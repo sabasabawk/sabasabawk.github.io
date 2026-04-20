@@ -143,3 +143,15 @@ footer {
 
 </body>
 </html>
+<section id="donate">
+  <div class="card">
+    <h2>Support the Ministry</h2>
+    <p>Your support helps spread the Gospel.</p>
+
+    <p><b>Mobile Money:</b> 0653669337</p>
+
+    <a class="btn" href="https://paypal.me/yourname">
+      Donate via PayPal
+    </a>
+  </div>
+</section>
