@@ -1,157 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sabasaba Wilfred Ministries</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabasaba Wilfred Ministry</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f7;
+        }
 
-/* HEADER */
-header {
-    background: #0b3d91;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
+        header {
+            background: #0a3d62;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
 
-nav {
-    background: #062c6b;
-    padding: 10px;
-    text-align: center;
-}
+        nav {
+            background: #1e90ff;
+            padding: 12px;
+            text-align: center;
+        }
 
-nav a {
-    color: white;
-    margin: 10px;
-    text-decoration: none;
-    font-weight: bold;
-}
+        nav a {
+            color: white;
+            margin: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-nav a:hover {
-    text-decoration: underline;
-}
+        section {
+            padding: 40px;
+            text-align: center;
+        }
 
-/* SECTIONS */
-section {
-    padding: 40px;
-    background: white;
-    margin: 20px;
-    border-radius: 10px;
-}
+        .hero {
+            background: #dff9fb;
+        }
 
-h2 {
-    color: #0b3d91;
-}
+        .btn {
+            background: #0a3d62;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
 
-/* BUTTON */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: green;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
 
-/* FOOTER */
-footer {
-    background: #0b3d91;
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
-</style>
-
+        footer {
+            background: #0a3d62;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Sabasaba Wilfred Ministries</h1>
-    <p>Preaching the Word | Teaching Truth | Transforming Lives</p>
+    <h1>Sabasaba Wilfred Ministry</h1>
+    <p>Preaching • Teaching • Transforming Lives</p>
 </header>
 
 <nav>
     <a href="#home">Home</a>
-    <a href="#about">About</a>
     <a href="#sermons">Sermons</a>
-    <a href="#teachings">Teachings</a>
-    <a href="#contact">Contact</a>
+    <a href="#prayer">Prayer</a>
     <a href="#donation">Donate</a>
+    <a href="#contact">Contact</a>
 </nav>
 
-<!-- HOME -->
-<section id="home">
+<section class="hero" id="home">
     <h2>Welcome</h2>
-    <p>Welcome to Sabasaba Wilfred Ministries. This is a place of powerful preaching, deep teaching, and spiritual growth.</p>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-    <h2>About Me</h2>
-    <p>My name is <strong>Sabasaba Wilfred</strong>. I am a preacher and teacher dedicated to sharing the Word of God with clarity and power.</p>
-    <p>My mission is to help people grow spiritually, understand the Bible deeply, and live transformed lives.</p>
+    <p>Growing together in the Word of God.</p>
+    <a href="https://wa.me/255653669337" class="btn">Join on WhatsApp</a>
 </section>
 
 <!-- SERMONS -->
 <section id="sermons">
-    <h2>Sermons</h2>
+    <h2>Latest Sermons</h2>
 
-    <h3>When Enough is Never Enough</h3>
-    <p>Based on Luke 12:13-21. A powerful message about greed and contentment.</p>
+    <div class="card">
+        <h3>When Enough is Never Enough</h3>
+        <p>Luke 12:13-21</p>
+        <p>A message about greed, contentment, and eternal focus.</p>
+    </div>
 
-    <h3>Faith That Does Not Give Up</h3>
-    <p>Based on Matthew 15:22-28. A message on persistent faith.</p>
-
-</section>
-
-<!-- TEACHINGS -->
-<section id="teachings">
-    <h2>Teachings</h2>
-
-    <h3>Biblical Teachings</h3>
-    <p>Deep explanations of scripture to help believers understand God's Word.</p>
-
-    <h3>History Lessons</h3>
-    <p>Educational teachings based on history for students and learners.</p>
+    <div class="card">
+        <h3>Walking by Faith</h3>
+        <p>2 Corinthians 5:7</p>
+        <p>Learning to trust God beyond what we see.</p>
+    </div>
 
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-    <h2>Contact Me</h2>
-    <p>Reach me directly on WhatsApp:</p>
-    <a class="btn" href="https://wa.me/255653669337">Chat on WhatsApp</a>
+<!-- PRAYER -->
+<section id="prayer" style="background:#dff9fb;">
+    <h2>Prayer Requests</h2>
+    <p>We stand with you in prayer. Share your request with us.</p>
+
+    <a href="https://wa.me/255653669337" class="btn">
+        Send Prayer Request
+    </a>
 </section>
 
 <!-- DONATION -->
 <section id="donation">
     <h2>Support the Ministry</h2>
-    <p>If you are blessed by this ministry, you can support the work.</p>
-    <p><strong>M-Pesa / Airtel Money:</strong> 0653669337</p>
+    <div class="card">
+        <p>Your giving helps spread the Gospel.</p>
+
+        <h3>M-Pesa / Tigo Pesa</h3>
+        <p><strong>0653669337</strong></p>
+
+        <p>Thank you for your support 🙏</p>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:#dff9fb;">
+    <h2>Contact</h2>
+    <p>Reach out for prayer, teaching, or ministry support.</p>
+
+    <a href="https://wa.me/255653669337" class="btn">
+        Chat on WhatsApp
+    </a>
 </section>
 
 <footer>
-    <p>© 2026 Sabasaba Wilfred Ministries</p>
+    <p>© 2026 Sabasaba Wilfred Ministry</p>
 </footer>
 
 </body>
 </html>
-<section id="donate">
-  <div class="card">
-    <h2>Support the Ministry</h2>
-    <p>Your support helps spread the Gospel.</p>
-
-    <p><b>Mobile Money:</b> 0653669337</p>
-
-    <a class="btn" href="https://paypal.me/yourname">
-      Donate via PayPal
-    </a>
-  </div>
-</section>
