@@ -714,6 +714,7 @@ https://sabasabawk.github.io/
     }
   ]
 
-https://your-site/app.html
-index.html
-https://sabasabawk.github.io/
+<head>
+  <title>Sabasaba Ministries</title>
+  <link rel="manifest" href="manifest.json">
+</head>
