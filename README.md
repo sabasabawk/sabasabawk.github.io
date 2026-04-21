@@ -718,3 +718,5 @@ https://sabasabawk.github.io/
   <title>Sabasaba Ministries</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
+manifest.json
