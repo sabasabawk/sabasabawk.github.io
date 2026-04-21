@@ -713,12 +713,7 @@ https://sabasabawk.github.io/
       "type": "image/png"
     }
   ]
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e3a5f">
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./service-worker.js")
-    .then(() => console.log("SW registered"))
-    .catch(err => console.log("SW error", err));
-}
-</script>
+
+https://your-site/app.html
+index.html
+https://sabasabawk.github.io/
