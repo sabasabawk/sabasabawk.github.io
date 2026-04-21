@@ -746,3 +746,9 @@ service-worker.jsself.addEventListener("install", e => {
 });
 
 self.addEventListener("fetch", e => {});
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
