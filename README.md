@@ -692,3 +692,5 @@ https://sabasabawk.github.io/
   <h3>New Sermon Title</h3>
   <a href="sermon3.html" class="btn">Read</a>
 </div>
+
+manifest.json
