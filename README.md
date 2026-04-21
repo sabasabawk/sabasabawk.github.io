@@ -685,3 +685,5 @@ index.html
 https://sabasabawk.github.io/
 
 <a href="https://wa.me/255653669337" class="btn">💬 Chat on WhatsApp</a>
+
+<a href="https://wa.me/255653669337" class="btn">Send Prayer via WhatsApp</a>
