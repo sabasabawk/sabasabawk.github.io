@@ -699,3 +699,9 @@ service-worker.js
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1e3a5f">
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
