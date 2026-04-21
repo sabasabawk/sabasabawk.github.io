@@ -705,3 +705,6 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 </script>
+
+"start_url": "/",
+"scope": "/"
