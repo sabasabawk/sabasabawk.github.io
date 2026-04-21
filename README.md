@@ -708,3 +708,5 @@ if ("serviceWorker" in navigator) {
 
 "start_url": "/",
 "scope": "/"
+
+"/index.html"
