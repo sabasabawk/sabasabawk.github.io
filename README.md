@@ -715,3 +715,6 @@ manifest.json
     }
   ]
 }
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e3a5f">
