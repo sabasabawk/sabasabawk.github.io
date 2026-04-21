@@ -718,3 +718,24 @@ manifest.json
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1e3a5f">
+
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open("app-cache").then((cache) => {
+      return cache.addAll([
+        "/",
+        "/index.html",
+        "/sermon1.html",
+        "/sermon2.html"
+      ]);
+    })
+  );
+});
+
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
+});
