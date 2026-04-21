@@ -740,3 +740,9 @@ manifest.json{
     }
   ]
 }
+
+service-worker.jsself.addEventListener("install", e => {
+  self.skipWaiting();
+});
+
+self.addEventListener("fetch", e => {});
