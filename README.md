@@ -737,3 +737,5 @@ self.addEventListener("fetch", (event) => {
 });
 
 https://sabasabawk.github.io/
+
+chrome://settings/siteSettings/all
