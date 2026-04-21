@@ -232,3 +232,240 @@ sermon1.html
 </html>
 
 <a href="sermon2.html">Do Not Be Silent – Read Sermon</a>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Do Not Be Silent – Faith That Cries Out</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #1e3a5f;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    h1, h2 {
+      color: #1e3a5f;
+    }
+
+    .verse {
+      background: #eef4ff;
+      padding: 15px;
+      border-left: 5px solid #1e90ff;
+      margin: 20px 0;
+      font-style: italic;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #1e3a5f;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #1e90ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background: #0d6efd;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🕊️ Do Not Be Silent – Faith That Cries Out</h1>
+  <p>📖 Mark 10:46–52</p>
+</header>
+
+<div class="container">
+
+  <div class="section">
+    <h2>🔰 Introduction</h2>
+    <p>
+      This is the powerful story of Bartimaeus—a man who refused to remain where life had placed him.
+      He refused to be silenced, and his faith attracted the attention of Jesus.
+    </p>
+    <p>
+      Many people are alive but not truly living—present but not progressing.
+      Today, something is about to change!
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>🔥 1. The Condition of Bartimaeus</h2>
+    <div class="verse">
+      “Blind Bartimaeus… sat by the roadside begging.” – Mark 10:46
+    </div>
+
+    <ul>
+      <li><strong>Blind:</strong> No vision – many today are spiritually blind</li>
+      <li><strong>Beggar:</strong> Living in lack and dependence</li>
+      <li><strong>Roadside:</strong> Close to progress but not progressing</li>
+    </ul>
+
+    <p><strong>But Jesus passes by the roadside!</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>🔊 2. Faith Begins by Hearing</h2>
+    <div class="verse">
+      “When he heard that it was Jesus…” – Mark 10:47
+    </div>
+
+    <p>Faith begins with hearing. What you hear shapes your life.</p>
+
+    <ul>
+      <li>Hear doubt → produce fear</li>
+      <li>Hear faith → produce confidence</li>
+    </ul>
+
+    <p><strong>He declared: “Son of David!” – recognizing Jesus as Messiah.</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>📣 3. Cry Out – Refuse Silence</h2>
+    <div class="verse">
+      “Many rebuked him… but he cried out all the more!” – Mark 10:48
+    </div>
+
+    <p>People will try to silence you—but faith refuses intimidation.</p>
+
+    <ul>
+      <li>Desperation fuels persistence</li>
+      <li>Faith grows louder under pressure</li>
+    </ul>
+
+    <p><strong>Your miracle may be waiting for your voice!</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>✋ 4. Jesus Stood Still</h2>
+    <div class="verse">
+      “Jesus stood still and said, ‘Call him.’” – Mark 10:49
+    </div>
+
+    <p>Your faith can stop heaven’s movement.</p>
+    <p>When Jesus steps in, people change their attitude!</p>
+  </div>
+
+  <div class="section">
+    <h2>👣 5. Throw Off the Cloak</h2>
+    <div class="verse">
+      “Throwing his cloak aside, he jumped to his feet…” – Mark 10:50
+    </div>
+
+    <p>The cloak represented his past and identity as a beggar.</p>
+
+    <ul>
+      <li>Let go of fear</li>
+      <li>Let go of sin</li>
+      <li>Let go of limiting beliefs</li>
+    </ul>
+
+    <p><strong>You cannot carry your past into your future!</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>❓ 6. What Do You Want?</h2>
+    <div class="verse">
+      “What do you want Me to do for you?” – Mark 10:51
+    </div>
+
+    <p>God requires clarity.</p>
+    <p>Bartimaeus said: <strong>“I want to see.”</strong></p>
+
+    <p><strong>Clarity attracts miracles!</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>👁️ 7. The Miracle</h2>
+    <div class="verse">
+      “Your faith has healed you.” – Mark 10:52
+    </div>
+
+    <p>His faith activated divine power.</p>
+
+    <ul>
+      <li>Roadside → Road</li>
+      <li>Begging → Following</li>
+      <li>Blindness → Vision</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🎯 Conclusion</h2>
+    <p>
+      Your condition is not your conclusion.
+      Your faith can change your life.
+    </p>
+
+    <p><strong>Do not be silent. Cry out in faith!</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>🙏 Altar Call</h2>
+    <p>
+      If you feel stuck or need a miracle, lift your heart and say:
+    </p>
+    <div class="verse">
+      “Jesus, Son of David, have mercy on me!”
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🙌 Final Prayer</h2>
+    <p>
+      Heavenly Father, thank You for Your Word.  
+      Today we refuse to be silent.  
+      Touch every life, restore every heart, and open every blind eye.  
+      In Jesus’ name, Amen.
+    </p>
+  </div>
+
+  <a href="index.html" class="btn">⬅ Back to Home</a>
+
+</div>
+
+<footer>
+  <p>© 2026 Sabasaba Wilfred Ministries</p>
+</footer>
+
+</body>
+</html>
