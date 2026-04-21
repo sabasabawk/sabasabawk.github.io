@@ -231,6 +231,7 @@ sermon1.html
 </body>
 </html>
 
+
 <a href="sermon2.html">Do Not Be Silent – Read Sermon</a>
 
 <!DOCTYPE html>
