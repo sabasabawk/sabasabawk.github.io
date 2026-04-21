@@ -678,12 +678,6 @@ sermon1.html
 </body>
 </html>
 
-https://your-site/app.html
-
-index.html
-
-https://sabasabawk.github.io/
-
 <a href="https://wa.me/255653669337" class="btn">💬 Chat on WhatsApp</a>
 
 <a href="https://wa.me/255653669337" class="btn">Send Prayer via WhatsApp</a>
@@ -741,14 +735,3 @@ manifest.json{
   ]
 }
 
-service-worker.jsself.addEventListener("install", e => {
-  self.skipWaiting();
-});
-
-self.addEventListener("fetch", e => {});
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
