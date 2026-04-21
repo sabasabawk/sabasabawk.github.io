@@ -683,3 +683,5 @@ https://your-site/app.html
 index.html
 
 https://sabasabawk.github.io/
+
+<a href="https://wa.me/255653669337" class="btn">💬 Chat on WhatsApp</a>
