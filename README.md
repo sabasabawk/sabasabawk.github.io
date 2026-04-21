@@ -693,49 +693,24 @@ https://sabasabawk.github.io/
   <a href="sermon3.html" class="btn">Read</a>
 </div>
 
-manifest.json
-
-service-worker.js
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e3a5f">
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+{
+  "name": "Sabasaba Ministries",
+  "short_name": "Ministry",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a5f",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
-</script>
-
-"start_url": "/",
-"scope": "/"
-
-"/index.html"
-
-const CACHE_NAME = "ministry-app-v1";
-
-const urlsToCache = [
-  "./",
-  "./index.html",
-  "./sermon1.html",
-  "./sermon2.html"
-];
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
-
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
-});
-
-https://sabasabawk.github.io/
-
-chrome://settings/siteSettings/all
