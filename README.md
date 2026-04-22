@@ -157,15 +157,19 @@
   </div>
 </div>
 
-<!-- SERMON 2 -->
-<div id="sermon2" class="page hidden">
+<div id="sermons" class="page hidden">
   <div class="card">
-    <h2>WHEN ENOUGH IS NEVER ENOUGH</h2>
-    <p><b>Luke 12:13-21</b></p>
+    <h3>Do Not Be Silent</h3>
+    <p>Mark 10:46-52</p>
+    <button class="btn" onclick="openSermon('sermon1')">Read Sermon</button>
+  </div>
 
-    <p>The rich fool stored wealth but ignored God. Life is not about possessions, but purpose.</p>
-
-    <p>Be rich toward God, not just rich on earth.</p>
+  <div class="card">
+    <h3>When Enough is Never Enough</h3>
+    <p>Luke 12:13-21</p>
+    <button class="btn" onclick="openSermon('sermon2')">Read Sermon</button>
+  </div>
+</div>
 
     <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
   </div>
