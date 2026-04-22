@@ -1,82 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabasaba Ministries</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.json">
+<title>Sabasaba Ministries</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-    }
+<link rel="manifest" href="manifest.json">
 
-    header {
-      background: #1e3a5f;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+}
 
-    nav {
-      display: flex;
-      justify-content: space-around;
-      background: white;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
+header {
+  background: #1e3a5f;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    nav button {
-      background: none;
-      border: none;
-      font-size: 16px;
-      color: #555;
-    }
+nav {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
 
-    nav button.active {
-      color: #1e3a5f;
-      font-weight: bold;
-    }
+nav button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: #555;
+}
 
-    .container {
-      padding: 15px;
-    }
+nav button.active {
+  color: #1e3a5f;
+  font-weight: bold;
+}
 
-    .card {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+.container {
+  padding: 15px;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 10px 15px;
-      background: #1e88e5;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      margin-top: 10px;
-    }
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-    .hidden {
-      display: none;
-    }
-  </style>
+.btn {
+  display: inline-block;
+  background: #1e88e5;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-top: 10px;
+  border: none;
+}
+
+.hidden {
+  display: none;
+}
+
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  Sabasaba Ministries
-</header>
+<header>Sabasaba Ministries</header>
 
 <nav>
   <button onclick="showPage('home')" class="active">Home</button>
@@ -87,103 +92,59 @@
 
 <div class="container">
 
-  <!-- HOME -->
-  <div id="home" class="page">
-    <div class="card">
-      <h3>Welcome</h3>
-      <p>Preaching the Word. Teaching the Truth. Transforming Lives.</p>
-    </div>
-
-    <div class="card">
-      <h3>Quick Actions</h3>
-      <a class="btn" href="https://wa.me/255653669337">Chat on WhatsApp</a><br>
-      <a class="btn" href="https://wa.me/255653669337">Send Prayer Request</a>
-    </div>
-  </div>
-
-  <div id="sermons" class="page hidden">
+<!-- HOME -->
+<div id="home" class="page">
   <div class="card">
-    <h3>Do Not Be Silent</h3>
-    <p>Mark 10:46-52</p>
-    <button class="btn" onclick="openSermon('sermon1')">Read Sermon</button>
+    <h3>Welcome</h3>
+    <p>Preaching the Word. Teaching the Truth. Transforming Lives.</p>
   </div>
 
   <div class="card">
-    <h3>When Enough is Never Enough</h3>
-    <p>Luke 12:13-21</p>
-    <button class="btn" onclick="openSermon('sermon2')">Read Sermon</button>
-  </div>
-</div>
-  <div id="sermons" class="page hidden">
-    <div class="card">
-      <h3>Do Not Be Silent</h3>
-      <p>Faith that cries out - Mark 10:46-52</p>
-      <a class="btn" href="#">Read Sermon</a>
-    </div>
-
-    <div class="card">
-      <h3>When Enough is Never Enough</h3>
-      <p>Luke 12:13-21</p>
-      <a class="btn" href="#">Read Sermon</a>
-    </div>
-  </div>
-
-  <!-- PRAYER -->
-  <div id="prayer" class="page hidden">
-    <div class="card">
-      <h3>Send Prayer Request</h3>
-      <p>We stand with you in prayer.</p>
-      <a class="btn" href="https://wa.me/255653669337">Send via WhatsApp</a>
-    </div>
-  </div>
-
-  <!-- DONATE -->
-  <div id="donate" class="page hidden">
-    <div class="card">
-      <h3>Support the Ministry</h3>
-      <p>Your giving helps spread the Gospel.</p>
-      <a class="btn" href="https://wa.me/255653669337">Give via Mobile Money</a>
-    </div><!-- SERMON 1 -->
-<div id="sermon1" class="page hidden">
-  <div class="card">
-    <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
-    <p><b>Mark 10:46-52</b></p>
-
-    <p>Blind Bartimaeus refused to stay silent. Even when people tried to stop him, he cried louder: "Jesus, Son of David, have mercy on me!"</p>
-
-    <p>Your breakthrough begins when your faith refuses to be quiet.</p>
-
-    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
+    <h3>Quick Actions</h3>
+    <a class="btn" href="https://wa.me/255653669337">Chat on WhatsApp</a><br>
+    <a class="btn" href="https://wa.me/255653669337">Send Prayer Request</a>
   </div>
 </div>
 
+<!-- SERMON LIST -->
 <div id="sermons" class="page hidden">
   <div class="card">
     <h3>Do Not Be Silent</h3>
     <p>Mark 10:46-52</p>
-    <button class="btn" onclick="openSermon('sermon1')">Read Sermon</button>
+    <button class="btn" onclick="openSermon('sermon1')">Read / Listen</button>
   </div>
 
   <div class="card">
     <h3>When Enough is Never Enough</h3>
     <p>Luke 12:13-21</p>
-    <button class="btn" onclick="openSermon('sermon2')">Read Sermon</button>
+    <button class="btn" onclick="openSermon('sermon2')">Read / Listen</button>
   </div>
 </div>
 
-    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
-  </div>
-</div>
-  </div>
 <!-- SERMON 1 -->
 <div id="sermon1" class="page hidden">
   <div class="card">
     <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
     <p><b>Mark 10:46-52</b></p>
 
-    <p>Blind Bartimaeus refused to stay silent. Even when people tried to stop him, he cried louder: "Jesus, Son of David, have mercy on me!"</p>
+    <audio controls>
+      <source src="sermon1.mp3" type="audio/mpeg">
+    </audio>
 
-    <p>Your breakthrough begins when your faith refuses to be quiet.</p>
+    <h3>Introduction</h3>
+    <p>Bartimaeus refused silence. Faith must speak.</p>
+
+    <h3>1. Your condition is not your end</h3>
+    <p>He was blind, but not finished.</p>
+
+    <h3>2. Faith must cry out</h3>
+    <p>He shouted until Jesus responded.</p>
+
+    <h3>3. Jesus stops for faith</h3>
+    <p>Your voice of faith moves heaven.</p>
+
+    <h3>Conclusion</h3>
+    <p>Do not be silent.</p>
 
     <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
   </div>
@@ -195,13 +156,44 @@
     <h2>WHEN ENOUGH IS NEVER ENOUGH</h2>
     <p><b>Luke 12:13-21</b></p>
 
-    <p>The rich fool stored wealth but ignored God. Life is not about possessions, but purpose.</p>
+    <audio controls>
+      <source src="sermon2.mp3" type="audio/mpeg">
+    </audio>
 
-    <p>Be rich toward God, not just rich on earth.</p>
+    <h3>Introduction</h3>
+    <p>Life is more than accumulation.</p>
+
+    <h3>1. The trap of wealth</h3>
+    <p>He stored but did not serve.</p>
+
+    <h3>2. Ignoring eternity</h3>
+    <p>He planned for earth only.</p>
+
+    <h3>Conclusion</h3>
+    <p>Be rich toward God.</p>
 
     <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
   </div>
 </div>
+
+<!-- PRAYER -->
+<div id="prayer" class="page hidden">
+  <div class="card">
+    <h3>Prayer Request</h3>
+    <p>We are praying with you.</p>
+    <a class="btn" href="https://wa.me/255653669337">Send via WhatsApp</a>
+  </div>
+</div>
+
+<!-- DONATION -->
+<div id="donate" class="page hidden">
+  <div class="card">
+    <h3>Support the Ministry</h3>
+    <p>M-Pesa / Airtel Money: <b>+255653669337</b></p>
+    <a class="btn" href="https://wa.me/255653669337">Confirm Giving</a>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -212,9 +204,13 @@ function showPage(pageId) {
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
 }
+
+function openSermon(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
 </script>
 
-<!-- Service Worker -->
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
