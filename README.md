@@ -3,99 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sabasaba Wilfred - AI Services</title>
+    <title>Sabasaba Wilfred Ministry</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            background: #0f172a;
-            color: white;
-            text-align: center;
+            font-family: Arial, sans-serif;
+            background: #f4f6f7;
         }
 
         header {
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 40px;
-        }
-
-        p {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-
-        .container {
-            padding: 40px 20px;
-        }
-
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 500px;
-            border-radius: 12px;
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 20px;
-            background: #22c55e;
+            background: #0a3d62;
             color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        nav {
+            background: #1e90ff;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 10px;
             text-decoration: none;
-            border-radius: 8px;
             font-weight: bold;
         }
 
-        .btn:hover {
-            background: #16a34a;
+        section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .hero {
+            background: #dff9fb;
+        }
+
+        .btn {
+            background: #0a3d62;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         footer {
-            padding: 20px;
-            font-size: 14px;
-            opacity: 0.7;
+            background: #0a3d62;
+            color: white;
+            text-align: center;
+            padding: 15px;
         }
     </style>
 </head>
+
 <body>
 
 <header>
-    <h1>Sabasaba Wilfred</h1>
-    <p>AI Services | I buy what you have suggested</p>
+    <h1>Sabasaba Wilfred Ministry</h1>
+    <p>Preaching • Teaching • Transforming Lives</p>
 </header>
 
-<div class="container">
+<nav>
+    <a href="#home">Home</a>
+    <a href="#sermons">Sermons</a>
+    <a href="#prayer">Prayer</a>
+    <a href="#donation">Donate</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Welcome</h2>
+    <p>Growing together in the Word of God.</p>
+    <a href="https://wa.me/255653669337" class="btn">Join on WhatsApp</a>
+</section>
+
+<!-- SERMONS -->
+<section id="sermons">
+    <h2>Latest Sermons</h2>
 
     <div class="card">
-        <h2>Services</h2>
-        <p>I buy what you have suggested using AI recommendations and solutions.</p>
+        <h3>When Enough is Never Enough</h3>
+        <p>Luke 12:13-21</p>
+        <p>A message about greed, contentment, and eternal focus.</p>
     </div>
 
     <div class="card">
-        <h2>Prices</h2>
-        <p>Flexible pricing depending on what is suggested.</p>
+        <h3>Walking by Faith</h3>
+        <p>2 Corinthians 5:7</p>
+        <p>Learning to trust God beyond what we see.</p>
     </div>
 
+</section>
+
+<!-- PRAYER -->
+<section id="prayer" style="background:#dff9fb;">
+    <h2>Prayer Requests</h2>
+    <p>We stand with you in prayer. Share your request with us.</p>
+
+    <a href="https://wa.me/255653669337" class="btn">
+        Send Prayer Request
+    </a>
+</section>
+
+<!-- DONATION -->
+<section id="donation">
+    <h2>Support the Ministry</h2>
     <div class="card">
-        <h2>Contact Me</h2>
-        <p>Click below to chat with me on WhatsApp</p>
+        <p>Your giving helps spread the Gospel.</p>
 
-        <a class="btn" 
-           href="https://wa.me/255653669337?text=Hello%20I%20want%20to%20buy" 
-           target="_blank">
-           Chat on WhatsApp
-        </a>
+        <h3>M-Pesa / Tigo Pesa</h3>
+        <p><strong>0653669337</strong></p>
+
+        <p>Thank you for your support 🙏</p>
     </div>
+</section>
 
-</div>
+<!-- CONTACT -->
+<section id="contact" style="background:#dff9fb;">
+    <h2>Contact</h2>
+    <p>Reach out for prayer, teaching, or ministry support.</p>
+
+    <a href="https://wa.me/255653669337" class="btn">
+        Chat on WhatsApp
+    </a>
+</section>
 
 <footer>
-    © 2026 Sabasaba Wilfred | All rights reserved
+    <p>© 2026 Sabasaba Wilfred Ministry</p>
 </footer>
 
 </body>
