@@ -101,7 +101,19 @@
     </div>
   </div>
 
-  <!-- SERMONS -->
+  <div id="sermons" class="page hidden">
+  <div class="card">
+    <h3>Do Not Be Silent</h3>
+    <p>Mark 10:46-52</p>
+    <button class="btn" onclick="openSermon('sermon1')">Read Sermon</button>
+  </div>
+
+  <div class="card">
+    <h3>When Enough is Never Enough</h3>
+    <p>Luke 12:13-21</p>
+    <button class="btn" onclick="openSermon('sermon2')">Read Sermon</button>
+  </div>
+</div>
   <div id="sermons" class="page hidden">
     <div class="card">
       <h3>Do Not Be Silent</h3>
