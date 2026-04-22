@@ -1,95 +1,102 @@
-
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabasaba Wilfred | Sermons & Teaching Materials</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: #f8fafc;
-      text-align: center;
-    }
-    header {
-      padding: 80px 20px;
-      background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
-    }
-    h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-    h2 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 18px;
-      color: #cbd5f5;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 28px;
-      background: #16a34a;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-    section {
-      padding: 60px 20px;
-    }
-    .grid {
-      display: grid;
-      gap: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .card {
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 14px;
-    }
-    footer {
-      padding: 20px;
-      background: #020617;
-      font-size: 14px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabasaba Wilfred - AI Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+
+        p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .container {
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            border-radius: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #22c55e;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #16a34a;
+        }
+
+        footer {
+            padding: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+    </style>
 </head>
-<body><header>
-  <h1>Sabasaba Wilfred</h1>
-  <p>I help pastors, teachers, and students with powerful sermons and quality learning materials.</p>
-  <a class="btn" href="https://wa.me/255653669337">Request a Sermon or Notes</a>
-</header><section>
-  <h2>My Services</h2>
-  <div class="grid">
-    <div class="card">📖 30–45 Minute Powerful Sermons (with illustrations and stories)</div>
-    <div class="card">📚 Teaching Notes for Students (History, Language, and more)</div>
-    <div class="card">🙏 Bible Studies and Devotional Materials</div>
-  </div>
-</section><section>
-  <h2>Pricing</h2>
-  <div class="grid">
-    <div class="card">Sermon Preparation: 10,000 – 30,000 TZS</div>
-    <div class="card">Teaching Notes: 5,000 – 20,000 TZS</div>
-    <div class="card">Full Church Package: 50,000+ TZS</div>
-  </div>
-</section><section>
-  <h2>About Me</h2>
-  <p>I am a preacher and teacher dedicated to helping others grow spiritually and academically. I prepare sermons and learning materials that are clear, impactful, and easy to understand.</p>
-</section><section>
-  <h2>Why Choose Me</h2>
-  <div class="grid">
-    <div class="card">✔ Clear and well-structured content</div>
-    <div class="card">✔ Deep biblical understanding</div>
-    <div class="card">✔ Experience in teaching and preaching</div>
-  </div>
-</section><footer>
-  <p>© 2026 Sabasaba Wilfred. All rights reserved.</p>
-</footer></body>
+<body>
+
+<header>
+    <h1>Sabasaba Wilfred</h1>
+    <p>AI Services | I buy what you have suggested</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Services</h2>
+        <p>I buy what you have suggested using AI recommendations and solutions.</p>
+    </div>
+
+    <div class="card">
+        <h2>Prices</h2>
+        <p>Flexible pricing depending on what is suggested.</p>
+    </div>
+
+    <div class="card">
+        <h2>Contact Me</h2>
+        <p>Click below to chat with me on WhatsApp</p>
+
+        <a class="btn" 
+           href="https://wa.me/255653669337?text=Hello%20I%20want%20to%20buy" 
+           target="_blank">
+           Chat on WhatsApp
+        </a>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Sabasaba Wilfred | All rights reserved
+</footer>
+
+</body>
 </html>
