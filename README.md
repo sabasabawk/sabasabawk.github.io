@@ -1,78 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>When Enough is Never Enough</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f4f6f7;
-        }
-
-        header {
-            background: #0a3d62;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        section {
-            padding: 30px;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-        }
-
-        h2 {
-            color: #0a3d62;
-        }
-
-        .back {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            background: #1e90ff;
-            color: white;
-            padding: 10px 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Writing & Teaching Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<body>
-
-<header>
-    <h1>Sermon</h1>
-</header>
-
-<section>
-    <h2>When Enough is Never Enough</h2>
-    <p><strong>Text: Luke 12:13-21</strong></p>
-
-    <p>
-    In this passage, Jesus warns us about the danger of greed. A man asks Jesus
-    to settle an inheritance dispute, but instead of focusing on money, Jesus
-    teaches about life’s true purpose.
-    </p>
-
-    <p>
-    The rich fool stored wealth for himself but forgot God. Many today live the
-    same way — focusing on possessions while neglecting their soul.
-    </p>
-
-    <p>
-    True life is not found in abundance of things, but in a relationship with God.
-    We are called to be rich toward God, not just rich in this world.
-    </p>
-
-    <p>
-    Let us examine our lives: Are we chasing temporary wealth, or eternal purpose?
-    </p>
-
-    <a href="index.html" class="back">← Back to Home</a>
-</section>
-
-</body>
+<body class="bg-gray-50 text-gray-800">  <!-- HERO SECTION -->  <section class="bg-blue-600 text-white py-20 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Professional Sermons & Study Notes</h1>
+    <p class="text-lg mb-6">Powered by AI – Fast, Clear, Powerful Content</p>
+    <a href="#contact" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold">Order Now</a>
+  </section>  <!-- SERVICES -->  <section class="py-16 px-6 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-10">Our Services</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <h3 class="text-xl font-semibold mb-2">Sermon Writing</h3>
+        <p>Powerful 30–45 minute sermons with illustrations and biblical depth.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <h3 class="text-xl font-semibold mb-2">Student Notes</h3>
+        <p>Clear notes for history, language, and other subjects.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow">
+        <h3 class="text-xl font-semibold mb-2">AI Content</h3>
+        <p>Landing pages, essays, and professional writing services.</p>
+      </div>
+    </div>
+  </section>  <!-- PRICING -->  <section class="bg-gray-100 py-16 px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">Pricing</h2>
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="bg-white p-6 rounded-2xl shadow text-center">
+        <h3 class="text-xl font-semibold">Basic</h3>
+        <p class="text-2xl font-bold my-4">Tsh 5,000</p>
+        <p>Short notes or content</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow text-center border-2 border-blue-600">
+        <h3 class="text-xl font-semibold">Standard</h3>
+        <p class="text-2xl font-bold my-4">Tsh 10,000</p>
+        <p>Full sermon or detailed notes</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow text-center">
+        <h3 class="text-xl font-semibold">Premium</h3>
+        <p class="text-2xl font-bold my-4">Tsh 20,000</p>
+        <p>Advanced sermon with stories & illustrations</p>
+      </div>
+    </div>
+  </section>  <!-- TESTIMONIALS -->  <section class="py-16 px-6 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-10">What Clients Say</h2>
+    <p class="italic">"Very powerful sermons and easy to understand notes!"</p>
+  </section>  <!-- CONTACT -->  <section id="contact" class="bg-blue-600 text-white py-16 px-6 text-center">
+    <h2 class="text-3xl font-bold mb-6">Contact Us</h2>
+    <p class="mb-4">Order via WhatsApp</p>
+    <a href="https://wa.me/255XXXXXXXXX" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold">Chat on WhatsApp</a>
+  </section>  <!-- FOOTER -->  <footer class="bg-gray-800 text-white text-center py-6">
+    <p>© 2026 AI Writing Services | All Rights Reserved</p>
+  </footer></body>
 </html>
