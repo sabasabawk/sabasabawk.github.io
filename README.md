@@ -143,7 +143,33 @@
       <h3>Support the Ministry</h3>
       <p>Your giving helps spread the Gospel.</p>
       <a class="btn" href="https://wa.me/255653669337">Give via Mobile Money</a>
-    </div>
+    </div><!-- SERMON 1 -->
+<div id="sermon1" class="page hidden">
+  <div class="card">
+    <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
+    <p><b>Mark 10:46-52</b></p>
+
+    <p>Blind Bartimaeus refused to stay silent. Even when people tried to stop him, he cried louder: "Jesus, Son of David, have mercy on me!"</p>
+
+    <p>Your breakthrough begins when your faith refuses to be quiet.</p>
+
+    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
+  </div>
+</div>
+
+<!-- SERMON 2 -->
+<div id="sermon2" class="page hidden">
+  <div class="card">
+    <h2>WHEN ENOUGH IS NEVER ENOUGH</h2>
+    <p><b>Luke 12:13-21</b></p>
+
+    <p>The rich fool stored wealth but ignored God. Life is not about possessions, but purpose.</p>
+
+    <p>Be rich toward God, not just rich on earth.</p>
+
+    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
+  </div>
+</div>
   </div>
 
 </div>
