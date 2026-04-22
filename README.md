@@ -163,6 +163,20 @@ audio {
     <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
   </div>
 </div>
+<!-- YOUTUBE LIVE -->
+<div id="live" class="page hidden">
+  <div class="card">
+    <h3>Live Preaching</h3>
+    <p>Watch live or recent messages</p>
+
+    <iframe width="100%" height="220"
+      src="https://www.youtube.com/embed/VIDEO_ID"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+</div>
 
 <!-- PRAYER -->
 <div id="prayer" class="page hidden">
