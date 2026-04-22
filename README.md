@@ -169,8 +169,7 @@ audio {
     <h3>Live Preaching</h3>
     <p>Watch live or recent messages</p>
 
-    <iframe width="100%" height="220"
-      src="https://www.youtube.com/embed/abc123XYZ
+    <iframe src="https://www.youtube.com/embed/abc123XYZ"></iframe>
       frameborder="0"
       allowfullscreen>
     </iframe>
