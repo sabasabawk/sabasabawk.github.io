@@ -25,25 +25,13 @@ header {
   font-weight: bold;
 }
 
-nav {
-  display: flex;
-  justify-content: space-around;
-  background: white;
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
-}
-
-nav button {
-  background: none;
-  border: none;
-  font-size: 15px;
-  color: #555;
-}
-
-nav button.active {
-  color: #1e3a5f;
-  font-weight: bold;
-}
+<nav>
+  <button onclick="showPage('home')" class="active">Home</button>
+  <button onclick="showPage('sermons')">Sermons</button>
+  <button onclick="showPage('live')">Live</button>
+  <button onclick="showPage('prayer')">Prayer</button>
+  <button onclick="showPage('donate')">Donate</button>
+</nav>
 
 .container {
   padding: 15px;
