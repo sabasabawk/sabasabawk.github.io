@@ -1,57 +1,157 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Writing & Teaching Services</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Sabasaba Ministries</title>
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+    }
+
+    header {
+      background: #1e3a5f;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: #555;
+    }
+
+    nav button.active {
+      color: #1e3a5f;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      background: #1e88e5;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">  <!-- HERO SECTION -->  <section class="bg-blue-600 text-white py-20 text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Professional Sermons & Study Notes</h1>
-    <p class="text-lg mb-6">Powered by AI – Fast, Clear, Powerful Content</p>
-    <a href="#contact" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold">Order Now</a>
-  </section>  <!-- SERVICES -->  <section class="py-16 px-6 max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold text-center mb-10">Our Services</h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white p-6 rounded-2xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Sermon Writing</h3>
-        <p>Powerful 30–45 minute sermons with illustrations and biblical depth.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Student Notes</h3>
-        <p>Clear notes for history, language, and other subjects.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow">
-        <h3 class="text-xl font-semibold mb-2">AI Content</h3>
-        <p>Landing pages, essays, and professional writing services.</p>
-      </div>
+
+<body>
+
+<header>
+  Sabasaba Ministries
+</header>
+
+<nav>
+  <button onclick="showPage('home')" class="active">Home</button>
+  <button onclick="showPage('sermons')">Sermons</button>
+  <button onclick="showPage('prayer')">Prayer</button>
+  <button onclick="showPage('donate')">Donate</button>
+</nav>
+
+<div class="container">
+
+  <!-- HOME -->
+  <div id="home" class="page">
+    <div class="card">
+      <h3>Welcome</h3>
+      <p>Preaching the Word. Teaching the Truth. Transforming Lives.</p>
     </div>
-  </section>  <!-- PRICING -->  <section class="bg-gray-100 py-16 px-6">
-    <h2 class="text-3xl font-bold text-center mb-10">Pricing</h2>
-    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-white p-6 rounded-2xl shadow text-center">
-        <h3 class="text-xl font-semibold">Basic</h3>
-        <p class="text-2xl font-bold my-4">Tsh 5,000</p>
-        <p>Short notes or content</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow text-center border-2 border-blue-600">
-        <h3 class="text-xl font-semibold">Standard</h3>
-        <p class="text-2xl font-bold my-4">Tsh 10,000</p>
-        <p>Full sermon or detailed notes</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow text-center">
-        <h3 class="text-xl font-semibold">Premium</h3>
-        <p class="text-2xl font-bold my-4">Tsh 20,000</p>
-        <p>Advanced sermon with stories & illustrations</p>
-      </div>
+
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <a class="btn" href="https://wa.me/255653669337">Chat on WhatsApp</a><br>
+      <a class="btn" href="https://wa.me/255653669337">Send Prayer Request</a>
     </div>
-  </section>  <!-- TESTIMONIALS -->  <section class="py-16 px-6 max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-10">What Clients Say</h2>
-    <p class="italic">"Very powerful sermons and easy to understand notes!"</p>
-  </section>  <!-- CONTACT -->  <section id="contact" class="bg-blue-600 text-white py-16 px-6 text-center">
-    <h2 class="text-3xl font-bold mb-6">Contact Us</h2>
-    <p class="mb-4">Order via WhatsApp</p>
-    <a href="https://wa.me/255XXXXXXXXX" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold">Chat on WhatsApp</a>
-  </section>  <!-- FOOTER -->  <footer class="bg-gray-800 text-white text-center py-6">
-    <p>© 2026 AI Writing Services | All Rights Reserved</p>
-  </footer></body>
+  </div>
+
+  <!-- SERMONS -->
+  <div id="sermons" class="page hidden">
+    <div class="card">
+      <h3>Do Not Be Silent</h3>
+      <p>Faith that cries out - Mark 10:46-52</p>
+      <a class="btn" href="#">Read Sermon</a>
+    </div>
+
+    <div class="card">
+      <h3>When Enough is Never Enough</h3>
+      <p>Luke 12:13-21</p>
+      <a class="btn" href="#">Read Sermon</a>
+    </div>
+  </div>
+
+  <!-- PRAYER -->
+  <div id="prayer" class="page hidden">
+    <div class="card">
+      <h3>Send Prayer Request</h3>
+      <p>We stand with you in prayer.</p>
+      <a class="btn" href="https://wa.me/255653669337">Send via WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- DONATE -->
+  <div id="donate" class="page hidden">
+    <div class="card">
+      <h3>Support the Ministry</h3>
+      <p>Your giving helps spread the Gospel.</p>
+      <a class="btn" href="https://wa.me/255653669337">Give via Mobile Money</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(pageId).classList.remove('hidden');
+
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+
+<!-- Service Worker -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
 </html>
