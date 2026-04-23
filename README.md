@@ -143,7 +143,9 @@
       <a class="btn" href="prayer.html"><!DOCTYPE html>
 <html>
 <head>
-  <title>Prayer</title>
+  <title>Prayer<a class="btn" href="https://wa.me/255653669337" target="_blank">
+  Send via WhatsApp
+</a></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
