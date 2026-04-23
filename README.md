@@ -1,278 +1,78 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabasaba Ministry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sabasaba Ministries</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f4f6f9;
+    }
 
-<link rel="manifest" href="manifest.json">
+    .header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 20px;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-}
+    .container {
+      padding: 20px;
+    }
 
-header {
-  background: #1e3a5f;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 20px;
-  font-weight: bold;
-}
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
 
-<nav>
-  <button onclick="showPage('home')" class="active">Home</button>
-  <button onclick="showPage('sermons')">Sermons</button>
-  <button onclick="showPage('live')">Live</button>
-  <button onclick="showPage('prayer')">Prayer</button>
-  <button onclick="showPage('donate')">Donate</button>
-</nav>
+    .btn {
+      display: block;
+      background: #3498db;
+      color: white;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+    }
 
-.container {
-  padding: 15px;
-}
-
-.card {
-  background: white;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.btn {
-  display: inline-block;
-  background: #1e88e5;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  text-decoration: none;
-  margin-top: 10px;
-  border: none;
-}
-
-.hidden {
-  display: none;
-}
-
-audio {
-  width: 100%;
-  margin-top: 10px;
-}
-</style>
+    .btn:hover {
+      background: #2980b9;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>Sabasaba Ministries</header>
-
-<nav>
-  <button onclick="showPage('home')" class="active">Home</button>
-  <button onclick="showPage('sermons')">Sermons</button>
-  <button onclick="showPage('prayer')">Prayer</button>
-  <button onclick="showPage('donate')">Donate</button>
-</nav>
-
-<div class="container">
-
-<!-- HOME -->
-<div id="home" class="page">
-  <div class="card">
-    <h3>Welcome</h3>
-    <p>Preaching the Word. Teaching the Truth. Transforming Lives.</p>
+  <div class="header">
+    🙏 Sabasaba Ministry
   </div>
 
-  <div class="card">
-    <h3>Quick Actions</h3>
-    <a class="btn" href="https://wa.me/255653669337">Chat on WhatsApp</a><br>
-    <a class="btn" href="https://wa.me/255653669337">Send Prayer Request</a>
-  </div>
-</div>
+  <div class="container">
 
-<!-- SERMON LIST --><!DOCTYPE html>
-<html>
-<head>
-  <title>Sermons</title>
-</head>
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>Grow your faith. Listen. Pray. Be transformed.</p>
+    </div>
 
-<body style="font-family: Arial; text-align: center;">
+    <div class="card">
+      <h3>📖 Sermons</h3>
+      <a class="btn" href="sermons.html">Open Sermons</a>
+    </div>
 
-  <h1>📖 Sermons</h1>
-
-  <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
-  <p><b>Mark 10:46–52</b></p>
-
-  <p>
-  Blind Bartimaeus cried out to Jesus and refused to be silent.
-  Even when people told him to stop, he shouted louder.
-  His faith made him whole.
-  </p>
-
-  <p>
-  👉 Lesson: Never be silent when you need God.
-  Cry out in faith!
-  </p>
-
-  <br><br>
-
-  <a href="index.html">
-    <button>⬅ Back Home</button>
-  </a>
-
-</body>
-</html>
-<div id="sermons" class="page hidden">
-  <div class="card">
-    <h3>Do Not Be Silent</h3>
-    <p>Mark 10:46-52</p>
-    <button class="btn" onclick="openSermon('sermon1')">Read / Listen</button>
-  </div>
-
-  <div class="card">
-    <h3>When Enough is Never Enough</h3>
-    <p>Luke 12:13-21</p>
-    <button class="btn" onclick="openSermon('sermon2')">Read / Listen</button>
-  </div>
-</div>
-
-<!-- SERMON 1 -->
-<div id="sermon1" class="page hidden">
-  <div class="card">
-    <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
-    <p><b>Mark 10:46-52</b></p>
-
-    <audio controls>
-      <source src="sermon1.mp3" type="audio/mpeg">
-    </audio>
-
-    <h3>Introduction</h3>
-    <p>Bartimaeus refused silence. Faith must speak.</p>
-
-    <h3>1. Your condition is not your end</h3>
-    <p>He was blind, but not finished.</p>
-
-    <h3>2. Faith must cry out</h3>
-    <p>He shouted until Jesus responded.</p>
-
-    <h3>3. Jesus stops for faith</h3>
-    <p>Your voice of faith moves heaven.</p>
-
-    <h3>Conclusion</h3>
-    <p>Do not be silent.</p>
-
-    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
-  </div>
-</div>
-
-<!-- SERMON 2 -->
-<div id="sermon2" class="page hidden">
-  <div class="card">
-    <h2>WHEN ENOUGH IS NEVER ENOUGH</h2>
-    <p><b>Luke 12:13-21</b></p>
-
-    <audio controls>
-      <source src="sermon2.mp3" type="audio/mpeg">
-    </audio>
-
-    <h3>Introduction</h3>
-    <p>Life is more than accumulation.</p>
-
-    <h3>1. The trap of wealth</h3>
-    <p>He stored but did not serve.</p>
-
-    <h3>2. Ignoring eternity</h3>
-    <p>He planned for earth only.</p>
-
-    <h3>Conclusion</h3>
-    <p>Be rich toward God.</p>
-
-    <button class="btn" onclick="showPage('sermons')">⬅ Back</button>
-  </div>
-</div>
-<!-- YOUTUBE LIVE -->
-<div id="live" class="page hidden">
-  <div class="card">
-    <h3>Live Preaching</h3>
-    <p>Watch live or recent messages</p>
-
-    <iframe src="https://www.youtube.com/embed/abc123XYZ"></iframe>
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+    <div class="card">
+      <h3>🙏 Prayer</h3>
+      <a class="btn" href="prayer.html">Send Prayer Request</a>
+    </div>
 
   </div>
-</div>
-
-<!-- PRAYER --><!DOCTYPE html>
-<html>
-<head>
-  <title>Prayer Request</title>
-</head>
-
-<body style="font-family: Arial; text-align: center;">
-
-  <h1>🙏 Prayer Request</h1>
-
-  <p>Send your prayer to God. He hears you.</p>
-
-  <textarea rows="6" cols="30" placeholder="Write your prayer here..."></textarea>
-
-  <br><br>
-
-  <button>Submit Prayer</button>
-
-  <br><br>
-
-  <a href="index.html">
-    <button>⬅ Back Home</button>
-  </a>
-
-</body>
-</html>
-<div id="prayer" class="page hidden">
-  <div class="card">
-    <h3>Prayer Request</h3>
-    <p>We are praying with you.</p>
-    <a class="btn" href="https://wa.me/255653669337">Send via WhatsApp</a>
-  </div>
-</div>
-
-<!-- DONATION -->
-<div id="donate" class="page hidden">
-  <div class="card">
-    <h3>Support the Ministry</h3>
-    <p>M-Pesa / Airtel Money: <b>+255653669337</b></p>
-    <a class="btn" href="https://wa.me/255653669337">Confirm Giving</a>
-  </div>
-</div>
-
-</div>
-
-<script>
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-  document.getElementById(pageId).classList.remove('hidden');
-
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-function openSermon(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
 
 </body>
 </html>
