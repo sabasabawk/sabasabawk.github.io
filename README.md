@@ -55,7 +55,9 @@
     🙏 Sabasaba Ministry
   </div>
 
-  <div class="container">
+  <<a class="btn" href="https://wa.me/255653669337?text=Hello%20I%20need%20prayer" target="_blank">
+  Chat on WhatsApp
+</a>>
 
     <div class="card">
       <h2>Welcome</h2>
