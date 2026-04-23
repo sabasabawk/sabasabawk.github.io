@@ -208,7 +208,32 @@ audio {
   </div>
 </div>
 
-<!-- PRAYER -->
+<!-- PRAYER --><!DOCTYPE html>
+<html>
+<head>
+  <title>Prayer Request</title>
+</head>
+
+<body style="font-family: Arial; text-align: center;">
+
+  <h1>🙏 Prayer Request</h1>
+
+  <p>Send your prayer to God. He hears you.</p>
+
+  <textarea rows="6" cols="30" placeholder="Write your prayer here..."></textarea>
+
+  <br><br>
+
+  <button>Submit Prayer</button>
+
+  <br><br>
+
+  <a href="index.html">
+    <button>⬅ Back Home</button>
+  </a>
+
+</body>
+</html>
 <div id="prayer" class="page hidden">
   <div class="card">
     <h3>Prayer Request</h3>
