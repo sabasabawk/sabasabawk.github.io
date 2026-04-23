@@ -94,7 +94,38 @@ audio {
   </div>
 </div>
 
-<!-- SERMON LIST -->
+<!-- SERMON LIST --><!DOCTYPE html>
+<html>
+<head>
+  <title>Sermons</title>
+</head>
+
+<body style="font-family: Arial; text-align: center;">
+
+  <h1>📖 Sermons</h1>
+
+  <h2>DO NOT BE SILENT – FAITH THAT CRIES OUT</h2>
+  <p><b>Mark 10:46–52</b></p>
+
+  <p>
+  Blind Bartimaeus cried out to Jesus and refused to be silent.
+  Even when people told him to stop, he shouted louder.
+  His faith made him whole.
+  </p>
+
+  <p>
+  👉 Lesson: Never be silent when you need God.
+  Cry out in faith!
+  </p>
+
+  <br><br>
+
+  <a href="index.html">
+    <button>⬅ Back Home</button>
+  </a>
+
+</body>
+</html>
 <div id="sermons" class="page hidden">
   <div class="card">
     <h3>Do Not Be Silent</h3>
