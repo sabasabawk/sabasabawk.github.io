@@ -162,3 +162,4 @@ manifest.json{
     }
   ]
 }
+service-worker.js
