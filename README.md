@@ -55,7 +55,12 @@
     🙏 Sabasaba Ministry
   </div>
 
-  <div class="container">
+  <div class="container"<div class="card">
+  <h3>💬 Contact Us</h3>
+  <a class="btn" href="https://wa.me/255653669337" target="_blank">
+    Chat on WhatsApp
+  </a>
+</div>>
 
     <div class="card">
       <h2>Welcome</h2>
