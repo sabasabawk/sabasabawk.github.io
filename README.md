@@ -173,3 +173,4 @@ service-worker.jsself.addEventListener("install", function(event) {
 
 self.addEventListener("fetch", function(event) {
 });
+icon.png
