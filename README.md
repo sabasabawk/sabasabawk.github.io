@@ -133,12 +133,68 @@
 </body>
 </html>>
 
-    <div class="card">
-      <h3>🙏 Prayer</h3>
-      <a class="btn" href="prayer.html">Send Prayer Request</a>
-    </div>
+    <<!DOCTYPE html>
+<html>
+<head>
+  <title>Prayer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f4f6f9;
+    }
+
+    .header {
+      background: #8e44ad;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .btn {
+      display: block;
+      margin-top: 15px;
+      background: #27ae60;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    🙏 Prayer Request
+  </div>
+
+  <div class="container">
+
+    <p>Write your prayer below:</p>
+
+    <textarea rows="5" placeholder="Type your prayer here..."></textarea>
+
+    <div class="btn">Submit Prayer</div>
+
+    <a class="btn" href="index.html">⬅ Back Home</a>
 
   </div>
 
 </body>
-</html>
+</html>>
