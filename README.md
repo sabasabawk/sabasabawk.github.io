@@ -194,6 +194,9 @@
     <p>Write your prayer below:</p>
 
     <textarea rows="5" placeholder="Type your prayer here..."></textarea>
+<a class="btn" href="https://wa.me/255653669337" target="_blank">
+  Send via WhatsApp
+</a>
 
     <div class="btn">Submit Prayer</div>
 
