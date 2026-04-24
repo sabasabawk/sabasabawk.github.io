@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sabasaba Wilfred Ministry</title>
 
-    <style>
+    <style><script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+  .then(() => console.log("Service Worker Registered"));
+}
+</script>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
