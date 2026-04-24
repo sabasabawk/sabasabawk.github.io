@@ -147,4 +147,18 @@
 
 </body>
 </html>
-manifest.json
+manifest.json{
+  "name": "Sabasaba Ministry",
+  "short_name": "Ministry",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c3e50",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
