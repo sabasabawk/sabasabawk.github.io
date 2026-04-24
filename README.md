@@ -162,4 +162,9 @@ manifest.json{
     }
   ]
 }
-service-worker.js
+service-worker.jsself.addEventListener("install", function(event) {
+  console.log("Service Worker Installed");
+});
+
+self.addEventListener("fetch", function(event) {
+});
