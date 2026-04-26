@@ -59,31 +59,12 @@
 
 <body>
 
-  <div class="header">🙏 Sabasaba Ministry</div>
-
-  <div class="container">
-
-    <div class="card">
-      <h2>Welcome</h2>
-      <p>Grow your faith daily.</p>
-    </div>
-
-    <div class="card">
-      <h3>📖 Sermons</h3>
-      <a class="btn" href="sermons.html">Open</a>
-    </div>
-
-    <div class="card">
-      <h3>🙏 Prayer</h3>
-      <a class="btn" href="prayer.html">Open</a>
-    </div>
-
-    <div class="card">
-      <h3>📞 Contact</h3>
-      <a class="btn" href="contact.html">Open</a>
-    </div>
-
-  </div>
+  <div class="nav">
+  <button onclick="show('home', this)" class="active">🏠<br>Home</button>
+  <button onclick="show('sermons', this)">📖<br>Sermons</button>
+  <button onclick="show('prayer', this)">🙏<br>Prayer</button>
+  <button onclick="show('donate', this)">💰<br>Donate</button>
+</div>
 
   <!-- Floating WhatsApp -->
   <a class="whatsapp" href="https://wa.me/255653669337" target="_blank">💬</a>
