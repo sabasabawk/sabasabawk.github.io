@@ -27,7 +27,7 @@ Feel free to reach out via WhatsApp for:
 - Questions about God's word
 - Ministry inquiries
 
-📱 **WhatsApp Contact**: [Message me on WhatsApp](https://wa.me/) *(Add your WhatsApp number)*
+📱 **WhatsApp Contact**: [+255653669337](https://wa.me/255653669337)
 
 ### Other Ways to Connect
 - Email or phone inquiries
@@ -38,10 +38,8 @@ Feel free to reach out via WhatsApp for:
 
 Your generous offerings help sustain this ministry and support those in need. Offerings can be made:
 
-- **Online**: Through [your payment platform]
+- **WhatsApp/Mobile Money**: +255653669337
 - **In Person**: During services or events
-- **Bank Transfer**: [Bank details to be added]
-- **Mobile Money**: [Mobile money details to be added]
 
 All offerings are tax-deductible and directly support:
 - Prayer and intercession programs
