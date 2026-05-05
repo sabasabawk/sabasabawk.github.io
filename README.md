@@ -20,11 +20,36 @@ I am called to preach the Gospel and lift up those in need through the power of 
 
 ## Contact & Connect
 
-Feel free to reach out if you:
-- Need prayer support
-- Want to discuss faith and spirituality
-- Are interested in attending services or events
-- Have questions about God's word
+### WhatsApp
+Feel free to reach out via WhatsApp for:
+- Prayer support
+- Spiritual discussions
+- Questions about God's word
+- Ministry inquiries
+
+📱 **WhatsApp Contact**: [Message me on WhatsApp](https://wa.me/) *(Add your WhatsApp number)*
+
+### Other Ways to Connect
+- Email or phone inquiries
+- Attending services or events
+- Community outreach participation
+
+## Offerings & Support
+
+Your generous offerings help sustain this ministry and support those in need. Offerings can be made:
+
+- **Online**: Through [your payment platform]
+- **In Person**: During services or events
+- **Bank Transfer**: [Bank details to be added]
+- **Mobile Money**: [Mobile money details to be added]
+
+All offerings are tax-deductible and directly support:
+- Prayer and intercession programs
+- Community outreach initiatives
+- Helping the less fortunate
+- Building God's kingdom
+
+*Your contribution, no matter the amount, makes a difference. "God loves a cheerful giver." - 2 Corinthians 9:7*
 
 ## Scripture
 
