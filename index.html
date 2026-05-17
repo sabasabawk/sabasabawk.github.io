@@ -3,469 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sabasaba Ministry</title>
+<title>Sabasaba Gospel Ministry</title>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#0b0b0b;
-color:white;
-line-height:1.6;
-}
-
-header{
-background:black;
-padding:20px 8%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#d4af37;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-size:16px;
-}
-
-.hero{
-height:100vh;
-background:
-linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
-url('images/blind-bartimaeus.jpg');
-background-size:cover;
-background-position:center;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-}
-
-.hero-content h1{
-font-size:70px;
-color:#d4af37;
-margin-bottom:20px;
-}
-
-.hero-content p{
-font-size:22px;
-max-width:700px;
-margin:auto;
-margin-bottom:30px;
-}
-
-.btn{
-display:inline-block;
-background:#d4af37;
-color:black;
-padding:15px 35px;
-text-decoration:none;
-border-radius:8px;
-font-weight:bold;
-}
-
-section{
-padding:80px 8%;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:50px;
-}
-
-.section-title h2{
-font-size:42px;
-color:#d4af37;
-margin-bottom:10px;
-}
-
-.featured{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-align-items:center;
-}
-
-.featured img{
-width:100%;
-border-radius:15px;
-}
-
-.featured h3{
-font-size:40px;
-margin-bottom:20px;
-}
-
-.verse{
-color:#d4af37;
-font-weight:bold;
-margin-bottom:20px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.card{
-background:#161616;
-padding:30px;
-border-radius:15px;
-}
-
-.card h3{
-color:#d4af37;
-margin-bottom:15px;
-}
-
-.donation{
-background:#111;
-padding:60px 20px;
-border-radius:20px;
-text-align:center;
-}
-
-.donation h2{
-font-size:40px;
-color:#d4af37;
-margin-bottom:20px;
-}
-
-.number{
-font-size:32px;
-font-weight:bold;
-margin-top:20px;
-}
-
-footer{
-background:black;
-padding:40px 20px;
-text-align:center;
-margin-top:50px;
-}
-
-@media(max-width:900px){
-
-.featured{
-grid-template-columns:1fr;
-}
-
-.hero-content h1{
-font-size:45px;
-}
-
-nav{
-display:none;
-}
-
-}
-.ministry-socials {
-    text-align: center;
-    padding: 50px 20px;
-}
-
-.social-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.social-btn {
-    padding: 12px 20px;
-    border-radius: 8px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.youtube {
-    background: red;
-}
-
-.facebook {
-    background: #1877f2;
-}
-
-.whatsapp {
-    background: #25d366;
-}
-
-.instagram {
-    background: #e1306c;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-
-<div class="logo">
-SABASABA MINISTRY
-</div>
-
-<nav>
-<a href="#">Home</a>
-<a href="#">Sermons</a>
-<a href="#">Ministry</a>
-<a href="#">Donation</a>
-</nav>
-
-</header>
-
-<section class="hero">
-
-<div class="hero-content">
-
-<h1>BLIND BARTIMAEUS</h1>
-
-<p>
-When Jesus Stops For You — A powerful message from Mark 10:46–52.
-</p>
-
-<a href="#" class="btn">
-Watch Sermon
-</a>
-
-</div>
-
-</section>
-
-<section>
-
-<div class="section-title">
-<h2>Featured Sermon</h2>
-<p>Latest Sabbath Worship Message</p>
-</div>
-
-<div class="featured">
-
-<img src="images/blind-bartimaeus.jpg">
-
-<div>
-
-<h3>
-Blind Bartimaeus — When Jesus Stops For You
-</h3>
-
-<p class="verse">
-Mark 10:46–52
-</p>
-
-<p>
-Bartimaeus cried out to Jesus in faith and Jesus stopped for him.
-One encounter with Christ can completely change your life.
-</p>
-
-<a href="#" class="btn">
-▶ Watch Full Sermon
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-<section>
-
-<div class="section-title">
-<h2>Our Ministry</h2>
-<p>Preaching Christ • Teaching Truth</p>
-</div>
-
-<div class="cards">
-
-<div class="card">
-<h3>📖 Sermons</h3>
-<p>
-Biblical preaching that transforms lives and prepares souls for Christ.
-</p>
-</div>
-
-<div class="card">
-<h3>🙏 Prayer</h3>
-<p>
-Standing together in prayer for families, youth, and communities.
-</p>
-</div>
-
-<div class="card">
-<h3>🎵 Worship</h3>
-<p>
-Spirit-filled worship services that glorify God.
-</p>
-</div>
-
-<div class="card">
-<h3>🌍 Evangelism</h3>
-<p>
-Taking the gospel everywhere through media ministry and outreach.
-</p>
-</div>
-
-</div>
-
-</section>
-</a>
-<section>
-</div>
-
-</div>
-
-</section>
-
-<footer>
-
-<h2 style="color:#d4af37;">
-Sabasaba Ministry
-</h2>
-
-<br>
-
-<p>
-© 2026 Sabasaba Ministry. All Rights Reserved.
-</p>
-
-</footer>
-<section class="ministry-socials">
-    <h2>Follow Our Ministry</h2>
-    <p>Stay connected with Sabasaba Gospel Ministry through our official channels.</p>
-
-    <div class="social-buttons">
-        <a href="https://www.youtube.com/@sabasabawilfred863" target="_blank" class="social-btn youtube">
-            Subscribe on YouTube
-        </a>
-
-        <a href="https://www.facebook.com/" target="_blank" class="social-btn facebook">
-            Follow on Facebook
-        </a>
-
-        <a href="https://wa.me/255653669337" target="_blank" class="social-btn whatsapp">
-            Chat on WhatsApp
-        </a>
-    </div>
-</section>
-
-<style>
-.ministry-socials {
-    text-align: center;
-    padding: 50px 20px;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
     background: #f4f4f4;
-    border-radius: 15px;
-    margin: 40px 20px;
-}
-
-.ministry-socials h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
     color: #222;
 }
 
-.ministry-socials p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    color: #555;
-}
-
-.social-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-btn {
-    padding: 14px 24px;
-    text-decoration: none;
-    border-radius: 10px;
+header {
+    background: #0d47a1;
     color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 40px;
+}
+
+header p {
+    font-size: 18px;
+}
+
+nav {
+    background: #1565c0;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 15px;
+    font-size: 18px;
     font-weight: bold;
-    transition: 0.3s;
-    font-size: 16px;
 }
 
-.social-btn:hover {
-    opacity: 0.85;
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
 }
 
-.youtube {
-    background: #ff0000;
+.hero h2 {
+    font-size: 35px;
+    color: #0d47a1;
 }
 
-.facebook {
-    background: #1877f2;
+.hero p {
+    font-size: 20px;
+    max-width: 700px;
+    margin: auto;
 }
 
-.whatsapp {
-    background: #25d366;
-}.instagram {
-    background: #e1306c;
+.section {
+    background: white;
+    margin: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-</style><section class="ministry-socials">
-    <h2>Follow Our Ministry</h2>
 
-    <div class="social-buttons">
+.section h2 {
+    color: #0d47a1;
+}
 
-        <a href="https://www.youtube.com/@sabasabawilfred863"
-           target="_blank"
-           class="social-btn youtube">
-           YouTube
-        </a>
+.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 15px 25px;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
 
-        <a href="https://facebook.com/"
-           target="_blank"
-           class="social-btn facebook">
-           Facebook
-        </a>
+.socials {
+    text-align: center;
+    padding: 30px;
+}
 
-        <a href="https://wa.me/255653669337"
-           target="_blank"
-           class="social-btn whatsapp">
-           WhatsApp
-        </a>
+.socials a {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #1565c0;
+    font-weight: bold;
+}
 
-        <a href="https://instagram.com/sabasabawk"
-           target="_blank"
-           class="social-btn instagram">
-           Instagram
-        </a>
+footer {
+    background: #0d47a1;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+</style>
+</head>
+<body>
 
-    </div>
+<header>
+    <h1>Sabasaba Gospel Ministry</h1>
+    <p>Preaching Christ to the World</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#sermons">Sermons</a>
+    <a href="#contact">Contact</a>
+    <a href="#social">Social Media</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Welcome to Our Ministry</h2>
+    <p>
+        We are dedicated to spreading the Gospel of Jesus Christ through preaching, teaching, worship, and online ministry.
+    </p>
+
+    <a class="button" href="https://whatsapp.com/channel/0029VbCqWJoL7UVVpofHfC27" target="_blank">
+        📱 Join Our WhatsApp Channel
+    </a>
 </section>
-</body><div style="text-align:center; margin:20px;">
-  <h2>Follow Our Ministry Channel</h2>
 
-  <a href="https://whatsapp.com/channel/0029VbCqWJoL7UVVpofHfC27"
-     target="_blank"
-     style="display:inline-block;
-     background:#25D366;
-     color:white;
-     padding:15px 25px;
-     border-radius:10px;
-     text-decoration:none;
-     font-size:20px;
-     font-weight:bold;">
-     📱 Join WhatsApp Channel
-  </a>
-</div>
+<section class="section" id="sermons">
+    <h2>Featured Sermon</h2>
+    <p>
+        "Blind Bartimaeus – When Jesus Stops for You"
+    </p>
+
+    <p>
+        Jesus still hears those who cry out in faith.
+    </p>
+</section>
+
+<section class="section" id="contact">
+    <h2>Contact Ministry</h2>
+    <p>WhatsApp: +255 653 669 337</p>
+    <p>Email: yourministryemail@example.com</p>
+</section>
+
+<section class="socials" id="social">
+    <h2>Follow Us</h2>
+
+    <a href="https://youtube.com/@sabasabawilfred863" target="_blank">YouTube</a>
+
+    <a href="https://facebook.com" target="_blank">Facebook</a>
+
+    <a href="https://instagram.com/sabasabawk" target="_blank">Instagram</a>
+</section>
+
+<footer>
+    <p>© 2026 Sabasaba Gospel Ministry | All Rights Reserved</p>
+</footer>
+
+</body>
 </html>
