@@ -6,109 +6,139 @@
   <title>Sabasaba Gospel Ministry</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
-    body {
-      background: #f5f5f5;
-      color: #222;
-      line-height: 1.6;
-    }
+body {
+  background: linear-gradient(to bottom, #eef3ff, #f7f9fc);
+  color: #222;
+  line-height: 1.7;
+}
 
-    header {
-      background: linear-gradient(to right, #0b3d91, #1e90ff);
-      color: white;
-      text-align: center;
-      padding: 60px 20px;
-    }
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #0b3d91, #1e90ff);
+  color: white;
+  text-align: center;
+  padding: 70px 20px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
 
-    header h1 {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
+header h1 {
+  font-size: 42px;
+  letter-spacing: 2px;
+}
 
-    header p {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
+header p {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-top: 10px;
+}
 
-    .hero-buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 22px;
-      background: white;
-      color: #0b3d91;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
+/* HERO BUTTONS */
+.hero-buttons a {
+  display: inline-block;
+  margin: 12px;
+  padding: 12px 22px;
+  background: white;
+  color: #0b3d91;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
 
-    .hero-buttons a:hover {
-      background: #ffd700;
-      color: black;
-    }
+.hero-buttons a:hover {
+  background: gold;
+  color: black;
+  transform: scale(1.05);
+}
 
-    section {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
+/* SECTION */
+section {
+  padding: 40px 15px;
+  max-width: 1000px;
+  margin: auto;
+}
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+/* CARDS */
+.card {
+  background: white;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
 
-    h2 {
-      color: #0b3d91;
-      margin-bottom: 15px;
-    }
+.card:hover {
+  transform: translateY(-5px);
+}
 
-    .verse {
-      font-style: italic;
-      background: #eef6ff;
-      border-left: 5px solid #1e90ff;
-    }
+/* HEADINGS */
+h2 {
+  color: #0b3d91;
+  margin-bottom: 12px;
+  border-left: 5px solid #1e90ff;
+  padding-left: 10px;
+}
 
-    .social-links a {
-      display: inline-block;
-      margin: 10px;
-      text-decoration: none;
-      background: #0b3d91;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-    }
+/* VERSE BOX */
+.verse {
+  background: #eaf2ff;
+  border-left: 6px solid #1e90ff;
+  font-style: italic;
+}
 
-    footer {
-      text-align: center;
-      background: #111;
-      color: white;
-      padding: 20px;
-      margin-top: 30px;
-    }
+/* SOCIAL LINKS */
+.social-links a {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 18px;
+  background: #0b3d91;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: 0.3s;
+}
 
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 30px;
-      }
+.social-links a:hover {
+  background: #1e90ff;
+  transform: scale(1.05);
+}
 
-      .hero-buttons a,
-      .social-links a {
-        display: block;
-        margin: 10px auto;
-        width: 90%;
-        text-align: center;
-      }
-    }
+/* FOOTER */
+footer {
+  text-align: center;
+  background: #0b3d91;
+  color: white;
+  padding: 20px;
+  margin-top: 40px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 30px;
+  }
+
+  .hero-buttons a,
+  .social-links a {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    text-align: center;
+  }
+}
   </style>
 </head>
 <body>
