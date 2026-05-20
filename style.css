@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f5f5f5;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}
