@@ -187,6 +187,21 @@
       © 2026 Sabasaba Gospel Ministry | All Rights Reserved
     </p>
   </footer>
+<script>
+const verses = [
+"Philippians 4:13 - I can do all things through Christ.",
+"Jeremiah 29:11 - For I know the plans I have for you.",
+"Luke 1:37 - For with God nothing shall be impossible.",
+"Psalm 23:1 - The Lord is my shepherd.",
+"Isaiah 41:10 - Fear not, for I am with you.",
+"John 14:6 - Jesus said, I am the way, the truth, and the life.",
+"Romans 8:28 - All things work together for good."
+];
 
+const today = new Date().getDate();
+
+document.getElementById("dailyVerse").innerText =
+verses[today % verses.length];
+</script>
 </body>
 </html>
