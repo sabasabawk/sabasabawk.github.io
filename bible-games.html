@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bible Games - SABASABA Gospel Ministry</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.header {
+  background: linear-gradient(45deg, #1e3c72, #2a5298);
+  color: white;
+  padding: 20px;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px auto;
+  border-radius: 12px;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+button {
+  padding: 10px;
+  margin: 8px;
+  width: 90%;
+  border: none;
+  border-radius: 8px;
+  background: #2a5298;
+  color: white;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #1e3c72;
+}
+
+.score {
+  font-size: 18px;
+  margin-top: 10px;
+  color: green;
+}
+
+.level {
+  font-weight: bold;
+  color: #2a5298;
+}
+
+.footer {
+  margin-top: 30px;
+  padding: 15px;
+  background: #222;
+  color: white;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>🎮 Bible Games</h2>
+  <p>SABASABA Gospel Ministry</p>
+  <small>sabasabawk.github.io</small>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h3 class="level" id="level">Level: Easy</h3>
+
+    <p id="question">Who built the ark?</p>
+
+    <button onclick="answer(false)">Moses</button>
+    <button onclick="answer(true)">Noah</button>
+    <button onclick="answer(false)">David</button>
+
+    <p id="result"></p>
+    <p class="score">Score: <span id="score">0</span></p>
+  </div>
+
+</div>
+
+<div class="footer">
+  © SABASABA Gospel Ministry | Faith • Word • Power
+</div>
+
+<script>
+
+let score = 0;
+let level = 1;
+let questionIndex = 0;
+
+const questions = [
+  {
+    q: "Who built the ark?",
+    a: ["Moses", "Noah", "David"],
+    correct: 1
+  },
+  {
+    q: "How many days did God create the world?",
+    a: ["7 days", "6 days", "10 days"],
+    correct: 1
+  },
+  {
+    q: "Who was swallowed by a big fish?",
+    a: ["Jonah", "Peter", "Paul"],
+    correct: 0
+  },
+  {
+    q: "Who led Israel out of Egypt?",
+    a: ["Abraham", "Moses", "Isaac"],
+    correct: 1
+  }
+];
+
+function loadQuestion() {
+  let q = questions[questionIndex];
+
+  document.getElementById("question").innerText = q.q;
+
+  let buttons = document.getElementsByTagName("button");
+
+  buttons[0].innerText = q.a[0];
+  buttons[1].innerText = q.a[1];
+  buttons[2].innerText = q.a[2];
+
+  document.getElementById("result").innerText = "";
+}
+
+function answer(isCorrect) {
+  if (isCorrect) {
+    score += 10;
+    document.getElementById("result").innerText = "Correct! 🎉";
+  } else {
+    document.getElementById("result").innerText = "Wrong answer 🙏";
+  }
+
+  document.getElementById("score").innerText = score;
+
+  questionIndex++;
+
+  // Level system
+  if (score >= 30) {
+    level = 3;
+    document.getElementById("level").innerText = "Level: Hard 🔥";
+  } else if (score >= 20) {
+    level = 2;
+    document.getElementById("level").innerText = "Level: Medium ⚡";
+  }
+
+  if (questionIndex < questions.length) {
+    setTimeout(loadQuestion, 1000);
+  } else {
+    document.getElementById("question").innerText =
+      "Game Finished 🙏 Glory to God!";
+  }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
