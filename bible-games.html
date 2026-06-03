@@ -7,64 +7,63 @@
 
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f9;
+  font-family: Arial;
   margin: 0;
-  padding: 0;
+  background: #eef2f7;
   text-align: center;
 }
 
 .header {
-  background: linear-gradient(45deg, #1e3c72, #2a5298);
+  background: linear-gradient(45deg, #0f172a, #1e3c72);
   color: white;
-  padding: 20px;
-}
-
-.container {
-  padding: 20px;
+  padding: 18px;
 }
 
 .card {
   background: white;
-  padding: 20px;
   margin: 15px auto;
-  border-radius: 12px;
+  padding: 18px;
   max-width: 500px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 button {
-  padding: 10px;
-  margin: 8px;
   width: 90%;
+  padding: 10px;
+  margin: 6px;
   border: none;
   border-radius: 8px;
-  background: #2a5298;
+  background: #1e3c72;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 button:hover {
-  background: #1e3c72;
+  background: #0f172a;
 }
 
-.score {
-  font-size: 18px;
+.score { color: green; font-weight: bold; }
+.level { color: #1e3c72; font-weight: bold; }
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background: gold;
+  border-radius: 8px;
   margin-top: 10px;
-  color: green;
-}
-
-.level {
-  font-weight: bold;
-  color: #2a5298;
 }
 
 .footer {
-  margin-top: 30px;
-  padding: 15px;
-  background: #222;
+  background: #111;
   color: white;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 13px;
+}
+
+.timer {
+  color: red;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -77,100 +76,168 @@ button:hover {
   <small>sabasabawk.github.io</small>
 </div>
 
-<div class="container">
+<!-- QUIZ GAME -->
+<div class="card">
+  <h3 class="level" id="level">Level: Easy</h3>
+  <p class="timer">⏱ Time: <span id="time">15</span>s</p>
 
-  <div class="card">
-    <h3 class="level" id="level">Level: Easy</h3>
+  <p id="question">Loading...</p>
 
-    <p id="question">Who built the ark?</p>
+  <button onclick="answer(0)">A</button>
+  <button onclick="answer(1)">B</button>
+  <button onclick="answer(2)">C</button>
 
-    <button onclick="answer(false)">Moses</button>
-    <button onclick="answer(true)">Noah</button>
-    <button onclick="answer(false)">David</button>
+  <p id="result"></p>
+  <p>Score: <span class="score" id="score">0</span></p>
+</div>
 
-    <p id="result"></p>
-    <p class="score">Score: <span id="score">0</span></p>
-  </div>
+<!-- MEMORY VERSE GAME -->
+<div class="card">
+  <h3>📖 Memory Verse</h3>
+  <p id="verse">"For God so loved the world..."</p>
+  <button onclick="showVerse()">Reveal Verse</button>
+  <p id="verseFull"></p>
+</div>
 
+<!-- DAILY CHALLENGE -->
+<div class="card">
+  <h3>🎯 Daily Challenge</h3>
+  <p id="daily">Who was the first king of Israel?</p>
+  <button onclick="dailyAnswer(true)">Saul</button>
+  <button onclick="dailyAnswer(false)">David</button>
+  <p id="dailyResult"></p>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="card">
+  <h3>🏅 Leaderboard</h3>
+  <p>Your Best Score:</p>
+  <h2 id="bestScore">0</h2>
 </div>
 
 <div class="footer">
   © SABASABA Gospel Ministry | Faith • Word • Power
 </div>
 
+<!-- AUDIO -->
+<audio id="correctSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-4.mp3">
+</audio>
+
+<audio id="wrongSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3">
+</audio>
+
 <script>
 
-let score = 0;
-let level = 1;
-let questionIndex = 0;
-
+// QUIZ DATA
 const questions = [
-  {
-    q: "Who built the ark?",
-    a: ["Moses", "Noah", "David"],
-    correct: 1
-  },
-  {
-    q: "How many days did God create the world?",
-    a: ["7 days", "6 days", "10 days"],
-    correct: 1
-  },
-  {
-    q: "Who was swallowed by a big fish?",
-    a: ["Jonah", "Peter", "Paul"],
-    correct: 0
-  },
-  {
-    q: "Who led Israel out of Egypt?",
-    a: ["Abraham", "Moses", "Isaac"],
-    correct: 1
-  }
+  {q:"Who built the ark?", a:["Moses","Noah","David"], c:1},
+  {q:"How many days did creation take?", a:["6","7","10"], c:0},
+  {q:"Who was swallowed by a fish?", a:["Jonah","Peter","Paul"], c:0},
+  {q:"Who led Israel out of Egypt?", a:["Moses","Aaron","Isaac"], c:0}
 ];
 
-function loadQuestion() {
-  let q = questions[questionIndex];
+let index = 0;
+let score = 0;
+let time = 15;
+let timer;
 
+// LOAD QUESTION
+function loadQ(){
+  let q = questions[index];
   document.getElementById("question").innerText = q.q;
 
-  let buttons = document.getElementsByTagName("button");
+  let btns = document.getElementsByTagName("button");
+  btns[0].innerText = q.a[0];
+  btns[1].innerText = q.a[1];
+  btns[2].innerText = q.a[2];
 
-  buttons[0].innerText = q.a[0];
-  buttons[1].innerText = q.a[1];
-  buttons[2].innerText = q.a[2];
-
-  document.getElementById("result").innerText = "";
+  resetTimer();
 }
 
-function answer(isCorrect) {
-  if (isCorrect) {
+function answer(i){
+  let correct = questions[index].c;
+
+  if(i === correct){
     score += 10;
-    document.getElementById("result").innerText = "Correct! 🎉";
+    document.getElementById("result").innerText = "Correct 🎉";
+    document.getElementById("correctSound").play();
   } else {
-    document.getElementById("result").innerText = "Wrong answer 🙏";
+    document.getElementById("result").innerText = "Wrong 🙏";
+    document.getElementById("wrongSound").play();
   }
 
   document.getElementById("score").innerText = score;
 
-  questionIndex++;
+  updateLevel();
+  saveBest();
 
-  // Level system
-  if (score >= 30) {
-    level = 3;
-    document.getElementById("level").innerText = "Level: Hard 🔥";
-  } else if (score >= 20) {
-    level = 2;
-    document.getElementById("level").innerText = "Level: Medium ⚡";
-  }
-
-  if (questionIndex < questions.length) {
-    setTimeout(loadQuestion, 1000);
+  index++;
+  if(index < questions.length){
+    loadQ();
   } else {
-    document.getElementById("question").innerText =
-      "Game Finished 🙏 Glory to God!";
+    document.getElementById("question").innerText = "Game Finished 🙏";
   }
 }
 
-loadQuestion();
+// LEVEL SYSTEM
+function updateLevel(){
+  if(score >= 30){
+    document.getElementById("level").innerText = "Level: Hard 🔥";
+  } else if(score >= 20){
+    document.getElementById("level").innerText = "Level: Medium ⚡";
+  }
+}
+
+// TIMER
+function resetTimer(){
+  clearInterval(timer);
+  time = 15;
+  document.getElementById("time").innerText = time;
+
+  timer = setInterval(()=>{
+    time--;
+    document.getElementById("time").innerText = time;
+
+    if(time <= 0){
+      clearInterval(timer);
+      index++;
+      if(index < questions.length){
+        loadQ();
+      }
+    }
+  },1000);
+}
+
+// MEMORY VERSE
+function showVerse(){
+  document.getElementById("verseFull").innerText =
+  "John 3:16 - For God so loved the world that He gave His only Son.";
+}
+
+// DAILY CHALLENGE
+function dailyAnswer(correct){
+  if(correct){
+    document.getElementById("dailyResult").innerText = "Correct 🎉";
+  } else {
+    document.getElementById("dailyResult").innerText = "Try again 🙏";
+  }
+}
+
+// LEADERBOARD (LOCAL STORAGE)
+function saveBest(){
+  let best = localStorage.getItem("bestScore") || 0;
+  if(score > best){
+    localStorage.setItem("bestScore", score);
+  }
+  document.getElementById("bestScore").innerText =
+  localStorage.getItem("bestScore") || 0;
+}
+
+// INIT
+loadQ();
+saveBest();
 
 </script>
 
