@@ -3,35 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bible Games - SABASABA Gospel Ministry</title>
+<title>Bible Academy - SABASABA Gospel Ministry</title>
 
 <style>
 body {
   font-family: Arial;
   margin: 0;
-  background: #eef2f7;
-  text-align: center;
+  background: #f7f7f7;
 }
 
 .header {
-  background: linear-gradient(45deg, #0f172a, #1e3c72);
-  color: white;
-  padding: 18px;
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+.header h2 {
+  color: #1e3c72;
+  margin: 0;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+  padding: 15px;
 }
 
 .card {
   background: white;
-  margin: 15px auto;
-  padding: 18px;
-  max-width: 500px;
+  padding: 15px;
+  margin: 12px 0;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 button {
-  width: 90%;
+  width: 100%;
   padding: 10px;
-  margin: 6px;
+  margin-top: 6px;
   border: none;
   border-radius: 8px;
   background: #1e3c72;
@@ -39,31 +49,35 @@ button {
   font-size: 15px;
 }
 
-button:hover {
-  background: #0f172a;
+button:disabled {
+  background: #aaa;
 }
 
-.score { color: green; font-weight: bold; }
-.level { color: #1e3c72; font-weight: bold; }
+.level-title {
+  font-weight: bold;
+  color: #1e3c72;
+}
 
 .badge {
   display: inline-block;
-  padding: 5px 10px;
   background: gold;
+  padding: 6px 10px;
   border-radius: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
+}
+
+.progress {
+  font-weight: bold;
+  color: green;
 }
 
 .footer {
-  background: #111;
-  color: white;
+  text-align: center;
   padding: 12px;
   font-size: 13px;
-}
-
-.timer {
-  color: red;
-  font-weight: bold;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -71,173 +85,171 @@ button:hover {
 <body>
 
 <div class="header">
-  <h2>🎮 Bible Games</h2>
+  <h2>🎮 SABASABA Bible Academy</h2>
   <p>SABASABA Gospel Ministry</p>
-  <small>sabasabawk.github.io</small>
 </div>
 
-<!-- QUIZ GAME -->
-<div class="card">
-  <h3 class="level" id="level">Level: Easy</h3>
-  <p class="timer">⏱ Time: <span id="time">15</span>s</p>
+<div class="container">
 
-  <p id="question">Loading...</p>
+  <!-- PROGRESS -->
+  <div class="card">
+    <h3>📊 My Progress</h3>
+    <p class="progress">Points: <span id="points">0</span></p>
+    <p>Unlocked Level: <span id="unlocked">1</span> / 10</p>
+    <div id="badge"></div>
+  </div>
 
-  <button onclick="answer(0)">A</button>
-  <button onclick="answer(1)">B</button>
-  <button onclick="answer(2)">C</button>
+  <!-- LEVELS -->
+  <div id="levels"></div>
 
-  <p id="result"></p>
-  <p>Score: <span class="score" id="score">0</span></p>
-</div>
-
-<!-- MEMORY VERSE GAME -->
-<div class="card">
-  <h3>📖 Memory Verse</h3>
-  <p id="verse">"For God so loved the world..."</p>
-  <button onclick="showVerse()">Reveal Verse</button>
-  <p id="verseFull"></p>
-</div>
-
-<!-- DAILY CHALLENGE -->
-<div class="card">
-  <h3>🎯 Daily Challenge</h3>
-  <p id="daily">Who was the first king of Israel?</p>
-  <button onclick="dailyAnswer(true)">Saul</button>
-  <button onclick="dailyAnswer(false)">David</button>
-  <p id="dailyResult"></p>
-</div>
-
-<!-- LEADERBOARD -->
-<div class="card">
-  <h3>🏅 Leaderboard</h3>
-  <p>Your Best Score:</p>
-  <h2 id="bestScore">0</h2>
 </div>
 
 <div class="footer">
   © SABASABA Gospel Ministry | Faith • Word • Power
 </div>
 
-<!-- AUDIO -->
-<audio id="correctSound">
-  <source src="https://www.soundjay.com/buttons/sounds/button-4.mp3">
-</audio>
-
-<audio id="wrongSound">
-  <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3">
-</audio>
-
 <script>
 
-// QUIZ DATA
-const questions = [
-  {q:"Who built the ark?", a:["Moses","Noah","David"], c:1},
-  {q:"How many days did creation take?", a:["6","7","10"], c:0},
-  {q:"Who was swallowed by a fish?", a:["Jonah","Peter","Paul"], c:0},
-  {q:"Who led Israel out of Egypt?", a:["Moses","Aaron","Isaac"], c:0}
+let points = 0;
+let unlocked = 1;
+
+const levels = [
+  "Creation",
+  "Noah",
+  "Abraham",
+  "Joseph",
+  "Moses",
+  "Judges",
+  "Kings & Prophets",
+  "Jesus Christ",
+  "Apostles",
+  "Revelation"
 ];
 
-let index = 0;
-let score = 0;
-let time = 15;
-let timer;
-
-// LOAD QUESTION
-function loadQ(){
-  let q = questions[index];
-  document.getElementById("question").innerText = q.q;
-
-  let btns = document.getElementsByTagName("button");
-  btns[0].innerText = q.a[0];
-  btns[1].innerText = q.a[1];
-  btns[2].innerText = q.a[2];
-
-  resetTimer();
+// LOAD DATA
+function load(){
+  points = parseInt(localStorage.getItem("points")) || 0;
+  unlocked = parseInt(localStorage.getItem("unlocked")) || 1;
+  renderLevels();
+  updateUI();
 }
 
-function answer(i){
-  let correct = questions[index].c;
+// SAVE
+function save(){
+  localStorage.setItem("points", points);
+  localStorage.setItem("unlocked", unlocked);
+}
 
-  if(i === correct){
-    score += 10;
-    document.getElementById("result").innerText = "Correct 🎉";
-    document.getElementById("correctSound").play();
+// UPDATE UI
+function updateUI(){
+  document.getElementById("points").innerText = points;
+  document.getElementById("unlocked").innerText = unlocked;
+
+  let badge = "";
+
+  if(points >= 300){
+    badge = "👑 Bible Champion";
+  } else if(points >= 200){
+    badge = "🥇 Bible Scholar";
+  } else if(points >= 100){
+    badge = "🥈 Bible Student";
+  }
+
+  document.getElementById("badge").innerHTML =
+    badge ? `<div class="badge">${badge}</div>` : "";
+}
+
+// RENDER LEVELS
+function renderLevels(){
+  let html = "";
+
+  levels.forEach((lvl, i) => {
+    let locked = (i + 1) > unlocked;
+
+    html += `
+      <div class="card">
+        <h3 class="level-title">Level ${i+1}: ${lvl}</h3>
+        <button ${locked ? "disabled" : ""} onclick="play(${i})">
+          ${locked ? "🔒 Locked" : "▶ Play"}
+        </button>
+      </div>
+    `;
+  });
+
+  document.getElementById("levels").innerHTML = html;
+}
+
+// PLAY LEVEL
+function play(i){
+
+  let correct = 0;
+
+  if(i === 0){
+    if(confirm("Creation: Did God create the world in 6 days? OK=Yes Cancel=No")) correct++;
+    if(confirm("Did God rest on the 7th day? OK=Yes Cancel=No")) correct++;
+  }
+
+  if(i === 1){
+    if(confirm("Noah built an ark?")) correct++;
+    if(confirm("Was there a flood?")) correct++;
+  }
+
+  if(i === 2){
+    if(confirm("Abraham had faith in God?")) correct++;
+    if(confirm("He is called father of nations?")) correct++;
+  }
+
+  if(i === 3){
+    if(confirm("Joseph was sold by brothers?")) correct++;
+    if(confirm("He became ruler in Egypt?")) correct++;
+  }
+
+  if(i === 4){
+    if(confirm("Moses led Israel out of Egypt?")) correct++;
+    if(confirm("He received 10 commandments?")) correct++;
+  }
+
+  if(i === 5){
+    if(confirm("Judges ruled Israel?")) correct++;
+    if(confirm("Samson was a judge?")) correct++;
+  }
+
+  if(i === 6){
+    if(confirm("David was a king?")) correct++;
+    if(confirm("Elijah was a prophet?")) correct++;
+  }
+
+  if(i === 7){
+    if(confirm("Jesus performed miracles?")) correct++;
+    if(confirm("He rose from the dead?")) correct++;
+  }
+
+  if(i === 8){
+    if(confirm("Apostles preached the gospel?")) correct++;
+    if(confirm("Peter was an apostle?")) correct++;
+  }
+
+  if(i === 9){
+    if(confirm("Revelation is prophetic?")) correct++;
+    if(confirm("Jesus will come again?")) correct++;
+  }
+
+  points += correct * 10;
+
+  if(correct >= 2 && unlocked < 10){
+    unlocked++;
+    alert("Level Unlocked 🎉");
   } else {
-    document.getElementById("result").innerText = "Wrong 🙏";
-    document.getElementById("wrongSound").play();
+    alert("Level Completed 👍");
   }
 
-  document.getElementById("score").innerText = score;
-
-  updateLevel();
-  saveBest();
-
-  index++;
-  if(index < questions.length){
-    loadQ();
-  } else {
-    document.getElementById("question").innerText = "Game Finished 🙏";
-  }
-}
-
-// LEVEL SYSTEM
-function updateLevel(){
-  if(score >= 30){
-    document.getElementById("level").innerText = "Level: Hard 🔥";
-  } else if(score >= 20){
-    document.getElementById("level").innerText = "Level: Medium ⚡";
-  }
-}
-
-// TIMER
-function resetTimer(){
-  clearInterval(timer);
-  time = 15;
-  document.getElementById("time").innerText = time;
-
-  timer = setInterval(()=>{
-    time--;
-    document.getElementById("time").innerText = time;
-
-    if(time <= 0){
-      clearInterval(timer);
-      index++;
-      if(index < questions.length){
-        loadQ();
-      }
-    }
-  },1000);
-}
-
-// MEMORY VERSE
-function showVerse(){
-  document.getElementById("verseFull").innerText =
-  "John 3:16 - For God so loved the world that He gave His only Son.";
-}
-
-// DAILY CHALLENGE
-function dailyAnswer(correct){
-  if(correct){
-    document.getElementById("dailyResult").innerText = "Correct 🎉";
-  } else {
-    document.getElementById("dailyResult").innerText = "Try again 🙏";
-  }
-}
-
-// LEADERBOARD (LOCAL STORAGE)
-function saveBest(){
-  let best = localStorage.getItem("bestScore") || 0;
-  if(score > best){
-    localStorage.setItem("bestScore", score);
-  }
-  document.getElementById("bestScore").innerText =
-  localStorage.getItem("bestScore") || 0;
+  save();
+  updateUI();
+  renderLevels();
 }
 
 // INIT
-loadQ();
-saveBest();
+load();
 
 </script>
 
