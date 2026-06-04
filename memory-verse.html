@@ -1,11 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Memory Verse</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Verse - SABASABA Gospel Ministry</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+.header {
+  background: #ffffff;
+  padding: 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+.header h2 {
+  color: #1e3c72;
+  margin: 0;
+}
+
+.card {
+  background: white;
+  max-width: 600px;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+button {
+  width: 85%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #1e3c72;
+  color: white;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #16305c;
+}
+
+.score {
+  font-weight: bold;
+  color: green;
+}
+
+.verse {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  margin-top: 20px;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+</style>
 </head>
+
 <body>
-<h1>📖 Memory Verse Challenge</h1>
-<p>This section is under development.</p>
-<p>SABASABA Gospel Ministry</p>
+
+<div class="header">
+  <h2>📖 Memory Verse Challenge</h2>
+  <p>SABASABA Gospel Ministry</p>
+</div>
+
+<div class="card">
+  <p class="verse" id="verse"></p>
+
+  <input type="text" id="answer" placeholder="Type missing word">
+
+  <button onclick="checkAnswer()">Submit Answer</button>
+
+  <p id="result"></p>
+  <p class="score">Score: <span id="score">0</span></p>
+</div>
+
+<div class="footer">
+  © SABASABA Gospel Ministry | Hide the Word, Learn the Word
+</div>
+
+<script>
+
+// VERSES DATABASE
+const verses = [
+  {text: "For God so loved the ____ that He gave His only Son.", answer: "world"},
+  {text: "The Lord is my ____; I shall not want.", answer: "shepherd"},
+  {text: "In the beginning God created the ____ and the earth.", answer: "heavens"},
+  {text: "I can do all things through ____ who strengthens me.", answer: "Christ"},
+  {text: "The fear of the Lord is the beginning of ____.", answer: "wisdom"}
+];
+
+let current = 0;
+let score = 0;
+
+// LOAD VERSE
+function loadVerse(){
+  let v = verses[current];
+  document.getElementById("verse").innerText = v.text;
+  document.getElementById("answer").value = "";
+}
+
+// CHECK ANSWER
+function checkAnswer(){
+  let user = document.getElementById("answer").value.trim().toLowerCase();
+  let correct = verses[current].answer.toLowerCase();
+
+  if(user === correct){
+    score += 10;
+    document.getElementById("result").innerText = "Correct 🎉";
+  } else {
+    document.getElementById("result").innerText = "Wrong 🙏 Correct answer: " + correct;
+  }
+
+  document.getElementById("score").innerText = score;
+
+  current++;
+
+  if(current >= verses.length){
+    current = 0;
+    alert("You completed all verses! 🔥");
+  }
+
+  setTimeout(loadVerse, 1000);
+}
+
+// INIT
+loadVerse();
+
+</script>
+
 </body>
 </html>
