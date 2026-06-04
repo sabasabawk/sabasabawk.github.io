@@ -189,10 +189,77 @@ function play(i){
     if(confirm("Did God rest on the 7th day? OK=Yes Cancel=No")) correct++;
   }
 
-  if(i === 1){
-    if(confirm("Noah built an ark?")) correct++;
-    if(confirm("Was there a flood?")) correct++;
-  }
+  if(i === 1)if(i === 0){
+
+let q = [
+["On which day did God create light?", 0],
+["What did God separate from darkness?", 1],
+["On which day did God create the sky?", 1],
+["What appeared on the third day?", 2],
+["What did God create on the fourth day?", 1],
+["What was created on the fifth day?", 0],
+["What was created on the sixth day?", 0],
+["Who was the first man?", 2],
+["Who was the first woman?", 1],
+["From what was Adam formed?", 1],
+["From what was Eve created?", 0],
+["What garden did God place Adam and Eve in?", 0],
+["What tree were they forbidden to eat from?", 1],
+["Who tempted Eve?", 1],
+["What happened after they sinned?", 0],
+["What did God use for clothing?", 0],
+["What did God do on the seventh day?", 1],
+["Which day is Sabbath?", 1],
+["God’s creation was:", 2],
+["How many days did creation take?", 1]
+];
+
+let options = [
+["Light","Water","Animals"],
+["Light","Darkness","Fire"],
+["First","Second","Third"],
+["Sun","Dry Land","Fish"],
+["Fish","Stars","Animals"],
+["Birds and Fish","Trees","Humans"],
+["Animals and Humans","Sun","Moon"],
+["Noah","Abraham","Adam"],
+["Sarah","Eve","Mary"],
+["Stone","Dust","Water"],
+["Adam's Rib","Clay","Gold"],
+["Eden","Gethsemane","Sinai"],
+["Tree of Life","Tree of Knowledge","Olive"],
+["Lion","Serpent","Eagle"],
+["Built city","Hid from God","Became kings"],
+["Gold","Animal skins","Leaves"],
+["Worked","Rested","Slept"],
+["First","Seventh","Sixth"],
+["Bad","Incomplete","Very Good"],
+["5","6","7"]
+];
+
+// ASK QUESTIONS LOOP
+let correct = 0;
+
+for(let x=0; x<q.length; x++){
+
+let ans = confirm(q[x][0] + "\n\nOK = " + options[x][0] + "\nCancel = " + options[x][1]);
+
+if(ans && q[x][1] === 0) correct++;
+if(!ans && q[x][1] === 1) correct++;
+
+}
+
+let earned = correct * 5;
+points += earned;
+
+alert("Level Complete 🎉\nScore: " + earned + " points");
+
+if(correct >= 15 && unlocked < 10){
+unlocked++;
+alert("Level Unlocked 🔓");
+}
+
+}
 
   if(i === 2){
     if(confirm("Abraham had faith in God?")) correct++;
