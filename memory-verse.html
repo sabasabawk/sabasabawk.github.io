@@ -132,7 +132,7 @@ function checkAnswer(){
   }
 
   document.getElementById("score").innerText = score;
-
+localStorage.setItem("memoryPoints", score);
   current++;
 
   if(current >= verses.length){
