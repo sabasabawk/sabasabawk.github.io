@@ -1,11 +1,167 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Achievements</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Achievements - SABASABA Gospel Ministry</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#ffffff;
+padding:15px;
+border-bottom:2px solid #ddd;
+}
+
+.header h2{
+color:#1e3c72;
+margin:0;
+}
+
+.card{
+background:white;
+max-width:650px;
+margin:15px auto;
+padding:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.badge{
+font-size:22px;
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+}
+
+.locked{
+background:#e0e0e0;
+color:#777;
+}
+
+.unlocked{
+background:#fff8d6;
+color:#111;
+}
+
+.footer{
+margin-top:20px;
+padding:12px;
+background:white;
+border-top:1px solid #ddd;
+}
+</style>
 </head>
+
 <body>
-<h1>🏆 Achievements</h1>
-<p>This section is under development.</p>
+
+<div class="header">
+<h2>🏆 Achievement Center</h2>
 <p>SABASABA Gospel Ministry</p>
+</div>
+
+<div class="card">
+
+<h3>Total Points</h3>
+<h1 id="points">0</h1>
+
+</div>
+
+<div class="card">
+
+<div id="student" class="badge locked">
+🥉 Bible Student (100 Points)
+</div>
+
+<div id="explorer" class="badge locked">
+🥈 Scripture Explorer (250 Points)
+</div>
+
+<div id="scholar" class="badge locked">
+🥇 Bible Scholar (500 Points)
+</div>
+
+<div id="champion" class="badge locked">
+👑 Bible Champion (1000 Points)
+</div>
+
+<div id="memory" class="badge locked">
+📖 Memory Verse Master
+</div>
+
+<div id="daily" class="badge locked">
+🎯 Daily Challenge Hero
+</div>
+
+</div>
+
+<div class="footer">
+© SABASABA Gospel Ministry
+</div>
+
+<script>
+
+// Collect points from different sections
+
+let academyPoints =
+parseInt(localStorage.getItem("points")) || 0;
+
+let memoryPoints =
+parseInt(localStorage.getItem("memoryPoints")) || 0;
+
+let dailyPoints =
+parseInt(localStorage.getItem("dailyPoints")) || 0;
+
+let totalPoints =
+academyPoints + memoryPoints + dailyPoints;
+
+document.getElementById("points").innerText =
+totalPoints;
+
+// Achievement unlocks
+
+if(totalPoints >= 100){
+unlock("student");
+}
+
+if(totalPoints >= 250){
+unlock("explorer");
+}
+
+if(totalPoints >= 500){
+unlock("scholar");
+}
+
+if(totalPoints >= 1000){
+unlock("champion");
+}
+
+// Special achievements
+
+if(memoryPoints >= 50){
+unlock("memory");
+}
+
+if(dailyPoints >= 50){
+unlock("daily");
+}
+
+function unlock(id){
+
+let item =
+document.getElementById(id);
+
+item.classList.remove("locked");
+item.classList.add("unlocked");
+
+}
+</script>
+
 </body>
 </html>
