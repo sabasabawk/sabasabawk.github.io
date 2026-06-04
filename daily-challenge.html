@@ -1,11 +1,157 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Daily Challenge</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Challenge - SABASABA Gospel Ministry</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+margin:0;
+text-align:center;
+}
+
+.header{
+background:#ffffff;
+padding:15px;
+border-bottom:2px solid #ddd;
+}
+
+.header h2{
+color:#1e3c72;
+margin:0;
+}
+
+.card{
+background:white;
+max-width:600px;
+margin:20px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+button{
+width:90%;
+padding:10px;
+margin:6px;
+border:none;
+border-radius:8px;
+background:#1e3c72;
+color:white;
+font-size:16px;
+}
+
+button:hover{
+background:#16305c;
+}
+
+.score{
+font-weight:bold;
+color:green;
+}
+
+.footer{
+margin-top:20px;
+padding:12px;
+background:white;
+border-top:1px solid #ddd;
+}
+</style>
 </head>
+
 <body>
-<h1>🎯 Daily Challenge</h1>
-<p>This section is under development.</p>
+
+<div class="header">
+<h2>🎯 Daily Bible Challenge</h2>
 <p>SABASABA Gospel Ministry</p>
+</div>
+
+<div class="card">
+
+<h3 id="date"></h3>
+
+<p id="question">
+Who built the ark?
+</p>
+
+<button onclick="checkAnswer(true)">Noah</button>
+<button onclick="checkAnswer(false)">Moses</button>
+<button onclick="checkAnswer(false)">Abraham</button>
+
+<p id="result"></p>
+
+<p class="score">
+Challenge Points:
+<span id="points">0</span>
+</p>
+
+</div>
+
+<div class="footer">
+© SABASABA Gospel Ministry
+</div>
+
+<script>
+
+// Show today's date
+document.getElementById("date").innerText =
+new Date().toDateString();
+
+// Load saved points
+let points =
+parseInt(localStorage.getItem("dailyPoints")) || 0;
+
+document.getElementById("points").innerText = points;
+
+// Only one challenge per day
+let today = new Date().toDateString();
+let completed =
+localStorage.getItem("dailyCompleted");
+
+if(completed === today){
+document.getElementById("result").innerHTML =
+"✅ You already completed today's challenge.";
+disableButtons();
+}
+
+function checkAnswer(correct){
+
+if(correct){
+
+points += 10;
+
+document.getElementById("result").innerHTML =
+"🎉 Correct! +10 points";
+
+}else{
+
+document.getElementById("result").innerHTML =
+"🙏 Not correct today.";
+
+}
+
+document.getElementById("points").innerText = points;
+
+localStorage.setItem("dailyPoints", points);
+localStorage.setItem("dailyCompleted", today);
+
+disableButtons();
+}
+
+function disableButtons(){
+
+let buttons =
+document.getElementsByTagName("button");
+
+for(let i=0;i<buttons.length;i++){
+buttons[i].disabled = true;
+}
+
+}
+</script>
+
 </body>
 </html>
