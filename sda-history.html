@@ -90,10 +90,41 @@ border-top:1px solid #ddd;
 <div class="container">
 
 <div class="lesson">
+
 <h2>Lesson 1: The Great Awakening</h2>
+
 <p>
-During the late 1700s and early 1800s many Christians became interested in Bible prophecy and the Second Coming of Jesus. This revival became known as the Great Awakening.
+The Great Awakening was a powerful religious revival that spread through America and other parts of the world during the 1700s and 1800s.
 </p>
+
+<p>
+Many people began studying the Bible more seriously and became interested in prophecy and the Second Coming of Jesus Christ.
+</p>
+
+<p>
+This revival prepared the way for the Advent Movement and later the Seventh-day Adventist Church.
+</p>
+
+<p>
+<b>Key Text:</b> Matthew 24:14
+</p>
+
+<div style="margin-top:10px;">
+
+<p><b>Quiz:</b> What was the Great Awakening?</p>
+
+<button onclick="checkL1(true)">
+A Religious Revival
+</button>
+
+<button onclick="checkL1(false)">
+A Political Revolution
+</button>
+
+<p id="l1"></p>
+
+</div>
+
 </div>
 
 <div class="lesson">
@@ -225,6 +256,17 @@ document.getElementById("l5").innerHTML =
 "✅ Correct! Joseph Bates was a former sea captain.";
 }else{
 document.getElementById("l5").innerHTML =
+"❌ Try Again";
+}
+
+}
+function checkL1(correct){
+
+if(correct){
+document.getElementById("l1").innerHTML =
+"✅ Correct! The Great Awakening was a religious revival.";
+}else{
+document.getElementById("l1").innerHTML =
 "❌ Try Again";
 }
 
