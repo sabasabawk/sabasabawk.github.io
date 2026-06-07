@@ -1,100 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Memory Verse</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Verse - SABASABA Gospel Ministry</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: #f4f6f9;
-      margin: 0;
-    }
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+    text-align:center;
+}
 
-    header {
-      background: #1e3a8a;
-      color: white;
-      padding: 20px;
-    }
+header{
+    background:#1e3a8a;
+    color:white;
+    padding:20px;
+}
 
-    .card {
-      background: white;
-      margin: 30px auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+.container{
+    padding:20px;
+}
 
-    button {
-      padding: 12px;
-      background: #1e3a8a;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-  </style>
+.card{
+    background:white;
+    max-width:600px;
+    margin:20px auto;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+#verseText{
+    font-size:22px;
+    line-height:1.6;
+    color:#333;
+}
+
+#verseRef{
+    margin-top:15px;
+    font-weight:bold;
+    color:#1e3a8a;
+}
+
+button{
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:15px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+footer{
+    margin-top:30px;
+    padding:15px;
+    color:#666;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>📖 Memory Verse</h1>
+    <h1>📖 Memory Verse</h1>
+    <p>SABASABA Gospel Ministry</p>
 </header>
 
-<div class="card">
-  <h2 id="verseText">Loading...</h2>
-  <p id="verseRef"></p>
+<div class="container">
+    <div class="card">
+        <h2 id="verseText"></h2>
+        <p id="verseRef"></p>
 
-  <button onclick="nextVerse()">Next Verse</button>
+        <button onclick="nextVerse()">Next Verse</button>
+    </div>
 </div>
+
+<footer>
+    SABASABA Gospel Ministry<br>
+    sabasabawk.github.io
+</footer>
+
 <script>
-  const verses = [
-    ["Jeremiah 29:11", "For I know the plans I have for you declares the Lord."],
-    ["Psalm 23:1", "The Lord is my shepherd; I shall not want."],
-    ["Philippians 4:13", "I can do all things through Christ who strengthens me."],
-    ["Joshua 1:9", "Be strong and courageous. Do not be afraid."]
-  ];
+const verses = [
+{
+text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",
+ref:"Jeremiah 29:11"
+},
+{
+text:"The Lord is my shepherd; I shall not want.",
+ref:"Psalm 23:1"
+},
+{
+text:"I can do all things through Christ who strengthens me.",
+ref:"Philippians 4:13"
+},
+{
+text:"Be strong and courageous. Do not be afraid or discouraged, for the Lord your God will be with you wherever you go.",
+ref:"Joshua 1:9"
+},
+{
+text:"Trust in the Lord with all your heart and lean not on your own understanding.",
+ref:"Proverbs 3:5"
+}
+];
 
-  let index = 0;
+let currentVerse = 0;
 
-  function showVerse() {
-    document.getElementById("verseRef").innerText = verses[index][0];
-    document.getElementById("verseText").innerText = verses[index][1];
-  }
+function showVerse(){
+document.getElementById("verseText").innerHTML =
+verses[currentVerse].text;
 
-  function nextVerse() {
-    index = (index + 1) % verses.length;
-    showVerse();
-  }
+document.getElementById("verseRef").innerHTML =
+verses[currentVerse].ref;
+}
 
-  showVerse();
-<script>
-  const verses = [
-    { ref: "Jeremiah 29:11", text: "For I know the plans I have for you declares the Lord." },
-    { ref: "Psalm 23:1", text: "The Lord is my shepherd; I shall not want." },
-    { ref: "Philippians 4:13", text: "I can do all things through Christ who strengthens me." },
-    { ref: "Joshua 1:9", text: "Be strong and courageous. Do not be afraid." }
-  ];
+function nextVerse(){
+currentVerse++;
 
-  let index = 0;
+if(currentVerse >= verses.length){
+currentVerse = 0;
+}
 
-  function showVerse() {
-    document.getElementById("verseText").innerText = verses[index].text;
-    document.getElementById("verseRef").innerText = verses[index].ref;
-  }
+showVerse();
+}
 
-  function nextVerse() {
-    index = (index + 1) % verses.length;
-    showVerse();
-  }
-
-  // Make sure page loads properly
-  document.addEventListener("DOMContentLoaded", showVerse);
+showVerse();
 </script>
+
 </body>
 </html>
