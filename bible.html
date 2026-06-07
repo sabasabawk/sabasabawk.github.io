@@ -44,6 +44,7 @@
     .back-btn {
       display: inline-block;
       margin-bottom: 20px;
+      margin-left: 20px;
       padding: 10px 20px;
       background: #0b3d91;
       color: white;
@@ -66,12 +67,12 @@
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 15px;
     }
 
     .controls select, .controls input {
-      padding: 10px 15px;
+      padding: 12px 15px;
       border: 2px solid #0b3d91;
       border-radius: 8px;
       font-size: 14px;
@@ -107,26 +108,29 @@
 
     .verse {
       margin-bottom: 15px;
-      padding: 10px;
+      padding: 12px;
       border-left: 4px solid #1e90ff;
       background: #f0f5ff;
+      line-height: 1.9;
     }
 
     .verse-number {
       color: #0b3d91;
       font-weight: bold;
       margin-right: 8px;
+      display: inline-block;
+      min-width: 100px;
     }
 
     .verse-text {
       color: #333;
-      line-height: 1.8;
+      line-height: 1.9;
     }
 
     .chapter-title {
       color: #0b3d91;
-      font-size: 24px;
-      margin-bottom: 20px;
+      font-size: 28px;
+      margin-bottom: 25px;
       border-bottom: 3px solid #1e90ff;
       padding-bottom: 10px;
     }
@@ -162,6 +166,11 @@
       .bible-content {
         padding: 15px;
       }
+
+      .verse-number {
+        display: block;
+        margin-bottom: 5px;
+      }
     }
 
     .loading {
@@ -177,6 +186,31 @@
       color: #999;
       font-size: 16px;
     }
+
+    .error {
+      background: #ffebee;
+      border-left: 4px solid #d32f2f;
+      padding: 15px;
+      border-radius: 5px;
+      color: #c62828;
+      margin: 20px auto;
+      max-width: 900px;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0b3d91;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 40px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -189,111 +223,56 @@
   </header>
 
   <div class="controls">
-    <select id="bookSelect" onchange="loadChapter()">
-      <option value="">Select a Book...</option>
-    </select>
+    <div>
+      <label for="bookSelect" style="color: #0b3d91; font-weight: bold;">Select Book:</label>
+      <select id="bookSelect" onchange="updateChapters()">
+        <option value="">Choose a book...</option>
+      </select>
+    </div>
 
-    <select id="chapterSelect" onchange="loadChapter()">
-      <option value="">Select a Chapter...</option>
-    </select>
+    <div>
+      <label for="chapterSelect" style="color: #0b3d91; font-weight: bold;">Select Chapter:</label>
+      <select id="chapterSelect" onchange="loadChapter()">
+        <option value="">Choose a chapter...</option>
+      </select>
+    </div>
 
-    <select id="verseSelect" onchange="goToVerse()">
-      <option value="">Go to Verse...</option>
-    </select>
-
-    <input type="text" id="searchInput" placeholder="🔍 Search the Bible..." onkeyup="searchBible()">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Search Bible (e.g., 'John 3:16' or 'love')..." onkeyup="searchBible()">
+    </div>
   </div>
 
   <div class="bible-content" id="bibleContent">
-    <div class="loading">Loading Bible...</div>
+    <div class="loading">📖 Welcome to the King James Bible</div>
+    <p style="text-align: center; margin-top: 20px; color: #666;">Select a book and chapter to start reading.</p>
   </div>
 
   <footer>
-    <p>© 2026 Sabasaba Gospel Ministry | King James Version (Public Domain)</p>
+    <p>© 2026 Sabasaba Gospel Ministry | King James Version (Public Domain) | Powered by Bible API</p>
   </footer>
 
   <script>
-    // Bible data structure - KJV simplified version
-    const bibleData = {
-      'Genesis': 50,
-      'Exodus': 40,
-      'Leviticus': 27,
-      'Numbers': 36,
-      'Deuteronomy': 34,
-      'Joshua': 24,
-      'Judges': 21,
-      'Ruth': 4,
-      '1 Samuel': 31,
-      '2 Samuel': 24,
-      '1 Kings': 22,
-      '2 Kings': 25,
-      '1 Chronicles': 29,
-      '2 Chronicles': 36,
-      'Ezra': 10,
-      'Nehemiah': 13,
-      'Esther': 10,
-      'Job': 42,
-      'Psalm': 150,
-      'Proverbs': 31,
-      'Ecclesiastes': 12,
-      'Isaiah': 66,
-      'Jeremiah': 52,
-      'Lamentations': 5,
-      'Ezekiel': 48,
-      'Daniel': 12,
-      'Hosea': 14,
-      'Joel': 3,
-      'Amos': 9,
-      'Obadiah': 1,
-      'Jonah': 4,
-      'Micah': 7,
-      'Nahum': 3,
-      'Habakkuk': 3,
-      'Zephaniah': 3,
-      'Haggai': 2,
-      'Zechariah': 14,
-      'Malachi': 4,
-      'Matthew': 28,
-      'Mark': 16,
-      'Luke': 24,
-      'John': 21,
-      'Acts': 28,
-      'Romans': 16,
-      '1 Corinthians': 16,
-      '2 Corinthians': 13,
-      'Galatians': 6,
-      'Ephesians': 6,
-      'Philippians': 4,
-      'Colossians': 4,
-      '1 Thessalonians': 5,
-      '2 Thessalonians': 3,
-      '1 Timothy': 6,
-      '2 Timothy': 4,
-      'Titus': 3,
-      'Philemon': 1,
-      'Hebrews': 13,
-      'James': 5,
-      '1 Peter': 5,
-      '2 Peter': 3,
-      '1 John': 5,
-      '2 John': 1,
-      '3 John': 1,
-      'Jude': 1,
-      'Revelation': 22
-    };
-
-    // Placeholder verses - In production, load from API or file
-    const verses = {
-      'John:3:16': 'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',
-      'Romans:8:28': 'And we know that all things work together for good to them that love God, to them who are the called according to his purpose.',
-      'Philippians:4:13': 'I can do all things through Christ which strengtheneth me.',
-      'Psalm:23:1': 'The LORD is my shepherd; I shall not want.'
+    // Complete list of Bible books with chapter counts
+    const bibleBooks = {
+      'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36, 'Deuteronomy': 34,
+      'Joshua': 24, 'Judges': 21, 'Ruth': 4, '1 Samuel': 31, '2 Samuel': 24,
+      '1 Kings': 22, '2 Kings': 25, '1 Chronicles': 29, '2 Chronicles': 36, 'Ezra': 10,
+      'Nehemiah': 13, 'Esther': 10, 'Job': 42, 'Psalm': 150, 'Proverbs': 31,
+      'Ecclesiastes': 12, 'Isaiah': 66, 'Jeremiah': 52, 'Lamentations': 5, 'Ezekiel': 48,
+      'Daniel': 12, 'Hosea': 14, 'Joel': 3, 'Amos': 9, 'Obadiah': 1,
+      'Jonah': 4, 'Micah': 7, 'Nahum': 3, 'Habakkuk': 3, 'Zephaniah': 3,
+      'Haggai': 2, 'Zechariah': 14, 'Malachi': 4, 'Matthew': 28, 'Mark': 16,
+      'Luke': 24, 'John': 21, 'Acts': 28, 'Romans': 16, '1 Corinthians': 16,
+      '2 Corinthians': 13, 'Galatians': 6, 'Ephesians': 6, 'Philippians': 4, 'Colossians': 4,
+      '1 Thessalonians': 5, '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4, 'Titus': 3,
+      'Philemon': 1, 'Hebrews': 13, 'James': 5, '1 Peter': 5, '2 Peter': 3,
+      '1 John': 5, '2 John': 1, '3 John': 1, 'Jude': 1, 'Revelation': 22
     };
 
     // Initialize book dropdown
     function initBooks() {
       const bookSelect = document.getElementById('bookSelect');
-      for (const book in bibleData) {
+      for (const book in bibleBooks) {
         const option = document.createElement('option');
         option.value = book;
         option.textContent = book;
@@ -305,11 +284,11 @@
     function updateChapters() {
       const book = document.getElementById('bookSelect').value;
       const chapterSelect = document.getElementById('chapterSelect');
-      chapterSelect.innerHTML = '<option value="">Select a Chapter...</option>';
+      chapterSelect.innerHTML = '<option value="">Choose a chapter...</option>';
 
       if (!book) return;
 
-      const chapters = bibleData[book];
+      const chapters = bibleBooks[book];
       for (let i = 1; i <= chapters; i++) {
         const option = document.createElement('option');
         option.value = i;
@@ -318,8 +297,8 @@
       }
     }
 
-    // Load chapter
-    function loadChapter() {
+    // Load chapter from API
+    async function loadChapter() {
       const book = document.getElementById('bookSelect').value;
       const chapter = document.getElementById('chapterSelect').value;
       const content = document.getElementById('bibleContent');
@@ -329,28 +308,51 @@
         return;
       }
 
-      // Display sample content
-      content.innerHTML = `
-        <h2 class="chapter-title">${book} Chapter ${chapter}</h2>
-        <div class="verse">
-          <span class="verse-number">${book} ${chapter}:1-3 (KJV)</span>
-          <p class="verse-text">This is where the full chapter verses would display. To use the complete Bible database, integrate with an API like:</p>
-        </div>
-        <div class="verse">
-          <span class="verse-number">📌 API Options:</span>
-          <p class="verse-text">
-            1. API.Bible (biblestudytools.com)<br>
-            2. Scripture.API.Bible<br>
-            3. ESV Bible API<br>
-            Or load a local JSON file with all verses.
-          </p>
-        </div>
-      `;
+      content.innerHTML = '<div class="spinner"></div>';
+
+      try {
+        // Using Bible API
+        const reference = `${book} ${chapter}`;
+        const response = await fetch(`https://bible-api.com/${encodeURIComponent(reference)}?translation=kjv`);
+        
+        if (!response.ok) {
+          throw new Error('Chapter not found');
+        }
+
+        const data = await response.json();
+
+        if (!data.verses || data.verses.length === 0) {
+          content.innerHTML = '<div class="no-results">No verses found for this chapter.</div>';
+          return;
+        }
+
+        let html = `<h2 class="chapter-title">${data.reference}</h2>`;
+        
+        data.verses.forEach(verse => {
+          html += `
+            <div class="verse">
+              <span class="verse-number">${verse.verse}</span>
+              <span class="verse-text">${verse.text}</span>
+            </div>
+          `;
+        });
+
+        content.innerHTML = html;
+      } catch (error) {
+        console.error('Error:', error);
+        content.innerHTML = `
+          <div class="error">
+            <strong>⚠️ Error loading chapter:</strong><br>
+            ${error.message}<br><br>
+            <small>Try another chapter or book.</small>
+          </div>
+        `;
+      }
     }
 
     // Search Bible
-    function searchBible() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
+    async function searchBible() {
+      const query = document.getElementById('searchInput').value.trim();
       const content = document.getElementById('bibleContent');
 
       if (query.length < 2) {
@@ -358,57 +360,49 @@
         return;
       }
 
-      // Search in sample verses
-      const results = Object.entries(verses)
-        .filter(([key, text]) => text.toLowerCase().includes(query))
-        .map(([key, text]) => {
-          const [book, chapter, verse] = key.split(':');
-          return `
+      content.innerHTML = '<div class="spinner"></div>';
+
+      try {
+        const response = await fetch(`https://bible-api.com/${encodeURIComponent(query)}?translation=kjv`);
+        
+        if (!response.ok) {
+          throw new Error('Search not found');
+        }
+
+        const data = await response.json();
+
+        if (!data.verses || data.verses.length === 0) {
+          content.innerHTML = '<div class="no-results">No verses found matching your search.</div>';
+          return;
+        }
+
+        let html = `<h2 class="chapter-title">Search Results: "${query}"</h2>`;
+        
+        data.verses.forEach(verse => {
+          html += `
             <div class="verse">
-              <span class="verse-number">${book} ${chapter}:${verse}</span>
-              <p class="verse-text">${text}</p>
+              <span class="verse-number">${verse.reference}</span>
+              <span class="verse-text">${verse.text}</span>
             </div>
           `;
         });
 
-      if (results.length === 0) {
-        content.innerHTML = '<div class="no-results">No verses found matching your search.</div>';
-      } else {
-        content.innerHTML = `<h2 class="chapter-title">Search Results (${results.length})</h2>` + results.join('');
-      }
-    }
-
-    // Go to specific verse
-    function goToVerse() {
-      const verse = document.getElementById('verseSelect').value;
-      if (verse && verses[verse]) {
-        const [book, chapter, verseNum] = verse.split(':');
-        document.getElementById('bookSelect').value = book;
-        updateChapters();
-        document.getElementById('chapterSelect').value = chapter;
-        searchBible();
+        content.innerHTML = html;
+      } catch (error) {
+        console.error('Error:', error);
+        content.innerHTML = `
+          <div class="error">
+            <strong>⚠️ Search Error:</strong><br>
+            ${error.message}<br><br>
+            <small>Try searching with a verse reference like "John 3:16" or a keyword.</small>
+          </div>
+        `;
       }
     }
 
     // Initialize on load
     window.addEventListener('load', () => {
       initBooks();
-      document.getElementById('bibleContent').innerHTML = `
-        <h2 class="chapter-title">Welcome to the King James Bible</h2>
-        <div class="verse">
-          <p class="verse-text">
-            Select a book and chapter from the dropdown menu above to begin reading God's Word. 
-            You can also search for specific verses or passages using the search function.
-          </p>
-        </div>
-        <div class="verse" style="background: #fff0f0; border-left-color: #d32f2f;">
-          <p class="verse-text">
-            <strong>💡 To load the complete Bible:</strong><br>
-            This page currently uses a simplified structure. To load all verses, integrate with a free Bible API 
-            or download the complete KJV text from Project Gutenberg and convert it to JSON format.
-          </p>
-        </div>
-      `;
     });
   </script>
 
