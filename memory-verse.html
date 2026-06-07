@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Memory Verse - SABASABA Gospel Ministry</title>
+  <title>Memory Verse</title>
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f9;
+      font-family: Arial;
       text-align: center;
+      background: #f4f6f9;
+      margin: 0;
     }
 
     header {
@@ -18,55 +18,24 @@
       padding: 20px;
     }
 
-    h1 {
-      margin: 0;
-    }
-
-    .container {
-      padding: 20px;
-    }
-
-    .verse-card {
+    .card {
       background: white;
+      margin: 30px auto;
       padding: 20px;
-      margin: 20px auto;
       width: 90%;
       max-width: 500px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .verse-text {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #333;
-    }
-
-    .reference {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #1e3a8a;
-    }
-
     button {
-      padding: 12px 20px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 8px;
+      padding: 12px;
       background: #1e3a8a;
       color: white;
-      font-size: 16px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-    }
-
-    button:hover {
-      background: #0f2557;
-    }
-
-    footer {
-      margin-top: 30px;
-      font-size: 12px;
-      color: gray;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -75,64 +44,37 @@
 
 <header>
   <h1>📖 Memory Verse</h1>
-  <p>SABASABA Gospel Ministry</p>
 </header>
 
-<div class="container">
-
-  <div class="verse-card">
-    <p class="verse-text" id="verseText"></p>
-    <p class="reference" id="verseRef"></p>
-  </div>
+<div class="card">
+  <h2 id="verseText">Loading...</h2>
+  <p id="verseRef"></p>
 
   <button onclick="nextVerse()">Next Verse</button>
-
 </div>
-
-<footer>
-  Powered by SABASABA Gospel Ministry |
-  <a href="https://sabasabawk.github.io" target="_blank">
-    sabasabawk.github.io
-  </a>
-</footer>
 
 <script>
   const verses = [
-    {
-      text: "For I know the plans I have for you, declares the Lord...",
-      ref: "Jeremiah 29:11"
-    },
-    {
-      text: "The Lord is my shepherd; I shall not want.",
-      ref: "Psalm 23:1"
-    },
-    {
-      text: "I can do all things through Christ who strengthens me.",
-      ref: "Philippians 4:13"
-    },
-    {
-      text: "Be strong and courageous. Do not be afraid.",
-      ref: "Joshua 1:9"
-    }
+    ["Jeremiah 29:11", "For I know the plans I have for you declares the Lord."],
+    ["Psalm 23:1", "The Lord is my shepherd; I shall not want."],
+    ["Philippians 4:13", "I can do all things through Christ who strengthens me."],
+    ["Joshua 1:9", "Be strong and courageous. Do not be afraid."]
   ];
 
-  let current = 0;
+  let index = 0;
 
   function showVerse() {
-    document.getElementById("verseText").innerText = verses[current].text;
-    document.getElementById("verseRef").innerText = verses[current].ref;
+    document.getElementById("verseRef").innerText = verses[index][0];
+    document.getElementById("verseText").innerText = verses[index][1];
   }
 
   function nextVerse() {
-    current = (current + 1) % verses.length;
+    index = (index + 1) % verses.length;
     showVerse();
   }
 
-  // show first verse immediately
   showVerse();
 </script>
-<script>
-  alert("JS is working");
-</script>
+
 </body>
 </html>
