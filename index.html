@@ -94,6 +94,72 @@
       color: #0b3d91;
     }
 
+    /* BIBLE STUDY LESSONS TITLE - CLICKABLE */
+    .lessons-title {
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .lessons-title:hover {
+      background: #e0eaff;
+      transform: scale(1.05);
+    }
+
+    /* LESSONS GRID */
+    .lessons-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .lessons-grid.active {
+      display: grid;
+    }
+
+    .lesson-card {
+      background: linear-gradient(135deg, #1e90ff, #0b3d91);
+      color: white;
+      padding: 30px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 150px;
+      text-decoration: none;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      background: linear-gradient(135deg, #0b3d91, #1e90ff);
+    }
+
+    .lesson-card .number {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .lesson-card .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .lesson-card .description {
+      font-size: 12px;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
     /* VERSE BOX */
     .verse {
       background: #eaf2ff;
@@ -129,11 +195,6 @@
       border-top-right-radius: 20px;
     }
 
-    /* LESSONS SECTION - HIDDEN */
-    .lessons-grid {
-      display: none;
-    }
-
     /* MOBILE */
     @media (max-width: 768px) {
       header h1 {
@@ -146,6 +207,10 @@
         width: 90%;
         margin: 10px auto;
         text-align: center;
+      }
+
+      .lessons-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       }
     }
   </style>
@@ -196,7 +261,39 @@
     </div>
 
     <div class="card">
-      <h2>📚 Bible Study Lessons</h2>
+      <h2 class="lessons-title" onclick="toggleLessons()">📚 Bible Study Lessons</h2>
+
+      <div class="lessons-grid" id="lessonsGrid">
+        <a href="lesson1.html" class="lesson-card">
+          <div class="number">1</div>
+          <div class="title">Salvation</div>
+          <div class="description">Learn salvation through Jesus Christ</div>
+        </a>
+
+        <a href="lesson2.html" class="lesson-card">
+          <div class="number">2</div>
+          <div class="title">Prayer</div>
+          <div class="description">Learn to pray effectively</div>
+        </a>
+
+        <a href="lesson3.html" class="lesson-card">
+          <div class="number">3</div>
+          <div class="title">Faith</div>
+          <div class="description">Understand the power of faith</div>
+        </a>
+
+        <a href="lesson4.html" class="lesson-card">
+          <div class="number">4</div>
+          <div class="title">The Sabbath</div>
+          <div class="description">Discover God's holy Sabbath</div>
+        </a>
+
+        <a href="lesson5.html" class="lesson-card">
+          <div class="number">5</div>
+          <div class="title">The Second Coming</div>
+          <div class="description">Christ's promised return</div>
+        </a>
+      </div>
     </div>
 
     <div style="background:#8B0000;
@@ -333,6 +430,12 @@
 
     document.getElementById("dailyVerse").innerText =
       verses[today % verses.length];
+
+    // Toggle lessons display
+    function toggleLessons() {
+      const lessonsGrid = document.getElementById('lessonsGrid');
+      lessonsGrid.classList.toggle('active');
+    }
   </script>
 
 </body>
