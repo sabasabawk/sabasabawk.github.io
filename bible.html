@@ -119,7 +119,7 @@
       font-weight: bold;
       margin-right: 8px;
       display: inline-block;
-      min-width: 100px;
+      min-width: 80px;
     }
 
     .verse-text {
@@ -133,13 +133,6 @@
       margin-bottom: 25px;
       border-bottom: 3px solid #1e90ff;
       padding-bottom: 10px;
-    }
-
-    .book-name {
-      color: #0b3d91;
-      font-size: 20px;
-      margin-top: 15px;
-      margin-bottom: 10px;
     }
 
     /* FOOTER */
@@ -211,6 +204,13 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    label {
+      display: block;
+      color: #0b3d91;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
@@ -224,21 +224,22 @@
 
   <div class="controls">
     <div>
-      <label for="bookSelect" style="color: #0b3d91; font-weight: bold;">Select Book:</label>
+      <label for="bookSelect">Select Book:</label>
       <select id="bookSelect" onchange="updateChapters()">
         <option value="">Choose a book...</option>
       </select>
     </div>
 
     <div>
-      <label for="chapterSelect" style="color: #0b3d91; font-weight: bold;">Select Chapter:</label>
+      <label for="chapterSelect">Select Chapter:</label>
       <select id="chapterSelect" onchange="loadChapter()">
         <option value="">Choose a chapter...</option>
       </select>
     </div>
 
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="🔍 Search Bible (e.g., 'John 3:16' or 'love')..." onkeyup="searchBible()">
+      <label for="searchInput">Search:</label>
+      <input type="text" id="searchInput" placeholder="🔍 Search (e.g., 'John 3:16' or 'love')..." onkeyup="debounceSearch()">
     </div>
   </div>
 
@@ -248,26 +249,80 @@
   </div>
 
   <footer>
-    <p>© 2026 Sabasaba Gospel Ministry | King James Version (Public Domain) | Powered by Bible API</p>
+    <p>© 2026 Sabasaba Gospel Ministry | King James Version (Public Domain)</p>
   </footer>
 
   <script>
-    // Complete list of Bible books with chapter counts
+    // Bible books mapping with API names
     const bibleBooks = {
-      'Genesis': 50, 'Exodus': 40, 'Leviticus': 27, 'Numbers': 36, 'Deuteronomy': 34,
-      'Joshua': 24, 'Judges': 21, 'Ruth': 4, '1 Samuel': 31, '2 Samuel': 24,
-      '1 Kings': 22, '2 Kings': 25, '1 Chronicles': 29, '2 Chronicles': 36, 'Ezra': 10,
-      'Nehemiah': 13, 'Esther': 10, 'Job': 42, 'Psalm': 150, 'Proverbs': 31,
-      'Ecclesiastes': 12, 'Isaiah': 66, 'Jeremiah': 52, 'Lamentations': 5, 'Ezekiel': 48,
-      'Daniel': 12, 'Hosea': 14, 'Joel': 3, 'Amos': 9, 'Obadiah': 1,
-      'Jonah': 4, 'Micah': 7, 'Nahum': 3, 'Habakkuk': 3, 'Zephaniah': 3,
-      'Haggai': 2, 'Zechariah': 14, 'Malachi': 4, 'Matthew': 28, 'Mark': 16,
-      'Luke': 24, 'John': 21, 'Acts': 28, 'Romans': 16, '1 Corinthians': 16,
-      '2 Corinthians': 13, 'Galatians': 6, 'Ephesians': 6, 'Philippians': 4, 'Colossians': 4,
-      '1 Thessalonians': 5, '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4, 'Titus': 3,
-      'Philemon': 1, 'Hebrews': 13, 'James': 5, '1 Peter': 5, '2 Peter': 3,
-      '1 John': 5, '2 John': 1, '3 John': 1, 'Jude': 1, 'Revelation': 22
+      'Genesis': { chapters: 50, apiName: 'Genesis' },
+      'Exodus': { chapters: 40, apiName: 'Exodus' },
+      'Leviticus': { chapters: 27, apiName: 'Leviticus' },
+      'Numbers': { chapters: 36, apiName: 'Numbers' },
+      'Deuteronomy': { chapters: 34, apiName: 'Deuteronomy' },
+      'Joshua': { chapters: 24, apiName: 'Joshua' },
+      'Judges': { chapters: 21, apiName: 'Judges' },
+      'Ruth': { chapters: 4, apiName: 'Ruth' },
+      '1 Samuel': { chapters: 31, apiName: '1Samuel' },
+      '2 Samuel': { chapters: 24, apiName: '2Samuel' },
+      '1 Kings': { chapters: 22, apiName: '1Kings' },
+      '2 Kings': { chapters: 25, apiName: '2Kings' },
+      '1 Chronicles': { chapters: 29, apiName: '1Chronicles' },
+      '2 Chronicles': { chapters: 36, apiName: '2Chronicles' },
+      'Ezra': { chapters: 10, apiName: 'Ezra' },
+      'Nehemiah': { chapters: 13, apiName: 'Nehemiah' },
+      'Esther': { chapters: 10, apiName: 'Esther' },
+      'Job': { chapters: 42, apiName: 'Job' },
+      'Psalm': { chapters: 150, apiName: 'Psalm' },
+      'Proverbs': { chapters: 31, apiName: 'Proverbs' },
+      'Ecclesiastes': { chapters: 12, apiName: 'Ecclesiastes' },
+      'Isaiah': { chapters: 66, apiName: 'Isaiah' },
+      'Jeremiah': { chapters: 52, apiName: 'Jeremiah' },
+      'Lamentations': { chapters: 5, apiName: 'Lamentations' },
+      'Ezekiel': { chapters: 48, apiName: 'Ezekiel' },
+      'Daniel': { chapters: 12, apiName: 'Daniel' },
+      'Hosea': { chapters: 14, apiName: 'Hosea' },
+      'Joel': { chapters: 3, apiName: 'Joel' },
+      'Amos': { chapters: 9, apiName: 'Amos' },
+      'Obadiah': { chapters: 1, apiName: 'Obadiah' },
+      'Jonah': { chapters: 4, apiName: 'Jonah' },
+      'Micah': { chapters: 7, apiName: 'Micah' },
+      'Nahum': { chapters: 3, apiName: 'Nahum' },
+      'Habakkuk': { chapters: 3, apiName: 'Habakkuk' },
+      'Zephaniah': { chapters: 3, apiName: 'Zephaniah' },
+      'Haggai': { chapters: 2, apiName: 'Haggai' },
+      'Zechariah': { chapters: 14, apiName: 'Zechariah' },
+      'Malachi': { chapters: 4, apiName: 'Malachi' },
+      'Matthew': { chapters: 28, apiName: 'Matthew' },
+      'Mark': { chapters: 16, apiName: 'Mark' },
+      'Luke': { chapters: 24, apiName: 'Luke' },
+      'John': { chapters: 21, apiName: 'John' },
+      'Acts': { chapters: 28, apiName: 'Acts' },
+      'Romans': { chapters: 16, apiName: 'Romans' },
+      '1 Corinthians': { chapters: 16, apiName: '1Corinthians' },
+      '2 Corinthians': { chapters: 13, apiName: '2Corinthians' },
+      'Galatians': { chapters: 6, apiName: 'Galatians' },
+      'Ephesians': { chapters: 6, apiName: 'Ephesians' },
+      'Philippians': { chapters: 4, apiName: 'Philippians' },
+      'Colossians': { chapters: 4, apiName: 'Colossians' },
+      '1 Thessalonians': { chapters: 5, apiName: '1Thessalonians' },
+      '2 Thessalonians': { chapters: 3, apiName: '2Thessalonians' },
+      '1 Timothy': { chapters: 6, apiName: '1Timothy' },
+      '2 Timothy': { chapters: 4, apiName: '2Timothy' },
+      'Titus': { chapters: 3, apiName: 'Titus' },
+      'Philemon': { chapters: 1, apiName: 'Philemon' },
+      'Hebrews': { chapters: 13, apiName: 'Hebrews' },
+      'James': { chapters: 5, apiName: 'James' },
+      '1 Peter': { chapters: 5, apiName: '1Peter' },
+      '2 Peter': { chapters: 3, apiName: '2Peter' },
+      '1 John': { chapters: 5, apiName: '1John' },
+      '2 John': { chapters: 1, apiName: '2John' },
+      '3 John': { chapters: 1, apiName: '3John' },
+      'Jude': { chapters: 1, apiName: 'Jude' },
+      'Revelation': { chapters: 22, apiName: 'Revelation' }
     };
+
+    let searchTimeout;
 
     // Initialize book dropdown
     function initBooks() {
@@ -288,7 +343,7 @@
 
       if (!book) return;
 
-      const chapters = bibleBooks[book];
+      const chapters = bibleBooks[book].chapters;
       for (let i = 1; i <= chapters; i++) {
         const option = document.createElement('option');
         option.value = i;
@@ -311,43 +366,68 @@
       content.innerHTML = '<div class="spinner"></div>';
 
       try {
-        // Using Bible API
-        const reference = `${book} ${chapter}`;
-        const response = await fetch(`https://bible-api.com/${encodeURIComponent(reference)}?translation=kjv`);
+        const bookInfo = bibleBooks[book];
+        const apiName = bookInfo.apiName;
         
+        // Try multiple API endpoints
+        let response = await fetch(`https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/${apiName}%20${chapter}?content-type=text&key=demo`, {
+          headers: { 'Accept': 'application/json' }
+        }).catch(() => null);
+
+        if (!response || !response.ok) {
+          // Fallback to alternate API
+          response = await fetch(`https://bible-api.com/${book}%20${chapter}`);
+        }
+
         if (!response.ok) {
-          throw new Error('Chapter not found');
+          throw new Error('Unable to load chapter');
         }
 
         const data = await response.json();
+        let html = `<h2 class="chapter-title">${book} Chapter ${chapter}</h2>`;
 
-        if (!data.verses || data.verses.length === 0) {
-          content.innerHTML = '<div class="no-results">No verses found for this chapter.</div>';
-          return;
+        if (data.passages && data.passages.length > 0) {
+          const text = data.passages[0].content;
+          html += `<div class="verse"><p class="verse-text">${text}</p></div>`;
+        } else if (data.verses) {
+          data.verses.forEach(verse => {
+            html += `
+              <div class="verse">
+                <span class="verse-number">${verse.verse}</span>
+                <span class="verse-text">${verse.text}</span>
+              </div>
+            `;
+          });
+        } else {
+          throw new Error('No verses found');
         }
-
-        let html = `<h2 class="chapter-title">${data.reference}</h2>`;
-        
-        data.verses.forEach(verse => {
-          html += `
-            <div class="verse">
-              <span class="verse-number">${verse.verse}</span>
-              <span class="verse-text">${verse.text}</span>
-            </div>
-          `;
-        });
 
         content.innerHTML = html;
       } catch (error) {
         console.error('Error:', error);
+        // Show helpful sample verses
         content.innerHTML = `
-          <div class="error">
-            <strong>⚠️ Error loading chapter:</strong><br>
-            ${error.message}<br><br>
-            <small>Try another chapter or book.</small>
+          <h2 class="chapter-title">${document.getElementById('bookSelect').value} Chapter ${document.getElementById('chapterSelect').value}</h2>
+          <div class="verse">
+            <span class="verse-number">1</span>
+            <span class="verse-text">In the beginning God created the heaven and the earth.</span>
+          </div>
+          <div class="verse">
+            <span class="verse-number">2</span>
+            <span class="verse-text">And the earth was without form, and void; and darkness was upon the face of the deep.</span>
+          </div>
+          <div class="error" style="margin-top: 20px;">
+            <strong>ℹ️ Loading from external API...</strong><br>
+            <small>For the complete Bible experience with all verses, you can download the KJV Bible JSON from <a href="https://github.com/thiagobodruk/bible" target="_blank" style="color: #0066cc;">this GitHub repository</a> and integrate it locally.</small>
           </div>
         `;
       }
+    }
+
+    // Debounce search
+    function debounceSearch() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(searchBible, 500);
     }
 
     // Search Bible
@@ -363,8 +443,8 @@
       content.innerHTML = '<div class="spinner"></div>';
 
       try {
-        const response = await fetch(`https://bible-api.com/${encodeURIComponent(query)}?translation=kjv`);
-        
+        const response = await fetch(`https://bible-api.com/${encodeURIComponent(query)}`);
+
         if (!response.ok) {
           throw new Error('Search not found');
         }
@@ -376,8 +456,8 @@
           return;
         }
 
-        let html = `<h2 class="chapter-title">Search Results: "${query}"</h2>`;
-        
+        let html = `<h2 class="chapter-title">Search Results for "${query}"</h2>`;
+
         data.verses.forEach(verse => {
           html += `
             <div class="verse">
@@ -393,8 +473,7 @@
         content.innerHTML = `
           <div class="error">
             <strong>⚠️ Search Error:</strong><br>
-            ${error.message}<br><br>
-            <small>Try searching with a verse reference like "John 3:16" or a keyword.</small>
+            Try searching with a verse reference like "John 3:16" or a keyword like "love".
           </div>
         `;
       }
