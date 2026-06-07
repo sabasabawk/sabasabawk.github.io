@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Memory Verse - SABASABA Gospel</title>
+  <title>Memory Verse - SABASABA Gospel Ministry</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
-      padding: 0;
+      background: #f4f6f9;
+      text-align: center;
     }
 
     header {
       background: #1e3a8a;
       color: white;
-      padding: 15px;
-      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
     }
 
     .container {
@@ -25,69 +29,103 @@
     .verse-card {
       background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      text-align: center;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .verse {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .verse-text {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
     }
 
     .reference {
-      color: #555;
-      margin-bottom: 20px;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #1e3a8a;
     }
 
     button {
+      padding: 12px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
       background: #1e3a8a;
       color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #3749a6;
+      background: #0f2557;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: gray;
     }
   </style>
 </head>
+
 <body>
 
 <header>
-  <h2>SABASABA Gospel Ministry</h2>
-  <p>Memory Verse</p>
+  <h1>📖 Memory Verse</h1>
+  <p>SABASABA Gospel Ministry</p>
 </header>
 
 <div class="container">
-  <div class="verse-card">
-    <div class="verse" id="verseText">
-      "I can do all things through Christ who strengthens me."
-    </div>
-    <div class="reference" id="verseRef">
-      Philippians 4:13
-    </div>
 
-    <button onclick="newVerse()">Next Verse</button>
+  <div class="verse-card">
+    <p class="verse-text" id="verseText"></p>
+    <p class="reference" id="verseRef"></p>
   </div>
+
+  <button onclick="showVerse()">Next Verse</button>
+
 </div>
+
+<footer>
+  Powered by SABASABA Gospel Ministry |
+  <a href="https://sabasabawk.github.io" target="_blank">
+    sabasabawk.github.io
+  </a>
+</footer>
 
 <script>
   const verses = [
-    { text: "I can do all things through Christ who strengthens me.", ref: "Philippians 4:13" },
-    { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
-    { text: "For God so loved the world that He gave His only Son.", ref: "John 3:16" },
-    { text: "Trust in the Lord with all your heart.", ref: "Proverbs 3:5" }
+    {
+      text: "For I know the plans I have for you, declares the Lord...",
+      ref: "Jeremiah 29:11"
+    },
+    {
+      text: "The Lord is my shepherd; I shall not want.",
+      ref: "Psalm 23:1"
+    },
+    {
+      text: "I can do all things through Christ who strengthens me.",
+      ref: "Philippians 4:13"
+    },
+    {
+      text: "Be strong and courageous. Do not be afraid.",
+      ref: "Joshua 1:9"
+    }
   ];
 
-  function newVerse() {
-    const random = Math.floor(Math.random() * verses.length);
-    document.getElementById("verseText").innerText = verses[random].text;
-    document.getElementById("verseRef").innerText = verses[random].ref;
+  let current = 0;
+
+  function showVerse() {
+    current = (current + 1) % verses.length;
+    document.getElementById("verseText").innerText = verses[current].text;
+    document.getElementById("verseRef").innerText = verses[current].ref;
   }
+
+  // load first verse automatically
+  window.onload = showVerse;
 </script>
 
 </body>
