@@ -1,161 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Verse - SABASABA Gospel Ministry</title>
+  <meta charset="UTF-8">
+  <title>Memory Verse - SABASABA Gospel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #f7f7f7;
-  text-align: center;
-}
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
 
-.header {
-  background: #ffffff;
-  padding: 15px;
-  border-bottom: 2px solid #ddd;
-}
+    .container {
+      padding: 20px;
+    }
 
-.header h2 {
-  color: #1e3c72;
-  margin: 0;
-}
+    .verse-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      text-align: center;
+    }
 
-.card {
-  background: white;
-  max-width: 600px;
-  margin: 15px auto;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+    .verse {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-input {
-  width: 80%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
+    .reference {
+      color: #555;
+      margin-bottom: 20px;
+    }
 
-button {
-  width: 85%;
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #1e3c72;
-  color: white;
-  font-size: 15px;
-}
+    button {
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-button:hover {
-  background: #16305c;
-}
-
-.score {
-  font-weight: bold;
-  color: green;
-}
-
-.verse {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.footer {
-  margin-top: 20px;
-  padding: 12px;
-  background: #fff;
-  border-top: 1px solid #ddd;
-}
-</style>
+    button:hover {
+      background: #3749a6;
+    }
+  </style>
 </head>
-
 <body>
 
-<div style="background:#1e3c72;padding:12px;">
-<a href="index.html"
-style="
-display:inline-block;
-background:white;
-color:#1e3c72;
-padding:8px 15px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-">
-🏠 Home
-</a>
-</div>
+<header>
+  <h2>SABASABA Gospel Ministry</h2>
+  <p>Memory Verse</p>
+</header>
 
-<div class="card">
-  <p class="verse" id="verse"></p>
+<div class="container">
+  <div class="verse-card">
+    <div class="verse" id="verseText">
+      "I can do all things through Christ who strengthens me."
+    </div>
+    <div class="reference" id="verseRef">
+      Philippians 4:13
+    </div>
 
-  <input type="text" id="answer" placeholder="Type missing word">
-
-  <button onclick="checkAnswer()">Submit Answer</button>
-
-  <p id="result"></p>
-  <p class="score">Score: <span id="score">0</span></p>
-</div>
-
-<div class="footer">
-  © SABASABA Gospel Ministry | Hide the Word, Learn the Word
+    <button onclick="newVerse()">Next Verse</button>
+  </div>
 </div>
 
 <script>
+  const verses = [
+    { text: "I can do all things through Christ who strengthens me.", ref: "Philippians 4:13" },
+    { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+    { text: "For God so loved the world that He gave His only Son.", ref: "John 3:16" },
+    { text: "Trust in the Lord with all your heart.", ref: "Proverbs 3:5" }
+  ];
 
-// VERSES DATABASE
-const verses = [
-  {text: "For God so loved the ____ that He gave His only Son.", answer: "world"},
-  {text: "The Lord is my ____; I shall not want.", answer: "shepherd"},
-  {text: "In the beginning God created the ____ and the earth.", answer: "heavens"},
-  {text: "I can do all things through ____ who strengthens me.", answer: "Christ"},
-  {text: "The fear of the Lord is the beginning of ____.", answer: "wisdom"}
-];
-
-let current = 0;
-let score = 0;
-
-// LOAD VERSE
-function loadVerse(){
-  let v = verses[current];
-  document.getElementById("verse").innerText = v.text;
-  document.getElementById("answer").value = "";
-}
-
-// CHECK ANSWER
-function checkAnswer(){
-  let user = document.getElementById("answer").value.trim().toLowerCase();
-  let correct = verses[current].answer.toLowerCase();
-
-  if(user === correct){
-    score += 10;
-    document.getElementById("result").innerText = "Correct 🎉";
-  } else {
-    document.getElementById("result").innerText = "Wrong 🙏 Correct answer: " + correct;
+  function newVerse() {
+    const random = Math.floor(Math.random() * verses.length);
+    document.getElementById("verseText").innerText = verses[random].text;
+    document.getElementById("verseRef").innerText = verses[random].ref;
   }
-
-  document.getElementById("score").innerText = score;
-localStorage.setItem("memoryPoints", score);
-  current++;
-
-  if(current >= verses.length){
-    current = 0;
-    alert("You completed all verses! 🔥");
-  }
-
-  setTimeout(loadVerse, 1000);
-}
-
-// INIT
-loadVerse();
-
 </script>
 
 </body>
