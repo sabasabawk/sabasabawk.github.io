@@ -119,13 +119,17 @@
   let current = 0;
 
   function showVerse() {
-    current = (current + 1) % verses.length;
     document.getElementById("verseText").innerText = verses[current].text;
     document.getElementById("verseRef").innerText = verses[current].ref;
   }
 
-  // load first verse automatically
-  window.onload = showVerse;
+  function nextVerse() {
+    current = (current + 1) % verses.length;
+    showVerse();
+  }
+
+  // show first verse immediately
+  showVerse();
 </script>
 
 </body>
