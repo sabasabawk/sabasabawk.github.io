@@ -74,7 +74,28 @@
   }
 
   showVerse();
-</script>
+<script>
+  const verses = [
+    { ref: "Jeremiah 29:11", text: "For I know the plans I have for you declares the Lord." },
+    { ref: "Psalm 23:1", text: "The Lord is my shepherd; I shall not want." },
+    { ref: "Philippians 4:13", text: "I can do all things through Christ who strengthens me." },
+    { ref: "Joshua 1:9", text: "Be strong and courageous. Do not be afraid." }
+  ];
 
+  let index = 0;
+
+  function showVerse() {
+    document.getElementById("verseText").innerText = verses[index].text;
+    document.getElementById("verseRef").innerText = verses[index].ref;
+  }
+
+  function nextVerse() {
+    index = (index + 1) % verses.length;
+    showVerse();
+  }
+
+  // Make sure page loads properly
+  document.addEventListener("DOMContentLoaded", showVerse);
+</script>
 </body>
 </html>
