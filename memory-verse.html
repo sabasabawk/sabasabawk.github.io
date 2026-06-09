@@ -8,30 +8,41 @@
 <style>
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f6f9;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(to bottom,#eef3ff,#f7f9fc);
     text-align:center;
 }
 
+/* HEADER */
 header{
-    background:#1e3a8a;
+    background:linear-gradient(135deg,#0b3d91,#1e90ff);
     color:white;
-    padding:20px;
+    padding:25px;
+    border-bottom-left-radius:25px;
+    border-bottom-right-radius:25px;
 }
 
+header h1{
+    font-size:28px;
+}
+
+/* CONTAINER */
 .container{
+    max-width:900px;
+    margin:auto;
     padding:20px;
 }
 
+/* CARD */
 .card{
     background:white;
-    max-width:600px;
-    margin:20px auto;
     padding:25px;
+    margin-top:20px;
     border-radius:15px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    box-shadow:0 6px 15px rgba(0,0,0,0.1);
 }
 
+/* VERSE */
 #verseText{
     font-size:22px;
     line-height:1.6;
@@ -39,30 +50,80 @@ header{
 }
 
 #verseRef{
-    margin-top:15px;
+    margin-top:10px;
     font-weight:bold;
-    color:#1e3a8a;
+    color:#0b3d91;
+}
+
+/* PROGRESS */
+.progress-container{
+    width:100%;
+    background:#ddd;
+    height:16px;
+    border-radius:10px;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+#progressBar{
+    height:100%;
+    width:0%;
+    background:green;
+    transition:0.4s;
+}
+
+#progressText{
+    font-weight:bold;
+    margin-top:10px;
+    color:#0b3d91;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:15px;
 }
 
 button{
-    background:#1e3a8a;
-    color:white;
+    padding:10px 14px;
     border:none;
-    padding:12px 20px;
     border-radius:8px;
+    background:#0b3d91;
+    color:white;
     cursor:pointer;
-    font-size:16px;
-    margin-top:15px;
+    transition:0.3s;
 }
 
 button:hover{
-    opacity:0.9;
+    background:#1e90ff;
+    transform:scale(1.05);
 }
 
+/* LIST */
+.list{
+    text-align:left;
+    margin-top:10px;
+    max-height:200px;
+    overflow:auto;
+}
+
+.item{
+    padding:8px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+}
+
+/* FOOTER */
 footer{
     margin-top:30px;
     padding:15px;
-    color:#666;
+    background:#0b3d91;
+    color:white;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
 }
 </style>
 </head>
@@ -75,61 +136,120 @@ footer{
 </header>
 
 <div class="container">
-    <div class="card">
-        <h2 id="verseText"></h2>
-        <p id="verseRef"></p>
 
-        <button onclick="nextVerse()">Next Verse</button>
+<div class="card">
+    <h2 id="verseText">Loading...</h2>
+    <p id="verseRef"></p>
+
+    <div class="progress-container">
+        <div id="progressBar"></div>
+    </div>
+    <p id="progressText"></p>
+
+    <div class="buttons">
+        <button onclick="prevVerse()">⬅ Prev</button>
+        <button onclick="nextVerse()">Next ➡</button>
+        <button onclick="randomVerse()">🔀 Random</button>
+        <button onclick="markLearned()">✅ Learned</button>
+        <button onclick="toggleFavorite()">⭐ Favorite</button>
+        <button onclick="shareVerse()">📤 Share</button>
     </div>
 </div>
 
+<div class="card">
+    <h2>📌 Learned Verses</h2>
+    <div id="learnedList" class="list"></div>
+</div>
+
+</div>
+
 <footer>
-    SABASABA Gospel Ministry<br>
-    sabasabawk.github.io
+SABASABA Gospel Ministry<br>
+sabasabawk.github.io
 </footer>
 
 <script>
 const verses = [
-{
-text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",
-ref:"Jeremiah 29:11"
-},
-{
-text:"The Lord is my shepherd; I shall not want.",
-ref:"Psalm 23:1"
-},
-{
-text:"I can do all things through Christ who strengthens me.",
-ref:"Philippians 4:13"
-},
-{
-text:"Be strong and courageous. Do not be afraid or discouraged, for the Lord your God will be with you wherever you go.",
-ref:"Joshua 1:9"
-},
-{
-text:"Trust in the Lord with all your heart and lean not on your own understanding.",
-ref:"Proverbs 3:5"
-}
+{ text:"I can do all things through Christ who strengthens me.", ref:"Philippians 4:13" },
+{ text:"The Lord is my shepherd; I shall not want.", ref:"Psalm 23:1" },
+{ text:"For I know the plans I have for you.", ref:"Jeremiah 29:11" },
+{ text:"Be strong and courageous.", ref:"Joshua 1:9" },
+{ text:"Trust in the Lord with all your heart.", ref:"Proverbs 3:5" }
 ];
 
-let currentVerse = 0;
+let index = 0;
+let learned = JSON.parse(localStorage.getItem("learned") || "[]");
+let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
 function showVerse(){
-document.getElementById("verseText").innerHTML =
-verses[currentVerse].text;
-
-document.getElementById("verseRef").innerHTML =
-verses[currentVerse].ref;
+    document.getElementById("verseText").innerText = verses[index].text;
+    document.getElementById("verseRef").innerText = verses[index].ref;
+    updateProgress();
+    renderLearned();
 }
 
 function nextVerse(){
-currentVerse++;
-
-if(currentVerse >= verses.length){
-currentVerse = 0;
+    index = (index + 1) % verses.length;
+    showVerse();
 }
 
-showVerse();
+function prevVerse(){
+    index = (index - 1 + verses.length) % verses.length;
+    showVerse();
+}
+
+function randomVerse(){
+    index = Math.floor(Math.random() * verses.length);
+    showVerse();
+}
+
+function markLearned(){
+    let v = verses[index];
+    if(!learned.some(x => x.ref === v.ref)){
+        learned.push(v);
+        localStorage.setItem("learned", JSON.stringify(learned));
+    }
+    updateProgress();
+    renderLearned();
+}
+
+function toggleFavorite(){
+    let v = verses[index];
+    let exists = favorites.some(x => x.ref === v.ref);
+
+    if(exists){
+        favorites = favorites.filter(x => x.ref !== v.ref);
+    } else {
+        favorites.push(v);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+function shareVerse(){
+    let v = verses[index];
+    let text = `${v.text} - ${v.ref}`;
+    navigator.clipboard.writeText(text);
+    alert("Verse copied to clipboard!");
+}
+
+function updateProgress(){
+    let percent = Math.round((learned.length / verses.length) * 100);
+    document.getElementById("progressBar").style.width = percent + "%";
+    document.getElementById("progressText").innerText =
+        `${learned.length} / ${verses.length} learned (${percent}%)`;
+}
+
+function renderLearned(){
+    let box = document.getElementById("learnedList");
+    box.innerHTML = "";
+
+    learned.forEach(v=>{
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerText = v.text + " - " + v.ref;
+        box.appendChild(div);
+    });
 }
 
 showVerse();
