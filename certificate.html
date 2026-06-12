@@ -1,56 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Certificate</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate of Completion</title>
 
 <style>
 body{
-    font-family: Arial;
-    text-align: center;
+    font-family: Georgia, serif;
     background: #f4f8fc;
-    padding: 40px;
+    padding: 20px;
 }
 
-.box{
-    background: white;
-    padding: 30px;
-    max-width: 700px;
+.certificate{
+    max-width: 900px;
     margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px gray;
+    background: white;
+    border: 12px solid gold;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
 h1{
     color: #0066cc;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+h2{
+    color: #b8860b;
+    font-size: 32px;
+}
+
+.award{
+    font-size: 22px;
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.verse{
+    font-style: italic;
+    color: #444;
+    margin-top: 20px;
+}
+
+.signature{
+    margin-top: 40px;
+    font-weight: bold;
+}
+
+.seal{
+    font-size: 60px;
+    margin-top: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="certificate">
 
-<h1>🏆 Certificate of Completion</h1>
+<div class="seal">🏆</div>
 
-<p>You have completed the SDA History Course</p>
+<h1>CERTIFICATE OF COMPLETION</h1>
 
-<h2>SABASABA Gospel Ministry</h2>
+<h2>SDA HISTORY COURSE</h2>
+
+<p class="award">
+This certificate is proudly presented to
+</p>
+
+<h2>Faithful Student</h2>
+
+<p class="award">
+For successfully completing all twelve lessons of the
+Seventh-day Adventist History Course.
+
+Your commitment to learning the story of God's leading,
+the Advent Movement, and the mission of the Seventh-day
+Adventist Church demonstrates a desire to grow in faith,
+knowledge, and service.
+
+May the lessons learned inspire you to stand for truth,
+walk with Christ, and share His love with the world.
+</p>
+
+<p class="verse">
+"Study to shew thyself approved unto God, a workman that
+needeth not to be ashamed." – 2 Timothy 2:15
+</p>
+
+<div class="signature">
+SABASABA Gospel Ministry<br>
+sabasabawk.github.io
+</div>
+
+<br>
 
 <p id="status"></p>
-
-</div>
 
 <script>
 let completed = JSON.parse(localStorage.getItem("historyProgress")) || [];
 
 if(completed.length >= 12){
     document.getElementById("status").innerHTML =
-    "✅ Congratulations! You completed all lessons.";
+    "✅ Congratulations! You have successfully completed all 12 lessons.";
 } else {
     document.getElementById("status").innerHTML =
-    "❌ You have completed " + completed.length + "/12 lessons.";
+    "📚 Progress: " + completed.length + "/12 lessons completed.";
 }
 </script>
+
+</div>
 
 </body>
 </html>
