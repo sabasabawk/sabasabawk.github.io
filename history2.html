@@ -6,6 +6,22 @@
 <title>SDA History Lesson 2 - William Miller and the Millerite Movement</title>
 
 <style>
+<script>
+let completedLessons =
+localStorage.getItem("historyCompleted") || 0;
+
+function completeLesson() {
+    completedLessons++;
+    localStorage.setItem(
+        "historyCompleted",
+        completedLessons
+    );
+
+    document.getElementById("progress").innerHTML =
+    "Lessons Completed: " +
+    completedLessons + "/12";
+}
+</script>
 body{
 font-family:Arial,sans-serif;
 background:#f4f6f9;
