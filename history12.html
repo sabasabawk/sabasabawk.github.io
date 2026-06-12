@@ -23,7 +23,9 @@ body{
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h1,h2{ color:#0066cc; }
+h1,h2{
+    color:#0066cc;
+}
 
 .quiz{
     margin-top: 30px;
@@ -34,7 +36,7 @@ h1,h2{ color:#0066cc; }
 
 button{
     padding: 10px 15px;
-    margin: 5px;
+    margin: 8px;
     border: none;
     border-radius: 5px;
     background: #0066cc;
@@ -42,7 +44,9 @@ button{
     cursor: pointer;
 }
 
-button:hover{ background:#004a99; }
+button:hover{
+    background: #004a99;
+}
 
 #result{
     font-weight: bold;
@@ -58,18 +62,20 @@ button:hover{ background:#004a99; }
 <h1>🇹🇿 History 12: SDA Church in Tanzania</h1>
 
 <h2>Introduction</h2>
+
 <p>
 The SDA Church in Tanzania has grown through evangelism, education, and health ministry.
 </p>
 
-<h2>Growth</h2>
+<h2>Growth of the Church</h2>
+
 <p>
-From early missionaries to today’s thousands of members, the church continues to expand.
+From early missionaries to thousands of members today, the church continues to expand across the country.
 </p>
 
-<h2>Quiz</h2>
-
 <div class="quiz">
+
+<h2>❓ Final Quiz</h2>
 
 <p><strong>What are the main mission areas of the SDA Church in Tanzania?</strong></p>
 
@@ -81,19 +87,20 @@ From early missionaries to today’s thousands of members, the church continues 
 
 </div>
 
-<br>
-
+<!-- COMPLETION BUTTON -->
 <button onclick="markComplete()">
 Mark Lesson Complete
 </button>
 
-<button onclick="goCertificate()">
-View Certificate
+<!-- CERTIFICATE BUTTON -->
+<button onclick="openCertificate()">
+View Certificate 🏆
 </button>
 
 </div>
 
 <script>
+
 function checkAnswer(answer){
     if(answer === 'correct'){
         document.getElementById('result').innerHTML =
@@ -104,22 +111,23 @@ function checkAnswer(answer){
     }
 }
 
+// Save completion properly
 function markComplete(){
     let completed = JSON.parse(localStorage.getItem("historyProgress")) || [];
 
-    let page = window.location.pathname;
-
-    if(!completed.includes(page)){
-        completed.push(page);
+    if(!completed.includes("history12")){
+        completed.push("history12");
         localStorage.setItem("historyProgress", JSON.stringify(completed));
     }
 
-    alert("Lesson Completed ✔");
+    alert("Lesson 12 Completed ✔");
 }
 
-function goCertificate(){
+// OPEN CERTIFICATE (FIXED)
+function openCertificate(){
     window.location.href = "certificate.html";
 }
+
 </script>
 
 </body>
