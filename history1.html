@@ -42,7 +42,22 @@ padding:15px;
 }
 </style>
 </head>
+<script>
+let completedLessons =
+localStorage.getItem("historyCompleted") || 0;
 
+function completeLesson() {
+    completedLessons++;
+    localStorage.setItem(
+        "historyCompleted",
+        completedLessons
+    );
+
+    document.getElementById("progress").innerHTML =
+    "Lessons Completed: " +
+    completedLessons + "/12";
+}
+</script>
 <body>
 
 <header>
