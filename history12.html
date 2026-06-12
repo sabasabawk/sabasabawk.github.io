@@ -1,239 +1,126 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDA History Lesson 12 - Church Today and Future Mission</title>
+<title>History 12 - SDA Church in Tanzania</title>
 
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-margin:0;
-line-height:1.7;
-}
-
-header{
-background:linear-gradient(135deg,#0b3d91,#1e90ff);
-color:white;
-text-align:center;
-padding:30px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background: #f4f8fc;
+    color: #333;
 }
 
 .container{
-max-width:1000px;
-margin:auto;
-padding:20px;
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.card{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
+h1,h2{ color:#0066cc; }
+
+.quiz{
+    margin-top: 30px;
+    padding: 15px;
+    background: #eef6ff;
+    border-radius: 8px;
 }
 
-h2{
-color:#0b3d91;
+button{
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #0066cc;
+    color: white;
+    cursor: pointer;
 }
 
-ul{
-padding-left:25px;
-}
+button:hover{ background:#004a99; }
 
-footer{
-background:#0b3d91;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:20px;
+#result{
+    font-weight: bold;
+    margin-top: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>SDA History Lesson 12</h1>
-<p>The Church Today and Future Mission</p>
-</header>
-
 <div class="container">
 
-<div class="card">
+<h1>🇹🇿 History 12: SDA Church in Tanzania</h1>
 
 <h2>Introduction</h2>
-
 <p>
-Today the Seventh-day Adventist Church is a global movement with millions of
-members in nearly every country in the world. The church continues to focus
-on preaching the Gospel, preparing people for the second coming of Jesus Christ,
-and serving humanity.
+The SDA Church in Tanzania has grown through evangelism, education, and health ministry.
 </p>
+
+<h2>Growth</h2>
+<p>
+From early missionaries to today’s thousands of members, the church continues to expand.
+</p>
+
+<h2>Quiz</h2>
+
+<div class="quiz">
+
+<p><strong>What are the main mission areas of the SDA Church in Tanzania?</strong></p>
+
+<button onclick="checkAnswer('correct')">Evangelism, Education, Health</button>
+<button onclick="checkAnswer('wrong')">Politics only</button>
+<button onclick="checkAnswer('wrong')">Business only</button>
+
+<p id="result"></p>
 
 </div>
 
-<div class="card">
+<br>
 
-<h2>Global Presence</h2>
+<button onclick="markComplete()">
+Mark Lesson Complete
+</button>
 
-<p>
-The Adventist Church operates in:
-</p>
-
-<ul>
-<li>More than 200 countries and territories</li>
-<li>Thousands of churches worldwide</li>
-<li>Schools, colleges, and universities</li>
-<li>Hospitals and clinics</li>
-<li>Media and publishing ministries</li>
-</ul>
+<button onclick="goCertificate()">
+View Certificate
+</button>
 
 </div>
 
-<div class="card">
+<script>
+function checkAnswer(answer){
+    if(answer === 'correct'){
+        document.getElementById('result').innerHTML =
+        "✅ Correct! Well done.";
+    } else {
+        document.getElementById('result').innerHTML =
+        "❌ Try again.";
+    }
+}
 
-<h2>Modern Evangelism</h2>
+function markComplete(){
+    let completed = JSON.parse(localStorage.getItem("historyProgress")) || [];
 
-<p>
-Today’s mission work uses modern tools such as:
-</p>
+    let page = window.location.pathname;
 
-<ul>
-<li>Television and radio programs</li>
-<li>Social media evangelism</li>
-<li>Online Bible studies</li>
-<li>Mobile apps and websites</li>
-<li>Global satellite evangelism</li>
-</ul>
+    if(!completed.includes(page)){
+        completed.push(page);
+        localStorage.setItem("historyProgress", JSON.stringify(completed));
+    }
 
-<p>
-These tools help spread the Gospel faster than ever before.
-</p>
+    alert("Lesson Completed ✔");
+}
 
-</div>
-
-<div class="card">
-
-<h2>Health and Education Today</h2>
-
-<p>
-The Adventist Church continues to operate one of the largest Protestant
-health and education systems in the world.
-</p>
-
-<p>
-These institutions continue to serve communities and support mission work.
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Challenges in the Modern Era</h2>
-
-<ul>
-<li>Secularism and unbelief</li>
-<li>Rapid cultural changes</li>
-<li>Economic challenges</li>
-<li>Religious opposition in some areas</li>
-<li>Technological distractions</li>
-</ul>
-
-<p>
-Despite these challenges, the church continues to grow.
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Future Mission Focus</h2>
-
-<p>
-The church’s mission for the future is based on Revelation 14:6-12:
-the three angels’ messages.
-</p>
-
-<p>
-The focus is:
-</p>
-
-<ul>
-<li>Preaching the everlasting Gospel</li>
-<li>Calling people to worship God as Creator</li>
-<li>Preparing for the second coming of Christ</li>
-<li>Living holy and faithful lives</li>
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>Hope for the Future</h2>
-
-<p>
-Adventists believe that Jesus Christ will soon return to end suffering,
-sin, and death. The church continues to prepare people for this great event.
-</p>
-
-<p>
-A new earth will be created where believers will live eternally with God.
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Conclusion</h2>
-
-<p>
-From a small group of believers in the 1800s, the Seventh-day Adventist Church
-has grown into a worldwide movement. Its mission continues until the return
-of Jesus Christ.
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Review Questions</h2>
-
-<p>1. How many countries does the SDA Church operate in?</p>
-
-<p>2. What modern tools are used for evangelism?</p>
-
-<p>3. What are the three angels’ messages?</p>
-
-<p>4. What challenges does the church face today?</p>
-
-<p>5. What is the future hope of Adventists?</p>
-
-</div>
-
-<div style="text-align:center;">
-
-<a href="history11.html"
-style="background:#0b3d91;color:white;padding:10px 20px;
-text-decoration:none;border-radius:8px;">
-⬅ Previous
-</a>
-
-<a href="index.html"
-style="background:#1e90ff;color:white;padding:10px 20px;
-text-decoration:none;border-radius:8px;margin-left:10px;">
-Home ➡
-</a>
-
-</div>
-
-</div>
-
-<footer>
-SABASABA GOSPEL MINISTRY<br>
-sabasabawk.github.io
-</footer>
+function goCertificate(){
+    window.location.href = "certificate.html";
+}
+</script>
 
 </body>
-</html
+</html>
