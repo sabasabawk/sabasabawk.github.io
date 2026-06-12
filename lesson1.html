@@ -3,38 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Lesson 1 - Salvation</title>
+<title>History 1 - The Protestant Reformation</title>
 
 <style>
 body{
-font-family: Arial, sans-serif;
-padding:20px;
-background:#f5f5f5;
-line-height:1.8;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background: #f4f8fc;
+    color: #333;
 }
 
 .container{
-background:white;
-padding:25px;
-border-radius:10px;
-max-width:800px;
-margin:auto;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 h1{
-color:#0b3d91;
+    color: #0066cc;
+    text-align: center;
 }
 
-a{
-display:inline-block;
-margin-top:20px;
-text-decoration:none;
-background:#0b3d91;
-color:white;
-padding:10px 18px;
-border-radius:8px;
+h2{
+    color: #0066cc;
+}
+
+.quiz{
+    margin-top: 30px;
+    padding: 15px;
+    background: #eef6ff;
+    border-radius: 8px;
+}
+
+button{
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #0066cc;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #004a99;
+}
+
+#result{
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.footer{
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
 }
 </style>
 </head>
@@ -43,43 +70,78 @@ border-radius:8px;
 
 <div class="container">
 
-<h1>Lesson 1: Salvation</h1>
+<h1>📜 History 1: The Protestant Reformation</h1>
 
-<h3>Main Scripture</h3>
-
-<p>
-John 3:16
-</p>
-
-<h3>What Is Salvation?</h3>
+<h2>Introduction</h2>
 
 <p>
-Salvation is God's gift through Jesus Christ. Through salvation we receive forgiveness of sins and eternal life.
+The Protestant Reformation was a major religious movement that began in
+Europe during the 16th century. It challenged certain teachings and
+practices of the medieval church and encouraged believers to return to
+the authority of the Bible.
 </p>
 
-<h3>Why Do We Need Salvation?</h3>
+<h2>Martin Luther</h2>
 
 <p>
-All people have sinned and need God's mercy.
+A German monk named Martin Luther became one of the leading figures of
+the Reformation. In 1517, he presented his concerns about church abuses,
+including the sale of indulgences. His actions sparked widespread
+religious discussion throughout Europe.
 </p>
+
+<h2>The Importance of the Bible</h2>
 
 <p>
-Romans 3:23 — “For all have sinned and fall short of the glory of God.”
+One of the key teachings of the Reformation was that the Bible should be
+the foundation of Christian faith and practice. Reformers encouraged
+people to study Scripture for themselves and trust God's Word.
 </p>
 
-<h3>How Do We Receive Salvation?</h3>
+<h2>Impact on Adventist History</h2>
 
 <p>
-We receive salvation by believing in Jesus Christ and accepting Him as Lord and Savior.
+The Protestant Reformation prepared the way for later movements that
+emphasized biblical truth, including the Advent Movement and the
+development of the Seventh-day Adventist Church.
 </p>
 
-<p>
-Romans 10:9
-</p>
+<div class="quiz">
 
-<a href="index.html">← Back Home</a>
+<h2>❓ History Quiz</h2>
+
+<p><strong>Who is known as the leader of the Protestant Reformation?</strong></p>
+
+<button onclick="checkAnswer('correct')">Martin Luther</button>
+
+<button onclick="checkAnswer('wrong')">William Miller</button>
+
+<button onclick="checkAnswer('wrong')">James White</button>
+
+<p id="result"></p>
 
 </div>
+
+<div class="footer">
+<p>
+SABASABA Gospel Ministry<br>
+Visit: sabasabawk.github.io
+</p>
+</div>
+
+</div>
+
+<script>
+function checkAnswer(answer){
+    if(answer === 'correct'){
+        document.getElementById('result').innerHTML =
+        "✅ Correct! Martin Luther was a leader of the Protestant Reformation.";
+    } else {
+        document.getElementById('result').innerHTML =
+        "❌ Incorrect. Try again.";
+    }
+}
+</script>
 
 </body>
 </html>
