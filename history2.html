@@ -3,235 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDA History Lesson 2 - William Miller and the Millerite Movement</title>
+<title>History 2 - William Miller and the Millerite Movement</title>
 
 <style>
-<script>
-let completedLessons =
-localStorage.getItem("historyCompleted") || 0;
-
-function completeLesson() {
-    completedLessons++;
-    localStorage.setItem(
-        "historyCompleted",
-        completedLessons
-    );
-
-    document.getElementById("progress").innerHTML =
-    "Lessons Completed: " +
-    completedLessons + "/12";
-}
-</script>
 body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-margin:0;
-line-height:1.7;
-}
-
-header{
-background:linear-gradient(135deg,#0b3d91,#1e90ff);
-color:white;
-text-align:center;
-padding:30px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background: #f4f8fc;
+    color: #333;
 }
 
 .container{
-max-width:1000px;
-margin:auto;
-padding:20px;
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.card{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
+h1{
+    color: #0066cc;
+    text-align: center;
 }
 
 h2{
-color:#0b3d91;
+    color: #0066cc;
 }
 
-ul{
-padding-left:25px;
+.quiz{
+    margin-top: 30px;
+    padding: 15px;
+    background: #eef6ff;
+    border-radius: 8px;
 }
 
-footer{
-background:#0b3d91;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:20px;
+button{
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #0066cc;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #004a99;
+}
+
+#result{
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.footer{
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>SDA History Lesson 2</h1>
-<p>William Miller and the Millerite Movement</p>
-</header>
-
 <div class="container">
 
-<div class="card">
+<h1>📜 History 2: William Miller and the Millerite Movement</h1>
 
-<h2>Who Was William Miller?</h2>
-
-<p>
-William Miller was an American farmer, military veteran, and Bible student.
-After years of careful Bible study, he became convinced that the prophecies
-of Daniel revealed that Jesus Christ would soon return.
-</p>
+<h2>Introduction</h2>
 
 <p>
-Using the Bible as his guide, Miller compared Scripture with Scripture and
-developed a strong interest in prophecy.
+William Miller was an American farmer, military veteran, and Bible student
+who became one of the most influential religious figures of the nineteenth century.
+His careful study of Bible prophecy led him to believe that Jesus Christ would
+return very soon.
 </p>
 
-</div>
-
-<div class="card">
-
-<h2>The Prophecy of Daniel 8:14</h2>
+<h2>Studying Bible Prophecy</h2>
 
 <p>
-William Miller focused on Daniel 8:14:
+Miller spent years studying the Bible, especially the prophecies found in the
+books of Daniel and Revelation. He used the principle that one prophetic day
+represents one literal year and focused on the prophecy of 2,300 days in
+Daniel 8:14.
 </p>
-
-<p>
-<i>"Unto two thousand and three hundred days; then shall the sanctuary be cleansed."</i>
-</p>
-
-<p>
-Applying the prophetic day-year principle, he concluded that the 2300 prophetic
-days represented 2300 literal years.
-</p>
-
-</div>
-
-<div class="card">
 
 <h2>The Millerite Movement</h2>
 
 <p>
-Beginning in the 1830s, Miller preached throughout the United States.
-Thousands accepted the message that Christ's return was near.
+Beginning in the 1830s, William Miller preached throughout the United States.
+Thousands of people accepted his message and eagerly anticipated the Second
+Coming of Christ. These believers became known as Millerites.
 </p>
+
+<h2>A Worldwide Awakening</h2>
 
 <p>
-People from many Christian denominations joined the Advent Movement.
-These believers became known as Millerites.
+The Advent message spread rapidly through preaching, books, newspapers, and
+public meetings. Many people turned to God, studied the Bible, and prepared
+their hearts for Christ's return.
 </p>
 
-<ul>
-<li>Large evangelistic meetings were held.</li>
-<li>Bible prophecy was widely studied.</li>
-<li>Thousands prepared for Christ's return.</li>
-<li>The movement spread across North America and beyond.</li>
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>Expectation of Christ's Return</h2>
+<h2>Preparing the Way</h2>
 
 <p>
-The Millerites eventually believed that Jesus would return on October 22, 1844.
-Believers prayed, studied, and eagerly waited for the Second Coming.
+Although the Millerites misunderstood the event that would occur at the end
+of the 2,300-year prophecy, their movement prepared the way for the birth of
+the Seventh-day Adventist Church after 1844.
 </p>
 
-<p>
-However, Christ did not return on that date. This event became known as
-"The Great Disappointment."
-</p>
+<div class="quiz">
 
-</div>
+<h2>❓ History Quiz</h2>
 
-<div class="card">
+<p><strong>Who started the Millerite Movement?</strong></p>
 
-<h2>Importance to SDA History</h2>
+<button onclick="checkAnswer('wrong')">Ellen G. White</button>
 
-<p>
-Although Miller's understanding of the sanctuary was incomplete, the Advent
-Movement laid the foundation for the Seventh-day Adventist Church.
-</p>
-
-<p>
-Many believers continued studying the Bible after 1844 and discovered important
-truths about Christ's ministry in the heavenly sanctuary, the Sabbath, and the
-Three Angels' Messages.
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Key Facts</h2>
-
-<ul>
-<li>William Miller lived from 1782 to 1849.</li>
-<li>He preached the soon return of Jesus.</li>
-<li>The Millerite Movement spread rapidly.</li>
-<li>October 22, 1844 became a pivotal date in Adventist history.</li>
-<li>The movement led to the birth of the Seventh-day Adventist Church.</li>
-</ul>
-
-</div>
-
-<div class="card">
-
-<h2>Review Questions</h2>
-
-<p>1. Who was William Miller?</p>
-
-<p>2. Which prophecy did Miller study most closely?</p>
-
-<p>3. What was the Millerite Movement?</p>
-
-<p>4. What happened on October 22, 1844?</p>
-
-<p>5. Why is William Miller important to SDA history?</p>
-
-</div>
-
-<div style="text-align:center;">
-
-<a href="history1.html"
-style="background:#0b3d91;color:white;padding:10px 20px;
-text-decoration:none;border-radius:8px;">
-⬅ Previous
-</a>
-
-<a href="history3.html"
-style="background:#1e90ff;color:white;padding:10px 20px;
-text-decoration:none;border-radius:8px;margin-left:10px;">
-Next ➡
-</a>
-
-</div>
-
-</div>
-
-<footer>
-SABASABA Gospel Ministry<br>
-sabasabawk.github.io
-</footer>
-<p>Who started the Millerite Movement?</p>
-
-<button onclick="checkAnswer('wrong')">Ellen White</button>
 <button onclick="checkAnswer('correct')">William Miller</button>
-<button onclick="checkAnswer('wrong')">Joseph Bates</button>
-<h3 id="progress">
-Lessons Completed: 0/12
-</h3>
 
-<button onclick="completeLesson()">
-Mark Lesson Complete
-</button>
+<button onclick="checkAnswer('wrong')">Joseph Bates</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="footer">
+<p>
+SABASABA Gospel Ministry<br>
+Visit: sabasabawk.github.io
+</p>
+</div>
+
+</div>
+
+<script>
+function checkAnswer(answer){
+    if(answer === 'correct'){
+        document.getElementById('result').innerHTML =
+        "✅ Correct! William Miller led the Millerite Movement.";
+    } else {
+        document.getElementById('result').innerHTML =
+        "❌ Incorrect. Try again.";
+    }
+}
+</script>
+
 </body>
 </html>
