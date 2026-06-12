@@ -138,6 +138,26 @@ Next Lesson ➡
 SABASABA Gospel Ministry<br>
 sabasabawk.github.io
 </footer>
+<h3>History Quiz</h3>
 
+<p>Who led the Millerite Movement?</p>
+
+<button onclick="checkAnswer('wrong')">Ellen White</button>
+<button onclick="checkAnswer('correct')">William Miller</button>
+<button onclick="checkAnswer('wrong')">James White</button>
+
+<p id="result"></p>
+
+<script>
+function checkAnswer(answer) {
+    if (answer === 'correct') {
+        document.getElementById('result').innerHTML =
+        "✅ Correct! You earned 10 points.";
+    } else {
+        document.getElementById('result').innerHTML =
+        "❌ Try Again.";
+    }
+}
+</script>
 </body>
 </html>
