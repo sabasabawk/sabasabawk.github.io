@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bible Reading Plan</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+.day{
+    background:#eef6ff;
+    padding:15px;
+    margin:10px 0;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>📖 Bible Reading Plan</h1>
+
+<div class="day">
+<h3>Day 1</h3>
+<p>Genesis 1-3</p>
+<button onclick="completeReading(1)">Mark Complete</button>
+</div>
+
+<div class="day">
+<h3>Day 2</h3>
+<p>Genesis 4-6</p>
+<button onclick="completeReading(2)">Mark Complete</button>
+</div>
+
+<div class="day">
+<h3>Day 3</h3>
+<p>Genesis 7-9</p>
+<button onclick="completeReading(3)">Mark Complete</button>
+</div>
+
+<p id="status"></p>
+
+</div>
+
+<script>
+function completeReading(day){
+    localStorage.setItem("readingDay"+day,"completed");
+    document.getElementById("status").innerHTML =
+    "✅ Day " + day + " completed!";
+}
+</script>
+
+</body>
+</html>
