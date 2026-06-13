@@ -151,7 +151,8 @@ function completeReading(day){
 <script>
 function completeReading(day){
     localStorage.setItem("BibleDay" + day, "completed");
-    alert("Day " + day + " completed! 🎉");
+    document.getElementById("status").innerHTML =
+    "✅ Day " + day + " completed!";
 }
 </script>
 </body>
