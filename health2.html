@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 2 - The Eight Laws of Health</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 2: The Eight Laws of Health (NEWSTART)</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."
+<br><br>
+<strong>3 John 1:2</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+The Seventh-day Adventist Health Message is often summarized by the word <strong>NEWSTART</strong>. These are eight principles that promote physical, mental, and spiritual well-being.
+</p>
+
+<h2>NEWSTART Principles</h2>
+
+<ul>
+<li><strong>N – Nutrition:</strong> Eat wholesome foods God has provided.</li>
+<li><strong>E – Exercise:</strong> Keep the body active through regular physical activity.</li>
+<li><strong>W – Water:</strong> Drink sufficient clean water daily.</li>
+<li><strong>S – Sunshine:</strong> Receive moderate sunlight for health.</li>
+<li><strong>T – Temperance:</strong> Practice moderation and avoid harmful substances.</li>
+<li><strong>A – Air:</strong> Breathe fresh air whenever possible.</li>
+<li><strong>R – Rest:</strong> Get adequate sleep and Sabbath rest.</li>
+<li><strong>T – Trust in God:</strong> Depend upon God for strength and healing.</li>
+</ul>
+
+<p>
+These principles have helped millions of people enjoy healthier and longer lives. They are based on Biblical teachings and supported by scientific research.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What does the N in NEWSTART stand for?</p>
+
+<input type="radio" name="q1" value="correct"> Nutrition<br>
+<input type="radio" name="q1"> Night<br>
+<input type="radio" name="q1"> Nature<br><br>
+
+<p>2. What does the R in NEWSTART stand for?</p>
+
+<input type="radio" name="q2"> Religion<br>
+<input type="radio" name="q2" value="correct"> Rest<br>
+<input type="radio" name="q2"> Reading<br><br>
+
+<p>3. What is the final T in NEWSTART?</p>
+
+<input type="radio" name="q3"> Teaching<br>
+<input type="radio" name="q3" value="correct"> Trust in God<br>
+<input type="radio" name="q3"> Tradition<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health2","completed");
+}
+</script>
+
+</body>
+</html>
