@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 4 - Water and Its Importance</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💧 Lesson 4: Water and Its Importance</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Jesus answered and said unto her, Whosoever drinketh of this water shall thirst again: But whosoever drinketh of the water that I shall give him shall never thirst."
+<br><br>
+<strong>John 4:13-14</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Water is one of God's greatest gifts for health and life. The human body is made up largely of water, and every organ depends on it to function properly.
+</p>
+
+<p>
+Water helps regulate body temperature, transport nutrients, remove waste products, lubricate joints, and maintain healthy digestion.
+</p>
+
+<p>
+Many health problems can result from insufficient water intake, including fatigue, headaches, poor concentration, and dehydration.
+</p>
+
+<p>
+The Adventist Health Message encourages drinking clean water regularly and using water wisely for hygiene and health.
+</p>
+
+<p>
+Just as water is essential for physical life, Jesus Christ is the Living Water who satisfies our spiritual thirst.
+</p>
+
+<h2>Benefits of Water</h2>
+
+<ul>
+<li>Maintains body hydration.</li>
+<li>Supports healthy digestion.</li>
+<li>Helps regulate body temperature.</li>
+<li>Removes toxins from the body.</li>
+<li>Improves physical and mental performance.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whosoever drinketh of the water that I shall give him shall never thirst."
+<br><br>
+<strong>John 4:14</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why is water important?</p>
+
+<input type="radio" name="q1"> It has no health benefits<br>
+<input type="radio" name="q1" value="correct"> It supports many body functions<br>
+<input type="radio" name="q1"> It should be avoided<br><br>
+
+<p>2. What can happen when a person lacks enough water?</p>
+
+<input type="radio" name="q2" value="correct"> Dehydration<br>
+<input type="radio" name="q2"> Increased strength automatically<br>
+<input type="radio" name="q2"> Perfect health always<br><br>
+
+<p>3. Jesus described Himself as:</p>
+
+<input type="radio" name="q3"> Bread only<br>
+<input type="radio" name="q3"> A physician only<br>
+<input type="radio" name="q3" value="correct"> The Living Water<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health4","completed");
+}
+</script>
+
+</body>
+</html>
