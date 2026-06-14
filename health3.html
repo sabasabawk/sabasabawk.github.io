@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 3 - Nutrition and Balanced Diet</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 3: Nutrition and Balanced Diet</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"So whether you eat or drink or whatever you do, do it all for the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Good nutrition is one of the foundations of health. God has provided a variety of wholesome foods to nourish our bodies and help us maintain strength, energy, and wellness.
+</p>
+
+<p>
+A balanced diet includes fruits, vegetables, whole grains, legumes, nuts, and adequate water. These foods provide essential vitamins, minerals, fiber, and nutrients needed for healthy living.
+</p>
+
+<p>
+Poor nutrition can contribute to obesity, diabetes, heart disease, and many other health problems. Christians are called to care for their bodies because they are temples of the Holy Spirit.
+</p>
+
+<p>
+The Adventist Health Message encourages simple, natural, and nutritious foods that promote physical, mental, and spiritual well-being.
+</p>
+
+<h2>Benefits of a Balanced Diet</h2>
+
+<ul>
+<li>Provides energy for daily activities.</li>
+<li>Strengthens the immune system.</li>
+<li>Supports healthy growth and development.</li>
+<li>Reduces the risk of many diseases.</li>
+<li>Improves mental and physical performance.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Which foods are important in a balanced diet?</p>
+
+<input type="radio" name="q1"> Sweets and soda only<br>
+<input type="radio" name="q1" value="correct"> Fruits, vegetables, grains, and legumes<br>
+<input type="radio" name="q1"> Fast food only<br><br>
+
+<p>2. Why should Christians care for nutrition?</p>
+
+<input type="radio" name="q2"> It is unimportant<br>
+<input type="radio" name="q2" value="correct"> The body is God's temple<br>
+<input type="radio" name="q2"> Only athletes need nutrition<br><br>
+
+<p>3. A balanced diet helps:</p>
+
+<input type="radio" name="q3"> Cause disease<br>
+<input type="radio" name="q3" value="correct"> Promote health and strength<br>
+<input type="radio" name="q3"> Reduce energy<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health3","completed");
+}
+</script>
+
+</body>
+</html>
