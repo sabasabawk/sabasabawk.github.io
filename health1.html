@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 1 - God's Original Diet</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#004c99;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 1: God's Original Diet</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Behold, I have given you every herb bearing seed, which is upon the face of all the earth, and every tree, in the which is the fruit of a tree yielding seed; to you it shall be for meat."
+<br><br>
+<strong>Genesis 1:29</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God's original diet was given in the Garden of Eden before sin entered the world. This diet consisted of fruits, grains, nuts, and vegetables. It was designed by the Creator to provide complete nourishment and promote health and longevity.
+</p>
+
+<p>
+The Seventh-day Adventist Church teaches that caring for our bodies is part of Christian stewardship. Healthy eating helps us maintain physical, mental, and spiritual well-being.
+</p>
+
+<p>
+Many scientific studies have shown the benefits of a plant-based diet, including reduced risk of heart disease, diabetes, obesity, and certain cancers.
+</p>
+
+<p>
+As Christians, we seek to honor God not only through worship but also through healthy living.
+</p>
+
+<h2>Important Points</h2>
+
+<ul>
+<li>God gave humanity a plant-based diet at creation.</li>
+<li>Health is a gift from God.</li>
+<li>Our bodies are temples of the Holy Spirit.</li>
+<li>Good nutrition supports spiritual growth and service.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What diet did God originally give humanity?</p>
+
+<input type="radio" name="q1" value="correct"> Fruits, grains, nuts, and plants<br>
+<input type="radio" name="q1"> Fast food<br>
+<input type="radio" name="q1"> Processed foods<br><br>
+
+<p>2. Where is God's original diet first mentioned?</p>
+
+<input type="radio" name="q2"> Exodus<br>
+<input type="radio" name="q2" value="correct"> Genesis 1:29<br>
+<input type="radio" name="q2"> Revelation<br><br>
+
+<p>3. Why should Christians care for their health?</p>
+
+<input type="radio" name="q3"> It does not matter<br>
+<input type="radio" name="q3" value="correct"> The body is God's temple<br>
+<input type="radio" name="q3"> For appearance only<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health1","completed");
+}
+</script>
+
+</body>
+</html>
