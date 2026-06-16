@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 3 - Roles of Husband and Wife</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>❤️ Lesson 3: Roles of Husband and Wife</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Submitting yourselves one to another in the fear of God."
+<br><br>
+<strong>Ephesians 5:21</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God designed marriage to be a loving partnership. Husbands and wives have different responsibilities, but both are equal in value before God.
+</p>
+
+<p>
+The husband is called to love his wife as Christ loved the church. This means showing kindness, sacrifice, leadership through service, and spiritual guidance in the home.
+</p>
+
+<p>
+The wife is called to support her husband, nurture the family, and work together with him in building a Christ-centered home.
+</p>
+
+<p>
+Both husband and wife should respect one another, communicate openly, pray together, and seek God's wisdom in family decisions.
+</p>
+
+<p>
+A happy Christian home is built on mutual love, respect, cooperation, and commitment to God's will.
+</p>
+
+<h2>Biblical Responsibilities</h2>
+
+<ul>
+<li>Love one another unconditionally.</li>
+<li>Respect one another.</li>
+<li>Pray together daily.</li>
+<li>Support each other during challenges.</li>
+<li>Raise children in the knowledge of God.</li>
+<li>Work together for the good of the family.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Husbands, love your wives, even as Christ also loved the church."
+<br><br>
+<strong>Ephesians 5:25</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Husbands should love their wives as:</p>
+
+<input type="radio" name="q1"> Friends only<br>
+<input type="radio" name="q1" value="correct"> Christ loved the church<br>
+<input type="radio" name="q1"> Neighbors<br><br>
+
+<p>2. In God's plan, husband and wife are:</p>
+
+<input type="radio" name="q2"> Enemies<br>
+<input type="radio" name="q2" value="correct"> Equal in value before God<br>
+<input type="radio" name="q2"> Competitors<br><br>
+
+<p>3. A Christian home should be built on:</p>
+
+<input type="radio" name="q3"> Selfishness<br>
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3" value="correct"> Love and respect<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family3","completed");
+}
+</script>
+
+</body>
+</html>
