@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 8 - Temperance and Self-Control</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 8: Temperance and Self-Control</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And every man that striveth for the mastery is temperate in all things."
+<br><br>
+<strong>1 Corinthians 9:25</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Temperance means practicing moderation in good things and completely avoiding things that are harmful. It is one of the important principles of the Adventist Health Message.
+</p>
+
+<p>
+God desires His people to develop self-control in eating, drinking, speaking, working, and every area of life. Self-control helps us make wise decisions that honor God.
+</p>
+
+<p>
+The Bible warns against harmful substances such as alcohol, tobacco, and drugs because they damage the body and mind. Since our bodies are temples of the Holy Spirit, we should avoid anything that weakens our health or spiritual life.
+</p>
+
+<p>
+Through the power of the Holy Spirit, Christians can develop self-discipline and live balanced lives that glorify God.
+</p>
+
+<h2>Benefits of Temperance</h2>
+
+<ul>
+<li>Protects physical health.</li>
+<li>Improves mental clarity.</li>
+<li>Strengthens self-discipline.</li>
+<li>Helps resist harmful habits.</li>
+<li>Honors God through healthy living.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"I can do all things through Christ which strengtheneth me."
+<br><br>
+<strong>Philippians 4:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What does temperance mean?</p>
+
+<input type="radio" name="q1"> Doing whatever we want<br>
+<input type="radio" name="q1" value="correct"> Moderation in good things and avoiding harmful things<br>
+<input type="radio" name="q1"> Never eating food<br><br>
+
+<p>2. What should Christians avoid?</p>
+
+<input type="radio" name="q2"> Prayer<br>
+<input type="radio" name="q2" value="correct"> Harmful substances that damage health<br>
+<input type="radio" name="q2"> Exercise<br><br>
+
+<p>3. Who gives believers strength to practice self-control?</p>
+
+<input type="radio" name="q3"> The world<br>
+<input type="radio" name="q3"> Luck<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health8","completed");
+}
+</script>
+
+</body>
+</html>
