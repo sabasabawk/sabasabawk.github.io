@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 4 - Parenting God's Way</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👨‍👩‍👧 Lesson 4: Parenting God's Way</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Train up a child in the way he should go: and when he is old, he will not depart from it."
+<br><br>
+<strong>Proverbs 22:6</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Children are a gift from God and parents have the sacred responsibility of guiding them toward Christ. Christian parenting is more than providing food, clothing, and education—it includes teaching children to know, love, and obey God.
+</p>
+
+<p>
+Parents should lead by example. Children learn more from what they see than from what they hear. A home filled with prayer, kindness, honesty, and love provides a strong foundation for spiritual growth.
+</p>
+
+<p>
+Discipline should be given with love, patience, and consistency. The goal of discipline is to teach and guide, not to harm or discourage.
+</p>
+
+<p>
+Family worship, Bible study, and prayer help children develop a personal relationship with Jesus and prepare them for a life of faithful service.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages parents to work closely with the church and school in the spiritual development of their children.
+</p>
+
+<h2>Principles of Godly Parenting</h2>
+
+<ul>
+<li>Teach children God's Word.</li>
+<li>Lead by personal example.</li>
+<li>Show love and patience.</li>
+<li>Discipline with wisdom and kindness.</li>
+<li>Pray with and for your children.</li>
+<li>Encourage faith in Jesus Christ.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Children, obey your parents in the Lord: for this is right."
+<br><br>
+<strong>Ephesians 6:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Children are:</p>
+
+<input type="radio" name="q1"> A burden<br>
+<input type="radio" name="q1" value="correct"> A gift from God<br>
+<input type="radio" name="q1"> Unimportant<br><br>
+
+<p>2. Parents should discipline children with:</p>
+
+<input type="radio" name="q2"> Anger<br>
+<input type="radio" name="q2" value="correct"> Love and wisdom<br>
+<input type="radio" name="q2"> Neglect<br><br>
+
+<p>3. What helps children grow spiritually?</p>
+
+<input type="radio" name="q3"> Ignoring God<br>
+<input type="radio" name="q3"> No family worship<br>
+<input type="radio" name="q3" value="correct"> Bible study and prayer<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family4","completed");
+}
+</script>
+
+</body>
+</html>
