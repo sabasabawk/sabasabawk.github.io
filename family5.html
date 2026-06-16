@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 5 - Family Worship</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 5: Family Worship</h1>
+
+<h2>Key Text</h2>
+<p>
+"And these words, which I command thee this day, shall be in thine heart: And thou shalt teach them diligently unto thy children..." <br><br>
+<strong>Deuteronomy 6:6-7</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Family worship is one of the most powerful spiritual foundations in a Christian home. It is a daily time when the family comes together to pray, read the Bible, and sing praises to God.
+</p>
+
+<p>
+In a busy world, family worship creates unity, peace, and spiritual strength. It helps children learn to trust God and build a personal relationship with Jesus Christ.
+</p>
+
+<p>
+A successful family worship does not need to be long or complicated. It should be simple, consistent, and heartfelt.
+</p>
+
+<p>
+When families worship together, they invite God’s presence into their home, protecting them from temptation and strengthening their faith.
+</p>
+
+<p>
+The Seventh-day Adventist Church teaches that family worship is essential for preparing families for Christ’s return and building strong Christian character.
+</p>
+
+<h2>Principles of Family Worship</h2>
+
+<ul>
+<li>Pray together daily.</li>
+<li>Read the Bible together.</li>
+<li>Sing songs of praise.</li>
+<li>Keep worship simple and consistent.</li>
+<li>Let every family member participate.</li>
+<li>Invite the Holy Spirit into your home.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"But as for me and my house, we will serve the Lord." <br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Family worship includes:</p>
+<input type="radio" name="q1"> Watching TV<br>
+<input type="radio" name="q1" value="correct"> Prayer, Bible reading, and singing<br>
+<input type="radio" name="q1"> Playing games<br><br>
+
+<p>2. Family worship should be:</p>
+<input type="radio" name="q2"> Rare<br>
+<input type="radio" name="q2" value="correct"> Consistent and simple<br>
+<input type="radio" name="q2"> Only on Sabbath<br><br>
+
+<p>3. Family worship helps:</p>
+<input type="radio" name="q3"> Weakens faith<br>
+<input type="radio" name="q3"> Causes confusion<br>
+<input type="radio" name="q3" value="correct"> Build spiritual strength<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family4.html"><button>⬅ Previous Lesson</button></a>
+<a href="family6.html"><button>Next Lesson ➜</button></a>
+
+<br><br>
+
+<footer>
+<small>
+SABASABA Gospel Ministry • sabasabawk.github.io
+</small>
+</footer>
+
+</div>
+
+<script>
+function checkQuiz(){
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+    document.getElementById("result").innerHTML = "Your Score: " + score + "/3";
+
+    localStorage.setItem("family5","completed");
+}
+</script>
+
+</body>
+</html>
