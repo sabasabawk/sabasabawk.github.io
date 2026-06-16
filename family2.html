@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 2 - Christian Marriage</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Lesson 2: Christian Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh."
+<br><br>
+<strong>Genesis 2:24</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Marriage is a sacred institution established by God. It is a lifelong covenant between a man and a woman based on love, faithfulness, commitment, and mutual respect.
+</p>
+
+<p>
+Christian marriage reflects the relationship between Christ and His church. Husbands and wives are called to love, honor, support, and encourage one another.
+</p>
+
+<p>
+A successful marriage is built upon prayer, trust, forgiveness, good communication, and obedience to God's Word.
+</p>
+
+<p>
+No marriage is perfect, but when Christ is at the center of the home, couples can overcome challenges and grow stronger together.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages couples to seek God's guidance and maintain strong spiritual lives together.
+</p>
+
+<h2>Principles of Christian Marriage</h2>
+
+<ul>
+<li>Love one another sincerely.</li>
+<li>Practice forgiveness.</li>
+<li>Communicate openly and honestly.</li>
+<li>Pray together regularly.</li>
+<li>Remain faithful to one another.</li>
+<li>Keep Christ at the center of the relationship.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Above all these things put on charity, which is the bond of perfectness."
+<br><br>
+<strong>Colossians 3:14</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who established marriage?</p>
+
+<input type="radio" name="q1"> Society<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Government<br><br>
+
+<p>2. Christian marriage reflects the relationship between:</p>
+
+<input type="radio" name="q2"> Parents and children<br>
+<input type="radio" name="q2" value="correct"> Christ and His church<br>
+<input type="radio" name="q2"> Friends<br><br>
+
+<p>3. What is important for a strong marriage?</p>
+
+<input type="radio" name="q3"> Selfishness<br>
+<input type="radio" name="q3"> Constant arguments<br>
+<input type="radio" name="q3" value="correct"> Prayer and communication<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family2","completed");
+}
+</script>
+
+</body>
+</html>
