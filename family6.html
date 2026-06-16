@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 6 - Communication in the Home</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💬 Lesson 6: Communication in the Home</h1>
+
+<h2>Key Text</h2>
+<p>
+"Let your speech be always with grace, seasoned with salt..." <br><br>
+<strong>Colossians 4:6</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Good communication is the foundation of a strong and peaceful Christian home. Many family problems begin when people stop talking or speak without love and respect.
+</p>
+
+<p>
+God designed the family to be a place of understanding, listening, and encouragement. Words have power—they can heal or hurt, build or destroy.
+</p>
+
+<p>
+In a Christian home, family members should learn to listen patiently, speak kindly, and forgive quickly.
+</p>
+
+<p>
+Parents should create an environment where children feel safe to express their feelings without fear. Children, in turn, should learn respect when speaking to parents.
+</p>
+
+<p>
+The Seventh-day Adventist home is called to reflect Christ’s character through loving and respectful communication.
+</p>
+
+<h2>Principles of Good Communication</h2>
+
+<ul>
+<li>Listen before responding.</li>
+<li>Speak with kindness and respect.</li>
+<li>Avoid shouting and harsh words.</li>
+<li>Be honest but loving.</li>
+<li>Forgive quickly and avoid bitterness.</li>
+<li>Pray before difficult conversations.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"A soft answer turneth away wrath: but grievous words stir up anger." <br><br>
+<strong>Proverbs 15:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Good communication means:</p>
+<input type="radio" name="q1"> Shouting loudly<br>
+<input type="radio" name="q1" value="correct"> Speaking and listening with respect<br>
+<input type="radio" name="q1"> Ignoring others<br><br>
+
+<p>2. Words in a home should be:</p>
+<input type="radio" name="q2"> Harsh<br>
+<input type="radio" name="q2" value="correct"> Kind and loving<br>
+<input type="radio" name="q2"> Offensive<br><br>
+
+<p>3. A soft answer:</p>
+<input type="radio" name="q3"> Increases anger<br>
+<input type="radio" name="q3"> Has no effect<br>
+<input type="radio" name="q3" value="correct"> Turns away wrath<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family5.html"><button>⬅ Previous Lesson</button></a>
+<a href="family7.html"><button>Next Lesson ➜</button></a>
+
+<br><br>
+
+<footer>
+<small>
+SABASABA Gospel Ministry • sabasabawk.github.io
+</small>
+</footer>
+
+</div>
+
+<script>
+function checkQuiz(){
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+    document.getElementById("result").innerHTML = "Your Score: " + score + "/3";
+
+    localStorage.setItem("family6","completed");
+}
+</script>
+
+</body>
+</html>
