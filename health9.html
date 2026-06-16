@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 9 - Mental Health and Trust in God</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🧠 Lesson 9: Mental Health and Trust in God</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Thou wilt keep him in perfect peace, whose mind is stayed on thee: because he trusteth in thee."
+<br><br>
+<strong>Isaiah 26:3</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Mental health is an important part of overall health. God cares not only about our bodies but also about our minds, emotions, and spiritual well-being.
+</p>
+
+<p>
+Life can bring stress, anxiety, fear, disappointment, and grief. However, God invites us to bring every burden to Him through prayer. Trusting in God's promises can bring peace even during difficult times.
+</p>
+
+<p>
+Healthy habits such as prayer, Bible study, exercise, proper rest, healthy relationships, and positive thinking help maintain good mental health.
+</p>
+
+<p>
+Jesus often spent time in prayer and communion with His Father. His example teaches us the importance of staying connected to God daily.
+</p>
+
+<p>
+When we trust God, we gain courage, hope, and strength to face life's challenges.
+</p>
+
+<h2>Keys to Good Mental Health</h2>
+
+<ul>
+<li>Pray regularly.</li>
+<li>Study God's Word daily.</li>
+<li>Get proper rest and exercise.</li>
+<li>Maintain healthy friendships.</li>
+<li>Trust God's promises.</li>
+<li>Focus on positive and uplifting thoughts.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Casting all your care upon him; for he careth for you."
+<br><br>
+<strong>1 Peter 5:7</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who can give us perfect peace?</p>
+
+<input type="radio" name="q1"> The world<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Money<br><br>
+
+<p>2. What should we do with our worries?</p>
+
+<input type="radio" name="q2"> Keep them to ourselves<br>
+<input type="radio" name="q2" value="correct"> Bring them to God in prayer<br>
+<input type="radio" name="q2"> Ignore them completely<br><br>
+
+<p>3. Which habit helps maintain good mental health?</p>
+
+<input type="radio" name="q3"> Constant worry<br>
+<input type="radio" name="q3"> Lack of sleep<br>
+<input type="radio" name="q3" value="correct"> Prayer and Bible study<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health9","completed");
+}
+</script>
+
+</body>
+</html>
