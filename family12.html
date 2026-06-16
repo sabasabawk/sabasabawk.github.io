@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 12 - The Family as a Mission Center</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 Lesson 12: The Family as a Mission Center</h1>
+
+<h2>Key Text</h2>
+<p>
+"Go ye therefore, and teach all nations... teaching them to observe all things whatsoever I have commanded you..." <br><br>
+<strong>Matthew 28:19-20</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God designed the family not only to be a place of love and growth, but also a center of mission. Every Christian home should shine as a light to the world.
+</p>
+
+<p>
+A mission-centered family shares the love of Jesus through kindness, service, hospitality, and witnessing to neighbors and friends.
+</p>
+
+<p>
+Parents should train children to become active participants in God’s mission by teaching them to pray for others, help the needy, and share their faith.
+</p>
+
+<p>
+When Christ is the center of the home, the family naturally becomes a powerful witness of His transforming grace.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages every home to become a small mission field preparing souls for the soon return of Jesus Christ.
+</p>
+
+<h2>Principles of a Mission Family</h2>
+
+<ul>
+<li>Make Christ the center of the home.</li>
+<li>Pray for others daily.</li>
+<li>Share God’s love through actions.</li>
+<li>Practice hospitality and kindness.</li>
+<li>Teach children to witness.</li>
+<li>Support church mission work.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven." <br><br>
+<strong>Matthew 5:16</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. A Christian family should be:</p>
+<input type="radio" name="q1"> Private only<br>
+<input type="radio" name="q1" value="correct"> A light to others<br>
+<input type="radio" name="q1"> Isolated from others<br><br>
+
+<p>2. Mission in the family includes:</p>
+<input type="radio" name="q2"> Ignoring neighbors<br>
+<input type="radio" name="q2" value="correct"> Sharing God’s love<br>
+<input type="radio" name="q2"> Avoiding church work<br><br>
+
+<p>3. Jesus commanded us to:</p>
+<input type="radio" name="q3"> Stay silent<br>
+<input type="radio" name="q3" value="correct"> Go and make disciples<br>
+<input type="radio" name="q3"> Only stay at home<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family11.html"><button>⬅ Previous Lesson</button></a>
+<a href="index.html"><button>🏠 Home</button></a>
+
+<br><br>
+
+<footer>
+<small>
+SABASABA Gospel Ministry • sabasabawk.github.io
+</small>
+</footer>
+
+</div>
+
+<script>
+function checkQuiz(){
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+    document.getElementById("result").innerHTML = "Your Score: " + score + "/3";
+
+    localStorage.setItem("family12","completed");
+}
+</script>
+
+</body>
+</html>
