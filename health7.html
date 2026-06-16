@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 7 - Fresh Air and Sunshine</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>☀️ Lesson 7: Fresh Air and Sunshine</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Truly the light is sweet, and a pleasant thing it is for the eyes to behold the sun."
+<br><br>
+<strong>Ecclesiastes 11:7</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God has provided fresh air and sunshine as important gifts for maintaining health. Clean air helps supply oxygen to every part of the body, while sunshine contributes to physical and emotional well-being.
+</p>
+
+<p>
+Fresh air improves lung function, increases energy, and helps the body remove waste products efficiently. Spending time outdoors in clean environments can also reduce stress and improve mood.
+</p>
+
+<p>
+Sunlight helps the body produce Vitamin D, which is important for strong bones, a healthy immune system, and overall wellness. Moderate exposure to sunshine is beneficial when practiced wisely.
+</p>
+
+<p>
+The Adventist Health Message encourages spending time outdoors, enjoying God's creation, and appreciating the natural remedies He has provided.
+</p>
+
+<h2>Benefits of Fresh Air and Sunshine</h2>
+
+<ul>
+<li>Improves oxygen supply to the body.</li>
+<li>Supports healthy lungs.</li>
+<li>Boosts mood and emotional health.</li>
+<li>Helps the body produce Vitamin D.</li>
+<li>Encourages appreciation of God's creation.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"The heavens declare the glory of God; and the firmament sheweth his handywork."
+<br><br>
+<strong>Psalm 19:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why is fresh air important?</p>
+
+<input type="radio" name="q1"> It weakens the lungs<br>
+<input type="radio" name="q1" value="correct"> It provides oxygen for the body<br>
+<input type="radio" name="q1"> It causes tiredness<br><br>
+
+<p>2. Sunshine helps the body produce:</p>
+
+<input type="radio" name="q2"> Sugar<br>
+<input type="radio" name="q2"> Protein<br>
+<input type="radio" name="q2" value="correct"> Vitamin D<br><br>
+
+<p>3. What do the heavens declare according to Psalm 19:1?</p>
+
+<input type="radio" name="q3"> Human wisdom<br>
+<input type="radio" name="q3" value="correct"> The glory of God<br>
+<input type="radio" name="q3"> The power of kings<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health7","completed");
+}
+</script>
+
+</body>
+</html>
