@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 11 - Christian Leadership in the Home</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👨‍👩‍👧‍👦 Lesson 11: Christian Leadership in the Home</h1>
+
+<h2>Key Text</h2>
+<p>
+"But as for me and my house, we will serve the Lord." <br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+A Christian home needs strong spiritual leadership grounded in God’s Word. Leadership in the family is not about control, but about service, guidance, and responsibility before God.
+</p>
+
+<p>
+Parents are called to lead their families in prayer, Bible study, worship, and moral decision-making. A leader in the home reflects Christ’s humility and love.
+</p>
+
+<p>
+Fathers and mothers should work together as a team, setting a godly example for children through their words and actions.
+</p>
+
+<p>
+True Christian leadership builds unity, discipline, and spiritual direction in the home, helping each family member grow in Christ.
+</p>
+
+<p>
+The Seventh-day Adventist understanding of family leadership emphasizes servant leadership modeled after Jesus Christ.
+</p>
+
+<h2>Principles of Christian Leadership</h2>
+
+<ul>
+<li>Lead the family in prayer and worship.</li>
+<li>Be a good spiritual example.</li>
+<li>Serve with humility, not control.</li>
+<li>Make decisions based on God’s Word.</li>
+<li>Work together as parents in unity.</li>
+<li>Guide children in truth and love.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Ye shall serve the Lord your God, and he shall bless thy bread, and thy water..." <br><br>
+<strong>Exodus 23:25</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Christian leadership in the home is about:</p>
+<input type="radio" name="q1"> Control<br>
+<input type="radio" name="q1" value="correct"> Service and guidance<br>
+<input type="radio" name="q1"> Power<br><br>
+
+<p>2. A family leader should follow:</p>
+<input type="radio" name="q2"> Friends’ opinions<br>
+<input type="radio" name="q2" value="correct"> God’s Word<br>
+<input type="radio" name="q2"> Society trends<br><br>
+
+<p>3. Joshua said, “As for me and my house…” means:</p>
+<input type="radio" name="q3"> They will ignore God<br>
+<input type="radio" name="q3" value="correct"> They will serve the Lord<br>
+<input type="radio" name="q3"> They will be independent only<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family10.html"><button>⬅ Previous Lesson</button></a>
+<a href="family12.html"><button>Next Lesson ➜</button></a>
+
+<br><br>
+
+<footer>
+<small>
+SABASABA Gospel Ministry • sabasabawk.github.io
+</small>
+</footer>
+
+</div>
+
+<script>
+function checkQuiz(){
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+    document.getElementById("result").innerHTML = "Your Score: " + score + "/3";
+
+    localStorage.setItem("family11","completed");
+}
+</script>
+
+</body>
+</html>
