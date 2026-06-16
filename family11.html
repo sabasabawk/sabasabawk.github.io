@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 11 - Family and the Church</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⛪ Lesson 11: Family and the Church</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And let us consider one another to provoke unto love and to good works: Not forsaking the assembling of ourselves together."
+<br><br>
+<strong>Hebrews 10:24-25</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God designed the family and the church to work together in nurturing spiritual growth. The family is often called the first church because it is the place where faith is first taught and practiced.
+</p>
+
+<p>
+Parents have the responsibility to teach their children about God, while the church provides fellowship, worship, spiritual instruction, and opportunities for service.
+</p>
+
+<p>
+Families that actively participate in church life grow stronger spiritually. Attending worship services, Sabbath School, prayer meetings, and church activities helps strengthen faith and build Christian character.
+</p>
+
+<p>
+The church also supports families during times of joy, challenge, and sorrow. Through fellowship and encouragement, believers help one another remain faithful to Christ.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages every family to become actively involved in worship, evangelism, community service, and spiritual growth.
+</p>
+
+<h2>Benefits of Church Involvement</h2>
+
+<ul>
+<li>Spiritual growth.</li>
+<li>Christian fellowship.</li>
+<li>Biblical instruction.</li>
+<li>Opportunities for service.</li>
+<li>Support during difficult times.</li>
+<li>Preparation for Christ's return.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"I was glad when they said unto me, Let us go into the house of the Lord."
+<br><br>
+<strong>Psalm 122:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. The family is often called:</p>
+
+<input type="radio" name="q1"> A business<br>
+<input type="radio" name="q1" value="correct"> The first church<br>
+<input type="radio" name="q1"> A government<br><br>
+
+<p>2. Church involvement helps families:</p>
+
+<input type="radio" name="q2"> Grow spiritually<br>
+<input type="radio" name="q2" value="correct"> Grow spiritually<br>
+<input type="radio" name="q2"> Ignore God<br><br>
+
+<p>3. According to Psalm 122:1, David was glad to:</p>
+
+<input type="radio" name="q3"> Stay home always<br>
+<input type="radio" name="q3" value="correct"> Go into the house of the Lord<br>
+<input type="radio" name="q3"> Avoid worship<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family11","completed");
+}
+</script>
+
+</body>
+</html>
