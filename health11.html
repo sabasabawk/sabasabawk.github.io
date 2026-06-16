@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 11 - Health Reform in the SDA Church</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 11: Health Reform in the SDA Church</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."
+<br><br>
+<strong>3 John 1:2</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Health Reform is an important part of the mission of the Seventh-day Adventist Church. Adventists believe that God is interested in the complete well-being of His people—physical, mental, social, and spiritual.
+</p>
+
+<p>
+In 1863, Ellen G. White received important counsel regarding healthful living. These principles encouraged proper nutrition, exercise, fresh air, water, rest, temperance, and trust in God.
+</p>
+
+<p>
+The Adventist Church established hospitals, clinics, health centers, and educational institutions around the world to promote health and healing.
+</p>
+
+<p>
+Health Reform is not merely about avoiding disease. It is about honoring God, enjoying abundant life, and being better prepared to serve Him and others.
+</p>
+
+<p>
+Today, Adventists are known worldwide for promoting healthy lifestyles and preventive health practices.
+</p>
+
+<h2>Main Principles of Health Reform</h2>
+
+<ul>
+<li>Healthy nutrition.</li>
+<li>Regular exercise.</li>
+<li>Pure water.</li>
+<li>Fresh air and sunshine.</li>
+<li>Adequate rest.</li>
+<li>Temperance and self-control.</li>
+<li>Trust in God.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Know ye not that your body is the temple of the Holy Ghost which is in you?"
+<br><br>
+<strong>1 Corinthians 6:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is the goal of Health Reform?</p>
+
+<input type="radio" name="q1"> Physical health only<br>
+<input type="radio" name="q1" value="correct"> Complete well-being of body, mind, and spirit<br>
+<input type="radio" name="q1"> Exercise only<br><br>
+
+<p>2. Who received important health counsel in 1863?</p>
+
+<input type="radio" name="q2"> Martin Luther<br>
+<input type="radio" name="q2" value="correct"> Ellen G. White<br>
+<input type="radio" name="q2"> William Miller<br><br>
+
+<p>3. Adventist health institutions were established to:</p>
+
+<input type="radio" name="q3"> Promote health and healing<br>
+<input type="radio" name="q3" value="correct"> Promote health and healing<br>
+<input type="radio" name="q3"> Promote unhealthy habits<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health11","completed");
+}
+</script>
+
+</body>
+</html>
