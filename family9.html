@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 9 - Protecting Children</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛡️ Lesson 9: Protecting Children</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"But Jesus said, Suffer little children, and forbid them not, to come unto me: for of such is the kingdom of heaven."
+<br><br>
+<strong>Matthew 19:14</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Children are precious gifts from God. Parents, guardians, churches, and communities have a responsibility to protect, nurture, and guide them according to God's will.
+</p>
+
+<p>
+Protection includes caring for a child's physical, emotional, mental, and spiritual well-being. Children should grow in an environment where they feel safe, loved, respected, and valued.
+</p>
+
+<p>
+Parents should teach children biblical values, help them develop good character, and prepare them to make wise decisions. They should also be aware of dangers that may threaten children, including harmful influences, abuse, neglect, and inappropriate media.
+</p>
+
+<p>
+Open communication between parents and children helps build trust and allows children to seek guidance when facing challenges.
+</p>
+
+<p>
+The Seventh-day Adventist Church believes that every child should be treated with dignity and protected from harm. Families should reflect Christ's love by caring for children with patience, wisdom, and compassion.
+</p>
+
+<h2>Ways to Protect Children</h2>
+
+<ul>
+<li>Provide a safe and loving home.</li>
+<li>Teach biblical values and moral principles.</li>
+<li>Spend quality time with children.</li>
+<li>Monitor media and online activities.</li>
+<li>Listen to children's concerns.</li>
+<li>Pray with and for them regularly.</li>
+<li>Protect them from harmful influences.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Train up a child in the way he should go: and when he is old, he will not depart from it."
+<br><br>
+<strong>Proverbs 22:6</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Children are:</p>
+
+<input type="radio" name="q1"> Unimportant<br>
+<input type="radio" name="q1"> A burden<br>
+<input type="radio" name="q1" value="correct"> Precious gifts from God<br><br>
+
+<p>2. Parents should help children develop:</p>
+
+<input type="radio" name="q2"> Bad habits<br>
+<input type="radio" name="q2" value="correct"> Good character and biblical values<br>
+<input type="radio" name="q2"> Fear and confusion<br><br>
+
+<p>3. One way to protect children is to:</p>
+
+<input type="radio" name="q3"> Ignore their concerns<br>
+<input type="radio" name="q3"> Leave them without guidance<br>
+<input type="radio" name="q3" value="correct"> Listen to and guide them lovingly<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family9","completed");
+}
+</script>
+
+</body>
+</html>
