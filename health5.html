@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 5 - Exercise for Health</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏃 Lesson 5: Exercise for Health</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"For bodily exercise profiteth little: but godliness is profitable unto all things..."
+<br><br>
+<strong>1 Timothy 4:8</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Exercise is one of God's natural remedies for maintaining health. Regular physical activity strengthens the heart, muscles, lungs, and bones while improving overall well-being.
+</p>
+
+<p>
+Exercise helps reduce stress, improves sleep, boosts energy, and supports mental health. Walking, running, cycling, swimming, gardening, and other physical activities are excellent forms of exercise.
+</p>
+
+<p>
+The Adventist Health Message encourages regular exercise as part of a balanced lifestyle. Physical activity helps us remain strong and fit for service to God and others.
+</p>
+
+<p>
+While physical exercise is important, spiritual growth is even more important. Christians should seek both physical health and spiritual health.
+</p>
+
+<h2>Benefits of Exercise</h2>
+
+<ul>
+<li>Strengthens the heart and lungs.</li>
+<li>Improves circulation.</li>
+<li>Increases energy levels.</li>
+<li>Helps maintain healthy weight.</li>
+<li>Reduces stress and anxiety.</li>
+<li>Improves sleep quality.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"I can do all things through Christ which strengtheneth me."
+<br><br>
+<strong>Philippians 4:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is one benefit of regular exercise?</p>
+
+<input type="radio" name="q1"> Weakens the heart<br>
+<input type="radio" name="q1" value="correct"> Improves health and fitness<br>
+<input type="radio" name="q1"> Causes constant fatigue<br><br>
+
+<p>2. Which activity is a form of exercise?</p>
+
+<input type="radio" name="q2"> Sitting all day<br>
+<input type="radio" name="q2" value="correct"> Walking<br>
+<input type="radio" name="q2"> Sleeping all day<br><br>
+
+<p>3. According to the lesson, exercise helps:</p>
+
+<input type="radio" name="q3"> Increase stress<br>
+<input type="radio" name="q3"> Harm the body<br>
+<input type="radio" name="q3" value="correct"> Improve physical and mental health<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health5","completed");
+}
+</script>
+
+</body>
+</html>
