@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 12 - Preparing Families for Christ's Return</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 Lesson 12: Preparing Families for Christ's Return</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And what I say unto you I say unto all, Watch."
+<br><br>
+<strong>Mark 13:37</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+The greatest hope of every Christian family is the Second Coming of Jesus Christ. The Bible promises that Jesus will return to take His faithful people home.
+</p>
+
+<p>
+Preparing for Christ's return begins in the home. Families should pray together, study God's Word, worship faithfully, and encourage one another in the Christian walk.
+</p>
+
+<p>
+Parents should teach their children to love Jesus and trust His promises. Family members should forgive one another, serve others, and remain faithful to God's commandments.
+</p>
+
+<p>
+The Seventh-day Adventist Church emphasizes the blessed hope of Christ's soon return. Christian homes should be places where this hope is taught, lived, and shared.
+</p>
+
+<p>
+A family that follows Christ together will be ready to welcome Him when He comes in glory.
+</p>
+
+<h2>How Families Can Prepare</h2>
+
+<ul>
+<li>Maintain daily family worship.</li>
+<li>Study the Bible regularly.</li>
+<li>Pray together.</li>
+<li>Attend church faithfully.</li>
+<li>Share the gospel with others.</li>
+<li>Live according to God's commandments.</li>
+<li>Keep the hope of Christ's return alive.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let not your heart be troubled... I will come again, and receive you unto myself."
+<br><br>
+<strong>John 14:1-3</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. What is the great hope of Christian families?</p>
+
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1" value="correct"> The Second Coming of Christ<br>
+<input type="radio" name="q1"> Fame<br><br>
+
+<p>2. Families prepare for Christ's return by:</p>
+
+<input type="radio" name="q2"> Ignoring the Bible<br>
+<input type="radio" name="q2" value="correct"> Prayer and Bible study<br>
+<input type="radio" name="q2"> Following the world<br><br>
+
+<p>3. Jesus promised:</p>
+
+<input type="radio" name="q3"> To never return<br>
+<input type="radio" name="q3"> To send another savior<br>
+<input type="radio" name="q3" value="correct"> I will come again<br><br>
+
+<button onclick="checkQuiz()">Submit Final Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family-certificate.html">
+<button>🏆 View Family Life Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Congratulations! You completed the Family Life Course with a score of " + score + "/3";
+
+localStorage.setItem("family12","completed");
+}
+</script>
+
+</body>
+</html>
