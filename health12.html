@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 12 - Healthy Living for God's Glory</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌟 Lesson 12: Healthy Living for God's Glory</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Throughout this Health Course, we have learned that God cares deeply about our physical, mental, and spiritual well-being. Healthy living is not merely about avoiding disease—it is about honoring God with our entire lives.
+</p>
+
+<p>
+When we follow God's principles of health, we can enjoy greater strength, clearer thinking, increased energy, and a better quality of life. Good health also enables us to serve God and others more effectively.
+</p>
+
+<p>
+The Seventh-day Adventist Health Message encourages believers to practice healthy habits, trust in God's guidance, and remember that true health includes a relationship with Jesus Christ.
+</p>
+
+<p>
+Our goal is not simply to live longer, but to live faithfully and bring glory to God in everything we do.
+</p>
+
+<h2>Review of the Health Principles</h2>
+
+<ul>
+<li>Nutrition</li>
+<li>Exercise</li>
+<li>Water</li>
+<li>Sunshine</li>
+<li>Temperance</li>
+<li>Fresh Air</li>
+<li>Rest</li>
+<li>Trust in God</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. Why should Christians practice healthy living?</p>
+
+<input type="radio" name="q1"> To impress others<br>
+<input type="radio" name="q1" value="correct"> To glorify God and serve Him better<br>
+<input type="radio" name="q1"> There is no reason<br><br>
+
+<p>2. Which principle is part of NEWSTART?</p>
+
+<input type="radio" name="q2"> Laziness<br>
+<input type="radio" name="q2" value="correct"> Trust in God<br>
+<input type="radio" name="q2"> Worry<br><br>
+
+<p>3. True health includes:</p>
+
+<input type="radio" name="q3"> Physical health only<br>
+<input type="radio" name="q3"> Mental health only<br>
+<input type="radio" name="q3" value="correct"> Physical, mental, and spiritual well-being<br><br>
+
+<button onclick="checkQuiz()">Submit Final Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health-certificate.html">
+<button>🏆 View Health Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Congratulations! Your Score: " + score + "/3";
+
+localStorage.setItem("health12","completed");
+}
+</script>
+
+</body>
+</html>
