@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 8 - Financial Stewardship</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 8: Financial Stewardship</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Everything we possess ultimately belongs to God. He has entrusted us with time, talents, resources, and finances to manage wisely for His glory.
+</p>
+
+<p>
+Financial stewardship means using money responsibly and according to biblical principles. Christian families should plan carefully, avoid unnecessary debt, save wisely, and spend responsibly.
+</p>
+
+<p>
+The Bible teaches the importance of returning faithful tithes and offerings, helping those in need, and supporting God's work.
+</p>
+
+<p>
+Good financial management reduces stress within the family and helps create stability and peace in the home.
+</p>
+
+<p>
+When families honor God with their finances, they demonstrate trust in His provision and guidance.
+</p>
+
+<h2>Principles of Financial Stewardship</h2>
+
+<ul>
+<li>Remember that God owns everything.</li>
+<li>Return faithful tithes and offerings.</li>
+<li>Create a family budget.</li>
+<li>Save for future needs.</li>
+<li>Avoid unnecessary debt.</li>
+<li>Help those in need.</li>
+<li>Use resources wisely.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Honour the Lord with thy substance, and with the firstfruits of all thine increase."
+<br><br>
+<strong>Proverbs 3:9</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is the true owner of everything we have?</p>
+
+<input type="radio" name="q1"> Ourselves<br>
+<input type="radio" name="q1"> Government<br>
+<input type="radio" name="q1" value="correct"> God<br><br>
+
+<p>2. What should Christian families do with money?</p>
+
+<input type="radio" name="q2"> Spend carelessly<br>
+<input type="radio" name="q2" value="correct"> Manage it wisely<br>
+<input type="radio" name="q2"> Ignore budgeting<br><br>
+
+<p>3. According to Proverbs 3:9, we should:</p>
+
+<input type="radio" name="q3"> Honor the Lord with our substance<br>
+<input type="radio" name="q3" value="correct"> Honor the Lord with our substance<br>
+<input type="radio" name="q3"> Keep everything for ourselves<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family8","completed");
+}
+</script>
+
+</body>
+</html>
