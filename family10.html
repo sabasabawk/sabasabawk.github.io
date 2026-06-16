@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 10 - Christian Courtship</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💑 Lesson 10: Christian Courtship</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Can two walk together, except they be agreed?"
+<br><br>
+<strong>Amos 3:3</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Christian courtship is a period during which a man and a woman intentionally get to know one another while seeking God's guidance regarding marriage.
+</p>
+
+<p>
+Unlike worldly dating that may focus mainly on emotions or physical attraction, Christian courtship places God at the center. Its purpose is to determine whether two people can build a Christ-centered marriage together.
+</p>
+
+<p>
+A Christian should seek a partner who shares the same faith, values, and commitment to God. Spiritual compatibility is one of the strongest foundations for a successful marriage.
+</p>
+
+<p>
+Courtship should be characterized by purity, honesty, respect, patience, and prayer. Couples should encourage one another spiritually and avoid behaviors that dishonor God.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages young people to seek God's will carefully before making lifelong marriage commitments.
+</p>
+
+<h2>Principles of Christian Courtship</h2>
+
+<ul>
+<li>Put God first in the relationship.</li>
+<li>Pray for wisdom and guidance.</li>
+<li>Seek spiritual compatibility.</li>
+<li>Practice purity and self-control.</li>
+<li>Be honest and respectful.</li>
+<li>Involve trusted parents, pastors, or mentors.</li>
+<li>Prepare for a Christ-centered marriage.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Trust in the Lord with all thine heart; and lean not unto thine own understanding."
+<br><br>
+<strong>Proverbs 3:5</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What should be at the center of Christian courtship?</p>
+
+<input type="radio" name="q1"> Popular opinion<br>
+<input type="radio" name="q1"> Money<br>
+<input type="radio" name="q1" value="correct"> God<br><br>
+
+<p>2. Christian courtship helps couples:</p>
+
+<input type="radio" name="q2"> Ignore spiritual matters<br>
+<input type="radio" name="q2" value="correct"> Prepare for marriage wisely<br>
+<input type="radio" name="q2"> Avoid commitment<br><br>
+
+<p>3. A Christian should seek a partner who:</p>
+
+<input type="radio" name="q3"> Rejects faith<br>
+<input type="radio" name="q3" value="correct"> Shares biblical values and faith<br>
+<input type="radio" name="q3"> Has popularity only<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="family11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("family10","completed");
+}
+</script>
+
+</body>
+</html>
