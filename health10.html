@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 10 - Harmful Effects of Alcohol and Tobacco</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚭 Lesson 10: Harmful Effects of Alcohol and Tobacco</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Know ye not that ye are the temple of God, and that the Spirit of God dwelleth in you?"
+<br><br>
+<strong>1 Corinthians 3:16</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+The Bible teaches that our bodies are temples of the Holy Spirit. Therefore, Christians are called to care for their health and avoid practices that harm the body and mind.
+</p>
+
+<p>
+Alcohol impairs judgment, weakens self-control, damages relationships, and can contribute to serious health problems. Tobacco contains harmful chemicals that damage the lungs, heart, and many other organs.
+</p>
+
+<p>
+The Seventh-day Adventist Church encourages complete abstinence from alcohol, tobacco, and other harmful substances because they interfere with physical, mental, and spiritual well-being.
+</p>
+
+<p>
+God desires His people to enjoy abundant life through healthy choices. Through Christ's power, people can overcome harmful habits and live healthier lives.
+</p>
+
+<h2>Why Avoid Harmful Substances?</h2>
+
+<ul>
+<li>They damage the body.</li>
+<li>They affect clear thinking and judgment.</li>
+<li>They can lead to addiction.</li>
+<li>They weaken spiritual growth.</li>
+<li>They reduce quality of life.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to the Bible, our bodies are:</p>
+
+<input type="radio" name="q1"> Unimportant<br>
+<input type="radio" name="q1" value="correct"> Temples of God<br>
+<input type="radio" name="q1"> Only physical machines<br><br>
+
+<p>2. Alcohol can:</p>
+
+<input type="radio" name="q2" value="correct"> Impair judgment<br>
+<input type="radio" name="q2"> Improve wisdom automatically<br>
+<input type="radio" name="q2"> Strengthen self-control<br><br>
+
+<p>3. Why should Christians avoid harmful substances?</p>
+
+<input type="radio" name="q3"> They help spiritual growth<br>
+<input type="radio" name="q3" value="correct"> They damage health and well-being<br>
+<input type="radio" name="q3"> There is no reason<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health10","completed");
+}
+</script>
+
+</body>
+</html>
