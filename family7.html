@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Life Lesson 7 - Conflict Resolution in the Home</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚖️ Lesson 7: Conflict Resolution in the Home</h1>
+
+<h2>Key Text</h2>
+<p>
+"If it be possible, as much as lieth in you, live peaceably with all men." <br><br>
+<strong>Romans 12:18</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+Every family experiences disagreements, but how those conflicts are handled determines whether the home becomes stronger or weaker.
+</p>
+
+<p>
+God calls families to be peacemakers. Conflict should not be solved with anger, shouting, or silence, but with prayer, understanding, and forgiveness.
+</p>
+
+<p>
+When conflict arises, family members should first calm down, then talk respectfully and listen to each other’s perspective.
+</p>
+
+<p>
+Forgiveness is the key to healing relationships. Holding grudges destroys unity, but forgiveness restores peace.
+</p>
+
+<p>
+The Seventh-day Adventist home should reflect Christ’s example of love, patience, and reconciliation.
+</p>
+
+<h2>Principles of Resolving Conflict</h2>
+
+<ul>
+<li>Pray before reacting.</li>
+<li>Stay calm during disagreements.</li>
+<li>Listen to understand, not to reply.</li>
+<li>Avoid insults and blaming.</li>
+<li>Seek forgiveness quickly.</li>
+<li>Focus on solutions, not problems.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Blessed are the peacemakers: for they shall be called the children of God." <br><br>
+<strong>Matthew 5:9</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Conflict in the family should be solved with:</p>
+<input type="radio" name="q1"> Anger<br>
+<input type="radio" name="q1" value="correct"> Prayer and understanding<br>
+<input type="radio" name="q1"> Silence forever<br><br>
+
+<p>2. Forgiveness helps to:</p>
+<input type="radio" name="q2"> Increase hatred<br>
+<input type="radio" name="q2" value="correct"> Restore peace<br>
+<input type="radio" name="q2"> Continue conflict<br><br>
+
+<p>3. Peacemakers are called:</p>
+<input type="radio" name="q3"> Weak people<br>
+<input type="radio" name="q3"> Angry people<br>
+<input type="radio" name="q3" value="correct"> Children of God<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="family6.html"><button>⬅ Previous Lesson</button></a>
+<a href="family8.html"><button>Next Lesson ➜</button></a>
+
+<br><br>
+
+<footer>
+<small>
+SABASABA Gospel Ministry • sabasabawk.github.io
+</small>
+</footer>
+
+</div>
+
+<script>
+function checkQuiz(){
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+    if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+    document.getElementById("result").innerHTML = "Your Score: " + score + "/3";
+
+    localStorage.setItem("family7","completed");
+}
+</script>
+
+</body>
+</html>
