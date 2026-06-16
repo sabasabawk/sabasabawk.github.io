@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Lesson 6 - Rest and Sleep</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>😴 Lesson 6: Rest and Sleep</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"It is vain for you to rise up early, to sit up late... for so he giveth his beloved sleep."
+<br><br>
+<strong>Psalm 127:2</strong>
+</p>
+
+<h2>Lesson</h2>
+
+<p>
+God designed our bodies to need regular rest and sleep. Sleep allows the body and mind to recover from daily activities and prepare for a new day.
+</p>
+
+<p>
+Lack of sleep can lead to fatigue, poor concentration, weakened immunity, stress, and health problems. Most adults need about 7–9 hours of sleep each night.
+</p>
+
+<p>
+The Sabbath is also God's special gift of rest. By setting aside the seventh day for worship and fellowship with Him, we receive physical, mental, and spiritual renewal.
+</p>
+
+<p>
+Good sleep habits include going to bed at a regular time, avoiding unnecessary late-night activities, and trusting God with the concerns of life.
+</p>
+
+<h2>Benefits of Rest and Sleep</h2>
+
+<ul>
+<li>Restores energy.</li>
+<li>Improves memory and concentration.</li>
+<li>Strengthens the immune system.</li>
+<li>Supports emotional well-being.</li>
+<li>Promotes overall health.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Come unto me, all ye that labour and are heavy laden, and I will give you rest."
+<br><br>
+<strong>Matthew 11:28</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why is sleep important?</p>
+
+<input type="radio" name="q1"> It weakens the body<br>
+<input type="radio" name="q1" value="correct"> It helps the body recover and renew<br>
+<input type="radio" name="q1"> It is unnecessary<br><br>
+
+<p>2. What special day did God give for rest and worship?</p>
+
+<input type="radio" name="q2"> Monday<br>
+<input type="radio" name="q2" value="correct"> Sabbath<br>
+<input type="radio" name="q2"> Wednesday<br><br>
+
+<p>3. According to Matthew 11:28, who gives true rest?</p>
+
+<input type="radio" name="q3"> Friends<br>
+<input type="radio" name="q3"> Doctors<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="health5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="health7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked'))
+score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked'))
+score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("health6","completed");
+}
+</script>
+
+</body>
+</html>
