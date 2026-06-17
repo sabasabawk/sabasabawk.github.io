@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 1</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 1: What Is the Spirit of Prophecy?</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And I fell at his feet to worship him. And he said unto me, See thou do it not:
+I am thy fellowservant, and of thy brethren that have the testimony of Jesus:
+worship God: for the testimony of Jesus is the spirit of prophecy."
+<br><br>
+<strong>Revelation 19:10</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+The Spirit of Prophecy is God's special gift through which He communicates His will,
+guidance, warnings, and encouragement to His people through chosen messengers.
+</p>
+
+<p>
+Throughout Bible history, God spoke through prophets such as Moses, Isaiah,
+Jeremiah, Daniel, and many others. These prophets delivered messages from God
+to guide His people.
+</p>
+
+<p>
+The Seventh-day Adventist Church believes that the gift of prophecy continues
+to operate according to God's plan and that this gift was manifested in the
+ministry of Ellen G. White.
+</p>
+
+<p>
+The Spirit of Prophecy never replaces the Bible. Instead, it points people
+back to Scripture and helps them understand and apply biblical principles.
+</p>
+
+<p>
+The writings of Ellen G. White provide counsel on Christian living, education,
+health, family life, evangelism, and preparation for Christ's second coming.
+</p>
+
+<h2>Main Truths</h2>
+
+<ul>
+<li>God communicates through prophets.</li>
+<li>The gift of prophecy is a biblical gift.</li>
+<li>The Bible remains the supreme authority.</li>
+<li>The Spirit of Prophecy points people to Jesus.</li>
+<li>Ellen G. White exercised the prophetic gift in the Advent movement.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"For the testimony of Jesus is the spirit of prophecy."
+<br><br>
+<strong>Revelation 19:10</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. The Spirit of Prophecy is:</p>
+
+<input type="radio" name="q1"> Human wisdom<br>
+<input type="radio" name="q1" value="correct"> God's gift of prophetic guidance<br>
+<input type="radio" name="q1"> Church tradition<br><br>
+
+<p>2. The Spirit of Prophecy replaces:</p>
+
+<input type="radio" name="q2"> The Bible<br>
+<input type="radio" name="q2" value="correct"> It does not replace the Bible<br>
+<input type="radio" name="q2"> Prayer<br><br>
+
+<p>3. According to Revelation 19:10, the testimony of Jesus is:</p>
+
+<input type="radio" name="q3"> The law<br>
+<input type="radio" name="q3" value="correct"> The spirit of prophecy<br>
+<input type="radio" name="q3"> The church<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop.html">
+<button>⬅ Back to Course</button>
+</a>
+
+<a href="sop2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop1","completed");
+}
+</script>
+
+</body>
+</html>
