@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 12</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📜 Lesson 12: The Continuing Relevance of the Spirit of Prophecy</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Despise not prophesyings. Prove all things; hold fast that which is good."
+<br><br>
+<strong>1 Thessalonians 5:20-21</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+The Spirit of Prophecy continues to be a blessing to the Seventh-day Adventist Church around the world. The counsels given through Ellen G. White remain relevant because they are based upon timeless biblical principles.
+</p>
+
+<p>
+Her writings address challenges that Christians still face today, including spiritual growth, family life, education, health, evangelism, stewardship, and preparation for Christ's return.
+</p>
+
+<p>
+Millions of believers continue to read her books because they strengthen faith, encourage obedience to God, and deepen understanding of Scripture.
+</p>
+
+<p>
+The purpose of the Spirit of Prophecy is not to replace personal Bible study but to help believers draw closer to Jesus and live according to God's will.
+</p>
+
+<p>
+As we approach the return of Christ, the messages of hope, faithfulness, and revival found in the Spirit of Prophecy remain as valuable as ever.
+</p>
+
+<h2>Key Lessons from the Course</h2>
+
+<ul>
+<li>The gift of prophecy is biblical.</li>
+<li>God guided His church through Ellen G. White.</li>
+<li>The Bible remains the supreme authority.</li>
+<li>The Spirit of Prophecy points people to Jesus.</li>
+<li>Christian character is essential.</li>
+<li>Christ is coming again soon.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Surely the Lord God will do nothing, but he revealeth his secret unto his servants the prophets."
+<br><br>
+<strong>Amos 3:7</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. The Spirit of Prophecy is based on:</p>
+
+<input type="radio" name="q1"> Human philosophy<br>
+<input type="radio" name="q1" value="correct"> Biblical principles<br>
+<input type="radio" name="q1"> Tradition alone<br><br>
+
+<p>2. The Bible remains:</p>
+
+<input type="radio" name="q2"> Optional<br>
+<input type="radio" name="q2" value="correct"> The supreme authority<br>
+<input type="radio" name="q2"> Outdated<br><br>
+
+<p>3. The Spirit of Prophecy points people to:</p>
+
+<input type="radio" name="q3"> Church leaders<br>
+<input type="radio" name="q3"> Human wisdom<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Final Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop-certificate.html">
+<button>🏆 View Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Congratulations! You completed the Spirit of Prophecy Course with a score of " + score + "/3";
+
+localStorage.setItem("sop12","completed");
+}
+</script>
+
+</body>
+</html>
