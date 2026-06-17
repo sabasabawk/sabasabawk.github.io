@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 10</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📜 Lesson 10: Last-Day Events</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Surely I come quickly. Amen. Even so, come, Lord Jesus."
+<br><br>
+<strong>Revelation 22:20</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+One of the major themes in the Spirit of Prophecy is preparation for the final events of earth's history and the soon return of Jesus Christ.
+</p>
+
+<p>
+Ellen G. White wrote extensively about the closing scenes of the great controversy between Christ and Satan. Her writings encourage believers to remain faithful to God during difficult times and to trust in His promises.
+</p>
+
+<p>
+The Spirit of Prophecy teaches that God's people should study the Bible carefully, especially the books of Daniel and Revelation, to understand end-time events.
+</p>
+
+<p>
+Believers are called to develop strong faith, daily prayer habits, obedience to God's commandments, and complete dependence upon Christ.
+</p>
+
+<p>
+The focus of last-day events is not fear, but hope. Jesus has promised to return for His faithful people and establish His eternal kingdom where sin, suffering, and death will never exist again.
+</p>
+
+<h2>Important Last-Day Principles</h2>
+
+<ul>
+<li>Jesus is coming again soon.</li>
+<li>God's people should be spiritually prepared.</li>
+<li>The Bible is our guide for the future.</li>
+<li>Faithfulness is more important than fear.</li>
+<li>Christ will ultimately defeat evil.</li>
+<li>The redeemed will live with God forever.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let not your heart be troubled... I will come again."
+<br><br>
+<strong>John 14:1-3</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. The Spirit of Prophecy points believers toward:</p>
+
+<input type="radio" name="q1"> Human predictions<br>
+<input type="radio" name="q1" value="correct"> Christ's Second Coming<br>
+<input type="radio" name="q1"> Worldly success<br><br>
+
+<p>2. Which Bible books are especially important for end-time study?</p>
+
+<input type="radio" name="q2"> Ruth and Esther<br>
+<input type="radio" name="q2" value="correct"> Daniel and Revelation<br>
+<input type="radio" name="q2"> Ezra and Nehemiah<br><br>
+
+<p>3. The message of last-day events is mainly one of:</p>
+
+<input type="radio" name="q3"> Fear<br>
+<input type="radio" name="q3"> Confusion<br>
+<input type="radio" name="q3" value="correct"> Hope in Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop10","completed");
+}
+</script>
+
+</body>
+</html>
