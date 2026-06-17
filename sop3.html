@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 3</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 3: Ellen G. White's Call to Ministry</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And it shall come to pass afterward, that I will pour out my spirit upon all flesh."
+<br><br>
+<strong>Joel 2:28</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+Ellen G. White was one of the founders of the Seventh-day Adventist Church and is recognized by Adventists as having received the biblical gift of prophecy.
+</p>
+
+<p>
+She was born on November 26, 1827, in Gorham, Maine, USA. As a young girl she experienced a serious accident that affected her health and education.
+</p>
+
+<p>
+In December 1844, at the age of 17, Ellen Harmon (later Ellen White) received her first vision. This vision encouraged the disappointed Advent believers after the Great Disappointment of October 22, 1844.
+</p>
+
+<p>
+God called her to share messages of encouragement, correction, instruction, and hope. Although she initially felt unqualified and fearful, she accepted God's call and faithfully served for more than seventy years.
+</p>
+
+<p>
+During her lifetime she received thousands of visions and dreams and wrote extensively on spiritual life, education, health, evangelism, family life, and the great controversy between Christ and Satan.
+</p>
+
+<p>
+Her ministry helped shape the development and worldwide growth of the Seventh-day Adventist Church.
+</p>
+
+<h2>Important Facts</h2>
+
+<ul>
+<li>Born in 1827 in Maine, USA.</li>
+<li>Received her first vision in 1844.</li>
+<li>Married James White in 1846.</li>
+<li>Wrote many books and articles.</li>
+<li>Encouraged faithfulness to God and His Word.</li>
+<li>Pointed people to Jesus and the Bible.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Where there is no vision, the people perish."
+<br><br>
+<strong>Proverbs 29:18</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Ellen White received her first vision in:</p>
+
+<input type="radio" name="q1"> 1863<br>
+<input type="radio" name="q1" value="correct"> 1844<br>
+<input type="radio" name="q1"> 1900<br><br>
+
+<p>2. Ellen White's messages pointed people to:</p>
+
+<input type="radio" name="q2"> Human traditions<br>
+<input type="radio" name="q2"> Church leaders only<br>
+<input type="radio" name="q2" value="correct"> Jesus and the Bible<br><br>
+
+<p>3. Ellen White served God's church for:</p>
+
+<input type="radio" name="q3"> A few months<br>
+<input type="radio" name="q3"> Ten years<br>
+<input type="radio" name="q3" value="correct"> More than seventy years<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop3","completed");
+}
+</script>
+
+</body>
+</html>
