@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 4</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📜 Lesson 4: The Authority of the Spirit of Prophecy</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"To the law and to the testimony: if they speak not according to this word, it is because there is no light in them."
+<br><br>
+<strong>Isaiah 8:20</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+The Seventh-day Adventist Church teaches that the Bible is the supreme authority for faith and practice. All teachings, doctrines, and prophetic messages must be tested by Scripture.
+</p>
+
+<p>
+The Spirit of Prophecy does not replace the Bible, nor does it add new doctrines. Instead, it helps believers understand and apply biblical truth in daily life.
+</p>
+
+<p>
+Ellen G. White consistently pointed people to the Bible as God's inspired Word. She described her writings as a "lesser light" leading people to the "greater light," which is the Bible.
+</p>
+
+<p>
+The authority of the Spirit of Prophecy comes from God, who gives spiritual gifts to His church. When the prophetic gift operates according to biblical tests, believers can benefit from its instruction, encouragement, and correction.
+</p>
+
+<p>
+The writings of Ellen White provide practical guidance on Christian living, education, health, evangelism, stewardship, and preparation for Christ's return.
+</p>
+
+<h2>Important Principles</h2>
+
+<ul>
+<li>The Bible is the highest authority.</li>
+<li>The Spirit of Prophecy supports Scripture.</li>
+<li>True prophetic messages agree with God's Word.</li>
+<li>The gift of prophecy strengthens the church.</li>
+<li>Believers should study both the Bible and inspired counsel.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"To the law and to the testimony."
+<br><br>
+<strong>Isaiah 8:20</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is the supreme authority for Christians?</p>
+
+<input type="radio" name="q1"> Church tradition<br>
+<input type="radio" name="q1" value="correct"> The Bible<br>
+<input type="radio" name="q1"> Human opinion<br><br>
+
+<p>2. The Spirit of Prophecy:</p>
+
+<input type="radio" name="q2"> Replaces the Bible<br>
+<input type="radio" name="q2" value="correct"> Points people to the Bible<br>
+<input type="radio" name="q2"> Cancels Scripture<br><br>
+
+<p>3. Ellen White called her writings:</p>
+
+<input type="radio" name="q3"> A greater light<br>
+<input type="radio" name="q3" value="correct"> A lesser light leading to the greater light<br>
+<input type="radio" name="q3"> Equal to the Bible<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop4","completed");
+}
+</script>
+
+</body>
+</html>
