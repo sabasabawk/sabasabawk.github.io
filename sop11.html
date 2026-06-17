@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 11</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 11: Reading and Applying the Writings</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Thy word is a lamp unto my feet, and a light unto my path."
+<br><br>
+<strong>Psalm 119:105</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+The Spirit of Prophecy was given to help God's people grow spiritually and better understand biblical truth. The writings of Ellen G. White should be read prayerfully and thoughtfully.
+</p>
+
+<p>
+As believers study these writings, they discover practical counsel for daily living, family life, health, education, evangelism, stewardship, and preparation for Christ's return.
+</p>
+
+<p>
+The purpose of reading the Spirit of Prophecy is not merely to gain information but to experience transformation through the guidance of the Holy Spirit.
+</p>
+
+<p>
+Every reader should compare all teachings with the Bible, which remains the supreme authority for faith and practice.
+</p>
+
+<p>
+When the inspired counsels are applied in everyday life, they help develop Christlike character, strengthen faith, and prepare believers for service in God's kingdom.
+</p>
+
+<h2>How to Study the Spirit of Prophecy</h2>
+
+<ul>
+<li>Begin with prayer.</li>
+<li>Study alongside the Bible.</li>
+<li>Read regularly and thoughtfully.</li>
+<li>Apply the principles to daily life.</li>
+<li>Share what you learn with others.</li>
+<li>Allow God's Spirit to transform your character.</li>
+</ul>
+
+<h2>Recommended Books</h2>
+
+<ul>
+<li>Steps to Christ</li>
+<li>The Desire of Ages</li>
+<li>The Great Controversy</li>
+<li>Patriarchs and Prophets</li>
+<li>Prophets and Kings</li>
+<li>Acts of the Apostles</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Be ye doers of the word, and not hearers only."
+<br><br>
+<strong>James 1:22</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. The Spirit of Prophecy should be studied together with:</p>
+
+<input type="radio" name="q1"> Newspapers<br>
+<input type="radio" name="q1" value="correct"> The Bible<br>
+<input type="radio" name="q1"> Fiction books<br><br>
+
+<p>2. The purpose of reading inspired writings is:</p>
+
+<input type="radio" name="q2"> Information only<br>
+<input type="radio" name="q2" value="correct"> Spiritual transformation<br>
+<input type="radio" name="q2"> Entertainment<br><br>
+
+<p>3. Which book was written by Ellen G. White?</p>
+
+<input type="radio" name="q3"> Pilgrim's Progress<br>
+<input type="radio" name="q3" value="correct"> Steps to Christ<br>
+<input type="radio" name="q3"> Foxe's Book of Martyrs<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop11","completed");
+}
+</script>
+
+</body>
+</html>
