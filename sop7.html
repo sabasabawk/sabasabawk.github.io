@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 7</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏡 Lesson 7: Counsel on Christian Living</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+<br><br>
+<strong>1 Corinthians 10:31</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+The Spirit of Prophecy provides practical counsel for daily Christian living. Ellen G. White emphasized that Christianity is not only a belief system but a way of life that reflects the character of Jesus.
+</p>
+
+<p>
+Her writings encourage believers to develop habits of prayer, Bible study, honesty, purity, kindness, humility, and service. These qualities help Christians grow spiritually and become effective witnesses for Christ.
+</p>
+
+<p>
+She taught that every area of life should be surrendered to God, including our thoughts, words, actions, relationships, and use of time.
+</p>
+
+<p>
+Christian living involves making choices that honor God and avoiding influences that weaken faith. Through the power of the Holy Spirit, believers can experience victory over sin and grow in Christlike character.
+</p>
+
+<p>
+The goal of Christian living is to reveal the love of Jesus to the world and prepare for His soon return.
+</p>
+
+<h2>Principles of Christian Living</h2>
+
+<ul>
+<li>Pray daily.</li>
+<li>Study the Bible regularly.</li>
+<li>Practice honesty and integrity.</li>
+<li>Show kindness and compassion.</li>
+<li>Use time wisely.</li>
+<li>Serve others unselfishly.</li>
+<li>Live for the glory of God.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven."
+<br><br>
+<strong>Matthew 5:16</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Christian living should glorify:</p>
+
+<input type="radio" name="q1"> Self<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Society<br><br>
+
+<p>2. Which habit strengthens Christian life?</p>
+
+<input type="radio" name="q2"> Neglecting prayer<br>
+<input type="radio" name="q2" value="correct"> Daily prayer and Bible study<br>
+<input type="radio" name="q2"> Following every worldly trend<br><br>
+
+<p>3. The goal of Christian living is to:</p>
+
+<input type="radio" name="q3"> Gain popularity<br>
+<input type="radio" name="q3"> Become wealthy<br>
+<input type="radio" name="q3" value="correct"> Reflect the character of Jesus<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop7","completed");
+}
+</script>
+
+</body>
+</html>
