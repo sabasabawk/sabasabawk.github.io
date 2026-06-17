@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 6</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚔️ Lesson 6: The Great Controversy Theme</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And there was war in heaven: Michael and his angels fought against the dragon."
+<br><br>
+<strong>Revelation 12:7</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+One of the most important themes in the writings of Ellen G. White is the Great Controversy between Christ and Satan. This conflict began in heaven when Lucifer rebelled against God.
+</p>
+
+<p>
+After being cast out of heaven, Satan continued his rebellion on earth. Throughout history, the battle between good and evil has affected every person and every nation.
+</p>
+
+<p>
+The Great Controversy theme helps us understand why suffering, sin, temptation, and death exist in the world. It also reveals God's plan to save humanity through Jesus Christ.
+</p>
+
+<p>
+The book <strong>The Great Controversy</strong> traces this conflict from the destruction of Jerusalem through church history and into the final events before Christ's second coming.
+</p>
+
+<p>
+Although Satan is a powerful enemy, Christ has already won the victory through His death and resurrection. In the end, sin will be destroyed and God's kingdom will be fully restored.
+</p>
+
+<h2>Main Lessons from the Great Controversy</h2>
+
+<ul>
+<li>God is a God of love and justice.</li>
+<li>Satan is the originator of sin.</li>
+<li>Every person must choose whom to follow.</li>
+<li>Jesus provides victory over sin.</li>
+<li>God's truth will triumph in the end.</li>
+<li>Christ will soon return to establish His eternal kingdom.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And they overcame him by the blood of the Lamb, and by the word of their testimony."
+<br><br>
+<strong>Revelation 12:11</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. The Great Controversy is between:</p>
+
+<input type="radio" name="q1"> Nations only<br>
+<input type="radio" name="q1" value="correct"> Christ and Satan<br>
+<input type="radio" name="q1"> Rich and poor<br><br>
+
+<p>2. Who originated sin?</p>
+
+<input type="radio" name="q2"> Adam<br>
+<input type="radio" name="q2" value="correct"> Satan (Lucifer)<br>
+<input type="radio" name="q2"> Moses<br><br>
+
+<p>3. How do believers overcome Satan?</p>
+
+<input type="radio" name="q3"> Human strength<br>
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3" value="correct"> By the blood of the Lamb<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop6","completed");
+}
+</script>
+
+</body>
+</html>
