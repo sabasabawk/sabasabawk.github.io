@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 9</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌿 Lesson 9: Health Reform and the Spirit of Prophecy</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."
+<br><br>
+<strong>3 John 1:2</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+One of the most influential areas of Ellen G. White's ministry was health reform. Through visions and inspired counsel, she encouraged God's people to care for their bodies as temples of the Holy Spirit.
+</p>
+
+<p>
+In 1863, Ellen White received an important vision on health. She emphasized the connection between physical health, mental well-being, and spiritual growth.
+</p>
+
+<p>
+Her writings encouraged proper nutrition, exercise, fresh air, pure water, sunlight, rest, temperance, and trust in God. These principles later became known as part of the Adventist health message.
+</p>
+
+<p>
+The Spirit of Prophecy teaches that good health enables people to serve God more effectively and enjoy a better quality of life.
+</p>
+
+<p>
+Today, Adventist hospitals, clinics, and health ministries around the world continue to apply these principles, helping millions of people live healthier lives.
+</p>
+
+<h2>Principles of Health Reform</h2>
+
+<ul>
+<li>Eat wholesome and nutritious foods.</li>
+<li>Exercise regularly.</li>
+<li>Drink pure water.</li>
+<li>Get adequate rest.</li>
+<li>Enjoy fresh air and sunlight.</li>
+<li>Avoid harmful substances.</li>
+<li>Trust in God's healing power.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Know ye not that your body is the temple of the Holy Ghost?"
+<br><br>
+<strong>1 Corinthians 6:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Ellen White received a major health vision in:</p>
+
+<input type="radio" name="q1"> 1844<br>
+<input type="radio" name="q1" value="correct"> 1863<br>
+<input type="radio" name="q1"> 1915<br><br>
+
+<p>2. The body is described as:</p>
+
+<input type="radio" name="q2"> A machine only<br>
+<input type="radio" name="q2" value="correct"> The temple of the Holy Spirit<br>
+<input type="radio" name="q2"> Unimportant<br><br>
+
+<p>3. Which is part of Adventist health reform?</p>
+
+<input type="radio" name="q3"> Neglecting exercise<br>
+<input type="radio" name="q3"> Ignoring rest<br>
+<input type="radio" name="q3" value="correct"> Healthy living principles<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop9","completed");
+}
+</script>
+
+</body>
+</html>
