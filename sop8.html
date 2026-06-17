@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirit of Prophecy Lesson 8</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:8px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎓 Lesson 8: Education and Character Building</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And Jesus increased in wisdom and stature, and in favour with God and man."
+<br><br>
+<strong>Luke 2:52</strong>
+</p>
+
+<h2>Lesson Study</h2>
+
+<p>
+One of Ellen G. White's major contributions was her emphasis on true education. She taught that education is more than the study of books; it is the harmonious development of the physical, mental, social, and spiritual powers.
+</p>
+
+<p>
+According to the Spirit of Prophecy, the primary purpose of education is to restore the image of God in humanity. True education prepares people not only for useful service in this life but also for eternal life in God's kingdom.
+</p>
+
+<p>
+Character building is at the heart of Christian education. Knowledge alone is not enough. Students should learn honesty, responsibility, self-discipline, respect, kindness, and faithfulness.
+</p>
+
+<p>
+Ellen White encouraged schools to combine academic excellence with practical skills, Bible study, service, and healthy living. She believed that Jesus Christ should be the center of all education.
+</p>
+
+<p>
+The Adventist education system around the world is built upon these principles and seeks to prepare young people for leadership and service.
+</p>
+
+<h2>Principles of True Education</h2>
+
+<ul>
+<li>Jesus is the Master Teacher.</li>
+<li>Education develops the whole person.</li>
+<li>Character is more important than mere knowledge.</li>
+<li>Learning should prepare students for service.</li>
+<li>The Bible should be central in education.</li>
+<li>Education should prepare people for eternity.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"The fear of the Lord is the beginning of wisdom."
+<br><br>
+<strong>Proverbs 9:10</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. True education develops:</p>
+
+<input type="radio" name="q1"> Only the mind<br>
+<input type="radio" name="q1"> Only physical strength<br>
+<input type="radio" name="q1" value="correct"> The whole person</input><br><br>
+
+<p>2. The primary purpose of education is to:</p>
+
+<input type="radio" name="q2"> Gain wealth only<br>
+<input type="radio" name="q2" value="correct"> Restore God's image in humanity<br>
+<input type="radio" name="q2"> Win arguments<br><br>
+
+<p>3. Who should be at the center of education?</p>
+
+<input type="radio" name="q3"> Government<br>
+<input type="radio" name="q3"> Popular culture<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="sop7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="sop9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Your Score: " + score + "/3";
+
+localStorage.setItem("sop8","completed");
+}
+</script>
+
+</body>
+</html>
