@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hymn 001 - Praise to the Lord</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+.info{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.favorite{
+    margin-top:20px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎵 Hymn 001</h1>
+
+<div class="info">
+<h2>Praise to the Lord</h2>
+
+<p><strong>Theme:</strong> Worship & Praise</p>
+
+<p><strong>Scripture:</strong> Psalm 103:1-2</p>
+
+<p><strong>Author:</strong> Joachim Neander</p>
+
+<p><strong>Category:</strong> Opening Hymn</p>
+</div>
+
+<h2>About This Hymn</h2>
+
+<p>
+This hymn is one of the best-known Christian hymns of praise.
+It calls believers to worship God as Creator, Sustainer,
+and Redeemer. It is frequently used during worship services
+and special occasions.
+</p>
+
+<h2>Bible Reflection</h2>
+
+<p>
+"Bless the Lord, O my soul: and all that is within me,
+bless his holy name."
+</p>
+
+<div class="favorite">
+<button onclick="saveFavorite()">
+⭐ Add to Favorites
+</button>
+
+<p id="msg"></p>
+</div>
+
+<br>
+
+<a href="hymnal.html">
+<button>⬅ Back to Hymnal</button>
+</a>
+
+</div>
+
+<script>
+function saveFavorite(){
+localStorage.setItem("favoriteHymn1","Praise to the Lord");
+document.getElementById("msg").innerHTML =
+"Added to Favorites!";
+}
+</script>
+
+</body>
+</html>
