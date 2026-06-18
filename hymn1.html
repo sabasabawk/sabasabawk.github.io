@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hymn 001 - Praise to the Lord</title>
+<title>Hymn 001 - Amazing Grace</title>
 
 <style>
 body{
-    font-family: Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#f4f8fc;
-    margin:0;
     padding:20px;
 }
 
@@ -34,6 +33,11 @@ h1{
     margin-bottom:20px;
 }
 
+.lyrics{
+    font-size:22px;
+    line-height:1.8;
+}
+
 button{
     background:#0066cc;
     color:white;
@@ -42,11 +46,6 @@ button{
     border-radius:8px;
     cursor:pointer;
 }
-
-.favorite{
-    margin-top:20px;
-    text-align:center;
-}
 </style>
 </head>
 
@@ -54,59 +53,46 @@ button{
 
 <div class="container">
 
-<h1>🎵 Hymn 001</h1>
+<h1>🎵 Amazing Grace</h1>
 
 <div class="info">
-<h2>Praise to the Lord</h2>
-
-<p><strong>Theme:</strong> Worship & Praise</p>
-
-<p><strong>Scripture:</strong> Psalm 103:1-2</p>
-
-<p><strong>Author:</strong> Joachim Neander</p>
-
-<p><strong>Category:</strong> Opening Hymn</p>
+<p><b>Author:</b> John Newton</p>
+<p><b>Year:</b> 1779</p>
+<p><b>Theme:</b> Salvation by Grace</p>
+<p><b>Scripture:</b> Ephesians 2:8-9</p>
 </div>
 
-<h2>About This Hymn</h2>
+<div class="lyrics">
 
 <p>
-This hymn is one of the best-known Christian hymns of praise.
-It calls believers to worship God as Creator, Sustainer,
-and Redeemer. It is frequently used during worship services
-and special occasions.
+Amazing grace! how sweet the sound,<br>
+That saved a wretch like me!<br>
+I once was lost, but now am found,<br>
+Was blind, but now I see.
 </p>
-
-<h2>Bible Reflection</h2>
 
 <p>
-"Bless the Lord, O my soul: and all that is within me,
-bless his holy name."
+'Twas grace that taught my heart to fear,<br>
+And grace my fears relieved;<br>
+How precious did that grace appear<br>
+The hour I first believed.
 </p>
 
-<div class="favorite">
-<button onclick="saveFavorite()">
-⭐ Add to Favorites
-</button>
+<p>
+Through many dangers, toils, and snares,<br>
+I have already come;<br>
+'Tis grace hath brought me safe thus far,<br>
+And grace will lead me home.
+</p>
 
-<p id="msg"></p>
-</div>
+<p>
+The Lord hath promised good to me,<br>
+His Word my hope secures;<br>
+He will my Shield and Portion be,<br>
+As long as life endures.
+</p>
 
-<br>
-
-<a href="hymnal.html">
-<button>⬅ Back to Hymnal</button>
-</a>
-
-</div>
-
-<script>
-function saveFavorite(){
-localStorage.setItem("favoriteHymn1","Praise to the Lord");
-document.getElementById("msg").innerHTML =
-"Added to Favorites!";
-}
-</script>
-
-</body>
-</html>
+<p>
+Yea, when this flesh and heart shall fail,<br>
+And mortal life shall cease,<br>
+I shall possess, within
