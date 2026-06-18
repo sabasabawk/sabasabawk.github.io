@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hymn 004 - Blessed Assurance</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+.info{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.lyrics{
+    font-size:22px;
+    line-height:1.8;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎵 Blessed Assurance</h1>
+
+<div class="info">
+<p><b>Author:</b> Fanny J. Crosby</p>
+<p><b>Composer:</b> Phoebe P. Knapp</p>
+<p><b>Year:</b> 1873</p>
+<p><b>Theme:</b> Assurance of Salvation</p>
+<p><b>Scripture:</b> Hebrews 10:22</p>
+</div>
+
+<div class="lyrics">
+
+<p>
+Blessed assurance, Jesus is mine!<br>
+Oh, what a foretaste of glory divine!<br>
+Heir of salvation, purchase of God,<br>
+Born of His Spirit, washed in His blood.
+</p>
+
+<p>
+<b>Chorus</b><br>
+This is my story, this is my song,<br>
+Praising my
