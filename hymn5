@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hymn 005 - What a Friend We Have in Jesus</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+.info{
+    background:#eef6ff;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.lyrics{
+    font-size:22px;
+    line-height:1.8;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎵 What a Friend We Have in Jesus</h1>
+
+<div class="info">
+<p><b>Author:</b> Joseph M. Scriven</p>
+<p><b>Composer:</b> Charles C. Converse</p>
+<p><b>Year:</b> 1855</p>
+<p><b>Theme:</b> Prayer and Trust in Jesus</p>
+<p><b>Scripture:</b> Philippians 4:6</p>
+</div>
+
+<div class="lyrics">
+
+<p>
+What a Friend we have in Jesus,<br>
+All our sins and griefs to bear!<br>
+What a privilege to carry<br>
+Everything to God in prayer!<br>
+O what peace we often forfeit,<br>
+O what needless pain we bear,<br>
+All because we do not carry<br>
+Everything to God in prayer!
+</p>
+
+<p>
