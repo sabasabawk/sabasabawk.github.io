@@ -71,7 +71,9 @@ h2{
 This certificate is proudly presented to
 </p>
 
-<h2>Faithful Student</h2>
+<div class="student" id="studentNameDisplay">
+Loading...
+</div>
 
 <p class="award">
 For successfully completing all twelve lessons of the
@@ -113,6 +115,17 @@ if(completed.length >= 12){
 </script>
 
 </div>
+<script>
+let studentName =
+localStorage.getItem("studentName");
 
+if(studentName){
+    document.getElementById("studentNameDisplay")
+    .innerHTML = studentName;
+}else{
+    document.getElementById("studentNameDisplay")
+    .innerHTML = "Faithful Student";
+}
+</script>
 </body>
 </html>
