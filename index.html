@@ -220,7 +220,28 @@
   <header>
     <h1>SABASABA GOSPEL MINISTRY</h1>
     <p>Preaching Jesus Christ to the World</p>
+<div class="card">
+    <h2>👤 Student Profile</h2>
 
+    <input type="text" id="studentName"
+           placeholder="Enter your full name">
+
+    <button onclick="saveName()">Save Name</button>
+
+    <p id="savedMsg"></p>
+</div>
+
+<script>
+function saveName(){
+    let name = document.getElementById("studentName").value;
+
+    if(name.trim() !== ""){
+        localStorage.setItem("studentName", name);
+        document.getElementById("savedMsg").innerHTML =
+        "✅ Name saved successfully!";
+    }
+}
+</script>
     <div class="hero-buttons">
       <a href="bible.html">📖 Read the Bible</a>
       <a href="https://whatsapp.com/channel/0029VbCqWJoL7UVVpofHfC27" target="_blank">Join WhatsApp Channel</a>
