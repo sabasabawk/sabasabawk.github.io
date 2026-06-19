@@ -114,6 +114,17 @@ strengthen your faith, and prepare you for Christ's eternal kingdom.
 </div>
 
 </div>
+<script>
+let studentName =
+localStorage.getItem("studentName");
 
+if(studentName){
+    document.getElementById("studentNameDisplay")
+    .innerHTML = studentName;
+}else{
+    document.getElementById("studentNameDisplay")
+    .innerHTML = "Faithful Student";
+}
+</script>
 </body>
 </html>
