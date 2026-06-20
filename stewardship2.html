@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 2 - Stewardship of Time</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⏰ Lesson 2: Stewardship of Time</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"See then that ye walk circumspectly, not as fools, but as wise, redeeming the time, because the days are evil."
+<br><br>
+<strong>Ephesians 5:15-16</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Time is one of God's greatest gifts. Every person receives the same twenty-four hours each day. Once time is gone, it can never be recovered. Therefore, God calls His children to use time wisely and purposefully.
+</p>
+
+<h2>Time Belongs to God</h2>
+
+<p>
+Just as our money, talents, and possessions belong to God, our time also belongs to Him. We are stewards of every hour, minute, and second that God gives us.
+</p>
+
+<p>
+Faithful Christians seek to honor God through how they spend their days. They make time for worship, prayer, Bible study, family, work, and service.
+</p>
+
+<h2>Jesus as Our Example</h2>
+
+<p>
+Jesus lived a balanced and purposeful life. He spent time in prayer, teaching, healing, and helping others. He never wasted time, yet He always had time for people in need.
+</p>
+
+<h2>Wise Use of Time</h2>
+
+<ul>
+<li>Begin each day with prayer.</li>
+<li>Study God's Word daily.</li>
+<li>Avoid habits that waste time.</li>
+<li>Be faithful in work and responsibilities.</li>
+<li>Make time for family and service.</li>
+<li>Prepare for Christ's return.</li>
+</ul>
+
+<h2>The Sabbath and Time Stewardship</h2>
+
+<p>
+The Sabbath teaches us that God deserves a special portion of our time. Each week we dedicate sacred hours to worship, rest, and fellowship with Him.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"So teach us to number our days, that we may apply our hearts unto wisdom."
+<br><br>
+<strong>Psalm 90:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. How many hours does God give each person in a day?</p>
+
+<input type="radio" name="q1"> 12<br>
+<input type="radio" name="q1" value="correct"> 24<br>
+<input type="radio" name="q1"> 48<br><br>
+
+<p>2. What should Christians do with their time?</p>
+
+<input type="radio" name="q2"> Waste it<br>
+<input type="radio" name="q2" value="correct"> Use it wisely<br>
+<input type="radio" name="q2"> Ignore responsibilities<br><br>
+
+<p>3. Which commandment teaches stewardship of sacred time?</p>
+
+<input type="radio" name="q3"> Fifth Commandment<br>
+<input type="radio" name="q3"> Sixth Commandment<br>
+<input type="radio" name="q3" value="correct"> Fourth Commandment<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship2","completed");
+}
+</script>
+
+</body>
+</html>
