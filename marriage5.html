@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 5 - Conflict Resolution</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 5: Conflict Resolution</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Be ye angry, and sin not: let not the sun go down upon your wrath."
+<br><br>
+<strong>Ephesians 4:26</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Conflict is a normal part of every marriage. Even loving couples sometimes disagree because each person has different experiences, opinions, and personalities.
+</p>
+
+<p>
+The goal is not to avoid every conflict, but to resolve disagreements in a way that honors God and strengthens the relationship.
+</p>
+
+<h2>Understanding Conflict</h2>
+
+<p>
+Conflict itself is not a sin. Problems arise when disagreements are handled with anger, pride, harsh words, or selfishness.
+</p>
+
+<p>
+Healthy conflict resolution can actually bring couples closer together by improving understanding and trust.
+</p>
+
+<h2>Common Causes of Conflict</h2>
+
+<ul>
+<li>Poor communication.</li>
+<li>Financial disagreements.</li>
+<li>Unmet expectations.</li>
+<li>Parenting differences.</li>
+<li>Lack of quality time together.</li>
+<li>Stress and outside pressures.</li>
+</ul>
+
+<h2>Biblical Principles for Resolving Conflict</h2>
+
+<ul>
+<li>Pray before discussing the issue.</li>
+<li>Speak the truth in love.</li>
+<li>Listen carefully before responding.</li>
+<li>Stay calm and respectful.</li>
+<li>Seek solutions, not victory.</li>
+<li>Forgive quickly.</li>
+</ul>
+
+<h2>Avoid Harmful Behaviors</h2>
+
+<p>
+Certain actions make conflicts worse and should be avoided:
+</p>
+
+<ul>
+<li>Shouting and yelling.</li>
+<li>Name-calling.</li>
+<li>Threats and intimidation.</li>
+<li>Bringing up past mistakes repeatedly.</li>
+<li>Refusing to communicate.</li>
+<li>Seeking revenge.</li>
+</ul>
+
+<h2>The Power of Forgiveness</h2>
+
+<p>
+Forgiveness is essential in marriage. Since both husband and wife make mistakes, both need grace and forgiveness.
+</p>
+
+<p>
+Forgiveness does not mean ignoring problems. It means choosing to release bitterness and work toward healing.
+</p>
+
+<h2>Resolving Issues Quickly</h2>
+
+<p>
+The Bible advises believers not to let the sun go down on their anger. Couples should address conflicts as soon as reasonably possible rather than allowing resentment to grow.
+</p>
+
+<p>
+Unresolved anger often creates larger problems later.
+</p>
+
+<h2>Christ Our Example</h2>
+
+<p>
+Jesus demonstrated patience, humility, mercy, and forgiveness. Christian couples should follow His example when dealing with disagreements.
+</p>
+
+<p>
+A marriage that follows Christ's example can overcome even difficult challenges.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Be ye angry, and sin not: let not the sun go down upon your wrath."
+<br><br>
+<strong>Ephesians 4:26</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Is conflict itself always a sin?</p>
+
+<input type="radio" name="q1"> Yes<br>
+<input type="radio" name="q1" value="correct"> No<br>
+<input type="radio" name="q1"> Sometimes only<br><br>
+
+<p>2. Which behavior helps resolve conflict?</p>
+
+<input type="radio" name="q2"> Shouting<br>
+<input type="radio" name="q2"> Name-calling<br>
+<input type="radio" name="q2" value="correct"> Listening carefully<br><br>
+
+<p>3. What is essential in every marriage?</p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3" value="correct"> Forgiveness<br>
+<input type="radio" name="q3"> Revenge<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage5","completed");
+}
+</script>
+
+</body>
+</html>
