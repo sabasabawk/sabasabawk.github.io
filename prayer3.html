@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 3 - The Lord's Prayer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 3: The Lord's Prayer</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"After this manner therefore pray ye: Our Father which art in heaven, Hallowed be thy name."
+<br><br>
+<strong>Matthew 6:9</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+One day the disciples asked Jesus, "Lord, teach us to pray." In response, Jesus gave them a model prayer known as the Lord's Prayer. This prayer is not merely to be repeated word for word; it is a guide that teaches the principles of effective prayer.
+</p>
+
+<h2>The Lord's Prayer</h2>
+
+<p>
+"Our Father which art in heaven,<br>
+Hallowed be thy name.<br>
+Thy kingdom come.<br>
+Thy will be done in earth, as it is in heaven.<br>
+Give us this day our daily bread.<br>
+And forgive us our debts, as we forgive our debtors.<br>
+And lead us not into temptation, but deliver us from evil:<br>
+For thine is the kingdom, and the power, and the glory, for ever. Amen."
+</p>
+
+<h2>Our Father in Heaven</h2>
+
+<p>
+Jesus teaches us to approach God as our loving Father. This reminds us that God cares for us and desires a close relationship with His children.
+</p>
+
+<h2>Hallowed Be Thy Name</h2>
+
+<p>
+Prayer begins with worship. We honor God's holy name and acknowledge His greatness, goodness, and power.
+</p>
+
+<h2>Thy Kingdom Come</h2>
+
+<p>
+Christians should pray for God's kingdom to be established and for Christ's soon return. We should desire God's rule in our hearts and in the world.
+</p>
+
+<h2>Give Us This Day Our Daily Bread</h2>
+
+<p>
+God invites us to bring our daily needs to Him. Whether physical, emotional, or spiritual, God is interested in every aspect of our lives.
+</p>
+
+<h2>Forgive Us Our Debts</h2>
+
+<p>
+Confession is an important part of prayer. We ask God for forgiveness and extend forgiveness to others just as He forgives us.
+</p>
+
+<h2>Lead Us Not into Temptation</h2>
+
+<p>
+We need God's protection and strength every day. Through prayer, God helps us resist temptation and overcome evil.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Our Father which art in heaven, Hallowed be thy name."
+<br><br>
+<strong>Matthew 6:9</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who taught the Lord's Prayer?</p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1"> Peter<br>
+<input type="radio" name="q1" value="correct"> Jesus<br><br>
+
+<p>2. The words "Give us this day our daily bread" teach us to:</p>
+
+<input type="radio" name="q2"> Ignore our needs<br>
+<input type="radio" name="q2" value="correct"> Depend on God daily<br>
+<input type="radio" name="q2"> Worry about tomorrow<br><br>
+
+<p>3. What important part of prayer is taught by "Forgive us our debts"?</p>
+
+<input type="radio" name="q3"> Singing<br>
+<input type="radio" name="q3" value="correct"> Confession and forgiveness<br>
+<input type="radio" name="q3"> Fasting only<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer3","completed");
+}
+</script>
+
+</body>
+</html>
