@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 5 - Tithes and Offerings</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 5: Tithes and Offerings</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Bring ye all the tithes into the storehouse, that there may be meat in mine house."
+<br><br>
+<strong>Malachi 3:10</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Tithes and offerings are important expressions of worship and faithfulness. Through them, God's people acknowledge that He is the source of all blessings and demonstrate trust in His provision.
+</p>
+
+<h2>What Is Tithe?</h2>
+
+<p>
+A tithe is one-tenth (10%) of a person's increase or income. The Bible teaches that the tithe belongs to God and should be returned faithfully.
+</p>
+
+<p>
+Abraham returned tithe to God before the nation of Israel existed, showing that tithing is a biblical principle that predates the ceremonial laws.
+</p>
+
+<h2>Purpose of Tithe</h2>
+
+<p>
+The tithe supports the preaching of the gospel and the ministry of God's church. It helps provide for those who dedicate their lives to sharing God's message.
+</p>
+
+<ul>
+<li>Supports gospel ministry.</li>
+<li>Advances mission work.</li>
+<li>Demonstrates faithfulness.</li>
+<li>Recognizes God's ownership.</li>
+</ul>
+
+<h2>What Are Offerings?</h2>
+
+<p>
+Offerings are gifts given freely in addition to the tithe. While tithe is a fixed portion, offerings are voluntary expressions of gratitude, love, and worship.
+</p>
+
+<p>
+God loves a cheerful giver and blesses those who give willingly and generously.
+</p>
+
+<h2>Blessings of Faithfulness</h2>
+
+<p>
+God promises spiritual blessings to those who trust Him with their resources. Faithful giving develops faith, gratitude, and dependence upon God.
+</p>
+
+<p>
+Returning tithe and giving offerings are acts of worship that honor God and help spread the gospel throughout the world.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Honor the Lord with thy substance, and with the firstfruits of all thine increase."
+<br><br>
+<strong>Proverbs 3:9</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What percentage is a biblical tithe?</p>
+
+<input type="radio" name="q1"> 5%<br>
+<input type="radio" name="q1" value="correct"> 10%<br>
+<input type="radio" name="q1"> 20%<br><br>
+
+<p>2. Offerings are:</p>
+
+<input type="radio" name="q2"> Required taxes<br>
+<input type="radio" name="q2" value="correct"> Voluntary gifts<br>
+<input type="radio" name="q2"> Government payments<br><br>
+
+<p>3. Tithes and offerings help:</p>
+
+<input type="radio" name="q3"> Only individuals<br>
+<input type="radio" name="q3"> Businesses grow<br>
+<input type="radio" name="q3" value="correct"> Support God's mission and ministry<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship5","completed");
+}
+</script>
+
+</body>
+</html>
