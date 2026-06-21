@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 2 - Why We Need Prayer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 2: Why We Need Prayer</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Men ought always to pray, and not to faint."
+<br><br>
+<strong>Luke 18:1</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer is not merely a religious activity; it is a necessity for every Christian. Just as our bodies need food and water, our spiritual lives need prayer. Without prayer, our relationship with God becomes weak.
+</p>
+
+<p>
+Prayer connects us with Heaven's power and helps us face life's challenges with faith and courage.
+</p>
+
+<h2>Prayer Strengthens Our Relationship with God</h2>
+
+<p>
+Every healthy relationship requires communication. Prayer is how we communicate with God. The more time we spend talking with Him, the closer we become to Him.
+</p>
+
+<p>
+God desires fellowship with His children and invites us to come boldly before His throne of grace.
+</p>
+
+<h2>Prayer Gives Spiritual Strength</h2>
+
+<p>
+The Christian life involves many battles against temptation, discouragement, and sin. Prayer gives us strength to overcome these challenges.
+</p>
+
+<p>
+Jesus Himself prayed regularly and taught His followers to depend on God through prayer.
+</p>
+
+<h2>Prayer Brings Peace</h2>
+
+<p>
+Many people carry heavy burdens of worry and anxiety. Through prayer we can bring our concerns to God and receive His peace.
+</p>
+
+<p>
+When we trust God with our problems, He helps us face them with confidence.
+</p>
+
+<h2>Prayer Helps Us Understand God's Will</h2>
+
+<p>
+God promises to guide those who seek Him sincerely. Through prayer and Bible study, we learn His plans and purposes for our lives.
+</p>
+
+<p>
+Prayer opens our hearts to receive God's wisdom and direction.
+</p>
+
+<h2>Jesus' Example</h2>
+
+<p>
+Jesus often withdrew to quiet places to pray. Before important decisions, during times of ministry, and even in His suffering, He prayed.
+</p>
+
+<p>
+If the Son of God felt the need to pray, how much more do we need prayer today?
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Pray without ceasing."
+<br><br>
+<strong>1 Thessalonians 5:17</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why do Christians need prayer?</p>
+
+<input type="radio" name="q1"> For entertainment<br>
+<input type="radio" name="q1" value="correct"> To strengthen their relationship with God<br>
+<input type="radio" name="q1"> To impress others<br><br>
+
+<p>2. What can prayer bring to a troubled heart?</p>
+
+<input type="radio" name="q2"> Confusion<br>
+<input type="radio" name="q2"> Fear<br>
+<input type="radio" name="q2" value="correct"> Peace<br><br>
+
+<p>3. Who set the perfect example of prayer?</p>
+
+<input type="radio" name="q3"> Abraham<br>
+<input type="radio" name="q3"> Daniel<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer2","completed");
+}
+</script>
+
+</body>
+</html>
