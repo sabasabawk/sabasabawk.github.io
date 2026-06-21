@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 8 - Prayer and the Holy Spirit</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 8: Prayer and the Holy Spirit</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Likewise the Spirit also helpeth our infirmities: for we know not what we should pray for as we ought."
+<br><br>
+<strong>Romans 8:26</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+The Holy Spirit plays a vital role in the prayer life of every Christian. He guides us, teaches us, strengthens us, and helps us communicate with God. Without the Holy Spirit, our spiritual lives become weak, but through His presence we experience power and victory.
+</p>
+
+<h2>Who Is the Holy Spirit?</h2>
+
+<p>
+The Holy Spirit is the third Person of the Godhead. He works together with the Father and the Son in the plan of salvation. Jesus promised to send the Holy Spirit to comfort, guide, and empower His followers.
+</p>
+
+<h2>The Holy Spirit Helps Us Pray</h2>
+
+<p>
+Sometimes we do not know how to pray or what to ask for. At such times the Holy Spirit helps us by guiding our thoughts and bringing our needs before God.
+</p>
+
+<p>
+The Spirit helps believers pray according to God's will rather than their own desires.
+</p>
+
+<h2>The Holy Spirit Convicts of Sin</h2>
+
+<p>
+One of the Spirit's important works is to show us our need of repentance. Through prayer and the work of the Holy Spirit, we are led closer to Jesus and experience forgiveness and transformation.
+</p>
+
+<h2>The Holy Spirit Gives Power</h2>
+
+<p>
+The disciples were transformed after receiving the Holy Spirit at Pentecost. Fearful followers became bold witnesses for Christ.
+</p>
+
+<p>
+The same Spirit is available to believers today, giving strength for Christian living and service.
+</p>
+
+<h2>Praying for the Holy Spirit</h2>
+
+<p>
+Jesus encouraged His followers to ask for the Holy Spirit.
+</p>
+
+<p>
+"If ye then, being evil, know how to give good gifts unto your children: how much more shall your heavenly Father give the Holy Spirit to them that ask him?"
+<br><br>
+<strong>Luke 11:13</strong>
+</p>
+
+<h2>How the Holy Spirit Works Through Prayer</h2>
+
+<ul>
+<li>Guides us into truth.</li>
+<li>Strengthens faith.</li>
+<li>Convicts of sin.</li>
+<li>Comforts in times of trouble.</li>
+<li>Helps us understand Scripture.</li>
+<li>Empowers us for witnessing.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"If ye then, being evil, know how to give good gifts unto your children: how much more shall your heavenly Father give the Holy Spirit to them that ask him?"
+<br><br>
+<strong>Luke 11:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who helps believers when they do not know how to pray?</p>
+
+<input type="radio" name="q1"> Angels<br>
+<input type="radio" name="q1" value="correct"> The Holy Spirit<br>
+<input type="radio" name="q1"> Prophets<br><br>
+
+<p>2. What happened to the disciples after receiving the Holy Spirit?</p>
+
+<input type="radio" name="q2"> They became fearful<br>
+<input type="radio" name="q2" value="correct"> They became bold witnesses<br>
+<input type="radio" name="q2"> They stopped preaching<br><br>
+
+<p>3. According to Luke 11:13, what should believers ask God for?</p>
+
+<input type="radio" name="q3"> Riches only<br>
+<input type="radio" name="q3"> Fame<br>
+<input type="radio" name="q3" value="correct"> The Holy Spirit<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer8","completed");
+}
+</script>
+
+</body>
+</html>
