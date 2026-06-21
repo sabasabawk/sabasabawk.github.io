@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 10 - Prayer in Times of Trouble</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 10: Prayer in Times of Trouble</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Call upon me in the day of trouble: I will deliver thee, and thou shalt glorify me."
+<br><br>
+<strong>Psalm 50:15</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Every person experiences difficulties, disappointments, losses, and trials. During such times, prayer becomes a powerful source of strength and comfort. God does not promise a life free from trouble, but He promises to be with us through every storm.
+</p>
+
+<p>
+Prayer allows us to place our burdens in God's hands and receive His peace and guidance.
+</p>
+
+<h2>God Is Our Refuge</h2>
+
+<p>
+The Bible repeatedly reminds us that God is our refuge and strength. When we feel overwhelmed, afraid, or discouraged, we can turn to Him in prayer.
+</p>
+
+<p>
+"God is our refuge and strength, a very present help in trouble."
+<br><br>
+<strong>Psalm 46:1</strong>
+</p>
+
+<h2>Biblical Examples</h2>
+
+<ul>
+<li>David prayed during times of danger.</li>
+<li>Daniel prayed when threatened with death.</li>
+<li>Jonah prayed from inside the great fish.</li>
+<li>Paul and Silas prayed while in prison.</li>
+<li>Jesus prayed in the Garden of Gethsemane.</li>
+</ul>
+
+<h2>What Prayer Does During Trials</h2>
+
+<ul>
+<li>Brings peace to troubled hearts.</li>
+<li>Strengthens faith.</li>
+<li>Provides courage.</li>
+<li>Helps us trust God.</li>
+<li>Guides us through difficult decisions.</li>
+<li>Reminds us that we are never alone.</li>
+</ul>
+
+<h2>Trusting God's Timing</h2>
+
+<p>
+Sometimes God's answers do not come immediately. During such moments, prayer teaches patience and trust. God's timing is always perfect, even when we do not fully understand His plans.
+</p>
+
+<p>
+Faith means trusting God even when the situation remains difficult.
+</p>
+
+<h2>Jesus in Gethsemane</h2>
+
+<p>
+Before His crucifixion, Jesus prayed earnestly in the Garden of Gethsemane. Although He faced great suffering, He submitted Himself completely to the Father's will.
+</p>
+
+<p>
+His example teaches us to pray:
+</p>
+
+<p>
+"Not my will, but thine, be done."
+</p>
+
+<h2>Victory Through Prayer</h2>
+
+<p>
+Prayer may not always remove our problems immediately, but it gives us strength to face them. Through prayer, God transforms fear into faith and weakness into courage.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Casting all your care upon him; for he careth for you."
+<br><br>
+<strong>1 Peter 5:7</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What does Psalm 50:15 encourage us to do?</p>
+
+<input type="radio" name="q1"> Depend only on ourselves<br>
+<input type="radio" name="q1" value="correct"> Call upon God in trouble<br>
+<input type="radio" name="q1"> Avoid prayer<br><br>
+
+<p>2. Who prayed while in prison?</p>
+
+<input type="radio" name="q2"> Abraham and Isaac<br>
+<input type="radio" name="q2" value="correct"> Paul and Silas<br>
+<input type="radio" name="q2"> Elijah and Elisha<br><br>
+
+<p>3. What can prayer bring during difficult times?</p>
+
+<input type="radio" name="q3"> Fear<br>
+<input type="radio" name="q3"> Confusion<br>
+<input type="radio" name="q3" value="correct"> Peace and strength<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer10","completed");
+}
+</script>
+
+</body>
+</html>
