@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 1 - What Is Prayer?</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 1: What Is Prayer?</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Call unto me, and I will answer thee, and shew thee great and mighty things, which thou knowest not."
+<br><br>
+<strong>Jeremiah 33:3</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer is one of the greatest gifts God has given to humanity. Through prayer we communicate directly with our Heavenly Father. It is the means by which we express our praise, gratitude, needs, and desires to God.
+</p>
+
+<p>
+Prayer is not merely repeating words or following a ritual. It is a heartfelt conversation with God. Just as friends speak to one another, God invites us to speak with Him.
+</p>
+
+<h2>What Is Prayer?</h2>
+
+<p>
+Prayer is opening our hearts to God as to a friend. Through prayer we develop a personal relationship with Him and learn to trust Him more fully.
+</p>
+
+<p>
+Prayer includes:
+</p>
+
+<ul>
+<li>Praising God for who He is.</li>
+<li>Thanking Him for His blessings.</li>
+<li>Confessing our sins.</li>
+<li>Asking for His help and guidance.</li>
+<li>Praying for others.</li>
+</ul>
+
+<h2>Why Did God Give Us Prayer?</h2>
+
+<p>
+God already knows our needs, but He desires a relationship with us. Prayer draws us closer to Him and helps us depend upon His wisdom rather than our own.
+</p>
+
+<p>
+When we pray, our faith grows and our hearts become more sensitive to God's leading.
+</p>
+
+<h2>Examples of Prayer in the Bible</h2>
+
+<ul>
+<li>Abraham prayed for others.</li>
+<li>Moses prayed for Israel.</li>
+<li>Hannah prayed for a child.</li>
+<li>Daniel prayed three times daily.</li>
+<li>Jesus frequently prayed to His Father.</li>
+</ul>
+
+<h2>Benefits of Prayer</h2>
+
+<ul>
+<li>Strengthens our relationship with God.</li>
+<li>Brings peace to the heart.</li>
+<li>Increases faith.</li>
+<li>Provides guidance and wisdom.</li>
+<li>Helps us overcome temptation.</li>
+<li>Brings comfort during difficulties.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Pray without ceasing."
+<br><br>
+<strong>1 Thessalonians 5:17</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is prayer?</p>
+
+<input type="radio" name="q1"> A religious ritual only<br>
+<input type="radio" name="q1" value="correct"> Talking with God<br>
+<input type="radio" name="q1"> A church program<br><br>
+
+<p>2. Which person prayed three times daily?</p>
+
+<input type="radio" name="q2"> Abraham<br>
+<input type="radio" name="q2" value="correct"> Daniel<br>
+<input type="radio" name="q2"> Joseph<br><br>
+
+<p>3. What is one benefit of prayer?</p>
+
+<input type="radio" name="q3"> Confusion<br>
+<input type="radio" name="q3"> Fear<br>
+<input type="radio" name="q3" value="correct"> Increased faith<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer.html">
+<button>⬅ Course Home</button>
+</a>
+
+<a href="prayer2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer1","completed");
+}
+</script>
+
+</body>
+</html>
