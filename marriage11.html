@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 11 - Challenges in Marriage</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 11: Challenges in Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"I can do all things through Christ which strengtheneth me."
+<br><br>
+<strong>Philippians 4:13</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Every marriage faces challenges. No couple is perfect, and no relationship is free from difficulties. However, challenges do not have to destroy a marriage. With God's help, couples can grow stronger through trials and difficulties.
+</p>
+
+<p>
+Christian marriage is not the absence of problems but the presence of Christ in the midst of problems.
+</p>
+
+<h2>Common Challenges in Marriage</h2>
+
+<ul>
+<li>Financial difficulties.</li>
+<li>Communication problems.</li>
+<li>Differences in personality.</li>
+<li>Health challenges.</li>
+<li>Stress from work or family responsibilities.</li>
+<li>Parenting disagreements.</li>
+<li>Loss, grief, or unexpected hardships.</li>
+</ul>
+
+<h2>Understanding Differences</h2>
+
+<p>
+God created each person uniquely. Husbands and wives may think differently, communicate differently, and respond differently to situations.
+</p>
+
+<p>
+Instead of allowing differences to divide them, couples should learn to appreciate and understand one another.
+</p>
+
+<h2>Facing Problems Together</h2>
+
+<p>
+Marriage is a partnership. Challenges should not be viewed as "your problem" or "my problem" but as "our problem."
+</p>
+
+<p>
+Working together builds unity and strengthens the relationship.
+</p>
+
+<h2>The Power of Prayer</h2>
+
+<p>
+Prayer is one of the greatest tools for overcoming difficulties in marriage. When couples pray together, they invite God's wisdom, peace, and strength into their home.
+</p>
+
+<p>
+Prayer softens hearts and helps couples focus on solutions rather than blame.
+</p>
+
+<h2>Forgiveness During Difficult Times</h2>
+
+<p>
+Challenges can sometimes lead to misunderstandings and hurt feelings. Forgiveness is essential for healing and moving forward.
+</p>
+
+<p>
+Just as Christ forgives us, husbands and wives should extend grace to one another.
+</p>
+
+<h2>Seeking Wise Counsel</h2>
+
+<p>
+There may be times when couples need guidance from trusted Christian leaders, pastors, or experienced mentors.
+</p>
+
+<p>
+Seeking help is a sign of wisdom, not weakness.
+</p>
+
+<h2>Trusting God's Promises</h2>
+
+<p>
+God never promised a life without challenges, but He promised to be with His people through every trial.
+</p>
+
+<p>
+Couples who trust God's promises can face difficulties with courage and hope.
+</p>
+
+<h2>Growing Through Challenges</h2>
+
+<p>
+Many strong marriages become stronger because couples learn to overcome difficulties together. Challenges can develop patience, faith, understanding, and deeper love.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"I can do all things through Christ which strengtheneth me."
+<br><br>
+<strong>Philippians 4:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Are challenges normal in marriage?</p>
+
+<input type="radio" name="q1"> No<br>
+<input type="radio" name="q1" value="correct"> Yes<br>
+<input type="radio" name="q1"> Only for some couples<br><br>
+
+<p>2. What should couples do when facing difficulties?</p>
+
+<input type="radio" name="q2"> Blame one another<br>
+<input type="radio" name="q2"> Ignore the problem<br>
+<input type="radio" name="q2" value="correct"> Face it together with God's help<br><br>
+
+<p>3. What is one powerful tool for overcoming marital challenges?</p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3"> Anger<br>
+<input type="radio" name="q3" value="correct"> Prayer<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage11","completed");
+}
+</script>
+
+</body>
+</html>
