@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 4 - Stewardship of Money</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 4: Stewardship of Money</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Money is a gift entrusted to us by God. While money itself is not evil, the Bible warns against the love of money and teaches believers to use their financial resources wisely and faithfully.
+</p>
+
+<p>
+A Christian steward recognizes that God is the true owner of all wealth and that every resource should be managed according to His will.
+</p>
+
+<h2>God Owns Everything</h2>
+
+<p>
+The Bible teaches that all things belong to God. Our income, possessions, and opportunities come from Him. We are managers of God's blessings, not owners.
+</p>
+
+<p>
+Understanding this principle helps us avoid selfishness and encourages gratitude and faithfulness.
+</p>
+
+<h2>Biblical Principles of Money Management</h2>
+
+<ul>
+<li>Honor God first in your finances.</li>
+<li>Return faithful tithe and offerings.</li>
+<li>Live within your means.</li>
+<li>Avoid unnecessary debt.</li>
+<li>Save wisely for future needs.</li>
+<li>Help those who are in need.</li>
+<li>Support the work of the gospel.</li>
+</ul>
+
+<h2>The Danger of Loving Money</h2>
+
+<p>
+The Bible warns:
+</p>
+
+<p>
+"For the love of money is the root of all kinds of evil."
+<br><br>
+<strong>1 Timothy 6:10</strong>
+</p>
+
+<p>
+Money should be our servant, not our master. Our trust must always remain in God rather than in material possessions.
+</p>
+
+<h2>Generosity</h2>
+
+<p>
+God blesses us so that we can be a blessing to others. Generosity reflects God's character and demonstrates love for our neighbors.
+</p>
+
+<p>
+Faithful stewards willingly share with those in need and support God's mission around the world.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you."
+<br><br>
+<strong>Matthew 6:33</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is the true owner of all wealth?</p>
+
+<input type="radio" name="q1"> Governments<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Businesses<br><br>
+
+<p>2. What does the Bible warn against?</p>
+
+<input type="radio" name="q2"> Working hard<br>
+<input type="radio" name="q2" value="correct"> Loving money<br>
+<input type="radio" name="q2"> Saving money<br><br>
+
+<p>3. What should faithful stewards do?</p>
+
+<input type="radio" name="q3"> Spend carelessly<br>
+<input type="radio" name="q3"> Trust only in money<br>
+<input type="radio" name="q3" value="correct"> Use money wisely for God's glory<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship4","completed");
+}
+</script>
+
+</body>
+</html>
