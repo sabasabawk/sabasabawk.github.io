@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 6 - Intercessory Prayer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 6: Intercessory Prayer</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"I exhort therefore, that, first of all, supplications, prayers, intercessions, and giving of thanks, be made for all men."
+<br><br>
+<strong>1 Timothy 2:1</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Intercessory prayer is praying on behalf of others. Instead of focusing only on our own needs, we bring the needs, struggles, and concerns of other people before God.
+</p>
+
+<p>
+Intercession reflects the love of Christ, who continually intercedes for His people before the Father.
+</p>
+
+<h2>What Is Intercessory Prayer?</h2>
+
+<p>
+Intercessory prayer means standing in the gap for someone else. It involves asking God to bless, guide, protect, heal, forgive, strengthen, or save others.
+</p>
+
+<p>
+God invites His children to participate in His work by praying for family members, friends, church leaders, communities, and even enemies.
+</p>
+
+<h2>Biblical Examples</h2>
+
+<ul>
+<li>Abraham prayed for Sodom.</li>
+<li>Moses interceded for Israel.</li>
+<li>Samuel prayed for the people.</li>
+<li>Job prayed for his friends.</li>
+<li>Jesus prayed for His disciples.</li>
+<li>Paul constantly prayed for the churches.</li>
+</ul>
+
+<h2>Jesus Our Greatest Intercessor</h2>
+
+<p>
+Jesus is the perfect example of intercessory prayer. Even while on the cross He prayed:
+</p>
+
+<p>
+"Father, forgive them; for they know not what they do."
+<br><br>
+<strong>Luke 23:34</strong>
+</p>
+
+<p>
+Today, Jesus continues to intercede for believers in heaven.
+</p>
+
+<h2>Who Should We Pray For?</h2>
+
+<ul>
+<li>Family members.</li>
+<li>Friends and neighbors.</li>
+<li>Church leaders.</li>
+<li>Government leaders.</li>
+<li>The sick and suffering.</li>
+<li>Missionaries and evangelists.</li>
+<li>Those who do not know Christ.</li>
+<li>Those who have wronged us.</li>
+</ul>
+
+<h2>The Blessings of Intercessory Prayer</h2>
+
+<p>
+When we pray for others:
+</p>
+
+<ul>
+<li>Our love for people grows.</li>
+<li>Our faith becomes stronger.</li>
+<li>We become more Christlike.</li>
+<li>God works in powerful ways.</li>
+<li>Lives can be transformed.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Pray one for another, that ye may be healed."
+<br><br>
+<strong>James 5:16</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is intercessory prayer?</p>
+
+<input type="radio" name="q1"> Praying only for ourselves<br>
+<input type="radio" name="q1" value="correct"> Praying for others<br>
+<input type="radio" name="q1"> Singing hymns<br><br>
+
+<p>2. Who is our greatest example of intercessory prayer?</p>
+
+<input type="radio" name="q2"> Moses<br>
+<input type="radio" name="q2"> Paul<br>
+<input type="radio" name="q2" value="correct"> Jesus Christ<br><br>
+
+<p>3. Which group should Christians pray for?</p>
+
+<input type="radio" name="q3"> Family only<br>
+<input type="radio" name="q3"> Friends only<br>
+<input type="radio" name="q3" value="correct"> All people<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer6","completed");
+}
+</script>
+
+</body>
+</html>
