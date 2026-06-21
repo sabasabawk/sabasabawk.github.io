@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 11 - Preparing for Eternity</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✨ Lesson 11: Preparing for Eternity</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Lay up for yourselves treasures in heaven, where neither moth nor rust doth corrupt, and where thieves do not break through nor steal."
+<br><br>
+<strong>Matthew 6:20</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Life on earth is temporary, but eternity is forever. Christian stewardship teaches us to live with eternity in mind. Every decision we make should help prepare us for the kingdom of God.
+</p>
+
+<p>
+Faithful stewards understand that earthly possessions will pass away, but spiritual treasures will last forever.
+</p>
+
+<h2>Living for Eternal Values</h2>
+
+<p>
+Many people focus only on material success, wealth, and worldly achievements. While these things have their place, they should never become more important than our relationship with God.
+</p>
+
+<p>
+Jesus taught His followers to seek first the kingdom of God and to invest in things that have eternal value.
+</p>
+
+<h2>Treasures in Heaven</h2>
+
+<p>
+We store treasures in heaven when we:
+</p>
+
+<ul>
+<li>Serve God faithfully.</li>
+<li>Share the gospel with others.</li>
+<li>Help those in need.</li>
+<li>Develop Christlike character.</li>
+<li>Use our resources for God's work.</li>
+<li>Remain faithful to God's commandments.</li>
+</ul>
+
+<h2>The Soon Return of Jesus</h2>
+
+<p>
+The Bible teaches that Jesus Christ will soon return. This blessed hope motivates Christians to live faithfully and prepare others for His coming.
+</p>
+
+<p>
+Stewardship is not merely about managing resources; it is about being ready to meet our Lord when He appears.
+</p>
+
+<h2>Preparing Daily</h2>
+
+<p>
+Preparation for eternity involves:
+</p>
+
+<ul>
+<li>Daily prayer.</li>
+<li>Bible study.</li>
+<li>Obedience to God's Word.</li>
+<li>Faith in Jesus Christ.</li>
+<li>Service to others.</li>
+<li>Faithful stewardship.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Set your affection on things above, not on things on the earth."
+<br><br>
+<strong>Colossians 3:2</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Where should Christians store their greatest treasures?</p>
+
+<input type="radio" name="q1"> On earth<br>
+<input type="radio" name="q1" value="correct"> In heaven<br>
+<input type="radio" name="q1"> In banks only<br><br>
+
+<p>2. What event are Christians preparing for?</p>
+
+<input type="radio" name="q2"> A world kingdom<br>
+<input type="radio" name="q2"> Human perfection<br>
+<input type="radio" name="q2" value="correct"> The return of Jesus Christ<br><br>
+
+<p>3. Which activity helps prepare us for eternity?</p>
+
+<input type="radio" name="q3"> Ignoring God<br>
+<input type="radio" name="q3" value="correct"> Prayer and Bible study<br>
+<input type="radio" name="q3"> Living only for wealth<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship11","completed");
+}
+</script>
+
+</body>
+</html>
