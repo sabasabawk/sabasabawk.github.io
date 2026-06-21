@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 8 - Stewardship of Relationships</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👨‍👩‍👧‍👦 Lesson 8: Stewardship of Relationships</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And be ye kind one to another, tenderhearted, forgiving one another, even as God for Christ's sake hath forgiven you."
+<br><br>
+<strong>Ephesians 4:32</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Relationships are among God's greatest gifts. Family, friends, church members, neighbors, and fellow workers all play important roles in our lives. As Christian stewards, we are called to manage our relationships in a way that honors God.
+</p>
+
+<h2>God Created Us for Relationships</h2>
+
+<p>
+From the beginning, God declared that it was not good for man to be alone. He created human beings to live in loving fellowship with Him and with one another.
+</p>
+
+<p>
+Healthy relationships bring joy, support, encouragement, and spiritual growth.
+</p>
+
+<h2>Stewardship in the Family</h2>
+
+<p>
+The family is the first institution established by God. Christians should show love, respect, patience, and faithfulness within the home.
+</p>
+
+<ul>
+<li>Honor parents.</li>
+<li>Love and respect spouses.</li>
+<li>Care for children.</li>
+<li>Practice family worship.</li>
+<li>Resolve conflicts with kindness.</li>
+</ul>
+
+<h2>Relationships in the Church</h2>
+
+<p>
+The church is the family of God. Believers are called to encourage one another, pray for one another, and work together in unity.
+</p>
+
+<p>
+A spirit of forgiveness and humility strengthens the church and glorifies Christ.
+</p>
+
+<h2>Relationships with Others</h2>
+
+<p>
+Jesus taught us to love our neighbors as ourselves. Christian stewardship includes treating all people with dignity, compassion, honesty, and respect.
+</p>
+
+<p>
+Our words and actions should reflect Christ's character.
+</p>
+
+<h2>Forgiveness and Reconciliation</h2>
+
+<p>
+No relationship is perfect. Conflicts will arise, but God calls us to forgive others as He has forgiven us.
+</p>
+
+<p>
+Forgiveness restores broken relationships and brings peace to the heart.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"A new commandment I give unto you, That ye love one another; as I have loved you."
+<br><br>
+<strong>John 13:34</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who created human beings for relationships?</p>
+
+<input type="radio" name="q1"> Society<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Government<br><br>
+
+<p>2. What should Christians show in relationships?</p>
+
+<input type="radio" name="q2"> Hatred<br>
+<input type="radio" name="q2"> Pride<br>
+<input type="radio" name="q2" value="correct"> Love and respect<br><br>
+
+<p>3. What does God call us to do when conflicts arise?</p>
+
+<input type="radio" name="q3"> Seek revenge<br>
+<input type="radio" name="q3" value="correct"> Forgive and reconcile<br>
+<input type="radio" name="q3"> Ignore everyone<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship8","completed");
+}
+</script>
+
+</body>
+</html>
