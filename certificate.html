@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate of Completion</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    padding:20px;
+    text-align:center;
+}
+
+.certificate{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    border:10px solid #0066cc;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+}
+
+h1{
+    color:#0066cc;
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.ministry{
+    font-size:24px;
+    font-weight:bold;
+    color:#333;
+}
+
+.website{
+    color:#0066cc;
+    margin-bottom:20px;
+}
+
+.student-name{
+    font-size:42px;
+    font-weight:bold;
+    text-decoration:underline;
+    margin:20px 0;
+}
+
+.course-name{
+    font-size:30px;
+    color:#0066cc;
+    font-weight:bold;
+    margin:20px 0;
+}
+
+input{
+    padding:12px;
+    width:300px;
+    font-size:18px;
+    text-align:center;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    margin:5px;
+    font-size:16px;
+}
+
+.signature{
+    display:flex;
+    justify-content:space-between;
+    margin-top:60px;
+}
+
+.line{
+    border-top:2px solid black;
+    width:250px;
+    margin:auto;
+    padding-top:8px;
+}
+
+.date{
+    margin-top:20px;
+    font-size:18px;
+}
+
+@media print{
+    input,button{
+        display:none;
+    }
+
+    body{
+        background:white;
+    }
+
+    .certificate{
+        box-shadow:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="certificate">
+
+<h1>CERTIFICATE OF COMPLETION</h1>
+
+<div class="ministry">
+SABASABA GOSPEL MINISTRY
+</div>
+
+<p>Learning • Growing • Preparing for Christ's Return</p>
+
+<div class="website">
+sabasabawk.github.io
+</div>
+
+<input type="text" id="studentName" placeholder="Enter Your Name">
+
+<br><br>
+
+<button onclick="generateCertificate()">
+Generate Certificate
+</button>
+
+<div id="certificateContent" style="display:none;">
+
+<p>This certifies that</p>
+
+<div class="student-name" id="displayName"></div>
+
+<p>has successfully completed the</p>
+
+<div class="course-name" id="courseName"></div>
+
+<p>
+and has successfully fulfilled the course requirements
+through study and assessment under SABASABA Gospel Ministry.
+</p>
+
+<div class="date">
+Date: <span id="date"></span>
+</div>
+
+<div class="signature">
+
+<div>
+<div class="line"></div>
+Course Director
+</div>
+
+<div>
+<div class="line"></div>
+Student
+</div>
+
+</div>
+
+<br><br>
+
+<button onclick="window.print()">
+📥 Download / Print Certificate
+</button>
+
+<button onclick="shareCertificate()">
+📤 Share Certificate
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const course = params.get("course") || "Bible Course";
+
+function generateCertificate(){
+
+let name = document.getElementById("studentName").value;
+
+if(name.trim()===""){
+alert("Please enter your name");
+return;
+}
+
+document.getElementById("displayName").innerText = name;
+document.getElementById("courseName").innerText = course.toUpperCase();
+
+document.getElementById("date").innerText =
+new Date().toLocaleDateString();
+
+document.getElementById("certificateContent").style.display = "block";
+
+}
+
+function shareCertificate(){
+
+if(navigator.share){
+
+navigator.share({
+title:"Certificate of Completion",
+text:"I completed the " + course + " course at SABASABA Gospel Ministry.",
+url:window.location.href
+});
+
+}else{
+
+alert("Sharing is not supported on this device.");
+
+}
+
+}
+</script>
+
+</body>
+</html>
