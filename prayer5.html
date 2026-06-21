@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 5 - Prayer and Fasting</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 5: Prayer and Fasting</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Howbeit this kind goeth not out but by prayer and fasting."
+<br><br>
+<strong>Matthew 17:21</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer and fasting are powerful spiritual practices that draw believers closer to God. Throughout the Bible, God's people combined prayer with fasting during times of repentance, spiritual need, guidance, and special dedication.
+</p>
+
+<p>
+Fasting is not a way to earn God's favor. Instead, it is a voluntary act of self-denial that helps us focus more fully on God and His will.
+</p>
+
+<h2>What Is Fasting?</h2>
+
+<p>
+Fasting usually means abstaining from food for a period of time in order to devote oneself to prayer and spiritual reflection. In some situations, people may fast from certain foods or other activities that distract them from seeking God.
+</p>
+
+<p>
+The purpose of fasting is not to impress others but to strengthen our relationship with God.
+</p>
+
+<h2>Biblical Examples of Fasting</h2>
+
+<ul>
+<li>Moses fasted while receiving God's law.</li>
+<li>Esther called for a fast before approaching the king.</li>
+<li>Daniel practiced fasting and prayer.</li>
+<li>Jesus fasted for forty days in the wilderness.</li>
+<li>The early church fasted when seeking God's guidance.</li>
+</ul>
+
+<h2>Benefits of Prayer and Fasting</h2>
+
+<ul>
+<li>Deepens spiritual commitment.</li>
+<li>Helps focus on God.</li>
+<li>Strengthens faith.</li>
+<li>Encourages humility.</li>
+<li>Provides clarity when making decisions.</li>
+<li>Draws believers closer to God.</li>
+</ul>
+
+<h2>Proper Attitude in Fasting</h2>
+
+<p>
+Jesus taught that fasting should be done sincerely and privately, not for public recognition. God looks at the heart and desires genuine devotion rather than outward display.
+</p>
+
+<p>
+Fasting should always be accompanied by prayer, Bible study, repentance, and a desire to follow God's will.
+</p>
+
+<h2>When Should Christians Fast?</h2>
+
+<p>
+Christians may choose to fast during times of:
+</p>
+
+<ul>
+<li>Personal spiritual renewal.</li>
+<li>Seeking God's guidance.</li>
+<li>Special prayer requests.</li>
+<li>Repentance and confession.</li>
+<li>Interceding for others.</li>
+<li>Church revival and mission.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Then shall ye call upon me, and ye shall go and pray unto me, and I will hearken unto you."
+<br><br>
+<strong>Jeremiah 29:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is the primary purpose of fasting?</p>
+
+<input type="radio" name="q1"> To impress people<br>
+<input type="radio" name="q1" value="correct"> To focus more fully on God<br>
+<input type="radio" name="q1"> To lose weight<br><br>
+
+<p>2. Which Bible character called for a fast before approaching the king?</p>
+
+<input type="radio" name="q2"> Ruth<br>
+<input type="radio" name="q2" value="correct"> Esther<br>
+<input type="radio" name="q2"> Mary<br><br>
+
+<p>3. Prayer and fasting help believers to:</p>
+
+<input type="radio" name="q3"> Become proud<br>
+<input type="radio" name="q3"> Avoid prayer<br>
+<input type="radio" name="q3" value="correct"> Draw closer to God<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer5","completed");
+}
+</script>
+
+</body>
+</html>
