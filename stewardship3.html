@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 3 - Stewardship of Talents</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎁 Lesson 3: Stewardship of Talents</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"As every man hath received the gift, even so minister the same one to another, as good stewards of the manifold grace of God."
+<br><br>
+<strong>1 Peter 4:10</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+God has given every person unique talents, abilities, and spiritual gifts. These gifts are not given merely for personal benefit but to glorify God and serve others.
+</p>
+
+<p>
+A faithful steward recognizes that talents come from God and should be developed and used wisely.
+</p>
+
+<h2>The Parable of the Talents</h2>
+
+<p>
+In Matthew 25:14-30, Jesus told the Parable of the Talents. The servants who used and multiplied their talents were praised by their master, while the servant who hid his talent was rebuked.
+</p>
+
+<p>
+This parable teaches that God expects us to use what He has entrusted to us faithfully.
+</p>
+
+<h2>Different Gifts, Same Purpose</h2>
+
+<p>
+God gives different gifts to different people:
+</p>
+
+<ul>
+<li>Teaching</li>
+<li>Preaching</li>
+<li>Singing and music</li>
+<li>Leadership</li>
+<li>Encouragement</li>
+<li>Service and helping others</li>
+<li>Writing and communication</li>
+<li>Administration</li>
+</ul>
+
+<p>
+No gift is unimportant. Every talent can be used to honor God.
+</p>
+
+<h2>Developing Your Talents</h2>
+
+<ul>
+<li>Pray for God's guidance.</li>
+<li>Practice and improve your skills.</li>
+<li>Use your gifts regularly.</li>
+<li>Serve others through your abilities.</li>
+<li>Give God the glory for every success.</li>
+</ul>
+
+<h2>Stewardship and Mission</h2>
+
+<p>
+God's gifts are meant to advance His kingdom. Whether through preaching, teaching, music, health ministry, or service, our talents should help lead people to Christ.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Well done, thou good and faithful servant."
+<br><br>
+<strong>Matthew 25:21</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who gives us our talents?</p>
+
+<input type="radio" name="q1"> Parents<br>
+<input type="radio" name="q1"> Teachers<br>
+<input type="radio" name="q1" value="correct"> God<br><br>
+
+<p>2. What did the faithful servants do in the Parable of the Talents?</p>
+
+<input type="radio" name="q2"> Hid their talents<br>
+<input type="radio" name="q2" value="correct"> Used their talents faithfully<br>
+<input type="radio" name="q2"> Ignored their talents<br><br>
+
+<p>3. Why should we use our talents?</p>
+
+<input type="radio" name="q3"> For pride<br>
+<input type="radio" name="q3"> For popularity only<br>
+<input type="radio" name="q3" value="correct"> To glorify God and serve others<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship3","completed");
+}
+</script>
+
+</body>
+</html>
