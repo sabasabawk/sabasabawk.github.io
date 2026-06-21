@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 10 - Faithfulness in Small Things</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⭐ Lesson 10: Faithfulness in Small Things</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"He that is faithful in that which is least is faithful also in much."
+<br><br>
+<strong>Luke 16:10</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many people desire great responsibilities, but God often prepares His servants through small responsibilities. Faithfulness in everyday duties reveals character and prepares us for greater opportunities.
+</p>
+
+<p>
+Christian stewardship involves being dependable, honest, and faithful in all aspects of life, even when tasks seem small or unnoticed.
+</p>
+
+<h2>God Values Faithfulness</h2>
+
+<p>
+God is not impressed merely by the size of an achievement. He looks at the heart and rewards faithfulness. Small acts of obedience are precious in His sight.
+</p>
+
+<p>
+Throughout Scripture, God entrusted greater responsibilities to those who first proved faithful in smaller ones.
+</p>
+
+<h2>Biblical Examples</h2>
+
+<ul>
+<li>David faithfully cared for sheep before becoming king.</li>
+<li>Joseph served faithfully as a servant and prisoner before becoming a ruler in Egypt.</li>
+<li>Daniel remained faithful in Babylon despite many challenges.</li>
+<li>The disciples faithfully followed Jesus and later helped spread the gospel worldwide.</li>
+</ul>
+
+<h2>Faithfulness in Daily Life</h2>
+
+<p>
+Faithfulness should be demonstrated in:
+</p>
+
+<ul>
+<li>Prayer and Bible study.</li>
+<li>School and work responsibilities.</li>
+<li>Family duties.</li>
+<li>Church service.</li>
+<li>Financial management.</li>
+<li>Relationships with others.</li>
+</ul>
+
+<h2>The Reward of Faithfulness</h2>
+
+<p>
+God promises blessings to those who remain faithful. While earthly rewards may not always come immediately, faithful stewards can trust that God sees every act of obedience.
+</p>
+
+<p>
+At Christ's return, faithful believers will hear the wonderful words:
+</p>
+
+<p>
+"Well done, thou good and faithful servant."
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to Jesus, a person faithful in little will be:</p>
+
+<input type="radio" name="q1"> Untrustworthy in much<br>
+<input type="radio" name="q1" value="correct"> Faithful also in much<br>
+<input type="radio" name="q1"> Ignored by God<br><br>
+
+<p>2. Which biblical character cared for sheep before becoming king?</p>
+
+<input type="radio" name="q2"> Solomon<br>
+<input type="radio" name="q2"> Moses<br>
+<input type="radio" name="q2" value="correct"> David<br><br>
+
+<p>3. What does God require in stewards?</p>
+
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3"> Fame<br>
+<input type="radio" name="q3" value="correct"> Faithfulness<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship10","completed");
+}
+</script>
+
+</body>
+</html>
