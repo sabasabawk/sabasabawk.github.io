@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 6 - Trust and Faithfulness</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 6: Trust and Faithfulness</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Trust is one of the strongest foundations of a successful marriage. Without trust, a relationship becomes weak and unstable. Faithfulness helps couples build confidence in one another and creates a secure, loving home.
+</p>
+
+<p>
+God calls husbands and wives to be faithful in their words, actions, and commitments.
+</p>
+
+<h2>What Is Trust?</h2>
+
+<p>
+Trust is the confidence that your spouse will be honest, dependable, and loyal. It grows over time through consistent actions and truthful communication.
+</p>
+
+<p>
+Trust cannot be demanded; it must be earned and maintained.
+</p>
+
+<h2>The Importance of Faithfulness</h2>
+
+<p>
+Marriage is a covenant before God. Faithfulness means remaining committed to your spouse emotionally, spiritually, and physically.
+</p>
+
+<p>
+A faithful husband or wife protects the marriage relationship and honors the promises made before God.
+</p>
+
+<h2>Ways to Build Trust</h2>
+
+<ul>
+<li>Always tell the truth.</li>
+<li>Keep your promises.</li>
+<li>Be dependable and responsible.</li>
+<li>Communicate openly.</li>
+<li>Respect personal boundaries.</li>
+<li>Pray together regularly.</li>
+</ul>
+
+<h2>Things That Destroy Trust</h2>
+
+<ul>
+<li>Dishonesty.</li>
+<li>Broken promises.</li>
+<li>Secretive behavior.</li>
+<li>Unfaithfulness.</li>
+<li>Manipulation and deception.</li>
+<li>Lack of accountability.</li>
+</ul>
+
+<h2>Restoring Broken Trust</h2>
+
+<p>
+Sometimes trust is damaged through mistakes or poor decisions. With genuine repentance, forgiveness, patience, and God's grace, trust can be rebuilt.
+</p>
+
+<p>
+Restoration often takes time, but God can heal broken relationships when both partners are willing to work together.
+</p>
+
+<h2>Faithfulness to God First</h2>
+
+<p>
+The strongest marriages are built when both husband and wife are faithful to God. As they grow closer to Christ, they also grow closer to one another.
+</p>
+
+<p>
+A Christ-centered marriage encourages loyalty, honesty, and lifelong commitment.
+</p>
+
+<h2>The Blessings of Trust</h2>
+
+<ul>
+<li>Greater peace in the home.</li>
+<li>Stronger emotional connection.</li>
+<li>Better communication.</li>
+<li>Deeper love and security.</li>
+<li>Stronger family relationships.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is one foundation of a strong marriage?</p>
+
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1" value="correct"> Trust<br>
+<input type="radio" name="q1"> Popularity<br><br>
+
+<p>2. Which action helps build trust?</p>
+
+<input type="radio" name="q2"> Dishonesty<br>
+<input type="radio" name="q2"> Breaking promises<br>
+<input type="radio" name="q2" value="correct"> Keeping promises<br><br>
+
+<p>3. What destroys trust in marriage?</p>
+
+<input type="radio" name="q3"> Open communication<br>
+<input type="radio" name="q3" value="correct"> Deception and unfaithfulness<br>
+<input type="radio" name="q3"> Prayer together<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage6","completed");
+}
+</script>
+
+</body>
+</html>
