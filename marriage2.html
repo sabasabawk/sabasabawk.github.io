@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 2 - Choosing the Right Life Partner</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 2: Choosing the Right Life Partner</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Can two walk together, except they be agreed?"
+<br><br>
+<strong>Amos 3:3</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+One of the most important decisions a person will ever make is choosing a life partner. The choice of a husband or wife affects spiritual life, happiness, family stability, and future goals.
+</p>
+
+<p>
+God desires His children to seek His guidance when making this important decision.
+</p>
+
+<h2>Seek God's Guidance</h2>
+
+<p>
+Before entering a serious relationship, believers should pray earnestly for God's direction. God sees what we cannot see and knows what is best for our future.
+</p>
+
+<p>
+A relationship built on God's guidance has a stronger foundation for lasting success.
+</p>
+
+<h2>Spiritual Compatibility</h2>
+
+<p>
+A Christian should seek a partner who shares the same faith and commitment to God. Spiritual unity is one of the strongest foundations for a successful marriage.
+</p>
+
+<p>
+When both partners love God, they are better able to face life's challenges together.
+</p>
+
+<h2>Important Qualities to Look For</h2>
+
+<ul>
+<li>Strong faith in God.</li>
+<li>Honesty and integrity.</li>
+<li>Kindness and respect.</li>
+<li>Responsibility and maturity.</li>
+<li>Good communication skills.</li>
+<li>A willingness to serve others.</li>
+<li>Commitment to biblical values.</li>
+</ul>
+
+<h2>Do Not Focus Only on Appearance</h2>
+
+<p>
+Physical appearance may attract attention, but character determines the strength of a marriage.
+</p>
+
+<p>
+The Bible teaches that godly character is more valuable than outward beauty alone.
+</p>
+
+<h2>Warning Signs</h2>
+
+<p>
+Before marriage, it is wise to recognize unhealthy behaviors that can create serious problems later.
+</p>
+
+<ul>
+<li>Dishonesty.</li>
+<li>Abusive behavior.</li>
+<li>Lack of respect.</li>
+<li>Irresponsibility.</li>
+<li>Disregard for God's principles.</li>
+</ul>
+
+<h2>Patience in Choosing</h2>
+
+<p>
+Many people rush into relationships because of pressure or emotions. God's timing is always best. It is better to wait for the right person than to make a decision that leads to regret.
+</p>
+
+<h2>Christ-Centered Relationships</h2>
+
+<p>
+Healthy relationships honor God. Couples should encourage one another spiritually, pray together, study God's Word together, and support each other's walk with Christ.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Can two walk together, except they be agreed?"
+<br><br>
+<strong>Amos 3:3</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What should a believer seek first when choosing a life partner?</p>
+
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1"> Popularity<br>
+<input type="radio" name="q1" value="correct"> God's guidance<br><br>
+
+<p>2. What is one of the strongest foundations for marriage?</p>
+
+<input type="radio" name="q2"> Physical appearance<br>
+<input type="radio" name="q2" value="correct"> Spiritual compatibility<br>
+<input type="radio" name="q2"> Social status<br><br>
+
+<p>3. Which quality is most important?</p>
+
+<input type="radio" name="q3"> Expensive possessions<br>
+<input type="radio" name="q3"> Fame<br>
+<input type="radio" name="q3" value="correct"> Godly character<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage2","completed");
+}
+</script>
+
+</body>
+</html>
