@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 3 - Love and Respect in Marriage</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 3: Love and Respect in Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Nevertheless let every one of you in particular so love his wife even as himself; and the wife see that she reverence her husband."
+<br><br>
+<strong>Ephesians 5:33</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Love and respect are two essential pillars of a successful marriage. When genuine love and mutual respect are present, a marriage becomes stronger, happier, and more Christ-centered.
+</p>
+
+<p>
+God designed marriage to reflect His love. Both husband and wife have a responsibility to treat one another with kindness, honor, and understanding.
+</p>
+
+<h2>Biblical Love</h2>
+
+<p>
+Biblical love is more than a feeling. It is a choice to care, serve, forgive, and sacrifice for another person.
+</p>
+
+<p>
+The love described in 1 Corinthians 13 is patient, kind, humble, forgiving, and enduring. This kind of love should guide every Christian marriage.
+</p>
+
+<h2>The Husband's Responsibility</h2>
+
+<p>
+The Bible instructs husbands to love their wives as Christ loved the church. Christ's love was selfless, sacrificial, and compassionate.
+</p>
+
+<ul>
+<li>Show kindness daily.</li>
+<li>Listen carefully.</li>
+<li>Protect and support your family.</li>
+<li>Lead spiritually through prayer and example.</li>
+<li>Treat your wife with honor.</li>
+</ul>
+
+<h2>The Wife's Responsibility</h2>
+
+<p>
+The Bible encourages wives to respect and support their husbands. Respect strengthens trust and promotes harmony within the home.
+</p>
+
+<ul>
+<li>Encourage your husband.</li>
+<li>Communicate respectfully.</li>
+<li>Support family goals.</li>
+<li>Show appreciation.</li>
+<li>Work together as a team.</li>
+</ul>
+
+<h2>Mutual Respect</h2>
+
+<p>
+Respect is not one-sided. Both husband and wife should value each other's opinions, feelings, and contributions.
+</p>
+
+<p>
+Respect involves listening, speaking kindly, avoiding insults, and treating one another with dignity.
+</p>
+
+<h2>Forgiveness and Grace</h2>
+
+<p>
+No marriage is perfect because no person is perfect. Mistakes will happen. Love and respect grow stronger when couples practice forgiveness.
+</p>
+
+<p>
+Just as Christ forgives us, husbands and wives should forgive one another and seek reconciliation.
+</p>
+
+<h2>Building a Loving Home</h2>
+
+<p>
+Small daily actions strengthen love and respect:
+</p>
+
+<ul>
+<li>Praying together.</li>
+<li>Expressing gratitude.</li>
+<li>Spending quality time together.</li>
+<li>Encouraging one another.</li>
+<li>Resolving disagreements peacefully.</li>
+</ul>
+
+<h2>Christ as the Example</h2>
+
+<p>
+Jesus demonstrated perfect love, humility, and service. Christian couples should look to Him as their greatest example in marriage.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Nevertheless let every one of you in particular so love his wife even as himself; and the wife see that she reverence her husband."
+<br><br>
+<strong>Ephesians 5:33</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to the Bible, husbands should love their wives as Christ loved the ______.</p>
+
+<input type="radio" name="q1"> World<br>
+<input type="radio" name="q1" value="correct"> Church<br>
+<input type="radio" name="q1"> Nation<br><br>
+
+<p>2. What is a key element of a healthy marriage?</p>
+
+<input type="radio" name="q2"> Pride<br>
+<input type="radio" name="q2"> Competition<br>
+<input type="radio" name="q2" value="correct"> Mutual respect<br><br>
+
+<p>3. Which chapter is known as the Bible's love chapter?</p>
+
+<input type="radio" name="q3"> Psalm 23<br>
+<input type="radio" name="q3" value="correct"> 1 Corinthians 13<br>
+<input type="radio" name="q3"> Matthew 5<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage3","completed");
+}
+</script>
+
+</body>
+</html>
