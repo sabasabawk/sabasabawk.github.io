@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 9 - Raising Children God's Way</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 9: Raising Children God's Way</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Train up a child in the way he should go: and when he is old, he will not depart from it."
+<br><br>
+<strong>Proverbs 22:6</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Children are a precious gift from God. Parents have the sacred responsibility of guiding, teaching, protecting, and preparing their children to become faithful followers of Christ.
+</p>
+
+<p>
+Raising children is one of the greatest ministries God gives to families.
+</p>
+
+<h2>Children Are a Blessing</h2>
+
+<p>
+The Bible describes children as a heritage from the Lord. They should be loved, valued, and cared for as gifts entrusted to parents by God.
+</p>
+
+<p>
+Every child has unique talents and abilities that should be nurtured.
+</p>
+
+<h2>The Role of Parents</h2>
+
+<p>
+Parents are the first teachers their children will know. Children learn not only from what parents say but also from what they do.
+</p>
+
+<ul>
+<li>Teach God's Word.</li>
+<li>Set a good example.</li>
+<li>Pray with and for your children.</li>
+<li>Provide loving discipline.</li>
+<li>Encourage honesty and responsibility.</li>
+</ul>
+
+<h2>Teaching Spiritual Values</h2>
+
+<p>
+Children should learn about God from an early age. Family worship, Bible study, prayer, and Christian service help build a strong spiritual foundation.
+</p>
+
+<p>
+Parents should create a home where faith is practiced daily.
+</p>
+
+<h2>The Importance of Discipline</h2>
+
+<p>
+Biblical discipline is motivated by love, not anger. Discipline helps children learn self-control, respect, responsibility, and obedience.
+</p>
+
+<p>
+Correction should always be fair, consistent, and aimed at helping the child grow.
+</p>
+
+<h2>Building Strong Relationships</h2>
+
+<p>
+Children thrive when they feel loved and accepted. Parents should spend quality time with their children and maintain open communication.
+</p>
+
+<ul>
+<li>Listen carefully.</li>
+<li>Show affection.</li>
+<li>Encourage their efforts.</li>
+<li>Celebrate achievements.</li>
+<li>Provide guidance during challenges.</li>
+</ul>
+
+<h2>Preparing Children for Life</h2>
+
+<p>
+Parents should teach practical life skills, strong character, and dependence on God. The goal is to prepare children to become responsible adults who honor Christ.
+</p>
+
+<h2>A Christ-Centered Home</h2>
+
+<p>
+The most effective parenting takes place in a Christ-centered home. When children see their parents loving God and living by biblical principles, they are more likely to follow the same path.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Train up a child in the way he should go: and when he is old, he will not depart from it."
+<br><br>
+<strong>Proverbs 22:6</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to Proverbs 22:6, parents should ______.</p>
+
+<input type="radio" name="q1"> Ignore spiritual training<br>
+<input type="radio" name="q1" value="correct"> Train up a child in the right way<br>
+<input type="radio" name="q1"> Allow children to teach themselves<br><br>
+
+<p>2. What is one important responsibility of parents?</p>
+
+<input type="radio" name="q2"> Teach God's Word<br>
+<input type="radio" name="q2"> Pray for their children<br>
+<input type="radio" name="q2" value="correct"> Both of the above<br><br>
+
+<p>3. Biblical discipline should be motivated by ______.</p>
+
+<input type="radio" name="q3"> Anger<br>
+<input type="radio" name="q3" value="correct"> Love<br>
+<input type="radio" name="q3"> Revenge<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage9","completed");
+}
+</script>
+
+</body>
+</html>
