@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 8 - Intimacy and Emotional Connection</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 8: Intimacy and Emotional Connection</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And they were both naked, the man and his wife, and were not ashamed."
+<br><br>
+<strong>Genesis 2:25</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+God designed marriage to include deep emotional, spiritual, and physical closeness. Intimacy is more than physical affection; it involves trust, understanding, friendship, and genuine care for one another.
+</p>
+
+<p>
+A strong emotional connection helps couples remain united through life's joys and challenges.
+</p>
+
+<h2>What Is Emotional Intimacy?</h2>
+
+<p>
+Emotional intimacy develops when husband and wife openly share their thoughts, feelings, hopes, fears, and experiences.
+</p>
+
+<p>
+It grows when couples feel safe, valued, understood, and accepted by one another.
+</p>
+
+<h2>Building Emotional Connection</h2>
+
+<ul>
+<li>Spend quality time together.</li>
+<li>Listen carefully to one another.</li>
+<li>Pray together regularly.</li>
+<li>Express appreciation often.</li>
+<li>Show kindness and affection.</li>
+<li>Support each other during difficult times.</li>
+</ul>
+
+<h2>The Importance of Friendship</h2>
+
+<p>
+Healthy marriages are built on strong friendship. Husband and wife should enjoy spending time together, encouraging one another, and sharing life's experiences.
+</p>
+
+<p>
+Friendship strengthens the bond between couples and increases trust.
+</p>
+
+<h2>Physical Intimacy in Marriage</h2>
+
+<p>
+Physical affection is a gift from God within marriage. It should be expressed with love, respect, faithfulness, and mutual care.
+</p>
+
+<p>
+True intimacy is built on commitment and selfless love rather than selfish desires.
+</p>
+
+<h2>Barriers to Intimacy</h2>
+
+<p>
+Several things can weaken emotional connection:
+</p>
+
+<ul>
+<li>Poor communication.</li>
+<li>Unresolved conflict.</li>
+<li>Lack of trust.</li>
+<li>Neglecting quality time together.</li>
+<li>Bitterness and unforgiveness.</li>
+</ul>
+
+<h2>Keeping the Relationship Strong</h2>
+
+<p>
+Intimacy grows when couples intentionally invest in their relationship. Small daily acts of kindness, encouragement, and affection strengthen the marriage bond.
+</p>
+
+<p>
+A healthy marriage requires ongoing effort from both husband and wife.
+</p>
+
+<h2>Christ-Centered Intimacy</h2>
+
+<p>
+When Christ is at the center of marriage, couples learn to love selflessly and serve one another. His example teaches patience, forgiveness, humility, and genuine care.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And they were both naked, the man and his wife, and were not ashamed."
+<br><br>
+<strong>Genesis 2:25</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Emotional intimacy grows through ______.</p>
+
+<input type="radio" name="q1"> Ignoring one another<br>
+<input type="radio" name="q1" value="correct"> Open communication and trust<br>
+<input type="radio" name="q1"> Constant arguments<br><br>
+
+<p>2. What strengthens emotional connection?</p>
+
+<input type="radio" name="q2"> Lack of communication<br>
+<input type="radio" name="q2"> Bitterness<br>
+<input type="radio" name="q2" value="correct"> Quality time together<br><br>
+
+<p>3. Who should be at the center of marital intimacy?</p>
+
+<input type="radio" name="q3"> Friends<br>
+<input type="radio" name="q3"> Money<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage8","completed");
+}
+</script>
+
+</body>
+</html>
