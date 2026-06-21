@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 12 - The Power of a Praying Christian</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.certificate{
+    text-align:center;
+    margin-top:30px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 12: The Power of a Praying Christian</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"The effectual fervent prayer of a righteous man availeth much."
+<br><br>
+<strong>James 5:16</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer is one of the greatest privileges given to God's people. Through prayer, ordinary men and women are connected with the power of Heaven. Prayer changes hearts, strengthens faith, defeats temptation, and brings believers closer to God.
+</p>
+
+<p>
+The history of Christianity is filled with examples of faithful believers whose prayers changed lives, families, churches, and even nations.
+</p>
+
+<h2>The Power of Prayer</h2>
+
+<p>
+Prayer is powerful because it connects us with an all-powerful God. The power is not in the person praying but in the God who hears and answers prayer.
+</p>
+
+<ul>
+<li>Prayer brings peace.</li>
+<li>Prayer strengthens faith.</li>
+<li>Prayer helps overcome temptation.</li>
+<li>Prayer opens doors for God's blessings.</li>
+<li>Prayer prepares hearts for revival.</li>
+<li>Prayer helps believers remain faithful.</li>
+</ul>
+
+<h2>Examples of Powerful Prayer</h2>
+
+<ul>
+<li>Elijah prayed and God sent rain.</li>
+<li>Daniel prayed and God protected him.</li>
+<li>The early church prayed and received power.</li>
+<li>Jesus prayed continually during His ministry.</li>
+</ul>
+
+<h2>A Lifestyle of Prayer</h2>
+
+<p>
+Prayer should not be limited to emergencies. God desires His children to maintain a daily relationship with Him through prayer.
+</p>
+
+<p>
+A praying Christian seeks God's guidance every day and learns to trust Him in every circumstance.
+</p>
+
+<h2>Remain Faithful in Prayer</h2>
+
+<p>
+There may be times when answers seem delayed. During such moments we must continue praying and trusting God's promises.
+</p>
+
+<p>
+God always hears sincere prayer and answers according to His perfect wisdom and love.
+</p>
+
+<h2>Final Appeal</h2>
+
+<p>
+Make prayer a daily habit. Begin each day with God, walk with Him throughout the day, and end the day in prayer. A life connected to God through prayer is a life filled with peace, purpose, and spiritual power.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Pray without ceasing."
+<br><br>
+<strong>1 Thessalonians 5:17</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. Why is prayer powerful?</p>
+
+<input type="radio" name="q1"> Because of human ability<br>
+<input type="radio" name="q1" value="correct"> Because it connects us with God<br>
+<input type="radio" name="q1"> Because of special words<br><br>
+
+<p>2. Who prayed for rain and God answered?</p>
+
+<input type="radio" name="q2"> Moses<br>
+<input type="radio" name="q2"> Peter<br>
+<input type="radio" name="q2" value="correct"> Elijah<br><br>
+
+<p>3. What should be the Christian's attitude toward prayer?</p>
+
+<input type="radio" name="q3"> Pray only during emergencies<br>
+<input type="radio" name="q3" value="correct"> Make prayer a daily lifestyle<br>
+<input type="radio" name="q3"> Pray only at church<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="certificate" id="certificateSection">
+
+<h2>🎉 Congratulations!</h2>
+
+<p>
+You have successfully completed the Prayer Course.
+</p>
+
+<a href="certificate.html?course=Prayer%20Course">
+<button>🏆 Claim Your Certificate</button>
+</a>
+
+</div>
+
+<br>
+
+<a href="prayer11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer.html">
+<button>📚 Course Home</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer12","completed");
+
+if(score >= 2){
+document.getElementById("certificateSection").style.display = "block";
+}
+}
+</script>
+
+</body>
+</html>
