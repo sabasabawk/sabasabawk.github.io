@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 7 - Stewardship of the Environment</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 Lesson 7: Stewardship of the Environment</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And the Lord God took the man, and put him into the garden of Eden to dress it and to keep it."
+<br><br>
+<strong>Genesis 2:15</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+God created a beautiful world and entrusted it to humanity. From the beginning, Adam and Eve were given the responsibility of caring for God's creation. Christian stewardship includes caring for the environment and using natural resources wisely.
+</p>
+
+<h2>God the Creator</h2>
+
+<p>
+The Bible teaches that God created the heavens, the earth, the seas, plants, animals, and all living things. Everything in nature reflects His wisdom, power, and love.
+</p>
+
+<p>
+Because God is the Creator, we should respect and care for His creation.
+</p>
+
+<h2>Human Responsibility</h2>
+
+<p>
+God appointed humanity as caretakers of the earth. This responsibility includes protecting nature, avoiding waste, and using resources responsibly.
+</p>
+
+<p>
+A faithful steward recognizes that the earth belongs to God and that we are accountable for how we treat it.
+</p>
+
+<h2>Practical Ways to Care for the Environment</h2>
+
+<ul>
+<li>Keep your surroundings clean.</li>
+<li>Avoid unnecessary pollution.</li>
+<li>Use water wisely.</li>
+<li>Plant and care for trees.</li>
+<li>Protect animals from cruelty.</li>
+<li>Avoid wastefulness.</li>
+<li>Appreciate and preserve God's creation.</li>
+</ul>
+
+<h2>Environmental Stewardship and Mission</h2>
+
+<p>
+When Christians care for the environment, they demonstrate respect for God's gifts and provide a positive witness to others. Caring for creation reflects God's character and promotes the well-being of communities.
+</p>
+
+<h2>The Future of Creation</h2>
+
+<p>
+The Bible teaches that sin has damaged the earth, but God has promised a new heaven and a new earth. Until that day, Christians should faithfully care for the world God has entrusted to them.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"The earth is the Lord's, and the fullness thereof; the world, and they that dwell therein."
+<br><br>
+<strong>Psalm 24:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who created the earth?</p>
+
+<input type="radio" name="q1"> Nature<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Humanity<br><br>
+
+<p>2. Why should Christians care for the environment?</p>
+
+<input type="radio" name="q2"> Because it belongs to God<br>
+<input type="radio" name="q2" value="correct"> Because God entrusted it to us<br>
+<input type="radio" name="q2"> For personal pride<br><br>
+
+<p>3. Which action demonstrates good environmental stewardship?</p>
+
+<input type="radio" name="q3"> Polluting rivers<br>
+<input type="radio" name="q3"> Wasting resources<br>
+<input type="radio" name="q3" value="correct"> Keeping surroundings clean<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship7","completed");
+}
+</script>
+
+</body>
+</html>
