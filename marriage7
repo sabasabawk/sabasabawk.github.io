@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 7 - Financial Stewardship in Marriage</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 7: Financial Stewardship in Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Money is one of the areas that can either strengthen or weaken a marriage. Many family conflicts arise from poor financial management, lack of planning, or disagreements about spending.
+</p>
+
+<p>
+God calls married couples to be faithful stewards of the resources He provides.
+</p>
+
+<h2>God Owns Everything</h2>
+
+<p>
+The Bible teaches that everything belongs to God. Our money, possessions, talents, and opportunities are gifts entrusted to us by Him.
+</p>
+
+<p>
+As stewards, husbands and wives should manage finances wisely and responsibly.
+</p>
+
+<h2>Financial Unity</h2>
+
+<p>
+Marriage is a partnership. Couples should work together when making financial decisions rather than acting independently.
+</p>
+
+<ul>
+<li>Discuss financial goals together.</li>
+<li>Create a family budget.</li>
+<li>Be transparent about spending.</li>
+<li>Avoid financial secrets.</li>
+<li>Pray together about major decisions.</li>
+</ul>
+
+<h2>The Importance of Budgeting</h2>
+
+<p>
+A budget helps families use resources wisely and avoid unnecessary debt.
+</p>
+
+<p>
+Good budgeting allows couples to meet needs, save for the future, support God's work, and prepare for emergencies.
+</p>
+
+<h2>Avoiding Debt</h2>
+
+<p>
+While some financial obligations may be unavoidable, unnecessary debt can place stress on a marriage.
+</p>
+
+<p>
+Wise couples live within their means and avoid spending beyond what they can afford.
+</p>
+
+<h2>Giving and Generosity</h2>
+
+<p>
+Christian families should honor God through faithful giving. Returning tithes and offerings is an act of worship and gratitude.
+</p>
+
+<p>
+Generosity also reflects God's character and blesses others.
+</p>
+
+<h2>Contentment and Gratitude</h2>
+
+<p>
+Many financial problems come from comparing ourselves with others. God's Word teaches contentment and gratitude for His blessings.
+</p>
+
+<p>
+A content family experiences greater peace and joy than one constantly chasing material possessions.
+</p>
+
+<h2>Working Together Toward Goals</h2>
+
+<p>
+Successful couples establish common financial goals such as:
+</p>
+
+<ul>
+<li>Saving for future needs.</li>
+<li>Supporting children's education.</li>
+<li>Reducing debt.</li>
+<li>Helping others.</li>
+<li>Advancing God's mission.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Moreover it is required in stewards, that a man be found faithful."
+<br><br>
+<strong>1 Corinthians 4:2</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who ultimately owns everything we possess?</p>
+
+<input type="radio" name="q1"> Ourselves<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Government<br><br>
+
+<p>2. What helps families manage money wisely?</p>
+
+<input type="radio" name="q2"> Guesswork<br>
+<input type="radio" name="q2" value="correct"> A budget<br>
+<input type="radio" name="q2"> Overspending<br><br>
+
+<p>3. What should Christian couples avoid when possible?</p>
+
+<input type="radio" name="q3"> Saving money<br>
+<input type="radio" name="q3"> Giving offerings<br>
+<input type="radio" name="q3" value="correct"> Unnecessary debt<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage7","completed");
+}
+</script>
+
+</body>
+</html>
