@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 4 - Communication in Marriage</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 4: Communication in Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Let every man be swift to hear, slow to speak, slow to wrath."
+<br><br>
+<strong>James 1:19</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Communication is one of the most important ingredients in a healthy marriage. Many marital problems arise not because couples do not love each other, but because they fail to communicate effectively.
+</p>
+
+<p>
+God desires husbands and wives to speak honestly, listen carefully, and treat each other with kindness and respect.
+</p>
+
+<h2>Why Communication Matters</h2>
+
+<p>
+Communication helps couples understand one another's thoughts, feelings, concerns, and needs. When communication is healthy, trust grows and relationships become stronger.
+</p>
+
+<p>
+Good communication creates unity, while poor communication often leads to misunderstandings and conflict.
+</p>
+
+<h2>The Importance of Listening</h2>
+
+<p>
+Listening is just as important as speaking. Many people listen only to respond rather than to understand.
+</p>
+
+<p>
+A loving spouse takes time to listen carefully and respectfully.
+</p>
+
+<ul>
+<li>Listen without interrupting.</li>
+<li>Show genuine interest.</li>
+<li>Seek to understand before responding.</li>
+<li>Be patient and attentive.</li>
+</ul>
+
+<h2>Speaking with Kindness</h2>
+
+<p>
+Words have great power. They can heal or hurt, encourage or discourage.
+</p>
+
+<p>
+Christian couples should use words that build up rather than tear down.
+</p>
+
+<ul>
+<li>Speak truthfully.</li>
+<li>Speak respectfully.</li>
+<li>Avoid insults and harsh criticism.</li>
+<li>Use encouraging words.</li>
+<li>Express appreciation regularly.</li>
+</ul>
+
+<h2>Resolving Misunderstandings</h2>
+
+<p>
+Misunderstandings happen in every marriage. The key is addressing them quickly and lovingly.
+</p>
+
+<p>
+Couples should discuss problems calmly rather than allowing anger and resentment to grow.
+</p>
+
+<h2>Avoiding Harmful Communication</h2>
+
+<p>
+Certain habits damage relationships and should be avoided:
+</p>
+
+<ul>
+<li>Yelling and shouting.</li>
+<li>Insults and name-calling.</li>
+<li>Ignoring one another.</li>
+<li>Dishonesty.</li>
+<li>Holding grudges.</li>
+</ul>
+
+<h2>Prayer and Communication</h2>
+
+<p>
+Couples who pray together often communicate better. Prayer invites God's wisdom into conversations and helps soften hearts.
+</p>
+
+<p>
+When Christ guides communication, marriages become stronger and more peaceful.
+</p>
+
+<h2>Building Daily Connection</h2>
+
+<p>
+Healthy communication requires regular effort. Spend time talking about daily experiences, goals, concerns, and spiritual growth.
+</p>
+
+<p>
+Strong marriages are built through many small conversations over time.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let every man be swift to hear, slow to speak, slow to wrath."
+<br><br>
+<strong>James 1:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to James 1:19, believers should be swift to ______.</p>
+
+<input type="radio" name="q1"> Speak<br>
+<input type="radio" name="q1" value="correct"> Hear<br>
+<input type="radio" name="q1"> Argue<br><br>
+
+<p>2. Which communication habit strengthens marriage?</p>
+
+<input type="radio" name="q2"> Insults<br>
+<input type="radio" name="q2"> Yelling<br>
+<input type="radio" name="q2" value="correct"> Listening carefully<br><br>
+
+<p>3. What should Christian couples avoid?</p>
+
+<input type="radio" name="q3" value="correct"> Harsh criticism and dishonesty<br>
+<input type="radio" name="q3"> Respectful discussion<br>
+<input type="radio" name="q3"> Prayer together<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage4","completed");
+}
+</script>
+
+</body>
+</html>
