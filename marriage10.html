@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 10 - The Christian Home</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 10: The Christian Home</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"But as for me and my house, we will serve the Lord."
+<br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+A Christian home is more than a place where people live together. It is a place where God is honored, loved, and worshiped. The Christian home serves as a training ground for faith, character, and service.
+</p>
+
+<p>
+When Christ is the center of the family, the home becomes a place of peace, love, and spiritual growth.
+</p>
+
+<h2>Christ at the Center</h2>
+
+<p>
+The foundation of every Christian home should be Jesus Christ. Family members should seek God's guidance in their decisions, relationships, and daily activities.
+</p>
+
+<p>
+A home centered on Christ is better prepared to face life's challenges.
+</p>
+
+<h2>Family Worship</h2>
+
+<p>
+Family worship is an important part of a Christian home. Through worship, family members grow spiritually and strengthen their relationship with God.
+</p>
+
+<ul>
+<li>Read the Bible together.</li>
+<li>Pray together daily.</li>
+<li>Sing hymns and spiritual songs.</li>
+<li>Discuss God's teachings.</li>
+</ul>
+
+<h2>Love and Respect in the Home</h2>
+
+<p>
+Christian homes should be characterized by love, respect, patience, and kindness. Family members should support and encourage one another.
+</p>
+
+<p>
+Harsh words, selfishness, and disrespect weaken family relationships.
+</p>
+
+<h2>Teaching Christian Values</h2>
+
+<p>
+Parents have the responsibility of teaching biblical values to their children.
+</p>
+
+<ul>
+<li>Honesty.</li>
+<li>Respect.</li>
+<li>Obedience.</li>
+<li>Compassion.</li>
+<li>Faithfulness.</li>
+<li>Service to others.</li>
+</ul>
+
+<h2>Hospitality and Service</h2>
+
+<p>
+A Christian home should be a place of hospitality. Families should welcome others, show kindness, and serve those in need.
+</p>
+
+<p>
+Through acts of love and generosity, families reflect the character of Christ.
+</p>
+
+<h2>Handling Challenges Together</h2>
+
+<p>
+Every family faces difficulties. Financial problems, illness, misunderstandings, and other challenges may arise.
+</p>
+
+<p>
+Christian families overcome difficulties by praying together, trusting God, and supporting one another.
+</p>
+
+<h2>The Home as a Witness</h2>
+
+<p>
+A Christ-centered home becomes a powerful witness to neighbors, friends, and the community. Others can see God's love through the way family members treat one another.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"But as for me and my house, we will serve the Lord."
+<br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who should be the center of every Christian home?</p>
+
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1"> Success<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p>2. Which activity strengthens a Christian family?</p>
+
+<input type="radio" name="q2"> Family worship<br>
+<input type="radio" name="q2"> Prayer together<br>
+<input type="radio" name="q2" value="correct"> Both of the above<br><br>
+
+<p>3. What should characterize a Christian home?</p>
+
+<input type="radio" name="q3"> Selfishness<br>
+<input type="radio" name="q3"> Disrespect<br>
+<input type="radio" name="q3" value="correct"> Love and respect<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="marriage11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage10","completed");
+}
+</script>
+
+</body>
+</html>
