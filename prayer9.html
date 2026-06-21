@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 9 - Family Prayer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 9: Family Prayer</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"But as for me and my house, we will serve the Lord."
+<br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Family prayer is one of the strongest foundations of a Christian home. When family members pray together, they invite God's presence into their daily lives and strengthen their relationships with one another.
+</p>
+
+<p>
+A home where prayer is practiced regularly becomes a place of peace, love, unity, and spiritual growth.
+</p>
+
+<h2>Why Family Prayer Is Important</h2>
+
+<p>
+Families face many challenges in today's world. Prayer helps family members remain connected to God and provides strength to face difficulties together.
+</p>
+
+<p>
+Through family worship and prayer, parents can teach children to trust God and follow His ways.
+</p>
+
+<h2>Biblical Examples</h2>
+
+<ul>
+<li>Joshua dedicated his household to serve God.</li>
+<li>Cornelius gathered his family for worship.</li>
+<li>Timothy learned faith through his family.</li>
+<li>The early Christians often worshiped in homes.</li>
+</ul>
+
+<h2>Benefits of Family Prayer</h2>
+
+<ul>
+<li>Brings family members closer together.</li>
+<li>Encourages forgiveness and understanding.</li>
+<li>Builds faith in God.</li>
+<li>Creates a Christ-centered home.</li>
+<li>Provides guidance for daily decisions.</li>
+<li>Helps children develop spiritual habits.</li>
+</ul>
+
+<h2>How to Conduct Family Prayer</h2>
+
+<p>
+Family prayer does not need to be complicated. A simple family worship may include:
+</p>
+
+<ul>
+<li>Reading a Bible passage.</li>
+<li>Singing a hymn or song.</li>
+<li>Sharing blessings and prayer requests.</li>
+<li>Praying together.</li>
+</ul>
+
+<h2>Praying for Family Members</h2>
+
+<p>
+Parents should pray for their children. Children should pray for their parents. Husbands and wives should pray for one another.
+</p>
+
+<p>
+Families should also pray for relatives, friends, neighbors, and those in need.
+</p>
+
+<h2>Building a Lasting Habit</h2>
+
+<p>
+Choose a regular time each day for family prayer, such as morning or evening. Consistency helps make prayer a natural part of family life.
+</p>
+
+<p>
+Even when schedules are busy, families should make time for God.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"But as for me and my house, we will serve the Lord."
+<br><br>
+<strong>Joshua 24:15</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What does family prayer help build?</p>
+
+<input type="radio" name="q1"> Division<br>
+<input type="radio" name="q1" value="correct"> Unity and faith<br>
+<input type="radio" name="q1"> Confusion<br><br>
+
+<p>2. Who said, "As for me and my house, we will serve the Lord"?</p>
+
+<input type="radio" name="q2"> Moses<br>
+<input type="radio" name="q2" value="correct"> Joshua<br>
+<input type="radio" name="q2"> David<br><br>
+
+<p>3. Which activity can be part of family worship?</p>
+
+<input type="radio" name="q3"> Bible reading<br>
+<input type="radio" name="q3"> Prayer<br>
+<input type="radio" name="q3" value="correct"> Both Bible reading and prayer<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer9","completed");
+}
+</script>
+
+</body>
+</html>
