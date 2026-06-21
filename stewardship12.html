@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Lesson 12 - The Faithful Steward's Reward</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏆 Lesson 12: The Faithful Steward's Reward</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"His lord said unto him, Well done, thou good and faithful servant: thou hast been faithful over a few things, I will make thee ruler over many things: enter thou into the joy of thy lord."
+<br><br>
+<strong>Matthew 25:21</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Throughout this course we have learned that God has entrusted us with time, talents, money, health, relationships, and opportunities for service. One day every steward will give an account of how these gifts were used.
+</p>
+
+<p>
+The good news is that God promises a wonderful reward to those who remain faithful to Him.
+</p>
+
+<h2>The Judgment of Stewards</h2>
+
+<p>
+The Bible teaches that every person is accountable to God. Our actions, choices, and stewardship responsibilities matter because we serve a loving Creator who has entrusted us with many blessings.
+</p>
+
+<p>
+Faithful stewardship is evidence of a heart surrendered to God.
+</p>
+
+<h2>The Reward of the Righteous</h2>
+
+<p>
+When Jesus returns, faithful believers will receive the gift of eternal life. Sin, suffering, sickness, and death will come to an end.
+</p>
+
+<p>
+The faithful steward looks beyond temporary earthly rewards and focuses on the eternal promises of God.
+</p>
+
+<h2>The New Earth</h2>
+
+<p>
+God has promised a new heaven and a new earth where righteousness will dwell. The redeemed will live forever in the presence of God.
+</p>
+
+<ul>
+<li>No more death.</li>
+<li>No more sorrow.</li>
+<li>No more pain.</li>
+<li>No more suffering.</li>
+<li>Perfect fellowship with God.</li>
+</ul>
+
+<h2>Hearing the Master's Voice</h2>
+
+<p>
+The greatest reward is not gold, riches, or position. The greatest reward is hearing Jesus say:
+</p>
+
+<p>
+<strong>
+"Well done, thou good and faithful servant."
+</strong>
+</p>
+
+<p>
+Every act of faithfulness, no matter how small, is remembered by God.
+</p>
+
+<h2>Course Summary</h2>
+
+<p>
+A faithful steward:
+</p>
+
+<ul>
+<li>Recognizes God's ownership.</li>
+<li>Uses time wisely.</li>
+<li>Develops talents.</li>
+<li>Manages money faithfully.</li>
+<li>Returns tithe and offerings.</li>
+<li>Cares for the body.</li>
+<li>Protects God's creation.</li>
+<li>Nurtures relationships.</li>
+<li>Supports God's mission.</li>
+<li>Remains faithful in small things.</li>
+<li>Lives in preparation for eternity.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Be thou faithful unto death, and I will give thee a crown of life."
+<br><br>
+<strong>Revelation 2:10</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Lesson Quiz</h2>
+
+<p>1. What words does Jesus speak to faithful servants?</p>
+
+<input type="radio" name="q1"> Try again<br>
+<input type="radio" name="q1" value="correct"> Well done, good and faithful servant<br>
+<input type="radio" name="q1"> Maybe later<br><br>
+
+<p>2. What is the ultimate reward of faithful stewardship?</p>
+
+<input type="radio" name="q2"> Earthly riches<br>
+<input type="radio" name="q2" value="correct"> Eternal life with God<br>
+<input type="radio" name="q2"> Fame and power<br><br>
+
+<p>3. What should faithful stewards do while waiting for Christ?</p>
+
+<input type="radio" name="q3"> Be careless<br>
+<input type="radio" name="q3"> Ignore responsibilities<br>
+<input type="radio" name="q3" value="correct"> Remain faithful in all things<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="stewardship11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="stewardship-certificate.html">
+<button>🏆 Get Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("stewardship12","completed");
+}
+</script>
+
+</body>
+</html>
