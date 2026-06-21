@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 12 - Building a Marriage That Lasts</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 12: Building a Marriage That Lasts</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Except the Lord build the house, they labour in vain that build it."
+<br><br>
+<strong>Psalm 127:1</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+A strong and lasting marriage does not happen by accident. It is built day by day through love, commitment, sacrifice, forgiveness, prayer, and dependence upon God.
+</p>
+
+<p>
+The happiest marriages are those where both husband and wife continually seek God's guidance and choose to love one another faithfully.
+</p>
+
+<h2>The Foundation of a Lasting Marriage</h2>
+
+<p>
+Jesus Christ must be the foundation of every successful marriage. Without Him, relationships become vulnerable to the pressures and temptations of life.
+</p>
+
+<p>
+When Christ is the center, couples find strength, wisdom, and hope.
+</p>
+
+<h2>Essential Ingredients</h2>
+
+<ul>
+<li>Love that reflects Christ.</li>
+<li>Mutual respect.</li>
+<li>Open communication.</li>
+<li>Trust and faithfulness.</li>
+<li>Forgiveness.</li>
+<li>Prayer and worship together.</li>
+<li>Commitment through all seasons of life.</li>
+</ul>
+
+<h2>Growing Together</h2>
+
+<p>
+Healthy marriages continue to grow. Couples should encourage one another spiritually, emotionally, and personally.
+</p>
+
+<p>
+Growth occurs when both partners are willing to learn, improve, and support each other.
+</p>
+
+<h2>Serving One Another</h2>
+
+<p>
+Jesus taught that true greatness comes through service. Strong marriages are built when husbands and wives seek to serve rather than be served.
+</p>
+
+<p>
+Selfishness weakens relationships, but selfless love strengthens them.
+</p>
+
+<h2>Keeping Romance Alive</h2>
+
+<p>
+Couples should continue showing affection, appreciation, and kindness throughout marriage.
+</p>
+
+<ul>
+<li>Spend quality time together.</li>
+<li>Express gratitude regularly.</li>
+<li>Celebrate special moments.</li>
+<li>Encourage one another.</li>
+</ul>
+
+<h2>Trusting God for the Future</h2>
+
+<p>
+Every marriage will experience seasons of joy and seasons of challenge. Couples who trust God remain strong because their confidence is placed in Him.
+</p>
+
+<p>
+God can sustain and bless marriages that are committed to His will.
+</p>
+
+<h2>Conclusion</h2>
+
+<p>
+A lasting marriage is built upon Christ, strengthened by love, protected by faithfulness, and sustained through prayer.
+</p>
+
+<p>
+As husbands and wives walk together with God, their marriage becomes a testimony of His grace and love.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Except the Lord build the house, they labour in vain that build it."
+<br><br>
+<strong>Psalm 127:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. Who should be the foundation of every marriage?</p>
+
+<input type="radio" name="q1"> Friends<br>
+<input type="radio" name="q1"> Money<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p>2. Which quality strengthens marriage?</p>
+
+<input type="radio" name="q2"> Selfishness<br>
+<input type="radio" name="q2" value="correct"> Faithfulness<br>
+<input type="radio" name="q2"> Pride<br><br>
+
+<p>3. According to Psalm 127:1, who must build the house?</p>
+
+<input type="radio" name="q3"> Husband only<br>
+<input type="radio" name="q3"> Wife only<br>
+<input type="radio" name="q3" value="correct"> The Lord<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="certificate.html?course=Marriage%20Course">
+<button>🏆 Get Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Congratulations! You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage12","completed");
+localStorage.setItem("marriageCourseCompleted","true");
+}
+</script>
+
+</body>
+</html>
