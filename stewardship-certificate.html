@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stewardship Course Certificate</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f8fc;
+    text-align:center;
+    padding:20px;
+}
+
+.certificate{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:40px;
+    border:10px solid #0066cc;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+}
+
+h1{
+    color:#0066cc;
+    font-size:40px;
+}
+
+h2{
+    color:#333;
+}
+
+.student-name{
+    font-size:32px;
+    color:#000;
+    font-weight:bold;
+    margin:20px 0;
+    text-decoration:underline;
+}
+
+input{
+    padding:12px;
+    width:300px;
+    font-size:18px;
+    text-align:center;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin:5px;
+}
+
+.date{
+    margin-top:20px;
+    font-size:18px;
+}
+
+.signature{
+    margin-top:50px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.line{
+    border-top:2px solid black;
+    width:250px;
+    margin:auto;
+    padding-top:5px;
+}
+
+@media print{
+    button,input{
+        display:none;
+    }
+
+    body{
+        background:white;
+    }
+
+    .certificate{
+        box-shadow:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="certificate">
+
+<h1>CERTIFICATE OF COMPLETION</h1>
+
+<h2>SABASABA GOSPEL MINISTRY</h2>
+
+<p>🌐 sabasabawk.github.io</p>
+
+<p>This certifies that</p>
+
+<input type="text" id="studentName" placeholder="Enter Your Name">
+
+<br><br>
+
+<button onclick="generateCertificate()">
+Generate Certificate
+</button>
+
+<div id="certificateContent" style="display:none;">
+
+<p>has successfully completed the</p>
+
+<h2>CHRISTIAN STEWARDSHIP COURSE</h2>
+
+<p>
+and has demonstrated understanding of biblical stewardship,
+including stewardship of time, talents, finances, health,
+relationships, mission, and preparation for eternity.
+</p>
+
+<div class="student-name" id="displayName"></div>
+
+<div class="date">
+Date: <span id="date"></span>
+</div>
+
+<div class="signature">
+
+<div>
+<div class="line"></div>
+Course Director
+</div>
+
+<div>
+<div class="line"></div>
+Student
+</div>
+
+</div>
+
+<br><br>
+
+<button onclick="window.print()">
+📥 Download / Print Certificate
+</button>
+
+<button onclick="shareCertificate()">
+📤 Share Certificate
+</button>
+
+</div>
+
+</div>
+
+<script>
+function generateCertificate(){
+
+let name = document.getElementById("studentName").value;
+
+if(name.trim() === ""){
+alert("Please enter your name.");
+return;
+}
+
+document.getElementById("displayName").innerHTML = name;
+
+document.getElementById("date").innerHTML =
+new Date().toLocaleDateString();
+
+document.getElementById("certificateContent").style.display = "block";
+}
+
+function shareCertificate(){
+
+if(navigator.share){
+
+navigator.share({
+title:"Christian Stewardship Certificate",
+text:"I have successfully completed the Christian Stewardship Course from SABASABA Gospel Ministry.",
+url:window.location.href
+});
+
+}else{
+alert("Sharing is not supported on this device.");
+}
+
+}
+</script>
+
+</body>
+</html>
