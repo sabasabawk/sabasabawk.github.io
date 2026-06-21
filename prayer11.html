@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 11 - Prayer and Revival</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 11: Prayer and Revival</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"If my people, which are called by my name, shall humble themselves, and pray, and seek my face, and turn from their wicked ways; then will I hear from heaven, and will forgive their sin, and will heal their land."
+<br><br>
+<strong>2 Chronicles 7:14</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Throughout history, every great spiritual revival has been connected with earnest prayer. Revival is the renewal of spiritual life, a fresh experience with God that awakens faith, repentance, obedience, and love for Christ.
+</p>
+
+<p>
+God desires His people to experience true revival, and prayer is one of the primary means through which revival comes.
+</p>
+
+<h2>What Is Revival?</h2>
+
+<p>
+Revival is a restoration of spiritual life. It occurs when believers draw near to God, repent of sin, and allow the Holy Spirit to work powerfully in their hearts.
+</p>
+
+<p>
+Revival is not merely emotional excitement. True revival produces lasting change and deeper commitment to God.
+</p>
+
+<h2>The Role of Prayer in Revival</h2>
+
+<p>
+Prayer prepares the heart for the work of the Holy Spirit. As believers pray, they become aware of their need for God's grace and power.
+</p>
+
+<ul>
+<li>Prayer leads to repentance.</li>
+<li>Prayer strengthens faith.</li>
+<li>Prayer deepens love for God.</li>
+<li>Prayer unites believers.</li>
+<li>Prayer opens the way for the Holy Spirit to work.</li>
+</ul>
+
+<h2>Biblical Examples of Revival</h2>
+
+<ul>
+<li>The revival under King Hezekiah.</li>
+<li>The revival under King Josiah.</li>
+<li>The outpouring of the Holy Spirit at Pentecost.</li>
+<li>The spiritual awakenings described in the book of Acts.</li>
+</ul>
+
+<h2>Revival Begins Personally</h2>
+
+<p>
+Before a church or nation can experience revival, individual believers must seek God personally. Revival starts when we humble ourselves, confess our sins, and surrender our lives fully to Christ.
+</p>
+
+<p>
+Every Christian should pray daily for personal revival.
+</p>
+
+<h2>Praying for Church Revival</h2>
+
+<p>
+Churches need revival today more than ever. Members should pray for unity, faithfulness, spiritual growth, and a renewed passion for evangelism.
+</p>
+
+<p>
+A praying church becomes a powerful witness to the world.
+</p>
+
+<h2>Signs of True Revival</h2>
+
+<ul>
+<li>Greater love for God.</li>
+<li>Increased Bible study.</li>
+<li>More faithful prayer.</li>
+<li>Repentance and confession.</li>
+<li>Unity among believers.</li>
+<li>Passion for sharing the gospel.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Wilt thou not revive us again: that thy people may rejoice in thee?"
+<br><br>
+<strong>Psalm 85:6</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is revival?</p>
+
+<input type="radio" name="q1"> A social event<br>
+<input type="radio" name="q1" value="correct"> A renewal of spiritual life<br>
+<input type="radio" name="q1"> A political movement<br><br>
+
+<p>2. According to 2 Chronicles 7:14, what should God's people do?</p>
+
+<input type="radio" name="q2"> Ignore prayer<br>
+<input type="radio" name="q2" value="correct"> Humble themselves and pray<br>
+<input type="radio" name="q2"> Depend only on human effort<br><br>
+
+<p>3. Which is a sign of true revival?</p>
+
+<input type="radio" name="q3"> Less interest in God<br>
+<input type="radio" name="q3"> Division among believers<br>
+<input type="radio" name="q3" value="correct"> Greater love for God and His Word<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer11","completed");
+}
+</script>
+
+</body>
+</html>
