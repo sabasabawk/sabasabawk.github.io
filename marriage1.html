@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Lesson 1 - God's Plan for Marriage</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>💍 Marriage Lesson 1: God's Plan for Marriage</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh."
+<br><br>
+<strong>Genesis 2:24</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Marriage is one of God's greatest gifts to humanity. It was established in the Garden of Eden before sin entered the world. God designed marriage to be a lifelong union between a man and a woman, built on love, commitment, faithfulness, and mutual support.
+</p>
+
+<p>
+When marriage follows God's plan, it becomes a source of joy, strength, companionship, and spiritual growth.
+</p>
+
+<h2>The Origin of Marriage</h2>
+
+<p>
+After creating Adam, God declared that it was not good for man to be alone. He then created Eve and brought her to Adam. This was the first marriage ceremony in history, performed by God Himself.
+</p>
+
+<p>
+Because God created marriage, He provides the principles necessary for a successful and happy home.
+</p>
+
+<h2>Purposes of Marriage</h2>
+
+<ul>
+<li>Companionship and friendship.</li>
+<li>Mutual love and support.</li>
+<li>Providing a stable home.</li>
+<li>Raising children in God's ways.</li>
+<li>Reflecting God's love to the world.</li>
+</ul>
+
+<h2>Marriage Is a Sacred Covenant</h2>
+
+<p>
+Marriage is not merely a legal agreement. It is a sacred covenant made before God. Husbands and wives promise lifelong faithfulness and commitment to one another.
+</p>
+
+<p>
+God desires couples to honor and protect this covenant.
+</p>
+
+<h2>Christ at the Center</h2>
+
+<p>
+The strongest marriages are centered on Jesus Christ. When husband and wife seek God together through prayer, Bible study, worship, and obedience, their relationship grows stronger.
+</p>
+
+<p>
+A Christ-centered marriage is built upon forgiveness, patience, kindness, humility, and sacrificial love.
+</p>
+
+<h2>God's Ideal for Marriage</h2>
+
+<p>
+God's plan is for marriage to be loving, faithful, and permanent. Through His grace, couples can overcome difficulties and build homes that honor Him.
+</p>
+
+<p>
+Marriage should be a reflection of Christ's love for His church.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh."
+<br><br>
+<strong>Genesis 2:24</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who established the institution of marriage?</p>
+
+<input type="radio" name="q1"> Adam<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Moses<br><br>
+
+<p>2. Where was the first marriage established?</p>
+
+<input type="radio" name="q2" value="correct"> Garden of Eden<br>
+<input type="radio" name="q2"> Jerusalem<br>
+<input type="radio" name="q2"> Sinai<br><br>
+
+<p>3. What should be at the center of every Christian marriage?</p>
+
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br>
+<input type="radio" name="q3"> Popularity<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="marriage.html">
+<button>🏠 Course Home</button>
+</a>
+
+<a href="marriage2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("marriage1","completed");
+}
+</script>
+
+</body>
+</html>
