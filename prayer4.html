@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prayer Lesson 4 - Prayer and Faith</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#0066cc;
+    text-align:center;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 4: Prayer and Faith</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"But let him ask in faith, nothing wavering."
+<br><br>
+<strong>James 1:6</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer and faith go hand in hand. Prayer is speaking to God, while faith is trusting that God hears and answers according to His perfect will. Without faith, prayer becomes merely words, but with faith, prayer becomes a powerful connection with Heaven.
+</p>
+
+<h2>What Is Faith?</h2>
+
+<p>
+Faith is trusting in God even when we cannot see the outcome. It is believing God's promises because He is faithful and trustworthy.
+</p>
+
+<p>
+The Bible says:
+</p>
+
+<p>
+"Now faith is the substance of things hoped for, the evidence of things not seen."
+<br><br>
+<strong>Hebrews 11:1</strong>
+</p>
+
+<h2>Why Faith Is Important in Prayer</h2>
+
+<p>
+God wants His children to trust Him completely. Faith shows that we believe God is able to do what He has promised.
+</p>
+
+<p>
+When we pray with faith, we place our confidence not in ourselves but in God's power, wisdom, and love.
+</p>
+
+<h2>Jesus and Faith</h2>
+
+<p>
+Throughout His ministry, Jesus often emphasized faith. He healed the sick, calmed storms, and performed miracles while encouraging people to believe.
+</p>
+
+<p>
+Jesus said:
+</p>
+
+<p>
+"According to your faith be it unto you."
+<br><br>
+<strong>Matthew 9:29</strong>
+</p>
+
+<h2>Faith Does Not Mean Doubt Never Comes</h2>
+
+<p>
+Even strong believers sometimes struggle with doubts. Faith grows as we spend time in prayer, study God's Word, and remember His faithfulness in the past.
+</p>
+
+<p>
+God is patient with us and helps strengthen our faith when we seek Him sincerely.
+</p>
+
+<h2>How to Strengthen Faith</h2>
+
+<ul>
+<li>Study the Bible daily.</li>
+<li>Pray regularly.</li>
+<li>Claim God's promises.</li>
+<li>Remember past blessings.</li>
+<li>Associate with faithful believers.</li>
+<li>Obey God's Word.</li>
+</ul>
+
+<h2>Faith and God's Will</h2>
+
+<p>
+Faith does not mean demanding our own way. True faith trusts God's answer whether it is "Yes," "No," or "Wait." God's wisdom is always greater than ours.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And all things, whatsoever ye shall ask in prayer, believing, ye shall receive."
+<br><br>
+<strong>Matthew 21:22</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is faith?</p>
+
+<input type="radio" name="q1"> Seeing everything clearly<br>
+<input type="radio" name="q1" value="correct"> Trusting God and His promises<br>
+<input type="radio" name="q1"> Depending on ourselves<br><br>
+
+<p>2. According to James 1:6, how should we ask God?</p>
+
+<input type="radio" name="q2"> With fear<br>
+<input type="radio" name="q2"> With pride<br>
+<input type="radio" name="q2" value="correct"> In faith<br><br>
+
+<p>3. Which practice helps strengthen faith?</p>
+
+<input type="radio" name="q3"> Ignoring the Bible<br>
+<input type="radio" name="q3" value="correct"> Daily Bible study and prayer<br>
+<input type="radio" name="q3"> Avoiding church fellowship<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="prayer3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="prayer5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prayer4","completed");
+}
+</script>
+
+</body>
+</html>
