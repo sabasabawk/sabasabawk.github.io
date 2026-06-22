@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 2 - Identity in Christ</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 2: Identity in Christ</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Therefore if any man be in Christ, he is a new creature: old things are passed away; behold, all things are become new."
+<br><br>
+<strong>2 Corinthians 5:17</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many young people struggle with questions such as: Who am I? Why am I here? What is my purpose?
+</p>
+
+<p>
+The world often tells us that our value comes from appearance, popularity, talents, or possessions. God teaches something different. Our true identity is found in Jesus Christ.
+</p>
+
+<h2>Created by God</h2>
+
+<p>
+Every person is created by God with value and purpose. You are not an accident. God knew you before you were born and has a plan for your life.
+</p>
+
+<p>
+Because you are God's creation, your worth does not depend on what others think about you.
+</p>
+
+<h2>Children of God</h2>
+
+<p>
+When we accept Jesus Christ as our Savior, we become children of God. This is the greatest identity a person can have.
+</p>
+
+<p>
+As God's children, we are loved, forgiven, and accepted by Him.
+</p>
+
+<h2>A New Creation</h2>
+
+<p>
+Christ changes lives. When we follow Him, He transforms our hearts, attitudes, and actions.
+</p>
+
+<p>
+Old habits and sinful ways no longer define who we are.
+</p>
+
+<h2>Rejecting False Identities</h2>
+
+<p>
+The world may try to define you by:
+</p>
+
+<ul>
+<li>Your appearance.</li>
+<li>Your social status.</li>
+<li>Your mistakes.</li>
+<li>Your failures.</li>
+<li>The opinions of others.</li>
+</ul>
+
+<p>
+God defines you by His love and grace.
+</p>
+
+<h2>Living with Purpose</h2>
+
+<p>
+God has given every young person gifts, talents, and opportunities to serve Him.
+</p>
+
+<p>
+Understanding your identity in Christ helps you live with confidence, courage, and purpose.
+</p>
+
+<h2>Growing in Christ</h2>
+
+<ul>
+<li>Pray daily.</li>
+<li>Study the Bible.</li>
+<li>Choose godly friends.</li>
+<li>Serve others.</li>
+<li>Trust God's plan for your life.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Therefore if any man be in Christ, he is a new creature."
+<br><br>
+<strong>2 Corinthians 5:17</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Where is our true identity found?</p>
+
+<input type="radio" name="q1"> Popularity<br>
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p>2. What happens when a person is in Christ?</p>
+
+<input type="radio" name="q2"> Nothing changes<br>
+<input type="radio" name="q2" value="correct"> They become a new creation<br>
+<input type="radio" name="q2"> They become perfect immediately<br><br>
+
+<p>3. What should define our value?</p>
+
+<input type="radio" name="q3"> People's opinions<br>
+<input type="radio" name="q3" value="correct"> God's love and purpose<br>
+<input type="radio" name="q3"> Social status<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth2","completed");
+}
+</script>
+
+</body>
+</html>
