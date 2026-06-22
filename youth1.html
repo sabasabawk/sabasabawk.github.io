@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 1 - Called to Be Different</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 1: Called to Be Different</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Let no man despise thy youth; but be thou an example of the believers, in word, in conversation, in charity, in spirit, in faith, in purity."
+<br><br>
+<strong>1 Timothy 4:12</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many young people today feel pressure to follow the crowd. Society often encourages behaviors that are contrary to God's will. However, God calls His young people to stand out as examples of faith, purity, honesty, and love.
+</p>
+
+<p>
+Being different does not mean being strange. It means living according to God's principles even when others choose a different path.
+</p>
+
+<h2>God Has a Purpose for Youth</h2>
+
+<p>
+The Bible shows that God uses young people in powerful ways. Joseph, David, Daniel, Esther, Mary, and Timothy were all young when God called them for special purposes.
+</p>
+
+<p>
+Your age does not limit what God can do through you.
+</p>
+
+<h2>Standing Firm in Faith</h2>
+
+<p>
+Daniel and his friends chose to obey God even when surrounded by ungodly influences. Their faithfulness made them powerful witnesses.
+</p>
+
+<p>
+Young Christians today are called to stand firm for truth regardless of peer pressure.
+</p>
+
+<h2>Being a Positive Example</h2>
+
+<ul>
+<li>Speak kindly and truthfully.</li>
+<li>Show respect to others.</li>
+<li>Dress modestly.</li>
+<li>Make wise choices.</li>
+<li>Live a life of purity.</li>
+<li>Serve God faithfully.</li>
+</ul>
+
+<h2>The Influence of Youth</h2>
+
+<p>
+Young people have tremendous influence. Friends, classmates, family members, and communities observe how Christians live.
+</p>
+
+<p>
+Your example can lead others closer to Jesus.
+</p>
+
+<h2>Challenges Young Christians Face</h2>
+
+<ul>
+<li>Peer pressure.</li>
+<li>Social media influences.</li>
+<li>Temptations.</li>
+<li>Fear of rejection.</li>
+<li>Negative friendships.</li>
+</ul>
+
+<p>
+Through prayer and Bible study, God gives strength to overcome these challenges.
+</p>
+
+<h2>Living for Christ Daily</h2>
+
+<p>
+Following Jesus is a daily choice. Every decision becomes an opportunity to honor God and reflect His character.
+</p>
+
+<p>
+When Christ lives in us, we naturally become different from the world around us.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let no man despise thy youth; but be thou an example of the believers."
+<br><br>
+<strong>1 Timothy 4:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to 1 Timothy 4:12, young people should be ______.</p>
+
+<input type="radio" name="q1"> Followers of the crowd<br>
+<input type="radio" name="q1" value="correct"> Examples of believers<br>
+<input type="radio" name="q1"> Fearful of others<br><br>
+
+<p>2. Which young man stood firm for God in Babylon?</p>
+
+<input type="radio" name="q2"> Saul<br>
+<input type="radio" name="q2"> Samson<br>
+<input type="radio" name="q2" value="correct"> Daniel<br><br>
+
+<p>3. What helps young Christians overcome challenges?</p>
+
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3" value="correct"> Prayer and Bible study<br>
+<input type="radio" name="q3"> Following everyone else<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth.html">
+<button>⬅ Back to Course</button>
+</a>
+
+<a href="youth2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth1","completed");
+}
+</script>
+
+</body>
+</html>
