@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 11 - Leadership for Christ</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 11: Leadership for Christ</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And whosoever will be chief among you, let him be your servant."
+<br><br>
+<strong>Matthew 20:27</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Leadership is influence. Every young person influences someone through words, actions, and example. Christian leadership is different from worldly leadership because it is centered on serving others rather than seeking power or recognition.
+</p>
+
+<p>
+God calls young people to become leaders who reflect the character of Jesus Christ.
+</p>
+
+<h2>Jesus: The Greatest Leader</h2>
+
+<p>
+Jesus is the perfect example of leadership. Although He was the Son of God, He humbled Himself and served others.
+</p>
+
+<p>
+He taught that true greatness comes through service, sacrifice, and love.
+</p>
+
+<h2>Qualities of a Christian Leader</h2>
+
+<ul>
+<li>Faithfulness</li>
+<li>Integrity</li>
+<li>Humility</li>
+<li>Wisdom</li>
+<li>Compassion</li>
+<li>Self-control</li>
+<li>Courage</li>
+<li>Dependence on God</li>
+</ul>
+
+<h2>Young Leaders in the Bible</h2>
+
+<p>
+God used many young leaders throughout Scripture:
+</p>
+
+<ul>
+<li>Joseph led in Egypt.</li>
+<li>David led Israel.</li>
+<li>Daniel influenced Babylon.</li>
+<li>Esther saved her people.</li>
+<li>Timothy served the early church.</li>
+</ul>
+
+<p>
+Their success came from trusting God rather than relying on themselves.
+</p>
+
+<h2>Leading by Example</h2>
+
+<p>
+People learn more from what leaders do than from what they say. A Christian leader should model honesty, kindness, faithfulness, and obedience to God.
+</p>
+
+<p>
+Your example can inspire others to follow Christ.
+</p>
+
+<h2>Serving Others</h2>
+
+<p>
+Christian leadership is servant leadership. Instead of asking, "How can others serve me?" a Christian leader asks, "How can I serve others?"
+</p>
+
+<p>
+Service is one of the greatest expressions of Christlike leadership.
+</p>
+
+<h2>Challenges of Leadership</h2>
+
+<ul>
+<li>Criticism</li>
+<li>Responsibility</li>
+<li>Difficult decisions</li>
+<li>Temptation to pride</li>
+<li>Discouragement</li>
+</ul>
+
+<p>
+Through prayer and faith, God equips leaders to overcome these challenges.
+</p>
+
+<h2>Preparing for Leadership</h2>
+
+<ul>
+<li>Study God's Word.</li>
+<li>Develop a prayer life.</li>
+<li>Learn from godly mentors.</li>
+<li>Practice serving others.</li>
+<li>Remain teachable.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And whosoever will be chief among you, let him be your servant."
+<br><br>
+<strong>Matthew 20:27</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is the greatest example of Christian leadership?</p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1"> Paul<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p>2. According to Jesus, true greatness comes through ______.</p>
+
+<input type="radio" name="q2" value="correct"> Serving others<br>
+<input type="radio" name="q2"> Wealth<br>
+<input type="radio" name="q2"> Popularity<br><br>
+
+<p>3. Which of the following is a quality of a Christian leader?</p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3"> Selfishness<br>
+<input type="radio" name="q3" value="correct"> Humility<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth11","completed");
+}
+</script>
+
+</body>
+</html>
