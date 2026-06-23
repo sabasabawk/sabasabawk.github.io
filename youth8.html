@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 8 - Using Talents for God</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 8: Using Talents for God</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"As every man hath received the gift, even so minister the same one to another, as good stewards of the manifold grace of God."
+<br><br>
+<strong>1 Peter 4:10</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+God has given every person special talents, abilities, and gifts. These gifts are not meant to be hidden or used only for personal gain. God gives talents so that we may serve Him and bless others.
+</p>
+
+<p>
+Every young person has something valuable to contribute to God's work.
+</p>
+
+<h2>What Are Talents?</h2>
+
+<p>
+Talents are natural abilities and spiritual gifts that God has entrusted to us. Some people are gifted in music, teaching, leadership, encouragement, technology, speaking, writing, or helping others.
+</p>
+
+<p>
+No talent is too small when it is dedicated to God.
+</p>
+
+<h2>The Parable of the Talents</h2>
+
+<p>
+Jesus told a parable about servants who received talents from their master. Those who used their talents wisely were rewarded, while the servant who hid his talent was rebuked.
+</p>
+
+<p>
+God expects us to faithfully use what He has given us.
+</p>
+
+<h2>Discovering Your Talents</h2>
+
+<ul>
+<li>Pray for God's guidance.</li>
+<li>Identify what you enjoy doing.</li>
+<li>Notice areas where you serve effectively.</li>
+<li>Listen to advice from mature Christians.</li>
+<li>Look for opportunities to help others.</li>
+</ul>
+
+<h2>Using Talents in Ministry</h2>
+
+<p>
+Young people can use their talents in many ways:
+</p>
+
+<ul>
+<li>Music ministry.</li>
+<li>Teaching children.</li>
+<li>Technology and media ministry.</li>
+<li>Community service.</li>
+<li>Evangelism and witnessing.</li>
+<li>Leadership in church activities.</li>
+</ul>
+
+<h2>Developing Your Gifts</h2>
+
+<p>
+Talents grow through practice, learning, and dedication. God blesses those who are faithful with what they have received.
+</p>
+
+<p>
+Never compare your talents with those of others. Focus on being faithful with what God has entrusted to you.
+</p>
+
+<h2>Serving Others</h2>
+
+<p>
+Christian service is about helping others and bringing glory to God. Talents become most effective when they are used with love and humility.
+</p>
+
+<p>
+The goal is not personal recognition but honoring Christ.
+</p>
+
+<h2>Faithful Stewardship</h2>
+
+<p>
+Everything we have comes from God. We are stewards of our time, abilities, opportunities, and resources.
+</p>
+
+<p>
+Faithful stewardship means using all these blessings for God's glory.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"As every man hath received the gift, even so minister the same one to another."
+<br><br>
+<strong>1 Peter 4:10</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who gives talents and gifts?</p>
+
+<input type="radio" name="q1"> Teachers<br>
+<input type="radio" name="q1"> Parents<br>
+<input type="radio" name="q1" value="correct"> God<br><br>
+
+<p>2. What should we do with our talents?</p>
+
+<input type="radio" name="q2"> Hide them<br>
+<input type="radio" name="q2" value="correct"> Use them to serve God and others<br>
+<input type="radio" name="q2"> Ignore them<br><br>
+
+<p>3. Why does God give talents?</p>
+
+<input type="radio" name="q3"> For pride and fame<br>
+<input type="radio" name="q3" value="correct"> To glorify Him and bless others<br>
+<input type="radio" name="q3"> To compare ourselves with others<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth8","completed");
+}
+</script>
+
+</body>
+</html>
