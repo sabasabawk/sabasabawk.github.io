@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 12 - Preparing for Christ's Return</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 12: Preparing for Christ's Return</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And, behold, I come quickly; and my reward is with me, to give every man according as his work shall be."
+<br><br>
+<strong>Revelation 22:12</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+One of the greatest promises in the Bible is the Second Coming of Jesus Christ. Christians eagerly await the day when Jesus will return to take His faithful people home.
+</p>
+
+<p>
+This hope gives believers courage, purpose, and motivation to live faithfully each day.
+</p>
+
+<h2>The Promise of Christ's Return</h2>
+
+<p>
+Before Jesus ascended to heaven, angels assured the disciples that He would return again.
+</p>
+
+<p>
+The Second Coming is not a symbol or a myth. It is a real event promised throughout Scripture.
+</p>
+
+<h2>Why Jesus Is Coming Back</h2>
+
+<ul>
+<li>To end sin and suffering.</li>
+<li>To reward the faithful.</li>
+<li>To establish His eternal kingdom.</li>
+<li>To reunite believers with Him forever.</li>
+</ul>
+
+<h2>Living in Readiness</h2>
+
+<p>
+Since no one knows the exact day or hour of Christ's return, believers must always be spiritually prepared.
+</p>
+
+<p>
+Preparation is not about fear but about maintaining a close relationship with Jesus.
+</p>
+
+<h2>How Youth Can Prepare</h2>
+
+<ul>
+<li>Pray daily.</li>
+<li>Study the Bible.</li>
+<li>Obey God's commandments.</li>
+<li>Serve others faithfully.</li>
+<li>Share the gospel.</li>
+<li>Trust Jesus completely.</li>
+</ul>
+
+<h2>Keeping the Faith</h2>
+
+<p>
+The world offers many distractions, but Christians are called to remain faithful and focused on God's promises.
+</p>
+
+<p>
+Young people who keep their eyes on Jesus can face the future with confidence.
+</p>
+
+<h2>The Blessed Hope</h2>
+
+<p>
+The Second Coming is called the "blessed hope" because it brings joy to believers.
+</p>
+
+<p>
+One day Jesus will wipe away every tear, remove suffering, and establish everlasting peace.
+</p>
+
+<h2>A Call to Commitment</h2>
+
+<p>
+God invites every young person to surrender their life fully to Christ.
+</p>
+
+<p>
+The best preparation for Christ's return is a daily relationship with Him.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And, behold, I come quickly; and my reward is with me."
+<br><br>
+<strong>Revelation 22:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Lesson Quiz</h2>
+
+<p>1. Who promised to return again?</p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br>
+<input type="radio" name="q1"> Abraham<br><br>
+
+<p>2. What is one way to prepare for Christ's return?</p>
+
+<input type="radio" name="q2"> Ignore spiritual things<br>
+<input type="radio" name="q2" value="correct"> Pray and study the Bible<br>
+<input type="radio" name="q2"> Follow the crowd<br><br>
+
+<p>3. The Second Coming is called the ______.</p>
+
+<input type="radio" name="q3"> Great Mystery<br>
+<input type="radio" name="q3" value="correct"> Blessed Hope<br>
+<input type="radio" name="q3"> Hidden Secret<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="certificate.html?course=Youth Ministry Course">
+<button>🏆 Get Certificate</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth12","completed");
+localStorage.setItem("Youth Ministry Course","completed");
+}
+</script>
+
+</body>
+</html>
