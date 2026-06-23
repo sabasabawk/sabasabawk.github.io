@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 9 - Social Media and Faith</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 9: Social Media and Faith</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying."
+<br><br>
+<strong>Ephesians 4:29</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Social media is one of the most powerful tools available today. It allows people to communicate instantly, share ideas, and connect with others around the world.
+</p>
+
+<p>
+While social media offers many benefits, it also presents challenges for Christians. Young believers must learn how to use technology in ways that honor God.
+</p>
+
+<h2>Technology as a Gift</h2>
+
+<p>
+Technology can be used to spread the gospel, encourage others, share Bible messages, and strengthen faith.
+</p>
+
+<p>
+When used wisely, social media becomes a tool for ministry and positive influence.
+</p>
+
+<h2>Dangers of Social Media</h2>
+
+<ul>
+<li>Time wasting.</li>
+<li>Exposure to harmful content.</li>
+<li>Cyberbullying.</li>
+<li>Peer pressure.</li>
+<li>Comparing ourselves with others.</li>
+<li>Spreading gossip or false information.</li>
+</ul>
+
+<h2>Using Social Media Wisely</h2>
+
+<ul>
+<li>Think before posting.</li>
+<li>Share content that honors God.</li>
+<li>Be respectful in comments.</li>
+<li>Protect your personal information.</li>
+<li>Limit unnecessary screen time.</li>
+</ul>
+
+<h2>Being a Digital Witness</h2>
+
+<p>
+Everything we post reflects our values. As Christians, we should use social media to encourage, inspire, and point others to Jesus.
+</p>
+
+<p>
+A positive online presence can become a powerful testimony.
+</p>
+
+<h2>Ask Before You Post</h2>
+
+<p>
+Before sharing anything online, ask:
+</p>
+
+<ul>
+<li>Is it true?</li>
+<li>Is it kind?</li>
+<li>Is it helpful?</li>
+<li>Does it glorify God?</li>
+</ul>
+
+<h2>Balancing Online and Real Life</h2>
+
+<p>
+While technology is useful, it should never replace prayer, Bible study, family relationships, church fellowship, or personal growth.
+</p>
+
+<p>
+Healthy balance is essential for spiritual and emotional well-being.
+</p>
+
+<h2>Using Media for God's Glory</h2>
+
+<p>
+God can use social media to reach many people with messages of hope and truth. Young Christians can use their platforms to share Bible verses, testimonies, encouragement, and ministry resources.
+</p>
+
+<p>
+Every post is an opportunity to be a witness for Christ.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Let no corrupt communication proceed out of your mouth, but that which is good to the use of edifying."
+<br><br>
+<strong>Ephesians 4:29</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Social media can be used to ______.</p>
+
+<input type="radio" name="q1"> Spread gossip<br>
+<input type="radio" name="q1" value="correct"> Share the gospel<br>
+<input type="radio" name="q1"> Waste time only<br><br>
+
+<p>2. Before posting online, we should ask if it ______.</p>
+
+<input type="radio" name="q2"> Makes us popular<br>
+<input type="radio" name="q2" value="correct"> Glorifies God<br>
+<input type="radio" name="q2"> Gets many likes<br><br>
+
+<p>3. Christians should use social media to ______.</p>
+
+<input type="radio" name="q3"> Encourage others<br>
+<input type="radio" name="q3"> Share truth<br>
+<input type="radio" name="q3" value="correct"> Both of the above<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth9","completed");
+}
+</script>
+
+</body>
+</html>
