@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 10 - Youth in Mission</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 10: Youth in Mission</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost."
+<br><br>
+<strong>Matthew 28:19</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+God has called every believer to participate in His mission. Mission is not only for pastors, evangelists, or church leaders. Young people also have an important role in sharing the gospel with the world.
+</p>
+
+<p>
+Throughout the Bible, God used young people to accomplish great things for His kingdom.
+</p>
+
+<h2>What Is Mission?</h2>
+
+<p>
+Mission is sharing God's love and truth with others through our words, actions, and service.
+</p>
+
+<p>
+Every Christian has been commissioned by Jesus to help make disciples.
+</p>
+
+<h2>Biblical Examples of Youth in Mission</h2>
+
+<ul>
+<li>Joseph witnessed for God in Egypt.</li>
+<li>Daniel remained faithful in Babylon.</li>
+<li>David honored God before becoming king.</li>
+<li>Timothy served faithfully in the early church.</li>
+</ul>
+
+<p>
+These young people made a difference because they trusted God.
+</p>
+
+<h2>Ways Youth Can Participate in Mission</h2>
+
+<ul>
+<li>Sharing Bible verses.</li>
+<li>Inviting friends to church.</li>
+<li>Helping community members.</li>
+<li>Participating in evangelistic programs.</li>
+<li>Using social media to spread the gospel.</li>
+<li>Praying for others.</li>
+</ul>
+
+<h2>Mission Begins at Home</h2>
+
+<p>
+Mission work often begins with family, friends, classmates, and neighbors.
+</p>
+
+<p>
+Being kind, helpful, and Christlike can open doors for sharing your faith.
+</p>
+
+<h2>The Power of Personal Testimony</h2>
+
+<p>
+One of the most effective ways to witness is by sharing what Jesus has done in your life.
+</p>
+
+<p>
+People may argue with opinions, but they cannot deny a changed life.
+</p>
+
+<h2>Challenges in Mission</h2>
+
+<ul>
+<li>Fear of rejection.</li>
+<li>Lack of confidence.</li>
+<li>Peer pressure.</li>
+<li>Fear of making mistakes.</li>
+</ul>
+
+<p>
+God promises to be with those who serve Him and share His message.
+</p>
+
+<h2>Mission and the Second Coming</h2>
+
+<p>
+Jesus desires that the gospel be preached to all nations before His return.
+</p>
+
+<p>
+Young people have a vital role in helping fulfill this mission.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Go ye therefore, and teach all nations."
+<br><br>
+<strong>Matthew 28:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is called to participate in God's mission?</p>
+
+<input type="radio" name="q1"> Pastors only<br>
+<input type="radio" name="q1"> Adults only<br>
+<input type="radio" name="q1" value="correct"> Every believer<br><br>
+
+<p>2. Which young man remained faithful in Babylon?</p>
+
+<input type="radio" name="q2"> Samson<br>
+<input type="radio" name="q2" value="correct"> Daniel<br>
+<input type="radio" name="q2"> Saul<br><br>
+
+<p>3. One way youth can participate in mission is by ______.</p>
+
+<input type="radio" name="q3"> Hiding their faith<br>
+<input type="radio" name="q3"> Ignoring others<br>
+<input type="radio" name="q3" value="correct"> Sharing Bible verses<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth10","completed");
+}
+</script>
+
+</body>
+</html>
