@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 7 - Christian Character</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 7: Christian Character</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith."
+<br><br>
+<strong>Galatians 5:22</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Christian character is the reflection of Jesus Christ in our daily lives. It is not only about what we say but also about how we think, act, and treat others.
+</p>
+
+<p>
+God desires every young person to develop a character that honors Him and positively influences others.
+</p>
+
+<h2>What Is Character?</h2>
+
+<p>
+Character is the collection of qualities that define who we are. It is revealed through our choices, habits, attitudes, and actions.
+</p>
+
+<p>
+A strong Christian character is built on God's principles and guided by the Holy Spirit.
+</p>
+
+<h2>Jesus: Our Perfect Example</h2>
+
+<p>
+Jesus demonstrated perfect character. He showed love, humility, patience, honesty, forgiveness, and obedience to His Father.
+</p>
+
+<p>
+As followers of Christ, we should seek to imitate His example.
+</p>
+
+<h2>Qualities of Christian Character</h2>
+
+<ul>
+<li>Love</li>
+<li>Honesty</li>
+<li>Kindness</li>
+<li>Patience</li>
+<li>Humility</li>
+<li>Faithfulness</li>
+<li>Self-control</li>
+<li>Respect for others</li>
+</ul>
+
+<h2>Building Christian Character</h2>
+
+<p>
+Character is developed day by day through prayer, Bible study, obedience, and dependence upon God.
+</p>
+
+<p>
+Every challenge and trial provides an opportunity for growth.
+</p>
+
+<h2>Character and Influence</h2>
+
+<p>
+People often notice our actions more than our words. A godly character can be a powerful witness for Christ.
+</p>
+
+<p>
+Young people who demonstrate Christian character inspire others to follow Jesus.
+</p>
+
+<h2>Challenges to Character</h2>
+
+<ul>
+<li>Peer pressure</li>
+<li>Dishonesty</li>
+<li>Selfishness</li>
+<li>Pride</li>
+<li>Anger</li>
+<li>Negative influences</li>
+</ul>
+
+<p>
+Through God's grace, these challenges can be overcome.
+</p>
+
+<h2>The Fruit of the Spirit</h2>
+
+<p>
+The Holy Spirit produces Christlike qualities in our lives. As we remain connected to Jesus, His character becomes visible in us.
+</p>
+
+<p>
+Character transformation is one of the greatest evidences of God's work in a person's life.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"But the fruit of the Spirit is love, joy, peace..."
+<br><br>
+<strong>Galatians 5:22</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is the perfect example of Christian character?</p>
+
+<input type="radio" name="q1"> Peter<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br>
+<input type="radio" name="q1"> Paul<br><br>
+
+<p>2. Which of the following is a quality of Christian character?</p>
+
+<input type="radio" name="q2"> Pride<br>
+<input type="radio" name="q2" value="correct"> Humility<br>
+<input type="radio" name="q2"> Selfishness<br><br>
+
+<p>3. Who helps believers develop Christlike character?</p>
+
+<input type="radio" name="q3"> Friends only<br>
+<input type="radio" name="q3"> Teachers only<br>
+<input type="radio" name="q3" value="correct"> The Holy Spirit<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth7","completed");
+}
+</script>
+
+</body>
+</html>
