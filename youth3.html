@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 3 - The Power of Prayer</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 3: The Power of Prayer</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Pray without ceasing."
+<br><br>
+<strong>1 Thessalonians 5:17</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Prayer is one of the greatest gifts God has given His children. Through prayer, we communicate directly with our Heavenly Father. Prayer is not just a religious duty; it is a living relationship with God.
+</p>
+
+<p>
+Young people who develop a strong prayer life find strength, wisdom, peace, and guidance for daily living.
+</p>
+
+<h2>What Is Prayer?</h2>
+
+<p>
+Prayer is talking with God. It includes praising Him, thanking Him, confessing our sins, and bringing our requests before Him.
+</p>
+
+<p>
+God invites every believer to come boldly to Him in prayer.
+</p>
+
+<h2>Jesus and Prayer</h2>
+
+<p>
+Jesus often spent time in prayer. Before making important decisions, facing challenges, or beginning His daily work, He prayed.
+</p>
+
+<p>
+If Jesus needed prayer, how much more do we need it today?
+</p>
+
+<h2>Why Young People Need Prayer</h2>
+
+<ul>
+<li>To resist temptation.</li>
+<li>To receive wisdom.</li>
+<li>To find peace during difficulties.</li>
+<li>To strengthen faith.</li>
+<li>To grow closer to God.</li>
+</ul>
+
+<h2>Conditions for Effective Prayer</h2>
+
+<p>
+The Bible teaches that prayer should be offered with faith, sincerity, and humility.
+</p>
+
+<ul>
+<li>Believe God hears you.</li>
+<li>Pray according to God's will.</li>
+<li>Confess known sins.</li>
+<li>Trust God's timing.</li>
+</ul>
+
+<h2>Examples of Young People Who Prayed</h2>
+
+<p>
+Daniel prayed faithfully despite opposition. Samuel learned to listen to God's voice. Timothy grew spiritually through a life of faith and devotion.
+</p>
+
+<p>
+These young people became powerful servants of God because they depended on Him.
+</p>
+
+<h2>Making Prayer a Daily Habit</h2>
+
+<ul>
+<li>Pray in the morning.</li>
+<li>Pray before decisions.</li>
+<li>Pray for others.</li>
+<li>Pray before sleeping.</li>
+<li>Keep a prayer journal.</li>
+</ul>
+
+<h2>God Answers Prayer</h2>
+
+<p>
+God always hears sincere prayers. Sometimes He answers "yes," sometimes "wait," and sometimes "no" because He knows what is best.
+</p>
+
+<p>
+We can trust Him because He loves us and desires our good.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Pray without ceasing."
+<br><br>
+<strong>1 Thessalonians 5:17</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is prayer?</p>
+
+<input type="radio" name="q1"> Talking to friends<br>
+<input type="radio" name="q1" value="correct"> Talking with God<br>
+<input type="radio" name="q1"> Reading a book<br><br>
+
+<p>2. Who gave us the example of a strong prayer life?</p>
+
+<input type="radio" name="q2"> Pharaoh<br>
+<input type="radio" name="q2" value="correct"> Jesus Christ<br>
+<input type="radio" name="q2"> Goliath<br><br>
+
+<p>3. According to 1 Thessalonians 5:17, we should ______.</p>
+
+<input type="radio" name="q3"> Pray only on Sabbath<br>
+<input type="radio" name="q3"> Pray once a month<br>
+<input type="radio" name="q3" value="correct"> Pray without ceasing<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth3","completed");
+}
+</script>
+
+</body>
+</html>
