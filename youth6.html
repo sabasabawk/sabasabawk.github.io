@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 6 - Overcoming Temptation</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 6: Overcoming Temptation</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"There hath no temptation taken you but such as is common to man: but God is faithful, who will not suffer you to be tempted above that ye are able."
+<br><br>
+<strong>1 Corinthians 10:13</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Every Christian faces temptation. Temptation itself is not a sin, but giving in to temptation leads us away from God's will.
+</p>
+
+<p>
+The good news is that God provides strength and a way of escape for those who trust Him.
+</p>
+
+<h2>What Is Temptation?</h2>
+
+<p>
+Temptation is the invitation to think, say, or do something that is contrary to God's Word.
+</p>
+
+<p>
+Young people often face temptations involving peer pressure, dishonesty, harmful media, unhealthy relationships, and other challenges.
+</p>
+
+<h2>Jesus Faced Temptation</h2>
+
+<p>
+Jesus was tempted by Satan in the wilderness, yet He never sinned. He overcame temptation by trusting God and using Scripture.
+</p>
+
+<p>
+His victory shows us that temptation can be resisted through God's power.
+</p>
+
+<h2>Common Temptations for Youth</h2>
+
+<ul>
+<li>Peer pressure.</li>
+<li>Dishonesty.</li>
+<li>Impure thoughts.</li>
+<li>Harmful entertainment.</li>
+<li>Disobedience to parents.</li>
+<li>Neglecting prayer and Bible study.</li>
+</ul>
+
+<h2>How to Overcome Temptation</h2>
+
+<ul>
+<li>Pray regularly.</li>
+<li>Study God's Word.</li>
+<li>Avoid situations that encourage sin.</li>
+<li>Choose godly friends.</li>
+<li>Trust the Holy Spirit for strength.</li>
+</ul>
+
+<h2>The Power of God's Word</h2>
+
+<p>
+When Satan tempted Jesus, He answered with Scripture. Knowing Bible verses helps us recognize truth and resist evil.
+</p>
+
+<p>
+The Word of God is a powerful weapon in spiritual battles.
+</p>
+
+<h2>God Provides a Way Out</h2>
+
+<p>
+According to 1 Corinthians 10:13, God always provides a way of escape. We are never alone when facing temptation.
+</p>
+
+<p>
+God's grace is sufficient to help us remain faithful.
+</p>
+
+<h2>Victory Through Christ</h2>
+
+<p>
+We do not overcome temptation through our own strength. Victory comes through Jesus Christ.
+</p>
+
+<p>
+As we depend on Him daily, He gives us the power to choose what is right.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"God is faithful, who will not suffer you to be tempted above that ye are able."
+<br><br>
+<strong>1 Corinthians 10:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who was tempted in the wilderness but never sinned?</p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1" value="correct"> Jesus<br>
+<input type="radio" name="q1"> David<br><br>
+
+<p>2. What is one way to overcome temptation?</p>
+
+<input type="radio" name="q2" value="correct"> Prayer and Bible study<br>
+<input type="radio" name="q2"> Ignoring God<br>
+<input type="radio" name="q2"> Following the crowd<br><br>
+
+<p>3. According to 1 Corinthians 10:13, God provides a ______.</p>
+
+<input type="radio" name="q3"> Reward only<br>
+<input type="radio" name="q3" value="correct"> Way of escape<br>
+<input type="radio" name="q3"> Punishment only<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth6","completed");
+}
+</script>
+
+</body>
+</html>
