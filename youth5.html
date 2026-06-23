@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 5 - Choosing Good Friends</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 5: Choosing Good Friends</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"He that walketh with wise men shall be wise: but a companion of fools shall be destroyed."
+<br><br>
+<strong>Proverbs 13:20</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Friendships are one of the greatest influences in a young person's life. The people we spend time with can shape our attitudes, choices, habits, and even our relationship with God.
+</p>
+
+<p>
+God wants us to choose friends who encourage us to do what is right and help us grow spiritually.
+</p>
+
+<h2>The Power of Friendship</h2>
+
+<p>
+Friends influence the way we think, speak, and act. Good friends inspire us to become better people, while bad influences can lead us away from God's plan.
+</p>
+
+<p>
+This is why the Bible emphasizes the importance of wise friendships.
+</p>
+
+<h2>Qualities of Good Friends</h2>
+
+<ul>
+<li>They respect God and His Word.</li>
+<li>They are honest and trustworthy.</li>
+<li>They encourage good decisions.</li>
+<li>They show kindness and respect.</li>
+<li>They support you during difficult times.</li>
+</ul>
+
+<h2>Warning Signs of Bad Influences</h2>
+
+<ul>
+<li>Encouraging disobedience.</li>
+<li>Promoting harmful habits.</li>
+<li>Mocking spiritual values.</li>
+<li>Creating unnecessary conflict.</li>
+<li>Pressuring others to do wrong.</li>
+</ul>
+
+<h2>Jesus and Friendship</h2>
+
+<p>
+Jesus chose friends who were willing to learn from Him and follow His teachings. He loved people deeply while still standing firmly for truth.
+</p>
+
+<p>
+As Christians, we should be friendly to everyone while choosing our closest friends carefully.
+</p>
+
+<h2>Being a Good Friend</h2>
+
+<p>
+Not only should we seek good friends, but we should also strive to be good friends ourselves.
+</p>
+
+<ul>
+<li>Be honest.</li>
+<li>Be loyal.</li>
+<li>Be supportive.</li>
+<li>Show forgiveness.</li>
+<li>Lead others toward Christ.</li>
+</ul>
+
+<h2>Friendships and Spiritual Growth</h2>
+
+<p>
+Strong Christian friendships help us remain faithful during challenges. Friends can pray with us, encourage us, and help us stay focused on God's purpose.
+</p>
+
+<p>
+Choose friendships that strengthen your faith rather than weaken it.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"He that walketh with wise men shall be wise."
+<br><br>
+<strong>Proverbs 13:20</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to Proverbs 13:20, walking with wise people helps us become ______.</p>
+
+<input type="radio" name="q1"> Popular<br>
+<input type="radio" name="q1" value="correct"> Wise<br>
+<input type="radio" name="q1"> Rich<br><br>
+
+<p>2. Which is a quality of a good friend?</p>
+
+<input type="radio" name="q2"> Encourages wrongdoing<br>
+<input type="radio" name="q2"> Lies often<br>
+<input type="radio" name="q2" value="correct"> Honest and trustworthy<br><br>
+
+<p>3. What should Christian friendships do?</p>
+
+<input type="radio" name="q3"> Weaken faith<br>
+<input type="radio" name="q3" value="correct"> Strengthen faith<br>
+<input type="radio" name="q3"> Create conflict<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth5","completed");
+}
+</script>
+
+</body>
+</html>
