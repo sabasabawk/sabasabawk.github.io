@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youth Lesson 4 - Studying the Bible Daily</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f8fc;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+h2{
+    color:#0066cc;
+}
+
+.quiz{
+    background:#eef6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Youth Lesson 4: Studying the Bible Daily</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Thy word is a lamp unto my feet, and a light unto my path."
+<br><br>
+<strong>Psalm 119:105</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+The Bible is God's message to humanity. Through its pages, God reveals His character, His will, and His plan of salvation.
+</p>
+
+<p>
+Young people who study the Bible daily gain wisdom, strength, and guidance for life's decisions.
+</p>
+
+<h2>Why Study the Bible?</h2>
+
+<ul>
+<li>To know God better.</li>
+<li>To understand truth.</li>
+<li>To strengthen faith.</li>
+<li>To resist temptation.</li>
+<li>To receive guidance for daily life.</li>
+</ul>
+
+<h2>The Bible Changes Lives</h2>
+
+<p>
+God's Word has the power to transform hearts and minds. As we read and apply its teachings, we become more like Jesus.
+</p>
+
+<p>
+The Bible provides hope, comfort, correction, and encouragement.
+</p>
+
+<h2>Jesus and the Scriptures</h2>
+
+<p>
+Jesus frequently quoted Scripture during His ministry. When tempted by Satan, He responded with the words, "It is written."
+</p>
+
+<p>
+This teaches us the importance of knowing God's Word.
+</p>
+
+<h2>How to Study the Bible</h2>
+
+<ul>
+<li>Begin with prayer.</li>
+<li>Read carefully and slowly.</li>
+<li>Ask questions about the text.</li>
+<li>Compare verses with other verses.</li>
+<li>Apply what you learn.</li>
+</ul>
+
+<h2>Developing a Daily Habit</h2>
+
+<p>
+Choose a specific time each day for Bible study. Many people find morning worship especially helpful because it prepares them for the day ahead.
+</p>
+
+<p>
+Even a few minutes of Bible study each day can make a significant difference.
+</p>
+
+<h2>The Bible and Youth</h2>
+
+<p>
+Young people face many challenges and decisions. The Bible provides wisdom for friendships, education, relationships, career choices, and spiritual growth.
+</p>
+
+<p>
+God's Word remains relevant in every generation.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Thy word is a lamp unto my feet, and a light unto my path."
+<br><br>
+<strong>Psalm 119:105</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What does Psalm 119:105 describe God's Word as?</p>
+
+<input type="radio" name="q1"> A mountain<br>
+<input type="radio" name="q1" value="correct"> A lamp and a light<br>
+<input type="radio" name="q1"> A river<br><br>
+
+<p>2. What should we do before studying the Bible?</p>
+
+<input type="radio" name="q2"> Watch television<br>
+<input type="radio" name="q2" value="correct"> Pray<br>
+<input type="radio" name="q2"> Sleep<br><br>
+
+<p>3. How did Jesus respond to temptation?</p>
+
+<input type="radio" name="q3"> By arguing<br>
+<input type="radio" name="q3"> By running away<br>
+<input type="radio" name="q3" value="correct"> By quoting Scripture<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="youth3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="youth5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("youth4","completed");
+}
+</script>
+
+</body>
+</html>
