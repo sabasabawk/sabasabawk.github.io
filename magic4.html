@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 4 - The Witch of Endor</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👵 Lesson 4: The Witch of Endor</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"So Saul died for his transgression which he committed against the Lord."
+<br><br>
+<strong>1 Chronicles 10:13</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+The story of the Witch of Endor is one of the most unusual stories in the Bible. It teaches an important lesson about seeking guidance from God instead of turning to forbidden spiritual practices.
+</p>
+
+<h2>King Saul's Problem</h2>
+
+<p>
+King Saul had turned away from God through repeated disobedience. When the Philistines gathered to fight Israel, Saul became afraid and wanted guidance.
+</p>
+
+<p>
+However, God was no longer communicating with Saul through dreams, prophets, or the Urim.
+</p>
+
+<h2>Saul's Wrong Decision</h2>
+
+<p>
+Instead of repenting and seeking God sincerely, Saul went to a woman at Endor who claimed to communicate with the dead.
+</p>
+
+<p>
+Ironically, Saul himself had previously ordered that such practices be removed from Israel.
+</p>
+
+<h2>The Visit to Endor</h2>
+
+<p>
+Saul disguised himself and visited the woman at night. He asked her to bring up the prophet Samuel.
+</p>
+
+<p>
+The woman claimed to see a spirit and described what she saw to Saul.
+</p>
+
+<h2>What Can We Learn?</h2>
+
+<p>
+The Bible clearly forbids consulting mediums, spiritists, and those who claim to communicate with the dead.
+</p>
+
+<p>
+God wants His people to seek Him directly rather than relying on occult practices.
+</p>
+
+<h2>What Does the Bible Teach About the Dead?</h2>
+
+<p>
+According to Ecclesiastes 9:5, "the dead know not any thing."
+</p>
+
+<p>
+The Bible teaches that the dead are unconscious until the resurrection.
+</p>
+
+<p>
+Because of this, Christians should be cautious of claims involving communication with the dead.
+</p>
+
+<h2>Saul's Tragic End</h2>
+
+<p>
+Saul's visit to the medium did not solve his problem. Instead, it revealed how far he had drifted from God.
+</p>
+
+<p>
+Soon afterward, Saul died in battle.
+</p>
+
+<h2>Lessons for Today</h2>
+
+<ul>
+<li>Seek God first in times of trouble.</li>
+<li>Do not turn to mediums or spiritists.</li>
+<li>Trust God's Word above supernatural claims.</li>
+<li>Repent when you have wandered from God.</li>
+<li>God desires a personal relationship with His people.</li>
+</ul>
+
+<h2>God's Invitation</h2>
+
+<p>
+No matter how far we have wandered, God invites us to return to Him through repentance, prayer, and faith in Jesus Christ.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"So Saul died for his transgression which he committed against the Lord."
+<br><br>
+<strong>1 Chronicles 10:13</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why did Saul visit the woman at Endor?</p>
+
+<input type="radio" name="q1"> To celebrate<br>
+<input type="radio" name="q1" value="correct"> To seek guidance<br>
+<input type="radio" name="q1"> To buy food<br><br>
+
+<p>2. What does the Bible teach about the dead?</p>
+
+<input type="radio" name="q2"> They know everything<br>
+<input type="radio" name="q2" value="correct"> They are unconscious until the resurrection<br>
+<input type="radio" name="q2"> They rule the earth<br><br>
+
+<p>3. Who should Christians seek for guidance?</p>
+
+<input type="radio" name="q3"> Mediums<br>
+<input type="radio" name="q3"> Spiritists<br>
+<input type="radio" name="q3" value="correct"> God<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic4","completed");
+}
+</script>
+
+</body>
+</html>
