@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 5 - Moses and Pharaoh's Magicians</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🐍 Lesson 5: Moses and Pharaoh's Magicians</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"And the magicians said unto Pharaoh, This is the finger of God."
+<br><br>
+<strong>Exodus 8:19</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+One of the greatest confrontations in the Bible occurred between God's servant Moses and the magicians of Egypt. This story teaches that God's power is infinitely greater than all human or occult powers.
+</p>
+
+<h2>Moses Before Pharaoh</h2>
+
+<p>
+God sent Moses to Pharaoh with a message: "Let My people go."
+</p>
+
+<p>
+To confirm His authority, God performed miracles through Moses and Aaron.
+</p>
+
+<h2>The Rod Becomes a Serpent</h2>
+
+<p>
+Aaron threw down his rod before Pharaoh, and it became a serpent.
+</p>
+
+<p>
+Pharaoh's magicians also performed a similar act through their secret arts.
+</p>
+
+<p>
+However, Aaron's serpent swallowed the serpents of the magicians.
+</p>
+
+<h2>The Early Plagues</h2>
+
+<p>
+The magicians were able to imitate some of the first miracles, including turning water into blood and bringing forth frogs.
+</p>
+
+<p>
+This shows that supernatural signs alone are not proof that something comes from God.
+</p>
+
+<h2>The Finger of God</h2>
+
+<p>
+When God sent the plague of lice, the magicians could no longer copy the miracle.
+</p>
+
+<p>
+They admitted their defeat and declared, "This is the finger of God."
+</p>
+
+<h2>Lessons About Spiritual Power</h2>
+
+<ul>
+<li>Not every supernatural event comes from God.</li>
+<li>Satan can produce counterfeit signs.</li>
+<li>God's power is greater than all evil powers.</li>
+<li>Truth must be tested by Scripture.</li>
+<li>God always triumphs over darkness.</li>
+</ul>
+
+<h2>Pharaoh's Hard Heart</h2>
+
+<p>
+Even after witnessing God's power, Pharaoh repeatedly hardened his heart.
+</p>
+
+<p>
+Miracles alone do not change a person. A willing heart is needed to obey God.
+</p>
+
+<h2>Victory Belongs to God</h2>
+
+<p>
+The story of the Exodus reminds believers that no power of darkness can overcome God's plans.
+</p>
+
+<p>
+When we trust God, He is able to protect, guide, and deliver us.
+</p>
+
+<h2>Application for Today</h2>
+
+<p>
+Christians should never place their confidence in magic, charms, spells, or supernatural claims.
+</p>
+
+<p>
+Our confidence should rest entirely in Jesus Christ and the power of God's Word.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"And the magicians said unto Pharaoh, This is the finger of God."
+<br><br>
+<strong>Exodus 8:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What happened to Aaron's serpent?</p>
+
+<input type="radio" name="q1"> It disappeared<br>
+<input type="radio" name="q1" value="correct"> It swallowed the magicians' serpents<br>
+<input type="radio" name="q1"> It flew away<br><br>
+
+<p>2. What did the magicians eventually admit?</p>
+
+<input type="radio" name="q2"> Moses was lucky<br>
+<input type="radio" name="q2"> Pharaoh was wrong<br>
+<input type="radio" name="q2" value="correct"> This is the finger of God<br><br>
+
+<p>3. What lesson should Christians learn?</p>
+
+<input type="radio" name="q3"> Trust magic<br>
+<input type="radio" name="q3"> Trust charms<br>
+<input type="radio" name="q3" value="correct"> Trust God's power alone<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic5","completed");
+}
+</script>
+
+</body>
+</html>
