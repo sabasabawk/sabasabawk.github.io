@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 10 - Walking in God's Protection</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+#certificateBtn{
+display:none;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🕊️ Lesson 10: Walking in God's Protection</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty."
+<br><br>
+<strong>Psalm 91:1</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Throughout this course we have learned that God's people should avoid occult practices and place their trust entirely in Him.
+</p>
+
+<p>
+The Christian life is not built on fear but on confidence in God's love, power, and protection.
+</p>
+
+<h2>God Is Our Refuge</h2>
+
+<p>
+Psalm 91 describes God as our refuge, fortress, and protector.
+</p>
+
+<p>
+Those who trust in Him can live with peace even in difficult circumstances.
+</p>
+
+<h2>Protection Through Faith</h2>
+
+<p>
+God does not ask us to trust in charms, magical objects, lucky items, or superstitions.
+</p>
+
+<p>
+He invites us to trust Him through faith and obedience.
+</p>
+
+<h2>Daily Spiritual Habits</h2>
+
+<ul>
+<li>Pray every day.</li>
+<li>Study the Bible daily.</li>
+<li>Attend church regularly.</li>
+<li>Share your faith with others.</li>
+<li>Trust God's promises.</li>
+</ul>
+
+<h2>The Power of God's Word</h2>
+
+<p>
+Jesus used Scripture to resist Satan during His temptation in the wilderness.
+</p>
+
+<p>
+God's Word remains one of the strongest defenses against deception and temptation.
+</p>
+
+<h2>Living Without Fear</h2>
+
+<p>
+Christians do not need to live in fear of curses, witchcraft, evil spirits, or dark powers.
+</p>
+
+<p>
+Jesus is greater than every power of darkness.
+</p>
+
+<h2>Looking Forward</h2>
+
+<p>
+Our ultimate hope is not merely protection in this life but eternal life through Jesus Christ.
+</p>
+
+<p>
+One day Christ will return and completely destroy sin, evil, and suffering forever.
+</p>
+
+<h2>Course Summary</h2>
+
+<p>
+In this course you have learned:
+</p>
+
+<ul>
+<li>What the Bible teaches about magic and witchcraft.</li>
+<li>God's warnings against occult practices.</li>
+<li>The stories of Simon the Sorcerer and the Witch of Endor.</li>
+<li>The difference between God's power and magic.</li>
+<li>Spiritual warfare and victory through Christ.</li>
+<li>How to walk daily in God's protection.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+"He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty."
+<br><br>
+<strong>Psalm 91:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p>1. Who is our ultimate source of protection?</p>
+
+<input type="radio" name="q1"> Charms<br>
+<input type="radio" name="q1"> Magic<br>
+<input type="radio" name="q1" value="correct"> God<br><br>
+
+<p>2. What should Christians trust?</p>
+
+<input type="radio" name="q2"> Superstitions<br>
+<input type="radio" name="q2" value="correct"> God's promises<br>
+<input type="radio" name="q2"> Fortune tellers<br><br>
+
+<p>3. What is one daily spiritual habit?</p>
+
+<input type="radio" name="q3"> Reading horoscopes<br>
+<input type="radio" name="q3"> Practicing magic<br>
+<input type="radio" name="q3" value="correct"> Prayer and Bible study<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+<div id="certificateBtn">
+<a href="certificate.html?course=Magic, Witchcraft and the Bible">
+<button>🏆 Claim Your Certificate</button>
+</a>
+</div>
+
+</div>
+
+<br>
+
+<a href="magic9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic.html">
+<button>📚 Back to Course</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"Congratulations! You scored " + score + " out of 3.";
+
+if(score >= 2){
+document.getElementById("certificateBtn").style.display = "block";
+}
+
+localStorage.setItem("magic10","completed");
+localStorage.setItem("magic_course_completed","true");
+}
+</script>
+
+</body>
+</html>
