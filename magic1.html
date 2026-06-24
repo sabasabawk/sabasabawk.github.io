@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 1 - What Is Magic and Witchcraft?</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔮 Lesson 1: What Is Magic and Witchcraft?</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"There shall not be found among you anyone that maketh his son or his daughter to pass through the fire, or that useth divination, or an observer of times, or an enchanter, or a witch."
+<br><br>
+<strong>Deuteronomy 18:10</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many people are curious about magic, witchcraft, fortune telling, charms, spells, and supernatural powers. Throughout history these practices have existed in many cultures.
+</p>
+
+<p>
+The Bible clearly teaches that God's people should seek guidance, protection, and power from God alone.
+</p>
+
+<h2>What Is Magic?</h2>
+
+<p>
+Magic generally refers to attempts to control events, people, or spiritual forces through rituals, spells, charms, incantations, or supernatural practices.
+</p>
+
+<p>
+Many forms of magic claim to provide power, knowledge, healing, protection, or success.
+</p>
+
+<h2>What Is Witchcraft?</h2>
+
+<p>
+Witchcraft involves practices that seek supernatural power apart from God. It may include spells, divination, spirit communication, curses, fortune telling, or occult rituals.
+</p>
+
+<p>
+The Bible consistently warns believers against involvement in such practices.
+</p>
+
+<h2>Why Are People Attracted to Magic?</h2>
+
+<ul>
+<li>Desire for power.</li>
+<li>Curiosity about the future.</li>
+<li>Fear and insecurity.</li>
+<li>Desire for protection.</li>
+<li>Search for hidden knowledge.</li>
+</ul>
+
+<h2>God's View</h2>
+
+<p>
+God does not want His people to seek hidden powers or secret knowledge through occult practices.
+</p>
+
+<p>
+Instead, He invites us to trust Him completely for guidance and protection.
+</p>
+
+<h2>The Difference Between God's Power and Magic</h2>
+
+<p>
+God's power comes from His holy character and loving purpose.
+</p>
+
+<p>
+Magic seeks control through methods that operate outside God's revealed will.
+</p>
+
+<p>
+Believers are called to depend on prayer, faith, Scripture, and the Holy Spirit.
+</p>
+
+<h2>Trusting God</h2>
+
+<p>
+When facing uncertainty, Christians should seek God through prayer and His Word rather than turning to fortune tellers, charms, or magical practices.
+</p>
+
+<p>
+God alone knows the future and can guide His children safely.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"There shall not be found among you ... a witch."
+<br><br>
+<strong>Deuteronomy 18:10</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. According to the Bible, believers should seek guidance from ______.</p>
+
+<input type="radio" name="q1"> Fortune tellers<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Magical rituals<br><br>
+
+<p>2. Why are some people attracted to magic?</p>
+
+<input type="radio" name="q2"> Desire for hidden knowledge<br>
+<input type="radio" name="q2"> Curiosity about the future<br>
+<input type="radio" name="q2" value="correct"> Both of the above<br><br>
+
+<p>3. What should Christians rely on?</p>
+
+<input type="radio" name="q3"> Charms<br>
+<input type="radio" name="q3" value="correct"> Prayer and God's Word<br>
+<input type="radio" name="q3"> Spells<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic.html">
+<button>⬅ Back to Course</button>
+</a>
+
+<a href="magic2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic1","completed");
+}
+</script>
+
+</body>
+</html>
