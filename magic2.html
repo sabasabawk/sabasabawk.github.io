@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 2 - God's Warning Against Witchcraft</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚠️ Lesson 2: God's Warning Against Witchcraft</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"For all that do these things are an abomination unto the Lord."
+<br><br>
+<strong>Deuteronomy 18:12</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+The Bible contains strong warnings against witchcraft, sorcery, divination, fortune telling, and all forms of occult practices. God's warnings are given because He loves His people and desires to protect them from spiritual deception.
+</p>
+
+<h2>God's Command</h2>
+
+<p>
+In Deuteronomy 18:10-12, God instructed Israel not to practice divination, witchcraft, enchantments, or consult mediums and spiritists.
+</p>
+
+<p>
+These practices were common among the surrounding nations, but God called His people to be different.
+</p>
+
+<h2>Why Does God Forbid Witchcraft?</h2>
+
+<ul>
+<li>It leads people away from trusting God.</li>
+<li>It opens the door to spiritual deception.</li>
+<li>It seeks power apart from God.</li>
+<li>It can create fear and bondage.</li>
+<li>It dishonors God's authority.</li>
+</ul>
+
+<h2>God Wants Us to Trust Him</h2>
+
+<p>
+Instead of consulting fortune tellers or spiritual mediums, God invites us to seek wisdom through prayer, Scripture, and the guidance of the Holy Spirit.
+</p>
+
+<p>
+God knows the future and promises to direct those who trust Him.
+</p>
+
+<h2>The Danger of Deception</h2>
+
+<p>
+Satan often uses counterfeit spiritual experiences to deceive people.
+</p>
+
+<p>
+Not every supernatural experience comes from God. Christians must test everything by the Bible.
+</p>
+
+<h2>True Security</h2>
+
+<p>
+Many people turn to charms, amulets, or magical practices for protection.
+</p>
+
+<p>
+The Bible teaches that true protection comes from God alone.
+</p>
+
+<p>
+Psalm 91 reminds us that God is our refuge and fortress.
+</p>
+
+<h2>Choosing God's Way</h2>
+
+<p>
+Christians are called to reject occult practices and place their confidence fully in Jesus Christ.
+</p>
+
+<p>
+God's way may require faith, but it leads to peace, truth, and eternal life.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"For all that do these things are an abomination unto the Lord."
+<br><br>
+<strong>Deuteronomy 18:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Why does God warn against witchcraft?</p>
+
+<input type="radio" name="q1"> Because it is entertainment<br>
+<input type="radio" name="q1" value="correct"> Because it leads to spiritual deception<br>
+<input type="radio" name="q1"> Because it brings wisdom<br><br>
+
+<p>2. Where should Christians seek guidance?</p>
+
+<input type="radio" name="q2"> Mediums<br>
+<input type="radio" name="q2"> Fortune tellers<br>
+<input type="radio" name="q2" value="correct"> God and His Word<br><br>
+
+<p>3. True protection comes from ______.</p>
+
+<input type="radio" name="q3"> Charms<br>
+<input type="radio" name="q3"> Magic<br>
+<input type="radio" name="q3" value="correct"> God<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic2","completed");
+}
+</script>
+
+</body>
+</html>
