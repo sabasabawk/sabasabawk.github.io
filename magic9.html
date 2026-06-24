@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 9 - Testing Spiritual Claims</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 9: Testing Spiritual Claims</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Beloved, believe not every spirit, but try the spirits whether they are of God."
+<br><br>
+<strong>1 John 4:1</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Not every spiritual experience, vision, miracle, dream, or teaching comes from God. The Bible warns believers to test spiritual claims carefully.
+</p>
+
+<p>
+Many false teachings appear convincing because they contain some truth mixed with error.
+</p>
+
+<h2>Why Testing Is Necessary</h2>
+
+<p>
+Jesus warned that false prophets and false teachers would arise and attempt to deceive many people.
+</p>
+
+<p>
+Because of this danger, Christians must examine every teaching by the Word of God.
+</p>
+
+<h2>The Bible Is the Standard</h2>
+
+<p>
+God's Word is the final authority for faith and practice.
+</p>
+
+<p>
+Any teaching that contradicts Scripture should be rejected regardless of how impressive it appears.
+</p>
+
+<h2>Signs and Wonders</h2>
+
+<p>
+Miracles alone do not prove that a message comes from God.
+</p>
+
+<p>
+The Bible teaches that false prophets may perform signs and wonders to deceive people.
+</p>
+
+<p>
+Truth must always be tested by Scripture.
+</p>
+
+<h2>Questions to Ask</h2>
+
+<ul>
+<li>Does this teaching agree with the Bible?</li>
+<li>Does it honor Jesus Christ?</li>
+<li>Does it encourage obedience to God?</li>
+<li>Does it produce good spiritual fruit?</li>
+<li>Is it consistent with biblical truth?</li>
+</ul>
+
+<h2>The Example of the Bereans</h2>
+
+<p>
+Acts 17:11 praises the Bereans because they examined the Scriptures daily to verify what they were being taught.
+</p>
+
+<p>
+They did not blindly accept teachings without investigation.
+</p>
+
+<h2>The Holy Spirit and Truth</h2>
+
+<p>
+The Holy Spirit never contradicts the Bible because He inspired the Scriptures.
+</p>
+
+<p>
+True spiritual guidance will always agree with God's Word.
+</p>
+
+<h2>Living Wisely</h2>
+
+<p>
+Christians should be humble, prayerful, and careful when evaluating spiritual claims.
+</p>
+
+<p>
+God promises wisdom to those who sincerely seek Him.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Beloved, believe not every spirit, but try the spirits whether they are of God."
+<br><br>
+<strong>1 John 4:1</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What should Christians use to test teachings?</p>
+
+<input type="radio" name="q1"> Popular opinion<br>
+<input type="radio" name="q1" value="correct"> The Bible<br>
+<input type="radio" name="q1"> Social media<br><br>
+
+<p>2. Can miracles alone prove a message is from God?</p>
+
+<input type="radio" name="q2"> Yes<br>
+<input type="radio" name="q2" value="correct"> No<br>
+<input type="radio" name="q2"> Always<br><br>
+
+<p>3. Who examined the Scriptures daily?</p>
+
+<input type="radio" name="q3"> Pharaoh<br>
+<input type="radio" name="q3"> Simon the Sorcerer<br>
+<input type="radio" name="q3" value="correct"> The Bereans<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic9","completed");
+}
+</script>
+
+</body>
+</html>
