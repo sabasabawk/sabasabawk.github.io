@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 8 - Freedom Through Christ</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✝️ Lesson 8: Freedom Through Christ</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"If the Son therefore shall make you free, ye shall be free indeed."
+<br><br>
+<strong>John 8:36</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many people live in fear because of curses, witchcraft, occult involvement, superstition, or past sins. The good news of the gospel is that Jesus Christ has power to set people free.
+</p>
+
+<p>
+No matter what a person has done in the past, Christ offers forgiveness, healing, and a new beginning.
+</p>
+
+<h2>Jesus Came to Deliver</h2>
+
+<p>
+Throughout His ministry, Jesus brought freedom to those who were oppressed by evil.
+</p>
+
+<p>
+He healed the sick, forgave sinners, cast out demons, and restored broken lives.
+</p>
+
+<h2>The Power of the Cross</h2>
+
+<p>
+When Jesus died on the cross, He defeated Satan and made salvation available to everyone who believes.
+</p>
+
+<p>
+Because of Christ's sacrifice, believers can live in freedom rather than fear.
+</p>
+
+<h2>Breaking with the Past</h2>
+
+<p>
+Those who have participated in occult practices should completely turn away from them.
+</p>
+
+<ul>
+<li>Confess your sins to God.</li>
+<li>Ask Jesus for forgiveness.</li>
+<li>Destroy occult objects and materials.</li>
+<li>Commit your life fully to Christ.</li>
+<li>Study God's Word daily.</li>
+</ul>
+
+<h2>A New Creation</h2>
+
+<p>
+The Bible says that anyone who is in Christ is a new creation.
+</p>
+
+<p>
+Old habits, fears, and spiritual bondage do not have to control your future.
+</p>
+
+<h2>Living in Victory</h2>
+
+<p>
+Freedom is not only about leaving the past behind; it is also about walking daily with Jesus.
+</p>
+
+<p>
+Prayer, Bible study, fellowship, and obedience help believers grow stronger in faith.
+</p>
+
+<h2>God's Protection</h2>
+
+<p>
+Believers do not need to live in fear of curses, witchcraft, or evil powers.
+</p>
+
+<p>
+God promises His presence and protection to those who trust Him.
+</p>
+
+<h2>Hope for Everyone</h2>
+
+<p>
+No one is beyond God's grace. Christ can save, restore, and transform every person who comes to Him in faith.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"If the Son therefore shall make you free, ye shall be free indeed."
+<br><br>
+<strong>John 8:36</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who can give true freedom?</p>
+
+<input type="radio" name="q1"> Magic<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br>
+<input type="radio" name="q1"> Fortune tellers<br><br>
+
+<p>2. What should a person do after leaving occult practices?</p>
+
+<input type="radio" name="q2"> Return to them<br>
+<input type="radio" name="q2" value="correct"> Follow Christ and study God's Word<br>
+<input type="radio" name="q2"> Ignore God<br><br>
+
+<p>3. According to John 8:36, who makes us free indeed?</p>
+
+<input type="radio" name="q3"> Ourselves<br>
+<input type="radio" name="q3"> Religion<br>
+<input type="radio" name="q3" value="correct"> The Son (Jesus Christ)<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic8","completed");
+}
+</script>
+
+</body>
+</html>
