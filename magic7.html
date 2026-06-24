@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 7 - Spiritual Warfare</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛡️ Lesson 7: Spiritual Warfare</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"For we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world."
+<br><br>
+<strong>Ephesians 6:12</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+The Bible teaches that every Christian is involved in a spiritual battle. This battle is not fought with physical weapons but through faith, prayer, obedience, and the power of God.
+</p>
+
+<h2>What Is Spiritual Warfare?</h2>
+
+<p>
+Spiritual warfare is the conflict between the kingdom of God and the forces of evil. Satan seeks to lead people away from God, while Christ calls people into truth, salvation, and eternal life.
+</p>
+
+<h2>Our Real Enemy</h2>
+
+<p>
+Christians are not fighting against other people. The real enemy is Satan and the forces of darkness that oppose God's work.
+</p>
+
+<p>
+That is why believers are called to love people while resisting evil.
+</p>
+
+<h2>The Armor of God</h2>
+
+<p>
+Ephesians 6:13-18 describes the spiritual armor God provides:
+</p>
+
+<ul>
+<li>🪖 Helmet of Salvation</li>
+<li>🛡️ Shield of Faith</li>
+<li>⚔️ Sword of the Spirit (God's Word)</li>
+<li>👕 Breastplate of Righteousness</li>
+<li>👞 Shoes of the Gospel of Peace</li>
+<li>🔗 Belt of Truth</li>
+</ul>
+
+<h2>The Power of Prayer</h2>
+
+<p>
+Prayer is one of the Christian's greatest weapons. Through prayer we receive strength, wisdom, protection, and guidance from God.
+</p>
+
+<p>
+Jesus Himself spent much time in prayer during His earthly ministry.
+</p>
+
+<h2>Victory Through Christ</h2>
+
+<p>
+The good news is that Jesus has already defeated Satan through His death and resurrection.
+</p>
+
+<p>
+Believers do not fight for victory; they fight from victory because Christ has already won.
+</p>
+
+<h2>How to Stand Firm</h2>
+
+<ul>
+<li>Read the Bible daily.</li>
+<li>Pray regularly.</li>
+<li>Trust God's promises.</li>
+<li>Avoid occult practices.</li>
+<li>Stay close to Jesus.</li>
+</ul>
+
+<h2>Do Not Fear</h2>
+
+<p>
+Many people fear evil spirits, curses, or dark powers. The Bible repeatedly teaches that God's power is greater than all the powers of darkness.
+</p>
+
+<p>
+When we belong to Christ, we can live with confidence and peace.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"For we wrestle not against flesh and blood, but against principalities, against powers."
+<br><br>
+<strong>Ephesians 6:12</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. Who is the Christian's real enemy?</p>
+
+<input type="radio" name="q1"> Other people<br>
+<input type="radio" name="q1" value="correct"> Satan and the forces of evil<br>
+<input type="radio" name="q1"> Governments<br><br>
+
+<p>2. What is called the Sword of the Spirit?</p>
+
+<input type="radio" name="q2"> Human wisdom<br>
+<input type="radio" name="q2" value="correct"> The Word of God<br>
+<input type="radio" name="q2"> Wealth<br><br>
+
+<p>3. How can Christians stand firm?</p>
+
+<input type="radio" name="q3"> By using charms<br>
+<input type="radio" name="q3"> By practicing magic<br>
+<input type="radio" name="q3" value="correct"> Through prayer and faith in Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic7","completed");
+}
+</script>
+
+</body>
+</html>
