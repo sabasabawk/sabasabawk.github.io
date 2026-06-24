@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Lesson 6 - Astrology and Divination</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⭐ Lesson 6: Astrology and Divination</h1>
+
+<h2>Key Text</h2>
+
+<p>
+"Should not a people seek unto their God? for the living to the dead?"
+<br><br>
+<strong>Isaiah 8:19</strong>
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Many people read horoscopes, consult astrologers, or seek information about the future through divination. These practices have existed for thousands of years and remain popular today.
+</p>
+
+<p>
+The Bible teaches that God's people should seek wisdom and guidance from God rather than from astrology or fortune telling.
+</p>
+
+<h2>What Is Astrology?</h2>
+
+<p>
+Astrology is the belief that the positions of stars, planets, and other heavenly bodies influence human lives and events.
+</p>
+
+<p>
+Astrologers often create horoscopes and predictions based on birth dates and star signs.
+</p>
+
+<h2>What Is Divination?</h2>
+
+<p>
+Divination is any attempt to discover hidden knowledge or predict the future through supernatural means apart from God.
+</p>
+
+<p>
+Examples include fortune telling, tarot cards, crystal balls, palm reading, and similar practices.
+</p>
+
+<h2>The Bible's Warning</h2>
+
+<p>
+God repeatedly warned His people not to practice divination or seek guidance from those who claimed secret knowledge.
+</p>
+
+<p>
+Instead, He called His people to trust Him and obey His Word.
+</p>
+
+<h2>Daniel and the Wise Men</h2>
+
+<p>
+In the book of Daniel, the astrologers and wise men of Babylon could not reveal King Nebuchadnezzar's dream.
+</p>
+
+<p>
+God revealed the dream to Daniel because Daniel sought wisdom from God through prayer.
+</p>
+
+<h2>Why Astrology Cannot Replace God</h2>
+
+<ul>
+<li>Only God knows the future perfectly.</li>
+<li>God desires a personal relationship with His people.</li>
+<li>Astrology can lead people away from faith in God.</li>
+<li>The Bible provides trustworthy guidance.</li>
+<li>Prayer is more powerful than horoscopes.</li>
+</ul>
+
+<h2>Trusting God's Guidance</h2>
+
+<p>
+Christians should not base important decisions on star signs or predictions.
+</p>
+
+<p>
+Instead, we should seek God's wisdom through prayer, Bible study, and godly counsel.
+</p>
+
+<h2>Jesus Is Our Guide</h2>
+
+<p>
+Jesus promised to lead His followers through the Holy Spirit.
+</p>
+
+<p>
+When we trust Him, we do not need secret knowledge about the future because we know the One who holds the future.
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+"Should not a people seek unto their God?"
+<br><br>
+<strong>Isaiah 8:19</strong>
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p>1. What is astrology?</p>
+
+<input type="radio" name="q1"> Bible study<br>
+<input type="radio" name="q1" value="correct"> Belief that stars influence human lives<br>
+<input type="radio" name="q1"> Prayer<br><br>
+
+<p>2. Who knows the future perfectly?</p>
+
+<input type="radio" name="q2"> Astrologers<br>
+<input type="radio" name="q2"> Fortune tellers<br>
+<input type="radio" name="q2" value="correct"> God<br><br>
+
+<p>3. Where should Christians seek guidance?</p>
+
+<input type="radio" name="q3"> Horoscopes<br>
+<input type="radio" name="q3"> Tarot cards<br>
+<input type="radio" name="q3" value="correct"> God and His Word<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<br>
+
+<a href="magic5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="magic7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+<script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("magic6","completed");
+}
+</script>
+
+</body>
+</html>
