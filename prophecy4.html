@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 4 - The Fiery Furnace</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 4: The Fiery Furnace</h1><h2>Key Text</h2><p>
+"Our God whom we serve is able to deliver us from the burning fiery furnace."
+<br><br>
+<strong>Daniel 3:17</strong>
+</p><h2>Introduction</h2><p>
+After receiving the prophecy of Daniel 2, King Nebuchadnezzar made a huge image of gold and commanded everyone to worship it.
+</p><p>
+This event became a test of loyalty and faith for God's people.
+</p><h2>The Golden Image</h2><p>
+Nebuchadnezzar built a massive image on the plain of Dura.
+</p><p>
+Government officials from all over the kingdom were commanded to bow down and worship the image when the music played.
+</p><h2>A Test of Worship</h2><p>
+Anyone who refused to worship the image would be thrown into a fiery furnace.
+</p><p>
+This was not simply a political issue. It was a test of whether people would obey God or man.
+</p><h2>Three Faithful Young Men</h2><p>
+Shadrach, Meshach, and Abednego refused to bow before the image.
+</p><p>
+They knew God's commandment:
+</p><p>
+"Thou shalt not bow down thyself to them, nor serve them."
+</p><p>
+Their loyalty to God was more important than their own safety.
+</p><h2>The King's Anger</h2><p>
+Nebuchadnezzar became furious and ordered the furnace to be heated seven times hotter than normal.
+</p><p>
+The three Hebrews were bound and thrown into the flames.
+</p><h2>God's Deliverance</h2><p>
+As the king looked into the furnace, he was astonished.
+</p><p>
+Instead of three men, he saw four men walking unharmed in the fire.
+</p><p>
+The fourth person appeared like the Son of God.
+</p><p>
+God did not abandon His faithful servants.
+</p><h2>Victory Through Faith</h2><p>
+The three Hebrews came out of the furnace without injury.
+</p><p>
+Their clothes were not burned and they did not even smell like smoke.
+</p><p>
+God completely protected them.
+</p><h2>Prophetic Significance</h2><p>
+This story points to future tests of faith in the last days.
+</p><p>
+Just as God's people were pressured to worship the image in Babylon, Revelation describes a final conflict involving worship and loyalty to God.
+</p><h2>Lessons for Today</h2><ul>
+<li>God deserves our worship alone.</li>
+<li>Faithfulness may require courage.</li>
+<li>God is with His people in trials.</li>
+<li>Obedience is more important than popularity.</li>
+</ul><h2>Application</h2><p>
+When facing pressure to compromise your faith, remember the example of Shadrach, Meshach, and Abednego. God is able to strengthen and deliver those who trust Him.
+</p><h2>Memory Verse</h2><p>
+"Our God whom we serve is able to deliver us from the burning fiery furnace."
+<br><br>
+<strong>Daniel 3:17</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. What did Nebuchadnezzar build?</p><input type="radio" name="q1"> A temple<br>
+<input type="radio" name="q1" value="correct"> A golden image<br>
+<input type="radio" name="q1"> A palace<br><br>
+
+<p>2. Who refused to worship the image?</p><input type="radio" name="q2"> Daniel and Jeremiah<br>
+<input type="radio" name="q2" value="correct"> Shadrach, Meshach and Abednego<br>
+<input type="radio" name="q2"> Ezra and Nehemiah<br><br>
+
+<p>3. How many men did the king see in the furnace?</p><input type="radio" name="q3"> Three<br>
+<input type="radio" name="q3" value="correct"> Four<br>
+<input type="radio" name="q3"> Five<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy3.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy5.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy4","completed");
+}
+</script></body>
+</html>
