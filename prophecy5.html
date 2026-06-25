@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 5 - Daniel in the Lions' Den</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 5: Daniel in the Lions' Den</h1><h2>Key Text</h2><p>
+"My God hath sent his angel, and hath shut the lions' mouths, that they have not hurt me."
+<br><br>
+<strong>Daniel 6:22</strong>
+</p><h2>Introduction</h2><p>
+Daniel remained faithful to God throughout his life. Even when he became an old man serving under King Darius, his enemies tried to destroy him because of his faith.
+</p><p>
+This lesson teaches us about courage, prayer, and trusting God during difficult times.
+</p><h2>Daniel's Excellent Spirit</h2><p>
+King Darius appointed Daniel as one of the highest officials in the kingdom.
+</p><p>
+Daniel was honest, trustworthy, and faithful in all his responsibilities. Because of his excellent character, the king planned to place him over the entire kingdom.
+</p><h2>The Plot Against Daniel</h2><p>
+Other officials became jealous of Daniel and looked for a way to accuse him.
+</p><p>
+They could find no fault in his work, so they decided to attack him through his faith in God.
+</p><h2>The Law of the Medes and Persians</h2><p>
+The officials convinced King Darius to sign a law stating that for thirty days no one could pray to any god or man except the king.
+</p><p>
+Anyone who disobeyed would be thrown into a den of lions.
+</p><h2>Daniel Continues to Pray</h2><p>
+When Daniel learned about the law, he did not change his habits.
+</p><p>
+Three times a day he opened his window toward Jerusalem and prayed to God as he had always done.
+</p><p>
+Daniel chose obedience to God over obedience to an unjust human law.
+</p><h2>Thrown Into the Lions' Den</h2><p>
+The officials reported Daniel to the king.
+</p><p>
+Although King Darius respected Daniel, he could not change the law.
+</p><p>
+Daniel was thrown into the lions' den.
+</p><h2>God Protects Daniel</h2><p>
+The king spent a sleepless night worrying about Daniel.
+</p><p>
+Early the next morning he rushed to the lions' den and called out to him.
+</p><p>
+Daniel answered that God had sent His angel to shut the lions' mouths.
+</p><p>
+Daniel was completely unharmed.
+</p><h2>Prophetic Significance</h2><p>
+Daniel's experience points to future events when God's people will again face pressure to choose between obedience to God and obedience to human laws.
+</p><p>
+Like Daniel, God's faithful people must remain loyal to Him regardless of the consequences.
+</p><h2>Lessons for Today</h2><ul>
+<li>Prayer strengthens our relationship with God.</li>
+<li>Faithfulness should not depend on circumstances.</li>
+<li>God can protect His people in times of danger.</li>
+<li>Obedience to God must come first.</li>
+</ul><h2>Application</h2><p>
+Develop a consistent prayer life like Daniel. Trust God even when doing what is right becomes difficult.
+</p><h2>Memory Verse</h2><p>
+"My God hath sent his angel, and hath shut the lions' mouths, that they have not hurt me."
+<br><br>
+<strong>Daniel 6:22</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. Why were the officials jealous of Daniel?</p><input type="radio" name="q1"> He was rich<br>
+<input type="radio" name="q1" value="correct"> He was promoted because of his faithfulness<br>
+<input type="radio" name="q1"> He was a soldier<br><br>
+
+<p>2. How many times a day did Daniel pray?</p><input type="radio" name="q2"> Once<br>
+<input type="radio" name="q2"> Twice<br>
+<input type="radio" name="q2" value="correct"> Three times<br><br>
+
+<p>3. Who shut the lions' mouths?</p><input type="radio" name="q3"> King Darius<br>
+<input type="radio" name="q3" value="correct"> God's angel<br>
+<input type="radio" name="q3"> Daniel himself<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy4.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy6.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy5","completed");
+}
+</script></body>
+</html>
