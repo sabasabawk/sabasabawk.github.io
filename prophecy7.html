@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 7 - The Little Horn Power</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 7: The Little Horn Power</h1><h2>Key Text</h2><p>
+"And he shall speak great words against the most High, and shall wear out the saints of the most High."
+<br><br>
+<strong>Daniel 7:25</strong>
+</p><h2>Introduction</h2><p>
+In Daniel chapter 7, Daniel saw a mysterious "little horn" arise among the ten horns of the fourth beast.
+</p><p>
+God provided identifying characteristics so that this power could be recognized in history.
+</p><h2>Review of Daniel 7</h2><p>
+The four beasts represented:
+</p><ul>
+<li>Babylon</li>
+<li>Medo-Persia</li>
+<li>Greece</li>
+<li>Rome</li>
+</ul><p>
+After Rome was divided, ten kingdoms arose. Among these divisions, the little horn appeared.
+</p><h2>Characteristics of the Little Horn</h2><p>
+The Bible gives several identifying marks:
+</p><ul>
+<li>It arose among the ten divisions of Rome.</li>
+<li>It came after the ten kingdoms.</li>
+<li>It uprooted three kingdoms.</li>
+<li>It became different from the others.</li>
+<li>It spoke great words against God.</li>
+<li>It persecuted God's faithful people.</li>
+<li>It attempted to change times and laws.</li>
+<li>It exercised authority for a prophetic period.</li>
+</ul><h2>A Religious-Political Power</h2><p>
+The little horn was not merely a political kingdom.
+</p><p>
+It exercised both religious and political influence and became a major force in history.
+</p><h2>Persecution of the Saints</h2><p>
+Daniel saw that this power would oppose God's faithful people.
+</p><p>
+Throughout history many believers suffered persecution because they chose to follow Scripture above human traditions.
+</p><h2>Attempting to Change God's Law</h2><p>
+Daniel declared that the little horn would think to change times and laws.
+</p><p>
+This reminds us that God's law is eternal and cannot truly be altered by human authority.
+</p><h2>The Heavenly Judgment</h2><p>
+Although the little horn gained great influence, Daniel also saw that heaven would hold judgment.
+</p><p>
+God remains sovereign over history and will ultimately bring justice.
+</p><h2>Christ's Everlasting Kingdom</h2><p>
+The prophecy ends with hope.
+</p><p>
+The kingdoms of this world will pass away, but the kingdom of Jesus Christ will endure forever.
+</p><p>
+God's faithful people will share in His everlasting kingdom.
+</p><h2>Lessons for Today</h2><ul>
+<li>Truth must be tested by Scripture.</li>
+<li>Human authority should never replace God's authority.</li>
+<li>God knows the future.</li>
+<li>Jesus will ultimately triumph over every earthly power.</li>
+</ul><h2>Application</h2><p>
+Study God's Word carefully and follow Christ faithfully. Place your trust in Jesus rather than human systems, knowing that His kingdom will never end.
+</p><h2>Memory Verse</h2><p>
+"And he shall speak great words against the most High, and shall wear out the saints of the most High."
+<br><br>
+<strong>Daniel 7:25</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. The little horn arose among which group?</p><input type="radio" name="q1"> The four beasts<br>
+<input type="radio" name="q1" value="correct"> The ten horns<br>
+<input type="radio" name="q1"> The prophets<br><br>
+
+<p>2. What did the little horn attempt to change?</p><input type="radio" name="q2"> Geography<br>
+<input type="radio" name="q2"> Languages<br>
+<input type="radio" name="q2" value="correct"> Times and laws<br><br>
+
+<p>3. Which kingdom will last forever?</p><input type="radio" name="q3"> Babylon<br>
+<input type="radio" name="q3"> Rome<br>
+<input type="radio" name="q3" value="correct"> The Kingdom of Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy6.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy8.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy7","completed");
+}
+</script></body>
+</html>
