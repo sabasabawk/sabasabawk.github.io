@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 10 - The Seven Seals</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 10: The Seven Seals of Revelation</h1><h2>Key Text</h2><p>
+"Weep not: behold, the Lion of the tribe of Juda, the Root of David, hath prevailed to open the book, and to loose the seven seals thereof."
+<br><br>
+<strong>Revelation 5:5</strong>
+</p><h2>Introduction</h2><p>
+In Revelation chapters 5 and 6, John saw a scroll sealed with seven seals.
+</p><p>
+Only Jesus Christ was worthy to open the seals and reveal God's plans for His church throughout history.
+</p><h2>The First Seal – White Horse</h2><p>
+The first seal revealed a white horse and its rider.
+</p><p>
+The white color symbolizes purity and victory.
+</p><p>
+It represents the early Christian church spreading the gospel with power.
+</p><h2>The Second Seal – Red Horse</h2><p>
+The second seal revealed a red horse.
+</p><p>
+The color red symbolizes bloodshed and persecution.
+</p><p>
+This period represents the persecution of Christians by pagan Rome.
+</p><h2>The Third Seal – Black Horse</h2><p>
+The third seal revealed a black horse.
+</p><p>
+Black symbolizes spiritual darkness.
+</p><p>
+During this period, truth became mixed with error and many biblical teachings were neglected.
+</p><h2>The Fourth Seal – Pale Horse</h2><p>
+The fourth seal revealed a pale horse.
+</p><p>
+Its rider was called Death.
+</p><p>
+This represents a period of great spiritual decline and suffering.
+</p><h2>The Fifth Seal – The Cry of the Martyrs</h2><p>
+John saw faithful believers symbolically crying out for justice.
+</p><p>
+This seal reminds us that God remembers those who suffered for their faith.
+</p><p>
+A day of judgment and justice is coming.
+</p><h2>The Sixth Seal – Signs in Heaven and Earth</h2><p>
+The sixth seal describes great signs including:
+</p><ul>
+<li>A great earthquake</li>
+<li>The darkening of the sun</li>
+<li>The moon appearing as blood</li>
+<li>The falling of the stars</li>
+</ul><p>
+These signs point toward the nearness of Christ's return.
+</p><h2>The Seventh Seal – Silence in Heaven</h2><p>
+When the seventh seal was opened, there was silence in heaven for a short period.
+</p><p>
+Many understand this to symbolize heaven's attention focused on the Second Coming of Christ.
+</p><h2>The Central Message</h2><p>
+The seven seals reveal that Christ has guided His church through every age.
+</p><p>
+Even during persecution and spiritual darkness, God remained faithful to His people.
+</p><h2>Lessons for Today</h2><ul>
+<li>Jesus controls the course of history.</li>
+<li>God never forgets His faithful people.</li>
+<li>Prophecy strengthens faith.</li>
+<li>Christ's return is drawing near.</li>
+</ul><h2>Application</h2><p>
+Trust Jesus completely. The same Savior who guided His church through history is guiding His people today and preparing them for His glorious return.
+</p><h2>Memory Verse</h2><p>
+"Weep not: behold, the Lion of the tribe of Juda, the Root of David, hath prevailed to open the book."
+<br><br>
+<strong>Revelation 5:5</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. Who was worthy to open the seals?</p><input type="radio" name="q1"> John<br>
+<input type="radio" name="q1"> Gabriel<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p>2. What color was the first horse?</p><input type="radio" name="q2" value="correct"> White<br>
+<input type="radio" name="q2"> Red<br>
+<input type="radio" name="q2"> Black<br><br>
+
+<p>3. What does the sixth seal include?</p><input type="radio" name="q3"> The Flood<br>
+<input type="radio" name="q3"> The Exodus<br>
+<input type="radio" name="q3" value="correct"> Signs in heaven and earth<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy9.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy11.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy10","completed");
+}
+</script></body>
+</html>
