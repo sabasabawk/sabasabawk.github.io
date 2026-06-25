@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 6 - The Four Beasts</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 6: Daniel's Vision of the Four Beasts</h1><h2>Key Text</h2><p>
+"These great beasts, which are four, are four kings, which shall arise out of the earth."
+<br><br>
+<strong>Daniel 7:17</strong>
+</p><h2>Introduction</h2><p>
+In Daniel chapter 7, God gave Daniel a vision of four strange beasts rising from the sea.
+</p><p>
+These beasts represented kingdoms that would rule the world. This prophecy covers the same period as Daniel 2 but uses animals instead of metals.
+</p><h2>The First Beast – A Lion</h2><p>
+Daniel saw a lion with eagle's wings.
+</p><p>
+This beast represented Babylon, the same kingdom represented by the head of gold in Daniel 2.
+</p><p>
+The lion was a symbol of power and majesty.
+</p><h2>The Second Beast – A Bear</h2><p>
+The second beast was a bear raised up on one side with three ribs in its mouth.
+</p><p>
+This represented the Medo-Persian Empire which conquered Babylon.
+</p><p>
+The bear being raised on one side symbolized Persia becoming stronger than Media.
+</p><h2>The Third Beast – A Leopard</h2><p>
+Daniel then saw a leopard with four wings and four heads.
+</p><p>
+This represented Greece under Alexander the Great.
+</p><p>
+After Alexander's death, his empire was divided into four parts, symbolized by the four heads.
+</p><h2>The Fourth Beast – Terrifying and Powerful</h2><p>
+The fourth beast was unlike any other animal.
+</p><p>
+It had large iron teeth and was extremely powerful.
+</p><p>
+This beast represented Rome, the same empire symbolized by the legs of iron in Daniel 2.
+</p><h2>The Ten Horns</h2><p>
+Daniel saw ten horns on the fourth beast.
+</p><p>
+These represented the divisions of the Roman Empire after its fall.
+</p><p>
+The divided nations of Europe arose from these divisions.
+</p><h2>The Little Horn</h2><p>
+Among the ten horns, Daniel saw another small horn arise.
+</p><p>
+This little horn became very powerful and opposed God's truth.
+</p><p>
+Its full meaning will be studied in the next lesson.
+</p><h2>The Heavenly Judgment</h2><p>
+Daniel's vision shifted from earth to heaven.
+</p><p>
+He saw God's throne and the heavenly court.
+</p><p>
+The Ancient of Days sat in judgment while millions of angels stood before Him.
+</p><h2>The Son of Man</h2><p>
+Daniel saw Jesus, called the Son of Man, coming before the Ancient of Days.
+</p><p>
+Jesus received an everlasting kingdom that will never pass away.
+</p><h2>Lessons for Today</h2><ul>
+<li>God knows the future.</li>
+<li>Prophecy confirms the reliability of the Bible.</li>
+<li>Earthly kingdoms are temporary.</li>
+<li>Christ's kingdom will last forever.</li>
+</ul><h2>Application</h2><p>
+World powers rise and fall, but God's kingdom remains eternal. Place your confidence in Jesus and His everlasting kingdom.
+</p><h2>Memory Verse</h2><p>
+"These great beasts, which are four, are four kings, which shall arise out of the earth."
+<br><br>
+<strong>Daniel 7:17</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. What did the lion represent?</p><input type="radio" name="q1"> Greece<br>
+<input type="radio" name="q1" value="correct"> Babylon<br>
+<input type="radio" name="q1"> Rome<br><br>
+
+<p>2. What did the leopard represent?</p><input type="radio" name="q2"> Medo-Persia<br>
+<input type="radio" name="q2" value="correct"> Greece<br>
+<input type="radio" name="q2"> Rome<br><br>
+
+<p>3. Who received the everlasting kingdom?</p><input type="radio" name="q3"> Nebuchadnezzar<br>
+<input type="radio" name="q3"> Daniel<br>
+<input type="radio" name="q3" value="correct"> The Son of Man (Jesus Christ)<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy5.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy7.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy6","completed");
+}
+</script></body>
+</html>
