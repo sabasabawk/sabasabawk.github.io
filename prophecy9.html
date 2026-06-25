@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 9 - The Seven Churches</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 9: Revelation's Seven Churches</h1><h2>Key Text</h2><p>
+"He that hath an ear, let him hear what the Spirit saith unto the churches."
+<br><br>
+<strong>Revelation 2:7</strong>
+</p><h2>Introduction</h2><p>
+The book of Revelation begins with messages from Jesus to seven churches in Asia Minor.
+</p><p>
+While these were real churches, they also represent different periods of Christian history from the time of the apostles until the Second Coming.
+</p><h2>The Church of Ephesus</h2><p>
+Ephesus represents the Apostolic Church.
+</p><p>
+The believers worked faithfully for God but gradually lost their first love.
+</p><h2>The Church of Smyrna</h2><p>
+Smyrna represents the persecuted church.
+</p><p>
+Many Christians suffered and even died for their faith, yet they remained loyal to Christ.
+</p><h2>The Church of Pergamos</h2><p>
+Pergamos represents a period when compromise entered the church.
+</p><p>
+As Christianity gained popularity, some biblical truths became mixed with human traditions.
+</p><h2>The Church of Thyatira</h2><p>
+Thyatira represents a long period of spiritual darkness during the Middle Ages.
+</p><p>
+Yet God still had faithful believers who followed His truth.
+</p><h2>The Church of Sardis</h2><p>
+Sardis represents the period of the Protestant Reformation.
+</p><p>
+God used reformers to restore important biblical teachings.
+</p><h2>The Church of Philadelphia</h2><p>
+Philadelphia represents a revival movement characterized by brotherly love and renewed interest in Bible prophecy.
+</p><p>
+Many believers eagerly anticipated Christ's return.
+</p><h2>The Church of Laodicea</h2><p>
+Laodicea represents God's last-day church.
+</p><p>
+Jesus calls His people to spiritual revival, repentance, and complete commitment to Him.
+</p><h2>Christ Among the Churches</h2><p>
+In John's vision, Jesus walked among seven golden candlesticks.
+</p><p>
+This shows that Christ has always been present with His church throughout history.
+</p><h2>Lessons From the Seven Churches</h2><ul>
+<li>Jesus knows the condition of His church.</li>
+<li>God calls believers to faithfulness.</li>
+<li>Every generation faces spiritual challenges.</li>
+<li>Christ promises victory to those who overcome.</li>
+</ul><h2>Application</h2><p>
+Ask Jesus to help you remain faithful and spiritually awake. Accept His invitation to walk closely with Him every day.
+</p><h2>Memory Verse</h2><p>
+"He that hath an ear, let him hear what the Spirit saith unto the churches."
+<br><br>
+<strong>Revelation 2:7</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. How many churches are addressed in Revelation?</p><input type="radio" name="q1"> Five<br>
+<input type="radio" name="q1"> Six<br>
+<input type="radio" name="q1" value="correct"> Seven<br><br>
+
+<p>2. Which church represents God's last-day church?</p><input type="radio" name="q2"> Ephesus<br>
+<input type="radio" name="q2"> Philadelphia<br>
+<input type="radio" name="q2" value="correct"> Laodicea<br><br>
+
+<p>3. Who walks among the seven candlesticks?</p><input type="radio" name="q3"> Peter<br>
+<input type="radio" name="q3"> John<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy8.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy10.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy9","completed");
+}
+</script></body>
+</html>
