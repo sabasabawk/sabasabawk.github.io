@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 11 - The Seven Trumpets</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 11: The Seven Trumpets of Revelation</h1><h2>Key Text</h2><p>
+"And the seven angels which had the seven trumpets prepared themselves to sound."
+<br><br>
+<strong>Revelation 8:6</strong>
+</p><h2>Introduction</h2><p>
+In Bible prophecy, trumpets often symbolize warnings, judgments, or important events.
+</p><p>
+The seven trumpets of Revelation reveal God's judgments throughout history and demonstrate that God remains in control of world events.
+</p><h2>What Do Trumpets Represent?</h2><p>
+In ancient Israel, trumpets were used to warn people, announce important events, and call armies to battle.
+</p><p>
+Similarly, the seven trumpets contain messages of warning for the world.
+</p><h2>The First Trumpet</h2><p>
+The first trumpet brought hail and fire mixed with blood upon the earth.
+</p><p>
+Many Bible students understand this as representing judgments that fell upon the Roman Empire.
+</p><h2>The Second Trumpet</h2><p>
+A great mountain burning with fire was cast into the sea.
+</p><p>
+This trumpet points to major upheavals affecting nations and kingdoms.
+</p><h2>The Third Trumpet</h2><p>
+A great star called Wormwood fell from heaven and affected rivers and fountains of waters.
+</p><p>
+This symbolizes bitter experiences and judgments upon parts of the world.
+</p><h2>The Fourth Trumpet</h2><p>
+The sun, moon, and stars were partially darkened.
+</p><p>
+This represents a period of spiritual and political decline.
+</p><h2>The Fifth Trumpet</h2><p>
+The fifth trumpet introduces the first woe.
+</p><p>
+John saw symbolic locusts emerging from the abyss, bringing distress and judgment.
+</p><h2>The Sixth Trumpet</h2><p>
+The sixth trumpet is called the second woe.
+</p><p>
+Powerful forces are released, bringing conflict and destruction upon the earth.
+</p><h2>The Seventh Trumpet</h2><p>
+The seventh trumpet announces the triumph of God:
+</p><p>
+"The kingdoms of this world are become the kingdoms of our Lord, and of his Christ."
+</p><p>
+This trumpet points to the final victory of Christ and the establishment of His everlasting kingdom.
+</p><h2>The Message of the Trumpets</h2><p>
+The trumpets remind us that God allows warnings before final judgment.
+</p><p>
+They reveal His mercy, justice, and desire for people to repent and turn to Him.
+</p><h2>Lessons for Today</h2><ul>
+<li>God controls the course of history.</li>
+<li>His judgments are always fair.</li>
+<li>Warnings are given because God loves humanity.</li>
+<li>Christ's kingdom will ultimately triumph.</li>
+</ul><h2>Application</h2><p>
+Take God's warnings seriously. Draw closer to Jesus each day and trust Him as world events move toward the fulfillment of prophecy.
+</p><h2>Memory Verse</h2><p>
+"And the seven angels which had the seven trumpets prepared themselves to sound."
+<br><br>
+<strong>Revelation 8:6</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. What do trumpets often symbolize in Bible prophecy?</p><input type="radio" name="q1"> Entertainment<br>
+<input type="radio" name="q1" value="correct"> Warnings and judgments<br>
+<input type="radio" name="q1"> Harvest festivals<br><br>
+
+<p>2. Which trumpet announces Christ's final victory?</p><input type="radio" name="q2"> First Trumpet<br>
+<input type="radio" name="q2"> Fourth Trumpet<br>
+<input type="radio" name="q2" value="correct"> Seventh Trumpet<br><br>
+
+<p>3. Why does God give prophetic warnings?</p><input type="radio" name="q3"> To frighten people<br>
+<input type="radio" name="q3" value="correct"> Because He loves humanity and calls for repentance<br>
+<input type="radio" name="q3"> To hide the truth<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy10.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy12.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy11","completed");
+}
+</script></body>
+</html>
