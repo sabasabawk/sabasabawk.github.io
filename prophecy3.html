@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prophecy Lesson 3 - Nebuchadnezzar's Dream</title><style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+</style></head><body><div class="container"><h1>📖 Lesson 3: Nebuchadnezzar's Dream – The Great Image</h1><h2>Key Text</h2><p>
+"And in the days of these kings shall the God of heaven set up a kingdom, which shall never be destroyed."
+<br><br>
+<strong>Daniel 2:44</strong>
+</p><h2>Introduction</h2><p>
+One night King Nebuchadnezzar had a troubling dream. When he awoke, he could not remember it, but he knew it was important.
+</p><p>
+God used this dream to reveal the future of the world from Babylon until the establishment of His eternal kingdom.
+</p><h2>The King's Challenge</h2><p>
+Nebuchadnezzar called the wise men of Babylon and demanded that they tell him both the dream and its interpretation.
+</p><p>
+The wise men could not do it. They admitted that only God could reveal such a mystery.
+</p><h2>Daniel Seeks God</h2><p>
+Daniel and his friends prayed earnestly for God's help.
+</p><p>
+That night God revealed both the dream and its meaning to Daniel.
+</p><p>
+Daniel gave all the glory to God.
+</p><h2>The Great Image</h2><p>
+The king saw a great image made of different metals:
+</p><ul>
+<li>Head of Gold</li>
+<li>Chest and Arms of Silver</li>
+<li>Belly and Thighs of Bronze</li>
+<li>Legs of Iron</li>
+<li>Feet of Iron and Clay</li>
+</ul><p>
+A stone cut without human hands struck the image, destroyed it, and became a great mountain that filled the whole earth.
+</p><h2>The Meaning of the Metals</h2><p>
+The image represented successive world empires:
+</p><ul>
+<li><strong>Gold</strong> – Babylon</li>
+<li><strong>Silver</strong> – Medo-Persia</li>
+<li><strong>Bronze</strong> – Greece</li>
+<li><strong>Iron</strong> – Rome</li>
+<li><strong>Iron and Clay</strong> – Divided Nations of Europe</li>
+</ul><p>
+History has fulfilled this prophecy exactly as God predicted.
+</p><h2>The Stone Kingdom</h2><p>
+The stone represents Jesus Christ and His eternal kingdom.
+</p><p>
+Unlike earthly kingdoms, God's kingdom will never be destroyed.
+</p><p>
+At Christ's Second Coming, all human governments will pass away and God's kingdom will reign forever.
+</p><h2>Lessons From the Dream</h2><ul>
+<li>God knows the future.</li>
+<li>Bible prophecy is trustworthy.</li>
+<li>Earthly kingdoms rise and fall.</li>
+<li>Jesus will establish His everlasting kingdom.</li>
+</ul><h2>Application</h2><p>
+The prophecy of Daniel 2 reminds us that world events are under God's control. Our hope should not be in earthly powers but in the coming kingdom of Christ.
+</p><h2>Memory Verse</h2><p>
+"And in the days of these kings shall the God of heaven set up a kingdom, which shall never be destroyed."
+<br><br>
+<strong>Daniel 2:44</strong>
+</p><div class="quiz"><h2>Lesson Quiz</h2><p>1. What metal represented Babylon?</p><input type="radio" name="q1"> Silver<br>
+<input type="radio" name="q1" value="correct"> Gold<br>
+<input type="radio" name="q1"> Bronze<br><br>
+
+<p>2. What empire was represented by the legs of iron?</p><input type="radio" name="q2"> Greece<br>
+<input type="radio" name="q2"> Babylon<br>
+<input type="radio" name="q2" value="correct"> Rome<br><br>
+
+<p>3. What did the stone represent?</p><input type="radio" name="q3"> Babylon<br>
+<input type="radio" name="q3" value="correct"> God's eternal kingdom<br>
+<input type="radio" name="q3"> Greece<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p></div><br><a href="prophecy2.html">
+<button>⬅ Previous Lesson</button>
+</a><a href="prophecy4.html">
+<button>Next Lesson ➜</button>
+</a></div><script>
+function checkQuiz(){
+
+let score = 0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("prophecy3","completed");
+}
+</script></body>
+</html>
