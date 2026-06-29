@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 5 - Saving and Preparing for the Future</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 5: Saving and Preparing for the Future</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Go to the ant, thou sluggard; consider her ways, and be wise."</b>
+
+<br><br>
+
+<strong>Proverbs 6:6</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The Bible teaches that wise people prepare for the future. Saving money is not a sign of lacking faith in God. Instead, it is an act of wisdom and responsible stewardship.
+
+</p>
+
+<h2>Learning from the Ant</h2>
+
+<p>
+
+In Proverbs 6:6–8, the ant gathers food during harvest to prepare for future needs. God uses this small creature to teach us the importance of diligence, planning, and saving.
+
+</p>
+
+<h2>Why Should Christians Save?</h2>
+
+<ul>
+
+<li>To prepare for emergencies.</li>
+
+<li>To support our families.</li>
+
+<li>To avoid unnecessary debt.</li>
+
+<li>To be able to help others in times of need.</li>
+
+<li>To remain faithful stewards of God's blessings.</li>
+
+</ul>
+
+<h2>Saving Does Not Mean Hoarding</h2>
+
+<p>
+
+The Bible warns against storing wealth selfishly while ignoring God's work or the needs of others. Christians should save wisely while remaining generous and trusting in God.
+
+</p>
+
+<h2>Joseph's Example</h2>
+
+<p>
+
+In Genesis 41, God gave Joseph wisdom to store grain during seven years of plenty. Because of careful planning, Egypt survived seven years of famine.
+
+</p>
+
+<p>
+
+Joseph's example teaches us that preparing during good times enables us to endure difficult seasons.
+
+</p>
+
+<h2>Practical Ways to Save</h2>
+
+<ul>
+
+<li>Spend less than you earn.</li>
+
+<li>Set aside money regularly.</li>
+
+<li>Avoid unnecessary purchases.</li>
+
+<li>Prepare for unexpected expenses.</li>
+
+<li>Continue returning faithful tithes and offerings.</li>
+
+</ul>
+
+<h2>Application</h2>
+
+<p>
+
+Ask God to give you wisdom in managing your finances. Begin setting aside a portion of your income each month while trusting Him as your Provider.
+
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>
+
+"Go to the ant, thou sluggard; consider her ways, and be wise."
+
+</b>
+
+<br><br>
+
+<strong>Proverbs 6:6</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p><b>1. Which creature teaches us about saving?</b></p>
+
+<input type="radio" name="q1"> Lion<br>
+<input type="radio" name="q1"> Eagle<br>
+<input type="radio" name="q1" value="correct"> Ant<br><br>
+
+<p><b>2. Why should Christians save?</b></p>
+
+<input type="radio" name="q2"> To become greedy<br>
+<input type="radio" name="q2" value="correct"> To prepare wisely for future needs<br>
+<input type="radio" name="q2"> To stop trusting God<br><br>
+
+<p><b>3. Who stored food during seven years of plenty?</b></p>
+
+<input type="radio" name="q3"> Moses<br>
+<input type="radio" name="q3"> David<br>
+<input type="radio" name="q3" value="correct"> Joseph<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="economics4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="economics6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("economics5","completed");
+
+}
+
+</script>
+
+</body>
+</html>
