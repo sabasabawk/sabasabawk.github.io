@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 3 - Biblical Stewardship</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 3: Biblical Stewardship</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Moreover it is required in stewards, that a man be found faithful."</b>
+
+<br><br>
+
+<strong>1 Corinthians 4:2</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Stewardship is one of the greatest responsibilities God has given His people. Since everything belongs to God, He calls us to faithfully manage what He has entrusted to us.
+
+</p>
+
+<h2>What Is Stewardship?</h2>
+
+<p>
+
+A steward is someone who manages another person's property. As Christians, we are God's stewards. Our responsibility is to use His gifts wisely and faithfully for His glory.
+
+</p>
+
+<h2>Areas of Stewardship</h2>
+
+<ul>
+
+<li>Our time</li>
+
+<li>Our money</li>
+
+<li>Our talents and abilities</li>
+
+<li>Our health</li>
+
+<li>Our possessions</li>
+
+<li>Our influence</li>
+
+<li>The environment God created</li>
+
+</ul>
+
+<h2>The Parable of the Talents</h2>
+
+<p>
+
+In Matthew 25:14–30, Jesus told the Parable of the Talents. The faithful servants wisely used what their master entrusted to them and were rewarded. The servant who buried his talent was rebuked because he failed to use what had been entrusted to him.
+
+</p>
+
+<p>
+
+God expects us to use every blessing for His kingdom rather than wasting or neglecting it.
+
+</p>
+
+<h2>Characteristics of a Faithful Steward</h2>
+
+<ul>
+
+<li>Faithful</li>
+
+<li>Honest</li>
+
+<li>Responsible</li>
+
+<li>Generous</li>
+
+<li>Thankful</li>
+
+<li>Willing to serve others</li>
+
+</ul>
+
+<h2>Blessings of Faithful Stewardship</h2>
+
+<p>
+
+Faithful stewardship brings peace, contentment, trust from God, and opportunities to bless others. Above all, it prepares us to hear the words:
+
+<b>"Well done, thou good and faithful servant."</b>
+
+(Matthew 25:21)
+
+</p>
+
+<h2>Application</h2>
+
+<p>
+
+Examine your life today. Are you managing God's gifts faithfully? Pray for wisdom to become a trustworthy steward in every area of your life.
+
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>
+
+"Moreover it is required in stewards, that a man be found faithful."
+
+</b>
+
+<br><br>
+
+<strong>1 Corinthians 4:2</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p><b>1. Who owns everything?</b></p>
+
+<input type="radio" name="q1"> We do<br>
+<input type="radio" name="q1"> Governments<br>
+<input type="radio" name="q1" value="correct"> God does<br><br>
+
+<p><b>2. What is a steward?</b></p>
+
+<input type="radio" name="q2"> A king<br>
+<input type="radio" name="q2" value="correct"> One who faithfully manages another's property<br>
+<input type="radio" name="q2"> A wealthy merchant<br><br>
+
+<p><b>3. What does God require from His stewards?</b></p>
+
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3"> Riches<br>
+<input type="radio" name="q3" value="correct"> Faithfulness<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="economics2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="economics4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML="You scored "+score+" out of 3.";
+
+localStorage.setItem("economics3","completed");
+
+}
+
+</script>
+
+</body>
+</html>
