@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 6 - Debt and Borrowing</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 6: Debt and Borrowing</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"The rich ruleth over the poor, and the borrower is servant to the lender."</b>
+
+<br><br>
+
+<strong>Proverbs 22:7</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The Bible does not completely forbid borrowing, but it warns that debt can become a burden. Christians are encouraged to live wisely, avoid unnecessary debt, and trust God to provide for their needs.
+
+</p>
+
+<h2>What Is Debt?</h2>
+
+<p>
+
+Debt is money or property borrowed from another person or institution with the promise to repay it later.
+
+</p>
+
+<p>
+
+While some debt may be unavoidable, unnecessary borrowing can lead to financial stress and loss of freedom.
+
+</p>
+
+<h2>Biblical Warnings About Debt</h2>
+
+<ul>
+
+<li>Debt can make a person financially dependent.</li>
+
+<li>Debt may create anxiety and family problems.</li>
+
+<li>Failure to repay damages one's Christian witness.</li>
+
+<li>Living beyond your means often leads to debt.</li>
+
+</ul>
+
+<h2>How to Avoid Unnecessary Debt</h2>
+
+<ul>
+
+<li>Prepare and follow a budget.</li>
+
+<li>Save before making large purchases.</li>
+
+<li>Avoid impulse buying.</li>
+
+<li>Be content with what God has provided.</li>
+
+<li>Pray before making financial decisions.</li>
+
+</ul>
+
+<h2>Repaying What You Owe</h2>
+
+<p>
+
+Christians should be known for honesty and integrity. If you borrow money, make every effort to repay it faithfully and on time.
+
+</p>
+
+<p>
+
+Psalm 37:21 says,
+
+<b>"The wicked borroweth, and payeth not again: but the righteous sheweth mercy, and giveth."</b>
+
+</p>
+
+<h2>Trusting God</h2>
+
+<p>
+
+Instead of depending on debt, believers are encouraged to trust God, work diligently, manage resources wisely, and seek His guidance in every financial decision.
+
+</p>
+
+<h2>Application</h2>
+
+<p>
+
+Evaluate your financial situation. If you have debt, develop a plan to repay it responsibly. If you are debt-free, ask God to help you remain a faithful steward of His blessings.
+
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>
+
+"The rich ruleth over the poor, and the borrower is servant to the lender."
+
+</b>
+
+<br><br>
+
+<strong>Proverbs 22:7</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p><b>1. According to Proverbs 22:7, the borrower is...</b></p>
+
+<input type="radio" name="q1"> Always wealthy<br>
+<input type="radio" name="q1" value="correct"> Servant to the lender<br>
+<input type="radio" name="q1"> A king<br><br>
+
+<p><b>2. Which habit helps avoid unnecessary debt?</b></p>
+
+<input type="radio" name="q2"> Impulse buying<br>
+<input type="radio" name="q2" value="correct"> Following a budget<br>
+<input type="radio" name="q2"> Spending everything you earn<br><br>
+
+<p><b>3. What should Christians do if they borrow money?</b></p>
+
+<input type="radio" name="q3"> Ignore repayment<br>
+<input type="radio" name="q3"> Delay forever<br>
+<input type="radio" name="q3" value="correct"> Repay honestly and faithfully<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="economics5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="economics7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("economics6","completed");
+
+}
+
+</script>
+
+</body>
+</html>
