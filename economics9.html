@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 9 - Honesty and Business Ethics</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Lesson 9: Honesty and Business Ethics</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"A false balance is abomination to the Lord: but a just weight is his delight."</b>
+
+<br><br>
+
+<strong>Proverbs 11:1</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+God expects Christians to be honest in every financial activity. Whether buying, selling, managing a business, or working for someone else, integrity should always guide our decisions.
+
+</p>
+
+<h2>What Is Business Ethics?</h2>
+
+<p>
+
+Business ethics are moral principles that guide how we earn, spend, and manage money. Biblical business ethics are based on truthfulness, fairness, respect, and love for others.
+
+</p>
+
+<h2>God Hates Dishonesty</h2>
+
+<p>
+
+Throughout the Bible, God condemns cheating, stealing, corruption, bribery, false advertising, and dishonest measurements.
+
+</p>
+
+<p>
+
+A Christian should never gain wealth through deception.
+
+</p>
+
+<h2>Characteristics of an Honest Business Person</h2>
+
+<ul>
+
+<li>Tells the truth.</li>
+
+<li>Uses honest weights and measurements.</li>
+
+<li>Keeps promises.</li>
+
+<li>Pays workers fairly.</li>
+
+<li>Charges fair prices.</li>
+
+<li>Avoids corruption and bribery.</li>
+
+<li>Treats customers with respect.</li>
+
+</ul>
+
+<h2>The Blessings of Integrity</h2>
+
+<p>
+
+People trust honest individuals. Integrity builds a good reputation, strengthens relationships, and brings God's blessing upon our work.
+
+</p>
+
+<p>
+
+<b>"Better is a little with righteousness than great revenues without right."</b>
+
+<br><br>
+
+<strong>Proverbs 16:8</strong>
+
+</p>
+
+<h2>Jesus Our Example</h2>
+
+<p>
+
+Jesus always acted with honesty, compassion, and fairness. As His followers, we should reflect His character in every business transaction.
+
+</p>
+
+<h2>Application</h2>
+
+<p>
+
+Examine your daily life. Are you honest in school, at work, in business, and when handling money? Ask God to help you become a person of unquestionable integrity.
+
+</p>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>
+
+"A false balance is abomination to the Lord: but a just weight is his delight."
+
+</b>
+
+<br><br>
+
+<strong>Proverbs 11:1</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Lesson Quiz</h2>
+
+<p><b>1. According to Proverbs 11:1, God delights in...</b></p>
+
+<input type="radio" name="q1"> Dishonest business<br>
+<input type="radio" name="q1" value="correct"> Honest weights and fairness<br>
+<input type="radio" name="q1"> Bribery<br><br>
+
+<p><b>2. Which of the following is a biblical business practice?</b></p>
+
+<input type="radio" name="q2"> Cheating customers<br>
+<input type="radio" name="q2"> Giving false information<br>
+<input type="radio" name="q2" value="correct"> Keeping promises and being truthful<br><br>
+
+<p><b>3. What does integrity produce?</b></p>
+
+<input type="radio" name="q3"> Distrust<br>
+<input type="radio" name="q3" value="correct"> Trust and a good reputation<br>
+<input type="radio" name="q3"> Corruption<br><br>
+
+<button onclick="checkQuiz()">Submit Quiz</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="economics8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="economics10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"You scored " + score + " out of 3.";
+
+localStorage.setItem("economics9","completed");
+
+}
+
+</script>
+
+</body>
+</html>
