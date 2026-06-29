@@ -284,11 +284,15 @@ if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
 if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
 if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
 
-document.getElementById("result").innerHTML =
-"🎉 Congratulations! You scored " + score + " out of 3 and completed the Biblical Economics Course.";
-
 localStorage.setItem("economics12","completed");
 localStorage.setItem("economicsCourse","completed");
+
+document.getElementById("result").innerHTML =
+"🎉 Congratulations! You scored " + score + " out of 3.<br><br>" +
+"<h3>You have successfully completed the Biblical Economics Course!</h3>" +
+"<a href='economics-certificate.html'>" +
+"<button style='margin-top:15px;'>🏆 View Your Certificate</button>" +
+"</a>";
 
 }
 
