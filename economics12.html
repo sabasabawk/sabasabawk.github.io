@@ -254,9 +254,25 @@ Commit your finances to God every day. Let every coin you earn, every decision y
 <input type="radio" name="q3" value="correct"> Faithfulness to God and wise stewardship<br>
 <input type="radio" name="q3"> Having the biggest salary<br><br>
 
-<button onclick="checkQuiz()">Finish Course</button>
+function checkQuiz(){
 
-<p id="result"></p>
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+localStorage.setItem("economics12","completed");
+localStorage.setItem("economicsCourse","completed");
+
+document.getElementById("result").innerHTML =
+"🎉 Congratulations! You scored " + score + " out of 3.<br><br>" +
+"<h3>You have successfully completed the Biblical Economics Course!</h3>" +
+"<a href='economics-certificate.html'>" +
+"<button style='margin-top:15px;'>🏆 View Your Certificate</button>" +
+"</a>";
+
+}
 
 </div>
 
