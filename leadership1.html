@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 1 - What Is Biblical Leadership?</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 Lesson 1: What Is Biblical Leadership?</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"But he that is greatest among you shall be your servant."</b>
+
+<br><br>
+
+<strong>Matthew 23:11</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Many people think leadership is about power, position, or authority. The Bible teaches something different. A true leader serves others, honors God, and seeks the good of those under his or her care.
+
+</p>
+
+<h2>1. Leadership Is a Calling</h2>
+
+<p>
+
+God calls men and women to lead in their homes, churches, schools, workplaces, and communities. Biblical leadership begins with a willingness to obey God.
+
+</p>
+
+<h2>2. Jesus Is Our Perfect Example</h2>
+
+<p>
+
+Jesus led through humility, love, compassion, and sacrifice. Although He was Lord of all, He served others faithfully.
+
+</p>
+
+<h2>3. Leaders Influence Others</h2>
+
+<p>
+
+Every Christian influences someone. Good leaders encourage others to follow Christ through their words, actions, and example.
+
+</p>
+
+<h2>4. Character Matters</h2>
+
+<p>
+
+A godly leader is honest, trustworthy, humble, prayerful, and faithful.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Leadership begins with God.</li>
+
+<li>Jesus is the perfect Leader.</li>
+
+<li>Leadership means serving others.</li>
+
+<li>Godly character is more important than position.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"But he that is greatest among you shall be your servant."</b>
+
+<br><br>
+
+<strong>Matthew 23:11</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Who is the perfect example of leadership?</b></p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br>
+<input type="radio" name="q1"> King Saul<br><br>
+
+<p><b>2. Biblical leadership is mainly about...</b></p>
+
+<input type="radio" name="q2"> Power<br>
+<input type="radio" name="q2" value="correct"> Serving others<br>
+<input type="radio" name="q2"> Wealth<br><br>
+
+<p><b>3. Which quality is essential for a Christian leader?</b></p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3" value="correct"> Integrity<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership.html">
+<button>🏠 Course Home</button>
+</a>
+
+<a href="leadership2.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+}
+
+</script>
+
+</body>
+</html>
