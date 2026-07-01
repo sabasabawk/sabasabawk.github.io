@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 5 - Prayer and Leadership</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🙏 Lesson 5: Prayer and Leadership</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him."</b>
+
+<br><br>
+
+<strong>James 1:5</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Every leader faces important decisions. Human wisdom is limited, but God's wisdom is perfect. Prayer is the greatest source of strength and guidance for every Christian leader.
+
+</p>
+
+<h2>1. Jesus Prayed Often</h2>
+
+<p>
+
+Before choosing His disciples, performing great works, and facing the cross, Jesus spent time in prayer. He depended completely on His Father.
+
+</p>
+
+<h2>2. Prayer Brings Wisdom</h2>
+
+<p>
+
+Leaders are often required to solve problems and make difficult choices. God promises to give wisdom to those who sincerely ask Him.
+
+</p>
+
+<h2>3. Prayer Gives Strength</h2>
+
+<p>
+
+Leadership can be challenging. Prayer gives courage during trials, peace during difficulties, and strength to continue serving faithfully.
+
+</p>
+
+<h2>4. Pray for Those You Lead</h2>
+
+<p>
+
+Christian leaders should regularly pray for their families, churches, friends, coworkers, and communities. Interceding for others is an important part of leadership.
+
+</p>
+
+<h2>5. Stay Connected to God</h2>
+
+<p>
+
+Prayer is not only for emergencies. Daily communication with God keeps leaders humble, faithful, and spiritually strong.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Jesus made prayer a priority.</li>
+
+<li>God gives wisdom to those who ask Him.</li>
+
+<li>Prayer strengthens leaders during difficult times.</li>
+
+<li>Christian leaders pray for the people they serve.</li>
+
+<li>Daily prayer keeps leaders close to God.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"If any of you lack wisdom, let him ask of God."</b>
+
+<br><br>
+
+<strong>James 1:5</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. What should leaders do when they need wisdom?</b></p>
+
+<input type="radio" name="q1"> Depend only on themselves<br>
+<input type="radio" name="q1"> Ask friends only<br>
+<input type="radio" name="q1" value="correct"> Ask God in prayer<br><br>
+
+<p><b>2. Jesus often...</b></p>
+
+<input type="radio" name="q2"> Avoided prayer<br>
+<input type="radio" name="q2" value="correct"> Spent time praying<br>
+<input type="radio" name="q2"> Worked without rest<br><br>
+
+<p><b>3. Christian leaders should pray for...</b></p>
+
+<input type="radio" name="q3"> Only themselves<br>
+<input type="radio" name="q3" value="correct"> The people they lead<br>
+<input type="radio" name="q3"> Only church pastors<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
