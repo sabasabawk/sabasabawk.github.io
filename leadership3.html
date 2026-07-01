@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 3 - Servant Leadership</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 Lesson 3: Servant Leadership</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Whosoever will be chief among you, let him be your servant."</b>
+
+<br><br>
+
+<strong>Matthew 20:27</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The world often teaches that leadership means being in control and having authority over others. Jesus taught the opposite. The greatest leaders are those who willingly serve others with humility and love.
+
+</p>
+
+<h2>1. A Servant Leader Puts Others First</h2>
+
+<p>
+
+Servant leaders care about the needs of others. They seek to encourage, help, and build people up instead of seeking personal recognition.
+
+</p>
+
+<h2>2. Jesus Was the Perfect Servant Leader</h2>
+
+<p>
+
+Jesus demonstrated servant leadership by healing the sick, feeding the hungry, comforting the sorrowful, and washing His disciples' feet.
+
+</p>
+
+<h2>3. Humility Is Essential</h2>
+
+<p>
+
+Pride destroys leadership, but humility earns respect. Christian leaders recognize that every gift and opportunity comes from God.
+
+</p>
+
+<h2>4. Serve With Love</h2>
+
+<p>
+
+Leadership without love becomes harsh and selfish. God's leaders serve with kindness, patience, compassion, and forgiveness.
+
+</p>
+
+<h2>5. Leadership Is Ministry</h2>
+
+<p>
+
+Whether leading in the church, home, workplace, or community, Christian leadership is an opportunity to glorify God through faithful service.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>True leaders serve others.</li>
+
+<li>Jesus is our example of servant leadership.</li>
+
+<li>Humility is a mark of great leadership.</li>
+
+<li>Love should guide every leader.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Whosoever will be chief among you, let him be your servant."</b>
+
+<br><br>
+
+<strong>Matthew 20:27</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. According to Jesus, the greatest leader is...</b></p>
+
+<input type="radio" name="q1"> The richest person<br>
+<input type="radio" name="q1"> The strongest person<br>
+<input type="radio" name="q1" value="correct"> The servant of others<br><br>
+
+<p><b>2. Which action showed Jesus' servant leadership?</b></p>
+
+<input type="radio" name="q2"> Building a palace<br>
+<input type="radio" name="q2" value="correct"> Washing His disciples' feet<br>
+<input type="radio" name="q2"> Becoming an earthly king<br><br>
+
+<p><b>3. Which quality is essential for servant leadership?</b></p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3"> Selfishness<br>
+<input type="radio" name="q3" value="correct"> Humility<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
