@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 2 - Jesus the Greatest Leader</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 Lesson 2: Jesus the Greatest Leader</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"For even the Son of man came not to be ministered unto, but to minister, and to give his life a ransom for many."</b>
+
+<br><br>
+
+<strong>Mark 10:45</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Jesus Christ is the greatest leader who has ever lived. He never sought power for Himself but devoted His life to serving others. His leadership transformed lives and continues to inspire millions around the world.
+
+</p>
+
+<h2>1. Jesus Led by Example</h2>
+
+<p>
+
+Jesus never asked His followers to do what He was unwilling to do Himself. He lived a life of humility, obedience, love, and service.
+
+</p>
+
+<h2>2. Jesus Served Others</h2>
+
+<p>
+
+He healed the sick, comforted the discouraged, fed the hungry, forgave sinners, and even washed His disciples' feet. True leadership serves instead of demanding to be served.
+
+</p>
+
+<h2>3. Jesus Loved Everyone</h2>
+
+<p>
+
+Jesus showed compassion to the poor, children, outcasts, and even His enemies. Christian leaders must treat every person with love and respect.
+
+</p>
+
+<h2>4. Jesus Trusted the Father</h2>
+
+<p>
+
+Everything Jesus did was guided by prayer and complete obedience to God's will. Effective leadership depends on God's wisdom rather than human strength.
+
+</p>
+
+<h2>5. Jesus Developed Other Leaders</h2>
+
+<p>
+
+Jesus trained His twelve disciples and prepared them to continue His mission after His resurrection. Great leaders equip others to serve.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+<li>Jesus is the perfect model of leadership.</li>
+<li>He led through service and sacrifice.</li>
+<li>Prayer guided every decision He made.</li>
+<li>He invested in developing future leaders.</li>
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"For even the Son of man came not to be ministered unto, but to minister."</b>
+
+<br><br>
+
+<strong>Mark 10:45</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Why did Jesus come?</b></p>
+
+<input type="radio" name="q1"> To become a king on earth<br>
+<input type="radio" name="q1" value="correct"> To serve others and give His life<br>
+<input type="radio" name="q1"> To become rich<br><br>
+
+<p><b>2. Jesus trained His disciples to...</b></p>
+
+<input type="radio" name="q2"> Build palaces<br>
+<input type="radio" name="q2" value="correct"> Continue His mission<br>
+<input type="radio" name="q2"> Become soldiers<br><br>
+
+<p><b>3. A Christian leader should depend on...</b></p>
+
+<input type="radio" name="q3"> Human wisdom only<br>
+<input type="radio" name="q3"> Popular opinion<br>
+<input type="radio" name="q3" value="correct"> God's guidance through prayer<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
