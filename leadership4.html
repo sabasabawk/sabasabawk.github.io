@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 4 - Integrity and Character</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 Lesson 4: Integrity and Character</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"The just man walketh in his integrity: his children are blessed after him."</b>
+
+<br><br>
+
+<strong>Proverbs 20:7</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Leadership is built on character. A leader may possess knowledge, skills, and influence, but without integrity those qualities lose their value. God looks beyond outward appearance and examines the heart.
+
+</p>
+
+<h2>1. What Is Integrity?</h2>
+
+<p>
+
+Integrity means doing what is right even when no one is watching. It is living honestly, keeping promises, and remaining faithful to God's principles in every situation.
+
+</p>
+
+<h2>2. Character Is More Important Than Reputation</h2>
+
+<p>
+
+Reputation is what people think about us, but character is who we truly are. God desires leaders whose private lives match their public lives.
+
+</p>
+
+<h2>3. Daniel's Example</h2>
+
+<p>
+
+Daniel served faithfully in Babylon. Although his enemies searched for faults, they found none because Daniel was trustworthy and faithful to God.
+
+</p>
+
+<p>
+
+His integrity brought honor to God and respect from kings.
+
+</p>
+
+<h2>4. Honesty Builds Trust</h2>
+
+<p>
+
+People willingly follow leaders they trust. Christian leaders must be truthful in speech, faithful in responsibilities, and fair in every decision.
+
+</p>
+
+<h2>5. Guard Your Heart</h2>
+
+<p>
+
+A leader's actions begin in the heart. Daily prayer, Bible study, and obedience to God strengthen godly character.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Integrity means doing what is right at all times.</li>
+
+<li>Character matters more than reputation.</li>
+
+<li>Daniel is a biblical example of integrity.</li>
+
+<li>Honesty builds confidence and trust.</li>
+
+<li>Godly character is developed through a close relationship with God.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"The just man walketh in his integrity: his children are blessed after him."</b>
+
+<br><br>
+
+<strong>Proverbs 20:7</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Integrity means...</b></p>
+
+<input type="radio" name="q1"> Pleasing everyone<br>
+<input type="radio" name="q1" value="correct"> Doing what is right even when no one is watching<br>
+<input type="radio" name="q1"> Becoming famous<br><br>
+
+<p><b>2. Which Bible character is known for his integrity in Babylon?</b></p>
+
+<input type="radio" name="q2"> Samson<br>
+<input type="radio" name="q2"> Saul<br>
+<input type="radio" name="q2" value="correct"> Daniel<br><br>
+
+<p><b>3. Character is built by...</b></p>
+
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3" value="correct"> Walking daily with God<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
