@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 11 - Mentoring Others</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌱 Lesson 11: Mentoring Others</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"And the things that thou hast heard of me among many witnesses, the same commit thou to faithful men, who shall be able to teach others also."</b>
+
+<br><br>
+
+<strong>2 Timothy 2:2</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Great leaders do more than lead—they develop future leaders. Jesus mentored His disciples, preparing them to continue His mission after He returned to heaven. Every Christian leader should invest in helping others grow.
+
+</p>
+
+<h2>1. Lead by Example</h2>
+
+<p>
+
+People learn more from what leaders do than from what they say. A godly life is the strongest lesson any mentor can give.
+
+</p>
+
+<h2>2. Teach God's Word</h2>
+
+<p>
+
+Christian mentoring begins with the Bible. Help others understand Scripture, grow in faith, and apply God's truth in daily life.
+
+</p>
+
+<h2>3. Encourage Spiritual Growth</h2>
+
+<p>
+
+Support others through prayer, encouragement, correction, and love. Good mentors help people discover and use their God-given gifts.
+
+</p>
+
+<h2>4. Build Confidence</h2>
+
+<p>
+
+Jesus trusted His disciples with responsibility. Wise leaders also trust and encourage others to serve faithfully.
+
+</p>
+
+<h2>5. Leave a Lasting Legacy</h2>
+
+<p>
+
+The greatest success of a leader is not personal achievement but seeing others become faithful leaders who continue God's work.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Every Christian leader should mentor others.</li>
+
+<li>Lead by example.</li>
+
+<li>Teach God's Word faithfully.</li>
+
+<li>Encourage others to grow spiritually.</li>
+
+<li>Prepare the next generation of leaders.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"...Commit thou to faithful men, who shall be able to teach others also."</b>
+
+<br><br>
+
+<strong>2 Timothy 2:2</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Jesus mentored...</b></p>
+
+<input type="radio" name="q1"> Kings<br>
+<input type="radio" name="q1" value="correct"> His disciples<br>
+<input type="radio" name="q1"> Soldiers<br><br>
+
+<p><b>2. A mentor should first...</b></p>
+
+<input type="radio" name="q2"> Seek popularity<br>
+<input type="radio" name="q2"> Control everyone<br>
+<input type="radio" name="q2" value="correct"> Lead by example<br><br>
+
+<p><b>3. Christian mentoring is based on...</b></p>
+
+<input type="radio" name="q3"> Human opinions<br>
+<input type="radio" name="q3" value="correct"> God's Word<br>
+<input type="radio" name="q3"> Personal success<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
