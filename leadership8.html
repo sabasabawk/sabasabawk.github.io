@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 8 - Handling Conflict Biblically</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🤝 Lesson 8: Handling Conflict Biblically</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Blessed are the peacemakers: for they shall be called the children of God."</b>
+
+<br><br>
+
+<strong>Matthew 5:9</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Conflict is a part of life. Even faithful Christians sometimes disagree. A godly leader does not ignore conflict or make it worse but seeks peace through biblical principles.
+
+</p>
+
+<h2>1. Seek Peace First</h2>
+
+<p>
+
+God calls His people to be peacemakers. Christian leaders should always seek reconciliation rather than division.
+
+</p>
+
+<h2>2. Speak the Truth in Love</h2>
+
+<p>
+
+When correction is necessary, it should be given with kindness, respect, and love. Harsh words often create greater conflict.
+
+</p>
+
+<h2>3. Listen Before Speaking</h2>
+
+<p>
+
+Wise leaders carefully listen to every side before making decisions. Understanding comes before judgment.
+
+</p>
+
+<p>
+
+<b>"Wherefore, my beloved brethren, let every man be swift to hear, slow to speak, slow to wrath."</b>
+
+<br><br>
+
+<strong>James 1:19</strong>
+
+</p>
+
+<h2>4. Be Willing to Forgive</h2>
+
+<p>
+
+Forgiveness reflects the heart of Christ. Leaders who forgive help restore broken relationships and strengthen unity.
+
+</p>
+
+<h2>5. Pray for Wisdom</h2>
+
+<p>
+
+Every conflict should be taken to God in prayer. The Holy Spirit gives wisdom to resolve disagreements in a Christ-like manner.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>God calls leaders to be peacemakers.</li>
+
+<li>Truth should always be spoken with love.</li>
+
+<li>Listening is an important leadership skill.</li>
+
+<li>Forgiveness restores relationships.</li>
+
+<li>Prayer brings God's wisdom into every situation.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Blessed are the peacemakers: for they shall be called the children of God."</b>
+
+<br><br>
+
+<strong>Matthew 5:9</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Christian leaders should seek...</b></p>
+
+<input type="radio" name="q1"> Revenge<br>
+<input type="radio" name="q1"> Arguments<br>
+<input type="radio" name="q1" value="correct"> Peace<br><br>
+
+<p><b>2. Before speaking, a wise leader should...</b></p>
+
+<input type="radio" name="q2"> Become angry<br>
+<input type="radio" name="q2" value="correct"> Listen carefully<br>
+<input type="radio" name="q2"> Ignore others<br><br>
+
+<p><b>3. What helps restore broken relationships?</b></p>
+
+<input type="radio" name="q3"> Pride<br>
+<input type="radio" name="q3"> Blaming others<br>
+<input type="radio" name="q3" value="correct"> Forgiveness<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
