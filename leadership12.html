@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 12 - Finishing Faithfully</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:20px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏁 Lesson 12: Finishing Faithfully</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"I have fought a good fight, I have finished my course, I have kept the faith."</b>
+
+<br><br>
+
+<strong>2 Timothy 4:7</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Starting well is important, but finishing faithfully is even more important. Throughout the Bible we find leaders who began well but failed to remain faithful, while others remained committed to God until the end. Christian leadership is a lifelong journey of obedience.
+
+</p>
+
+<h2>1. Remain Faithful to God</h2>
+
+<p>
+
+A Christian leader should never stop trusting, obeying, and serving God regardless of challenges.
+
+</p>
+
+<h2>2. Continue Growing</h2>
+
+<p>
+
+Great leaders never stop learning. Continue studying God's Word, praying, and developing your leadership skills.
+
+</p>
+
+<h2>3. Persevere Through Trials</h2>
+
+<p>
+
+Leadership often includes difficulties, criticism, and disappointment. God gives strength to those who remain faithful.
+
+</p>
+
+<h2>4. Finish Your Assignment</h2>
+
+<p>
+
+God has given every believer a purpose. Stay committed until the work He has entrusted to you is complete.
+
+</p>
+
+<h2>5. Leave a Godly Legacy</h2>
+
+<p>
+
+The greatest achievement is hearing Jesus say,
+
+<b>"Well done, thou good and faithful servant."</b>
+
+(Matthew 25:23)
+
+</p>
+
+<h2>Course Summary</h2>
+
+<p>
+
+Congratulations! You have completed the <strong>Biblical Leadership Course.</strong>
+
+You have studied:
+
+</p>
+
+<ul>
+
+<li>What Biblical Leadership Is</li>
+<li>Jesus the Greatest Leader</li>
+<li>Servant Leadership</li>
+<li>Integrity and Character</li>
+<li>Prayer and Leadership</li>
+<li>Leading Your Family</li>
+<li>Leading in the Church</li>
+<li>Handling Conflict Biblically</li>
+<li>Time Management for Christians</li>
+<li>Teamwork and Unity</li>
+<li>Mentoring Others</li>
+<li>Finishing Faithfully</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"I have fought a good fight, I have finished my course, I have kept the faith."</b>
+
+<br><br>
+
+<strong>2 Timothy 4:7</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p><b>1. Christian leaders should remain...</b></p>
+
+<input type="radio" name="q1"> Popular<br>
+<input type="radio" name="q1"> Rich<br>
+<input type="radio" name="q1" value="correct"> Faithful to God<br><br>
+
+<p><b>2. Great leaders should...</b></p>
+
+<input type="radio" name="q2"> Stop learning<br>
+<input type="radio" name="q2" value="correct"> Continue growing spiritually<br>
+<input type="radio" name="q2"> Depend only on experience<br><br>
+
+<p><b>3. Paul's testimony was...</b></p>
+
+<input type="radio" name="q3"> I became famous<br>
+<input type="radio" name="q3"> I became wealthy<br>
+<input type="radio" name="q3" value="correct"> I have fought a good fight and kept the faith<br><br>
+
+<button onclick="checkQuiz()">Finish Course</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership.html">
+<button>🏠 Back to Leadership Course</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+localStorage.setItem("leadership12","completed");
+localStorage.setItem("leadershipCourse","completed");
+
+document.getElementById("result").innerHTML =
+"🎉 Congratulations! You scored " + score + " out of 3.<br><br>" +
+"<h3>You have successfully completed the Biblical Leadership Course!</h3>" +
+'<a href="certificate.html?course=Biblical%20Leadership">' +
+'<button>🏆 View Certificate</button>' +
+'</a>';
+
+}
+
+</script>
+
+</body>
+</html>
