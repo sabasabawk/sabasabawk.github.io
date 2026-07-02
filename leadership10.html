@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 10 - Teamwork and Unity</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🤝 Lesson 10: Teamwork and Unity</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Endeavouring to keep the unity of the Spirit in the bond of peace."</b>
+
+<br><br>
+
+<strong>Ephesians 4:3</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+God never intended His work to be done by one person alone. Throughout the Bible, God's people worked together to accomplish His mission. Strong leaders build strong teams that are united in Christ.
+
+</p>
+
+<h2>1. We Are One Body in Christ</h2>
+
+<p>
+
+Every believer has different gifts, but all are important. Just as the human body has many parts, the church functions best when everyone serves faithfully.
+
+</p>
+
+<p>
+
+<b>"For as the body is one, and hath many members... so also is Christ."</b>
+
+<br><br>
+
+<strong>1 Corinthians 12:12</strong>
+
+</p>
+
+<h2>2. Respect Every Team Member</h2>
+
+<p>
+
+Christian leaders value every person regardless of age, education, position, or background. Every member contributes to God's work.
+
+</p>
+
+<h2>3. Encourage Cooperation</h2>
+
+<p>
+
+Leaders should inspire people to work together instead of competing against one another. Unity strengthens the mission of the church.
+
+</p>
+
+<h2>4. Resolve Differences with Love</h2>
+
+<p>
+
+Disagreements should be handled with humility, forgiveness, and prayer. Unity does not mean everyone is identical—it means everyone is committed to Christ.
+
+</p>
+
+<h2>5. Keep the Mission First</h2>
+
+<p>
+
+When everyone focuses on winning souls and glorifying God, personal differences become less important than God's purpose.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>God blesses teamwork.</li>
+
+<li>Every believer has an important role.</li>
+
+<li>Unity strengthens God's work.</li>
+
+<li>Leaders encourage cooperation.</li>
+
+<li>Christ is the center of every successful team.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Endeavouring to keep the unity of the Spirit in the bond of peace."</b>
+
+<br><br>
+
+<strong>Ephesians 4:3</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. The church is compared to...</b></p>
+
+<input type="radio" name="q1"> A business<br>
+<input type="radio" name="q1" value="correct"> One body with many members<br>
+<input type="radio" name="q1"> A school<br><br>
+
+<p><b>2. Christian leaders should encourage...</b></p>
+
+<input type="radio" name="q2"> Competition<br>
+<input type="radio" name="q2" value="correct"> Cooperation and unity<br>
+<input type="radio" name="q2"> Pride<br><br>
+
+<p><b>3. The center of every Christian team should be...</b></p>
+
+<input type="radio" name="q3"> Human success<br>
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
