@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 9 - Building and Leading a Team</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Lesson 9: Building and Leading a Team</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Two are better than one; because they have a good reward for their labour."</b>
+
+<br><br>
+
+<strong>Ecclesiastes 4:9</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+God never intended His work to be done by one person alone. Throughout the Bible, faithful leaders worked together with others to accomplish God's mission. Great leaders build strong teams that serve God in unity.
+
+</p>
+
+<h2>1. Value Every Team Member</h2>
+
+<p>
+
+Every person has unique gifts and abilities given by God. Wise leaders appreciate and encourage the talents of each member instead of comparing them.
+
+</p>
+
+<h2>2. Work Together</h2>
+
+<p>
+
+The body of Christ has many members, each with an important role. Success comes when everyone faithfully performs his or her responsibility.
+
+</p>
+
+<p>
+
+<b>"For as we have many members in one body... so we, being many, are one body in Christ."</b>
+
+<br><br>
+
+<strong>Romans 12:4–5</strong>
+
+</p>
+
+<h2>3. Encourage Others</h2>
+
+<p>
+
+Good leaders motivate people through kindness, appreciation, and encouragement. A few positive words can inspire someone to serve God faithfully.
+
+</p>
+
+<h2>4. Share Responsibilities</h2>
+
+<p>
+
+Moses learned from Jethro that leadership becomes stronger when responsibilities are shared with capable and trustworthy people.
+
+</p>
+
+<h2>5. Keep Christ at the Center</h2>
+
+<p>
+
+When Jesus remains the center of the team, unity grows, conflicts decrease, and God's work prospers.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>God values teamwork.</li>
+
+<li>Every believer has an important role.</li>
+
+<li>Leaders encourage and develop others.</li>
+
+<li>Responsibilities should be shared wisely.</li>
+
+<li>Christ must remain the center of every team.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Two are better than one; because they have a good reward for their labour."</b>
+
+<br><br>
+
+<strong>Ecclesiastes 4:9</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. According to Ecclesiastes, two are...</b></p>
+
+<input type="radio" name="q1"> Weaker than one<br>
+<input type="radio" name="q1" value="correct"> Better than one<br>
+<input type="radio" name="q1"> Equal to none<br><br>
+
+<p><b>2. A good leader should...</b></p>
+
+<input type="radio" name="q2"> Do everything alone<br>
+<input type="radio" name="q2" value="correct"> Encourage and develop others<br>
+<input type="radio" name="q2"> Ignore team members<br><br>
+
+<p><b>3. The center of every Christian team should be...</b></p>
+
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3"> The leader<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
