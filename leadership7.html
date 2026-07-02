@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 7 - Leading in the Church</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⛪ Lesson 7: Leading in the Church</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Feed the flock of God which is among you, taking the oversight thereof, not by constraint, but willingly... neither as being lords over God's heritage, but being ensamples to the flock."</b>
+
+<br><br>
+
+<strong>1 Peter 5:2–3</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Leadership in the church is a sacred responsibility. Every church leader is called to serve Christ by caring for His people with love, humility, and faithfulness. Church leadership is not about power but about serving God's family.
+
+</p>
+
+<h2>1. Jesus Is the Head of the Church</h2>
+
+<p>
+
+Every church leader serves under the authority of Jesus Christ. Our purpose is to honor Him in every decision and every ministry.
+
+</p>
+
+<h2>2. Lead by Example</h2>
+
+<p>
+
+Members watch the lives of their leaders. A church leader should demonstrate honesty, kindness, humility, faithfulness, and love in both public and private life.
+
+</p>
+
+<h2>3. Serve Willingly</h2>
+
+<p>
+
+Church work should never be done for praise, position, or personal gain. Christian leaders serve joyfully because they love God and His people.
+
+</p>
+
+<h2>4. Promote Unity</h2>
+
+<p>
+
+Leaders should encourage peace, cooperation, forgiveness, and unity among church members. Unity strengthens the church and glorifies God.
+
+</p>
+
+<h2>5. Depend on the Holy Spirit</h2>
+
+<p>
+
+No leader can successfully serve without God's guidance. Prayer, Bible study, and dependence upon the Holy Spirit are essential for effective ministry.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Jesus Christ is the Head of the Church.</li>
+
+<li>Church leaders are servants, not rulers.</li>
+
+<li>Leaders must be examples to others.</li>
+
+<li>Unity is one of the leader's responsibilities.</li>
+
+<li>The Holy Spirit empowers Christian leadership.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Feed the flock of God which is among you... being ensamples to the flock."</b>
+
+<br><br>
+
+<strong>1 Peter 5:2–3</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Who is the Head of the Church?</b></p>
+
+<input type="radio" name="q1"> The pastor<br>
+<input type="radio" name="q1"> The elders<br>
+<input type="radio" name="q1" value="correct"> Jesus Christ<br><br>
+
+<p><b>2. Church leaders should serve...</b></p>
+
+<input type="radio" name="q2"> For personal honor<br>
+<input type="radio" name="q2" value="correct"> Willingly and faithfully<br>
+<input type="radio" name="q2"> Only when convenient<br><br>
+
+<p><b>3. A church leader should promote...</b></p>
+
+<input type="radio" name="q3"> Competition<br>
+<input type="radio" name="q3"> Division<br>
+<input type="radio" name="q3" value="correct"> Unity among believers<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership6.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership8.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
