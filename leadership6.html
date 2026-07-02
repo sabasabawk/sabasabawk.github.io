@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leadership Lesson 6 - Leading Your Family</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏡 Lesson 6: Leading Your Family</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"But as for me and my house, we will serve the Lord."</b>
+
+<br><br>
+
+<strong>Joshua 24:15</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The first place where leadership is practiced is not the church or the workplace—it is the home. God calls every Christian to be an example of faith, love, and integrity within the family.
+
+</p>
+
+<h2>1. Leadership Begins at Home</h2>
+
+<p>
+
+A person who faithfully leads their family develops qualities that prepare them to serve others. The home is God's training ground for leadership.
+
+</p>
+
+<h2>2. Lead by Example</h2>
+
+<p>
+
+Family members learn more from what they see than from what they hear. A godly leader demonstrates honesty, kindness, forgiveness, patience, and faith in daily life.
+
+</p>
+
+<h2>3. Build a Christ-Centered Home</h2>
+
+<p>
+
+Make prayer, Bible study, and worship regular parts of family life. Encourage every family member to grow in their relationship with Jesus.
+
+</p>
+
+<h2>4. Love and Respect One Another</h2>
+
+<p>
+
+Christian leadership is expressed through love, respect, encouragement, and selfless service. Strong families are built on mutual care and biblical values.
+
+</p>
+
+<h2>5. Leave a Godly Legacy</h2>
+
+<p>
+
+The greatest inheritance we can leave our children is a life of faithfulness to God. A godly example influences future generations.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Leadership begins in the home.</li>
+
+<li>Godly leaders lead by example.</li>
+
+<li>Prayer and Bible study strengthen families.</li>
+
+<li>Love and respect build strong homes.</li>
+
+<li>A faithful life leaves a lasting legacy.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"But as for me and my house, we will serve the Lord."</b>
+
+<br><br>
+
+<strong>Joshua 24:15</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Where does Christian leadership begin?</b></p>
+
+<input type="radio" name="q1"> At work<br>
+<input type="radio" name="q1"> At school<br>
+<input type="radio" name="q1" value="correct"> At home<br><br>
+
+<p><b>2. Family members learn most from...</b></p>
+
+<input type="radio" name="q2"> Our speeches only<br>
+<input type="radio" name="q2" value="correct"> Our example and actions<br>
+<input type="radio" name="q2"> Our education<br><br>
+
+<p><b>3. Joshua declared that his house would...</b></p>
+
+<input type="radio" name="q3"> Become wealthy<br>
+<input type="radio" name="q3"> Rule the nation<br>
+<input type="radio" name="q3" value="correct"> Serve the Lord<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="leadership5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="leadership7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
