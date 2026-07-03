@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 6 - The Role of Christian Teachers</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👩‍🏫 Lesson 6: The Role of Christian Teachers</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Be ye followers of me, even as I also am of Christ."</b>
+
+<br><br>
+
+<strong>1 Corinthians 11:1</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Teaching is one of the greatest responsibilities God gives to His people. Christian teachers do more than explain lessons—they help shape lives, build character, and lead students closer to Jesus Christ. Their influence often lasts for a lifetime.
+
+</p>
+
+<h2>1. A Teacher Is a Spiritual Leader</h2>
+
+<p>
+
+Christian teachers are called to guide students toward God's truth. Their classroom should be a place where faith, wisdom, and respect are encouraged.
+
+</p>
+
+<h2>2. Teach by Example</h2>
+
+<p>
+
+Students watch the lives of their teachers. Honesty, kindness, patience, humility, and fairness speak louder than words.
+
+</p>
+
+<h2>3. Love Every Student</h2>
+
+<p>
+
+Jesus showed love to everyone. Christian teachers should respect every learner, encourage those who struggle, and treat all students fairly without favoritism.
+
+</p>
+
+<h2>4. Encourage Excellence</h2>
+
+<p>
+
+Teachers should inspire students to work diligently and use their talents for the glory of God. Excellence honors the Creator who gave us our abilities.
+
+</p>
+
+<h2>5. Depend on God</h2>
+
+<p>
+
+Successful Christian teaching requires prayer and the guidance of the Holy Spirit. God gives wisdom, patience, and strength for every challenge.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Christian teachers are spiritual leaders.</li>
+
+<li>Students learn through the teacher's example.</li>
+
+<li>Every student deserves love and respect.</li>
+
+<li>Teachers encourage excellence for God's glory.</li>
+
+<li>Prayer and the Holy Spirit are essential in teaching.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Be ye followers of me, even as I also am of Christ."</b>
+
+<br><br>
+
+<strong>1 Corinthians 11:1</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. A Christian teacher should first be...</b></p>
+
+<input type="radio" name="q1"> Popular<br>
+<input type="radio" name="q1" value="correct"> A godly example<br>
+<input type="radio" name="q1"> Wealthy<br><br>
+
+<p><b>2. Christian teachers should treat students...</b></p>
+
+<input type="radio" name="q2"> With favoritism<br>
+<input type="radio" name="q2" value="correct"> With love and fairness<br>
+<input type="radio" name="q2"> According to their grades only<br><br>
+
+<p><b>3. Christian teachers depend on...</b></p>
+
+<input type="radio" name="q3"> Their own wisdom only<br>
+<input type="radio" name="q3"> Luck<br>
+<input type="radio" name="q3" value="correct"> God and the Holy Spirit<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education5.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education7.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
