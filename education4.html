@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 4 - The Purpose of True Education</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎯 Lesson 4: The Purpose of True Education</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"And Jesus increased in wisdom and stature, and in favour with God and man."</b>
+
+<br><br>
+
+<strong>Luke 2:52</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Many people believe that education exists only to prepare students for employment or financial success. While these are important, God's purpose for education is much greater. True education prepares people to know God, develop Christlike character, serve others faithfully, and become responsible citizens while preparing for eternal life.
+
+</p>
+
+<h2>1. To Know God</h2>
+
+<p>
+
+The highest purpose of education is to lead people into a personal relationship with God. Knowledge without knowing God is incomplete.
+
+</p>
+
+<h2>2. To Develop Christlike Character</h2>
+
+<p>
+
+True education shapes honesty, kindness, humility, self-control, patience, and love. Character is more valuable than academic achievement alone.
+
+</p>
+
+<h2>3. To Prepare for Service</h2>
+
+<p>
+
+God gives every person talents to bless others. Education should prepare students to use their gifts in service to God, their families, the church, and society.
+
+</p>
+
+<h2>4. To Develop the Whole Person</h2>
+
+<p>
+
+Seventh-day Adventist education encourages balanced growth in the physical, mental, spiritual, and social aspects of life.
+
+</p>
+
+<h2>5. To Prepare for Eternity</h2>
+
+<p>
+
+The final goal of Christian education is to prepare people to live forever with Jesus in His eternal kingdom.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>True education leads us to know God.</li>
+
+<li>It develops Christlike character.</li>
+
+<li>It prepares us to serve others.</li>
+
+<li>It develops the whole person.</li>
+
+<li>It prepares us for eternal life.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"And Jesus increased in wisdom and stature, and in favour with God and man."</b>
+
+<br><br>
+
+<strong>Luke 2:52</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. The highest purpose of education is to...</b></p>
+
+<input type="radio" name="q1"> Become wealthy<br>
+<input type="radio" name="q1" value="correct"> Know God<br>
+<input type="radio" name="q1"> Become famous<br><br>
+
+<p><b>2. True education develops...</b></p>
+
+<input type="radio" name="q2"> Only academic knowledge<br>
+<input type="radio" name="q2" value="correct"> Christlike character<br>
+<input type="radio" name="q2"> Only physical strength<br><br>
+
+<p><b>3. Christian education ultimately prepares us for...</b></p>
+
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3" value="correct"> Eternal life with Christ<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education3.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education5.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
