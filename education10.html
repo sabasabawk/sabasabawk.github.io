@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 10 - The Global Seventh-day Adventist Education System</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌍 Lesson 10: The Global Seventh-day Adventist Education System</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Go ye therefore, and teach all nations."</b>
+
+<br><br>
+
+<strong>Matthew 28:19</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Since its beginning, the Seventh-day Adventist Church has considered education to be one of its most important ministries. Around the world, Adventist schools, colleges, and universities help students grow academically, spiritually, physically, and socially while preparing them to serve God and humanity.
+
+</p>
+
+<h2>1. A Worldwide Mission</h2>
+
+<p>
+
+The Adventist education system serves millions of students across many countries. It exists to share the gospel while providing quality education based on biblical principles.
+
+</p>
+
+<h2>2. Education for Service</h2>
+
+<p>
+
+Adventist schools prepare students to become teachers, pastors, doctors, nurses, engineers, business leaders, and faithful Christians who positively influence society.
+
+</p>
+
+<h2>3. Academic Excellence with Christian Values</h2>
+
+<p>
+
+Students are encouraged to achieve high academic standards while developing honesty, integrity, compassion, and faith in Jesus Christ.
+
+</p>
+
+<h2>4. Learning Beyond the Classroom</h2>
+
+<p>
+
+Education includes community service, health education, leadership training, evangelism, music, agriculture, and practical work. Learning should prepare students for everyday life and Christian service.
+
+</p>
+
+<h2>5. Preparing Leaders for God's Kingdom</h2>
+
+<p>
+
+The ultimate goal of the Adventist education system is not only to prepare successful professionals but also faithful disciples who will help others know Christ and prepare for His second coming.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Adventist education is a worldwide ministry.</li>
+
+<li>It combines academic excellence with biblical values.</li>
+
+<li>Students are prepared for service and leadership.</li>
+
+<li>Learning includes practical and spiritual development.</li>
+
+<li>The highest goal is preparing people for God's kingdom.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Go ye therefore, and teach all nations."</b>
+
+<br><br>
+
+<strong>Matthew 28:19</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. The Adventist education system exists to...</b></p>
+
+<input type="radio" name="q1"> Earn money<br>
+<input type="radio" name="q1" value="correct"> Share the gospel through education<br>
+<input type="radio" name="q1"> Compete with other schools<br><br>
+
+<p><b>2. Adventist education combines academic excellence with...</b></p>
+
+<input type="radio" name="q2"> Popular culture<br>
+<input type="radio" name="q2"> Entertainment only<br>
+<input type="radio" name="q2" value="correct"> Christian values<br><br>
+
+<p><b>3. The highest goal of Adventist education is...</b></p>
+
+<input type="radio" name="q3"> Career success only<br>
+<input type="radio" name="q3"> Financial wealth<br>
+<input type="radio" name="q3" value="correct"> Preparing people for God's kingdom<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education9.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education11.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
