@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 2 - The Biblical Foundation of Education</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 2: The Biblical Foundation of Education</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness."</b>
+
+<br><br>
+
+<strong>2 Timothy 3:16</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The Bible is the foundation of true education. While many subjects are valuable, God's Word provides the principles that guide every area of life. Seventh-day Adventist education is built upon Scripture because the Bible reveals God's character, His will, and His plan for humanity.
+
+</p>
+
+<h2>1. The Bible Is God's Inspired Word</h2>
+
+<p>
+
+The Scriptures were given by God to teach truth, correct error, and guide people into righteous living. Every Christian education should begin with God's Word.
+
+</p>
+
+<h2>2. Jesus Is the Greatest Teacher</h2>
+
+<p>
+
+Jesus taught with wisdom, compassion, and authority. He used stories, questions, and practical examples to help people understand God's truth.
+
+</p>
+
+<h2>3. Wisdom Begins with Reverence for God</h2>
+
+<p>
+
+Knowledge without God can lead to pride, but true wisdom begins with respecting and obeying the Lord.
+
+</p>
+
+<p>
+
+<b>"The fear of the Lord is the beginning of knowledge."</b>
+
+<br><br>
+
+<strong>Proverbs 1:7</strong>
+
+</p>
+
+<h2>4. Education Should Transform Lives</h2>
+
+<p>
+
+Biblical education is not simply about gaining information. It should transform attitudes, strengthen faith, and prepare believers to serve others.
+
+</p>
+
+<h2>5. Every Subject Can Glorify God</h2>
+
+<p>
+
+Whether studying science, history, mathematics, language, or health, students should recognize God as the Creator and Sustainer of all truth.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>The Bible is the foundation of true education.</li>
+
+<li>Jesus is the perfect Teacher.</li>
+
+<li>True wisdom begins with God.</li>
+
+<li>Education should transform character.</li>
+
+<li>Learning should glorify God.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"All scripture is given by inspiration of God."</b>
+
+<br><br>
+
+<strong>2 Timothy 3:16</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. What is the foundation of Christian education?</b></p>
+
+<input type="radio" name="q1"> Tradition<br>
+<input type="radio" name="q1"> Human philosophy<br>
+<input type="radio" name="q1" value="correct"> The Bible<br><br>
+
+<p><b>2. Who is the greatest Teacher?</b></p>
+
+<input type="radio" name="q2"> Moses<br>
+<input type="radio" name="q2" value="correct"> Jesus Christ<br>
+<input type="radio" name="q2"> Solomon<br><br>
+
+<p><b>3. True wisdom begins with...</b></p>
+
+<input type="radio" name="q3"> Wealth<br>
+<input type="radio" name="q3"> Education alone<br>
+<input type="radio" name="q3" value="correct"> Reverence for God<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education1.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education3.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
