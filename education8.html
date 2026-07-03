@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 8 - Faith and Learning Together</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📖 Lesson 8: Faith and Learning Together</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Trust in the Lord with all thine heart; and lean not unto thine own understanding."</b>
+
+<br><br>
+
+<strong>Proverbs 3:5</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+In Seventh-day Adventist education, faith and learning cannot be separated. Every subject is taught from a biblical worldview, recognizing God as the Creator and Sustainer of all knowledge. True education helps students grow both intellectually and spiritually.
+
+</p>
+
+<h2>1. God Is the Source of Truth</h2>
+
+<p>
+
+All genuine truth comes from God. Science, history, mathematics, language, and every field of study reveal His wisdom when understood correctly.
+
+</p>
+
+<h2>2. Learning Strengthens Faith</h2>
+
+<p>
+
+Education should deepen our trust in God. As students learn about the world, they should also recognize God's power, order, and love in creation.
+
+</p>
+
+<h2>3. Faith Guides Decision-Making</h2>
+
+<p>
+
+Biblical principles help students make wise choices in school, at home, at work, and in society. Knowledge without faith can easily be misused.
+
+</p>
+
+<h2>4. Excellence Honors God</h2>
+
+<p>
+
+Students should strive for excellence, not merely for personal success, but to glorify God with the abilities He has given them.
+
+</p>
+
+<h2>5. Learning Never Ends</h2>
+
+<p>
+
+Christian education encourages a lifelong love of learning. As followers of Christ, we continue growing in wisdom, understanding, and faith throughout our lives.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Faith and learning belong together.</li>
+
+<li>God is the source of all truth.</li>
+
+<li>Education should strengthen faith.</li>
+
+<li>Excellence brings glory to God.</li>
+
+<li>Learning continues throughout life.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Trust in the Lord with all thine heart."</b>
+
+<br><br>
+
+<strong>Proverbs 3:5</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. All true knowledge comes from...</b></p>
+
+<input type="radio" name="q1"> Human wisdom only<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Technology<br><br>
+
+<p><b>2. Faith should...</b></p>
+
+<input type="radio" name="q2"> Be separated from education<br>
+<input type="radio" name="q2" value="correct"> Guide our learning and decisions<br>
+<input type="radio" name="q2"> Be practiced only in church<br><br>
+
+<p><b>3. Why should students pursue excellence?</b></p>
+
+<input type="radio" name="q3"> To become famous<br>
+<input type="radio" name="q3"> To impress others<br>
+<input type="radio" name="q3" value="correct"> To glorify God<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education7.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education9.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
