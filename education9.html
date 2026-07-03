@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 9 - Health, Work, and Practical Education</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💪 Lesson 9: Health, Work, and Practical Education</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Whatsoever ye do, do it heartily, as to the Lord, and not unto men."</b>
+
+<br><br>
+
+<strong>Colossians 3:23</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Seventh-day Adventist education teaches that true education includes more than classroom learning. God desires His children to care for their health, develop practical skills, and value honest work. Physical labor, healthy living, and useful service are all important parts of Christian education.
+
+</p>
+
+<h2>1. Our Bodies Are God's Temple</h2>
+
+<p>
+
+The Bible teaches that our bodies belong to God. Good health enables us to think clearly, serve faithfully, and honor our Creator.
+
+</p>
+
+<p>
+
+<b>"Know ye not that your body is the temple of the Holy Ghost?"</b>
+
+<br><br>
+
+<strong>1 Corinthians 6:19–20</strong>
+
+</p>
+
+<h2>2. The Dignity of Work</h2>
+
+<p>
+
+Work was given before sin entered the world. Honest labor develops discipline, responsibility, and respect for others. Every useful occupation can glorify God.
+
+</p>
+
+<h2>3. Practical Skills Are Important</h2>
+
+<p>
+
+Students should learn useful life skills such as gardening, craftsmanship, stewardship, communication, and service. Practical education prepares people for everyday life.
+
+</p>
+
+<h2>4. Balance Mental and Physical Activity</h2>
+
+<p>
+
+Healthy minds and healthy bodies work together. Regular exercise, proper rest, nutritious food, and productive work contribute to successful learning.
+
+</p>
+
+<h2>5. Serve Others Through Your Talents</h2>
+
+<p>
+
+God gives every person abilities to bless others. Education should prepare students to use their knowledge and skills in service to their families, communities, church, and the world.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Our bodies are God's temple.</li>
+
+<li>Honest work honors God.</li>
+
+<li>Practical skills are valuable.</li>
+
+<li>Health supports effective learning.</li>
+
+<li>Education prepares us for useful service.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Whatsoever ye do, do it heartily, as to the Lord."</b>
+
+<br><br>
+
+<strong>Colossians 3:23</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Our bodies are...</b></p>
+
+<input type="radio" name="q1"> Our own property only<br>
+<input type="radio" name="q1" value="correct"> The temple of the Holy Spirit<br>
+<input type="radio" name="q1"> Unimportant<br><br>
+
+<p><b>2. Honest work...</b></p>
+
+<input type="radio" name="q2"> Is a punishment only<br>
+<input type="radio" name="q2" value="correct"> Honors God and builds character<br>
+<input type="radio" name="q2"> Has no spiritual value<br><br>
+
+<p><b>3. Practical education prepares us...</b></p>
+
+<input type="radio" name="q3"> Only for examinations<br>
+<input type="radio" name="q3"> Only for employment<br>
+<input type="radio" name="q3" value="correct"> For useful service in daily life and God's work<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education8.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education10.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
