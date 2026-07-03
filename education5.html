@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 5 - The Home as the First School</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏡 Lesson 5: The Home as the First School</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Train up a child in the way he should go: and when he is old, he will not depart from it."</b>
+
+<br><br>
+
+<strong>Proverbs 22:6</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Long before children enter a classroom, they begin learning at home. Parents are the first teachers appointed by God. The values, habits, faith, and attitudes learned in the home often shape a person's entire life. Seventh-day Adventist education recognizes the home as the foundation of all true education.
+
+</p>
+
+<h2>1. Parents Are the First Teachers</h2>
+
+<p>
+
+God has given parents the responsibility of teaching their children to love Him, obey His commandments, and live according to biblical principles.
+
+</p>
+
+<h2>2. Teaching by Example</h2>
+
+<p>
+
+Children learn more from what they see than from what they hear. Parents should demonstrate honesty, kindness, prayer, respect, and faith in daily life.
+
+</p>
+
+<h2>3. Worship in the Home</h2>
+
+<p>
+
+Family worship strengthens faith. Reading the Bible, praying together, and singing hymns help children build a personal relationship with God.
+
+</p>
+
+<h2>4. Teaching Responsibility</h2>
+
+<p>
+
+Children should learn responsibility through household duties, respect for others, careful use of resources, and faithful service.
+
+</p>
+
+<h2>5. Cooperation Between Home and School</h2>
+
+<p>
+
+Parents and Christian teachers should work together to help children grow spiritually, mentally, physically, and socially.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>The home is the first school.</li>
+
+<li>Parents are God's first teachers.</li>
+
+<li>Children learn through example.</li>
+
+<li>Family worship builds faith.</li>
+
+<li>Home and school should work together.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"Train up a child in the way he should go."</b>
+
+<br><br>
+
+<strong>Proverbs 22:6</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Who are a child's first teachers?</b></p>
+
+<input type="radio" name="q1"> Friends<br>
+<input type="radio" name="q1"> School teachers<br>
+<input type="radio" name="q1" value="correct"> Parents<br><br>
+
+<p><b>2. Children learn best by...</b></p>
+
+<input type="radio" name="q2"> Listening only<br>
+<input type="radio" name="q2" value="correct"> Seeing good examples<br>
+<input type="radio" name="q2"> Watching television<br><br>
+
+<p><b>3. Family worship helps children...</b></p>
+
+<input type="radio" name="q3"> Become famous<br>
+<input type="radio" name="q3"> Earn money<br>
+<input type="radio" name="q3" value="correct"> Grow closer to God<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education4.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education6.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
