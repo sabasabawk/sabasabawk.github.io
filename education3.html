@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 3 - God as the First Teacher</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👨‍🏫 Lesson 3: God as the First Teacher</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"I am the Lord thy God which teacheth thee to profit, which leadeth thee by the way that thou shouldest go."</b>
+
+<br><br>
+
+<strong>Isaiah 48:17</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The first teacher in history was God Himself. From the Garden of Eden, God instructed Adam and Eve, teaching them about life, work, obedience, relationships, and stewardship. Every true teacher follows God's example by leading others into truth.
+
+</p>
+
+<h2>1. God Taught Adam and Eve</h2>
+
+<p>
+
+God gave humanity knowledge before sin entered the world. He taught them how to care for creation, enjoy fellowship with Him, and obey His commandments.
+
+</p>
+
+<h2>2. God Continues to Teach His People</h2>
+
+<p>
+
+Throughout the Bible, God taught through prophets, priests, kings, judges, and ultimately through His Son, Jesus Christ.
+
+</p>
+
+<h2>3. Nature Is God's Classroom</h2>
+
+<p>
+
+God uses His creation to reveal His wisdom and power. Every flower, tree, mountain, and star points us to the Creator.
+
+</p>
+
+<p>
+
+<b>"The heavens declare the glory of God."</b>
+
+<br><br>
+
+<strong>Psalm 19:1</strong>
+
+</p>
+
+<h2>4. The Holy Spirit Is Our Teacher</h2>
+
+<p>
+
+Jesus promised that the Holy Spirit would guide believers into all truth, helping them understand God's Word and apply it in daily life.
+
+</p>
+
+<p>
+
+<b>"He shall teach you all things."</b>
+
+<br><br>
+
+<strong>John 14:26</strong>
+
+</p>
+
+<h2>5. Teachers Reflect God's Character</h2>
+
+<p>
+
+Christian teachers should be patient, loving, truthful, and compassionate, reflecting the character of the Great Teacher.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>God is the first and greatest Teacher.</li>
+
+<li>Education began in the Garden of Eden.</li>
+
+<li>Nature reveals God's wisdom.</li>
+
+<li>The Holy Spirit continues to teach believers.</li>
+
+<li>Christian teachers should reflect God's character.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"I am the Lord thy God which teacheth thee to profit."</b>
+
+<br><br>
+
+<strong>Isaiah 48:17</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Who was the first Teacher?</b></p>
+
+<input type="radio" name="q1"> Moses<br>
+<input type="radio" name="q1" value="correct"> God<br>
+<input type="radio" name="q1"> Abraham<br><br>
+
+<p><b>2. Where did God's teaching begin?</b></p>
+
+<input type="radio" name="q2"> Mount Sinai<br>
+<input type="radio" name="q2" value="correct"> The Garden of Eden<br>
+<input type="radio" name="q2"> Jerusalem<br><br>
+
+<p><b>3. Who guides believers into all truth today?</b></p>
+
+<input type="radio" name="q3"> Angels<br>
+<input type="radio" name="q3"> Church leaders only<br>
+<input type="radio" name="q3" value="correct"> The Holy Spirit<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education2.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education4.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
