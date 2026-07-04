@@ -156,7 +156,54 @@ Share your testimony here to encourage other believers.
 <div class="footer">
 © SABASABA Gospel Ministry | sabasabawk.github.io
 </div>
+// Community statistics
+document.getElementById("postsCount").innerText =
+localStorage.getItem("posts") || 0;
 
+document.getElementById("commentsCount").innerText =
+localStorage.getItem("comments") || 0;
+
+document.getElementById("likesCount").innerText =
+localStorage.getItem("likes") || 0;
+
+// Certificates
+let certificates = 0;
+
+if(localStorage.getItem("economicsCourse")=="completed") certificates++;
+if(localStorage.getItem("leadershipCourse")=="completed") certificates++;
+if(localStorage.getItem("educationCourse")=="completed") certificates++;
+if(localStorage.getItem("familyCourse")=="completed") certificates++;
+if(localStorage.getItem("marriageCourse")=="completed") certificates++;
+if(localStorage.getItem("youthCourse")=="completed") certificates++;
+
+document.getElementById("certificateCount").innerText =
+certificates + " Certificates";
+
+// Completed courses
+let list=[];
+
+if(localStorage.getItem("economicsCourse")=="completed")
+list.push("💰 Biblical Economics");
+
+if(localStorage.getItem("leadershipCourse")=="completed")
+list.push("👑 Christian Leadership");
+
+if(localStorage.getItem("educationCourse")=="completed")
+list.push("🎓 Seventh-day Adventist Education");
+
+if(localStorage.getItem("familyCourse")=="completed")
+list.push("👨‍👩‍👧 Family Life");
+
+if(localStorage.getItem("marriageCourse")=="completed")
+list.push("💍 Marriage");
+
+if(localStorage.getItem("youthCourse")=="completed")
+list.push("🧒 Youth Ministry");
+
+if(list.length>0){
+document.getElementById("completedCourses").innerHTML =
+"<li>"+list.join("</li><li>")+"</li>";
+}
 <script>
 
 // Get stored data
