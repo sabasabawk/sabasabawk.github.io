@@ -298,7 +298,40 @@ document.getElementById("achievementList").innerHTML =
 achievements.length > 0
 ? achievements.join("<br>")
 : "No achievements yet";
+// Upload profile picture
 
+const upload = document.getElementById("imageUpload");
+const profileImage = document.getElementById("profileImage");
+
+// Load saved image
+const savedImage = localStorage.getItem("profileImage");
+
+if(savedImage){
+profileImage.src = savedImage;
+}
+
+upload.addEventListener("change", function(){
+
+const file = this.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+profileImage.src = e.target.result;
+
+// Save image
+localStorage.setItem("profileImage", e.target.result);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+});
 </script>
 
 </body>
