@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 12 - Lifelong Learning and Preparing for Eternity</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎓 Lesson 12: Lifelong Learning and Preparing for Eternity</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"And this is life eternal, that they might know thee the only true God, and Jesus Christ, whom thou hast sent."</b>
+
+<br><br>
+
+<strong>John 17:3</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+Education does not end with graduation. God calls His children to continue learning throughout life. True education prepares us not only for success on earth but also for eternal life with Jesus Christ.
+
+</p>
+
+<h2>Course Review</h2>
+
+<p>
+
+During this course you have learned about:
+
+</p>
+
+<ul>
+
+<li>The meaning of Seventh-day Adventist education.</li>
+<li>The biblical foundation of education.</li>
+<li>God as the first Teacher.</li>
+<li>The purpose of true education.</li>
+<li>The home as the first school.</li>
+<li>The role of Christian teachers.</li>
+<li>Developing Christlike character.</li>
+<li>Faith and learning together.</li>
+<li>Health, work, and practical education.</li>
+<li>The worldwide Adventist education system.</li>
+<li>Preparing for service in this world and the next.</li>
+
+</ul>
+
+<h2>The Final Goal</h2>
+
+<p>
+
+The highest purpose of education is to restore the image of God in humanity and prepare people for Christ's everlasting kingdom. Knowledge is valuable, but a relationship with Jesus Christ is priceless.
+
+</p>
+
+<p>
+
+<b>"The fear of the Lord is the beginning of wisdom."</b>
+
+<br><br>
+
+<strong>Proverbs 9:10</strong>
+
+</p>
+
+<h2>Final Challenge</h2>
+
+<p>
+
+Continue growing spiritually, intellectually, physically, and socially. Let everything you learn bring glory to God, strengthen your faith, and prepare you to serve others until Jesus returns.
+
+</p>
+
+<div class="quiz">
+
+<h2>Final Quiz</h2>
+
+<p><b>1. The highest purpose of education is...</b></p>
+
+<input type="radio" name="q1"> Wealth<br>
+<input type="radio" name="q1"> Fame<br>
+<input type="radio" name="q1" value="correct"> Preparation for eternal life<br><br>
+
+<p><b>2. Christian education develops...</b></p>
+
+<input type="radio" name="q2"> Only the mind<br>
+<input type="radio" name="q2"> Only physical strength<br>
+<input type="radio" name="q2" value="correct"> The whole person<br><br>
+
+<p><b>3. The center of Adventist education is...</b></p>
+
+<input type="radio" name="q3"> Human wisdom<br>
+<input type="radio" name="q3" value="correct"> Jesus Christ<br>
+<input type="radio" name="q3"> Tradition<br><br>
+
+<button onclick="checkQuiz()">Finish Course</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education11.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education.html">
+<button>🏠 Course Home</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+localStorage.setItem("education12","completed");
+localStorage.setItem("educationCourse","completed");
+
+document.getElementById("result").innerHTML =
+"🎉 Congratulations! You scored " + score + " out of 3.<br><br>" +
+"<h3>You have successfully completed the Seventh-day Adventist Education Course!</h3>" +
+'<a href="certificate.html?course=Seventh-day%20Adventist%20Education"><button>🏆 View Certificate</button></a>';
+
+}
+
+</script>
+
+</body>
+</html>
