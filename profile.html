@@ -116,9 +116,9 @@ text-decoration:none;
 src="images/profile.png"
 style="width:150px;height:150px;border-radius:50%;border:4px solid #0066cc;object-fit:cover;">
 
-<h1>Guest User</h1>
 
-<div class="email">
+<h1 id="userName">Guest User</h1>
+<div class="email" id="userEmail">
 guest@sabasabawk.github.io
 </div>
 <br>
@@ -127,7 +127,9 @@ guest@sabasabawk.github.io
 type="file"
 id="imageUpload"
 accept="image/*">
-<button>Edit Profile</button>
+<button onclick="editProfile()">
+✏️ Edit Profile
+</button>
 
 </div>
 
@@ -251,7 +253,48 @@ reader.readAsDataURL(file);
 }
 
 });
+// Load saved profile
 
+let savedName = localStorage.getItem("userName");
+let savedEmail = localStorage.getItem("userEmail");
+
+if(savedName){
+document.getElementById("userName").innerText = savedName;
+}
+
+if(savedEmail){
+document.getElementById("userEmail").innerText = savedEmail;
+}
+
+// Edit profile
+
+function editProfile(){
+
+let name = prompt(
+"Enter your full name:",
+document.getElementById("userName").innerText
+);
+
+if(name==null) return;
+
+let email = prompt(
+"Enter your email:",
+document.getElementById("userEmail").innerText
+);
+
+if(email==null) return;
+
+document.getElementById("userName").innerText = name;
+
+document.getElementById("userEmail").innerText = email;
+
+localStorage.setItem("userName",name);
+
+localStorage.setItem("userEmail",email);
+
+alert("✅ Profile updated successfully!");
+
+}
 </script>
 </body>
 </html>
