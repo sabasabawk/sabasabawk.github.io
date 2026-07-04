@@ -142,14 +142,63 @@ text-decoration:none;
 
 function publishPost(){
 
-let name=document.getElementById("name").value;
-let post=document.getElementById("post").value;
+let name = document.getElementById("name").value;
+let category = document.getElementById("category").value;
+let post = document.getElementById("post").value;
 
-if(name==="" || post===""){
+if(name.trim()=="" || post.trim()==""){
 
 alert("Please enter your name and write a post.");
 
 return;
+
+}
+
+// Create post object
+let newPost = {
+
+name:name,
+
+category:category,
+
+post:post,
+
+date:new Date().toLocaleString(),
+
+likes:0,
+
+comments:[]
+
+};
+
+// Read existing posts
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
+
+// Add newest post first
+posts.unshift(newPost);
+
+// Save
+localStorage.setItem("communityPosts",
+JSON.stringify(posts));
+
+// Update profile statistics
+let totalPosts =
+parseInt(localStorage.getItem("posts")) || 0;
+
+localStorage.setItem("posts",totalPosts+1);
+
+document.getElementById("message").innerHTML=
+"✅ Your post has been published successfully!";
+
+document.getElementById("name").value="";
+document.getElementById("post").value="";
+
+setTimeout(function(){
+
+window.location.href="feed.html";
+
+},1200);
 
 }
 
