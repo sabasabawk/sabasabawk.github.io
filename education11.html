@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Education Lesson 11 - Preparing for Service in This World and the Next</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f8fc;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+h2{
+color:#0066cc;
+margin-top:25px;
+}
+
+.quiz{
+background:#eef6ff;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#result{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+color:#006600;
+}
+
+.navigation{
+display:flex;
+justify-content:space-between;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌟 Lesson 11: Preparing for Service in This World and the Next</h1>
+
+<h2>Key Text</h2>
+
+<p>
+
+<b>"Even as the Son of man came not to be ministered unto, but to minister, and to give his life a ransom for many."</b>
+
+<br><br>
+
+<strong>Matthew 20:28</strong>
+
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+
+The goal of Seventh-day Adventist education is not simply to prepare students for employment, but to prepare them for a life of joyful service. Jesus lived a life of service, and His followers are called to use their knowledge, talents, and abilities to bless others while preparing for His soon return.
+
+</p>
+
+<h2>1. Jesus Is Our Example of Service</h2>
+
+<p>
+
+Christ used His life to teach, heal, encourage, and save others. Every Christian should seek opportunities to serve with love and humility.
+
+</p>
+
+<h2>2. Every Talent Is a Gift from God</h2>
+
+<p>
+
+God gives different abilities to every person. Whether teaching, farming, medicine, business, engineering, preaching, or any other profession, our gifts should be used for God's glory.
+
+</p>
+
+<h2>3. Service Is Part of Christian Education</h2>
+
+<p>
+
+Students should learn to help their families, churches, schools, and communities. Service develops compassion, responsibility, and leadership.
+
+</p>
+
+<h2>4. Witness Through Daily Life</h2>
+
+<p>
+
+Our actions often speak louder than our words. Honest work, kindness, respect, and integrity allow others to see Christ in us.
+
+</p>
+
+<h2>5. Preparing for Eternity</h2>
+
+<p>
+
+Every lesson we learn should help prepare us for Christ's second coming. True education points beyond this world to God's everlasting kingdom.
+
+</p>
+
+<h2>Lesson Summary</h2>
+
+<ul>
+
+<li>Jesus is the perfect example of service.</li>
+
+<li>Every talent should be used for God's glory.</li>
+
+<li>Christian education prepares people to serve others.</li>
+
+<li>Our daily lives should witness for Christ.</li>
+
+<li>The final goal is preparation for eternal life.</li>
+
+</ul>
+
+<h2>Memory Verse</h2>
+
+<p>
+
+<b>"The Son of man came not to be ministered unto, but to minister."</b>
+
+<br><br>
+
+<strong>Matthew 20:28</strong>
+
+</p>
+
+<div class="quiz">
+
+<h2>Quick Quiz</h2>
+
+<p><b>1. Jesus came to...</b></p>
+
+<input type="radio" name="q1"> Be served<br>
+<input type="radio" name="q1" value="correct"> Serve others<br>
+<input type="radio" name="q1"> Become rich<br><br>
+
+<p><b>2. Our talents should be used...</b></p>
+
+<input type="radio" name="q2"> Only for ourselves<br>
+<input type="radio" name="q2"> Only to make money<br>
+<input type="radio" name="q2" value="correct"> For God's glory and to help others<br><br>
+
+<p><b>3. The ultimate goal of Christian education is...</b></p>
+
+<input type="radio" name="q3"> Academic success only<br>
+<input type="radio" name="q3"> Popularity<br>
+<input type="radio" name="q3" value="correct"> Preparation for eternal life with Christ<br><br>
+
+<button onclick="checkQuiz()">Check Answers</button>
+
+<p id="result"></p>
+
+</div>
+
+<div class="navigation">
+
+<a href="education10.html">
+<button>⬅ Previous Lesson</button>
+</a>
+
+<a href="education12.html">
+<button>Next Lesson ➜</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function checkQuiz(){
+
+let score=0;
+
+if(document.querySelector('input[name="q1"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q2"][value="correct"]:checked')) score++;
+if(document.querySelector('input[name="q3"][value="correct"]:checked')) score++;
+
+document.getElementById("result").innerHTML =
+"🎉 You scored " + score + " out of 3.";
+
+}
+
+</script>
+
+</body>
+</html>
