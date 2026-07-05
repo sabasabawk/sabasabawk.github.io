@@ -192,7 +192,7 @@ ${post.post}
 👍 <span id="likes${index}">${post.likes}</span>
 </button>
 
-<button onclick="alert('Comments will be added next.')">
+<button onclick="commentPost(${index})">
 💬 Comment
 </button>
 
@@ -228,7 +228,27 @@ function sharePost(name){
 alert("Thanks for sharing " + name + "'s post.");
 
 }
+function commentPost(index){
 
+let comment = prompt("Write your comment:");
+
+if(comment==null || comment.trim()==""){
+return;
+}
+
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
+
+posts[index].comments.push(comment);
+
+localStorage.setItem("communityPosts",
+JSON.stringify(posts));
+
+alert("✅ Comment added successfully!");
+
+location.reload();
+
+}
 </script>
 
 </body>
