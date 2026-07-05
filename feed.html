@@ -217,22 +217,20 @@ ${post.post}
 
 <div class="actions">
 
-<button onclick="alert('Welcome to the Community!')"><button onclick="deletePost(${index})">
-🗑 Delete
-</button>
-👍 Like
+<button onclick="likePost(${index})">
+👍 <span id="likes${index}">${post.likes}</span>
 </button>
 
-<button onclick="alert('Leave an encouraging comment!')"><button onclick="deletePost(${index})">
-🗑 Delete
-</button>
+<button onclick="commentPost(${index})">
 💬 Comment
 </button>
 
-<button onclick="alert('Share this ministry with others!')"><button onclick="deletePost(${index})">
-🗑 Delete
-</button>
+<button onclick="sharePost('${post.name}')">
 📤 Share
+</button>
+
+<button onclick="deletePost(${index})">
+🗑 Delete
 </button>
 
 </div>
