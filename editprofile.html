@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Profile</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:600px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+label{
+display:block;
+margin-top:18px;
+font-weight:bold;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+box-sizing:border-box;
+}
+
+textarea{
+height:140px;
+resize:vertical;
+}
+
+button{
+margin-top:25px;
+width:100%;
+padding:14px;
+background:#0066cc;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#004d99;
+}
+
+.message{
+text-align:center;
+margin-top:20px;
+font-weight:bold;
+color:green;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✏ Edit Profile</h1>
+
+<label>Full Name</label>
+<input type="text" id="fullname">
+
+<label>Email</label>
+<input type="email" id="email">
+
+<label>Favorite Bible Verse</label>
+<input type="text" id="verse">
+
+<label>Personal Testimony</label>
+<textarea id="testimony"></textarea>
+
+<button onclick="saveProfile()">
+💾 Save Changes
+</button>
+
+<p class="message" id="message"></p>
+
+</div>
+
+<script>
+
+// Load saved information
+
+document.getElementById("fullname").value =
+localStorage.getItem("userName") || "";
+
+document.getElementById("email").value =
+localStorage.getItem("userEmail") || "";
+
+document.getElementById("verse").value =
+localStorage.getItem("favoriteVerse") || "";
+
+document.getElementById("testimony").value =
+localStorage.getItem("testimony") || "";
+
+function saveProfile(){
+
+localStorage.setItem("userName",
+document.getElementById("fullname").value);
+
+localStorage.setItem("userEmail",
+document.getElementById("email").value);
+
+localStorage.setItem("favoriteVerse",
+document.getElementById("verse").value);
+
+localStorage.setItem("testimony",
+document.getElementById("testimony").value);
+
+document.getElementById("message").innerHTML =
+"✅ Profile updated successfully!";
+
+setTimeout(function(){
+
+window.location.href="profile.html";
+
+},1200);
+
+}
+
+</script>
+
+</body>
+</html>
