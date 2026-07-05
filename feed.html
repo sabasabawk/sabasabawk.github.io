@@ -163,11 +163,21 @@ May God bless every member.
 
 <div class="actions">
 
-<button onclick="alert('Coming soon')">👍 Like</button>
+<button onclick="likePost(${index})">
+👍 <span id="likes${index}">${post.likes}</span>
+</button>
 
-<button onclick="alert('Coming soon')">💬 Comment</button>
+<button onclick="commentPost(${index})">
+💬 Comment
+</button>
 
-<button onclick="alert('Coming soon')">📤 Share</button>
+<button onclick="sharePost('${post.name}')">
+📤 Share
+</button>
+
+<button onclick="deletePost(${index})">
+🗑 Delete
+</button>
 
 </div>
 
