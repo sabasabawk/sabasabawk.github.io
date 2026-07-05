@@ -143,22 +143,32 @@ Here you can encourage one another, share Bible verses, testimonies, prayer requ
 May God bless every member.
 </p>
 
+
 <div class="actions">
-<button onclick="alert('Like feature coming soon!')">👍 Like</button>
-<button onclick="alert('Comment feature coming soon!')">💬 Comment</button>
-<button onclick="alert('Share feature coming soon!')">📤 Share</button>
+
+<button onclick="likePost(${index})">
+👍 <span id="likes${index}">${post.likes}</span>
+</button>
+
+<button onclick="commentPost(${index})">
+💬 Comment
+</button>
+
+<button onclick="sharePost('${post.name}')">
+📤 Share
+</button>
+
 </div>
+
 ${post.comments.length>0 ? `
 <hr>
-
 <h4>💬 Comments</h4>
-
 ${post.comments.map(c=>`<p>🗨️ ${c}</p>`).join("")}
-
 ` : ""}
-</div>
-`;
 
+</div>
+
+`;
 // Load user posts
 let posts =
 JSON.parse(localStorage.getItem("communityPosts")) || [];
