@@ -148,7 +148,14 @@ May God bless every member.
 <button onclick="alert('Comment feature coming soon!')">💬 Comment</button>
 <button onclick="alert('Share feature coming soon!')">📤 Share</button>
 </div>
+${post.comments.length>0 ? `
+<hr>
 
+<h4>💬 Comments</h4>
+
+${post.comments.map(c=>`<p>🗨️ ${c}</p>`).join("")}
+
+` : ""}
 </div>
 `;
 
