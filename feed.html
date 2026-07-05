@@ -71,6 +71,16 @@ border-top:1px solid #ddd;
 padding-top:15px;
 }
 
+.comments{
+margin-top:15px;
+padding-top:10px;
+border-top:1px solid #ddd;
+}
+
+.comments p{
+margin:6px 0;
+}
+
 button{
 background:#0066cc;
 color:white;
@@ -119,63 +129,57 @@ text-decoration:none;
 
 <script>
 
-let feed = document.getElementById("feedContainer");
+let feed=document.getElementById("feedContainer");
 
-// Permanent welcome post
-feed.innerHTML = `
+// Welcome post
+
+feed.innerHTML=`
+
 <div class="post">
 
 <div class="profile">
+
 <div class="avatar">👤</div>
 
 <div>
+
 <div class="name">SABASABA Gospel Ministry</div>
+
 <div class="time">Today</div>
+
 </div>
 
 </div>
 
 <p>
+
 📖 Welcome to our Christian Community!
 
 Here you can encourage one another, share Bible verses, testimonies, prayer requests, and grow together in Christ.
 
 May God bless every member.
-</p>
 
+</p>
 
 <div class="actions">
 
-<button onclick="likePost(${index})">
-👍 <span id="likes${index}">${post.likes}</span>
-</button>
+<button onclick="alert('Coming soon')">👍 Like</button>
 
-<button onclick="commentPost(${index})">
-💬 Comment
-</button>
+<button onclick="alert('Coming soon')">💬 Comment</button>
 
-<button onclick="sharePost('${post.name}')">
-📤 Share
-</button>
+<button onclick="alert('Coming soon')">📤 Share</button>
 
 </div>
-
-${post.comments.length>0 ? `
-<hr>
-<h4>💬 Comments</h4>
-${post.comments.map(c=>`<p>🗨️ ${c}</p>`).join("")}
-` : ""}
 
 </div>
 
 `;
-// Load user posts
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
+
+let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
 
 posts.forEach(function(post,index){
 
-feed.innerHTML += `
+feed.innerHTML+=`
 
 <div class="post">
 
@@ -206,16 +210,38 @@ ${post.post}
 <div class="actions">
 
 <button onclick="likePost(${index})">
+
 👍 <span id="likes${index}">${post.likes}</span>
+
 </button>
 
 <button onclick="commentPost(${index})">
+
 💬 Comment
+
 </button>
 
 <button onclick="sharePost('${post.name}')">
+
 📤 Share
+
 </button>
+
+</div>
+
+<div class="comments">
+
+<h4>💬 Comments</h4>
+
+<div id="comments${index}">
+
+${post.comments.map(function(c){
+
+return "<p>🗨️ "+c+"</p>";
+
+}).join("")}
+
+</div>
 
 </div>
 
@@ -227,45 +253,38 @@ ${post.post}
 
 function likePost(index){
 
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
+let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
 
 posts[index].likes++;
 
-localStorage.setItem("communityPosts",
-JSON.stringify(posts));
+localStorage.setItem("communityPosts",JSON.stringify(posts));
 
-document.getElementById("likes"+index).innerText =
-posts[index].likes;
+document.getElementById("likes"+index).innerText=posts[index].likes;
+
+}
+
+function commentPost(index){
+
+let comment=prompt("Write your comment");
+
+if(comment==null || comment.trim()=="") return;
+
+let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
+
+posts[index].comments.push(comment);
+
+localStorage.setItem("communityPosts",JSON.stringify(posts));
+
+location.reload();
 
 }
 
 function sharePost(name){
 
-alert("Thanks for sharing " + name + "'s post.");
+alert("Thanks for sharing "+name+"'s post.");
 
 }
-function commentPost(index){
 
-let comment = prompt("Write your comment:");
-
-if(comment==null || comment.trim()==""){
-return;
-}
-
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
-
-posts[index].comments.push(comment);
-
-localStorage.setItem("communityPosts",
-JSON.stringify(posts));
-
-alert("✅ Comment added successfully!");
-
-location.reload();
-
-}
 </script>
 
 </body>
