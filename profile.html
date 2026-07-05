@@ -296,5 +296,29 @@ alert("✅ Profile updated successfully!");
 
 }
 </script>
+<script>
+
+let loggedIn = localStorage.getItem("loggedIn");
+
+if(loggedIn!="true"){
+
+alert("Please login first.");
+
+window.location.href="login.html";
+
+}
+
+let name = localStorage.getItem("userName");
+let email = localStorage.getItem("userEmail");
+
+if(name){
+document.getElementById("userName").innerText = name;
+}
+
+if(email){
+document.getElementById("userEmail").innerText = email;
+}
+
+</script>
 </body>
 </html>
