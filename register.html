@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account - SABASABA Gospel Ministry</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#0066cc;
+}
+
+p{
+text-align:center;
+color:#555;
+}
+
+label{
+display:block;
+margin-top:15px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:8px;
+box-sizing:border-box;
+font-size:16px;
+}
+
+button{
+width:100%;
+margin-top:25px;
+padding:14px;
+background:#0066cc;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#004d99;
+}
+
+#message{
+margin-top:20px;
+text-align:center;
+font-weight:bold;
+color:green;
+}
+
+.login{
+text-align:center;
+margin-top:20px;
+}
+
+.login a{
+text-decoration:none;
+color:#0066cc;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📝 Create Account</h1>
+
+<p>Join the SABASABA Gospel Ministry Community.</p>
+
+<label>Full Name</label>
+<input type="text" id="fullname" placeholder="Enter your full name">
+
+<label>Email</label>
+<input type="email" id="email" placeholder="Enter your email">
+
+<label>Password</label>
+<input type="password" id="password" placeholder="Create a password">
+
+<label>Confirm Password</label>
+<input type="password" id="confirmPassword" placeholder="Confirm your password">
+
+<button onclick="registerUser()">Create Account</button>
+
+<p id="message"></p>
+
+<div class="login">
+Already have an account?
+<br><br>
+<a href="login.html">Sign In</a>
+</div>
+
+</div>
+
+<script>
+
+function registerUser(){
+
+let fullname=document.getElementById("fullname").value.trim();
+let email=document.getElementById("email").value.trim();
+let password=document.getElementById("password").value;
+let confirm=document.getElementById("confirmPassword").value;
+
+if(fullname=="" || email=="" || password==""){
+
+alert("Please complete all fields.");
+
+return;
+
+}
+
+if(password!==confirm){
+
+alert("Passwords do not match.");
+
+return;
+
+}
+
+let user={
+
+fullname:fullname,
+email:email,
+password:password
+
+};
+
+localStorage.setItem("registeredUser",JSON.stringify(user));
+
+document.getElementById("message").innerHTML=
+"✅ Account created successfully!";
+
+setTimeout(function(){
+
+window.location.href="login.html";
+
+},1500);
+
+}
+
+</script>
+
+</body>
+</html>
