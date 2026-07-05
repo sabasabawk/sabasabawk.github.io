@@ -139,13 +139,9 @@ accept="image/*">
 
 <h2>📖 Favorite Bible Verse</h2>
 
-<p>
+<p id="favoriteVerse">
 
 "I can do all things through Christ which strengtheneth me."
-
-<br><br>
-
-<b>Philippians 4:13</b>
 
 </p>
 
@@ -155,7 +151,7 @@ accept="image/*">
 
 <h2>🙏 Personal Testimony</h2>
 
-<p>
+<p id="testimonyText">
 
 Share your testimony here to encourage other believers.
 
@@ -320,7 +316,19 @@ document.getElementById("userName").innerText = name;
 if(email){
 document.getElementById("userEmail").innerText = email;
 }
+// Favorite Bible Verse
+let verse = localStorage.getItem("favoriteVerse");
 
+if(verse){
+document.getElementById("favoriteVerse").innerText = verse;
+}
+
+// Personal Testimony
+let testimony = localStorage.getItem("testimony");
+
+if(testimony){
+document.getElementById("testimonyText").innerText = testimony;
+}
 </script>
 </body>
 </html>
