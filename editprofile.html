@@ -109,9 +109,8 @@ accept="image/*">
 
 </div>
 
-<script>
 
-// Load saved information
+<script>
 
 document.getElementById("fullname").value =
 localStorage.getItem("userName") || "";
@@ -139,7 +138,37 @@ document.getElementById("verse").value);
 localStorage.setItem("testimony",
 document.getElementById("testimony").value);
 
-document.getElementById("message").innerHTML =
+let file =
+document.getElementById("profileImage").files[0];
+
+if(file){
+
+let reader = new FileReader();
+
+reader.onload=function(e){
+
+localStorage.setItem(
+"profilePicture",
+e.target.result
+);
+
+finishSaving();
+
+};
+
+reader.readAsDataURL(file);
+
+}else{
+
+finishSaving();
+
+}
+
+}
+
+function finishSaving(){
+
+document.getElementById("message").innerHTML=
 "✅ Profile updated successfully!";
 
 setTimeout(function(){
@@ -151,6 +180,5 @@ window.location.href="profile.html";
 }
 
 </script>
-
 </body>
 </html>
