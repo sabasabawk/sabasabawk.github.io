@@ -262,12 +262,24 @@ return `
 `;
 
 });
+function addNotification(message){
 
+let notifications =
+JSON.parse(localStorage.getItem("notifications")) || [];
+
+notifications.push(message);
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(notifications)
+);
+
+}
 function likePost(index){
 
 let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
 
-posts[index].likes++;
+posts[index].likes++;addNotification("❤️ Someone liked " + posts[index].name + "'s post.");
 
 localStorage.setItem("communityPosts",JSON.stringify(posts));
 
@@ -283,7 +295,7 @@ if(comment==null || comment.trim()=="") return;
 
 let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
 
-posts[index].comments.push(comment);
+posts[index].comments.push(comment);addNotification("💬 New comment on " + posts[index].name + "'s post.");
 
 localStorage.setItem("communityPosts",JSON.stringify(posts));
 
@@ -333,7 +345,7 @@ return;
 let posts =
 JSON.parse(localStorage.getItem("communityPosts")) || [];
 
-posts[index].comments.push("↪ " + reply);
+posts[index].comments.push("↪ " + reply);addNotification("↩ New reply on " + posts[index].name + "'s post.");
 
 localStorage.setItem(
 "communityPosts",
