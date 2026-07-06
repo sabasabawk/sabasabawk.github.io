@@ -128,7 +128,9 @@ shown.push(post.name);
 
 results.innerHTML+=`
 
-<div class="member">
+<div class="member"
+onclick="openMember('${post.name}')"
+style="cursor:pointer;">
 
 <img src="${post.picture}">
 
@@ -151,7 +153,16 @@ results.innerHTML+=`
 }
 
 searchMembers();
+function openMember(name){
 
+localStorage.setItem(
+"selectedMember",
+name
+);
+
+window.location.href="member.html";
+
+}
 </script>
 
 </body>
