@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Account - SABASABA Gospel Ministry</title>
+<title>Register</title>
 
 <style>
 
@@ -16,12 +17,12 @@ padding:20px;
 }
 
 .container{
-max-width:500px;
+max-width:450px;
 margin:auto;
 background:white;
-padding:30px;
+padding:25px;
 border-radius:15px;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
+box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
 
 h1{
@@ -29,21 +30,10 @@ text-align:center;
 color:#0066cc;
 }
 
-p{
-text-align:center;
-color:#555;
-}
-
-label{
-display:block;
-margin-top:15px;
-font-weight:bold;
-}
-
 input{
 width:100%;
 padding:12px;
-margin-top:5px;
+margin-top:15px;
 border:1px solid #ccc;
 border-radius:8px;
 box-sizing:border-box;
@@ -52,8 +42,8 @@ font-size:16px;
 
 button{
 width:100%;
-margin-top:25px;
-padding:14px;
+margin-top:20px;
+padding:12px;
 background:#0066cc;
 color:white;
 border:none;
@@ -70,15 +60,14 @@ background:#004d99;
 margin-top:20px;
 text-align:center;
 font-weight:bold;
-color:green;
 }
 
-.login{
+.link{
 text-align:center;
 margin-top:20px;
 }
 
-.login a{
+.link a{
 text-decoration:none;
 color:#0066cc;
 font-weight:bold;
@@ -92,77 +81,97 @@ font-weight:bold;
 
 <div class="container">
 
-<h1>📝 Create Account</h1>
+<h1>Create Account</h1>
 
-<p>Join the SABASABA Gospel Ministry Community.</p>
+<input
+type="text"
+id="name"
+placeholder="Full Name">
 
-<label>Full Name</label>
-<input type="text" id="fullname" placeholder="Enter your full name">
+<input
+type="email"
+id="email"
+placeholder="Email Address">
 
-<label>Email</label>
-<input type="email" id="email" placeholder="Enter your email">
+<input
+type="password"
+id="password"
+placeholder="Password">
 
-<label>Password</label>
-<input type="password" id="password" placeholder="Create a password">
+<button onclick="register()">
+Create Account
+</button>
 
-<label>Confirm Password</label>
-<input type="password" id="confirmPassword" placeholder="Confirm your password">
+<div id="message"></div>
 
-<button onclick="registerUser()">Create Account</button>
+<div class="link">
 
-<p id="message"></p>
-
-<div class="login">
 Already have an account?
-<br><br>
-<a href="login.html">Sign In</a>
+
+<a href="login.html">
+Login
+</a>
+
 </div>
 
 </div>
 
 <script type="module">
 
-function registerUser(){
+import {
+auth,
+createUserWithEmailAndPassword
+}
+from "./firebase.js";
 
-let fullname=document.getElementById("fullname").value.trim();
-let email=document.getElementById("email").value.trim();
-let password=document.getElementById("password").value;
-let confirm=document.getElementById("confirmPassword").value;
+window.register = function(){
 
-if(fullname=="" || email=="" || password==""){
+let name =
+document.getElementById("name").value;
 
-alert("Please complete all fields.");
+let email =
+document.getElementById("email").value;
+
+let password =
+document.getElementById("password").value;
+
+if(name=="" || email=="" || password==""){
+
+document.getElementById("message").innerHTML =
+"Please fill in all fields.";
 
 return;
 
 }
 
-if(password!==confirm){
+createUserWithEmailAndPassword(auth,email,password)
 
-alert("Passwords do not match.");
+.then((userCredential)=>{
 
-return;
+localStorage.setItem("userName",name);
+localStorage.setItem("userEmail",email);
 
-}
+document.getElementById("message").style.color="green";
 
-let user={
-
-fullname:fullname,
-email:email,
-password:password
-
-};
-
-localStorage.setItem("registeredUser",JSON.stringify(user));
-
-document.getElementById("message").innerHTML=
-"✅ Account created successfully!";
+document.getElementById("message").innerHTML =
+"✅ Registration successful!";
 
 setTimeout(function(){
 
 window.location.href="login.html";
 
 },1500);
+
+})
+
+.catch((error)=>{
+
+document.getElementById("message").style.color="red";
+
+document.getElementById("message").innerHTML =
+error.message;
+
+});
 
 }
 
