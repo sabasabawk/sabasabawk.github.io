@@ -243,7 +243,13 @@ ${post.post}
 
 ${post.comments.map(function(c){
 
-return "<p>🗨️ "+c+"</p>";
+return `
+<p>
+🗨️ ${c}
+<br>
+<button onclick="replyComment(${index})">↩ Reply</button>
+</p>
+`;
 
 }).join("")}
 
@@ -316,7 +322,29 @@ alert("✅ Post deleted successfully!");
 location.reload();
 
 }
+function replyComment(index){
 
+let reply = prompt("Write your reply:");
+
+if(reply==null || reply.trim()==""){
+return;
+}
+
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
+
+posts[index].comments.push("↪ " + reply);
+
+localStorage.setItem(
+"communityPosts",
+JSON.stringify(posts)
+);
+
+alert("✅ Reply added successfully!");
+
+location.reload();
+
+}
 </script>
 
 </body>
