@@ -82,7 +82,12 @@ background:#004d99;
 <img id="memberPicture" src="images/profile.png">
 
 <h1 id="memberName">Member</h1>
-
+<button onclick="followMember()">
+➕ Follow
+</button>
+<p id="followers">
+Followers: 0
+</p>
 </div>
 
 <div class="section">
@@ -135,7 +140,41 @@ ${post.post}
 }
 
 });
+function followMember(){
 
+let selected =
+localStorage.getItem("selectedMember");
+
+let followers =
+JSON.parse(localStorage.getItem("followers")) || {};
+
+if(!followers[selected]){
+followers[selected]=0;
+}
+
+followers[selected]++;
+
+localStorage.setItem(
+"followers",
+JSON.stringify(followers)
+);
+
+document.getElementById("followers").innerHTML =
+"Followers: " + followers[selected];
+
+alert("You are now following " + selected + "!");
+
+}
+
+let followers =
+JSON.parse(localStorage.getItem("followers")) || {};
+
+if(followers[selected]){
+
+document.getElementById("followers").innerHTML =
+"Followers: " + followers[selected];
+
+}
 </script>
 
 </body>
