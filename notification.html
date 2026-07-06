@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notifications</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+}
+
+.header{
+background:#0066cc;
+color:white;
+padding:20px;
+border-radius:15px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.notification{
+background:white;
+padding:18px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 3px 8px rgba(0,0,0,.1);
+font-size:18px;
+}
+
+.back{
+text-align:center;
+margin-top:25px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🔔 Notifications</h1>
+
+<p>Your recent activity</p>
+
+</div>
+
+<div id="notificationList"></div>
+
+<div class="back">
+
+<a href="community.html">
+
+<button>⬅ Back to Community</button>
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+let list=document.getElementById("notificationList");
+
+let notifications=
+JSON.parse(localStorage.getItem("notifications"))||[];
+
+if(notifications.length==0){
+
+list.innerHTML=
+"<div class='notification'>No notifications yet.</div>";
+
+}else{
+
+notifications.reverse().forEach(function(note){
+
+list.innerHTML+=
+"<div class='notification'>"+note+"</div>";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
