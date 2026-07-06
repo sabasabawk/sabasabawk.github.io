@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search Members</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.header{
+background:#0066cc;
+color:white;
+padding:20px;
+text-align:center;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:15px;
+font-size:18px;
+border:1px solid #ccc;
+border-radius:8px;
+box-sizing:border-box;
+margin-bottom:20px;
+}
+
+.member{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+display:flex;
+align-items:center;
+}
+
+.member img{
+width:60px;
+height:60px;
+border-radius:50%;
+margin-right:15px;
+object-fit:cover;
+border:2px solid #0066cc;
+}
+
+.name{
+font-size:20px;
+font-weight:bold;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🔍 Search Members</h1>
+</div>
+
+<input
+type="text"
+id="searchBox"
+placeholder="Search member..."
+onkeyup="searchMembers()">
+
+<div id="results"></div>
+
+<a href="community.html">
+<button>⬅ Back</button>
+</a>
+
+</div>
+
+<script>
+
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
+
+function searchMembers(){
+
+let keyword =
+document.getElementById("searchBox").value.toLowerCase();
+
+let results =
+document.getElementById("results");
+
+results.innerHTML="";
+
+let shown=[];
+
+posts.forEach(function(post){
+
+if(
+post.name.toLowerCase().includes(keyword)
+&&
+!shown.includes(post.name)
+){
+
+shown.push(post.name);
+
+results.innerHTML+=`
+
+<div class="member">
+
+<img src="${post.picture}">
+
+<div>
+
+<div class="name">${post.name}</div>
+
+<div>${post.category}</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+searchMembers();
+
+</script>
+
+</body>
+</html>
