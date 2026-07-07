@@ -146,6 +146,10 @@ collection,
 addDoc
 } from "./firebase.js";
 
+import {
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 async function publishPost(){
 
 let name = document.getElementById("name").value.trim();
@@ -168,6 +172,7 @@ name:name,
 category:category,
 post:post,
 date:new Date().toLocaleString(),
+timestamp: serverTimestamp(),
 likes:0,
 comments:[],
 picture:localStorage.getItem("profilePicture") || "images/profile.png"
