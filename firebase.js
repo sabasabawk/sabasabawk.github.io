@@ -8,6 +8,17 @@ signOut,
 onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+doc,
+updateDoc,
+deleteDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 const firebaseConfig = {
 apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
 authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
@@ -20,9 +31,18 @@ appId: "1:821278457946:web:3593bd1743970f44c05863"
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export {
 auth,
+db,
+collection,
+addDoc,
+getDocs,
+doc,
+updateDoc,
+deleteDoc,
+increment,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
 signOut,
