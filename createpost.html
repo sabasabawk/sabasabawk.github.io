@@ -140,7 +140,11 @@ text-decoration:none;
 
 <script type="module">
 
-function publishPost(){
+import {
+db,
+collection,
+addDoc
+} from "./firebase.js";
 
 let name = document.getElementById("name").value;
 let category = document.getElementById("category").value;
@@ -173,24 +177,40 @@ picture:localStorage.getItem("profilePicture") || "images/profile.png"
 
 };
 
-// Read existing posts
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
+async function publishPost(){
 
-// Add newest post first
-posts.unshift(newPost);
+let name = document.getElementById("name").value.trim();
+let category = document.getElementById("category").value;
+let post = document.getElementById("post").value.trim();
 
-// Save
-localStorage.setItem("communityPosts",
-JSON.stringify(posts));
+if(name=="" || post==""){
 
-// Update profile statistics
+alert("Please enter your name and write a post.");
+
+return;
+
+}
+
+try{
+
+await addDoc(collection(db,"communityPosts"),{
+
+name:name,
+category:category,
+post:post,
+date:new Date().toLocaleString(),
+likes:0,
+comments:[],
+picture:localStorage.getItem("profilePicture") || "images/profile.png"
+
+});
+
 let totalPosts =
 parseInt(localStorage.getItem("posts")) || 0;
 
 localStorage.setItem("posts",totalPosts+1);
 
-document.getElementById("message").innerHTML=
+document.getElementById("message").innerHTML =
 "✅ Your post has been published successfully!";
 
 document.getElementById("name").value="";
@@ -202,7 +222,14 @@ window.location.href="feed.html";
 
 },1200);
 
+}catch(error){
+
+alert(error.message);
+
 }
+
+}
+
 window.publishPost = publishPost;
 </script>
 
