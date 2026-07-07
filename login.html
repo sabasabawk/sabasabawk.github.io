@@ -135,32 +135,33 @@ Create Account
 
 <script type="module">
 
-function loginUser(){
+import {
+auth,
+signInWithEmailAndPassword
+} from "./firebase.js";
 
-let email=document.getElementById("email").value.trim();
+window.loginUser = async function(){
 
-let password=document.getElementById("password").value;
+let email =
+document.getElementById("email").value.trim();
 
-let user=
-JSON.parse(localStorage.getItem("registeredUser"));
+let password =
+document.getElementById("password").value;
 
-if(user==null){
+try{
 
-alert("No account found. Please register first.");
-
-return;
-
-}
-
-if(email===user.email && password===user.password){
+const userCredential =
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
 
 localStorage.setItem("loggedIn","true");
+localStorage.setItem("userEmail",email);
 
-localStorage.setItem("userName",user.fullname);
-
-localStorage.setItem("userEmail",user.email);
-
-document.getElementById("message").innerHTML=
+document.getElementById("message").style.color="green";
+document.getElementById("message").innerHTML =
 "✅ Login successful!";
 
 setTimeout(function(){
@@ -169,17 +170,16 @@ window.location.href="community.html";
 
 },1200);
 
-}else{
+}catch(error){
 
 document.getElementById("message").style.color="red";
-
-document.getElementById("message").innerHTML=
-"❌ Incorrect email or password.";
-
-}
+document.getElementById("message").innerHTML =
+error.message;
 
 }
-window.login = login;
+
+};
+
 </script>
 
 </body>
