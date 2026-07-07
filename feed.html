@@ -137,7 +137,18 @@ color:#666;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import {
+getFirestore,
+collection,
+query,
+orderBy,
+onSnapshot,
+doc,
+updateDoc,
+deleteDoc,
+getDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -212,7 +223,7 @@ async function loadPosts() {
               ${post.post}
             </p>
             <div class="actions">
-              <button onclick="likePost('${post.id}', ${post.likes || 0})">
+              <button onclick="likePost('${post.id}')">
                 👍 <span id="likes${post.id}">${post.likes || 0}</span>
               </button>
               <button onclick="commentPost('${post.id}')">
@@ -248,16 +259,24 @@ async function loadPosts() {
 }
 
 // Like post
-window.likePost = async function(postId, currentLikes) {
-  try {
-    const postRef = doc(db, "communityPosts", postId);
-    await updateDoc(postRef, {
-      likes: currentLikes + 1
-    });
-  } catch (error) {
-    console.error("Error liking post:", error);
-    alert("Error liking post");
-  }
+window.likePost = async function(postId){
+
+try{
+
+const postRef = doc(db,"communityPosts",postId);
+
+await updateDoc(postRef,{
+likes: increment(1)
+});
+
+}catch(error){
+
+console.error(error);
+
+alert("Unable to like this post.");
+
+}
+
 };
 
 // Comment on post
