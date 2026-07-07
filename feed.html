@@ -104,6 +104,13 @@ margin-top:30px;
 text-decoration:none;
 }
 
+.loading{
+text-align:center;
+padding:40px;
+font-size:18px;
+color:#666;
+}
+
 </style>
 
 </head>
@@ -129,240 +136,198 @@ text-decoration:none;
 
 <script type="module">
 
-let feed=document.getElementById("feedContainer");
-
-// Welcome post
-
-feed.innerHTML=`
-
-<div class="post">
-
-<div class="profile">
-
-<div class="avatar">👤</div>
-
-<div>
-
-<div class="name">SABASABA Gospel Ministry</div>
-
-<div class="time">Today</div>
-
-</div>
-
-</div>
-
-<p>
-
-📖 Welcome to our Christian Community!
-
-Here you can encourage one another, share Bible verses, testimonies, prayer requests, and grow together in Christ.
-
-May God bless every member.
-
-</p>
-
-<div class="actions">
-
-<button onclick="alert('Welcome to the Community!')">
-👍 Like
-</button>
-
-<button onclick="alert('Leave an encouraging comment!')">
-💬 Comment
-</button>
-
-<button onclick="alert('Share this ministry with others!')">
-📤 Share
-</button>
-
-</div>
-
-</div>
-
-`;
-
-let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
-
-posts.forEach(function(post,index){
-
-feed.innerHTML+=`
-
-<div class="post">
-
-<div class="profile">
-
-<img
-src="${post.picture}"
-style="width:55px;height:55px;border-radius:50%;margin-right:15px;object-fit:cover;border:2px solid #0066cc;">
-
-<div>
-
-<div class="name">${post.name}</div>
-
-<div class="time">${post.date}</div>
-
-</div>
-
-</div>
-
-<p>
-
-<b>Category:</b> ${post.category}
-
-<br><br>
-
-${post.post}
-
-</p>
-
-<div class="actions">
-
-<button onclick="likePost(${index})">
-👍 <span id="likes${index}">${post.likes}</span>
-</button>
-
-<button onclick="commentPost(${index})">
-💬 Comment
-</button>
-
-<button onclick="sharePost('${post.name}')">
-📤 Share
-</button>
-
-<button onclick="deletePost(${index})">
-🗑 Delete
-</button>
-
-</div>
-
-<div class="comments">
-
-<h4>💬 Comments</h4>
-
-<div id="comments${index}">
-
-${post.comments.map(function(c){
-
-return `
-<p>
-🗨️ ${c}
-<br>
-<button onclick="replyComment(${index})">↩ Reply</button>
-</p>
-`;
-
-}).join("")}
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
-function addNotification(message){
-
-let notifications =
-JSON.parse(localStorage.getItem("notifications")) || [];
-
-notifications.push(message);
-
-localStorage.setItem(
-"notifications",
-JSON.stringify(notifications)
-);
-
-}
-function likePost(index){
-
-let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
-
-posts[index].likes++;addNotification("❤️ Someone liked " + posts[index].name + "'s post.");
-
-localStorage.setItem("communityPosts",JSON.stringify(posts));
-
-document.getElementById("likes"+index).innerText=posts[index].likes;
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCJXzfLNvNzcN1ZyG3t5fN6Ypf7K5vN9Mk",
+  authDomain: "sabasaba-gospel.firebaseapp.com",
+  projectId: "sabasaba-gospel",
+  storageBucket: "sabasaba-gospel.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef1234567890"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let feed = document.getElementById("feedContainer");
+let posts = [];
+
+// Load posts from Firestore
+async function loadPosts() {
+  feed.innerHTML = '<div class="loading">Loading community posts...</div>';
+  
+  try {
+    const q = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
+    
+    onSnapshot(q, (querySnapshot) => {
+      feed.innerHTML = `
+        <div class="post">
+          <div class="profile">
+            <div class="avatar">👤</div>
+            <div>
+              <div class="name">SABASABA Gospel Ministry</div>
+              <div class="time">Today</div>
+            </div>
+          </div>
+          <p>
+            📖 Welcome to our Christian Community!
+            Here you can encourage one another, share Bible verses, testimonies, prayer requests, and grow together in Christ.
+            May God bless every member.
+          </p>
+          <div class="actions">
+            <button onclick="alert('Welcome to the Community!')">
+              👍 Like
+            </button>
+            <button onclick="alert('Leave an encouraging comment!')">
+              💬 Comment
+            </button>
+            <button onclick="alert('Share this ministry with others!')">
+              📤 Share
+            </button>
+          </div>
+        </div>
+      `;
+      
+      querySnapshot.forEach((docSnap) => {
+        const post = docSnap.data();
+        post.id = docSnap.id;
+        
+        feed.innerHTML += `
+          <div class="post">
+            <div class="profile">
+              <img
+              src="${post.picture || '👤'}"
+              style="width:55px;height:55px;border-radius:50%;margin-right:15px;object-fit:cover;border:2px solid #0066cc;">
+              <div>
+                <div class="name">${post.name}</div>
+                <div class="time">${new Date(post.timestamp?.toDate?.() || new Date()).toLocaleDateString()}</div>
+              </div>
+            </div>
+            <p>
+              <b>Category:</b> ${post.category}
+              <br><br>
+              ${post.post}
+            </p>
+            <div class="actions">
+              <button onclick="likePost('${post.id}', ${post.likes || 0})">
+                👍 <span id="likes${post.id}">${post.likes || 0}</span>
+              </button>
+              <button onclick="commentPost('${post.id}')">
+                💬 Comment
+              </button>
+              <button onclick="sharePost('${post.name}')">
+                📤 Share
+              </button>
+              <button onclick="deletePost('${post.id}')">
+                🗑 Delete
+              </button>
+            </div>
+            <div class="comments">
+              <h4>💬 Comments</h4>
+              <div id="comments${post.id}">
+                ${(post.comments || []).map(c => `
+                  <p>
+                    🗨️ ${c}
+                    <br>
+                    <button onclick="replyComment('${post.id}')">↩ Reply</button>
+                  </p>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    });
+  } catch (error) {
+    console.error("Error loading posts:", error);
+    feed.innerHTML = '<div class="loading">Error loading posts. Please refresh the page.</div>';
+  }
 }
 
-function commentPost(index){
+// Like post
+window.likePost = async function(postId, currentLikes) {
+  try {
+    const postRef = doc(db, "communityPosts", postId);
+    await updateDoc(postRef, {
+      likes: currentLikes + 1
+    });
+  } catch (error) {
+    console.error("Error liking post:", error);
+    alert("Error liking post");
+  }
+};
 
-let comment=prompt("Write your comment");
+// Comment on post
+window.commentPost = async function(postId) {
+  const comment = prompt("Write your comment");
+  
+  if(comment == null || comment.trim() == "") return;
+  
+  try {
+    const postRef = doc(db, "communityPosts", postId);
+    const postSnap = await getDoc(postRef);
+    const post = postSnap.data();
+    
+    await updateDoc(postRef, {
+      comments: [...(post.comments || []), comment]
+    });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    alert("Error adding comment");
+  }
+};
 
-if(comment==null || comment.trim()=="") return;
+// Share post
+window.sharePost = function(name) {
+  alert("Thanks for sharing " + name + "'s post.");
+};
 
-let posts=JSON.parse(localStorage.getItem("communityPosts"))||[];
+// Delete post
+window.deletePost = async function(postId) {
+  const answer = confirm("Are you sure you want to delete this post?");
+  
+  if(!answer) return;
+  
+  try {
+    await deleteDoc(doc(db, "communityPosts", postId));
+    alert("✅ Post deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    alert("Error deleting post");
+  }
+};
 
-posts[index].comments.push(comment);addNotification("💬 New comment on " + posts[index].name + "'s post.");
+// Reply to comment
+window.replyComment = async function(postId) {
+  const reply = prompt("Write your reply:");
+  
+  if(reply == null || reply.trim() == "") return;
+  
+  try {
+    const postRef = doc(db, "communityPosts", postId);
+    const postSnap = await getDoc(postRef);
+    const post = postSnap.data();
+    
+    await updateDoc(postRef, {
+      comments: [...(post.comments || []), "↪ " + reply]
+    });
+    alert("✅ Reply added successfully!");
+  } catch (error) {
+    console.error("Error adding reply:", error);
+    alert("Error adding reply");
+  }
+};
 
-localStorage.setItem("communityPosts",JSON.stringify(posts));
+// Import getDoc for read operations
+import { getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-location.reload();
+// Load posts on page load
+loadPosts();
 
-}
-
-function sharePost(name){
-
-alert("Thanks for sharing " + name + "'s post.");
-
-}
-
-function deletePost(index){
-
-let answer = confirm(
-"Are you sure you want to delete this post?"
-);
-
-if(!answer){
-return;
-}
-
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
-
-posts.splice(index,1);
-
-localStorage.setItem(
-"communityPosts",
-JSON.stringify(posts)
-);
-
-alert("✅ Post deleted successfully!");
-
-location.reload();
-
-}
-function replyComment(index){
-
-let reply = prompt("Write your reply:");
-
-if(reply==null || reply.trim()==""){
-return;
-}
-
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
-
-posts[index].comments.push("↪ " + reply);addNotification("↩ New reply on " + posts[index].name + "'s post.");
-
-localStorage.setItem(
-"communityPosts",
-JSON.stringify(posts)
-);
-
-alert("✅ Reply added successfully!");
-
-location.reload();
-
-}
-window.likePost = likePost;
-window.commentPost = commentPost;
-window.sharePost = sharePost;
-window.deletePost = deletePost;
-window.replyComment = replyComment;
-window.addNotification = addNotification;
 </script>
 
 </body>
