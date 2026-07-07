@@ -146,37 +146,6 @@ collection,
 addDoc
 } from "./firebase.js";
 
-let name = document.getElementById("name").value;
-let category = document.getElementById("category").value;
-let post = document.getElementById("post").value;
-
-if(name.trim()=="" || post.trim()==""){
-
-alert("Please enter your name and write a post.");
-
-return;
-
-}
-
-// Create post object
-let newPost = {
-
-name:name,
-
-category:category,
-
-post:post,
-
-date:new Date().toLocaleString(),
-
-likes:0,
-
-comments:[],
-
-picture:localStorage.getItem("profilePicture") || "images/profile.png"
-
-};
-
 async function publishPost(){
 
 let name = document.getElementById("name").value.trim();
