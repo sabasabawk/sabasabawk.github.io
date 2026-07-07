@@ -136,17 +136,17 @@ color:#666;
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCJXzfLNvNzcN1ZyG3t5fN6Ypf7K5vN9Mk",
-  authDomain: "sabasaba-gospel.firebaseapp.com",
-  projectId: "sabasaba-gospel",
-  storageBucket: "sabasaba-gospel.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890"
+  apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+  authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+  projectId: "sabasaba-gospel-ministry-414e2",
+  storageBucket: "sabasaba-gospel-ministry-414e2.firebasestorage.app",
+  messagingSenderId: "821278457946",
+  appId: "1:821278457946:web:3593bd1743970f44c05863"
 };
 
 // Initialize Firebase
@@ -154,7 +154,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let feed = document.getElementById("feedContainer");
-let posts = [];
 
 // Load posts from Firestore
 async function loadPosts() {
@@ -321,9 +320,6 @@ window.replyComment = async function(postId) {
     alert("Error adding reply");
   }
 };
-
-// Import getDoc for read operations
-import { getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // Load posts on page load
 loadPosts();
