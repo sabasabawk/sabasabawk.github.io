@@ -172,14 +172,16 @@ try{
 await addDoc(collection(db,"notifications"),{
 
 message: message,
-
 timestamp: serverTimestamp()
 
 });
 
+console.log("Notification saved successfully");
+
 }catch(error){
 
 console.error("Notification Error:", error);
+alert(error.message);
 
 }
 
