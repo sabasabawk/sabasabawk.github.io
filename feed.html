@@ -243,7 +243,7 @@ async function loadPosts() {
               ${post.post}
             </p>
             <div class="actions">
-              <button onclick="likePost('${post.id}')">
+              <button onclick="likePost('${post.id}','${post.name}')">
                 👍 <span id="likes${post.id}">${post.likes || 0}</span>
               </button>
               <button onclick="commentPost('${post.id}')">
@@ -279,7 +279,7 @@ async function loadPosts() {
 }
 
 // Like post
-window.likePost = async function(postId){
+window.likePost = async function(postId, postName){
 
 try{
 
@@ -288,7 +288,7 @@ const postRef = doc(db,"communityPosts",postId);
 await updateDoc(postRef,{
 likes: increment(1)
 });
-
+await addNotification("❤️ Someone liked " + postName + "'s post.");
 }catch(error){
 
 console.error(error);
