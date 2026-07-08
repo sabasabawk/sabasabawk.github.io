@@ -59,6 +59,14 @@ button:hover{
 background:#004d99;
 }
 
+.error {
+background:#ffcccc;
+color:#cc0000;
+padding:15px;
+border-radius:8px;
+margin-top:15px;
+}
+
 </style>
 
 </head>
@@ -118,12 +126,16 @@ orderBy("timestamp","desc")
 
 onSnapshot(q,function(snapshot){
 
+console.log("Snapshot received:", snapshot.size, "documents");
+
 list.innerHTML="";
 
 if(snapshot.empty){
 
 list.innerHTML=
 "<div class='notification'>No notifications yet.</div>";
+
+console.log("No notifications in database");
 
 return;
 
@@ -140,6 +152,8 @@ if(note.timestamp){
 time=new Date(note.timestamp.toDate()).toLocaleString();
 
 }
+
+console.log("Adding notification:", note);
 
 list.innerHTML+=`
 
@@ -158,6 +172,12 @@ ${note.message}
 `;
 
 });
+
+}, function(error){
+
+console.error("Firebase error:", error);
+
+list.innerHTML = "<div class='error'><strong>Error loading notifications:</strong> " + error.message + "</div>";
 
 });
 
