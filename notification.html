@@ -89,13 +89,14 @@ background:#004d99;
 
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import {
-  getFirestore,
-  collection,
-  query,
-  orderBy,
-  onSnapshot
+getFirestore,
+collection,
+query,
+orderBy,
+onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -112,32 +113,56 @@ const db = getFirestore(app);
 
 const list = document.getElementById("notificationList");
 
-// Query notifications ordered by timestamp descending
-const q = query(collection(db, "notifications"), orderBy("timestamp", "desc"));
+const q = query(
+collection(db,"notifications"),
+orderBy("timestamp","desc")
+);
 
-onSnapshot(q, (snapshot) => {
-  list.innerHTML = "";
-  if (snapshot.empty) {
-    list.innerHTML = "<div class='notification'>No notifications yet.</div>";
-    return;
-  }
+onSnapshot(q,function(snapshot){
 
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    // Format timestamp if available
-    let time = "";
-    if (data.timestamp && data.timestamp.toDate) {
-      time = new Date(data.timestamp.toDate()).toLocaleString();
-    }
-    const message = data.message || data.msg || "(no message)";
-    list.innerHTML += `
-      <div class="notification">
-        <div style="font-size:14px;color:#666;margin-bottom:6px">${time}</div>
-        <div style="font-size:16px">${message}</div>
-      </div>
-    `;
-  });
+list.innerHTML="";
+
+if(snapshot.empty){
+
+list.innerHTML=
+"<div class='notification'>No notifications yet.</div>";
+
+return;
+
+}
+
+snapshot.forEach(function(doc){
+
+const note=doc.data();
+
+let time="";
+
+if(note.timestamp){
+
+time=new Date(note.timestamp.toDate()).toLocaleString();
+
+}
+
+list.innerHTML+=`
+
+<div class="notification">
+
+<div style="color:gray;font-size:14px;">
+${time}
+</div>
+
+<div style="margin-top:8px;">
+${note.message}
+</div>
+
+</div>
+
+`;
+
 });
+
+});
+
 </script>
 </body>
 </html>
