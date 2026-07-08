@@ -87,29 +87,57 @@ background:#004d99;
 
 </div>
 
-<script>
 
-let list=document.getElementById("notificationList");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-let notifications=
-JSON.parse(localStorage.getItem("notifications"))||[];
+const firebaseConfig = {
+  apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+  authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+  projectId: "sabasaba-gospel-ministry-414e2",
+  storageBucket: "sabasaba-gospel-ministry-414e2.firebasestorage.app",
+  messagingSenderId: "821278457946",
+  appId: "1:821278457946:web:3593bd1743970f44c05863"
+};
 
-if(notifications.length==0){
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-list.innerHTML=
-"<div class='notification'>No notifications yet.</div>";
+const list = document.getElementById("notificationList");
 
-}else{
+// Query notifications ordered by timestamp descending
+const q = query(collection(db, "notifications"), orderBy("timestamp", "desc"));
 
-notifications.reverse().forEach(function(note){
+onSnapshot(q, (snapshot) => {
+  list.innerHTML = "";
+  if (snapshot.empty) {
+    list.innerHTML = "<div class='notification'>No notifications yet.</div>";
+    return;
+  }
 
-list.innerHTML+=
-"<div class='notification'>"+note+"</div>";
-
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    // Format timestamp if available
+    let time = "";
+    if (data.timestamp && data.timestamp.toDate) {
+      time = new Date(data.timestamp.toDate()).toLocaleString();
+    }
+    const message = data.message || data.msg || "(no message)";
+    list.innerHTML += `
+      <div class="notification">
+        <div style="font-size:14px;color:#666;margin-bottom:6px">${time}</div>
+        <div style="font-size:16px">${message}</div>
+      </div>
+    `;
+  });
 });
-
-}
 </script>
-
 </body>
 </html>
