@@ -306,30 +306,6 @@ Stay informed about new Bible courses, ministry updates, evangelistic meetings, 
 </a>
 
 </div>
-import {
-collection,
-onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-const badge = document.getElementById("notificationBadge");
-
-onSnapshot(collection(db,"notifications"),function(snapshot){
-
-let total = snapshot.size;
-
-if(total > 0){
-
-badge.style.display="inline-block";
-
-badge.innerText=total;
-
-}else{
-
-badge.style.display="none";
-
-}
-
-});
 </div>
 </body>
 </html>
