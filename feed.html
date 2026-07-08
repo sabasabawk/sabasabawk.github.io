@@ -313,6 +313,7 @@ window.commentPost = async function(postId) {
     await updateDoc(postRef, {
       comments: [...(post.comments || []), comment]
     });
+await addNotification("↩ New reply on " + post.name + "'s post.");
   } catch (error) {
     console.error("Error adding comment:", error);
     alert("Error adding comment");
@@ -338,7 +339,7 @@ window.deletePost = async function(postId) {
     alert("Error deleting post");
   }
 };
-
+await addNotification("🗑 A post was deleted.");
 // Reply to comment
 window.replyComment = async function(postId) {
   const reply = prompt("Write your reply:");
@@ -359,7 +360,7 @@ window.replyComment = async function(postId) {
     alert("Error adding reply");
   }
 };
-
+await addNotification("↩ New reply on " + post.name + "'s post.");
 // Load posts on page load
 loadPosts();
 
