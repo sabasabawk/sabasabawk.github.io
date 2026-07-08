@@ -290,7 +290,12 @@ const postRef = doc(db,"communityPosts",postId);
 await updateDoc(postRef,{
 likes: increment(1)
 });
+
+document.getElementById("likes"+postId).innerText =
+parseInt(document.getElementById("likes"+postId).innerText)+1;
+
 await addNotification("❤️ Someone liked " + postName + "'s post.");
+
 }catch(error){
 
 console.error(error);
@@ -300,7 +305,6 @@ alert("Unable to like this post.");
 }
 
 };
-
 // Comment on post
 window.commentPost = async function(postId) {
   const comment = prompt("Write your comment");
