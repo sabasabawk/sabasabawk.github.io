@@ -379,3 +379,64 @@ Announcements
 </div>
 
 </div>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+
+authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+
+projectId: "sabasaba-gospel-ministry-414e2",
+
+storageBucket: "sabasaba-gospel-ministry-414e2.firebasestorage.app",
+
+messagingSenderId: "821278457946",
+
+appId: "1:821278457946:web:3593bd1743970f44c05863"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const badge = document.getElementById("notificationBadge");
+
+onSnapshot(
+
+collection(db,"notifications"),
+
+(snapshot)=>{
+
+let total = snapshot.size;
+
+if(total>0){
+
+badge.style.display="flex";
+
+badge.innerText=total;
+
+}else{
+
+badge.style.display="none";
+
+}
+
+}
+
+);
+
+</script>
+
+</body>
+
+</html>
