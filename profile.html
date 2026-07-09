@@ -353,20 +353,6 @@ let verse = localStorage.getItem("favoriteVerse");
 if(verse){
 document.getElementById("favoriteVerse").innerText = verse;
 }
-
-// Personal Testimony
-let testimony = localStorage.getItem("testimony");
-
-if(testimony){
-document.getElementById("testimonyText").innerText = testimony;
-}
-let picture =
-localStorage.getItem("profilePicture");
-
-if(picture){
-document.getElementById("profileImage").src =
-picture;
-}
 window.logout = logout;
 window.editProfile = editProfile;
 </script>
