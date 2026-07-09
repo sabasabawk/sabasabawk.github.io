@@ -257,21 +257,22 @@ document.getElementById("userEmail").innerText =
 data.email;
 
 if(data.favoriteVerse){
-
 document.getElementById("favoriteVerse").innerText =
 data.favoriteVerse;
-
 }
 
 if(data.bio){
-
 document.getElementById("testimonyText").innerText =
 data.bio;
+}
 
+if(data.profilePicture){
+profileImage.src = data.profilePicture;
 }
 
 }
 
+});
 });
 // Load saved image
 const savedImage = localStorage.getItem("profileImage");
