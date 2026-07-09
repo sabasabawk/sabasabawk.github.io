@@ -124,6 +124,14 @@ createUserWithEmailAndPassword
 }
 from "./firebase.js";
 
+import {
+getFirestore,
+doc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const db = getFirestore();
+
 window.register = function(){
 
 let name =
@@ -146,7 +154,22 @@ return;
 
 createUserWithEmailAndPassword(auth,email,password)
 
-.then((userCredential)=>{
+.then(async(userCredential)=>{
+
+const user = userCredential.user;
+
+await setDoc(doc(db,"users",user.uid),{
+
+fullName:name,
+email:email,
+bio:"",
+favoriteVerse:"",
+profilePicture:"",
+joined:new Date().toLocaleString(),
+totalPosts:0,
+certificates:0
+
+});
 
 localStorage.setItem("userName",name);
 localStorage.setItem("userEmail",email);
