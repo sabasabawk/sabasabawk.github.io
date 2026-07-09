@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Profile</title>
+<title>My Profile - Firebase Storage</title>
 
 <style>
 
 body{
 font-family:Arial,sans-serif;
-background:#eef3f8;
+background:linear-gradient(to bottom, #eef3ff, #f7f9fc);
 margin:0;
 padding:20px;
 }
@@ -28,20 +28,150 @@ box-shadow:0 4px 12px rgba(0,0,0,.1);
 text-align:center;
 }
 
-.avatar{
-font-size:100px;
-margin-bottom:15px;
+.profile-picture {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #0066cc;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: block;
+  margin: 0 auto;
+}
+
+.placeholder-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0066cc, #1e90ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 70px;
+  margin: 0 auto;
+  border: 4px solid #0066cc;
 }
 
 h1{
 color:#0066cc;
 margin-bottom:5px;
+margin-top:15px;
 }
 
 .email{
 color:gray;
 font-size:18px;
 margin-bottom:20px;
+}
+
+.upload-section {
+  margin: 25px 0;
+  padding: 20px;
+  background: #f0f7ff;
+  border-radius: 12px;
+  border: 2px dashed #0066cc;
+  text-align: center;
+}
+
+.upload-section h3 {
+  color: #0066cc;
+  margin-top: 0;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.upload-btn {
+  background: #1e90ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.3s;
+  width: 90%;
+  max-width: 300px;
+  margin: 10px auto;
+  display: block;
+}
+
+.upload-btn:hover {
+  background: #0066cc;
+  transform: scale(1.05);
+}
+
+.upload-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+.delete-btn {
+  background: #d32f2f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: #b71c1c;
+}
+
+.delete-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.status-message {
+  margin: 15px 0;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: none;
+  text-align: center;
+}
+
+.success {
+  background: #c8e6c9;
+  color: #2e7d32;
+  display: block;
+}
+
+.error {
+  background: #ffcdd2;
+  color: #c62828;
+  display: block;
+}
+
+.loading {
+  background: #bbdefb;
+  color: #1565c0;
+  display: block;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  margin: 10px 0;
+  overflow: hidden;
+  display: none;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1e90ff;
+  transition: width 0.3s;
 }
 
 .section{
@@ -102,6 +232,12 @@ margin-top:30px;
 text-decoration:none;
 }
 
+.info-text {
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
 </style>
 
 </head>
@@ -112,21 +248,39 @@ text-decoration:none;
 
 <div class="profile">
 
-<img id="profileImage"
-src="images/profile.png"
-style="width:150px;height:150px;border-radius:50%;border:4px solid #0066cc;object-fit:cover;">
-
+<div style="margin: 20px 0;">
+  <img id="profilePicture" class="profile-picture" style="display: none;" alt="Profile Picture">
+  <div id="placeholderImage" class="placeholder-image">📷</div>
+</div>
 
 <h1 id="userName">Guest User</h1>
 <div class="email" id="userEmail">
 guest@sabasabawk.github.io
 </div>
-<br>
 
-<input
-type="file"
-id="imageUpload"
-accept="image/*">
+<div class="upload-section">
+  <h3>📸 Upload Profile Picture</h3>
+  <p class="info-text">JPG, PNG, or GIF (Max 5MB)</p>
+  <input type="file" id="fileInput" accept="image/*">
+  <button class="upload-btn" onclick="document.getElementById('fileInput').click();">
+    📁 Choose Picture
+  </button>
+
+  <div class="progress-bar">
+    <div class="progress-fill"></div>
+  </div>
+
+  <div id="statusMessage" class="status-message"></div>
+
+  <button id="uploadBtn" class="upload-btn" style="display: none;">
+    🚀 Upload Picture
+  </button>
+
+  <button id="deleteBtn" class="delete-btn" style="display: none;">
+    🗑️ Delete Picture
+  </button>
+</div>
+
 <a href="editprofile.html">
 <button>
 📝 Edit Profile
@@ -218,143 +372,171 @@ Certificates
 </div>
 
 </div>
-<script type="module">
 
-import { auth } from "./firebase.js";
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
 
-import {
-getFirestore,
-doc,
-getDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+<script src="firebase-config.js"></script>
 
-const db = getFirestore();
-
-const upload = document.getElementById("imageUpload");
-const profileImage = document.getElementById("profileImage");
-auth.onAuthStateChanged(async(user)=>{
-
-if(!user){
-
-window.location.href="login.html";
-
-return;
-
-}
-
-const docRef = doc(db,"users",user.uid);
-
-const docSnap = await getDoc(docRef);
-
-if(docSnap.exists()){
-
-const data = docSnap.data();
-
-document.getElementById("userName").innerText =
-data.fullName;
-
-document.getElementById("userEmail").innerText =
-data.email;
-
-if(data.favoriteVerse){
-document.getElementById("favoriteVerse").innerText =
-data.favoriteVerse;
-}
-
-if(data.bio){
-document.getElementById("testimonyText").innerText =
-data.bio;
-}
-
-if(data.profilePicture){
-profileImage.src = data.profilePicture;
-}
-
-}
-
-});
-});
-// Load saved image
-const savedImage = localStorage.getItem("profileImage");
-
-if(savedImage){
-profileImage.src = savedImage;
-}
-
-upload.addEventListener("change", function(){
-
-const file = this.files[0];
-
-if(file){
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-profileImage.src = e.target.result;
-
-localStorage.setItem("profileImage", e.target.result);
-
-};
-
-reader.readAsDataURL(file);
-
-}
-
-});
-// Load saved profile
-
-let savedName = localStorage.getItem("userName");
-let savedEmail = localStorage.getItem("userEmail");
-
-if(savedName){
-document.getElementById("userName").innerText = savedName;
-}
-
-if(savedEmail){
-document.getElementById("userEmail").innerText = savedEmail;
-}
-
-// Edit profile
-
-function editProfile(){
-
-let name = prompt(
-"Enter your full name:",
-document.getElementById("userName").innerText
-);
-
-if(name==null) return;
-
-let email = prompt(
-"Enter your email:",
-document.getElementById("userEmail").innerText
-);
-
-if(email==null) return;
-
-document.getElementById("userName").innerText = name;
-
-document.getElementById("userEmail").innerText = email;
-
-localStorage.setItem("userName",name);
-
-localStorage.setItem("userEmail",email);
-
-alert("✅ Profile updated successfully!");
-
-}
-</script>
 <script>
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const deleteBtn = document.getElementById('deleteBtn');
+const profilePicture = document.getElementById('profilePicture');
+const placeholderImage = document.getElementById('placeholderImage');
+const statusMessage = document.getElementById('statusMessage');
+const progressBar = document.querySelector('.progress-bar');
+const progressFill = document.querySelector('.progress-fill');
 
-// Favorite Bible Verse
-let verse = localStorage.getItem("favoriteVerse");
+const PROFILE_PIC_PATH = 'profile/profile-picture.jpg';
+const STORAGE_KEY = 'profilePictureURL';
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-if(verse){
-document.getElementById("favoriteVerse").innerText = verse;
+// Load profile picture on page load
+window.addEventListener('load', () => {
+  loadProfilePicture();
+  loadProfileInfo();
+});
+
+// File selection handler
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    showStatus('❌ Please select an image file', 'error');
+    fileInput.value = '';
+    return;
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    showStatus('❌ File too large. Maximum size is 5MB', 'error');
+    fileInput.value = '';
+    return;
+  }
+
+  uploadBtn.style.display = 'block';
+  showStatus(`📄 Selected: ${file.name}`, 'loading');
+});
+
+uploadBtn.addEventListener('click', uploadProfilePicture);
+deleteBtn.addEventListener('click', deleteProfilePicture);
+
+async function uploadProfilePicture() {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  uploadBtn.disabled = true;
+  progressBar.style.display = 'block';
+  showStatus('⏳ Uploading...', 'loading');
+
+  try {
+    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
+    const uploadTask = storageRef.put(file);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        progressFill.style.width = progress + '%';
+      },
+      (error) => {
+        showStatus(`❌ Error: ${error.message}`, 'error');
+        uploadBtn.disabled = false;
+        progressBar.style.display = 'none';
+      },
+      async () => {
+        try {
+          const downloadURL = await storageRef.getDownloadURL();
+          localStorage.setItem(STORAGE_KEY, downloadURL);
+          
+          profilePicture.src = downloadURL;
+          profilePicture.style.display = 'block';
+          placeholderImage.style.display = 'none';
+          deleteBtn.style.display = 'block';
+          
+          fileInput.value = '';
+          uploadBtn.style.display = 'none';
+          progressBar.style.display = 'none';
+          showStatus('✅ Picture uploaded successfully!', 'success');
+        } catch (error) {
+          showStatus(`❌ Error: ${error.message}`, 'error');
+        }
+        uploadBtn.disabled = false;
+      }
+    );
+  } catch (error) {
+    showStatus(`❌ Error: ${error.message}`, 'error');
+    uploadBtn.disabled = false;
+    progressBar.style.display = 'none';
+  }
 }
-window.logout = logout;
-window.editProfile = editProfile;
+
+async function loadProfilePicture() {
+  try {
+    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
+    const downloadURL = await storageRef.getDownloadURL();
+    
+    profilePicture.src = downloadURL;
+    profilePicture.style.display = 'block';
+    placeholderImage.style.display = 'none';
+    deleteBtn.style.display = 'block';
+    
+    localStorage.setItem(STORAGE_KEY, downloadURL);
+  } catch (error) {
+    placeholderImage.style.display = 'flex';
+    profilePicture.style.display = 'none';
+    deleteBtn.style.display = 'none';
+  }
+}
+
+async function deleteProfilePicture() {
+  if (!confirm('Are you sure you want to delete your profile picture?')) return;
+
+  deleteBtn.disabled = true;
+  showStatus('⏳ Deleting...', 'loading');
+
+  try {
+    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
+    await storageRef.delete();
+
+    profilePicture.style.display = 'none';
+    placeholderImage.style.display = 'flex';
+    deleteBtn.style.display = 'none';
+    localStorage.removeItem(STORAGE_KEY);
+
+    showStatus('✅ Picture deleted successfully!', 'success');
+  } catch (error) {
+    showStatus(`❌ Error: ${error.message}`, 'error');
+  }
+
+  deleteBtn.disabled = false;
+}
+
+function showStatus(message, type) {
+  statusMessage.textContent = message;
+  statusMessage.className = 'status-message ' + type;
+}
+
+function loadProfileInfo() {
+  let savedName = localStorage.getItem("userName");
+  let savedEmail = localStorage.getItem("userEmail");
+  
+  if(savedName){
+    document.getElementById("userName").innerText = savedName;
+  }
+  
+  if(savedEmail){
+    document.getElementById("userEmail").innerText = savedEmail;
+  }
+
+  let verse = localStorage.getItem("favoriteVerse");
+  if(verse){
+    document.getElementById("favoriteVerse").innerText = verse;
+  }
+}
 </script>
+
 </body>
 </html>
