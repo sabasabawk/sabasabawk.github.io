@@ -157,17 +157,23 @@ data.bio || "";
 
 function saveProfile(){
 
-localStorage.setItem("userName",
-document.getElementById("fullname").value);
+auth.onAuthStateChanged(async(user)=>{
 
-localStorage.setItem("userEmail",
-document.getElementById("email").value);
+if(!user)return;
 
-localStorage.setItem("favoriteVerse",
-document.getElementById("verse").value);
+await updateDoc(doc(db,"users",user.uid),{
 
-localStorage.setItem("testimony",
-document.getElementById("testimony").value);
+fullName:document.getElementById("fullname").value,
+
+email:document.getElementById("email").value,
+
+favoriteVerse:document.getElementById("verse").value,
+
+bio:document.getElementById("testimony").value
+
+});
+
+});
 
 let file =
 document.getElementById("profileImage").files[0];
