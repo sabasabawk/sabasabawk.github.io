@@ -219,9 +219,60 @@ Certificates
 
 </div>
 <script type="module">
+
+import { auth } from "./firebase.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const db = getFirestore();
+
 const upload = document.getElementById("imageUpload");
 const profileImage = document.getElementById("profileImage");
+auth.onAuthStateChanged(async(user)=>{
 
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+const docRef = doc(db,"users",user.uid);
+
+const docSnap = await getDoc(docRef);
+
+if(docSnap.exists()){
+
+const data = docSnap.data();
+
+document.getElementById("userName").innerText =
+data.fullName;
+
+document.getElementById("userEmail").innerText =
+data.email;
+
+if(data.favoriteVerse){
+
+document.getElementById("favoriteVerse").innerText =
+data.favoriteVerse;
+
+}
+
+if(data.bio){
+
+document.getElementById("testimonyText").innerText =
+data.bio;
+
+}
+
+}
+
+});
 // Load saved image
 const savedImage = localStorage.getItem("profileImage");
 
@@ -295,26 +346,6 @@ alert("✅ Profile updated successfully!");
 </script>
 <script>
 
-let loggedIn = localStorage.getItem("loggedIn");
-
-if(loggedIn!="true"){
-
-alert("Please login first.");
-
-window.location.href="login.html";
-
-}
-
-let name = localStorage.getItem("userName");
-let email = localStorage.getItem("userEmail");
-
-if(name){
-document.getElementById("userName").innerText = name;
-}
-
-if(email){
-document.getElementById("userEmail").innerText = email;
-}
 // Favorite Bible Verse
 let verse = localStorage.getItem("favoriteVerse");
 
