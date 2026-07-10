@@ -513,22 +513,47 @@ console.log(error);
   }
 }
 
-async function loadProfilePicture() {
-  try {
-    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
-    const downloadURL = await storageRef.getDownloadURL();
-    
-    profilePicture.src = downloadURL;
-    profilePicture.style.display = 'block';
-    placeholderImage.style.display = 'none';
-    deleteBtn.style.display = 'block';
-    
-    localStorage.setItem(STORAGE_KEY, downloadURL);
-  } catch (error) {
-    placeholderImage.style.display = 'flex';
-    profilePicture.style.display = 'none';
-    deleteBtn.style.display = 'none';
-  }
+async function loadProfilePicture(){
+
+try{
+
+const userDoc = await getDoc(
+doc(db,"users",currentUser.uid)
+);
+
+if(userDoc.exists()){
+
+const data = userDoc.data();
+
+if(data.profilePicture){
+
+profilePicture.src = data.profilePicture;
+
+profilePicture.style.display = "block";
+
+placeholderImage.style.display = "none";
+
+deleteBtn.style.display = "block";
+
+}else{
+
+profilePicture.style.display = "none";
+
+placeholderImage.style.display = "flex";
+
+deleteBtn.style.display = "none";
+
+}
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
 }
 
 async function deleteProfilePicture(){
