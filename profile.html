@@ -396,7 +396,6 @@ const statusMessage = document.getElementById('statusMessage');
 const progressBar = document.querySelector('.progress-bar');
 const progressFill = document.querySelector('.progress-fill');
 
-const PROFILE_PIC_PATH = 'profile/profile-picture.jpg';
 const STORAGE_KEY = 'profilePictureURL';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -477,14 +476,34 @@ async function uploadProfilePicture() {
   showStatus('⏳ Uploading...', 'loading');
 
   try {
-    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
-    const uploadTask = storageRef.put(file);
+    const storageRef = ref(
+storage,
+"profilePictures/" + currentUser.uid
+);
+    await uploadBytes(storageRef,file);
 
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        progressFill.style.width = progress + '%';
-      },
+    const downloadURL = await getDownloadURL(storageRef);
+
+await updateDoc(
+doc(db,"users",currentUser.uid),
+{
+profilePicture:downloadURL
+});
+
+profilePicture.src = downloadURL;
+profilePicture.style.display="block";
+placeholderImage.style.display="none";
+deleteBtn.style.display="block";
+
+showStatus(
+"✅ Picture uploaded successfully!",
+"success"
+);
+
+uploadBtn.disabled=false;
+progressBar.style.display="none";
+uploadBtn.style.display="none";
+fileInput.value="";
       (error) => {
         showStatus(`❌ Error: ${error.message}`, 'error');
         uploadBtn.disabled = false;
