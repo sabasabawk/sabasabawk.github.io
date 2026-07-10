@@ -531,25 +531,46 @@ async function loadProfilePicture() {
   }
 }
 
-async function deleteProfilePicture() {
-  if (!confirm('Are you sure you want to delete your profile picture?')) return;
+async function deleteProfilePicture(){
 
-  deleteBtn.disabled = true;
-  showStatus('⏳ Deleting...', 'loading');
+if(!confirm("Are you sure you want to delete your profile picture?")) return;
 
-  try {
-    const storageRef = firebase.storage().ref(PROFILE_PIC_PATH);
-    await storageRef.delete();
+try{
 
-    profilePicture.style.display = 'none';
-    placeholderImage.style.display = 'flex';
-    deleteBtn.style.display = 'none';
-    localStorage.removeItem(STORAGE_KEY);
+const storageRef = ref(
+storage,
+"profilePictures/" + currentUser.uid
+);
 
-    showStatus('✅ Picture deleted successfully!', 'success');
-  } catch (error) {
-    showStatus(`❌ Error: ${error.message}`, 'error');
-  }
+// Clear the picture URL from Firestore
+await updateDoc(
+doc(db,"users",currentUser.uid),
+{
+profilePicture:""
+}
+);
+
+// Remove picture from screen
+profilePicture.src = "";
+profilePicture.style.display = "none";
+placeholderImage.style.display = "flex";
+deleteBtn.style.display = "none";
+
+showStatus(
+"✅ Profile picture deleted successfully!",
+"success"
+);
+
+}catch(error){
+
+showStatus(
+"❌ " + error.message,
+"error"
+);
+
+}
+
+}
 
   deleteBtn.disabled = false;
 }
