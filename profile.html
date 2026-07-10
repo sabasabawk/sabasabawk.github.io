@@ -248,38 +248,41 @@ text-decoration:none;
 
 <div class="profile">
 
-<div style="margin: 20px 0;">
-  <img id="profilePicture" class="profile-picture" style="display: none;" alt="Profile Picture">
-  <div id="placeholderImage" class="placeholder-image">📷</div>
-</div>
+async function loadProfilePicture(){
 
-<h1 id="userName">Guest User</h1>
-<div class="email" id="userEmail">
-guest@sabasabawk.github.io
-</div>
+try{
 
-<div class="upload-section">
-  <h3>📸 Upload Profile Picture</h3>
-  <p class="info-text">JPG, PNG, or GIF (Max 5MB)</p>
-  <input type="file" id="fileInput" accept="image/*">
-  <button class="upload-btn" onclick="document.getElementById('fileInput').click();">
-    📁 Choose Picture
-  </button>
+const userDoc = await getDoc(
+doc(db,"users",currentUser.uid)
+);
 
-  <div class="progress-bar">
-    <div class="progress-fill"></div>
-  </div>
+if(userDoc.exists()){
 
-  <div id="statusMessage" class="status-message"></div>
+const data = userDoc.data();
 
-  <button id="uploadBtn" class="upload-btn" style="display: none;">
-    🚀 Upload Picture
-  </button>
+if(data.profilePicture){
 
-  <button id="deleteBtn" class="delete-btn" style="display: none;">
-    🗑️ Delete Picture
-  </button>
-</div>
+profilePicture.src = data.profilePicture;
+profilePicture.style.display = "block";
+placeholderImage.style.display = "none";
+deleteBtn.style.display = "block";
+
+}else{
+
+profilePicture.style.display = "none";
+placeholderImage.style.display = "flex";
+deleteBtn.style.display = "none";
+
+}
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+}
 
 <a href="editprofile.html">
 <button>
