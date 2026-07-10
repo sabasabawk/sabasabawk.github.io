@@ -1,26 +1,75 @@
-// Firebase Configuration
-// Initialize Firebase with your config values
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+getDoc,
+doc,
+updateDoc,
+deleteDoc,
+increment,
+query,
+orderBy,
+onSnapshot,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL,
+deleteObject
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+projectId: "sabasaba-gospel-ministry-414e2",
+storageBucket: "sabasaba-gospel-ministry-414e2.firebasestorage.app",
+messagingSenderId: "821278457946",
+appId: "1:821278457946:web:3593bd1743970f44c05863"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// Get reference to storage service
-const storage = firebase.storage();
-const auth = firebase.auth();
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-// Enable anonymous authentication
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    auth.signInAnonymously().catch(error => {
-      console.error("Authentication error:", error);
-    });
-  }
-});
+export {
+auth,
+db,
+storage,
+collection,
+addDoc,
+getDocs,
+getDoc,
+doc,
+updateDoc,
+deleteDoc,
+increment,
+query,
+orderBy,
+onSnapshot,
+serverTimestamp,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged,
+ref,
+uploadBytes,
+getDownloadURL,
+deleteObject
+};
