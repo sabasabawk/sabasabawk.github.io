@@ -110,7 +110,16 @@ accept="image/*">
 </div>
 
 <script type="module"> 
-import { auth } from "./firebase.js";
+import {
+auth,
+db,
+storage,
+doc,
+updateDoc,
+ref,
+uploadBytes,
+getDownloadURL
+} from "./firebase.js";
 
 import {
 getFirestore,
@@ -180,18 +189,50 @@ document.getElementById("profileImage").files[0];
 
 if(file){
 
-let reader = new FileReader();
+const user = auth.currentUser;
 
-reader.onload=function(e){
+const storageRef = ref(
+storage,
+"profilePictures/" + user.uid
+);
+
+uploadBytes(storageRef,file)
+
+.then(()=>{
+
+return getDownloadURL(storageRef);
+
+})
+
+.then(async(downloadURL)=>{
 
 localStorage.setItem(
 "profilePicture",
-e.target.result
+downloadURL
+);
+
+await updateDoc(
+doc(db,"users",user.uid),
+{
+profilePicture: downloadURL
+}
 );
 
 finishSaving();
 
-};
+})
+
+.catch(error=>{
+
+alert(error.message);
+
+});
+
+}else{
+
+finishSaving();
+
+}
 
 reader.readAsDataURL(file);
 
