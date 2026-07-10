@@ -562,14 +562,6 @@ function showStatus(message, type) {
   statusMessage.textContent = message;
   statusMessage.className = 'status-message ' + type;
 }
-
-function loadProfileInfo() {
-  let savedName = localStorage.getItem("userName");
-  let savedEmail = localStorage.getItem("userEmail");
-  
-  if(savedName){
-    document.getElementById("userName").innerText = savedName;
-  }
   
   if(savedEmail){
     document.getElementById("userEmail").innerText = savedEmail;
