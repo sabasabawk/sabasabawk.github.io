@@ -388,21 +388,23 @@ updateDoc,
 ref,
 uploadBytes,
 getDownloadURL,
+deleteObject,
 onAuthStateChanged
 } from "./firebase.js";
-const fileInput = document.getElementById('fileInput');
-const uploadBtn = document.getElementById('uploadBtn');
-const deleteBtn = document.getElementById('deleteBtn');
-const profilePicture = document.getElementById('profilePicture');
-const placeholderImage = document.getElementById('placeholderImage');
-const statusMessage = document.getElementById('statusMessage');
-const progressBar = document.querySelector('.progress-bar');
-const progressFill = document.querySelector('.progress-fill');
 
-const STORAGE_KEY = 'profilePictureURL';
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const fileInput = document.getElementById("fileInput");
+const uploadBtn = document.getElementById("uploadBtn");
+const deleteBtn = document.getElementById("deleteBtn");
 
-// Load profile picture on page load
+const profilePicture = document.getElementById("profilePicture");
+const placeholderImage = document.getElementById("placeholderImage");
+
+const statusMessage = document.getElementById("statusMessage");
+const progressBar = document.querySelector(".progress-bar");
+const progressFill = document.querySelector(".progress-fill");
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 let currentUser = null;
 
 onAuthStateChanged(auth, async(user)=>{
@@ -417,13 +419,15 @@ return;
 
 currentUser = user;
 
-const userDoc = await getDoc(
-doc(db,"users",user.uid)
-);
+try{
 
-if(userDoc.exists()){
+const userRef = doc(db,"users",user.uid);
 
-const data = userDoc.data();
+const userSnap = await getDoc(userRef);
+
+if(userSnap.exists()){
+
+const data = userSnap.data();
 
 document.getElementById("userName").innerText =
 data.fullName || "Guest User";
@@ -441,35 +445,118 @@ data.bio ||
 
 }
 
-loadProfilePicture();
+await loadProfilePicture();
+
+}catch(error){
+
+console.log(error);
+
+}
+
+});
+// Select picture
+fileInput.addEventListener("change",function(){
+
+const file = fileInput.files[0];
+
+if(!file) return;
+
+if(!file.type.startsWith("image/")){
+
+showStatus("❌ Please choose an image.","error");
+
+fileInput.value="";
+
+return;
+
+}
+
+if(file.size > MAX_FILE_SIZE){
+
+showStatus("❌ Image must be smaller than 5MB.","error");
+
+fileInput.value="";
+
+return;
+
+}
+
+uploadBtn.style.display="block";
+
+showStatus("📷 Picture selected.","loading");
 
 });
 
+uploadBtn.addEventListener("click",uploadProfilePicture);
 
-// File selection handler
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+async function uploadProfilePicture(){
 
-  if (!file.type.startsWith('image/')) {
-    showStatus('❌ Please select an image file', 'error');
-    fileInput.value = '';
-    return;
-  }
+const file = fileInput.files[0];
 
-  if (file.size > MAX_FILE_SIZE) {
-    showStatus('❌ File too large. Maximum size is 5MB', 'error');
-    fileInput.value = '';
-    return;
-  }
+if(!file) return;
 
-  uploadBtn.style.display = 'block';
-  showStatus(`📄 Selected: ${file.name}`, 'loading');
-});
+try{
 
-uploadBtn.addEventListener('click', uploadProfilePicture);
-deleteBtn.addEventListener('click', deleteProfilePicture);
+uploadBtn.disabled=true;
 
+progressBar.style.display="block";
+
+progressFill.style.width="40%";
+
+showStatus("Uploading...","loading");
+
+const storageRef = ref(
+storage,
+"profilePictures/" + currentUser.uid
+);
+
+await uploadBytes(storageRef,file);
+
+progressFill.style.width="80%";
+
+const downloadURL =
+await getDownloadURL(storageRef);
+
+await updateDoc(
+doc(db,"users",currentUser.uid),
+{
+profilePicture:downloadURL
+}
+);
+
+progressFill.style.width="100%";
+
+profilePicture.src=downloadURL;
+profilePicture.style.display="block";
+placeholderImage.style.display="none";
+
+deleteBtn.style.display="block";
+uploadBtn.style.display="none";
+
+fileInput.value="";
+
+progressBar.style.display="none";
+
+showStatus(
+"✅ Profile picture uploaded successfully!",
+"success"
+);
+
+}catch(error){
+
+progressBar.style.display="none";
+
+showStatus(
+"❌ " + error.message,
+"error"
+);
+
+}
+
+uploadBtn.disabled=false;
+
+}
+// Load profile picture
 async function loadProfilePicture(){
 
 try{
@@ -485,49 +572,6 @@ const data = userDoc.data();
 if(data.profilePicture){
 
 profilePicture.src = data.profilePicture;
-profilePicture.style.display = "block";
-placeholderImage.style.display = "none";
-deleteBtn.style.display = "block";
-
-}else{
-
-profilePicture.style.display = "none";
-placeholderImage.style.display = "flex";
-deleteBtn.style.display = "none";
-
-}
-
-}
-
-}catch(error){
-
-console.log(error);
-
-}
-}
-    );
-  } catch (error) {
-    showStatus(`❌ Error: ${error.message}`, 'error');
-    uploadBtn.disabled = false;
-    progressBar.style.display = 'none';
-  }
-}
-
-async function loadProfilePicture(){
-
-try{
-
-const userDoc = await getDoc(
-doc(db,"users",currentUser.uid)
-);
-
-if(userDoc.exists()){
-
-const data = userDoc.data();
-
-if(data.profilePicture){
-
-profilePicture.src = data.profilePicture;
 
 profilePicture.style.display = "block";
 
@@ -554,11 +598,13 @@ console.log(error);
 }
 
 }
-}
+
+// Delete profile picture
+deleteBtn.addEventListener("click",deleteProfilePicture);
 
 async function deleteProfilePicture(){
 
-if(!confirm("Are you sure you want to delete your profile picture?")) return;
+if(!confirm("Delete your profile picture?")) return;
 
 try{
 
@@ -567,7 +613,8 @@ storage,
 "profilePictures/" + currentUser.uid
 );
 
-// Clear the picture URL from Firestore
+await deleteObject(storageRef);
+
 await updateDoc(
 doc(db,"users",currentUser.uid),
 {
@@ -575,11 +622,13 @@ profilePicture:""
 }
 );
 
-// Remove picture from screen
-profilePicture.src = "";
-profilePicture.style.display = "none";
-placeholderImage.style.display = "flex";
-deleteBtn.style.display = "none";
+profilePicture.src="";
+
+profilePicture.style.display="none";
+
+placeholderImage.style.display="flex";
+
+deleteBtn.style.display="none";
 
 showStatus(
 "✅ Profile picture deleted successfully!",
@@ -596,25 +645,20 @@ showStatus(
 }
 
 }
+// Show status messages
+function showStatus(message,type){
 
-  deleteBtn.disabled = false;
+statusMessage.textContent = message;
+
+statusMessage.className = "status-message " + type;
+
 }
 
-function showStatus(message, type) {
-  statusMessage.textContent = message;
-  statusMessage.className = 'status-message ' + type;
-}
-  
-  if(savedEmail){
-    document.getElementById("userEmail").innerText = savedEmail;
-  }
+// Hide upload button initially
+uploadBtn.style.display = "none";
 
-  let verse = localStorage.getItem("favoriteVerse");
-  if(verse){
-    document.getElementById("favoriteVerse").innerText = verse;
-  }
-}
-</script>
+// Hide delete button initially
+deleteBtn.style.display = "none";
 
 </body>
 </html>
