@@ -470,67 +470,41 @@ fileInput.addEventListener('change', (e) => {
 uploadBtn.addEventListener('click', uploadProfilePicture);
 deleteBtn.addEventListener('click', deleteProfilePicture);
 
-async function uploadProfilePicture() {
-  const file = fileInput.files[0];
-  if (!file) return;
+async function loadProfilePicture(){
 
-  uploadBtn.disabled = true;
-  progressBar.style.display = 'block';
-  showStatus('⏳ Uploading...', 'loading');
+try{
 
-  try {
-    const storageRef = ref(
-storage,
-"profilePictures/" + currentUser.uid
-);
-    await uploadBytes(storageRef,file);
-
-    const downloadURL = await getDownloadURL(storageRef);
-
-await updateDoc(
-doc(db,"users",currentUser.uid),
-{
-profilePicture:downloadURL
-});
-
-profilePicture.src = downloadURL;
-profilePicture.style.display="block";
-placeholderImage.style.display="none";
-deleteBtn.style.display="block";
-
-showStatus(
-"✅ Picture uploaded successfully!",
-"success"
+const userDoc = await getDoc(
+doc(db,"users",currentUser.uid)
 );
 
-uploadBtn.disabled=false;
-progressBar.style.display="none";
-uploadBtn.style.display="none";
-fileInput.value="";
-      (error) => {
-        showStatus(`❌ Error: ${error.message}`, 'error');
-        uploadBtn.disabled = false;
-        progressBar.style.display = 'none';
-      },
-      async () => {
-        try {
-          const downloadURL = await storageRef.getDownloadURL();
-          localStorage.setItem(STORAGE_KEY, downloadURL);
-          
-          profilePicture.src = downloadURL;
-          profilePicture.style.display = 'block';
-          placeholderImage.style.display = 'none';
-          deleteBtn.style.display = 'block';
-          
-          fileInput.value = '';
-          uploadBtn.style.display = 'none';
-          progressBar.style.display = 'none';
-          showStatus('✅ Picture uploaded successfully!', 'success');
-        } catch (error) {
-          showStatus(`❌ Error: ${error.message}`, 'error');
-        }
-        uploadBtn.disabled = false;
-      }
+if(userDoc.exists()){
+
+const data = userDoc.data();
+
+if(data.profilePicture){
+
+profilePicture.src = data.profilePicture;
+profilePicture.style.display = "block";
+placeholderImage.style.display = "none";
+deleteBtn.style.display = "block";
+
+}else{
+
+profilePicture.style.display = "none";
+placeholderImage.style.display = "flex";
+deleteBtn.style.display = "none";
+
+}
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+}
     );
   } catch (error) {
     showStatus(`❌ Error: ${error.message}`, 'error');
