@@ -6,14 +6,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import {
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+}
+ from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 import {
   getFirestore,
   collection,
