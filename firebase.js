@@ -34,7 +34,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
   authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
   projectId: "sabasaba-gospel-ministry-414e2",
-  storageBucket:
+  storageBucket:,
 "sabasaba-gospel-ministry-414e2.appspot.com"
   messagingSenderId: "821278457946",
   appId: "1:821278457946:web:3593bd1743970f44c05863"
