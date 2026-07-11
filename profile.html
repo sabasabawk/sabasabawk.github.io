@@ -414,7 +414,7 @@ Certificates
 </div>
 
 <script type="module">
-alert("Profile script loaded");
+
 import {
 auth,
 db,
@@ -427,8 +427,9 @@ uploadBytes,
 getDownloadURL,
 deleteObject,
 onAuthStateChanged
-}
-from "./firebase.js";
+} from "./firebase.js";
+
+alert("Profile script loaded");
 
 const profilePicture =
 document.getElementById("profilePicture");
