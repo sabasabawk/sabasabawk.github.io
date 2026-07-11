@@ -551,6 +551,8 @@ showStatus("📷 Image selected. Click Upload Picture.","loading");
 // Upload picture
 uploadBtn.addEventListener("click",async function(){
 
+alert("Upload button clicked");
+
 const file = fileInput.files[0];
 
 if(!file || !currentUser) return;
