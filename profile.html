@@ -412,7 +412,6 @@ Certificates
 </div>
 
 </div>
-
 <script type="module">
 
 import {
@@ -423,8 +422,6 @@ getDoc,
 updateDoc,
 onAuthStateChanged
 } from "./firebase.js";
-
-alert("Profile script loaded");
 
 const profilePicture =
 document.getElementById("profilePicture");
@@ -454,12 +451,12 @@ const MAX_FILE_SIZE =
 5 * 1024 * 1024;
 
 let currentUser = null;
+
 onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
 
 window.location.href="login.html";
-
 return;
 
 }
@@ -468,13 +465,13 @@ currentUser = user;
 
 try{
 
-const userRef = doc(db,"users",user.uid);
+const snap = await getDoc(
+doc(db,"users",user.uid)
+);
 
-const userSnap = await getDoc(userRef);
+if(snap.exists()){
 
-if(userSnap.exists()){
-
-const data = userSnap.data();
+const data = snap.data();
 
 document.getElementById("userName").innerText =
 data.fullName || "Guest User";
@@ -511,19 +508,17 @@ console.log(error);
 }
 
 });
-// Select image
-fileInput.addEventListener("change",function(){
+// Select picture
+fileInput.addEventListener("change", () => {
 
 const file = fileInput.files[0];
-alert("Picture selected!");
+
 if(!file) return;
 
 if(!file.type.startsWith("image/")){
 
 showStatus("❌ Please choose an image.","error");
-
 fileInput.value="";
-
 return;
 
 }
@@ -531,22 +526,22 @@ return;
 if(file.size > MAX_FILE_SIZE){
 
 showStatus("❌ Image must be smaller than 5 MB.","error");
-
 fileInput.value="";
-
 return;
 
 }
 
-uploadBtn.style.display="inline-block";
+uploadBtn.style.display = "inline-block";
 
-showStatus("📷 Image selected. Click Upload Picture.","loading");
+showStatus(
+"📷 Picture selected. Click Upload Picture.",
+"loading"
+);
 
 });
 
 // Upload picture
-
-uploadBtn.addEventListener("click", async function(){
+uploadBtn.addEventListener("click", async()=>{
 
 const file = fileInput.files[0];
 
@@ -554,15 +549,11 @@ if(!file || !currentUser) return;
 
 const reader = new FileReader();
 
-reader.onload = async function(e){
-
-const imageData = e.target.result;
+reader.onload = async(e)=>{
 
 try{
 
-uploadBtn.disabled = true;
-
-showStatus("Uploading picture...","loading");
+const imageData = e.target.result;
 
 await updateDoc(
 doc(db,"users",currentUser.uid),
@@ -571,20 +562,12 @@ profilePicture:imageData
 }
 );
 
-reader.readAsDataURL(file);
+profilePicture.src = imageData;
+profilePicture.style.display = "block";
+placeholderImage.style.display = "none";
 
-});
-progressBar.style.width="100%";
-
-profilePicture.src = downloadURL;
-
-profilePicture.style.display="block";
-
-placeholderImage.style.display="none";
-
-deleteBtn.style.display="inline-block";
-
-uploadBtn.style.display="none";
+uploadBtn.style.display = "none";
+deleteBtn.style.display = "inline-block";
 
 fileInput.value="";
 
@@ -592,14 +575,6 @@ showStatus(
 "✅ Profile picture uploaded successfully!",
 "success"
 );
-
-setTimeout(function(){
-
-progress.style.display="none";
-
-progressBar.style.width="0%";
-
-},1000);
 
 }catch(error){
 
@@ -610,11 +585,13 @@ showStatus(
 
 }
 
-uploadBtn.disabled=false;
+};
+
+reader.readAsDataURL(file);
 
 });
 // Delete profile picture
-deleteBtn.addEventListener("click", async function(){
+deleteBtn.addEventListener("click", async()=>{
 
 if(!confirm("Delete your profile picture?")) return;
 
@@ -627,11 +604,12 @@ profilePicture:""
 }
 );
 
-profilePicture.src = "";
-profilePicture.style.display = "none";
-placeholderImage.style.display = "flex";
+profilePicture.src="";
+profilePicture.style.display="none";
 
-deleteBtn.style.display = "none";
+placeholderImage.style.display="flex";
+
+deleteBtn.style.display="none";
 
 showStatus(
 "✅ Profile picture deleted successfully!",
@@ -657,7 +635,8 @@ statusMessage.className = "status " + type;
 
 }
 
-</script>
+// Hide buttons when page first loads
+uploadBtn.style.display = "none";
+deleteBtn.style.display = "none";
 
-</body>
-</html>
+</script>
