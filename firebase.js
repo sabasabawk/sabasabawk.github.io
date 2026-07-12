@@ -1,12 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";import {
   getStorage,
   ref,
   uploadBytes,
@@ -43,16 +37,10 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 export {
   auth,
   db,
-storage,
-ref,
-uploadBytes,
-getDownloadURL,
-deleteObject,
   collection,
   addDoc,
   getDocs,
