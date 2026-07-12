@@ -122,7 +122,7 @@ text-decoration:none;
 
 <input type="file" disabled>
 
-<button onclick="publishPost()">📢 Publish Post</button>
+<button id="publishBtn">📢 Publish Post</button>
 
 <p id="message"></p>
 
@@ -204,7 +204,8 @@ alert(error.message);
 
 }
 
-window.publishPost = publishPost;
+document.getElementById("publishBtn")
+.addEventListener("click", publishPost);
 </script>
 
 </body>
