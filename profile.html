@@ -545,43 +545,62 @@ showStatus("📷 Image selected. Click Upload Picture.","loading");
 });
 
 // Upload picture
-uploadBtn.addEventListener("click",async function(){
 
-alert("Upload button clicked");
+uploadBtn.addEventListener("click", async function(){
 
 const file = fileInput.files[0];
 
 if(!file || !currentUser) return;
 
+const reader = new FileReader();
+
+reader.onload = async function(e){
+
+const imageData = e.target.result;
+
 try{
 
-uploadBtn.disabled=true;
-
-progress.style.display="block";
-
-progressBar.style.width="30%";
+uploadBtn.disabled = true;
 
 showStatus("Uploading picture...","loading");
-
-const storageRef = ref(
-storage,
-"profilePictures/" + currentUser.uid
-);
-
-await uploadBytes(storageRef,file);
-
-progressBar.style.width="70%";
-
-const downloadURL =
-await getDownloadURL(storageRef);
 
 await updateDoc(
 doc(db,"users",currentUser.uid),
 {
-profilePicture:downloadURL
+profilePicture:imageData
 }
 );
 
+profilePicture.src = imageData;
+profilePicture.style.display = "block";
+placeholderImage.style.display = "none";
+
+deleteBtn.style.display = "inline-block";
+uploadBtn.style.display = "none";
+
+fileInput.value = "";
+
+showStatus(
+"✅ Profile picture uploaded successfully!",
+"success"
+);
+
+}catch(error){
+
+showStatus(
+"❌ " + error.message,
+"error"
+);
+
+}
+
+uploadBtn.disabled = false;
+
+};
+
+reader.readAsDataURL(file);
+
+});
 progressBar.style.width="100%";
 
 profilePicture.src = downloadURL;
