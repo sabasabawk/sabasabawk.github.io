@@ -571,33 +571,6 @@ profilePicture:imageData
 }
 );
 
-profilePicture.src = imageData;
-profilePicture.style.display = "block";
-placeholderImage.style.display = "none";
-
-deleteBtn.style.display = "inline-block";
-uploadBtn.style.display = "none";
-
-fileInput.value = "";
-
-showStatus(
-"✅ Profile picture uploaded successfully!",
-"success"
-);
-
-}catch(error){
-
-showStatus(
-"❌ " + error.message,
-"error"
-);
-
-}
-
-uploadBtn.disabled = false;
-
-};
-
 reader.readAsDataURL(file);
 
 });
