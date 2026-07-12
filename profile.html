@@ -641,18 +641,11 @@ uploadBtn.disabled=false;
 
 });
 // Delete profile picture
-deleteBtn.addEventListener("click",async function(){
+deleteBtn.addEventListener("click", async function(){
 
 if(!confirm("Delete your profile picture?")) return;
 
 try{
-
-const storageRef = ref(
-storage,
-"profilePictures/" + currentUser.uid
-);
-
-await deleteObject(storageRef);
 
 await updateDoc(
 doc(db,"users",currentUser.uid),
@@ -661,13 +654,11 @@ profilePicture:""
 }
 );
 
-profilePicture.src="";
+profilePicture.src = "";
+profilePicture.style.display = "none";
+placeholderImage.style.display = "flex";
 
-profilePicture.style.display="none";
-
-placeholderImage.style.display="flex";
-
-deleteBtn.style.display="none";
+deleteBtn.style.display = "none";
 
 showStatus(
 "✅ Profile picture deleted successfully!",
@@ -684,7 +675,6 @@ showStatus(
 }
 
 });
-
 // Status message
 function showStatus(message,type){
 
