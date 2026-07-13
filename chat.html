@@ -132,6 +132,13 @@ auth,
 db,
 doc,
 getDoc,
+collection,
+addDoc,
+query,
+where,
+orderBy,
+onSnapshot,
+serverTimestamp,
 onAuthStateChanged
 } from "./firebase.js";
 
@@ -140,7 +147,11 @@ const otherUid = params.get("uid");
 
 const chatName = document.getElementById("chatName");
 const chatAvatar = document.getElementById("chatAvatar");
+const chatArea = document.getElementById("chatArea");
+const messageInput = document.getElementById("message");
+const sendBtn = document.getElementById("sendBtn");
 
+let currentUser = null;
 onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
