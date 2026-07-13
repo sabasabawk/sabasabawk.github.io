@@ -56,6 +56,7 @@ export {
   deleteDoc,
   increment,
   query,
+  where,
   orderBy,
   onSnapshot,
   serverTimestamp,
