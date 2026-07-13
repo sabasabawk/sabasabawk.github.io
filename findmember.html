@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search Members</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+.header{
+background:#0066cc;
+color:white;
+padding:25px;
+border-radius:18px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.search-box{
+margin-bottom:20px;
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+box-sizing:border-box;
+}
+
+.member{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.left{
+display:flex;
+align-items:center;
+}
+
+.avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+background:#ddd;
+margin-right:15px;
+}
+
+.info h3{
+margin:0;
+color:#0066cc;
+}
+
+.info p{
+margin:5px 0 0;
+color:#666;
+font-size:14px;
+}
+
+.message-btn{
+background:#0066cc;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.message-btn:hover{
+background:#004d99;
+}
+
+.back{
+text-align:center;
+margin-top:30px;
+}
+
+.back button{
+background:#0066cc;
+color:white;
+padding:12px 24px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🔍 Search Members</h1>
+
+<p>Find believers and start a private conversation.</p>
+
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search by name...">
+
+</div>
+
+<div id="membersList"></div>
+
+<div class="back">
+
+<a href="findmembe.html">
+
+<button>
+
+⬅ Back to Messages
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+db,
+collection,
+getDocs
+} from "./firebase.js";
+
+const membersList =
+document.getElementById("membersList");
+
+const searchInput =
+document.getElementById("searchInput");
+
+let members=[];
+
+async function loadMembers(){
+
+const snapshot =
+await getDocs(collection(db,"users"));
+
+members=[];
+
+snapshot.forEach(doc=>{
+
+members.push({
+id:doc.id,
+...doc.data()
+});
+
+});
+
+displayMembers(members);
+
+}
+
+function displayMembers(list){
+
+membersList.innerHTML="";
+
+list.forEach(user=>{
+
+membersList.innerHTML += `
+
+<div class="member">
+
+<div class="left">
+
+<img
+class="avatar"
+src="${user.profilePicture || 'images/profile.png'}">
+
+<div class="info">
+
+<h3>${user.fullName || "Unknown User"}</h3>
+
+<p>${user.email || ""}</p>
+
+</div>
+
+</div>
+
+<button
+class="message-btn"
+onclick="window.location.href='chat.html?uid=${user.id}'">
+
+💬 Message
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",function(){
+
+const keyword =
+this.value.toLowerCase();
+
+const filtered =
+members.filter(user=>
+
+(user.fullName || "")
+.toLowerCase()
+.includes(keyword)
+
+);
+
+displayMembers(filtered);
+
+});
+
+loadMembers();
+
+</script>
+
+</body>
+</html>
