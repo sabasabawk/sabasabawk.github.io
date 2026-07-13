@@ -161,6 +161,35 @@ return;
 
 }
 
+currentUser = user;
+
+sendBtn.addEventListener("click", async ()=>{
+
+const text = messageInput.value.trim();
+
+if(text=="") return;
+
+try{
+
+await addDoc(collection(db,"messages"),{
+
+senderId: currentUser.uid,
+receiverId: otherUid,
+message: text,
+timestamp: serverTimestamp()
+
+});
+
+messageInput.value="";
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+});
+
 try{
 
 const userSnap = await getDoc(
