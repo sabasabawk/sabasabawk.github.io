@@ -89,7 +89,7 @@ background:#004d99;
 
 <div class="header">
 
-<div class="avatar"></div>
+<img id="chatAvatar" class="avatar" src="images/profile.png">
 
 <div class="name" id="chatName">
 
@@ -125,6 +125,57 @@ Send
 </button>
 
 </div>
+<script type="module">
 
+import {
+auth,
+db,
+doc,
+getDoc,
+onAuthStateChanged
+} from "./firebase.js";
+
+const params = new URLSearchParams(window.location.search);
+const otherUid = params.get("uid");
+
+const chatName = document.getElementById("chatName");
+const chatAvatar = document.getElementById("chatAvatar");
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="login.html";
+return;
+
+}
+
+try{
+
+const userSnap = await getDoc(
+doc(db,"users",otherUid)
+);
+
+if(userSnap.exists()){
+
+const data = userSnap.data();
+
+chatName.innerText =
+data.fullName || "Unknown User";
+
+chatAvatar.src =
+data.profilePicture || "images/profile.png";
+
+}
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+});
+
+</script>
 </body>
 </html>
