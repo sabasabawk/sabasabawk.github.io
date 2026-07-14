@@ -462,7 +462,8 @@ return;
 }
 
 currentUser = user;
-
+alert("Logged in UID: " + user.uid);
+console.log(user.uid);
 try{
 
 const snap = await getDoc(
