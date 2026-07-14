@@ -187,9 +187,67 @@ messageInput.value="";
 alert(error.message);
 
 }
+});
+const q = query(
+collection(db,"messages"),
+orderBy("timestamp")
+);
+
+onSnapshot(q,(snapshot)=>{
+
+chatArea.innerHTML="";
+
+snapshot.forEach((doc)=>{
+
+const msg = doc.data();
+
+if(
+
+(msg.senderId===currentUser.uid &&
+msg.receiverId===otherUid)
+
+||
+
+(msg.senderId===otherUid &&
+msg.receiverId===currentUser.uid)
+
+){
+
+const mine =
+msg.senderId===currentUser.uid;
+
+chatArea.innerHTML += `
+
+<div style="
+display:flex;
+justify-content:${mine?"flex-end":"flex-start"};
+margin:10px 0;
+">
+
+<div style="
+background:${mine?"#0066cc":"#e5e5ea"};
+color:${mine?"white":"black"};
+padding:12px 16px;
+border-radius:15px;
+max-width:70%;
+word-wrap:break-word;
+">
+
+${msg.message}
+
+</div>
+
+</div>
+
+`;
+
+}
 
 });
 
+chatArea.scrollTop = chatArea.scrollHeight;
+
+});
 try{
 
 const userSnap = await getDoc(
