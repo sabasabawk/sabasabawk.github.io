@@ -181,7 +181,16 @@ message: text,
 timestamp: serverTimestamp()
 
 });
+await addDoc(collection(db,"notifications"),{
 
+userId: otherUid,
+senderId: currentUser.uid,
+title: "New Message",
+message: text,
+timestamp: serverTimestamp(),
+read: false
+
+});
 messageInput.value="";
 
 }catch(error){
