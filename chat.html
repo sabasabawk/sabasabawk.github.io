@@ -136,6 +136,9 @@ doc,
 getDoc,
 collection,
 addDoc,
+getDocs,
+updateDoc,
+writeBatch,
 query,
 where,
 orderBy,
@@ -164,7 +167,27 @@ return;
 }
 
 currentUser = user;
+// Mark notifications as read
+const notificationQuery = query(
+collection(db,"notifications"),
+where("userId","==",user.uid),
+where("senderId","==",otherUid),
+where("read","==",false)
+);
 
+const notificationSnapshot = await getDocs(notificationQuery);
+
+const batch = writeBatch(db);
+
+notificationSnapshot.forEach((notificationDoc)=>{
+
+batch.update(notificationDoc.ref,{
+read:true
+});
+
+});
+
+await batch.commit();
 sendBtn.addEventListener("click", async ()=>{
 
 const text = messageInput.value.trim();
