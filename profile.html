@@ -414,15 +414,16 @@ Certificates
 </div>
 <script type="module">
 
+
 import {
 auth,
 db,
 doc,
 getDoc,
+setDoc,
 updateDoc,
 onAuthStateChanged
 } from "./firebase.js";
-
 const profilePicture =
 document.getElementById("profilePicture");
 
@@ -466,11 +467,28 @@ alert("Logged in UID: " + user.uid);
 console.log(user.uid);
 try{
 
-const snap = await getDoc(
-doc(db,"users",user.uid)
-);
-alert("Document exists: " + snap.exists());
-if(snap.exists()){
+import { setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const userRef = doc(db,"users",user.uid);
+
+let snap = await getDoc(userRef);
+
+if(!snap.exists()){
+
+await setDoc(userRef,{
+fullName:user.displayName || "New User",
+email:user.email,
+bio:"",
+favoriteVerse:"",
+profilePicture:"",
+joined:new Date().toLocaleString(),
+totalPosts:0,
+certificates:0
+});
+
+snap = await getDoc(userRef);
+
+}
 
 const data = snap.data();
 
@@ -497,8 +515,6 @@ profilePicture.style.display = "block";
 placeholderImage.style.display = "none";
 
 deleteBtn.style.display = "inline-block";
-
-}
 
 }
 
