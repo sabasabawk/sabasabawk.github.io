@@ -284,7 +284,32 @@ orderBy("timestamp")
 onSnapshot(messageQuery, async(snapshot)=>{
 
 chatList.innerHTML="";
+const unreadQuery = query(
+collection(db,"notifications"),
+where("userId","==",user.uid),
+where("senderId","==",otherUid),
+where("read","==",false)
+);
 
+onSnapshot(unreadQuery,(snap)=>{
+
+const badge =
+document.getElementById("badge-"+otherUid);
+
+if(!badge) return;
+
+if(snap.size>0){
+
+badge.style.display="inline-block";
+badge.innerText=snap.size;
+
+}else{
+
+badge.style.display="none";
+
+}
+
+});
 const usersShown = new Set();
 
 for(const messageDoc of snapshot.docs){
