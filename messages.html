@@ -284,12 +284,6 @@ orderBy("timestamp")
 onSnapshot(messageQuery, async(snapshot)=>{
 
 chatList.innerHTML="";
-const unreadQuery = query(
-collection(db,"notifications"),
-where("userId","==",user.uid),
-where("senderId","==",otherUid),
-where("read","==",false)
-);
 
 onSnapshot(unreadQuery,(snap)=>{
 
@@ -336,7 +330,27 @@ if(!userSnap.exists()) continue;
 
 const other=userSnap.data();
 
-chatList.innerHTML += `
+chatList.innerHTML += '
+const notificationQuery = query(
+collection(db,"notifications"),
+where("userId","==",user.uid),
+where("senderId","==",otherUid),
+where("read","==",false)
+);
+
+onSnapshot(notificationQuery,(snap)=>{
+
+const badge = document.getElementById("badge-"+otherUid);
+
+if(!badge) return;
+
+if(snap.size>0){
+badge.innerText = snap.size + " new message(s)";
+}else{
+badge.innerText = "";
+}
+
+});
 <div class="chat-card"
 onclick="location.href='chat.html?uid=${otherUid}'">
 
