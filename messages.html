@@ -194,7 +194,9 @@ placeholder="Search conversations...">
 
 <div class="chat-info">
 
-<h3>No conversations yet</h3>
+<div class="chat-list" id="chatList">
+
+</div>
 
 <p>Your private chats will appear here.</p>
 
@@ -239,35 +241,92 @@ db,
 collection,
 query,
 where,
+orderBy,
 onSnapshot,
-onAuthStateChanged
+onAuthStateChanged,
+doc,
+getDoc
 } from "./firebase.js";
 
-const badge =
-document.getElementById("messageBadge");
+const badge = document.getElementById("messageBadge");
+const chatList = document.getElementById("chatList");
 
 onAuthStateChanged(auth,(user)=>{
 
 if(!user) return;
 
-const q = query(
+// Notification badge
+const notificationQuery = query(
 collection(db,"notifications"),
 where("userId","==",user.uid),
 where("read","==",false)
 );
 
-onSnapshot(q,(snapshot)=>{
+onSnapshot(notificationQuery,(snapshot)=>{
 
 const total = snapshot.size;
 
 if(total>0){
-
 badge.style.display="inline-block";
 badge.innerText=total;
-
 }else{
-
 badge.style.display="none";
+}
+
+});
+
+// Conversation list
+const messageQuery = query(
+collection(db,"messages"),
+orderBy("timestamp")
+);
+
+onSnapshot(messageQuery, async(snapshot)=>{
+
+chatList.innerHTML="";
+
+const usersShown = new Set();
+
+for(const messageDoc of snapshot.docs){
+
+const msg = messageDoc.data();
+
+let otherUid=null;
+
+if(msg.senderId===user.uid){
+otherUid=msg.receiverId;
+}else if(msg.receiverId===user.uid){
+otherUid=msg.senderId;
+}else{
+continue;
+}
+
+if(usersShown.has(otherUid)) continue;
+
+usersShown.add(otherUid);
+
+const userSnap=await getDoc(doc(db,"users",otherUid));
+
+if(!userSnap.exists()) continue;
+
+const other=userSnap.data();
+
+chatList.innerHTML += `
+<div class="chat-card"
+onclick="location.href='chat.html?uid=${otherUid}'">
+
+<div class="avatar">
+<img src="${other.profilePicture || 'images/profile.png'}"
+style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
+</div>
+
+<div class="chat-info">
+<h3>${other.fullName}</h3>
+<p>${msg.message}</p>
+</div>
+
+</div>
+`;
 
 }
 
