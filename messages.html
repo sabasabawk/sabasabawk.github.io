@@ -156,7 +156,21 @@ background:#004d99;
 
 <div class="header">
 
-<h1>💬 Private Messages</h1>
+<h1>
+💬 Private Messages
+<span id="messageBadge"
+style="
+background:red;
+color:white;
+border-radius:50%;
+padding:3px 9px;
+font-size:15px;
+display:none;
+margin-left:8px;
+">
+0
+</span>
+</h1>
 
 <p>Chat privately with other believers.</p>
 
@@ -217,6 +231,50 @@ onclick="window.location.href='findmembers.html'">
 </div>
 
 </div>
+<script type="module">
 
+import {
+auth,
+db,
+collection,
+query,
+where,
+onSnapshot,
+onAuthStateChanged
+} from "./firebase.js";
+
+const badge =
+document.getElementById("messageBadge");
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user) return;
+
+const q = query(
+collection(db,"notifications"),
+where("userId","==",user.uid),
+where("read","==",false)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+const total = snapshot.size;
+
+if(total>0){
+
+badge.style.display="inline-block";
+badge.innerText=total;
+
+}else{
+
+badge.style.display="none";
+
+}
+
+});
+
+});
+
+</script>
 </body>
 </html>
