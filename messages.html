@@ -321,7 +321,22 @@ style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
 </div>
 
 <div class="chat-info">
-<h3>${other.fullName}</h3>
+<h3>
+${other.fullName}
+<span id="badge-${otherUid}"
+style="
+display:none;
+background:red;
+color:white;
+border-radius:50%;
+padding:2px 7px;
+font-size:12px;
+margin-left:8px;
+">
+0
+</span>
+</h3>
+
 <p>${msg.message}</p>
 </div>
 
