@@ -466,8 +466,6 @@ alert("Logged in UID: " + user.uid);
 console.log(user.uid);
 try{
 
-import { setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
 const userRef = doc(db,"users",user.uid);
 
 let snap = await getDoc(userRef);
