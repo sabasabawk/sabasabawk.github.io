@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Messages | SABASABA Gospel Ministry</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.header{
+background:#0066cc;
+color:white;
+padding:25px;
+border-radius:18px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:32px;
+margin-bottom:8px;
+}
+
+.header p{
+font-size:16px;
+}
+
+.search-box{
+margin-bottom:20px;
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+#conversationList{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.chat-card{
+display:flex;
+align-items:center;
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+cursor:pointer;
+}
+
+.chat-card:hover{
+transform:translateY(-2px);
+}
+
+.avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+margin-right:15px;
+background:#ddd;
+}
+
+.info{
+flex:1;
+}
+
+.info h3{
+color:#0066cc;
+margin-bottom:5px;
+}
+
+.info p{
+color:#666;
+font-size:15px;
+}
+
+.time{
+font-size:12px;
+color:gray;
+}
+
+.newChat{
+position:fixed;
+bottom:25px;
+right:25px;
+width:65px;
+height:65px;
+border-radius:50%;
+border:none;
+background:#0066cc;
+color:white;
+font-size:34px;
+cursor:pointer;
+}
+
+.back{
+text-align:center;
+margin-top:30px;
+}
+
+.back button{
+background:#0066cc;
+color:white;
+padding:12px 24px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>
+💬 Private Messages
+<span id="messageBadge"
+style="display:none;background:red;color:white;padding:2px 8px;border-radius:50%;font-size:14px;">
+0
+</span>
+</h1>
+
+<p>Your conversations with other believers.</p>
+
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search conversations...">
+
+</div>
+
+<div id="conversationList">
+
+</div>
+
+<button
+class="newChat"
+onclick="location.href='findmembers.html'">
+
++
+
+</button>
+
+<div class="back">
+
+<a href="community.html">
+
+<button>
+
+⬅ Back to Community
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
