@@ -184,7 +184,7 @@ placeholder="Search conversations...">
 
 </div>
 
-<div class="chat-list">
+<div class="chat-list" id="chatList">
 
 <div class="chat-card">
 
@@ -194,17 +194,13 @@ placeholder="Search conversations...">
 
 <div class="chat-info">
 
-<div class="chat-list" id="chatList">
-
-</div>
+<h3>No conversations yet</h3>
 
 <p>Your private chats will appear here.</p>
 
 </div>
 
-<div class="time">
---
-</div>
+<div class="time">--</div>
 
 </div>
 
@@ -283,7 +279,19 @@ orderBy("timestamp")
 
 onSnapshot(messageQuery, async(snapshot)=>{
 
-chatList.innerHTML="";
+if(usersShown.size === 0){
+chatList.innerHTML = `
+<div class="chat-card">
+<div class="avatar">👤</div>
+<div class="chat-info">
+<h3>No conversations yet</h3>
+<p>Your private chats will appear here.</p>
+</div>
+<div class="time">--</div>
+</div>`;
+}else{
+chatList.innerHTML = "";
+}
 
 onSnapshot(unreadQuery,(snap)=>{
 
