@@ -247,7 +247,7 @@ orderBy("timestamp","desc")
 );
 
 onSnapshot(q, async(snapshot)=>{
-
+alert("Messages found: " + snapshot.size);
 conversations = [];
 
 const usersSeen = new Set();
