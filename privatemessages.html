@@ -171,9 +171,8 @@ placeholder="Search conversations...">
 <div id="conversationList">
 
 <div class="chat-list" id="chatList">
-</div>
 
-No conversations yet.
+</div>
 
 </div>
 
@@ -230,7 +229,7 @@ loadChats(user.uid);
 });
 
 function loadChats(myUid){
-
+alert("My UID is: " + myUid);
 const q = query(
 collection(db,"messages"),
 orderBy("timestamp","desc")
