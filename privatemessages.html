@@ -214,6 +214,7 @@ auth,
 db,
 collection,
 query,
+where,
 orderBy,
 onSnapshot,
 doc,
@@ -221,13 +222,9 @@ getDoc,
 onAuthStateChanged
 } from "./firebase.js";
 
-const chatList =
-document.getElementById("chatList");
+const chatList = document.getElementById("chatList");
+const searchInput = document.getElementById("searchInput");
 
-const searchInput =
-document.getElementById("searchInput");
-
-let currentUser = null;
 let conversations = [];
 
 onAuthStateChanged(auth,(user)=>{
@@ -239,59 +236,27 @@ return;
 
 }
 
-currentUser = user;
-
-loadChats();
-
-});
-
-function loadChats(){
-
-const q = collection(db,"messages");
+const q = query(
+collection(db,"conversations"),
+where("participants","array-contains",user.uid),
+orderBy("timestamp","desc")
+);
 
 onSnapshot(q, async(snapshot)=>{
 
 conversations = [];
 
-const shownUsers = new Set();
+for(const conversation of snapshot.docs){
 
-for(const messageDoc of snapshot.docs){
+const data = conversation.data();
 
-const msg = messageDoc.data();
+const otherUid =
+data.participants.find(uid => uid !== user.uid);
 
-let otherUid = null;
+const userSnap =
+await getDoc(doc(db,"users",otherUid));
 
-if(msg.senderId===currentUser.uid){
-
-otherUid = msg.receiverId;
-
-}else if(msg.receiverId===currentUser.uid){
-
-otherUid = msg.senderId;
-
-}else{
-
-continue;
-
-}
-
-if(shownUsers.has(otherUid)){
-
-continue;
-
-}
-
-shownUsers.add(otherUid);
-
-const userSnap = await getDoc(
-doc(db,"users",otherUid)
-);
-
-if(!userSnap.exists()){
-
-continue;
-
-}
+if(!userSnap.exists()) continue;
 
 const other = userSnap.data();
 
@@ -300,8 +265,8 @@ conversations.push({
 uid:otherUid,
 name:other.fullName || "Unknown User",
 photo:other.profilePicture || "images/profile.png",
-lastMessage:msg.message || "",
-time:msg.timestamp
+lastMessage:data.lastMessage || "",
+timestamp:data.timestamp
 
 });
 
@@ -311,21 +276,17 @@ renderChats(conversations);
 
 });
 
-}
+});
 function renderChats(list){
 
-chatList.innerHTML="";
+chatList.innerHTML = "";
 
-if(list.length===0){
+if(list.length === 0){
 
-chatList.innerHTML=`
-
+chatList.innerHTML = `
 <div class="empty">
-
 No conversations yet.
-
 </div>
-
 `;
 
 return;
@@ -348,10 +309,6 @@ src="${chat.photo}">
 <h3>${chat.name}</h3>
 
 <p>${chat.lastMessage}</p>
-
-</div>
-
-<div class="time">
 
 </div>
 
@@ -380,6 +337,9 @@ renderChats(filtered);
 });
 
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
