@@ -247,10 +247,7 @@ loadChats();
 
 function loadChats(){
 
-const q = query(
-collection(db,"messages"),
-orderBy("timestamp","desc")
-);
+const q = collection(db,"messages");
 
 onSnapshot(q, async(snapshot)=>{
 
