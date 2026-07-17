@@ -215,31 +215,20 @@ getDoc,
 onAuthStateChanged
 } from "./firebase.js";
 
-const conversationList =
-document.getElementById("conversationList");
-
-const searchInput =
-document.getElementById("searchInput");
-
-let currentUser = null;
-let conversations = [];
+const chatList = document.getElementById("chatList");
 
 onAuthStateChanged(auth,(user)=>{
 
 if(!user){
-
 window.location.href="login.html";
 return;
-
 }
 
-currentUser = user;
-
-loadConversations();
+loadChats(user.uid);
 
 });
 
-function loadConversations(){
+function loadChats(myUid){
 
 const q = query(
 collection(db,"messages"),
@@ -247,10 +236,10 @@ orderBy("timestamp","desc")
 );
 
 onSnapshot(q, async(snapshot)=>{
-alert("Messages found: " + snapshot.size);
-conversations = [];
 
-const usersSeen = new Set();
+chatList.innerHTML="";
+
+const shownUsers = new Set();
 
 for(const messageDoc of snapshot.docs){
 
@@ -258,11 +247,11 @@ const msg = messageDoc.data();
 
 let otherUid = null;
 
-if(msg.senderId===currentUser.uid){
+if(msg.senderId===myUid){
 
 otherUid = msg.receiverId;
 
-}else if(msg.receiverId===currentUser.uid){
+}else if(msg.receiverId===myUid){
 
 otherUid = msg.senderId;
 
@@ -272,66 +261,45 @@ continue;
 
 }
 
-if(usersSeen.has(otherUid)) continue;
+if(shownUsers.has(otherUid)) continue;
 
-usersSeen.add(otherUid);
+shownUsers.add(otherUid);
 
-const userSnap =
-await getDoc(doc(db,"users",otherUid));
+const userSnap = await getDoc(
+doc(db,"users",otherUid)
+);
 
 if(!userSnap.exists()) continue;
 
 const other = userSnap.data();
 
-conversations.push({
-
-uid:otherUid,
-name:other.fullName || "Unknown User",
-photo:other.profilePicture || "images/profile.png",
-lastMessage:msg.message || "",
-time:msg.timestamp
-
-});
-
-}
-
-displayConversations(conversations);
-
-});
-
-}
-function displayConversations(list){
-
-conversationList.innerHTML = "";
-
-if(list.length===0){
-
-conversationList.innerHTML = `
-<div class="empty">
-No conversations yet.
-</div>
-`;
-
-return;
-
-}
-
-list.forEach(chat=>{
-
-conversationList.innerHTML += `
+chatList.innerHTML += `
 
 <div class="chat-card"
-onclick="location.href='chat.html?uid=${chat.uid}'">
+onclick="window.location.href='chat.html?uid=${otherUid}'">
+
+<div class="avatar">
 
 <img
-class="avatar"
-src="${chat.photo}">
+src="${other.profilePicture || 'images/profile.png'}"
+style="
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+">
 
-<div class="info">
+</div>
 
-<h3>${chat.name}</h3>
+<div class="chat-info">
 
-<p>${chat.lastMessage}</p>
+<h3>${other.fullName}</h3>
+
+<p>${msg.message}</p>
+
+</div>
+
+<div class="time">
 
 </div>
 
@@ -339,26 +307,33 @@ src="${chat.photo}">
 
 `;
 
-});
+}
+
+if(chatList.innerHTML===""){
+
+chatList.innerHTML=`
+
+<div class="chat-card">
+
+<div class="avatar">👤</div>
+
+<div class="chat-info">
+
+<h3>No conversations yet</h3>
+
+<p>Your private chats will appear here.</p>
+
+</div>
+
+</div>
+
+`;
 
 }
 
-searchInput.addEventListener("input",()=>{
-
-const keyword =
-searchInput.value.toLowerCase();
-
-const filtered =
-conversations.filter(chat=>
-
-chat.name.toLowerCase()
-.includes(keyword)
-
-);
-
-displayConversations(filtered);
-
 });
+
+}
 
 </script>
 </body>
