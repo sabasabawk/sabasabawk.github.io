@@ -189,13 +189,14 @@ read:true
 });
 
 await batch.commit();
-sendBtn.addEventListener("click", async ()=>{
+await addDoc(collection(db,"messages"),{
 
-const text = messageInput.value.trim();
+senderId: currentUser.uid,
+receiverId: otherUid,
+message: text,
+timestamp: serverTimestamp()
 
-if(text=="") return;
-
-try{
+});
 
 const ids = [currentUser.uid, otherUid].sort();
 const conversationId = ids[0] + "_" + ids[1];
@@ -219,16 +220,6 @@ title: "New Message",
 message: text,
 read: false,
 timestamp: serverTimestamp()
-
-});
-await addDoc(collection(db,"notifications"),{
-
-userId: otherUid,
-senderId: currentUser.uid,
-title: "New Message",
-message: text,
-timestamp: serverTimestamp(),
-read: false
 
 });
 messageInput.value="";
