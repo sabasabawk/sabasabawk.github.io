@@ -134,6 +134,7 @@ auth,
 db,
 doc,
 getDoc,
+setDoc,
 collection,
 addDoc,
 getDocs,
@@ -196,14 +197,18 @@ if(text=="") return;
 
 try{
 
-await addDoc(collection(db,"messages"),{
+const ids = [currentUser.uid, otherUid].sort();
+const conversationId = ids[0] + "_" + ids[1];
 
-senderId: currentUser.uid,
-receiverId: otherUid,
-message: text,
+await setDoc(
+doc(db, "conversations", conversationId),
+{
+participants: ids,
+lastMessage: text,
+lastSender: currentUser.uid,
 timestamp: serverTimestamp()
-
-});
+}
+);
 
 // Create notification
 await addDoc(collection(db,"notifications"),{
