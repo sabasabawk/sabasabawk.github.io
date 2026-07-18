@@ -228,8 +228,8 @@ return;
 // NOTE: removed orderBy from the query to avoid requiring a composite index.
 // We will sort conversations client-side by timestamp instead.
 const q = query(
-collection(db,"conversations"),
-where("participants","array-contains",user.uid)
+ collection(db, "conversations"),
+ where("participants", "array-contains", user.uid)
 );
 
 onSnapshot(q, async(snapshot)=>{
