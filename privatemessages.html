@@ -225,27 +225,37 @@ return;
 
 }
 
+// NOTE: removed orderBy from the query to avoid requiring a composite index.
+// We will sort conversations client-side by timestamp instead.
 const q = query(
 collection(db,"conversations"),
-where("participants","array-contains",user.uid),
-orderBy("timestamp","desc")
+where("participants","array-contains",user.uid)
 );
 
 onSnapshot(q, async(snapshot)=>{
 
 allChats = [];
 
-for(const conversationDoc of snapshot.docs){
+// map docs to plain objects and sort by timestamp (descending)
+const docs = snapshot.docs.map(d => ({ id: d.id, ...(d.data()) }));
 
-const conversation = conversationDoc.data();
+docs.sort((a, b) => {
+  const aTs = a.timestamp && typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : (a.timestamp && typeof a.timestamp.toDate === 'function' ? a.timestamp.toDate().getTime() : 0);
+  const bTs = b.timestamp && typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : (b.timestamp && typeof b.timestamp.toDate === 'function' ? b.timestamp.toDate().getTime() : 0);
+  return bTs - aTs;
+});
+
+for(const conversation of docs){
 
 const otherUid =
-conversation.participants.find(
+conversation.participants?.find(
 uid => uid !== user.uid
 );
 
+if(!otherUid) continue;
+
 const userSnap = await getDoc(
-doc(db,"users",otherUid)
+ doc(db,"users",otherUid)
 );
 
 if(!userSnap.exists()) continue;
