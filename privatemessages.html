@@ -232,18 +232,19 @@ const q = query(
  where("participants", "array-contains", user.uid)
 );
 
-onSnapshot(q, async(snapshot)=>{
-
-allChats = [];
-
-// map docs to plain objects and sort by timestamp (descending)
-const docs = snapshot.docs.map(d => ({ id: d.id, ...(d.data()) }));
-
-docs.sort((a, b) => {
-  const aTs = a.timestamp && typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : (a.timestamp && typeof a.timestamp.toDate === 'function' ? a.timestamp.toDate().getTime() : 0);
-  const bTs = b.timestamp && typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : (b.timestamp && typeof b.timestamp.toDate === 'function' ? b.timestamp.toDate().getTime() : 0);
-  return bTs - aTs;
-});
+onSnapshot(q, async (snapshot) => {
+ allChats = [];
+ // map docs to plain objects and sort by timestamp descending
+ const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
+ .sort((a, b) => {
+ const aTs = a.timestamp && typeof a.timestamp.toMillis === 'function'
+ ? a.timestamp.toMillis()
+ : (a.timestamp && typeof a.timestamp.toDate === 'function' ? a.timestamp.toDate().getTime() : 0);
+ const bTs = b.timestamp && typeof b.timestamp.toMillis === 'function'
+ ? b.timestamp.toMillis()
+ : (b.timestamp && typeof b.timestamp.toDate === 'function' ? b.timestamp.toDate().getTime() : 0);
+ return bTs - aTs;
+ });
 
 for(const conversation of docs){
 
