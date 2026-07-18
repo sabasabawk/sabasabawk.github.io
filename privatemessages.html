@@ -3,9 +3,10 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
 
-<title>Private Messages | SABASABA Gospel Ministry</title>
+<title>Private Messages</title>
 
 <style>
 
@@ -29,41 +30,32 @@ padding:20px;
 .header{
 background:#0066cc;
 color:white;
-padding:25px;
+padding:20px;
 border-radius:18px;
 text-align:center;
 margin-bottom:20px;
 }
 
-.header h1{
-font-size:30px;
-margin-bottom:8px;
-}
-
-.header p{
-font-size:16px;
-}
-
-.search-box{
+.search{
 margin-bottom:20px;
 }
 
-.search-box input{
+.search input{
 width:100%;
 padding:14px;
-border:1px solid #ccc;
 border-radius:10px;
+border:1px solid #ccc;
 font-size:16px;
 outline:none;
 }
 
-.chat-list{
+.chatList{
 display:flex;
 flex-direction:column;
 gap:15px;
 }
 
-.chat-card{
+.chatCard{
 display:flex;
 align-items:center;
 background:white;
@@ -71,11 +63,11 @@ padding:15px;
 border-radius:15px;
 box-shadow:0 3px 10px rgba(0,0,0,.08);
 cursor:pointer;
-transition:.3s;
+transition:.25s;
 }
 
-.chat-card:hover{
-transform:translateY(-3px);
+.chatCard:hover{
+transform:translateY(-2px);
 }
 
 .avatar{
@@ -84,20 +76,18 @@ height:60px;
 border-radius:50%;
 object-fit:cover;
 margin-right:15px;
-background:#ddd;
 }
 
-.chat-info{
+.info{
 flex:1;
 }
 
-.chat-info h3{
+.info h3{
 color:#0066cc;
 margin-bottom:5px;
-font-size:18px;
 }
 
-.chat-info p{
+.info p{
 color:#666;
 font-size:15px;
 }
@@ -105,19 +95,17 @@ font-size:15px;
 .time{
 font-size:12px;
 color:gray;
-margin-left:10px;
 }
 
 .empty{
 background:white;
-padding:35px;
+padding:40px;
 border-radius:15px;
 text-align:center;
 color:#777;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-.new-chat{
+.newChat{
 position:fixed;
 bottom:25px;
 right:25px;
@@ -129,21 +117,20 @@ background:#0066cc;
 color:white;
 font-size:34px;
 cursor:pointer;
-box-shadow:0 5px 12px rgba(0,0,0,.25);
 }
 
 .back{
-text-align:center;
 margin-top:30px;
+text-align:center;
 }
 
 .back button{
 background:#0066cc;
 color:white;
-padding:12px 24px;
 border:none;
+padding:12px 24px;
 border-radius:10px;
-font-size:17px;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -159,22 +146,21 @@ cursor:pointer;
 
 <h1>💬 Private Messages</h1>
 
-<p>Your conversations with other believers.</p>
+<p>Your conversations</p>
 
 </div>
 
-<div class="search-box">
+<div class="search">
 
 <input
-type="text"
 id="searchInput"
 placeholder="Search conversations...">
 
 </div>
 
 <div
-class="chat-list"
-id="chatList">
+id="chatList"
+class="chatList">
 
 <div class="empty">
 
@@ -185,7 +171,7 @@ Loading conversations...
 </div>
 
 <button
-class="new-chat"
+class="newChat"
 onclick="location.href='findmembers.html'">
 
 +
@@ -207,8 +193,8 @@ onclick="location.href='findmembers.html'">
 </div>
 
 </div>
-<script type="module">
 
+<script type="module">
 import {
 auth,
 db,
@@ -222,10 +208,13 @@ getDoc,
 onAuthStateChanged
 } from "./firebase.js";
 
-const chatList = document.getElementById("chatList");
-const searchInput = document.getElementById("searchInput");
+const chatList =
+document.getElementById("chatList");
 
-let conversations = [];
+const searchInput =
+document.getElementById("searchInput");
+
+let allChats = [];
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -244,44 +233,53 @@ orderBy("timestamp","desc")
 
 onSnapshot(q, async(snapshot)=>{
 
-conversations = [];
+allChats = [];
 
-for(const conversation of snapshot.docs){
+for(const conversationDoc of snapshot.docs){
 
-const data = conversation.data();
+const conversation = conversationDoc.data();
 
 const otherUid =
-data.participants.find(uid => uid !== user.uid);
+conversation.participants.find(
+uid => uid !== user.uid
+);
 
-const userSnap =
-await getDoc(doc(db,"users",otherUid));
+const userSnap = await getDoc(
+doc(db,"users",otherUid)
+);
 
 if(!userSnap.exists()) continue;
 
 const other = userSnap.data();
 
-conversations.push({
+allChats.push({
 
 uid:otherUid,
 name:other.fullName || "Unknown User",
-photo:other.profilePicture || "images/profile.png",
-lastMessage:data.lastMessage || "",
-timestamp:data.timestamp
+photo:
+other.profilePicture ||
+"images/profile.png",
+
+lastMessage:
+conversation.lastMessage || "",
+
+timestamp:
+conversation.timestamp || null
 
 });
 
 }
 
-renderChats(conversations);
+renderChats(allChats);
 
 });
 
 });
-function renderChats(list){
+function renderChats(chats){
 
 chatList.innerHTML = "";
 
-if(list.length === 0){
+if(chats.length === 0){
 
 chatList.innerHTML = `
 <div class="empty">
@@ -293,22 +291,44 @@ return;
 
 }
 
-list.forEach(chat=>{
+chats.forEach(chat=>{
+
+let timeText = "";
+
+if(chat.timestamp && chat.timestamp.toDate){
+
+const d = chat.timestamp.toDate();
+
+timeText =
+d.toLocaleDateString() + " " +
+d.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
+
+}
 
 chatList.innerHTML += `
 
-<div class="chat-card"
+<div class="chatCard"
 onclick="location.href='chat.html?uid=${chat.uid}'">
 
 <img
 class="avatar"
-src="${chat.photo}">
+src="${chat.photo}"
+onerror="this.src='images/profile.png'">
 
-<div class="chat-info">
+<div class="info">
 
 <h3>${chat.name}</h3>
 
 <p>${chat.lastMessage}</p>
+
+</div>
+
+<div class="time">
+
+${timeText}
 
 </div>
 
@@ -323,10 +343,9 @@ src="${chat.photo}">
 searchInput.addEventListener("input",()=>{
 
 const keyword =
-searchInput.value.toLowerCase();
+searchInput.value.trim().toLowerCase();
 
-const filtered =
-conversations.filter(chat=>
+const filtered = allChats.filter(chat=>
 
 chat.name.toLowerCase().includes(keyword)
 
@@ -337,9 +356,6 @@ renderChats(filtered);
 });
 
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
