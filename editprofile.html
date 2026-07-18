@@ -7,72 +7,18 @@
 <title>Edit Profile</title>
 
 <style>
-
-body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-margin:0;
-padding:20px;
-}
-
-.container{
-max-width:600px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
-
-h1{
-text-align:center;
-color:#0066cc;
-}
-
-label{
-display:block;
-margin-top:18px;
-font-weight:bold;
-}
-
-input,textarea{
-width:100%;
-padding:12px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:8px;
-font-size:16px;
-box-sizing:border-box;
-}
-
-textarea{
-height:140px;
-resize:vertical;
-}
-
-button{
-margin-top:25px;
-width:100%;
-padding:14px;
-background:#0066cc;
-color:white;
-border:none;
-border-radius:8px;
-font-size:18px;
-cursor:pointer;
-}
-
-button:hover{
-background:#004d99;
-}
-
-.message{
-text-align:center;
-margin-top:20px;
-font-weight:bold;
-color:green;
-}
-
+body{font-family:Arial,sans-serif;background:#eef3f8;margin:0;padding:20px}
+.container{max-width:600px;margin:auto;background:white;padding:25px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+h1{text-align:center;color:#0066cc}
+label{display:block;margin-top:18px;font-weight:bold}
+input,textarea{width:100%;padding:12px;margin-top:5px;border:1px solid #ccc;border-radius:8px;font-size:16px;box-sizing:border-box}
+textarea{height:140px;resize:vertical}
+button{margin-top:15px;width:100%;padding:14px;background:#0066cc;color:white;border:none;border-radius:8px;font-size:18px;cursor:pointer}
+button:hover{background:#004d99}
+.message{text-align:center;margin-top:20px;font-weight:bold;color:green}
+.upload-row{display:flex;gap:10px;align-items:center;margin-top:10px}
+.upload-row input[type=file]{display:block;width:calc(100% - 110px)}
+.upload-row .choose-btn{flex:0 0 100px;padding:10px;background:#fff;border:1px solid #ccc;border-radius:6px;cursor:pointer}
 </style>
 
 </head>
@@ -83,180 +29,96 @@ color:green;
 
 <h1>✏ Edit Profile</h1>
 
-<label>Full Name</label>
+<label for="fullname">Full Name</label>
 <input type="text" id="fullname">
 
-<label>Email</label>
+<label for="email">Email</label>
 <input type="email" id="email">
 
-<label>Favorite Bible Verse</label>
+<label for="verse">Favorite Bible Verse</label>
 <input type="text" id="verse">
 
-<label>Personal Testimony</label>
+<label for="testimony">Personal Testimony</label>
 <textarea id="testimony"></textarea>
 
-<button onclick="saveProfile()">
-<label>Profile Picture</label>
+<label for="profileImage">Profile Picture</label>
+<div class="upload-row">
+  <input type="file" id="profileImage" accept="image/*">
+  <button type="button" class="choose-btn" onclick="document.getElementById('profileImage').click()">Choose</button>
+</div>
 
-<input
-type="file"
-id="profileImage"
-accept="image/*">
-💾 Save Changes
-</button>
+<button id="saveBtn">💾 Save Changes</button>
 
 <p class="message" id="message"></p>
 
 </div>
 
-<script type="module"> 
-import {
-auth,
-db,
-storage,
-doc,
-updateDoc,
-ref,
-uploadBytes,
-getDownloadURL
-} from "./firebase.js";
+<script type="module">
+import { auth, db, storage, doc, getDoc, updateDoc, ref, uploadBytes, getDownloadURL } from './firebase.js';
 
-import {
-getFirestore,
-doc,
-getDoc,
-updateDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const saveBtn = document.getElementById('saveBtn');
+const msgEl = document.getElementById('message');
 
-const db = getFirestore();
-
-auth.onAuthStateChanged(async(user)=>{
-
-if(!user){
-
-window.location.href="login.html";
-
-return;
-
+async function loadProfile(){
+  auth.onAuthStateChanged(async (user)=>{
+    if(!user){ window.location.href = 'login.html'; return; }
+    try{
+      const userRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(userRef);
+      if(snap.exists()){
+        const data = snap.data();
+        document.getElementById('fullname').value = data.fullName || '';
+        document.getElementById('email').value = data.email || '';
+        document.getElementById('verse').value = data.favoriteVerse || '';
+        document.getElementById('testimony').value = data.bio || '';
+      }
+    }catch(e){
+      console.error(e);
+    }
+  });
 }
 
-const docRef = doc(db,"users",user.uid);
+async function saveProfile(){
+  saveBtn.disabled = true;
+  msgEl.textContent = '';
+  const user = auth.currentUser;
+  if(!user){ window.location.href='login.html'; return; }
 
-const docSnap = await getDoc(docRef);
+  const updates = {
+    fullName: document.getElementById('fullname').value,
+    email: document.getElementById('email').value,
+    favoriteVerse: document.getElementById('verse').value,
+    bio: document.getElementById('testimony').value
+  };
 
-if(docSnap.exists()){
+  try{
+    // Update basic fields first
+    await updateDoc(doc(db, 'users', user.uid), updates);
 
-const data = docSnap.data();
+    // If a file is selected, upload it and update profilePicture
+    const fileInput = document.getElementById('profileImage');
+    const file = fileInput.files[0];
+    if(file){
+      const path = `profilePictures/${user.uid}/${Date.now()}_${file.name}`;
+      const sRef = ref(storage, path);
+      await uploadBytes(sRef, file);
+      const downloadURL = await getDownloadURL(sRef);
+      await updateDoc(doc(db, 'users', user.uid), { profilePicture: downloadURL, profilePicturePath: path });
+    }
 
-document.getElementById("fullname").value =
-data.fullName || "";
-
-document.getElementById("email").value =
-data.email || "";
-
-document.getElementById("verse").value =
-data.favoriteVerse || "";
-
-document.getElementById("testimony").value =
-data.bio || "";
-
+    msgEl.textContent = '✅ Profile updated successfully!';
+    setTimeout(()=>{ window.location.href = 'profile.html'; }, 1100);
+  }catch(err){
+    console.error(err);
+    alert('Error saving profile: ' + (err.message || err));
+    saveBtn.disabled = false;
+  }
 }
 
-});
+saveBtn.addEventListener('click', saveProfile);
 
-function saveProfile(){
+loadProfile();
 
-auth.onAuthStateChanged(async(user)=>{
-
-if(!user)return;
-
-await updateDoc(doc(db,"users",user.uid),{
-
-fullName:document.getElementById("fullname").value,
-
-email:document.getElementById("email").value,
-
-favoriteVerse:document.getElementById("verse").value,
-
-bio:document.getElementById("testimony").value
-
-});
-
-});
-
-let file =
-document.getElementById("profileImage").files[0];
-
-if(file){
-
-const user = auth.currentUser;
-
-const storageRef = ref(
-storage,
-"profilePictures/" + user.uid
-);
-
-uploadBytes(storageRef,file)
-
-.then(()=>{
-
-return getDownloadURL(storageRef);
-
-})
-
-.then(async(downloadURL)=>{
-
-localStorage.setItem(
-"profilePicture",
-downloadURL
-);
-
-await updateDoc(
-doc(db,"users",user.uid),
-{
-profilePicture: downloadURL
-}
-);
-
-finishSaving();
-
-})
-
-.catch(error=>{
-
-alert(error.message);
-
-});
-
-}else{
-
-finishSaving();
-
-}
-
-reader.readAsDataURL(file);
-
-}else{
-
-finishSaving();
-
-}
-
-}
-
-function finishSaving(){
-
-document.getElementById("message").innerHTML=
-"✅ Profile updated successfully!";
-
-setTimeout(function(){
-
-window.location.href="profile.html";
-
-},1200);
-
-}
-window.saveProfile = saveProfile;
 </script>
 </body>
 </html>
