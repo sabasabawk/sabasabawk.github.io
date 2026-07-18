@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Private Messages</title>
+<title>Private Messages | SABASABA Gospel Ministry</title>
 
 <style>
 
@@ -30,23 +31,37 @@ padding:20px;
 .header{
 background:#0066cc;
 color:white;
-padding:20px;
+padding:25px;
 border-radius:18px;
 text-align:center;
 margin-bottom:20px;
 }
 
-.search{
+.header h1{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.header p{
+font-size:16px;
+opacity:.95;
+}
+
+.searchBox{
 margin-bottom:20px;
 }
 
-.search input{
+.searchBox input{
 width:100%;
 padding:14px;
-border-radius:10px;
-border:1px solid #ccc;
 font-size:16px;
+border:1px solid #ccc;
+border-radius:12px;
 outline:none;
+}
+
+.searchBox input:focus{
+border-color:#0066cc;
 }
 
 .chatList{
@@ -76,6 +91,7 @@ height:60px;
 border-radius:50%;
 object-fit:cover;
 margin-right:15px;
+background:#ddd;
 }
 
 .info{
@@ -84,17 +100,20 @@ flex:1;
 
 .info h3{
 color:#0066cc;
+font-size:18px;
 margin-bottom:5px;
 }
 
 .info p{
-color:#666;
 font-size:15px;
+color:#666;
 }
 
 .time{
 font-size:12px;
 color:gray;
+margin-left:10px;
+white-space:nowrap;
 }
 
 .empty{
@@ -103,12 +122,13 @@ padding:40px;
 border-radius:15px;
 text-align:center;
 color:#777;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
 .newChat{
 position:fixed;
-bottom:25px;
 right:25px;
+bottom:25px;
 width:65px;
 height:65px;
 border:none;
@@ -117,11 +137,12 @@ background:#0066cc;
 color:white;
 font-size:34px;
 cursor:pointer;
+box-shadow:0 5px 12px rgba(0,0,0,.25);
 }
 
 .back{
-margin-top:30px;
 text-align:center;
+margin-top:30px;
 }
 
 .back button{
@@ -146,13 +167,14 @@ cursor:pointer;
 
 <h1>💬 Private Messages</h1>
 
-<p>Your conversations</p>
+<p>Your conversations with other believers</p>
 
 </div>
 
-<div class="search">
+<div class="searchBox">
 
 <input
+type="text"
 id="searchInput"
 placeholder="Search conversations...">
 
@@ -208,13 +230,11 @@ getDoc,
 onAuthStateChanged
 } from "./firebase.js";
 
-const chatList =
-document.getElementById("chatList");
+const chatList = document.getElementById("chatList");
+const searchInput = document.getElementById("searchInput");
 
-const searchInput =
-document.getElementById("searchInput");
-
-let allChats = [];
+let currentUser = null;
+let conversations = [];
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -225,76 +245,69 @@ return;
 
 }
 
-// NOTE: removed orderBy from the query to avoid requiring a composite index.
-// We will sort conversations client-side by timestamp instead.
+currentUser = user;
+
+loadConversations();
+
+});
+
+function loadConversations(){
+
 const q = query(
- collection(db, "conversations"),
- where("participants", "array-contains", user.uid)
+collection(db,"conversations"),
+where("participants","array-contains",currentUser.uid),
+orderBy("timestamp","desc")
 );
 
-onSnapshot(q, async (snapshot) => {
- allChats = [];
- // map docs to plain objects and sort by timestamp descending
- const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
- .sort((a, b) => {
- const aTs = a.timestamp && typeof a.timestamp.toMillis === 'function'
- ? a.timestamp.toMillis()
- : (a.timestamp && typeof a.timestamp.toDate === 'function' ? a.timestamp.toDate().getTime() : 0);
- const bTs = b.timestamp && typeof b.timestamp.toMillis === 'function'
- ? b.timestamp.toMillis()
- : (b.timestamp && typeof b.timestamp.toDate === 'function' ? b.timestamp.toDate().getTime() : 0);
- return bTs - aTs;
- });
+onSnapshot(q, async(snapshot)=>{
 
-for(const conversation of docs){
+conversations = [];
+
+for(const conversationDoc of snapshot.docs){
+
+const conversation = conversationDoc.data();
 
 const otherUid =
-conversation.participants?.find(
-uid => uid !== user.uid
+conversation.participants.find(
+uid => uid !== currentUser.uid
 );
 
-if(!otherUid) continue;
-
 const userSnap = await getDoc(
- doc(db,"users",otherUid)
+doc(db,"users",otherUid)
 );
 
 if(!userSnap.exists()) continue;
 
 const other = userSnap.data();
 
-allChats.push({
+conversations.push({
 
 uid:otherUid,
 name:other.fullName || "Unknown User",
-photo:
-other.profilePicture ||
-"images/profile.png",
-
-lastMessage:
-conversation.lastMessage || "",
-
-timestamp:
-conversation.timestamp || null
+photo:other.profilePicture || "images/profile.png",
+lastMessage:conversation.lastMessage || "",
+timestamp:conversation.timestamp || null
 
 });
 
 }
 
-renderChats(allChats);
+renderConversations(conversations);
 
 });
 
-});
-function renderChats(chats){
+}
+function renderConversations(list){
 
 chatList.innerHTML = "";
 
-if(chats.length === 0){
+if(list.length === 0){
 
 chatList.innerHTML = `
 <div class="empty">
+
 No conversations yet.
+
 </div>
 `;
 
@@ -302,11 +315,13 @@ return;
 
 }
 
-chats.forEach(chat=>{
+list.forEach(chat=>{
 
 let timeText = "";
 
-if(chat.timestamp && chat.timestamp.toDate){
+if(chat.timestamp){
+
+try{
 
 const d = chat.timestamp.toDate();
 
@@ -317,11 +332,18 @@ hour:"2-digit",
 minute:"2-digit"
 });
 
+}catch(e){
+
+timeText = "";
+
+}
+
 }
 
 chatList.innerHTML += `
 
-<div class="chatCard"
+<div
+class="chatCard"
 onclick="location.href='chat.html?uid=${chat.uid}'">
 
 <img
@@ -356,17 +378,29 @@ searchInput.addEventListener("input",()=>{
 const keyword =
 searchInput.value.trim().toLowerCase();
 
-const filtered = allChats.filter(chat=>
+const filtered =
+conversations.filter(chat=>
 
 chat.name.toLowerCase().includes(keyword)
 
 );
 
-renderChats(filtered);
+renderConversations(filtered);
+
+});
+// Refresh conversations when the page becomes visible
+document.addEventListener("visibilitychange",()=>{
+
+if(document.visibilityState==="visible" && currentUser){
+
+loadConversations();
+
+}
 
 });
 
 </script>
 
 </body>
+
 </html>
