@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,8 +9,13 @@
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 font-family:Arial,sans-serif;
 background:#eef3f8;
 display:flex;
@@ -27,9 +33,10 @@ gap:15px;
 }
 
 .avatar{
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 border-radius:50%;
+object-fit:cover;
 background:white;
 }
 
@@ -53,6 +60,26 @@ color:#777;
 margin-top:80px;
 }
 
+.message{
+max-width:70%;
+padding:12px 16px;
+margin:8px 0;
+border-radius:15px;
+word-wrap:break-word;
+}
+
+.mine{
+align-self:flex-end;
+background:#0066cc;
+color:white;
+}
+
+.other{
+align-self:flex-start;
+background:#e5e5ea;
+color:black;
+}
+
 .inputArea{
 display:flex;
 padding:15px;
@@ -66,6 +93,7 @@ padding:12px;
 border:1px solid #ccc;
 border-radius:25px;
 font-size:16px;
+outline:none;
 }
 
 .inputArea button{
@@ -79,10 +107,6 @@ font-size:16px;
 cursor:pointer;
 }
 
-.inputArea button:hover{
-background:#004d99;
-}
-
 </style>
 
 </head>
@@ -91,9 +115,14 @@ background:#004d99;
 
 <div class="header">
 
-<img id="chatAvatar" class="avatar" src="images/profile.png">
+<img
+id="chatAvatar"
+class="avatar"
+src="images/profile.png">
 
-<div class="name" id="chatName">
+<div
+class="name"
+id="chatName">
 
 Loading...
 
@@ -101,12 +130,13 @@ Loading...
 
 </div>
 
-<div class="chatArea" id="chatArea">
+<div
+class="chatArea"
+id="chatArea">
 
 <div class="empty">
 
 No messages yet.<br>
-
 Start your Christian conversation.
 
 </div>
@@ -116,8 +146,8 @@ Start your Christian conversation.
 <div class="inputArea">
 
 <input
-type="text"
 id="message"
+type="text"
 placeholder="Type your message...">
 
 <button id="sendBtn">
@@ -127,24 +157,21 @@ Send
 </button>
 
 </div>
-<script type="module">
 
+<script type="module">
 import {
 auth,
 db,
 doc,
 getDoc,
-setDoc,
 collection,
 addDoc,
-getDocs,
-updateDoc,
-writeBatch,
 query,
 where,
 orderBy,
 onSnapshot,
 serverTimestamp,
+setDoc,
 onAuthStateChanged
 } from "./firebase.js";
 
@@ -158,6 +185,7 @@ const messageInput = document.getElementById("message");
 const sendBtn = document.getElementById("sendBtn");
 
 let currentUser = null;
+
 onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
@@ -168,80 +196,42 @@ return;
 }
 
 currentUser = user;
-// Mark notifications as read
-const notificationQuery = query(
-collection(db,"notifications"),
-where("userId","==",user.uid),
-where("senderId","==",otherUid),
-where("read","==",false)
+
+const userSnap = await getDoc(
+doc(db,"users",otherUid)
 );
 
-const notificationSnapshot = await getDocs(notificationQuery);
+if(userSnap.exists()){
 
-const batch = writeBatch(db);
+const other = userSnap.data();
 
-notificationSnapshot.forEach((notificationDoc)=>{
+chatName.innerText =
+other.fullName || "Unknown User";
 
-batch.update(notificationDoc.ref,{
-read:true
-});
-
-});
-
-await batch.commit();
-await addDoc(collection(db,"messages"),{
-
-senderId: currentUser.uid,
-receiverId: otherUid,
-message: text,
-timestamp: serverTimestamp()
-
-});
-
-const ids = [currentUser.uid, otherUid].sort();
-const conversationId = ids[0] + "_" + ids[1];
-
-await setDoc(
-doc(db, "conversations", conversationId),
-{
-participants: ids,
-lastMessage: text,
-lastSender: currentUser.uid,
-timestamp: serverTimestamp()
-}
-);
-
-// Create notification
-await addDoc(collection(db,"notifications"),{
-
-userId: otherUid,
-senderId: currentUser.uid,
-title: "New Message",
-message: text,
-read: false,
-timestamp: serverTimestamp()
-
-});
-messageInput.value="";
-
-}catch(error){
-
-alert("ERROR: " + error.message);
+chatAvatar.src =
+other.profilePicture || "images/profile.png";
 
 }
+
+loadMessages();
+
 });
+function loadMessages(){
+
 const q = query(
 collection(db,"messages"),
-orderBy("timestamp")
+orderBy("timestamp","asc")
 );
 
 onSnapshot(q,(snapshot)=>{
 
 chatArea.innerHTML="";
 
-snapshot.forEach((doc)=>{
+let found = false;
 
-const msg = doc.data();
+snapshot.forEach((messageDoc)=>{
+
+const msg = messageDoc.data();
 
 if(
 
@@ -255,70 +245,97 @@ msg.receiverId===currentUser.uid)
 
 ){
 
-const mine =
-msg.senderId===currentUser.uid;
+found = true;
 
-chatArea.innerHTML += `
+const div = document.createElement("div");
 
-<div style="
-display:flex;
-justify-content:${mine?"flex-end":"flex-start"};
-margin:10px 0;
-">
+div.className =
+"message " +
+(msg.senderId===currentUser.uid ? "mine" : "other");
 
-<div style="
-background:${mine?"#0066cc":"#e5e5ea"};
-color:${mine?"white":"black"};
-padding:12px 16px;
-border-radius:15px;
-max-width:70%;
-word-wrap:break-word;
-">
+div.textContent = msg.message;
 
-${msg.message}
+chatArea.appendChild(div);
 
+}
+
+});
+
+if(!found){
+
+chatArea.innerHTML = `
+<div class="empty">
+No messages yet.<br>
+Start your Christian conversation.
 </div>
-
-</div>
-
 `;
 
 }
 
-});
-
 chatArea.scrollTop = chatArea.scrollHeight;
 
 });
-try{
-console.log("Send button clicked");
-const userSnap = await getDoc(
-doc(db,"users",otherUid)
-);
-
-if(userSnap.exists()){
-
-const data = userSnap.data();
-
-chatName.innerText =
-data.fullName || "Unknown User";
-
-chatAvatar.src =
-data.profilePicture || "images/profile.png";
 
 }
 
+sendBtn.addEventListener("click", async()=>{
+
+const text = messageInput.value.trim();
+
+if(text==="") return;
+
+try{
+
+// Save message
+await addDoc(collection(db,"messages"),{
+
+senderId: currentUser.uid,
+receiverId: otherUid,
+message: text,
+timestamp: serverTimestamp()
+
+});
+
+// Update conversation
+const ids = [currentUser.uid,otherUid].sort();
+
+const conversationId = ids[0] + "_" + ids[1];
+
+await setDoc(
+doc(db,"conversations",conversationId),
+{
+
+participants: ids,
+lastMessage: text,
+lastSender: currentUser.uid,
+timestamp: serverTimestamp()
+
+}
+
+);
+
+// Create notification
+await addDoc(collection(db,"notifications"),{
+
+userId: otherUid,
+senderId: currentUser.uid,
+title: "New Message",
+message: text,
+read: false,
+timestamp: serverTimestamp()
+
+});
+
+messageInput.value="";
+
 }catch(error){
 
-catch(error){
-
-console.error(error);
 alert(error.message);
 
 }
 
 });
-
 </script>
+
 </body>
 </html>
