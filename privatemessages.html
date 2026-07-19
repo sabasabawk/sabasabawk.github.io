@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
 
 <title>Private Messages | SABASABA Gospel Ministry</title>
 
@@ -31,7 +32,7 @@ padding:20px;
 .header{
 background:#0066cc;
 color:white;
-padding:25px;
+padding:22px;
 border-radius:18px;
 text-align:center;
 margin-bottom:20px;
@@ -43,7 +44,6 @@ margin-bottom:8px;
 }
 
 .header p{
-font-size:16px;
 opacity:.95;
 }
 
@@ -55,77 +55,95 @@ margin-bottom:20px;
 width:100%;
 padding:14px;
 font-size:16px;
-border:1px solid #ccc;
 border-radius:12px;
+border:1px solid #ccc;
 outline:none;
 }
 
 .searchBox input:focus{
+
 border-color:#0066cc;
+
 }
 
 .chatList{
+
 display:flex;
 flex-direction:column;
 gap:15px;
+
 }
 
 .chatCard{
+
 display:flex;
 align-items:center;
 background:white;
 padding:15px;
 border-radius:15px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
 cursor:pointer;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
 transition:.25s;
+
 }
 
 .chatCard:hover{
+
 transform:translateY(-2px);
+
 }
 
 .avatar{
+
 width:60px;
 height:60px;
 border-radius:50%;
 object-fit:cover;
 margin-right:15px;
 background:#ddd;
+
 }
 
 .info{
+
 flex:1;
+
 }
 
 .info h3{
+
 color:#0066cc;
 font-size:18px;
 margin-bottom:5px;
+
 }
 
 .info p{
-font-size:15px;
+
 color:#666;
+font-size:15px;
+
 }
 
 .time{
+
 font-size:12px;
 color:gray;
-margin-left:10px;
-white-space:nowrap;
+
 }
 
 .empty{
+
 background:white;
 padding:40px;
-border-radius:15px;
 text-align:center;
+border-radius:15px;
 color:#777;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
+
 }
 
 .newChat{
+
 position:fixed;
 right:25px;
 bottom:25px;
@@ -137,22 +155,26 @@ background:#0066cc;
 color:white;
 font-size:34px;
 cursor:pointer;
-box-shadow:0 5px 12px rgba(0,0,0,.25);
+
 }
 
 .back{
+
 text-align:center;
 margin-top:30px;
+
 }
 
 .back button{
+
 background:#0066cc;
 color:white;
-border:none;
 padding:12px 24px;
+border:none;
 border-radius:10px;
 font-size:16px;
 cursor:pointer;
+
 }
 
 </style>
@@ -174,8 +196,8 @@ cursor:pointer;
 <div class="searchBox">
 
 <input
-type="text"
 id="searchInput"
+type="text"
 placeholder="Search conversations...">
 
 </div>
@@ -217,79 +239,104 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
-
-import {
+import{
 auth,
 db,
 collection,
 query,
-orderBy,
+where,
 onSnapshot,
 doc,
 getDoc,
 onAuthStateChanged
-} from "./firebase.js";
+}from "./firebase.js";
 
-const chatList = document.getElementById("chatList");
-const searchInput = document.getElementById("searchInput");
+const chatList=document.getElementById("chatList");
+const searchInput=document.getElementById("searchInput");
 
-let currentUser = null;
-let conversations = [];
+let currentUser=null;
+let allChats=[];
 
-onAuthStateChanged(auth, (user)=>{
+onAuthStateChanged(auth,(user)=>{
 
 if(!user){
+
 location.href="login.html";
 return;
+
 }
 
-currentUser = user;
+currentUser=user;
+
 loadChats();
 
 });
 
-async function loadChats(){
+function loadChats(){
 
-const q = query(
+const q=query(
+
 collection(db,"messages"),
-orderBy("timestamp","desc")
+
+where("senderId","==",currentUser.uid)
+
 );
 
-onSnapshot(q, async(snapshot)=>{
+const q2=query(
 
-conversations = [];
-const seen = new Set();
-for(const messageDoc of snapshot.docs){
+collection(db,"messages"),
 
-const msg = messageDoc.data();
+where("receiverId","==",currentUser.uid)
 
-let otherUid = null;
+);
 
-if(msg.senderId === currentUser.uid){
+listen(q);
+listen(q2);
 
-otherUid = msg.receiverId;
+}
 
-}else if(msg.receiverId === currentUser.uid){
+function listen(q){
 
-otherUid = msg.senderId;
+onSnapshot(q,async(snapshot)=>{
+
+await buildConversationList(snapshot.docs);
+
+});
+
+}
+
+async function buildConversationList(messageDocs){
+
+allChats=[];
+
+const usersLoaded=new Set();
+for(const messageDoc of messageDocs){
+
+const msg=messageDoc.data();
+
+let otherUid=null;
+
+if(msg.senderId===currentUser.uid){
+
+otherUid=msg.receiverId;
 
 }else{
 
+otherUid=msg.senderId;
+
+}
+
+if(usersLoaded.has(otherUid)){
+
 continue;
 
 }
 
-if(seen.has(otherUid)){
-
-continue;
-
-}
-
-seen.add(otherUid);
+usersLoaded.add(otherUid);
 
 try{
 
-const userSnap = await getDoc(
+const userSnap=await getDoc(
 doc(db,"users",otherUid)
 );
 
@@ -299,92 +346,26 @@ continue;
 
 }
 
-const other = userSnap.data();
+const other=userSnap.data();
 
-conversations.push({
+allChats.push({
 
-uid: otherUid,
-name: other.fullName || "Unknown User",
-photo: other.profilePicture || "images/profile.png",
-lastMessage: msg.message || "",
-timestamp: msg.timestamp
+uid:otherUid,
+name:other.fullName||"Unknown User",
+photo:other.profilePicture||"images/profile.png",
+lastMessage:msg.message||"",
+timestamp:msg.timestamp||null
 
 });
 
 }catch(error){
 
-console.log(error);
+console.error(error);
 
 }
 
 }
-renderChats(conversations);
 
-});
-
-}
-
-function renderChats(list){
-
-chatList.innerHTML = "";
-
-if(list.length === 0){
-
-chatList.innerHTML = `
-
-<div class="empty">
-No conversations yet.
-</div>
-
-`;
-
-return;
+renderChats();
 
 }
-
-list.forEach(chat=>{
-
-chatList.innerHTML += `
-
-<div class="chat-card"
-onclick="location.href='chat.html?uid=${chat.uid}'">
-
-<img
-class="avatar"
-src="${chat.photo}">
-
-<div class="chat-info">
-
-<h3>${chat.name}</h3>
-
-<p>${chat.lastMessage}</p>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-searchInput.addEventListener("input",()=>{
-
-const keyword = searchInput.value.toLowerCase();
-
-const filtered = conversations.filter(chat=>
-
-chat.name.toLowerCase().includes(keyword)
-
-);
-
-renderChats(filtered);
-
-});
-
-</script>
-
-</body>
-
-</html>
