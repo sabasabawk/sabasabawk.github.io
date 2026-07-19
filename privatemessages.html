@@ -217,12 +217,12 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
+
 import {
 auth,
 db,
 collection,
 query,
-where,
 orderBy,
 onSnapshot,
 doc,
@@ -236,79 +236,106 @@ const searchInput = document.getElementById("searchInput");
 let currentUser = null;
 let conversations = [];
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, (user)=>{
 
 if(!user){
-
-window.location.href="login.html";
+location.href="login.html";
 return;
-
 }
 
 currentUser = user;
-
-loadConversations();
+loadChats();
 
 });
 
-function loadConversations(){
+async function loadChats(){
 
 const q = query(
-collection(db,"conversations"),
-where("participants","array-contains",currentUser.uid),
+collection(db,"messages"),
 orderBy("timestamp","desc")
 );
 
 onSnapshot(q, async(snapshot)=>{
 
 conversations = [];
+const seen = new Set();
+for(const messageDoc of snapshot.docs){
 
-for(const conversationDoc of snapshot.docs){
+const msg = messageDoc.data();
 
-const conversation = conversationDoc.data();
+let otherUid = null;
 
-const otherUid =
-conversation.participants.find(
-uid => uid !== currentUser.uid
-);
+if(msg.senderId === currentUser.uid){
+
+otherUid = msg.receiverId;
+
+}else if(msg.receiverId === currentUser.uid){
+
+otherUid = msg.senderId;
+
+}else{
+
+continue;
+
+}
+
+if(seen.has(otherUid)){
+
+continue;
+
+}
+
+seen.add(otherUid);
+
+try{
 
 const userSnap = await getDoc(
 doc(db,"users",otherUid)
 );
 
-if(!userSnap.exists()) continue;
+if(!userSnap.exists()){
+
+continue;
+
+}
 
 const other = userSnap.data();
 
 conversations.push({
 
-uid:otherUid,
-name:other.fullName || "Unknown User",
-photo:other.profilePicture || "images/profile.png",
-lastMessage:conversation.lastMessage || "",
-timestamp:conversation.timestamp || null
+uid: otherUid,
+name: other.fullName || "Unknown User",
+photo: other.profilePicture || "images/profile.png",
+lastMessage: msg.message || "",
+timestamp: msg.timestamp
+
+});
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+renderChats(conversations);
 
 });
 
 }
 
-renderConversations(conversations);
-
-});
-
-}
-function renderConversations(list){
+function renderChats(list){
 
 chatList.innerHTML = "";
 
 if(list.length === 0){
 
 chatList.innerHTML = `
+
 <div class="empty">
-
 No conversations yet.
-
 </div>
+
 `;
 
 return;
@@ -317,51 +344,20 @@ return;
 
 list.forEach(chat=>{
 
-let timeText = "";
-
-if(chat.timestamp){
-
-try{
-
-const d = chat.timestamp.toDate();
-
-timeText =
-d.toLocaleDateString() + " " +
-d.toLocaleTimeString([],{
-hour:"2-digit",
-minute:"2-digit"
-});
-
-}catch(e){
-
-timeText = "";
-
-}
-
-}
-
 chatList.innerHTML += `
 
-<div
-class="chatCard"
+<div class="chat-card"
 onclick="location.href='chat.html?uid=${chat.uid}'">
 
 <img
 class="avatar"
-src="${chat.photo}"
-onerror="this.src='images/profile.png'">
+src="${chat.photo}">
 
-<div class="info">
+<div class="chat-info">
 
 <h3>${chat.name}</h3>
 
 <p>${chat.lastMessage}</p>
-
-</div>
-
-<div class="time">
-
-${timeText}
 
 </div>
 
@@ -375,27 +371,15 @@ ${timeText}
 
 searchInput.addEventListener("input",()=>{
 
-const keyword =
-searchInput.value.trim().toLowerCase();
+const keyword = searchInput.value.toLowerCase();
 
-const filtered =
-conversations.filter(chat=>
+const filtered = conversations.filter(chat=>
 
 chat.name.toLowerCase().includes(keyword)
 
 );
 
-renderConversations(filtered);
-
-});
-// Refresh conversations when the page becomes visible
-document.addEventListener("visibilitychange",()=>{
-
-if(document.visibilityState==="visible" && currentUser){
-
-loadConversations();
-
-}
+renderChats(filtered);
 
 });
 
