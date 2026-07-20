@@ -369,3 +369,100 @@ console.error(error);
 renderChats();
 
 }
+function renderChats(){
+
+chatList.innerHTML="";
+
+if(allChats.length===0){
+
+chatList.innerHTML=`
+<div class="empty">
+No conversations yet.
+</div>
+`;
+
+return;
+
+}
+
+allChats.sort((a,b)=>{
+
+const ta=a.timestamp?.seconds||0;
+const tb=b.timestamp?.seconds||0;
+
+return tb-ta;
+
+});
+
+allChats.forEach(chat=>{
+
+let time="";
+
+if(chat.timestamp?.toDate){
+
+const d=chat.timestamp.toDate();
+
+time=d.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
+
+}
+
+chatList.innerHTML+=`
+
+<div class="chatCard"
+onclick="location.href='chat.html?uid=${chat.uid}'">
+
+<img
+class="avatar"
+src="${chat.photo}"
+onerror="this.src='images/profile.png'">
+
+<div class="info">
+
+<h3>${chat.name}</h3>
+
+<p>${chat.lastMessage}</p>
+
+</div>
+
+<div class="time">
+
+${time}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",()=>{
+
+const keyword=
+searchInput.value.toLowerCase();
+
+const filtered=allChats.filter(chat=>
+
+chat.name.toLowerCase().includes(keyword)
+
+);
+
+const backup=allChats;
+
+allChats=filtered;
+
+renderChats();
+
+allChats=backup;
+
+});
+
+</script>
+
+</body>
+</html>
