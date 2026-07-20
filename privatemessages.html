@@ -239,11 +239,6 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
-window.onerror = function(message){
-    alert(message);
-};
-
-console.log("Private Messages loaded");
 import{
 auth,
 db,
@@ -255,7 +250,11 @@ doc,
 getDoc,
 onAuthStateChanged
 }from "./firebase.js";
+window.onerror = function(message){
+    alert(message);
+};
 
+console.log("Private Messages loaded");
 const chatList=document.getElementById("chatList");
 const searchInput=document.getElementById("searchInput");
 
@@ -274,9 +273,19 @@ return;
 currentUser=user;
 
 loadChats();
+onAuthStateChanged(auth, (user)=>{
+
+console.log("Logged in user:", user);
+
+if(!user){
+    location.href="login.html";
+    return;
+}
+
+currentUser = user;
+loadChats();
 
 });
-
 function loadChats(){
 
 const q=query(
@@ -360,7 +369,20 @@ name:other.fullName||"Unknown User",
 photo:other.profilePicture||"images/profile.png",
 lastMessage:msg.message||"",
 timestamp:msg.timestamp||null
+async function loadChats(){
 
+console.log("Loading chats...");
+
+const q = query(
+    collection(db,"messages"),
+    orderBy("timestamp","desc")
+);
+
+onSnapshot(q, async(snapshot)=>{
+
+console.log("Messages found:", snapshot.size);
+
+...
 });
 
 }catch(error){
