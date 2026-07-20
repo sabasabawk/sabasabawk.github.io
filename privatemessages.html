@@ -239,22 +239,18 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
-import {
-    auth,
-    db,
-    collection,
-    query,
-    where,
-    onSnapshot,
-    doc,
-    getDoc,
-    onAuthStateChanged
-} from "./firebase.js";
 
-// Active alert debugger to catch structural problems immediately
-window.onerror = function(message) {
-    alert("Inbox Sync Debugger: " + message);
-};
+import {
+auth,
+db,
+collection,
+query,
+where,
+onSnapshot,
+doc,
+getDoc,
+onAuthStateChanged
+} from "./firebase.js";
 
 const chatList = document.getElementById("chatList");
 const searchInput = document.getElementById("searchInput");
@@ -262,109 +258,221 @@ const searchInput = document.getElementById("searchInput");
 let currentUser = null;
 let allChats = [];
 
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        location.href = "login.html";
-        return;
-    }
-    currentUser = user;
-    loadConversationsAlternative();
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser = user;
+
+loadChats();
+
 });
 
-function loadConversationsAlternative() {
-    console.log("Checking conversations for user:", currentUser.uid);
+function loadChats(){
 
-    // Fallback Method: Listen directly to the global conversations collection
-    const conversationsRef = collection(db, "conversations");
+const sentQuery = query(
+collection(db,"messages"),
+where("senderId","==",currentUser.uid)
+);
 
-    onSnapshot(conversationsRef, async (snapshot) => {
-        const updatedChats = [];
-        console.log("Total total system conversations detected: ", snapshot.size);
+const receivedQuery = query(
+collection(db,"messages"),
+where("receiverId","==",currentUser.uid)
+);
 
-        for (const docSnap of snapshot.docs) {
-            const convoData = docSnap.data();
-            const participants = convoData.participants || [];
+listen(sentQuery);
+listen(receivedQuery);
 
-            // Direct array check without relying on a rigid Firestore query structure
-            if (participants.includes(currentUser.uid)) {
-                const otherUid = participants.find(id => id !== currentUser.uid);
-                if (!otherUid) continue;
-
-                try {
-                    const userSnap = await getDoc(doc(db, "users", otherUid));
-                    let name = "Unknown User";
-                    let photo = "images/profile.png";
-
-                    if (userSnap.exists()) {
-                        const userData = userSnap.data();
-                        name = userData.fullName || userData.name || "Unknown User";
-                        photo = userData.profilePicture || userData.photoURL || "images/profile.png";
-                    }
-
-                    updatedChats.push({
-                        uid: otherUid,
-                        name: name,
-                        photo: photo,
-                        lastMessage: convoData.lastMessage || "No text yet",
-                        timestamp: convoData.timestamp || null
-                    });
-                } catch (err) {
-                    console.error("Failed fetching profile payload:", err);
-                }
-            }
-        }
-
-        // Sort descending by timestamp
-        updatedChats.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-        allChats = updatedChats;
-        renderChats();
-    }, (error) => {
-        // If Firestore blocks the query due to a missing index, this alert tells you exactly why!
-        alert("Firestore read error: " + error.message);
-    });
 }
 
-function renderChats() {
-    chatList.innerHTML = "";
-    const keyword = searchInput.value.trim().toLowerCase();
-    
-    const chatsToDisplay = allChats.filter(chat => {
-        if (!keyword) return true;
-        return chat.name.toLowerCase().includes(keyword);
-    });
+function listen(q){
 
-    if (chatsToDisplay.length === 0) {
-        chatList.innerHTML = `
-            <div class="empty">
-                ${keyword ? 'No matching conversation paths.' : 'No conversations yet.'}
-            </div>
-        `;
-        return;
-    }
+onSnapshot(q,(snapshot)=>{
 
-    chatsToDisplay.forEach(chat => {
-        let time = "";
-        if (chat.timestamp?.toDate) {
-            const d = chat.timestamp.toDate();
-            time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        }
+buildConversationList(snapshot.docs);
 
-        chatList.innerHTML += `
-            <div class="chatCard" onclick="location.href='chat.html?uid=${chat.uid}'">
-                <img class="avatar" src="${chat.photo}" onerror="this.src='images/profile.png'">
-                <div class="info">
-                    <h3>${chat.name}</h3>
-                    <p>${chat.lastMessage}</p>
-                </div>
-                <div class="time">${time}</div>
-            </div>
-        `;
-    });
+});
+
+}
+async function buildConversationList(messageDocs){
+
+const seen = new Set();
+
+for(const messageDoc of messageDocs){
+
+const msg = messageDoc.data();
+
+let otherUid;
+
+if(msg.senderId === currentUser.uid){
+
+otherUid = msg.receiverId;
+
+}else{
+
+otherUid = msg.senderId;
+
 }
 
-searchInput.addEventListener("input", renderChats);
+if(seen.has(otherUid)){
+
+continue;
+
+}
+
+seen.add(otherUid);
+
+const exists = allChats.find(chat => chat.uid === otherUid);
+
+if(exists){
+
+continue;
+
+}
+
+try{
+
+const userSnap = await getDoc(doc(db,"users",otherUid));
+
+if(!userSnap.exists()){
+
+continue;
+
+}
+
+const other = userSnap.data();
+
+allChats.push({
+
+uid: otherUid,
+name: other.fullName || "Unknown User",
+photo: other.profilePicture || "images/profile.png",
+lastMessage: msg.message || "",
+timestamp: msg.timestamp
+
+});
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+renderChats();
+
+}
+
+function renderChats(){
+
+chatList.innerHTML = "";
+
+if(allChats.length === 0){
+
+chatList.innerHTML = `
+<div class="empty">
+No conversations yet.
+</div>
+`;
+
+return;
+
+}
+
+allChats.sort((a,b)=>{
+
+const ta = a.timestamp?.seconds || 0;
+const tb = b.timestamp?.seconds || 0;
+
+return tb - ta;
+
+});
+
+allChats.forEach(chat=>{
+
+chatList.innerHTML += `
+
+<div class="chatCard"
+onclick="location.href='chat.html?uid=${chat.uid}'">
+
+<img
+class="avatar"
+src="${chat.photo}"
+onerror="this.src='images/profile.png'">
+
+<div class="info">
+
+<h3>${chat.name}</h3>
+
+<p>${chat.lastMessage}</p>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",()=>{
+
+const keyword = searchInput.value.toLowerCase();
+
+const filtered = allChats.filter(chat=>
+
+chat.name.toLowerCase().includes(keyword)
+
+);
+
+chatList.innerHTML = "";
+
+if(filtered.length === 0){
+
+chatList.innerHTML = `
+<div class="empty">
+No conversations found.
+</div>
+`;
+
+return;
+
+}
+
+filtered.forEach(chat=>{
+
+chatList.innerHTML += `
+
+<div class="chatCard"
+onclick="location.href='chat.html?uid=${chat.uid}'">
+
+<img
+class="avatar"
+src="${chat.photo}"
+onerror="this.src='images/profile.png'">
+
+<div class="info">
+
+<h3>${chat.name}</h3>
+
+<p>${chat.lastMessage}</p>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+});
 </script>
 
-
 </body>
+
 </html>
