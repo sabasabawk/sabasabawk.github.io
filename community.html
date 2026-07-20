@@ -5,7 +5,8 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Christian Community | SABASABA Gospel Ministry</title>
 
@@ -20,121 +21,170 @@ box-sizing:border-box;
 body{
 font-family:Arial,sans-serif;
 background:#eef3f8;
+color:#222;
 }
 
 .container{
-max-width:1100px;
+max-width:1200px;
 margin:auto;
 padding:20px;
 }
 
 .hero{
+
 background:linear-gradient(135deg,#0066cc,#004d99);
 color:white;
-padding:40px 25px;
+padding:45px 25px;
 border-radius:20px;
 text-align:center;
-margin-bottom:25px;
 box-shadow:0 5px 15px rgba(0,0,0,.15);
+margin-bottom:30px;
+
 }
 
 .hero h1{
+
 font-size:40px;
 margin-bottom:15px;
+
 }
 
 .hero p{
-font-size:19px;
+
+font-size:18px;
 line-height:1.7;
-max-width:850px;
+max-width:900px;
 margin:auto;
+
 }
 
 .cards{
+
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
-margin-top:25px;
+
 }
 
 .card{
+
 background:white;
 border-radius:18px;
 padding:25px;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
+box-shadow:0 4px 12px rgba(0,0,0,.08);
 transition:.3s;
+
 }
 
 .card:hover{
-transform:translateY(-5px);
+
+transform:translateY(-6px);
+
 }
 
 .icon{
+
 font-size:52px;
-margin-bottom:12px;
+margin-bottom:15px;
+
 }
 
 .card h2{
+
 color:#0066cc;
 margin-bottom:12px;
 font-size:24px;
+
 }
 
 .card p{
+
 font-size:17px;
 line-height:1.6;
 margin-bottom:20px;
-}
+color:#555;
 
-.card a{
-text-decoration:none;
 }
 
 .start-btn{
+
+width:100%;
+padding:13px;
+border:none;
+border-radius:10px;
 background:#0066cc;
 color:white;
-border:none;
-padding:12px 22px;
-border-radius:10px;
 font-size:17px;
 cursor:pointer;
-width:100%;
+transition:.3s;
+
 }
 
 .start-btn:hover{
+
 background:#004d99;
+
+}
+
+a{
+
+text-decoration:none;
+
 }
 
 .notificationLink{
+
 position:relative;
 display:block;
+
 }
 
 #notificationBadge{
+
 position:absolute;
-top:-10px;
+top:-8px;
 right:-8px;
 background:red;
 color:white;
-min-width:22px;
-height:22px;
+min-width:24px;
+height:24px;
 border-radius:50%;
 display:none;
 align-items:center;
 justify-content:center;
 font-size:12px;
 font-weight:bold;
-padding:2px;
+
 }
 
-@media(max-width:700px){
+.footer{
+
+margin-top:40px;
+padding:20px;
+text-align:center;
+color:#666;
+font-size:15px;
+
+}
+
+@media(max-width:768px){
 
 .hero h1{
+
 font-size:30px;
+
 }
 
 .hero p{
+
 font-size:17px;
+
+}
+
+.card{
+
+padding:20px;
+
 }
 
 }
@@ -153,9 +203,12 @@ font-size:17px;
 
 <p>
 
-Welcome to the <b>SABASABA Gospel Ministry</b> Community.
+Welcome to the official Christian Community of
+<b>SABASABA Gospel Ministry.</b>
 
-Grow in Christ, encourage one another, share Bible verses, testimonies, prayer requests, and build lasting Christian friendships around the world.
+Meet believers from around the world, encourage one another,
+share Bible truth, prayer requests, testimonies and grow together
+as we prepare for Christ's soon return.
 
 </p>
 
@@ -163,13 +216,19 @@ Grow in Christ, encourage one another, share Bible verses, testimonies, prayer r
 
 <div class="cards">
 <!-- Create Post -->
+
 <div class="card">
 
 <div class="icon">✍️</div>
 
-<h2>Create a Post</h2>
+<h2>Create Post</h2>
 
-<p>Share Bible verses, testimonies, prayer requests, encouragement and ministry announcements.</p>
+<p>
+
+Share Bible verses, testimonies, prayer requests,
+devotionals and ministry announcements.
+
+</p>
 
 <a href="createpost.html">
 
@@ -183,56 +242,77 @@ Create Post
 
 </div>
 
-<!-- Community Feed -->
+<!-- Community Wall -->
+
 <div class="card">
 
 <div class="icon">📰</div>
 
-<h2>Community Feed</h2>
+<h2>Community Wall</h2>
 
-<p>Read the latest posts from believers around the world.</p>
+<p>
+
+See the latest Christian posts, encouragement,
+Bible verses and testimonies.
+
+</p>
 
 <a href="feed.html">
 
 <button class="start-btn">
 
-Open Feed
+Open Community Wall
 
 </button>
 
 </a>
 
 </div>
-<!-- Private Messages -->
+
+<!-- Find Members -->
+
 <div class="card">
 
-<div class="icon">💬</div>
+<div class="icon">👥</div>
 
-<h2>Private Messages</h2>
+<h2>Find Members</h2>
 
-<p>Chat privately with other believers in real time.</p>
+<p>
 
-<a href="messages.html">
+Search Christians around the world,
+view their profiles and send a private message.
+
+</p>
+
+<a href="findmembers.html">
 
 <button class="start-btn">
 
-Open Messages
+Find Members
 
 </button>
 
 </a>
 
 </div>
+
 <!-- Notifications -->
+
 <div class="card">
 
 <div class="icon">🔔</div>
 
 <h2>Notifications</h2>
 
-<p>View likes, comments, replies and other activity.</p>
+<p>
 
-<a href="notification.html" class="notificationLink">
+View new likes, comments,
+friend activity and messages.
+
+</p>
+
+<a href="notification.html"
+class="notificationLink">
 
 <button class="start-btn">
 
@@ -250,14 +330,20 @@ Open Notifications
 
 </div>
 
-<!-- Profile -->
+<!-- My Profile -->
+
 <div class="card">
 
 <div class="icon">👤</div>
 
-<h2>My Profile</h2>
+<h2>My Ministry Profile</h2>
 
-<p>View your profile, certificates, posts and personal information.</p>
+<p>
+
+Manage your profile,
+posts, certificates and ministry information.
+
+</p>
 
 <a href="profile.html">
 
@@ -271,41 +357,26 @@ Open Profile
 
 </div>
 
-<!-- Search -->
-<div class="card">
+<!-- Prayer Wall -->
 
-<div class="icon">🔍</div>
-
-<h2>Search Members</h2>
-
-<p>Find Christians and connect with other believers.</p>
-
-<a href="search.html">
-
-<button class="start-btn">
-
-Search Members
-
-</button>
-
-</a>
-
-</div>
-
-<!-- Prayer -->
 <div class="card">
 
 <div class="icon">🙏</div>
 
-<h2>Prayer Requests</h2>
+<h2>Prayer Wall</h2>
 
-<p>Share prayer requests and pray together.</p>
+<p>
+
+Share prayer requests
+and pray together with believers.
+
+</p>
 
 <a href="prayer.html">
 
 <button class="start-btn">
 
-Prayer Requests
+Prayer Wall
 
 </button>
 
@@ -314,19 +385,25 @@ Prayer Requests
 </div>
 
 <!-- Bible Discussions -->
+
 <div class="card">
 
-<div class="icon">💬</div>
+<div class="icon">📖</div>
 
 <h2>Bible Discussions</h2>
 
-<p>Ask questions and discuss God's Word.</p>
+<p>
+
+Ask Bible questions,
+share answers and learn together.
+
+</p>
 
 <a href="discussion.html">
 
 <button class="start-btn">
 
-Bible Discussions
+Open Discussions
 
 </button>
 
@@ -335,13 +412,19 @@ Bible Discussions
 </div>
 
 <!-- Testimonies -->
+
 <div class="card">
 
 <div class="icon">✨</div>
 
 <h2>Testimonies</h2>
 
-<p>Read and share testimonies of God's goodness.</p>
+<p>
+
+Read inspiring testimonies
+of God's power and faithfulness.
+
+</p>
 
 <a href="testimony.html">
 
@@ -355,94 +438,112 @@ Read Testimonies
 
 </div>
 
-<!-- Encouragement -->
-<div class="card">
-
-<div class="icon">❤️</div>
-
-<h2>Encouragement Wall</h2>
-
-<p>Share encouraging messages and Bible promises.</p>
-
-<a href="encouragement.html">
-
-<button class="start-btn">
-
-Encourage Others
-
-</button>
-
-</a>
-
-</div>
-
 <!-- Announcements -->
+
 <div class="card">
 
 <div class="icon">📢</div>
 
 <h2>Announcements</h2>
 
-<p>Stay updated with ministry news and events.</p>
+<p>
+
+Stay informed about
+SABASABA Gospel Ministry news and events.
+
+</p>
 
 <a href="announcements.html">
 
 <button class="start-btn">
 
-Announcements
+View Announcements
 
 </button>
 
 </a>
 
 </div>
+</div>
+
+<div class="footer">
+
+© 2026 <b>SABASABA Gospel Ministry</b><br>
+
+Growing together in Christ • Preparing for His Soon Return
 
 </div>
+
+</div>
+
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+initializeApp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
 getFirestore,
 collection,
+query,
+where,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const firebaseConfig = {
+const firebaseConfig={
 
-apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+apiKey:"AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
 
-authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+authDomain:"sabasaba-gospel-ministry-414e2.firebaseapp.com",
 
-projectId: "sabasaba-gospel-ministry-414e2",
+projectId:"sabasaba-gospel-ministry-414e2",
 
-storageBucket: "sabasaba-gospel-ministry-414e2.appspot.com",
+storageBucket:"sabasaba-gospel-ministry-414e2.appspot.com",
 
-messagingSenderId: "821278457946",
+messagingSenderId:"821278457946",
 
-appId: "1:821278457946:web:3593bd1743970f44c05863"
+appId:"1:821278457946:web:3593bd1743970f44c05863"
 
 };
 
-const app = initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
+const auth=getAuth(app);
 
-const badge = document.getElementById("notificationBadge");
+const db=getFirestore(app);
 
-onSnapshot(
+const badge=document.getElementById("notificationBadge");
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+badge.style.display="none";
+return;
+
+}
+
+const q=query(
 
 collection(db,"notifications"),
 
-(snapshot)=>{
+where("userId","==",user.uid),
 
-let total = snapshot.size;
+where("read","==",false)
 
-if(total>0){
+);
+
+onSnapshot(q,(snapshot)=>{
+
+if(snapshot.size>0){
 
 badge.style.display="flex";
-
-badge.innerText=total;
+badge.innerText=snapshot.size;
 
 }else{
 
@@ -450,9 +551,9 @@ badge.style.display="none";
 
 }
 
-}
+});
 
-);
+});
 
 </script>
 
