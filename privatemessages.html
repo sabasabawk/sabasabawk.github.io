@@ -245,7 +245,7 @@ auth,
 db,
 collection,
 query,
-where,
+orderBy,
 onSnapshot,
 doc,
 getDoc,
@@ -256,7 +256,7 @@ const chatList = document.getElementById("chatList");
 const searchInput = document.getElementById("searchInput");
 
 let currentUser = null;
-let allChats = [];
+let conversations = [];
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -266,133 +266,104 @@ return;
 }
 
 currentUser = user;
-
-loadChats();
-
-});
-
-function loadChats(){
-
-const sentQuery = query(
-collection(db,"messages"),
-where("senderId","==",currentUser.uid)
-);
-
-const receivedQuery = query(
-collection(db,"messages"),
-where("receiverId","==",currentUser.uid)
-);
-
-listen(sentQuery);
-listen(receivedQuery);
-
-}
-
-function listen(q){
-
-onSnapshot(q,(snapshot)=>{
-
-buildConversationList(snapshot.docs);
+loadConversations();
 
 });
 
-}
-async function buildConversationList(messageDocs){
+function loadConversations(){
 
-const seen = new Set();
+const q = query(
+collection(db,"conversations"),
+orderBy("timestamp","desc")
+);
 
-for(const messageDoc of messageDocs){
+onSnapshot(q, async(snapshot)=>{
 
-const msg = messageDoc.data();
+conversations = [];
 
-let otherUid;
+for(const conversationDoc of snapshot.docs){
 
-if(msg.senderId === currentUser.uid){
+const data = conversationDoc.data();
 
-otherUid = msg.receiverId;
+if(!data.participants) continue;
 
-}else{
-
-otherUid = msg.senderId;
-
-}
-
-if(seen.has(otherUid)){
-
+if(!data.participants.includes(currentUser.uid))
 continue;
 
-}
+const otherUid =
+data.participants.find(uid=>uid!==currentUser.uid);
 
-seen.add(otherUid);
-
-const exists = allChats.find(chat => chat.uid === otherUid);
-
-if(exists){
-
-continue;
-
-}
+if(!otherUid) continue;
 
 try{
 
-const userSnap = await getDoc(doc(db,"users",otherUid));
+const userSnap =
+await getDoc(doc(db,"users",otherUid));
 
-if(!userSnap.exists()){
-
-continue;
-
-}
+if(!userSnap.exists()) continue;
 
 const other = userSnap.data();
 
-allChats.push({
+conversations.push({
 
-uid: otherUid,
-name: other.fullName || "Unknown User",
-photo: other.profilePicture || "images/profile.png",
-lastMessage: msg.message || "",
-timestamp: msg.timestamp
+uid:otherUid,
+name:other.fullName || "Unknown User",
+photo:other.profilePicture || "images/profile.png",
+lastMessage:data.lastMessage || "",
+timestamp:data.timestamp
 
 });
 
-}catch(error){
+}catch(e){
 
-console.error(error);
-
-}
+console.log(e);
 
 }
 
-renderChats();
+}
+
+renderChats(conversations);
+
+});
 
 }
 
-function renderChats(){
+function renderChats(list){
 
 chatList.innerHTML = "";
 
-if(allChats.length === 0){
+if(list.length===0){
 
-chatList.innerHTML = `
+chatList.innerHTML=`
+
 <div class="empty">
+
 No conversations yet.
+
 </div>
+
 `;
 
 return;
 
 }
 
-allChats.sort((a,b)=>{
+list.forEach(chat=>{
 
-const ta = a.timestamp?.seconds || 0;
-const tb = b.timestamp?.seconds || 0;
+let time = "";
 
-return tb - ta;
+if(chat.timestamp?.toDate){
 
+const d = chat.timestamp.toDate();
+
+time =
+d.toLocaleDateString()+" "+
+d.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
 });
 
-allChats.forEach(chat=>{
+}
 
 chatList.innerHTML += `
 
@@ -409,6 +380,12 @@ onerror="this.src='images/profile.png'">
 <h3>${chat.name}</h3>
 
 <p>${chat.lastMessage}</p>
+
+</div>
+
+<div class="time">
+
+${time}
 
 </div>
 
@@ -422,53 +399,17 @@ onerror="this.src='images/profile.png'">
 
 searchInput.addEventListener("input",()=>{
 
-const keyword = searchInput.value.toLowerCase();
+const keyword =
+searchInput.value.toLowerCase();
 
-const filtered = allChats.filter(chat=>
+const filtered =
+conversations.filter(chat=>
 
 chat.name.toLowerCase().includes(keyword)
 
 );
 
-chatList.innerHTML = "";
-
-if(filtered.length === 0){
-
-chatList.innerHTML = `
-<div class="empty">
-No conversations found.
-</div>
-`;
-
-return;
-
-}
-
-filtered.forEach(chat=>{
-
-chatList.innerHTML += `
-
-<div class="chatCard"
-onclick="location.href='chat.html?uid=${chat.uid}'">
-
-<img
-class="avatar"
-src="${chat.photo}"
-onerror="this.src='images/profile.png'">
-
-<div class="info">
-
-<h3>${chat.name}</h3>
-
-<p>${chat.lastMessage}</p>
-
-</div>
-
-</div>
-
-`;
-
-});
+renderChats(filtered);
 
 });
 </script>
