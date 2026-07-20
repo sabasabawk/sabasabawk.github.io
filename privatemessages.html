@@ -239,257 +239,161 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
-import{
-auth,
-db,
-collection,
-query,
-where,
-onSnapshot,
-doc,
-getDoc,
-onAuthStateChanged
-}from "./firebase.js";
-window.onerror = function(message){
-    alert(message);
+import {
+    auth,
+    db,
+    collection,
+    query,
+    where,
+    onSnapshot,
+    doc,
+    getDoc,
+    onAuthStateChanged
+} from "./firebase.js";
+
+// Error tracking for debugging
+window.onerror = function(message) {
+    alert("Error: " + message);
 };
 
 console.log("Private Messages loaded");
-const chatList=document.getElementById("chatList");
-const searchInput=document.getElementById("searchInput");
 
-let currentUser=null;
-let allChats=[];
+const chatList = document.getElementById("chatList");
+const searchInput = document.getElementById("searchInput");
 
-onAuthStateChanged(auth,(user)=>{
+let currentUser = null;
+let allChats = [];
 
-if(!user){
+// 1. Check if user is authenticated
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        console.log("No user found, redirecting to login...");
+        location.href = "login.html";
+        return;
+    }
 
-location.href="login.html";
-return;
-
-}
-
-currentUser=user;
-
-loadChats();
-onAuthStateChanged(auth, (user)=>{
-
-console.log("Logged in user:", user);
-
-if(!user){
-    location.href="login.html";
-    return;
-}
-
-currentUser = user;
-loadChats();
-
-});
-function loadChats(){
-
-const q=query(
-
-collection(db,"messages"),
-
-where("senderId","==",currentUser.uid)
-
-);
-
-const q2=query(
-
-collection(db,"messages"),
-
-where("receiverId","==",currentUser.uid)
-
-);
-
-listen(q);
-listen(q2);
-
-}
-
-function listen(q){
-
-onSnapshot(q,async(snapshot)=>{
-
-await buildConversationList(snapshot.docs);
-
+    currentUser = user;
+    console.log("Logged in user:", currentUser.uid);
+    loadChats();
 });
 
+// 2. Load and listen to messages involving the current user
+function loadChats() {
+    console.log("Loading chats...");
+    
+    // Fetch all messages from the global collection
+    const messagesRef = collection(db, "messages");
+    
+    // We listen to the messages collection. For a highly scaleable app, you'd use optimized queries, 
+    // but reading the message stream and filtering for sender/receiver gets you up and running immediately.
+    onSnapshot(messagesRef, async (snapshot) => {
+        const conversationsMap = new Map();
+
+        // Process all messages to find unique conversations involving the current user
+        snapshot.docs.forEach(docSnap => {
+            const msg = docSnap.data();
+            
+            // Only care about messages sent BY or TO the current user
+            if (msg.senderId === currentUser.uid || msg.receiverId === currentUser.uid) {
+                const otherUid = msg.senderId === currentUser.uid ? msg.receiverId : msg.senderId;
+                
+                // Track the latest message for this specific contact
+                const existingMsg = conversationsMap.get(otherUid);
+                if (!existingMsg || (msg.timestamp?.seconds > existingMsg.timestamp?.seconds)) {
+                    conversationsMap.set(otherUid, msg);
+                }
+            }
+        });
+
+        // Clear and rebuild our list array
+        allChats = [];
+
+        // 3. Fetch user details (Name & Photo) for each unique conversation partner
+        for (const [otherUid, msg] of conversationsMap.entries()) {
+            try {
+                const userSnap = await getDoc(doc(db, "users", otherUid));
+                let name = "Unknown User";
+                let photo = "images/profile.png";
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    name = userData.fullName || userData.name || "Unknown User";
+                    photo = userData.profilePicture || userData.photoURL || "images/profile.png";
+                }
+
+                allChats.push({
+                    uid: otherUid,
+                    name: name,
+                    photo: photo,
+                    lastMessage: msg.message || "",
+                    timestamp: msg.timestamp || null
+                });
+            } catch (error) {
+                console.error("Error fetching user data for " + otherUid, error);
+            }
+        }
+
+        // Sort conversations by newest message first
+        allChats.sort((a, b) => {
+            const ta = a.timestamp?.seconds || 0;
+            const tb = b.timestamp?.seconds || 0;
+            return tb - ta;
+        });
+
+        renderChats();
+    });
 }
 
-async function buildConversationList(messageDocs){
+// 4. Render the active chats into HTML
+function renderChats() {
+    chatList.innerHTML = "";
 
-allChats=[];
+    if (allChats.length === 0) {
+        chatList.innerHTML = `
+            <div class="empty">
+                No conversations yet. Click the '+' button to start one!
+            </div>
+        `;
+        return;
+    }
 
-const usersLoaded=new Set();
-for(const messageDoc of messageDocs){
+    allChats.forEach(chat => {
+        let time = "";
+        if (chat.timestamp?.toDate) {
+            const d = chat.timestamp.toDate();
+            time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        }
 
-const msg=messageDoc.data();
-
-let otherUid=null;
-
-if(msg.senderId===currentUser.uid){
-
-otherUid=msg.receiverId;
-
-}else{
-
-otherUid=msg.senderId;
-
+        chatList.innerHTML += `
+            <div class="chatCard" onclick="location.href='chat.html?uid=${chat.uid}'">
+                <img class="avatar" src="${chat.photo}" onerror="this.src='images/profile.png'">
+                <div class="info">
+                    <h3>${chat.name}</h3>
+                    <p>${chat.lastMessage}</p>
+                </div>
+                <div class="time">${time}</div>
+            </div>
+        `;
+    });
 }
 
-if(usersLoaded.has(otherUid)){
+// 5. Handle Live Searching
+searchInput.addEventListener("input", () => {
+    const keyword = searchInput.value.toLowerCase();
+    
+    // Filter out chats that match search
+    const filtered = allChats.filter(chat => 
+        chat.name.toLowerCase().includes(keyword)
+    );
 
-continue;
-
-}
-
-usersLoaded.add(otherUid);
-
-try{
-
-const userSnap=await getDoc(
-doc(db,"users",otherUid)
-);
-
-if(!userSnap.exists()){
-
-continue;
-
-}
-
-const other=userSnap.data();
-
-allChats.push({
-
-uid:otherUid,
-name:other.fullName||"Unknown User",
-photo:other.profilePicture||"images/profile.png",
-lastMessage:msg.message||"",
-timestamp:msg.timestamp||null
-async function loadChats(){
-
-console.log("Loading chats...");
-
-const q = query(
-    collection(db,"messages"),
-    orderBy("timestamp","desc")
-);
-
-onSnapshot(q, async(snapshot)=>{
-
-console.log("Messages found:", snapshot.size);
-
-...
+    // Temp swap array just to render the search results cleanly
+    const originalChats = allChats;
+    allChats = filtered;
+    renderChats();
+    allChats = originalChats; 
 });
-
-}catch(error){
-
-console.error(error);
-
-}
-
-}
-
-renderChats();
-
-}
-function renderChats(){
-
-chatList.innerHTML="";
-
-if(allChats.length===0){
-
-chatList.innerHTML=`
-<div class="empty">
-No conversations yet.
-</div>
-`;
-
-return;
-
-}
-
-allChats.sort((a,b)=>{
-
-const ta=a.timestamp?.seconds||0;
-const tb=b.timestamp?.seconds||0;
-
-return tb-ta;
-
-});
-
-allChats.forEach(chat=>{
-
-let time="";
-
-if(chat.timestamp?.toDate){
-
-const d=chat.timestamp.toDate();
-
-time=d.toLocaleTimeString([],{
-hour:"2-digit",
-minute:"2-digit"
-});
-
-}
-
-chatList.innerHTML+=`
-
-<div class="chatCard"
-onclick="location.href='chat.html?uid=${chat.uid}'">
-
-<img
-class="avatar"
-src="${chat.photo}"
-onerror="this.src='images/profile.png'">
-
-<div class="info">
-
-<h3>${chat.name}</h3>
-
-<p>${chat.lastMessage}</p>
-
-</div>
-
-<div class="time">
-
-${time}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-searchInput.addEventListener("input",()=>{
-
-const keyword=
-searchInput.value.toLowerCase();
-
-const filtered=allChats.filter(chat=>
-
-chat.name.toLowerCase().includes(keyword)
-
-);
-
-const backup=allChats;
-
-allChats=filtered;
-
-renderChats();
-
-allChats=backup;
-
-});
-
 </script>
+
 
 </body>
 </html>
