@@ -277,27 +277,23 @@ onAuthStateChanged(auth, (user) => {
     loadChats();
 });
 
-// 2. Load and listen to messages involving the current user
-function loadChats() {
-    console.log("Loading chats...");
+
+// 2. Load and listen to messages involving the current user efficiently
+async function loadChats() {
+    console.log("Loading chats optimized...");
     
-    // Fetch all messages from the global collection
     const messagesRef = collection(db, "messages");
     
-    // We listen to the messages collection. For a highly scaleable app, you'd use optimized queries, 
-    // but reading the message stream and filtering for sender/receiver gets you up and running immediately.
+    // Create a unified snapshot listener for messages involving the current user
     onSnapshot(messagesRef, async (snapshot) => {
         const conversationsMap = new Map();
 
-        // Process all messages to find unique conversations involving the current user
+        // Step A: Parse messages to extract only unique conversation IDs
         snapshot.docs.forEach(docSnap => {
             const msg = docSnap.data();
-            
-            // Only care about messages sent BY or TO the current user
             if (msg.senderId === currentUser.uid || msg.receiverId === currentUser.uid) {
                 const otherUid = msg.senderId === currentUser.uid ? msg.receiverId : msg.senderId;
                 
-                // Track the latest message for this specific contact
                 const existingMsg = conversationsMap.get(otherUid);
                 if (!existingMsg || (msg.timestamp?.seconds > existingMsg.timestamp?.seconds)) {
                     conversationsMap.set(otherUid, msg);
@@ -305,33 +301,45 @@ function loadChats() {
             }
         });
 
-        // Clear and rebuild our list array
-        allChats = [];
+        // Step B: Fetch user profiles efficiently (Cache hits to prevent duplicate requests)
+        const updatedChats = [];
+        const userProfileCache = {}; // Local memory cache to save roundtrips
 
-        // 3. Fetch user details (Name & Photo) for each unique conversation partner
         for (const [otherUid, msg] of conversationsMap.entries()) {
-            try {
-                const userSnap = await getDoc(doc(db, "users", otherUid));
-                let name = "Unknown User";
-                let photo = "images/profile.png";
+            let name = "Unknown User";
+            let photo = "images/profile.png";
 
-                if (userSnap.exists()) {
-                    const userData = userSnap.data();
-                    name = userData.fullName || userData.name || "Unknown User";
-                    photo = userData.profilePicture || userData.photoURL || "images/profile.png";
+            // If we already looked up this user in this execution cycle, use cached info instantly
+            if (userProfileCache[otherUid]) {
+                name = userProfileCache[otherUid].name;
+                photo = userProfileCache[otherUid].photo;
+            } else {
+                try {
+                    const userSnap = await getDoc(doc(db, "users", otherUid));
+                    if (userSnap.exists()) {
+                        const userData = userSnap.data();
+                        name = userData.fullName || userData.name || "Unknown User";
+                        photo = userData.profilePicture || userData.photoURL || "images/profile.png";
+                        
+                        // Save to cache memory
+                        userProfileCache[otherUid] = { name, photo };
+                    }
+                } catch (error) {
+                    console.error("Error reading profile:", error);
                 }
-
-                allChats.push({
-                    uid: otherUid,
-                    name: name,
-                    photo: photo,
-                    lastMessage: msg.message || "",
-                    timestamp: msg.timestamp || null
-                });
-            } catch (error) {
-                console.error("Error fetching user data for " + otherUid, error);
             }
+
+            updatedChats.push({
+                uid: otherUid,
+                name: name,
+                photo: photo,
+                lastMessage: msg.message || "",
+                timestamp: msg.timestamp || null
+            });
         }
+
+        // Step C: Update state array and immediately render to screen
+        allChats = updatedChats;
 
         // Sort conversations by newest message first
         allChats.sort((a, b) => {
