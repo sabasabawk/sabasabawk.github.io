@@ -251,9 +251,9 @@ import {
     onAuthStateChanged
 } from "./firebase.js";
 
-// Error tracker to pop up alerts if anything breaks at runtime
+// Active alert debugger to catch structural problems immediately
 window.onerror = function(message) {
-    alert("Inbox Error: " + message);
+    alert("Inbox Sync Debugger: " + message);
 };
 
 const chatList = document.getElementById("chatList");
@@ -262,73 +262,70 @@ const searchInput = document.getElementById("searchInput");
 let currentUser = null;
 let allChats = [];
 
-// 1. Monitor Authentication State
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         location.href = "login.html";
         return;
     }
     currentUser = user;
-    loadConversations();
+    loadConversationsAlternative();
 });
 
-// 2. Fetch Active Conversations from the Correct Collection
-function loadConversations() {
-    console.log("Loading user conversations...");
+function loadConversationsAlternative() {
+    console.log("Checking conversations for user:", currentUser.uid);
 
-    // Query the conversations collection where the current user is a participant
+    // Fallback Method: Listen directly to the global conversations collection
     const conversationsRef = collection(db, "conversations");
-    const q = query(conversationsRef, where("participants", "array-contains", currentUser.uid));
 
-    // Real-time listener for ongoing updates
-    onSnapshot(q, async (snapshot) => {
+    onSnapshot(conversationsRef, async (snapshot) => {
         const updatedChats = [];
+        console.log("Total total system conversations detected: ", snapshot.size);
 
         for (const docSnap of snapshot.docs) {
             const convoData = docSnap.data();
-            
-            // Find the ID of the *other* user in the participants array
-            const otherUid = convoData.participants.find(id => id !== currentUser.uid);
-            
-            if (!otherUid) continue;
+            const participants = convoData.participants || [];
 
-            try {
-                // Fetch the other user's profile details (Name and Photo)
-                const userSnap = await getDoc(doc(db, "users", otherUid));
-                let name = "Unknown User";
-                let photo = "images/profile.png";
+            // Direct array check without relying on a rigid Firestore query structure
+            if (participants.includes(currentUser.uid)) {
+                const otherUid = participants.find(id => id !== currentUser.uid);
+                if (!otherUid) continue;
 
-                if (userSnap.exists()) {
-                    const userData = userSnap.data();
-                    name = userData.fullName || userData.name || "Unknown User";
-                    photo = userData.profilePicture || userData.photoURL || "images/profile.png";
+                try {
+                    const userSnap = await getDoc(doc(db, "users", otherUid));
+                    let name = "Unknown User";
+                    let photo = "images/profile.png";
+
+                    if (userSnap.exists()) {
+                        const userData = userSnap.data();
+                        name = userData.fullName || userData.name || "Unknown User";
+                        photo = userData.profilePicture || userData.photoURL || "images/profile.png";
+                    }
+
+                    updatedChats.push({
+                        uid: otherUid,
+                        name: name,
+                        photo: photo,
+                        lastMessage: convoData.lastMessage || "No text yet",
+                        timestamp: convoData.timestamp || null
+                    });
+                } catch (err) {
+                    console.error("Failed fetching profile payload:", err);
                 }
-
-                updatedChats.push({
-                    uid: otherUid,
-                    name: name,
-                    photo: photo,
-                    lastMessage: convoData.lastMessage || "",
-                    timestamp: convoData.timestamp || null
-                });
-            } catch (err) {
-                console.error("Error fetching participant profile info:", err);
             }
         }
 
-        // Sort chats so that the absolute newest message stays on top
+        // Sort descending by timestamp
         updatedChats.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-
         allChats = updatedChats;
         renderChats();
+    }, (error) => {
+        // If Firestore blocks the query due to a missing index, this alert tells you exactly why!
+        alert("Firestore read error: " + error.message);
     });
 }
 
-// 3. Render the UI Elements cleanly
 function renderChats() {
     chatList.innerHTML = "";
-
-    // Clear search keyword filtering constraints during the initial load
     const keyword = searchInput.value.trim().toLowerCase();
     
     const chatsToDisplay = allChats.filter(chat => {
@@ -339,7 +336,7 @@ function renderChats() {
     if (chatsToDisplay.length === 0) {
         chatList.innerHTML = `
             <div class="empty">
-                ${keyword ? 'No matching believers found.' : 'No conversations yet.'}
+                ${keyword ? 'No matching conversation paths.' : 'No conversations yet.'}
             </div>
         `;
         return;
@@ -365,11 +362,8 @@ function renderChats() {
     });
 }
 
-// Re-filter lists instantly whenever typing in the search box
 searchInput.addEventListener("input", renderChats);
 </script>
-
-
 
 
 </body>
