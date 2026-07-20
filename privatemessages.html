@@ -239,6 +239,11 @@ onclick="location.href='findmembers.html'">
 </div>
 
 <script type="module">
+window.onerror = function(message){
+    alert(message);
+};
+
+console.log("Private Messages loaded");
 import{
 auth,
 db,
