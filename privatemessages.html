@@ -251,12 +251,10 @@ import {
     onAuthStateChanged
 } from "./firebase.js";
 
-// Error tracking for debugging
+// Catch all hidden runtime errors and display them as an alert popup
 window.onerror = function(message) {
-    alert("Error: " + message);
+    alert("App Error: " + message);
 };
-
-console.log("Private Messages loaded");
 
 const chatList = document.getElementById("chatList");
 const searchInput = document.getElementById("searchInput");
@@ -264,108 +262,99 @@ const searchInput = document.getElementById("searchInput");
 let currentUser = null;
 let allChats = [];
 
-// 1. Check if user is authenticated
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        console.log("No user found, redirecting to login...");
         location.href = "login.html";
         return;
     }
-
     currentUser = user;
-    console.log("Logged in user:", currentUser.uid);
     loadChats();
 });
 
-
-// 2. Load and listen to messages involving the current user efficiently
-async function loadChats() {
-    console.log("Loading chats optimized...");
+function loadChats() {
+    console.log("Listening for messages involving:", currentUser.uid);
     
     const messagesRef = collection(db, "messages");
-    
-    // Create a unified snapshot listener for messages involving the current user
+
+    // Real-time listener on the global messages collection
     onSnapshot(messagesRef, async (snapshot) => {
         const conversationsMap = new Map();
 
-        // Step A: Parse messages to extract only unique conversation IDs
         snapshot.docs.forEach(docSnap => {
             const msg = docSnap.data();
+            
+            // Check if the current user is part of this message
             if (msg.senderId === currentUser.uid || msg.receiverId === currentUser.uid) {
+                // Determine who the *other* person is
                 const otherUid = msg.senderId === currentUser.uid ? msg.receiverId : msg.senderId;
                 
+                if (!otherUid) return; // Skip if database fields are broken/empty
+
                 const existingMsg = conversationsMap.get(otherUid);
+                // Keep the absolute newest message for this user pairing
                 if (!existingMsg || (msg.timestamp?.seconds > existingMsg.timestamp?.seconds)) {
                     conversationsMap.set(otherUid, msg);
                 }
             }
         });
 
-        // Step B: Fetch user profiles efficiently (Cache hits to prevent duplicate requests)
         const updatedChats = [];
-        const userProfileCache = {}; // Local memory cache to save roundtrips
 
+        // Fetch profile names and pictures for conversation partners
         for (const [otherUid, msg] of conversationsMap.entries()) {
-            let name = "Unknown User";
-            let photo = "images/profile.png";
+            try {
+                const userSnap = await getDoc(doc(db, "users", otherUid));
+                let name = "Unknown User";
+                let photo = "images/profile.png";
 
-            // If we already looked up this user in this execution cycle, use cached info instantly
-            if (userProfileCache[otherUid]) {
-                name = userProfileCache[otherUid].name;
-                photo = userProfileCache[otherUid].photo;
-            } else {
-                try {
-                    const userSnap = await getDoc(doc(db, "users", otherUid));
-                    if (userSnap.exists()) {
-                        const userData = userSnap.data();
-                        name = userData.fullName || userData.name || "Unknown User";
-                        photo = userData.profilePicture || userData.photoURL || "images/profile.png";
-                        
-                        // Save to cache memory
-                        userProfileCache[otherUid] = { name, photo };
-                    }
-                } catch (error) {
-                    console.error("Error reading profile:", error);
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    name = userData.fullName || userData.name || "Unknown User";
+                    photo = userData.profilePicture || userData.photoURL || "images/profile.png";
                 }
-            }
 
-            updatedChats.push({
-                uid: otherUid,
-                name: name,
-                photo: photo,
-                lastMessage: msg.message || "",
-                timestamp: msg.timestamp || null
-            });
+                updatedChats.push({
+                    uid: otherUid,
+                    name: name,
+                    photo: photo,
+                    lastMessage: msg.message || "",
+                    timestamp: msg.timestamp || null
+                });
+            } catch (err) {
+                console.error("Failed fetching user profile:", err);
+            }
         }
 
-        // Step C: Update state array and immediately render to screen
+        // Sort by timestamp (newest first)
+        updatedChats.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
         allChats = updatedChats;
-
-        // Sort conversations by newest message first
-        allChats.sort((a, b) => {
-            const ta = a.timestamp?.seconds || 0;
-            const tb = b.timestamp?.seconds || 0;
-            return tb - ta;
-        });
-
         renderChats();
     });
 }
 
-// 4. Render the active chats into HTML
 function renderChats() {
     chatList.innerHTML = "";
 
-    if (allChats.length === 0) {
+    // Grab whatever text is inside the search box right now
+    const keyword = searchInput.value.trim().toLowerCase();
+    
+    // Filter the conversations only if the user actually typed something to search
+    const chatsToDisplay = allChats.filter(chat => {
+        if (!keyword) return true; // Show everything if search box is untouched
+        return chat.name.toLowerCase().includes(keyword);
+    });
+
+    if (chatsToDisplay.length === 0) {
         chatList.innerHTML = `
             <div class="empty">
-                No conversations yet. Click the '+' button to start one!
+                ${keyword ? 'No matching conversations found.' : 'No conversations yet.'}
             </div>
         `;
         return;
     }
 
-    allChats.forEach(chat => {
+    chatsToDisplay.forEach(chat => {
         let time = "";
         if (chat.timestamp?.toDate) {
             const d = chat.timestamp.toDate();
@@ -385,22 +374,10 @@ function renderChats() {
     });
 }
 
-// 5. Handle Live Searching
-searchInput.addEventListener("input", () => {
-    const keyword = searchInput.value.toLowerCase();
-    
-    // Filter out chats that match search
-    const filtered = allChats.filter(chat => 
-        chat.name.toLowerCase().includes(keyword)
-    );
-
-    // Temp swap array just to render the search results cleanly
-    const originalChats = allChats;
-    allChats = filtered;
-    renderChats();
-    allChats = originalChats; 
-});
+// Re-render matching cards smoothly when typing a search filter
+searchInput.addEventListener("input", renderChats);
 </script>
+
 
 
 </body>
