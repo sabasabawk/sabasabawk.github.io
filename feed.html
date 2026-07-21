@@ -30,6 +30,7 @@ min-height:100vh;
 
 button{
 font-family:inherit;
+cursor:pointer;
 }
 
 .pageContainer{
@@ -55,7 +56,323 @@ margin-bottom:14px;
 }
 
 .wallHeader p{
-max-width:730
+max-width:730px;
+margin:auto;
+font-size:18px;
+line-height:1.65;
+}
+
+.wallControls{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:25px;
+}
+
+.controlButton{
+border:none;
+color:white;
+padding:17px 16px;
+border-radius:14px;
+font-size:18px;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,.12);
+transition:.2s;
+}
+
+.controlButton:active{
+transform:scale(.98);
+}
+
+.createPostButton{
+flex:1;
+background:#0874d1;
+}
+
+.createPostButton:hover{
+background:#005eb8;
+}
+
+.refreshButton{
+min-width:155px;
+background:#28a745;
+}
+
+.refreshButton:hover{
+background:#218838;
+}
+.postsContainer{
+width:100%;
+}
+
+.loadingMessage,
+.emptyMessage,
+.errorMessage{
+background:white;
+padding:45px 25px;
+text-align:center;
+border-radius:22px;
+font-size:18px;
+line-height:1.6;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.loadingMessage,
+.emptyMessage{
+color:#777;
+}
+
+.errorMessage{
+color:#b00020;
+}
+
+.postCard{
+background:white;
+border-radius:22px;
+padding:22px;
+margin-bottom:24px;
+box-shadow:0 5px 15px rgba(0,0,0,.10);
+overflow:hidden;
+}
+
+.postHeader{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:17px;
+}
+
+.authorPicture{
+width:62px;
+height:62px;
+border-radius:50%;
+object-fit:cover;
+background:#ddd;
+border:3px solid #e5edf5;
+flex-shrink:0;
+cursor:pointer;
+}
+
+.authorInformation{
+flex:1;
+min-width:0;
+}
+
+.authorName{
+font-size:21px;
+font-weight:bold;
+color:#0066cc;
+cursor:pointer;
+word-break:break-word;
+}
+
+.authorName:hover{
+text-decoration:underline;
+}
+
+.postDetails{
+font-size:14px;
+color:#777;
+margin-top:5px;
+line-height:1.45;
+}
+
+.postCategory{
+display:inline-block;
+padding:7px 13px;
+margin-bottom:13px;
+background:#eaf3ff;
+color:#0066cc;
+border-radius:20px;
+font-size:14px;
+font-weight:bold;
+}
+
+.postMessage{
+font-size:17px;
+line-height:1.75;
+white-space:pre-wrap;
+word-break:break-word;
+margin-bottom:15px;
+}
+
+.communityPostImage{
+display:block;
+width:100%;
+max-height:620px;
+object-fit:cover;
+border-radius:16px;
+margin-top:15px;
+background:#eee;
+}
+
+.postActions{
+display:flex;
+gap:10px;
+margin-top:20px;
+padding-top:16px;
+border-top:1px solid #e5e5e5;
+}
+
+.postActions button{
+flex:1;
+border:none;
+padding:13px 8px;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+color:white;
+}
+
+.likeButton{
+background:#1877f2;
+}
+
+.commentButton{
+background:#28a745;
+}
+
+.shareButton{
+background:#ff9800;
+}
+.backSection{
+text-align:center;
+margin:32px 0;
+}
+
+.backButton{
+padding:15px 30px;
+border:none;
+border-radius:13px;
+background:#666;
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.backButton:hover{
+background:#555;
+}
+
+@media(max-width:700px){
+
+.pageContainer{
+padding:16px;
+}
+
+.wallHeader{
+padding:31px 18px;
+}
+
+.wallHeader h1{
+font-size:31px;
+}
+
+.wallHeader p{
+font-size:17px;
+}
+
+.wallControls{
+gap:10px;
+}
+
+.controlButton{
+font-size:16px;
+padding:15px 10px;
+}
+
+.refreshButton{
+min-width:0;
+flex:.65;
+}
+
+.postCard{
+padding:19px;
+}
+
+.authorPicture{
+width:58px;
+height:58px;
+}
+
+.postActions{
+flex-direction:column;
+}
+
+.postActions button{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="pageContainer">
+
+<section class="wallHeader">
+
+<h1>📰 Community Wall</h1>
+
+<p>
+
+Share God's Word, testimonies, encouragement and prayer with believers around the world.
+
+</p>
+
+</section>
+
+<section class="wallControls">
+
+<button
+type="button"
+id="createPostButton"
+class="controlButton createPostButton">
+
+✍️ Create New Post
+
+</button>
+
+<button
+type="button"
+id="refreshButton"
+class="controlButton refreshButton">
+
+🔄 Refresh
+
+</button>
+
+</section>
+
+<section
+id="postsContainer"
+class="postsContainer">
+
+<div class="loadingMessage">
+
+Loading community posts...
+
+</div>
+
+</section>
+
+<section class="backSection">
+
+<button
+type="button"
+id="backButton"
+class="backButton">
+
+⬅ Back to Community
+
+</button>
+
+</section>
+
 </main>
 <script type="module">
 
