@@ -272,49 +272,56 @@ onclick="history.back()">
 import{
   auth,
   db,
-  collection,
-  addDoc,
   doc,
   getDoc,
   onAuthStateChanged
 }from "./firebase.js";
-
-import{
-  serverTimestamp
-}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* ========================================
    PAGE ELEMENTS
 ======================================== */
 
-const nameInput =
-document.getElementById("name");
+const photo =
+document.getElementById("profilePhoto");
 
-const categoryInput =
-document.getElementById("category");
+const fullName =
+document.getElementById("fullName");
 
-const postInput =
-document.getElementById("post");
+const country =
+document.getElementById("country");
 
-const publishBtn =
-document.getElementById("publishBtn");
+const email =
+document.getElementById("email");
 
-const messageBox =
-document.getElementById("message");
+const joined =
+document.getElementById("joined");
+
+const about =
+document.getElementById("about");
+
+const messageBtn =
+document.getElementById("messageBtn");
+
+const prayBtn =
+document.getElementById("prayBtn");
 
 
 /* ========================================
-   USER INFORMATION
+   GET MEMBER ID FROM URL
 ======================================== */
 
-let currentUser = null;
+const params =
+new URLSearchParams(
+  window.location.search
+);
 
-let currentProfile = null;
+const uid =
+params.get("uid");
 
 
 /* ========================================
-   CHECK LOGIN AND LOAD PROFILE
+   CHECK LOGIN
 ======================================== */
 
 onAuthStateChanged(auth,async(user)=>{
@@ -326,56 +333,100 @@ onAuthStateChanged(auth,async(user)=>{
 
   }
 
-  currentUser = user;
 
-  await loadCurrentProfile();
+  if(!uid || uid === "undefined" || uid === "null"){
+
+    showProfileError(
+      "Member not found",
+      "No valid member was selected."
+    );
+
+    return;
+
+  }
+
+
+  await loadProfile();
 
 });
 
 
 /* ========================================
-   LOAD PROFILE FROM FIRESTORE
+   LOAD MEMBER PROFILE
 ======================================== */
 
-async function loadCurrentProfile(){
+async function loadProfile(){
 
   try{
 
+    fullName.innerText =
+    "Loading...";
+
+    about.innerText =
+    "Loading profile...";
+
+
     const profileReference =
-    doc(db,"users",currentUser.uid);
+    doc(db,"users",uid);
 
     const profileSnapshot =
     await getDoc(profileReference);
 
 
-    if(profileSnapshot.exists()){
+    if(!profileSnapshot.exists()){
 
-      currentProfile =
-      profileSnapshot.data();
+      showProfileError(
+        "Member not found",
+        "This member's profile does not exist."
+      );
 
-    }else{
-
-      currentProfile = {};
+      return;
 
     }
 
 
-    const savedName = getFirstValue(
+    const data =
+    profileSnapshot.data();
 
-      currentProfile.fullName,
-      currentProfile.name,
-      currentProfile.displayName,
-      currentUser.displayName,
-      ""
 
+    photo.src =
+    data.profilePicture ||
+    "images/profile.png";
+
+
+    fullName.innerText =
+    data.fullName ||
+    data.name ||
+    "Unknown Member";
+
+
+    country.innerText =
+
+    "🌍 " +
+    (
+      data.country ||
+      "Country not provided"
     );
 
 
-    if(savedName && nameInput){
+    email.innerText =
 
-      nameInput.value = savedName;
+    "📧 " +
+    (
+      data.email ||
+      "Email not provided"
+    );
 
-    }
+
+    joined.innerText =
+    "📅 Member of SABASABA Gospel Ministry";
+
+
+    about.innerText =
+
+    data.about ||
+    "This member has not added an introduction yet.";
+
 
   }catch(error){
 
@@ -384,252 +435,114 @@ async function loadCurrentProfile(){
       error
     );
 
-    currentProfile = {};
 
-    alert(
-      "Your profile information could not be loaded."
-    );
-
-  }
-
-}
-
-
-/* ========================================
-   PUBLISH COMMUNITY POST
-======================================== */
-
-async function publishPost(){
-
-  if(!currentUser){
-
-    alert(
-      "Please wait while your account is loading."
-    );
-
-    return;
-
-  }
-
-
-  const enteredName =
-  nameInput.value.trim();
-
-  const selectedCategory =
-  categoryInput.value;
-
-  const enteredPost =
-  postInput.value.trim();
-
-
-  if(enteredName === ""){
-
-    alert(
-      "Please enter your name."
-    );
-
-    nameInput.focus();
-    return;
-
-  }
-
-
-  if(enteredPost === ""){
-
-    alert(
-      "Please write your post."
-    );
-
-    postInput.focus();
-    return;
-
-  }
-
-
-  const profilePicture = getFirstValue(
-
-    currentProfile?.profilePicture,
-    currentUser.photoURL,
-    "images/profile.png"
-
-  );
-
-
-  const profileName = getFirstValue(
-
-    currentProfile?.fullName,
-    enteredName,
-    currentUser.displayName,
-    "Anonymous"
-
-  );
-
-
-  const profileCountry = getFirstValue(
-
-    currentProfile?.country,
-    ""
-
-  );
-
-
-  publishBtn.disabled = true;
-
-  publishBtn.innerText =
-  "Publishing...";
-
-
-  if(messageBox){
-
-    messageBox.innerHTML =
-    "Publishing your post...";
-
-  }
-
-
-  try{
-
-    await addDoc(
-
-      collection(db,"communityPosts"),
-
-      {
-
-        userId:
-        currentUser.uid,
-
-        uid:
-        currentUser.uid,
-
-        name:
-        profileName,
-
-        fullName:
-        profileName,
-
-        country:
-        profileCountry,
-
-        category:
-        selectedCategory,
-
-        post:
-        enteredPost,
-
-        text:
-        enteredPost,
-
-        picture:
-        profilePicture,
-
-        profilePicture:
-        profilePicture,
-
-        date:
-        new Date().toLocaleString(),
-
-        timestamp:
-        serverTimestamp(),
-
-        likes:
-        0,
-
-        comments:
-        []
-
-      }
-
-    );
-
-
-    const currentPostTotal =
-
-    parseInt(
-      localStorage.getItem("posts")
-    ) || 0;
-
-
-    localStorage.setItem(
-
-      "posts",
-
-      String(currentPostTotal + 1)
-
-    );
-
-
-    if(messageBox){
-
-      messageBox.innerHTML =
-
-      "✅ Your post has been published successfully!";
-
-    }
-
-
-    postInput.value = "";
-
-
-    setTimeout(()=>{
-
-      location.href = "feed.html";
-
-    },1200);
-
-  }catch(error){
-
-    console.error(
-      "Publishing error:",
-      error
-    );
-
-
-    if(messageBox){
-
-      messageBox.innerHTML =
-
-      "❌ The post could not be published.";
-
-    }
-
-
-    alert(
+    showProfileError(
+      "Unable to load profile",
       getFriendlyErrorMessage(error)
     );
 
-  }finally{
-
-    publishBtn.disabled = false;
-
-    publishBtn.innerText =
-    "Publish Post";
-
   }
 
 }
 
 
 /* ========================================
-   GET FIRST AVAILABLE VALUE
+   BROKEN PROFILE PICTURE
 ======================================== */
 
-function getFirstValue(...values){
+if(photo){
 
-  for(const value of values){
+  photo.addEventListener("error",()=>{
 
-    if(
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ){
+    const fallback =
+    new URL(
+      "images/profile.png",
+      location.href
+    ).href;
 
-      return String(value).trim();
+    if(photo.src !== fallback){
+
+      photo.src =
+      "images/profile.png";
 
     }
 
-  }
+  });
 
-  return "";
+}
+
+
+/* ========================================
+   MESSAGE BUTTON
+======================================== */
+
+if(messageBtn){
+
+  messageBtn.addEventListener("click",()=>{
+
+    if(!uid){
+
+      alert(
+        "This member is not available."
+      );
+
+      return;
+
+    }
+
+
+    location.href =
+
+    "chat.html?uid=" +
+    encodeURIComponent(uid);
+
+  });
+
+}
+
+
+/* ========================================
+   PRAY BUTTON
+======================================== */
+
+if(prayBtn){
+
+  prayBtn.addEventListener("click",()=>{
+
+    alert(
+      "🙏 Pray Together is coming soon.\n\n" +
+      "This feature will allow believers " +
+      "to pray together and send prayer requests."
+    );
+
+  });
+
+}
+
+
+/* ========================================
+   SHOW PROFILE ERROR
+======================================== */
+
+function showProfileError(title,message){
+
+  photo.src =
+  "images/profile.png";
+
+  fullName.innerText =
+  title;
+
+  country.innerText =
+  "🌍 Profile unavailable";
+
+  email.innerText =
+  "📧 Information unavailable";
+
+  joined.innerText =
+  "";
+
+  about.innerText =
+  message;
 
 }
 
@@ -640,48 +553,22 @@ function getFirstValue(...values){
 
 function getFriendlyErrorMessage(error){
 
-  if(
-    error.code ===
-    "permission-denied"
-  ){
+  if(error.code === "permission-denied"){
 
-    return "Firebase did not allow this post to be saved. Please check your Firestore security rules.";
+    return "Firebase did not allow this profile to be viewed. Check your Firestore security rules.";
 
   }
 
 
-  if(
-    error.code ===
-    "unavailable"
-  ){
+  if(error.code === "unavailable"){
 
-    return "The internet connection is unavailable. Please check your connection and try again.";
+    return "The profile could not be loaded because the internet connection is unavailable.";
 
   }
 
 
   return error.message ||
-  "The post could not be published.";
-
-}
-
-
-/* ========================================
-   PUBLISH BUTTON
-======================================== */
-
-if(publishBtn){
-
-  publishBtn.addEventListener(
-    "click",
-    publishPost
-  );
-
-}else{
-
-  console.error(
-    "The publishBtn element was not found."
-  );
+  "The member profile could not be loaded.";
 
 }
 
