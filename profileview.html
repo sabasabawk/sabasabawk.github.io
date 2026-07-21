@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Member Profile | SABASABA Gospel Ministry</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+}
+
+.container{
+max-width:800px;
+margin:30px auto;
+padding:20px;
+}
+
+.profileCard{
+
+background:white;
+border-radius:20px;
+padding:30px;
+box-shadow:0 4px 12px rgba(0,0,0,.10);
+
+}
+
+.cover{
+
+height:180px;
+background:linear-gradient(135deg,#0066cc,#004d99);
+border-radius:18px;
+position:relative;
+
+}
+
+.profilePhoto{
+
+width:150px;
+height:150px;
+border-radius:50%;
+border:6px solid white;
+object-fit:cover;
+background:#ddd;
+position:absolute;
+left:50%;
+bottom:-75px;
+transform:translateX(-50%);
+
+}
+
+.profileBody{
+
+margin-top:90px;
+text-align:center;
+
+}
+
+.profileBody h1{
+
+font-size:32px;
+color:#0066cc;
+margin-bottom:10px;
+
+}
+
+.info{
+
+font-size:17px;
+color:#666;
+margin:10px 0;
+
+}
+
+.about{
+
+margin-top:25px;
+padding:20px;
+background:#f8f8f8;
+border-radius:12px;
+line-height:1.8;
+font-size:17px;
+color:#444;
+
+}
+
+.buttonRow{
+
+margin-top:30px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+
+}
+
+.btn{
+
+padding:14px 28px;
+border:none;
+border-radius:10px;
+font-size:17px;
+cursor:pointer;
+color:white;
+
+}
+
+.messageBtn{
+
+background:#0066cc;
+
+}
+
+.prayBtn{
+
+background:#28a745;
+
+}
+
+.backBtn{
+
+background:#777;
+
+}
+
+.empty{
+
+text-align:center;
+font-size:18px;
+color:#777;
+padding:40px;
+
+}
+
+@media(max-width:700px){
+
+.profilePhoto{
+
+width:120px;
+height:120px;
+bottom:-60px;
+
+}
+
+.profileBody{
+
+margin-top:70px;
+
+}
+
+.profileBody h1{
+
+font-size:27px;
+
+}
+
+.buttonRow{
+
+flex-direction:column;
+
+}
+
+.btn{
+
+width:100%;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="profileCard">
+
+<div class="cover">
+
+<img
+id="profilePhoto"
+class="profilePhoto"
+src="images/profile.png">
+
+</div>
+
+<div class="profileBody">
+
+<h1 id="fullName">
+
+Loading...
+
+</h1>
+
+<div
+class="info"
+id="country">
+
+</div>
+
+<div
+class="info"
+id="email">
+
+</div>
+
+<div
+class="info"
+id="joined">
+
+</div>
+
+<div
+class="about"
+id="about">
+
+Loading profile...
+
+</div>
+
+<div class="buttonRow">
+
+<button
+class="btn messageBtn"
+id="messageBtn">
+
+💬 Message
+
+</button>
+
+<button
+class="btn prayBtn"
+id="prayBtn">
+
+🙏 Pray Together
+
+</button>
+
+<button
+class="btn backBtn"
+onclick="history.back()">
+
+⬅ Back
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<script type="module">
+
+import{
+auth,
+db,
+doc,
+getDoc,
+onAuthStateChanged
+}from "./firebase.js";
+
+const params=new URLSearchParams(window.location.search);
+const uid=params.get("uid");
+
+const photo=document.getElementById("profilePhoto");
+const fullName=document.getElementById("fullName");
+const country=document.getElementById("country");
+const email=document.getElementById("email");
+const joined=document.getElementById("joined");
+const about=document.getElementById("about");
+
+let currentUser=null;
+
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user){
+
+location.href="login.html";
+return;
+
+}
+
+currentUser=user;
+
+loadProfile();
+
+});
+
+async function loadProfile(){
+
+try{
+
+const userSnap=await getDoc(doc(db,"users",uid));
+
+if(!userSnap.exists()){
+
+fullName.innerText="Member not found";
+about.innerText="This member does not exist.";
+return;
+
+}
+
+const data=userSnap.data();
+
+photo.src=data.profilePicture||"images/profile.png";
+
+fullName.innerText=data.fullName||"Unknown Member";
+
+country.innerHTML="🌍 "+(data.country||"Country not provided");
+
+email.innerHTML="📧 "+(data.email||"No email");
+
+joined.innerHTML="📅 Member of SABASABA Gospel Ministry";
+
+about.innerText=data.about||"This member has not added an introduction yet.";
+
+}catch(error){
+
+console.error(error);
+
+fullName.innerText="Error";
+
+about.innerText=error.message;
+
+}
+
+}
+
+</script>
+<script>
+
+document.getElementById("messageBtn").addEventListener("click",()=>{
+
+const params=new URLSearchParams(window.location.search);
+
+const uid=params.get("uid");
+
+window.location.href="chat.html?uid="+uid;
+
+});
+
+document.getElementById("prayBtn").addEventListener("click",()=>{
+
+alert(
+"🙏 Pray Together is coming soon.\n\nThis feature will allow believers to pray together and send prayer requests."
+);
+
+});
+
+</script>
+
+</body>
+
+</html>
