@@ -372,7 +372,16 @@ class="backButton">
 </button>
 
 </section>
+.likeButton.liked{
+  background:#ffe9ee;
+  color:#d6003d;
+  font-weight:bold;
+}
 
+.likeButton:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
 </main>
 
 <script type="module">
@@ -382,8 +391,16 @@ import{
   db,
   collection,
   onSnapshot,
-  onAuthStateChanged
+  onAuthStateChanged,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc
 }from "./firebase.js";
+import{
+  collection as firestoreCollection,
+  onSnapshot as firestoreOnSnapshot
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* ========================================
@@ -816,13 +833,11 @@ function renderPosts(posts){
       <div class="postActions">
 
         <button
-          type="button"
-          class="likeButton"
-        >
-
-          ❤️ Like (${likes})
-
-        </button>
+  type="button"
+  class="likeButton"
+>
+  🤍 Like
+</button>
 
 
         <button
@@ -979,15 +994,138 @@ function connectPostCard(card,post){
 
   if(likeButton){
 
-    likeButton.addEventListener("click",()=>{
+  const likesCollection =
+  collection(
+    db,
+    "communityPosts",
+    post.id,
+    "likes"
+  );
 
-      alert(
-        "The Like feature will be connected next."
+  const currentUserLike =
+  doc(
+    db,
+    "communityPosts",
+    post.id,
+    "likes",
+    currentUser.uid
+  );
+
+
+  /* Listen to the number of likes */
+
+  const unsubscribeLikes =
+  onSnapshot(
+    likesCollection,
+    (snapshot)=>{
+
+      const totalLikes =
+      snapshot.size;
+
+      const userHasLiked =
+      snapshot.docs.some(
+        likeDocument =>
+        likeDocument.id === currentUser.uid
       );
 
-    });
 
-  }
+      likeButton.innerText =
+
+      userHasLiked
+      ? "❤️ Liked (" + totalLikes + ")"
+      : "🤍 Like (" + totalLikes + ")";
+
+
+      likeButton.classList.toggle(
+        "liked",
+        userHasLiked
+      );
+
+    },
+    (error)=>{
+
+      console.error(
+        "Likes loading error:",
+        error
+      );
+
+    }
+  );
+
+
+  likeButton.addEventListener(
+    "click",
+    async()=>{
+
+      if(!currentUser){
+
+        alert(
+          "Please log in before liking a post."
+        );
+
+        return;
+
+      }
+
+
+      likeButton.disabled = true;
+
+
+      try{
+
+        const likeSnapshot =
+        await getDoc(currentUserLike);
+
+
+        if(likeSnapshot.exists()){
+
+          await deleteDoc(
+            currentUserLike
+          );
+
+        }else{
+
+          await setDoc(
+            currentUserLike,
+            {
+              userId:currentUser.uid,
+              likedAt:new Date().toISOString()
+            }
+          );
+
+        }
+
+      }catch(error){
+
+        console.error(
+          "Like error:",
+          error
+        );
+
+        alert(
+          "The Like could not be saved."
+        );
+
+      }finally{
+
+        likeButton.disabled = false;
+
+      }
+
+    }
+  );
+
+
+  card.addEventListener(
+    "remove",
+    ()=>{
+
+      unsubscribeLikes();
+
+    }
+  );
+
+}
 
 
   /* ========================================
