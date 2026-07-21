@@ -299,6 +299,7 @@ onclick="location.href='community.html'">
 </div>
 
 </div>
+
 <script type="module">
 
 import{
@@ -328,12 +329,12 @@ loadPosts();
 
 function loadPosts(){
 
-const q=query(
+const postsQuery=query(
 collection(db,"communityPosts"),
 orderBy("timestamp","desc")
 );
 
-onSnapshot(q,(snapshot)=>{
+onSnapshot(postsQuery,(snapshot)=>{
 
 postsContainer.innerHTML="";
 
@@ -345,106 +346,7 @@ postsContainer.innerHTML=`
 
 No community posts yet.<br><br>
 
-Be the first believer to share something!
-
-</div>
-
-`;
-
-return;
-
-}
-
-snapshot.forEach(docSnap=>{
-
-const post=docSnap.data();
-
-const card=document.createElement("div");
-
-card.className="post";
-
-const imageHTML=post.image
-?`<img class="postImage" src="${post.image}" style="display:block;">`
-:"";
-
-const profilePicture=post.profilePicture||"images/profile.png";
-
-const country=post.country||"";
-
-const fullName=post.fullName||"Anonymous";
-
-let time="Just now";
-
-if(post.timestamp?.toDate){
-
-time=post.timestamp.toDate().toLocaleString();
-
-}
-
-card.innerHTML=`
-
-<div class="postHeader">
-
-<img src="${profilePicture}">
-
-<div>
-
-<div class="postName">
-
-${fullName}
-
-</div>
-
-<div class="postTime">
-
-${country} • ${time}
-
-</div>
-
-</div>
-
-</div>
-
-<div class="postText">
-
-${post.text||""}
-
-</div>
-
-${imageHTML}
-
-<div class="actions">
-
-<button class="likeBtn">
-
-❤️ Like (${post.likes||0})
-
-</button>
-
-<button class="commentBtn">
-
-💬 Comment (${post.comments||0})
-
-</button>
-
-<button class="shareBtn">
-
-📤 Share
-
-</button>
-
-</div>
-
-`;
-
-postsContainer.appendChild(card);
-
-});
-
-});
-
-}
-
+Be
 </script>
 
 </body>
