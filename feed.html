@@ -374,466 +374,961 @@ class="backButton">
 </section>
 
 </main>
+
 <script type="module">
 
 import{
-auth,
-db,
-collection,
-onSnapshot,
-onAuthStateChanged
+  auth,
+  db,
+  collection,
+  onSnapshot,
+  onAuthStateChanged
 }from "./firebase.js";
 
-const postsContainer=
+
+/* ========================================
+   PAGE ELEMENTS
+======================================== */
+
+const postsContainer =
 document.getElementById("postsContainer");
 
-const createPostButton=
+const createPostButton =
 document.getElementById("createPostButton");
 
-const refreshButton=
+const refreshButton =
 document.getElementById("refreshButton");
 
-const backButton=
+const backButton =
 document.getElementById("backButton");
 
-let unsubscribePosts=null;
 
-createPostButton.addEventListener("click",()=>{
+/* ========================================
+   COMMUNITY WALL VARIABLES
+======================================== */
 
-location.href="createpost.html";
+let currentUser = null;
 
-});
+let unsubscribePosts = null;
 
-refreshButton.addEventListener("click",()=>{
 
-location.reload();
+/* ========================================
+   PAGE BUTTONS
+======================================== */
 
-});
+if(createPostButton){
 
-backButton.addEventListener("click",()=>{
+  createPostButton.addEventListener("click",()=>{
 
-location.href="community.html";
+    location.href = "createpost.html";
 
-});
+  });
+
+}
+
+
+if(refreshButton){
+
+  refreshButton.addEventListener("click",()=>{
+
+    location.reload();
+
+  });
+
+}
+
+
+if(backButton){
+
+  backButton.addEventListener("click",()=>{
+
+    location.href = "community.html";
+
+  });
+
+}
+
+
+/* ========================================
+   CHECK USER LOGIN
+======================================== */
 
 onAuthStateChanged(auth,(user)=>{
 
-if(!user){
+  if(!user){
 
-location.href="login.html";
-return;
+    location.href = "login.html";
 
-}
+    return;
 
-startCommunityWall();
+  }
+
+  currentUser = user;
+
+  startCommunityWall();
 
 });
+/* ========================================
+   LOAD COMMUNITY POSTS
+======================================== */
 
 function startCommunityWall(){
 
-if(unsubscribePosts){
+  if(!postsContainer){
 
-unsubscribePosts();
+    console.error(
+      "The postsContainer element was not found."
+    );
+
+    return;
+
+  }
+
+
+  /* Stop the previous Firebase listener */
+
+  if(unsubscribePosts){
+
+    unsubscribePosts();
+
+    unsubscribePosts = null;
+
+  }
+
+
+  /* Show loading message */
+
+  postsContainer.innerHTML = `
+
+    <div class="loadingMessage">
+
+      Loading community posts...
+
+    </div>
+
+  `;
+
+
+  /* Listen for posts from Firebase */
+
+  unsubscribePosts = onSnapshot(
+
+    collection(db,"communityPosts"),
+
+    (snapshot)=>{
+
+      const posts = [];
+
+
+      snapshot.forEach((postDocument)=>{
+
+        posts.push({
+
+          id:postDocument.id,
+
+          ...postDocument.data()
+
+        });
+
+      });
+
+
+      /* Show newest posts first */
+
+      posts.sort((firstPost,secondPost)=>{
+
+        return (
+          getPostTime(secondPost) -
+          getPostTime(firstPost)
+        );
+
+      });
+
+
+      renderPosts(posts);
+
+    },
+
+
+    (error)=>{
+
+      console.error(
+        "Community posts error:",
+        error
+      );
+
+
+      postsContainer.innerHTML = `
+
+        <div class="errorMessage">
+
+          Unable to load community posts.
+
+          <br><br>
+
+          ${escapeHTML(error.message)}
+
+        </div>
+
+      `;
+
+    }
+
+  );
 
 }
-
-postsContainer.innerHTML=`
-
-<div class="loadingMessage">
-
-Loading community posts...
-
-</div>
-
-`;
-
-unsubscribePosts=onSnapshot(
-
-collection(db,"communityPosts"),
-
-(snapshot)=>{
-
-const posts=[];
-
-snapshot.forEach((doc)=>{
-
-posts.push({
-
-id:doc.id,
-...doc.data()
-
-});
-
-});
-
-posts.sort((a,b)=>{
-
-return getPostTime(b)-getPostTime(a);
-
-});
-
-renderPosts(posts);
-
-},
-
-(error)=>{
-
-console.error(error);
-
-postsContainer.innerHTML=`
-
-<div class="errorMessage">
-
-Unable to load community posts.
-
-<br><br>
-
-${error.message}
-
-</div>
-
-`;
-
-}
-
-);
-
-}
+/* ========================================
+   DISPLAY COMMUNITY POSTS
+======================================== */
 
 function renderPosts(posts){
 
-postsContainer.innerHTML="";
+  postsContainer.innerHTML = "";
 
-if(posts.length===0){
 
-postsContainer.innerHTML=`
+  /* Show message when there are no posts */
 
-<div class="emptyMessage">
+  if(posts.length === 0){
 
-No community posts yet.
+    postsContainer.innerHTML = `
 
-<br><br>
+      <div class="emptyMessage">
 
-Be the first believer to encourage others.
+        No community posts yet.
 
-</div>
+        <br><br>
 
-`;
+        Be the first believer to encourage others.
 
-return;
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  posts.forEach((post)=>{
+
+
+    /* ========================================
+       READ POST INFORMATION
+    ======================================== */
+
+    const name = getFirstValue(
+
+      post.name,
+      post.fullName,
+      post.displayName,
+      post.authorName,
+      "Anonymous"
+
+    );
+
+
+    const picture = getFirstValue(
+
+      post.picture,
+      post.profilePicture,
+      post.photoURL,
+      post.profileImage,
+      post.profilePhoto,
+      post.userPicture,
+      post.authorPicture,
+      "images/profile.png"
+
+    );
+
+
+    const message = getFirstValue(
+
+      post.post,
+      post.text,
+      post.message,
+      post.content,
+      ""
+
+    );
+
+
+    const postImage = getFirstValue(
+
+      post.image,
+      post.postImage,
+      post.imageURL,
+      post.imageUrl,
+      post.photo,
+      ""
+
+    );
+
+
+    const country = getFirstValue(
+
+      post.country,
+      post.location,
+      ""
+
+    );
+
+
+    const category = getFirstValue(
+
+      post.category,
+      post.postCategory,
+      ""
+
+    );
+
+
+    const userId = getFirstValue(
+
+      post.userId,
+      post.uid,
+      post.authorId,
+      post.ownerId,
+      ""
+
+    );
+
+
+    const likes =
+
+      typeof post.likes === "number"
+
+      ? post.likes
+
+      : 0;
+
+
+    const comments =
+
+      Array.isArray(post.comments)
+
+      ? post.comments.length
+
+      : typeof post.comments === "number"
+
+      ? post.comments
+
+      : 0;
+
+
+    const date = getDisplayDate(post);
+
+
+    /* ========================================
+       CREATE POST CARD
+    ======================================== */
+
+    const card = document.createElement("article");
+
+    card.className = "postCard";
+
+    card.dataset.postId = post.id;
+
+    card.dataset.userId = userId;
+
+
+    card.innerHTML = `
+
+      <div class="postHeader">
+
+        <img
+          class="authorPicture"
+          src="${escapeAttribute(picture)}"
+          alt="Profile Picture"
+          loading="lazy"
+        >
+
+        <div class="authorInformation">
+
+          <div class="authorName">
+
+            ${escapeHTML(name)}
+
+          </div>
+
+          <div class="postDetails">
+
+            ${
+              country
+              ? escapeHTML(country) + " • "
+              : ""
+            }
+
+            ${escapeHTML(date)}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      ${
+        category
+        ? `
+
+          <div class="postCategory">
+
+            ${escapeHTML(category)}
+
+          </div>
+
+        `
+        : ""
+      }
+
+
+      ${
+        message
+        ? `
+
+          <div class="postMessage">
+
+            ${formatPostMessage(message)}
+
+          </div>
+
+        `
+        : ""
+      }
+
+
+      ${
+        postImage
+        ? `
+
+          <img
+            class="communityPostImage"
+            src="${escapeAttribute(postImage)}"
+            alt="Community Post"
+            loading="lazy"
+          >
+
+        `
+        : ""
+      }
+
+
+      <div class="postActions">
+
+        <button
+          type="button"
+          class="likeButton"
+        >
+
+          ❤️ Like (${likes})
+
+        </button>
+
+
+        <button
+          type="button"
+          class="commentButton"
+        >
+
+          💬 Comment (${comments})
+
+        </button>
+
+
+        <button
+          type="button"
+          class="shareButton"
+        >
+
+          📤 Share
+
+        </button>
+
+      </div>
+
+    `;
+
+
+    postsContainer.appendChild(card);
+
+
+    /* Part 4 will connect all buttons and pictures */
+
+    connectPostCard(card,post);
+
+  });
 
 }
-posts.forEach((post)=>{
+/* ========================================
+   CONNECT EACH POST CARD
+======================================== */
 
-const name=
-post.name||
-post.fullName||
-"Anonymous";
+function connectPostCard(card,post){
 
-const picture=
-post.picture||
-post.profilePicture||
-"images/profile.png";
+  const authorPicture =
+  card.querySelector(".authorPicture");
 
-const message=
-post.post||
-post.text||
-"";
+  const authorName =
+  card.querySelector(".authorName");
 
-const image=
-post.image||
-post.postImage||
-"";
+  const communityPostImage =
+  card.querySelector(".communityPostImage");
 
-const country=
-post.country||
-"";
+  const likeButton =
+  card.querySelector(".likeButton");
 
-const category=
-post.category||
-"";
+  const commentButton =
+  card.querySelector(".commentButton");
 
-const likes=
-typeof post.likes==="number"
-?post.likes
-:0;
+  const shareButton =
+  card.querySelector(".shareButton");
 
-const comments=
-Array.isArray(post.comments)
-?post.comments.length
-:(typeof post.comments==="number"
-?post.comments
-:0);
 
-const date=getDisplayDate(post);
+  const userId = getFirstValue(
 
-const card=document.createElement("article");
+    post.userId,
+    post.uid,
+    post.authorId,
+    post.ownerId,
+    ""
 
-card.className="postCard";
+  );
 
-card.innerHTML=`
 
-<div class="postHeader">
+  /* ========================================
+     PROFILE-PICTURE ERROR
+  ======================================== */
 
-<img
-class="authorPicture"
-src="${picture}"
-alt="Profile Picture"
-onerror="this.src='images/profile.png'">
+  if(authorPicture){
 
-<div class="authorInformation">
+    authorPicture.addEventListener("error",()=>{
 
-<div class="authorName">
+      if(
+        !authorPicture.src.endsWith(
+          "images/profile.png"
+        )
+      ){
 
-${name}
+        authorPicture.src =
+        "images/profile.png";
 
-</div>
+      }
 
-<div class="postDetails">
+    });
 
-${country}${country?" • ":""}${date}
 
-</div>
+    authorPicture.addEventListener(
+      "click",
+      openMemberProfile
+    );
 
-</div>
+  }
 
-</div>
 
-${category?`
+  if(authorName){
 
-<div class="postCategory">
+    authorName.addEventListener(
+      "click",
+      openMemberProfile
+    );
 
-${category}
+  }
 
-</div>
 
-`:""}
+  function openMemberProfile(){
 
-<div class="postMessage">
+    if(!userId){
 
-${message}
+      alert(
+        "This member's profile is not available."
+      );
 
-</div>
+      return;
 
-${image?`
+    }
 
-<img
-class="communityPostImage"
-src="${image}"
-alt="Community Post"
-onerror="this.src='images/placeholder.png'; this.style.display='block';">
+    location.href =
+    "profileview.html?uid=" +
+    encodeURIComponent(userId);
 
-`:""}
+  }
 
-<div class="postActions">
 
-<button class="likeButton">
+  /* ========================================
+     POST-IMAGE ERROR
+  ======================================== */
 
-❤️ Like (${likes})
+  if(communityPostImage){
 
-</button>
+    communityPostImage.addEventListener(
+      "error",
+      ()=>{
 
-<button class="commentButton">
+        communityPostImage.style.display =
+        "none";
 
-💬 Comment (${comments})
+      }
+    );
 
-</button>
+  }
 
-<button class="shareButton">
 
-📤 Share
+  /* ========================================
+     LIKE BUTTON
+  ======================================== */
 
-</button>
+  if(likeButton){
 
-</div>
+    likeButton.addEventListener("click",()=>{
 
-`;
+      alert(
+        "The Like feature will be connected next."
+      );
 
-postsContainer.appendChild(card);
+    });
 
-});
-const postCards=
-postsContainer.querySelectorAll(".postCard");
+  }
 
-postCards.forEach((card,index)=>{
 
-const post=posts[index];
+  /* ========================================
+     COMMENT BUTTON
+  ======================================== */
 
-const authorPicture=
-card.querySelector(".authorPicture");
+  if(commentButton){
 
-const authorName=
-card.querySelector(".authorName");
+    commentButton.addEventListener("click",()=>{
 
-const likeButton=
-card.querySelector(".likeButton");
+      location.href =
+      "comments.html?postId=" +
+      encodeURIComponent(post.id);
 
-const commentButton=
-card.querySelector(".commentButton");
+    });
 
-const shareButton=
-card.querySelector(".shareButton");
+  }
 
-const userId=
-post.userId||
-post.uid||
-post.authorId||
-"";
 
-function openMemberProfile(){
+  /* ========================================
+     SHARE BUTTON
+  ======================================== */
 
-if(!userId){
+  if(shareButton){
 
-alert("This member's profile is not available.");
-return;
+    shareButton.addEventListener(
+      "click",
+      async()=>{
+
+        const postAuthor = getFirstValue(
+
+          post.name,
+          post.fullName,
+          post.displayName,
+          post.authorName,
+          "Community Member"
+
+        );
+
+
+        const postMessage = getFirstValue(
+
+          post.post,
+          post.text,
+          post.message,
+          post.content,
+          ""
+
+        );
+
+
+        const shareText =
+
+        postAuthor +
+        "\n\n" +
+        postMessage;
+
+
+        const shareURL =
+
+        location.origin +
+        location.pathname +
+        "?postId=" +
+        encodeURIComponent(post.id);
+
+
+        try{
+
+          if(navigator.share){
+
+            await navigator.share({
+
+              title:
+              "SABASABA Gospel Ministry",
+
+              text:shareText,
+
+              url:shareURL
+
+            });
+
+            return;
+
+          }
+
+
+          if(navigator.clipboard){
+
+            await navigator.clipboard.writeText(
+
+              shareText +
+              "\n\n" +
+              shareURL
+
+            );
+
+            alert(
+              "✅ Post copied. You can now share it."
+            );
+
+            return;
+
+          }
+
+
+          alert(
+            "Sharing is not supported on this device."
+          );
+
+        }catch(error){
+
+          if(error.name !== "AbortError"){
+
+            console.error(
+              "Share error:",
+              error
+            );
+
+            alert(
+              "The post could not be shared."
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+  }
 
 }
 
-location.href=
-"profileview.html?uid="+encodeURIComponent(userId);
+
+/* ========================================
+   GET FIRST AVAILABLE VALUE
+======================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
 
 }
 
-authorPicture.addEventListener(
-"click",
-openMemberProfile
-);
 
-authorName.addEventListener(
-"click",
-openMemberProfile
-);
+/* ========================================
+   PROTECT HTML TEXT
+======================================== */
 
-likeButton.addEventListener("click",()=>{
+function escapeHTML(value){
 
-alert("The Like feature will be connected next.");
+  return String(value)
 
-});
-
-commentButton.addEventListener("click",()=>{
-
-location.href=
-"comments.html?postId="+encodeURIComponent(post.id);
-
-});
-
-shareButton.addEventListener("click",async()=>{
-
-const postAuthor=
-post.name||
-post.fullName||
-"Community Member";
-
-const postMessage=
-post.post||
-post.text||
-"";
-
-const shareText=
-postAuthor+"\n\n"+postMessage;
-
-try{
-
-if(navigator.share){
-
-await navigator.share({
-
-title:"SABASABA Gospel Ministry",
-
-text:shareText,
-
-url:location.href
-
-});
-
-return;
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
 
 }
 
-if(navigator.clipboard){
 
-await navigator.clipboard.writeText(shareText);
+/* ========================================
+   PROTECT IMAGE ATTRIBUTES
+======================================== */
 
-alert("✅ Post copied. You can now share it.");
+function escapeAttribute(value){
 
-return;
-
-}
-
-alert("Sharing is not supported on this device.");
-
-}catch(error){
-
-if(error.name!=="AbortError"){
-
-console.error("Share error:",error);
-
-alert("The post could not be shared.");
+  return escapeHTML(value);
 
 }
 
+
+/* ========================================
+   FORMAT POST MESSAGE
+======================================== */
+
+function formatPostMessage(message){
+
+  return escapeHTML(message)
+
+  .replace(/\n/g,"<br>");
+
 }
 
-});
 
-});
+/* ========================================
+   GET POST TIME FOR SORTING
+======================================== */
 
-}
 function getPostTime(post){
 
-if(post.timestamp?.toMillis){
+  const timestamp =
 
-return post.timestamp.toMillis();
+  post.timestamp ||
+  post.createdAt ||
+  post.dateCreated ||
+  post.postedAt;
+
+
+  if(timestamp?.toMillis){
+
+    return timestamp.toMillis();
+
+  }
+
+
+  if(timestamp?.toDate){
+
+    return timestamp
+    .toDate()
+    .getTime();
+
+  }
+
+
+  if(typeof timestamp === "number"){
+
+    return timestamp;
+
+  }
+
+
+  if(typeof timestamp === "string"){
+
+    const parsedTimestamp =
+    Date.parse(timestamp);
+
+    if(!Number.isNaN(parsedTimestamp)){
+
+      return parsedTimestamp;
+
+    }
+
+  }
+
+
+  if(post.date){
+
+    const parsedDate =
+    Date.parse(post.date);
+
+    if(!Number.isNaN(parsedDate)){
+
+      return parsedDate;
+
+    }
+
+  }
+
+
+  return 0;
 
 }
 
-if(post.timestamp?.toDate){
 
-return post.timestamp.toDate().getTime();
-
-}
-
-if(typeof post.timestamp==="number"){
-
-return post.timestamp;
-
-}
-
-if(post.date){
-
-const parsedDate=Date.parse(post.date);
-
-if(!Number.isNaN(parsedDate)){
-
-return parsedDate;
-
-}
-
-}
-
-return 0;
-
-}
+/* ========================================
+   DISPLAY POST DATE
+======================================== */
 
 function getDisplayDate(post){
 
-if(post.timestamp?.toDate){
+  const timestamp =
 
-return post.timestamp
-.toDate()
-.toLocaleString();
+  post.timestamp ||
+  post.createdAt ||
+  post.dateCreated ||
+  post.postedAt;
+
+
+  if(timestamp?.toDate){
+
+    return timestamp
+    .toDate()
+    .toLocaleString();
+
+  }
+
+
+  if(typeof timestamp === "number"){
+
+    return new Date(timestamp)
+    .toLocaleString();
+
+  }
+
+
+  if(typeof timestamp === "string"){
+
+    const parsedTimestamp =
+    Date.parse(timestamp);
+
+    if(!Number.isNaN(parsedTimestamp)){
+
+      return new Date(parsedTimestamp)
+      .toLocaleString();
+
+    }
+
+  }
+
+
+  if(post.date){
+
+    return String(post.date);
+
+  }
+
+
+  return "Recently";
 
 }
 
-if(post.date){
 
-return String(post.date);
+/* ========================================
+   STOP FIREBASE LISTENER WHEN LEAVING
+======================================== */
 
-}
+window.addEventListener("beforeunload",()=>{
 
-return "Recently";
+  if(unsubscribePosts){
 
-}
+    unsubscribePosts();
+
+  }
+
+});
 
 </script>
 
