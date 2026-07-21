@@ -229,144 +229,229 @@ onclick="location.href='community.html'">
 <script type="module">
 
 import{
-auth,
-db,
-storage,
-doc,
-getDoc,
-updateDoc,
-ref,
-uploadBytes,
-getDownloadURL,
-onAuthStateChanged
+  auth,
+  db,
+  storage,
+  doc,
+  getDoc,
+  updateDoc,
+  ref,
+  getDownloadURL,
+  onAuthStateChanged
 }from "./firebase.js";
 
-const profileImage=document.getElementById("profileImage");
-const profileFile=document.getElementById("profileFile");
+import{
+  uploadBytesResumable
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
-const fullName=document.getElementById("fullName");
-const country=document.getElementById("country");
-const email=document.getElementById("email");
-const about=document.getElementById("about");
 
-const saveBtn=document.getElementById("saveBtn");
+/* ========================================
+   PAGE ELEMENTS
+======================================== */
 
-let currentUser=null;
+const profileImage =
+document.getElementById("profileImage");
+
+const profileFile =
+document.getElementById("profileFile");
+
+const fullName =
+document.getElementById("fullName");
+
+const country =
+document.getElementById("country");
+
+const email =
+document.getElementById("email");
+
+const about =
+document.getElementById("about");
+
+const saveBtn =
+document.getElementById("saveBtn");
+
+
+let currentUser = null;
+
+let currentPhotoURL = "images/profile.png";
+
+let previewURL = null;
+
+
+/* ========================================
+   LOAD CURRENT PROFILE
+======================================== */
 
 onAuthStateChanged(auth,async(user)=>{
 
-if(!user){
+  if(!user){
 
-location.href="login.html";
-return;
+    location.href = "login.html";
+    return;
 
-}
+  }
 
-currentUser=user;
+  currentUser = user;
 
-email.value=user.email||"";
+  email.value = user.email || "";
 
-try{
+  try{
 
-const snap=await getDoc(doc(db,"users",user.uid));
+    const profileSnap =
+    await getDoc(
+      doc(db,"users",user.uid)
+    );
 
-if(snap.exists()){
+    if(profileSnap.exists()){
 
-const data=snap.data();
+      const data =
+      profileSnap.data();
 
-fullName.value=data.fullName||"";
-country.value=data.country||"";
-about.value=data.about||"";
+      fullName.value =
+      data.fullName || "";
 
-if(data.profilePicture){
+      country.value =
+      data.country || "";
 
-profileImage.src=data.profilePicture;
+      about.value =
+      data.about || "";
 
-}
+      currentPhotoURL =
+      data.profilePicture ||
+      user.photoURL ||
+      "images/profile.png";
 
-}
+      profileImage.src =
+      currentPhotoURL;
 
-}catch(error){
+    }
 
-console.error(error);
-alert(error.message);
+  }catch(error){
 
-}
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+    alert(
+      "Unable to load your profile: " +
+      error.message
+    );
+
+  }
 
 });
+
+
+/* ========================================
+   PREVIEW SELECTED PICTURE
+======================================== */
 
 profileFile.addEventListener("change",()=>{
 
-const file=profileFile.files[0];
+  const file =
+  profileFile.files[0];
 
-if(file){
+  if(!file){
 
-profileImage.src=URL.createObjectURL(file);
+    return;
 
-}
+  }
+
+
+  /* Allow image files only */
+
+  if(!file.type.startsWith("image/")){
+
+    alert(
+      "Please choose a valid image file."
+    );
+
+    profileFile.value = "";
+    return;
+
+  }
+
+
+  /* Maximum size: 5 MB */
+
+  const maximumSize =
+  5 * 1024 * 1024;
+
+  if(file.size > maximumSize){
+
+    alert(
+      "The picture is too large. Please choose an image smaller than 5 MB."
+    );
+
+    profileFile.value = "";
+    return;
+
+  }
+
+
+  if(previewURL){
+
+    URL.revokeObjectURL(previewURL);
+
+  }
+
+  previewURL =
+  URL.createObjectURL(file);
+
+  profileImage.src =
+  previewURL;
 
 });
+
+
+/* ========================================
+   SAVE PROFILE
+======================================== */
 
 saveBtn.addEventListener("click",async()=>{
 
-try{
+  if(!currentUser){
 
-saveBtn.disabled=true;
-saveBtn.innerText="Saving...";
+    alert(
+      "Please wait while your account loads."
+    );
 
-let photoURL=profileImage.src;
+    return;
 
-const file=profileFile.files[0];
+  }
 
-if(file){
 
-const storageRef=ref(storage,"profilePictures/"+currentUser.uid);
+  const enteredName =
+  fullName.value.trim();
 
-await uploadBytes(storageRef,file);
+  if(!enteredName){
 
-photoURL=await getDownloadURL(storageRef);
+    alert(
+      "Please enter your full name."
+    );
 
-}
+    fullName.focus();
+    return;
 
-await updateDoc(
+  }
 
-doc(db,"users",currentUser.uid),
 
-{
+  saveBtn.disabled = true;
+  saveBtn.innerText = "Saving...";
 
-fullName:fullName.value.trim(),
 
-country:country.value.trim(),
+  try{
 
-about:about.value.trim(),
+    let photoURL =
+    currentPhotoURL;
 
-email:email.value,
+    const file =
+    profileFile.files[0];
 
-profilePicture:photoURL
 
-}
-
-);
-
-alert("✅ Profile updated successfully!");
-
-saveBtn.disabled=false;
-saveBtn.innerText="💾 Save Changes";
-
-}catch(error){
-
-console.error(error);
-
-alert(error.message);
-
-saveBtn.disabled=false;
-saveBtn.innerText="💾 Save Changes";
-
-}
-
-});
-
-</script>
+    /* Upload
+   </script>
 
 </body>
 
