@@ -400,5 +400,80 @@ profileImage.src=URL.createObjectURL(file);
 });
 
 </script>
+<script type="module">
+
+import{
+ref,
+uploadBytes,
+getDownloadURL,
+updateDoc,
+doc
+}from "./firebase.js";
+
+const saveBtn=document.getElementById("saveBtn");
+
+saveBtn.addEventListener("click",async()=>{
+
+try{
+
+saveBtn.disabled=true;
+saveBtn.innerText="Saving...";
+
+let profilePicture=profileImage.src;
+
+const file=profileFile.files[0];
+
+if(file){
+
+const storageRef=ref(
+storage,
+"profilePictures/"+currentUser.uid
+);
+
+await uploadBytes(storageRef,file);
+
+profilePicture=await getDownloadURL(storageRef);
+
+}
+
+await updateDoc(
+doc(db,"users",currentUser.uid),
+{
+
+fullName:fullName.value.trim(),
+
+country:country.value.trim(),
+
+about:about.value.trim(),
+
+email:email.value.trim(),
+
+profilePicture:profilePicture
+
+}
+
+);
+
+alert("✅ Profile updated successfully.");
+
+saveBtn.disabled=false;
+saveBtn.innerText="💾 Save Changes";
+
+}catch(error){
+
+console.error(error);
+
+alert(error.message);
+
+saveBtn.disabled=false;
+saveBtn.innerText="💾 Save Changes";
+
+}
+
+});
+
+</script>
+
 </body>
-</HTML>
+
+</html>
