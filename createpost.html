@@ -139,74 +139,256 @@ text-decoration:none;
 </div>
 
 <script type="module">
-alert("Script loaded");
+
 import {
-db,
-collection,
-addDoc
+  auth,
+  db,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  onAuthStateChanged
 } from "./firebase.js";
 
 import {
-serverTimestamp
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-async function publishPost(){
 
-let name = document.getElementById("name").value.trim();
-let category = document.getElementById("category").value;
-let post = document.getElementById("post").value.trim();
+let currentUser = null;
+let currentProfile = null;
 
-if(name=="" || post==""){
 
-alert("Please enter your name and write a post.");
+/* ========================================
+   CHECK LOGGED-IN USER
+======================================== */
 
-return;
+onAuthStateChanged(auth, async(user)=>{
 
-}
+  if(!user){
 
-try{
+    location.href = "login.html";
+    return;
 
-await addDoc(collection(db,"communityPosts"),{
+  }
 
-name:name,
-category:category,
-post:post,
-date:new Date().toLocaleString(),
-timestamp: serverTimestamp(),
-likes:0,
-comments:[],
-picture:localStorage.getItem("profilePicture") || "images/profile.png"
+  currentUser = user;
+
+  await loadCurrentProfile();
 
 });
 
-let totalPosts =
-parseInt(localStorage.getItem("posts")) || 0;
 
-localStorage.setItem("posts",totalPosts+1);
+/* ========================================
+   LOAD USER PROFILE
+======================================== */
 
-document.getElementById("message").innerHTML =
-"✅ Your post has been published successfully!";
+async function loadCurrentProfile(){
 
-document.getElementById("name").value="";
-document.getElementById("post").value="";
+  try{
 
-setTimeout(function(){
+    /*
+      Change "users" below only if your
+      member profiles use another collection name.
+    */
 
-window.location.href="feed.html";
+    const profileReference =
+    doc(db,"users",currentUser.uid);
 
-},1200);
+    const profileSnapshot =
+    await getDoc(profileReference);
 
-}catch(error){
 
-alert(error.message);
+    if(profileSnapshot.exists()){
+
+      currentProfile =
+      profileSnapshot.data();
+
+      const savedName =
+      getFirstValue(
+        currentProfile.name,
+        currentProfile.fullName,
+        currentProfile.displayName,
+        currentUser.displayName
+      );
+
+      if(savedName){
+
+        document.getElementById("name").value =
+        savedName;
+
+      }
+
+    }else{
+
+      currentProfile = {};
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+    currentProfile = {};
+
+  }
 
 }
 
+
+/* ========================================
+   PUBLISH POST
+======================================== */
+
+async function publishPost(){
+
+  if(!currentUser){
+
+    alert("Please wait while your account loads.");
+    return;
+
+  }
+
+  const name =
+  document.getElementById("name").value.trim();
+
+  const category =
+  document.getElementById("category").value;
+
+  const post =
+  document.getElementById("post").value.trim();
+
+
+  if(name === "" || post === ""){
+
+    alert(
+      "Please enter your name and write a post."
+    );
+
+    return;
+
+  }
+
+
+  const picture = getFirstValue(
+
+    currentProfile?.picture,
+    currentProfile?.profilePicture,
+    currentProfile?.photoURL,
+    currentProfile?.profileImage,
+    currentProfile?.profilePhoto,
+    currentUser.photoURL,
+    "images/profile.png"
+
+  );
+
+
+  try{
+
+    await addDoc(
+      collection(db,"communityPosts"),
+      {
+
+        userId:currentUser.uid,
+
+        name:name,
+
+        category:category,
+
+        post:post,
+
+        date:new Date().toLocaleString(),
+
+        timestamp:serverTimestamp(),
+
+        likes:0,
+
+        comments:[],
+
+        picture:picture
+
+      }
+    );
+
+
+    let totalPosts =
+    parseInt(
+      localStorage.getItem("posts")
+    ) || 0;
+
+    localStorage.setItem(
+      "posts",
+      totalPosts + 1
+    );
+
+
+    document.getElementById("message").innerHTML =
+
+    "✅ Your post has been published successfully!";
+
+
+    document.getElementById("post").value = "";
+
+
+    setTimeout(()=>{
+
+      location.href = "feed.html";
+
+    },1200);
+
+  }catch(error){
+
+    console.error(
+      "Post publishing error:",
+      error
+    );
+
+    alert(error.message);
+
+  }
+
 }
 
-document.getElementById("publishBtn")
-.addEventListener("click", publishPost);
+
+/* ========================================
+   GET FIRST AVAILABLE VALUE
+======================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* ========================================
+   PUBLISH BUTTON
+======================================== */
+
+document
+.getElementById("publishBtn")
+.addEventListener(
+  "click",
+  publishPost
+);
+
 </script>
-
 </body>
 </html>
