@@ -270,100 +270,420 @@ onclick="history.back()">
 <script type="module">
 
 import{
-auth,
-db,
-doc,
-getDoc,
-onAuthStateChanged
+  auth,
+  db,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  onAuthStateChanged
 }from "./firebase.js";
 
-const params=new URLSearchParams(window.location.search);
-const uid=params.get("uid");
+import{
+  serverTimestamp
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const photo=document.getElementById("profilePhoto");
-const fullName=document.getElementById("fullName");
-const country=document.getElementById("country");
-const email=document.getElementById("email");
-const joined=document.getElementById("joined");
-const about=document.getElementById("about");
 
-let currentUser=null;
+/* ========================================
+   PAGE ELEMENTS
+======================================== */
+
+const nameInput =
+document.getElementById("name");
+
+const categoryInput =
+document.getElementById("category");
+
+const postInput =
+document.getElementById("post");
+
+const publishBtn =
+document.getElementById("publishBtn");
+
+const messageBox =
+document.getElementById("message");
+
+
+/* ========================================
+   USER INFORMATION
+======================================== */
+
+let currentUser = null;
+
+let currentProfile = null;
+
+
+/* ========================================
+   CHECK LOGIN AND LOAD PROFILE
+======================================== */
 
 onAuthStateChanged(auth,async(user)=>{
 
-if(!user){
+  if(!user){
 
-location.href="login.html";
-return;
+    location.href = "login.html";
+    return;
 
-}
+  }
 
-currentUser=user;
+  currentUser = user;
 
-loadProfile();
-
-});
-
-async function loadProfile(){
-
-try{
-
-const userSnap=await getDoc(doc(db,"users",uid));
-
-if(!userSnap.exists()){
-
-fullName.innerText="Member not found";
-about.innerText="This member does not exist.";
-return;
-
-}
-
-const data=userSnap.data();
-
-photo.src=data.profilePicture||"images/profile.png";
-
-fullName.innerText=data.fullName||"Unknown Member";
-
-country.innerHTML="🌍 "+(data.country||"Country not provided");
-
-email.innerHTML="📧 "+(data.email||"No email");
-
-joined.innerHTML="📅 Member of SABASABA Gospel Ministry";
-
-about.innerText=data.about||"This member has not added an introduction yet.";
-
-}catch(error){
-
-console.error(error);
-
-fullName.innerText="Error";
-
-about.innerText=error.message;
-
-}
-
-}
-
-</script>
-<script>
-
-document.getElementById("messageBtn").addEventListener("click",()=>{
-
-const params=new URLSearchParams(window.location.search);
-
-const uid=params.get("uid");
-
-window.location.href="chat.html?uid="+uid;
+  await loadCurrentProfile();
 
 });
 
-document.getElementById("prayBtn").addEventListener("click",()=>{
 
-alert(
-"🙏 Pray Together is coming soon.\n\nThis feature will allow believers to pray together and send prayer requests."
-);
+/* ========================================
+   LOAD PROFILE FROM FIRESTORE
+======================================== */
 
-});
+async function loadCurrentProfile(){
+
+  try{
+
+    const profileReference =
+    doc(db,"users",currentUser.uid);
+
+    const profileSnapshot =
+    await getDoc(profileReference);
+
+
+    if(profileSnapshot.exists()){
+
+      currentProfile =
+      profileSnapshot.data();
+
+    }else{
+
+      currentProfile = {};
+
+    }
+
+
+    const savedName = getFirstValue(
+
+      currentProfile.fullName,
+      currentProfile.name,
+      currentProfile.displayName,
+      currentUser.displayName,
+      ""
+
+    );
+
+
+    if(savedName && nameInput){
+
+      nameInput.value = savedName;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+    currentProfile = {};
+
+    alert(
+      "Your profile information could not be loaded."
+    );
+
+  }
+
+}
+
+
+/* ========================================
+   PUBLISH COMMUNITY POST
+======================================== */
+
+async function publishPost(){
+
+  if(!currentUser){
+
+    alert(
+      "Please wait while your account is loading."
+    );
+
+    return;
+
+  }
+
+
+  const enteredName =
+  nameInput.value.trim();
+
+  const selectedCategory =
+  categoryInput.value;
+
+  const enteredPost =
+  postInput.value.trim();
+
+
+  if(enteredName === ""){
+
+    alert(
+      "Please enter your name."
+    );
+
+    nameInput.focus();
+    return;
+
+  }
+
+
+  if(enteredPost === ""){
+
+    alert(
+      "Please write your post."
+    );
+
+    postInput.focus();
+    return;
+
+  }
+
+
+  const profilePicture = getFirstValue(
+
+    currentProfile?.profilePicture,
+    currentUser.photoURL,
+    "images/profile.png"
+
+  );
+
+
+  const profileName = getFirstValue(
+
+    currentProfile?.fullName,
+    enteredName,
+    currentUser.displayName,
+    "Anonymous"
+
+  );
+
+
+  const profileCountry = getFirstValue(
+
+    currentProfile?.country,
+    ""
+
+  );
+
+
+  publishBtn.disabled = true;
+
+  publishBtn.innerText =
+  "Publishing...";
+
+
+  if(messageBox){
+
+    messageBox.innerHTML =
+    "Publishing your post...";
+
+  }
+
+
+  try{
+
+    await addDoc(
+
+      collection(db,"communityPosts"),
+
+      {
+
+        userId:
+        currentUser.uid,
+
+        uid:
+        currentUser.uid,
+
+        name:
+        profileName,
+
+        fullName:
+        profileName,
+
+        country:
+        profileCountry,
+
+        category:
+        selectedCategory,
+
+        post:
+        enteredPost,
+
+        text:
+        enteredPost,
+
+        picture:
+        profilePicture,
+
+        profilePicture:
+        profilePicture,
+
+        date:
+        new Date().toLocaleString(),
+
+        timestamp:
+        serverTimestamp(),
+
+        likes:
+        0,
+
+        comments:
+        []
+
+      }
+
+    );
+
+
+    const currentPostTotal =
+
+    parseInt(
+      localStorage.getItem("posts")
+    ) || 0;
+
+
+    localStorage.setItem(
+
+      "posts",
+
+      String(currentPostTotal + 1)
+
+    );
+
+
+    if(messageBox){
+
+      messageBox.innerHTML =
+
+      "✅ Your post has been published successfully!";
+
+    }
+
+
+    postInput.value = "";
+
+
+    setTimeout(()=>{
+
+      location.href = "feed.html";
+
+    },1200);
+
+  }catch(error){
+
+    console.error(
+      "Publishing error:",
+      error
+    );
+
+
+    if(messageBox){
+
+      messageBox.innerHTML =
+
+      "❌ The post could not be published.";
+
+    }
+
+
+    alert(
+      getFriendlyErrorMessage(error)
+    );
+
+  }finally{
+
+    publishBtn.disabled = false;
+
+    publishBtn.innerText =
+    "Publish Post";
+
+  }
+
+}
+
+
+/* ========================================
+   GET FIRST AVAILABLE VALUE
+======================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* ========================================
+   FRIENDLY ERROR MESSAGE
+======================================== */
+
+function getFriendlyErrorMessage(error){
+
+  if(
+    error.code ===
+    "permission-denied"
+  ){
+
+    return "Firebase did not allow this post to be saved. Please check your Firestore security rules.";
+
+  }
+
+
+  if(
+    error.code ===
+    "unavailable"
+  ){
+
+    return "The internet connection is unavailable. Please check your connection and try again.";
+
+  }
+
+
+  return error.message ||
+  "The post could not be published.";
+
+}
+
+
+/* ========================================
+   PUBLISH BUTTON
+======================================== */
+
+if(publishBtn){
+
+  publishBtn.addEventListener(
+    "click",
+    publishPost
+  );
+
+}else{
+
+  console.error(
+    "The publishBtn element was not found."
+  );
+
+}
 
 </script>
 
