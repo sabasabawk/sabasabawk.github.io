@@ -398,16 +398,31 @@ body{
 
 </div>
 
-
 <script type="module">
+
+/* ========================================
+   FIREBASE IMPORTS
+======================================== */
 
 import{
   auth,
-  db,
+  db
+}from "./firebase.js";
+
+import{
+  onAuthStateChanged
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import{
   doc,
   getDoc,
-  onAuthStateChanged
-}from "./firebase.js";
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* ========================================
@@ -437,20 +452,18 @@ document.getElementById("commentsCount");
 
 
 /* ========================================
-   GET POST ID FROM PAGE ADDRESS
+   GET POST ID FROM URL
 ======================================== */
 
 const pageParameters =
-new URLSearchParams(
-  window.location.search
-);
+new URLSearchParams(window.location.search);
 
 const postId =
 pageParameters.get("postId");
 
 
 /* ========================================
-   CURRENT USER AND POST
+   GLOBAL VARIABLES
 ======================================== */
 
 let currentUser = null;
@@ -459,24 +472,22 @@ let currentProfile = {};
 
 let selectedPostData = null;
 
+let unsubscribeComments = null;
+
 
 /* ========================================
    BACK BUTTON
 ======================================== */
 
-if(backButton){
+backButton.addEventListener("click",()=>{
 
-  backButton.addEventListener("click",()=>{
+  location.href = "feed.html";
 
-    location.href = "feed.html";
-
-  });
-
-}
+});
 
 
 /* ========================================
-   CHECK LOGIN
+   CHECK AUTHENTICATION
 ======================================== */
 
 onAuthStateChanged(auth,async(user)=>{
@@ -508,11 +519,13 @@ onAuthStateChanged(auth,async(user)=>{
 
   await loadSelectedPost();
 
+  await startCommentSystem();
+
 });
 
 
 /* ========================================
-   LOAD SELECTED COMMUNITY POST
+   LOAD SELECTED POST
 ======================================== */
 
 async function loadSelectedPost(){
@@ -531,7 +544,12 @@ async function loadSelectedPost(){
 
 
     const postReference =
-    doc(db,"communityPosts",postId);
+    doc(
+      db,
+      "communityPosts",
+      postId
+    );
+
 
     const postSnapshot =
     await getDoc(postReference);
@@ -753,15 +771,13 @@ function displaySelectedPost(post){
   `;
 
 
-  connectSelectedPost(
-    authorId
-  );
+  connectSelectedPost(authorId);
 
 }
 
 
 /* ========================================
-   CONNECT SELECTED POST
+   CONNECT POST PROFILE
 ======================================== */
 
 function connectSelectedPost(authorId){
@@ -855,6 +871,570 @@ function connectSelectedPost(authorId){
 
 
 /* ========================================
+   START COMMENT SYSTEM
+======================================== */
+
+async function startCommentSystem(){
+
+  await loadCurrentProfile();
+
+  loadComments();
+
+}
+
+
+/* ========================================
+   LOAD CURRENT USER PROFILE
+======================================== */
+
+async function loadCurrentProfile(){
+
+  try{
+
+    const profileReference =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+
+    const profileSnapshot =
+    await getDoc(profileReference);
+
+
+    if(profileSnapshot.exists()){
+
+      currentProfile =
+      profileSnapshot.data();
+
+    }else{
+
+      currentProfile = {};
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+    currentProfile = {};
+
+  }
+
+}
+
+
+/* ========================================
+   POST COMMENT BUTTON
+======================================== */
+
+publishCommentButton.addEventListener(
+  "click",
+  publishComment
+);
+
+
+/* ========================================
+   PUBLISH COMMENT
+======================================== */
+
+async function publishComment(){
+
+  if(!currentUser){
+
+    alert(
+      "Please log in before posting a comment."
+    );
+
+    return;
+
+  }
+
+
+  if(!selectedPostData){
+
+    alert(
+      "Please wait for the post to finish loading."
+    );
+
+    return;
+
+  }
+
+
+  const writtenComment =
+  commentText.value.trim();
+
+
+  if(writtenComment === ""){
+
+    alert(
+      "Please write a comment."
+    );
+
+    commentText.focus();
+
+    return;
+
+  }
+
+
+  const commenterName =
+  getFirstValue(
+
+    currentProfile.fullName,
+    currentProfile.name,
+    currentUser.displayName,
+    "Anonymous"
+
+  );
+
+
+  const commenterPicture =
+  getFirstValue(
+
+    currentProfile.profilePicture,
+    currentProfile.picture,
+    currentUser.photoURL,
+    "images/profile.png"
+
+  );
+
+
+  const commenterCountry =
+  getFirstValue(
+
+    currentProfile.country,
+    ""
+
+  );
+
+
+  publishCommentButton.disabled =
+  true;
+
+  publishCommentButton.innerText =
+  "Posting...";
+
+  commentMessage.innerText =
+  "Publishing your comment...";
+
+
+  try{
+
+    await addDoc(
+
+      collection(
+        db,
+        "communityPosts",
+        postId,
+        "comments"
+      ),
+
+      {
+
+        userId:
+        currentUser.uid,
+
+        uid:
+        currentUser.uid,
+
+        name:
+        commenterName,
+
+        fullName:
+        commenterName,
+
+        picture:
+        commenterPicture,
+
+        profilePicture:
+        commenterPicture,
+
+        country:
+        commenterCountry,
+
+        comment:
+        writtenComment,
+
+        text:
+        writtenComment,
+
+        timestamp:
+        serverTimestamp(),
+
+        date:
+        new Date().toLocaleString()
+
+      }
+
+    );
+
+
+    commentText.value = "";
+
+    commentMessage.innerText =
+    "✅ Comment posted successfully.";
+
+
+    setTimeout(()=>{
+
+      commentMessage.innerText = "";
+
+    },2000);
+
+  }catch(error){
+
+    console.error(
+      "Comment publishing error:",
+      error
+    );
+
+
+    commentMessage.innerText =
+    "❌ The comment could not be posted.";
+
+
+    alert(
+      getFriendlyCommentError(error)
+    );
+
+  }finally{
+
+    publishCommentButton.disabled =
+    false;
+
+    publishCommentButton.innerText =
+    "Post Comment";
+
+  }
+
+}
+
+
+/* ========================================
+   LOAD COMMENTS LIVE
+======================================== */
+
+function loadComments(){
+
+  if(unsubscribeComments){
+
+    unsubscribeComments();
+
+    unsubscribeComments = null;
+
+  }
+
+
+  commentsContainer.innerHTML = `
+
+    <div class="loadingMessage">
+
+      Loading comments...
+
+    </div>
+
+  `;
+
+
+  const commentsReference =
+  collection(
+    db,
+    "communityPosts",
+    postId,
+    "comments"
+  );
+
+
+  const commentsQuery =
+  query(
+    commentsReference,
+    orderBy("timestamp","asc")
+  );
+
+
+  unsubscribeComments =
+  onSnapshot(
+
+    commentsQuery,
+
+    (snapshot)=>{
+
+      const comments = [];
+
+
+      snapshot.forEach(
+        (commentDocument)=>{
+
+          comments.push({
+
+            id:
+            commentDocument.id,
+
+            ...commentDocument.data()
+
+          });
+
+        }
+      );
+
+
+      displayComments(comments);
+
+    },
+
+    (error)=>{
+
+      console.error(
+        "Comments loading error:",
+        error
+      );
+
+
+      commentsContainer.innerHTML = `
+
+        <div class="errorMessage">
+
+          ${escapeHTML(
+            getFriendlyCommentError(error)
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+  );
+
+}
+
+
+/* ========================================
+   DISPLAY COMMENTS
+======================================== */
+
+function displayComments(comments){
+
+  commentsCount.innerText =
+  String(comments.length);
+
+  commentsContainer.innerHTML = "";
+
+
+  if(comments.length === 0){
+
+    commentsContainer.innerHTML = `
+
+      <div class="emptyMessage">
+
+        No comments yet.
+
+        <br><br>
+
+        Be the first person to comment.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  comments.forEach((comment)=>{
+
+    const commenterName =
+    getFirstValue(
+
+      comment.name,
+      comment.fullName,
+      comment.displayName,
+      "Anonymous"
+
+    );
+
+
+    const commenterPicture =
+    getFirstValue(
+
+      comment.picture,
+      comment.profilePicture,
+      comment.photoURL,
+      "images/profile.png"
+
+    );
+
+
+    const commenterId =
+    getFirstValue(
+
+      comment.userId,
+      comment.uid,
+      comment.authorId,
+      ""
+
+    );
+
+
+    const commentTextValue =
+    getFirstValue(
+
+      comment.comment,
+      comment.text,
+      comment.message,
+      ""
+
+    );
+
+
+    const commentDate =
+    getCommentDisplayDate(comment);
+
+
+    const commentCard =
+    document.createElement("article");
+
+    commentCard.className =
+    "commentCard";
+
+
+    commentCard.innerHTML = `
+
+      <img
+        class="commentAuthorPicture"
+        src="${escapeAttribute(commenterPicture)}"
+        alt="Profile Picture"
+        loading="lazy"
+      >
+
+
+      <div class="commentBody">
+
+        <div class="commentAuthorName">
+
+          ${escapeHTML(commenterName)}
+
+        </div>
+
+
+        <div class="commentDate">
+
+          ${escapeHTML(commentDate)}
+
+        </div>
+
+
+        <div class="commentText">
+
+          ${formatText(commentTextValue)}
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    commentsContainer.appendChild(
+      commentCard
+    );
+
+
+    connectCommentCard(
+      commentCard,
+      commenterId
+    );
+
+  });
+
+}
+
+
+/* ========================================
+   CONNECT COMMENTER PROFILE
+======================================== */
+
+function connectCommentCard(
+  commentCard,
+  commenterId
+){
+
+  const commenterPicture =
+  commentCard.querySelector(
+    ".commentAuthorPicture"
+  );
+
+  const commenterName =
+  commentCard.querySelector(
+    ".commentAuthorName"
+  );
+
+
+  if(commenterPicture){
+
+    commenterPicture.addEventListener(
+      "error",
+      ()=>{
+
+        commenterPicture.src =
+        "images/profile.png";
+
+      },
+      {
+        once:true
+      }
+    );
+
+
+    commenterPicture.addEventListener(
+      "click",
+      openCommenterProfile
+    );
+
+  }
+
+
+  if(commenterName){
+
+    commenterName.addEventListener(
+      "click",
+      openCommenterProfile
+    );
+
+  }
+
+
+  function openCommenterProfile(){
+
+    if(!commenterId){
+
+      alert(
+        "This member's profile is not available."
+      );
+
+      return;
+
+    }
+
+
+    location.href =
+
+    "profileview.html?uid=" +
+    encodeURIComponent(commenterId);
+
+  }
+
+}
+
+
+/* ========================================
    SHOW POST ERROR
 ======================================== */
 
@@ -871,18 +1451,9 @@ function showPostError(message){
   `;
 
 
-  if(commentText){
+  commentText.disabled = true;
 
-    commentText.disabled = true;
-
-  }
-
-
-  if(publishCommentButton){
-
-    publishCommentButton.disabled = true;
-
-  }
+  publishCommentButton.disabled = true;
 
 
   commentsContainer.innerHTML = `
@@ -992,6 +1563,7 @@ function getDisplayDate(post){
     const parsedTimestamp =
     Date.parse(timestamp);
 
+
     if(!Number.isNaN(parsedTimestamp)){
 
       return new Date(parsedTimestamp)
@@ -1015,616 +1587,7 @@ function getDisplayDate(post){
 
 
 /* ========================================
-   FRIENDLY POST ERROR
-======================================== */
-
-function getFriendlyPostError(error){
-
-  if(error.code === "permission-denied"){
-
-    return "Firebase did not allow this post to be viewed. Check your Firestore security rules.";
-
-  }
-
-
-  if(error.code === "unavailable"){
-
-    return "The post could not be loaded because the internet connection is unavailable.";
-
-  }
-
-
-  return error.message ||
-  "The community post could not be loaded.";
-
-}
-/* ========================================
-   FIRESTORE COMMENT IMPORTS
-======================================== */
-
-import{
-  collection,
-  addDoc,
-  onSnapshot,
-  query,
-  orderBy,
-  serverTimestamp
-}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-
-/* ========================================
-   COMMENT LISTENER
-======================================== */
-
-let unsubscribeComments = null;
-
-
-/* ========================================
-   LOAD CURRENT MEMBER PROFILE
-======================================== */
-
-async function loadCurrentProfile(){
-
-  try{
-
-    const profileSnapshot =
-    await getDoc(
-      doc(db,"users",currentUser.uid)
-    );
-
-
-    if(profileSnapshot.exists()){
-
-      currentProfile =
-      profileSnapshot.data();
-
-    }else{
-
-      currentProfile = {};
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Profile loading error:",
-      error
-    );
-
-    currentProfile = {};
-
-  }
-
-}
-
-
-/* ========================================
-   START COMMENT SYSTEM
-======================================== */
-
-async function startCommentSystem(){
-
-  await loadCurrentProfile();
-  await startCommentSystem();
-  loadComments();
-
-}
-
-
-/* ========================================
-   PUBLISH COMMENT
-======================================== */
-
-publishCommentButton.addEventListener(
-  "click",
-  publishComment
-);
-
-
-async function publishComment(){
-
-  if(!currentUser){
-
-    alert(
-      "Please log in before posting a comment."
-    );
-
-    return;
-
-  }
-
-
-  if(!selectedPostData){
-
-    alert(
-      "Please wait for the post to finish loading."
-    );
-
-    return;
-
-  }
-
-
-  const comment =
-  commentText.value.trim();
-
-
-  if(comment === ""){
-
-    alert(
-      "Please write a comment."
-    );
-
-    commentText.focus();
-
-    return;
-
-  }
-
-
-  const commenterName =
-  getFirstValue(
-
-    currentProfile.fullName,
-    currentProfile.name,
-    currentUser.displayName,
-    "Anonymous"
-
-  );
-
-
-  const commenterPicture =
-  getFirstValue(
-
-    currentProfile.profilePicture,
-    currentUser.photoURL,
-    "images/profile.png"
-
-  );
-
-
-  const commenterCountry =
-  getFirstValue(
-
-    currentProfile.country,
-    ""
-
-  );
-
-
-  publishCommentButton.disabled =
-  true;
-
-  publishCommentButton.innerText =
-  "Posting...";
-
-
-  commentMessage.innerText =
-  "Publishing your comment...";
-
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        "communityPosts",
-        postId,
-        "comments"
-      ),
-
-      {
-
-        userId:
-        currentUser.uid,
-
-        uid:
-        currentUser.uid,
-
-        name:
-        commenterName,
-
-        fullName:
-        commenterName,
-
-        picture:
-        commenterPicture,
-
-        profilePicture:
-        commenterPicture,
-
-        country:
-        commenterCountry,
-
-        comment:
-        comment,
-
-        text:
-        comment,
-
-        timestamp:
-        serverTimestamp(),
-
-        date:
-        new Date().toLocaleString()
-
-      }
-
-    );
-
-
-    commentText.value = "";
-
-    commentMessage.innerText =
-    "✅ Comment posted successfully.";
-
-
-    setTimeout(()=>{
-
-      commentMessage.innerText = "";
-
-    },2000);
-
-  }catch(error){
-
-    console.error(
-      "Comment publishing error:",
-      error
-    );
-
-
-    commentMessage.innerText =
-    "❌ The comment could not be posted.";
-
-
-    alert(
-      getFriendlyCommentError(error)
-    );
-
-  }finally{
-
-    publishCommentButton.disabled =
-    false;
-
-    publishCommentButton.innerText =
-    "Post Comment";
-
-  }
-
-}
-
-
-/* ========================================
-   LOAD COMMENTS LIVE
-======================================== */
-
-function loadComments(){
-
-  if(unsubscribeComments){
-
-    unsubscribeComments();
-
-    unsubscribeComments = null;
-
-  }
-
-
-  commentsContainer.innerHTML = `
-
-    <div class="loadingMessage">
-
-      Loading comments...
-
-    </div>
-
-  `;
-
-
-  const commentsQuery =
-  query(
-
-    collection(
-      db,
-      "communityPosts",
-      postId,
-      "comments"
-    ),
-
-    orderBy("timestamp","asc")
-
-  );
-
-
-  unsubscribeComments =
-  onSnapshot(
-
-    commentsQuery,
-
-    (snapshot)=>{
-
-      const comments = [];
-
-
-      snapshot.forEach(
-        (commentDocument)=>{
-
-          comments.push({
-
-            id:
-            commentDocument.id,
-
-            ...commentDocument.data()
-
-          });
-
-        }
-      );
-
-
-      displayComments(comments);
-
-    },
-
-    (error)=>{
-
-      console.error(
-        "Comments loading error:",
-        error
-      );
-
-
-      commentsContainer.innerHTML = `
-
-        <div class="errorMessage">
-
-          ${escapeHTML(
-            getFriendlyCommentError(error)
-          )}
-
-        </div>
-
-      `;
-
-    }
-
-  );
-
-}
-
-
-/* ========================================
-   DISPLAY COMMENTS
-======================================== */
-
-function displayComments(comments){
-
-  commentsCount.innerText =
-  String(comments.length);
-
-
-  commentsContainer.innerHTML = "";
-
-
-  if(comments.length === 0){
-
-    commentsContainer.innerHTML = `
-
-      <div class="emptyMessage">
-
-        No comments yet.
-
-        <br><br>
-
-        Be the first person to comment.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  comments.forEach((comment)=>{
-
-    const commenterName =
-    getFirstValue(
-
-      comment.name,
-      comment.fullName,
-      comment.displayName,
-      "Anonymous"
-
-    );
-
-
-    const commenterPicture =
-    getFirstValue(
-
-      comment.picture,
-      comment.profilePicture,
-      comment.photoURL,
-      "images/profile.png"
-
-    );
-
-
-    const commenterId =
-    getFirstValue(
-
-      comment.userId,
-      comment.uid,
-      comment.authorId,
-      ""
-
-    );
-
-
-    const commentTextValue =
-    getFirstValue(
-
-      comment.comment,
-      comment.text,
-      comment.message,
-      ""
-
-    );
-
-
-    const commentDate =
-    getCommentDisplayDate(comment);
-
-
-    const commentCard =
-    document.createElement("article");
-
-    commentCard.className =
-    "commentCard";
-
-
-    commentCard.innerHTML = `
-
-      <img
-        class="commentAuthorPicture"
-        src="${escapeAttribute(
-          commenterPicture
-        )}"
-        alt="Profile Picture"
-        loading="lazy"
-      >
-
-
-      <div class="commentBody">
-
-        <div class="commentAuthorName">
-
-          ${escapeHTML(
-            commenterName
-          )}
-
-        </div>
-
-
-        <div class="commentDate">
-
-          ${escapeHTML(
-            commentDate
-          )}
-
-        </div>
-
-
-        <div class="commentText">
-
-          ${formatText(
-            commentTextValue
-          )}
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    commentsContainer.appendChild(
-      commentCard
-    );
-
-
-    connectCommentCard(
-      commentCard,
-      commenterId
-    );
-
-  });
-
-}
-
-
-/* ========================================
-   CONNECT COMMENT PROFILE
-======================================== */
-
-function connectCommentCard(
-  commentCard,
-  commenterId
-){
-
-  const commenterPicture =
-  commentCard.querySelector(
-    ".commentAuthorPicture"
-  );
-
-  const commenterName =
-  commentCard.querySelector(
-    ".commentAuthorName"
-  );
-
-
-  if(commenterPicture){
-
-    commenterPicture.addEventListener(
-      "error",
-      ()=>{
-
-        commenterPicture.src =
-        "images/profile.png";
-
-      },
-      {
-        once:true
-      }
-    );
-
-
-    commenterPicture.addEventListener(
-      "click",
-      openCommenterProfile
-    );
-
-  }
-
-
-  if(commenterName){
-
-    commenterName.addEventListener(
-      "click",
-      openCommenterProfile
-    );
-
-  }
-
-
-  function openCommenterProfile(){
-
-    if(!commenterId){
-
-      alert(
-        "This member's profile is not available."
-      );
-
-      return;
-
-    }
-
-
-    location.href =
-
-    "profileview.html?uid=" +
-    encodeURIComponent(
-      commenterId
-    );
-
-  }
-
-}
-
-
-/* ========================================
-   COMMENT DATE
+   DISPLAY COMMENT DATE
 ======================================== */
 
 function getCommentDisplayDate(comment){
@@ -1661,9 +1624,8 @@ function getCommentDisplayDate(comment){
 
     if(!Number.isNaN(parsedTimestamp)){
 
-      return new Date(
-        parsedTimestamp
-      ).toLocaleString();
+      return new Date(parsedTimestamp)
+      .toLocaleString();
 
     }
 
@@ -1683,7 +1645,33 @@ function getCommentDisplayDate(comment){
 
 
 /* ========================================
-   COMMENT ERROR MESSAGE
+   FRIENDLY POST ERROR
+======================================== */
+
+function getFriendlyPostError(error){
+
+  if(error.code === "permission-denied"){
+
+    return "Firebase did not allow this post to be viewed. Check your Firestore security rules.";
+
+  }
+
+
+  if(error.code === "unavailable"){
+
+    return "The post could not be loaded because the internet connection is unavailable.";
+
+  }
+
+
+  return error.message ||
+  "The community post could not be loaded.";
+
+}
+
+
+/* ========================================
+   FRIENDLY COMMENT ERROR
 ======================================== */
 
 function getFriendlyCommentError(error){
@@ -1713,21 +1701,26 @@ function getFriendlyCommentError(error){
   "The comment system could not complete this request.";
 
 }
+
+
 /* ========================================
-   STOP COMMENT LISTENER WHEN LEAVING
+   STOP LIVE LISTENER WHEN LEAVING
 ======================================== */
 
-window.addEventListener("beforeunload",()=>{
+window.addEventListener(
+  "beforeunload",
+  ()=>{
 
-  if(unsubscribeComments){
+    if(unsubscribeComments){
 
-    unsubscribeComments();
+      unsubscribeComments();
 
-    unsubscribeComments = null;
+      unsubscribeComments = null;
+
+    }
 
   }
-
-});
+);
 
 </script>
 
