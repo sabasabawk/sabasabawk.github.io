@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Profile</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>My Profile | SABASABA Gospel Ministry</title>
 
 <style>
 
@@ -16,202 +19,134 @@ box-sizing:border-box;
 }
 
 body{
-
 font-family:Arial,sans-serif;
 background:#eef3f8;
-padding:20px;
-
 }
 
 .container{
 
 max-width:850px;
-margin:auto;
-background:white;
-border-radius:20px;
-padding:30px;
-box-shadow:0 4px 15px rgba(0,0,0,.12);
+margin:30px auto;
+padding:20px;
 
 }
 
-.profile{
+.card{
 
+background:white;
+border-radius:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.10);
+overflow:hidden;
+
+}
+
+.header{
+
+background:linear-gradient(135deg,#0066cc,#004d99);
+color:white;
+padding:35px;
 text-align:center;
 
 }
 
-.profile-picture{
+.header h1{
 
-width:180px;
-height:180px;
+font-size:34px;
+margin-bottom:8px;
+
+}
+
+.header p{
+
+font-size:17px;
+
+}
+
+.content{
+
+padding:30px;
+
+}
+
+.photoBox{
+
+text-align:center;
+margin-bottom:30px;
+
+}
+
+.photoBox img{
+
+width:150px;
+height:150px;
 border-radius:50%;
 object-fit:cover;
 border:5px solid #0066cc;
-display:none;
-margin:auto;
+background:#ddd;
 
 }
 
-.placeholder{
+.photoBox input{
 
-width:180px;
-height:180px;
-border-radius:50%;
-background:#0066cc;
-color:white;
-font-size:70px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:auto;
+margin-top:15px;
 
 }
 
-h1{
+.group{
 
-margin-top:20px;
+margin-bottom:22px;
+
+}
+
+.group label{
+
+display:block;
+margin-bottom:8px;
+font-weight:bold;
 color:#0066cc;
 
 }
 
-.email{
-
-color:gray;
-margin-top:8px;
-font-size:18px;
-
-}
-
-.upload-box{
-
-margin-top:25px;
-padding:20px;
-border:2px dashed #0066cc;
-border-radius:12px;
-background:#f8fbff;
-
-}
-
-.upload-btn{
-
-background:#0066cc;
-color:white;
-padding:12px 22px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-size:16px;
-margin-top:10px;
-
-}
-
-.upload-btn:hover{
-
-background:#004d99;
-
-}
-
-.delete-btn{
-
-background:#d32f2f;
-color:white;
-padding:12px 22px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-margin-top:12px;
-display:none;
-
-}
-
-.delete-btn:hover{
-
-background:#a50000;
-
-}
-
-.progress{
+.group input,
+.group textarea{
 
 width:100%;
-height:8px;
-background:#ddd;
-border-radius:5px;
-overflow:hidden;
-margin-top:15px;
-display:none;
+padding:14px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+outline:none;
 
 }
 
-.progress-bar{
+.group input:focus,
+.group textarea:focus{
 
-height:100%;
-width:0%;
-background:#0066cc;
-
-}
-
-.status{
-
-margin-top:15px;
-font-weight:bold;
+border-color:#0066cc;
 
 }
 
-.section{
+.group textarea{
 
-margin-top:25px;
-background:#f4f8fc;
-padding:20px;
-border-radius:12px;
+height:140px;
+resize:vertical;
 
 }
 
-.section h2{
+.saveBtn{
 
-color:#0066cc;
-margin-bottom:10px;
-
-}
-
-.stats{
-
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-margin-top:25px;
-
-}
-
-.stat{
-
-background:#0066cc;
-color:white;
-padding:20px;
-border-radius:12px;
-text-align:center;
-
-}
-
-.stat h3{
-
-font-size:30px;
-
-}
-
-.main-btn{
-
-background:#0066cc;
-color:white;
-padding:12px 24px;
+width:100%;
+padding:16px;
 border:none;
-border-radius:8px;
+border-radius:10px;
+background:#0066cc;
+color:white;
+font-size:18px;
 cursor:pointer;
-font-size:17px;
-margin-top:20px;
 
 }
 
-.main-btn:hover{
+.saveBtn:hover{
 
 background:#004d99;
 
@@ -219,20 +154,43 @@ background:#004d99;
 
 .back{
 
+margin-top:20px;
 text-align:center;
-margin-top:30px;
 
 }
 
-.back a{
+.back button{
 
-text-decoration:none;
+padding:12px 28px;
+background:#777;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
 
 }
 
-input[type=file]{
+@media(max-width:700px){
 
-display:none;
+.content{
+
+padding:20px;
+
+}
+
+.header h1{
+
+font-size:28px;
+
+}
+
+.photoBox img{
+
+width:120px;
+height:120px;
+
+}
 
 }
 
@@ -244,416 +202,203 @@ display:none;
 
 <div class="container">
 
-<div class="profile">
+<div class="card">
 
-<img id="profilePicture"
-class="profile-picture">
+<div class="header">
 
-<div id="placeholderImage"
-class="placeholder">
-📷
-</div>
-
-<h1 id="userName">
-Guest User
-</h1>
-
-<div class="email"
-id="userEmail">
-guest@example.com
-</div>
-
-<div class="upload-box">
-
-<h3>📸 Profile Picture</h3>
+<h1>👤 My Profile</h1>
 
 <p>
-Choose a picture to personalize your account.
+
+Manage your personal information
+
 </p>
+
+</div>
+
+<div class="content">
+
+<div class="photoBox">
+
+<img
+id="profileImage"
+src="images/profile.png">
+
+<br>
 
 <input
 type="file"
-id="fileInput"
+id="profileFile"
 accept="image/*">
 
+</div>
+
+<div class="group">
+
+<label>
+
+Full Name
+
+</label>
+
+<input
+type="text"
+id="fullName">
+
+</div>
+
+<div class="group">
+
+<label>
+
+Country
+
+</label>
+
+<input
+type="text"
+id="country"
+placeholder="Example: Tanzania">
+
+</div>
+
+<div class="group">
+
+<label>
+
+Email
+
+</label>
+
+<input
+type="email"
+id="email"
+readonly>
+
+</div>
+
+<div class="group">
+
+<label>
+
+About Me
+
+</label>
+
+<textarea
+id="about"
+placeholder="Tell other believers something about yourself..."></textarea>
+
+</div>
+
 <button
-class="upload-btn"
-onclick="document.getElementById('fileInput').click();">
-📂 Choose Picture
-</button>
+class="saveBtn"
+id="saveBtn">
 
-<button
-id="uploadBtn"
-class="upload-btn"
-style="display:none;">
-⬆ Upload Picture
-</button>
-
-<button
-id="deleteBtn"
-class="delete-btn">
-🗑 Delete Picture
-</button>
-
-<div
-id="progress"
-class="progress">
-
-<div
-id="progressBar"
-class="progress-bar">
-</div>
-
-</div>
-
-<div
-id="statusMessage"
-class="status">
-</div>
-
-</div>
-
-<a href="editprofile.html">
-
-<button class="main-btn">
-
-📝 Edit Profile
+💾 Save Changes
 
 </button>
-
-</a>
-
-</div>
-
-<div class="section">
-
-<h2>📖 Favorite Bible Verse</h2>
-
-<p id="favoriteVerse">
-
-"I can do all things through Christ which strengtheneth me."
-— Philippians 4:13
-
-</p>
-
-</div>
-
-<div class="section">
-
-<h2>🙏 Personal Testimony</h2>
-
-<p id="testimonyText">
-
-Share your testimony here.
-
-</p>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-
-<h3>0</h3>
-
-Posts
-
-</div>
-
-<div class="stat">
-
-<h3>0</h3>
-
-Likes
-
-</div>
-
-<div class="stat">
-
-<h3>0</h3>
-
-Comments
-
-</div>
-
-<div class="stat">
-
-<h3>0</h3>
-
-Certificates
-
-</div>
-
-</div>
-<div class="section">
-
-<h2>📚 Courses Completed</h2>
-
-<ul id="completedCourses">
-
-<li>No completed courses yet.</li>
-
-</ul>
-
-</div>
 
 <div class="back">
 
-<a href="community.html">
-
-<button class="main-btn">
+<button
+onclick="location.href='community.html'">
 
 ⬅ Back to Community
 
 </button>
 
-</a>
+</div>
+
+</div>
 
 </div>
 
 </div>
 <script type="module">
 
-import {
+import{
 auth,
 db,
 doc,
 getDoc,
-setDoc,
-updateDoc,
 onAuthStateChanged
-} from "./firebase.js";
-const profilePicture =
-document.getElementById("profilePicture");
+}from "./firebase.js";
 
-const placeholderImage =
-document.getElementById("placeholderImage");
+const profileImage=document.getElementById("profileImage");
+const profileFile=document.getElementById("profileFile");
 
-const fileInput =
-document.getElementById("fileInput");
+const fullName=document.getElementById("fullName");
+const country=document.getElementById("country");
+const email=document.getElementById("email");
+const about=document.getElementById("about");
 
-const uploadBtn =
-document.getElementById("uploadBtn");
+let currentUser=null;
 
-const deleteBtn =
-document.getElementById("deleteBtn");
-
-const progress =
-document.getElementById("progress");
-
-const progressBar =
-document.getElementById("progressBar");
-
-const statusMessage =
-document.getElementById("statusMessage");
-
-const MAX_FILE_SIZE =
-5 * 1024 * 1024;
-
-let currentUser = null;
-
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
-window.location.href="login.html";
+location.href="login.html";
 return;
 
 }
 
-currentUser = user;
-alert("Logged in UID: " + user.uid);
-console.log(user.uid);
-try{
+currentUser=user;
 
-const userRef = doc(db,"users",user.uid);
+loadProfile();
 
-let snap = await getDoc(userRef);
-
-if(!snap.exists()){
-
-await setDoc(userRef,{
-fullName:user.displayName || "New User",
-email:user.email,
-bio:"",
-favoriteVerse:"",
-profilePicture:"",
-joined:new Date().toLocaleString(),
-totalPosts:0,
-certificates:0
 });
 
-snap = await getDoc(userRef);
+async function loadProfile(){
 
-}
+try{
 
-const data = snap.data();
+const userSnap=await getDoc(
+doc(db,"users",currentUser.uid)
+);
 
-document.getElementById("userName").innerText =
-data.fullName || "Guest User";
+if(!userSnap.exists()) return;
 
-document.getElementById("userEmail").innerText =
-data.email || "";
+const data=userSnap.data();
 
-document.getElementById("favoriteVerse").innerText =
-data.favoriteVerse ||
-"I can do all things through Christ which strengtheneth me.";
+profileImage.src=
+data.profilePicture||"images/profile.png";
 
-document.getElementById("testimonyText").innerText =
-data.bio ||
-"Share your testimony here.";
+fullName.value=
+data.fullName||"";
 
-if(data.profilePicture){
+country.value=
+data.country||"";
 
-profilePicture.src = data.profilePicture;
+email.value=
+data.email||currentUser.email||"";
 
-profilePicture.style.display = "block";
-
-placeholderImage.style.display = "none";
-
-deleteBtn.style.display = "inline-block";
-
-}
+about.value=
+data.about||"";
 
 }catch(error){
 
-console.log(error);
+console.error(error);
+
+alert(error.message);
 
 }
 
-});
-// Select picture
-fileInput.addEventListener("change", () => {
+}
 
-const file = fileInput.files[0];
+// Preview selected image before uploading
+
+profileFile.addEventListener("change",()=>{
+
+const file=profileFile.files[0];
 
 if(!file) return;
 
-if(!file.type.startsWith("image/")){
-
-showStatus("❌ Please choose an image.","error");
-fileInput.value="";
-return;
-
-}
-
-if(file.size > MAX_FILE_SIZE){
-
-showStatus("❌ Image must be smaller than 5 MB.","error");
-fileInput.value="";
-return;
-
-}
-
-uploadBtn.style.display = "inline-block";
-
-showStatus(
-"📷 Picture selected. Click Upload Picture.",
-"loading"
-);
+profileImage.src=URL.createObjectURL(file);
 
 });
-
-// Upload picture
-uploadBtn.addEventListener("click", async()=>{
-
-const file = fileInput.files[0];
-
-if(!file || !currentUser) return;
-
-const reader = new FileReader();
-
-reader.onload = async(e)=>{
-
-try{
-
-const imageData = e.target.result;
-
-await updateDoc(
-doc(db,"users",currentUser.uid),
-{
-profilePicture:imageData
-}
-);
-
-profilePicture.src = imageData;
-profilePicture.style.display = "block";
-placeholderImage.style.display = "none";
-
-uploadBtn.style.display = "none";
-deleteBtn.style.display = "inline-block";
-
-fileInput.value="";
-
-showStatus(
-"✅ Profile picture uploaded successfully!",
-"success"
-);
-
-}catch(error){
-
-showStatus(
-"❌ " + error.message,
-"error"
-);
-
-}
-
-};
-
-reader.readAsDataURL(file);
-
-});
-// Delete profile picture
-deleteBtn.addEventListener("click", async()=>{
-
-if(!confirm("Delete your profile picture?")) return;
-
-try{
-
-await updateDoc(
-doc(db,"users",currentUser.uid),
-{
-profilePicture:""
-}
-);
-
-profilePicture.src="";
-profilePicture.style.display="none";
-
-placeholderImage.style.display="flex";
-
-deleteBtn.style.display="none";
-
-showStatus(
-"✅ Profile picture deleted successfully!",
-"success"
-);
-
-}catch(error){
-
-showStatus(
-"❌ " + error.message,
-"error"
-);
-
-}
-
-});
-// Status message
-function showStatus(message,type){
-
-statusMessage.innerHTML = message;
-
-statusMessage.className = "status " + type;
-
-}
-
-// Hide buttons when page first loads
-uploadBtn.style.display = "none";
-deleteBtn.style.display = "none";
 
 </script>
-
 </body>
-</html
+</HTML>
