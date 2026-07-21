@@ -226,6 +226,7 @@ onclick="location.href='community.html'">
 </div>
 
 </div>
+
 <script type="module">
 
 import{
@@ -450,9 +451,270 @@ saveBtn.addEventListener("click",async()=>{
     profileFile.files[0];
 
 
-    /* Upload
-   </script>
+    /* Upload a new picture when selected */
 
+    if(file){
+
+      photoURL =
+      await uploadProfilePicture(
+        file
+      );
+
+    }
+
+
+    /* Update Firestore profile */
+
+    await updateDoc(
+
+      doc(db,"users",currentUser.uid),
+
+      {
+
+        fullName:enteredName,
+
+        country:
+        country.value.trim(),
+
+        about:
+        about.value.trim(),
+
+        email:
+        currentUser.email || email.value,
+
+        profilePicture:
+        photoURL
+
+      }
+
+    );
+
+
+    currentPhotoURL =
+    photoURL;
+
+    profileImage.src =
+    photoURL;
+
+    profileFile.value = "";
+
+
+    if(previewURL){
+
+      URL.revokeObjectURL(
+        previewURL
+      );
+
+      previewURL = null;
+
+    }
+
+
+    alert(
+      "✅ Profile updated successfully!"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Profile saving error:",
+      error
+    );
+
+    alert(
+      getFriendlyErrorMessage(error)
+    );
+
+  }finally{
+
+    saveBtn.disabled = false;
+
+    saveBtn.innerText =
+    "💾 Save Changes";
+
+  }
+
+});
+
+
+/* ========================================
+   UPLOAD PROFILE PICTURE
+======================================== */
+
+function uploadProfilePicture(file){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const safeFileName =
+      file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+
+      const filePath =
+
+      "profilePictures/" +
+      currentUser.uid +
+      "/" +
+      Date.now() +
+      "_" +
+      safeFileName;
+
+
+      const storageReference =
+      ref(storage,filePath);
+
+
+      const uploadTask =
+      uploadBytesResumable(
+
+        storageReference,
+        file,
+        {
+          contentType:file.type
+        }
+
+      );
+
+
+      /* Stop waiting after 90 seconds */
+
+      const uploadTimeout =
+      setTimeout(()=>{
+
+        uploadTask.cancel();
+
+        reject(
+          new Error(
+            "The picture upload took too long. Check your internet connection and try again."
+          )
+        );
+
+      },90000);
+
+
+      uploadTask.on(
+
+        "state_changed",
+
+
+        (snapshot)=>{
+
+          const progress = Math.round(
+
+            snapshot.bytesTransferred /
+            snapshot.totalBytes *
+            100
+
+          );
+
+          saveBtn.innerText =
+
+          "Uploading picture... " +
+          progress +
+          "%";
+
+        },
+
+
+        (error)=>{
+
+          clearTimeout(
+            uploadTimeout
+          );
+
+          reject(error);
+
+        },
+
+
+        async()=>{
+
+          clearTimeout(
+            uploadTimeout
+          );
+
+          try{
+
+            const downloadURL =
+            await getDownloadURL(
+
+              uploadTask.snapshot.ref
+
+            );
+
+            resolve(downloadURL);
+
+          }catch(error){
+
+            reject(error);
+
+          }
+
+        }
+
+      );
+
+    }
+  );
+
+}
+
+
+/* ========================================
+   FRIENDLY ERROR MESSAGES
+======================================== */
+
+function getFriendlyErrorMessage(error){
+
+  if(
+    error.code ===
+    "storage/unauthorized"
+  ){
+
+    return "Firebase Storage denied the upload. Please check your Storage security rules.";
+
+  }
+
+
+  if(
+    error.code ===
+    "storage/canceled"
+  ){
+
+    return "The picture upload was cancelled or took too long.";
+
+  }
+
+
+  if(
+    error.code ===
+    "storage/retry-limit-exceeded"
+  ){
+
+    return "The upload failed because of a weak internet connection. Please try again.";
+
+  }
+
+
+  if(
+    error.code ===
+    "storage/object-not-found"
+  ){
+
+    return "The uploaded picture could not be found in Firebase Storage.";
+
+  }
+
+
+  return error.message ||
+  "The profile could not be saved.";
+
+}
+
+</script>
 </body>
 
 </html>
