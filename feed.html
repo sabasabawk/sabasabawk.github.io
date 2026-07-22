@@ -572,9 +572,7 @@ onAuthStateChanged(
 
     await loadCurrentUserProfile();
 
-    /*
-      Part 2 will start loading the posts here.
-    */
+    loadCommunityPosts();
 
   },
   (error)=>{
@@ -668,33 +666,32 @@ function loadCommunityPosts(){
 
           };
 
+for(const postDocument of snapshot.docs){
+
+  const postData = {
+
+    id:postDocument.id,
+
+    ...postDocument.data()
+
+  };
+
+
+  const postCard =
+  await createPostCard(postData);
+
+
+  postsContainer.appendChild(
+    postCard
+  );
+
+}
+
+
 setTimeout(
   scrollToSharedPost,
   300
 );
-          /*
-            Part 3 will create and display each post here.
-          */
-
-          const temporaryPost =
-          document.createElement("article");
-
-          temporaryPost.className =
-          "postCard";
-
-          temporaryPost.innerHTML = `
-
-            <div class="postMessage">
-
-              Loading post...
-
-            </div>
-
-          `;
-
-          postsContainer.appendChild(
-            temporaryPost
-          );
 
         }
 
@@ -2149,9 +2146,6 @@ console.log(
 
 </script>
 
-</body>
-
-</html>
 </body>
 
 </html>
