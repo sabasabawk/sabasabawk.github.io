@@ -397,10 +397,7 @@ import{
   setDoc,
   deleteDoc
 }from "./firebase.js";
-import{
-  collection as firestoreCollection,
-  onSnapshot as firestoreOnSnapshot
-}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 
 
 /* ========================================
@@ -427,7 +424,7 @@ document.getElementById("backButton");
 let currentUser = null;
 
 let unsubscribePosts = null;
-
+let postListeners = [];
 
 /* ========================================
    PAGE BUTTONS
@@ -718,18 +715,6 @@ function renderPosts(posts){
 
       : 0;
 
-
-    const comments =
-
-      Array.isArray(post.comments)
-
-      ? post.comments.length
-
-      : typeof post.comments === "number"
-
-      ? post.comments
-
-      : 0;
 
 
     const date = getDisplayDate(post);
@@ -1116,16 +1101,9 @@ function connectPostCard(card,post){
   );
 
 
-  card.addEventListener(
-    "remove",
-    ()=>{
-
-      unsubscribeLikes();
-
-    }
-  );
-
-}
+  postListeners.push(
+  unsubscribeLikes
+);
 
 
   /* ========================================
