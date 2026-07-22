@@ -99,7 +99,17 @@ async function saveProfile(){
     const fileInput = document.getElementById('profileImage');
     const file = fileInput.files[0];
     if(file){
-      const path = `profilePictures/${user.uid}/${Date.now()}_${file.name}`;
+
+  if(!file.type.startsWith("image/")){
+    throw new Error("Please select a valid image file.");
+  }
+
+  if(file.size > 5 * 1024 * 1024){
+    throw new Error("The profile picture must be smaller than 5 MB.");
+  }
+
+  const path =
+  `profilePictures/${user.uid}/${Date.now()}_${file.name}`;
       const sRef = ref(storage, path);
       await uploadBytes(sRef, file);
       const downloadURL = await getDownloadURL(sRef);
