@@ -247,19 +247,33 @@ async function publishPost(){
 
   if(!currentUser){
 
-    alert("Please wait while your account loads.");
+    alert(
+      "Please wait while your account loads."
+    );
+
     return;
 
   }
 
+
   const name =
-  document.getElementById("name").value.trim();
+  document
+  .getElementById("name")
+  .value
+  .trim();
+
 
   const category =
-  document.getElementById("category").value;
+  document
+  .getElementById("category")
+  .value;
+
 
   const post =
-  document.getElementById("post").value.trim();
+  document
+  .getElementById("post")
+  .value
+  .trim();
 
 
   if(name === "" || post === ""){
@@ -273,44 +287,79 @@ async function publishPost(){
   }
 
 
-  const picture = getFirstValue(
+  if(post.length > 5000){
 
-    currentProfile?.picture,
+    alert(
+      "Your post is too long. Please use 5,000 characters or fewer."
+    );
+
+    return;
+
+  }
+
+
+  const savedPicture =
+  getFirstValue(
+
     currentProfile?.profilePicture,
+    currentProfile?.picture,
     currentProfile?.photoURL,
     currentProfile?.profileImage,
     currentProfile?.profilePhoto,
     currentUser.photoURL,
-    "images/profile.png"
+    ""
 
   );
+
+
+  /*
+    Never copy a Base64 image into Firestore.
+  */
+
+  const picture =
+
+  savedPicture &&
+  !savedPicture.startsWith("data:image/")
+
+  ? savedPicture
+
+  : "images/profile.png";
 
 
   try{
 
     await addDoc(
-      collection(db,"communityPosts"),
+
+      collection(
+        db,
+        "communityPosts"
+      ),
+
       {
 
-        userId:currentUser.uid,
+        userId:
+        currentUser.uid,
 
-        name:name,
+        name:
+        name,
 
-        category:category,
+        category:
+        category,
 
-        post:post,
+        post:
+        post,
 
-        date:new Date().toLocaleString(),
+        timestamp:
+        serverTimestamp(),
 
-        timestamp:serverTimestamp(),
+        likes:
+        0,
 
-        likes:0,
-
-        comments:[],
-
-        picture:picture
+        picture:
+        picture
 
       }
+
     );
 
 
@@ -319,23 +368,29 @@ async function publishPost(){
       localStorage.getItem("posts")
     ) || 0;
 
+
     localStorage.setItem(
       "posts",
       totalPosts + 1
     );
 
 
-    document.getElementById("message").innerHTML =
+    document
+    .getElementById("message")
+    .innerHTML =
 
     "✅ Your post has been published successfully!";
 
 
-    document.getElementById("post").value = "";
+    document
+    .getElementById("post")
+    .value = "";
 
 
     setTimeout(()=>{
 
-      location.href = "feed.html";
+      location.href =
+      "feed.html";
 
     },1200);
 
@@ -346,7 +401,11 @@ async function publishPost(){
       error
     );
 
-    alert(error.message);
+
+    alert(
+      error.message ||
+      "The post could not be published."
+    );
 
   }
 
