@@ -83,7 +83,16 @@ transition:.2s;
 .controlButton:active{
 transform:scale(.98);
 }
+.likeButton.liked{
+  background:#ffe9ee;
+  color:#d6003d;
+  font-weight:bold;
+}
 
+.likeButton:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
 .createPostButton{
 flex:1;
 background:#0874d1;
@@ -596,6 +605,16 @@ function startCommunityWall(){
 ======================================== */
 
 function renderPosts(posts){
+
+  postListeners.forEach(
+    unsubscribeListener =>{
+
+      unsubscribeListener();
+
+    }
+  );
+
+  postListeners = [];
 
   postsContainer.innerHTML = "";
 
