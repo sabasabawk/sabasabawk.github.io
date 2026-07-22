@@ -983,32 +983,62 @@ async function publishComment(){
   }
 
 
+  if(writtenComment.length > 1000){
+
+    alert(
+      "Your comment is too long. Please use 1,000 characters or fewer."
+    );
+
+    commentText.focus();
+
+    return;
+
+  }
+
+
   const commenterName =
   getFirstValue(
 
-    currentProfile.fullName,
-    currentProfile.name,
+    currentProfile?.fullName,
+    currentProfile?.name,
     currentUser.displayName,
     "Anonymous"
 
   );
 
 
-  const commenterPicture =
+  const originalPicture =
   getFirstValue(
 
-    currentProfile.profilePicture,
-    currentProfile.picture,
+    currentProfile?.profilePicture,
+    currentProfile?.picture,
     currentUser.photoURL,
-    "images/profile.png"
+    ""
 
   );
+
+
+  /*
+    Do not save Base64 images inside comments.
+
+    Base64 images usually begin with:
+    data:image/
+  */
+
+  const commenterPicture =
+
+  originalPicture &&
+  !originalPicture.startsWith("data:image/")
+
+  ? originalPicture
+
+  : "images/profile.png";
 
 
   const commenterCountry =
   getFirstValue(
 
-    currentProfile.country,
+    currentProfile?.country,
     ""
 
   );
@@ -1040,19 +1070,10 @@ async function publishComment(){
         userId:
         currentUser.uid,
 
-        uid:
-        currentUser.uid,
-
         name:
         commenterName,
 
-        fullName:
-        commenterName,
-
         picture:
-        commenterPicture,
-
-        profilePicture:
         commenterPicture,
 
         country:
@@ -1061,14 +1082,8 @@ async function publishComment(){
         comment:
         writtenComment,
 
-        text:
-        writtenComment,
-
         timestamp:
-        serverTimestamp(),
-
-        date:
-        new Date().toLocaleString()
+        serverTimestamp()
 
       }
 
