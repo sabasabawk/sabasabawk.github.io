@@ -373,14 +373,14 @@ class="backButton">
 </section>
 
 </main>
-
-<script type="module">
+ <script type="module">
 
 /* =====================================================
-   PART 1: FIREBASE SETUP AND PAGE INITIALIZATION
+   PART 1 OF 6
+   FIREBASE SETUP, PAGE ELEMENTS AND AUTHENTICATION
 ===================================================== */
 
-import{
+import {
   auth,
   db,
   collection,
@@ -391,9 +391,12 @@ import{
   getDoc,
   setDoc,
   deleteDoc,
-  serverTimestamp,
   onAuthStateChanged
-}from "./firebase.js";
+} from "./firebase.js";
+
+import {
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* =====================================================
@@ -423,12 +426,31 @@ let currentUserProfile = null;
 
 let unsubscribePosts = null;
 
+const likeListeners =
+new Map();
+
 const defaultProfilePicture =
-"https://cdn-icons-png.flaticon.com/512/149/149071.png";
+"images/profile.png";
 
 
 /* =====================================================
-   SHOW LOADING MESSAGE
+   HTML SAFETY
+===================================================== */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
+}
+
+
+/* =====================================================
+   LOADING MESSAGE
 ===================================================== */
 
 function showLoadingMessage(){
@@ -447,7 +469,31 @@ function showLoadingMessage(){
 
 
 /* =====================================================
-   SHOW ERROR MESSAGE
+   EMPTY MESSAGE
+===================================================== */
+
+function showEmptyMessage(){
+
+  postsContainer.innerHTML = `
+
+    <div class="emptyMessage">
+
+      <strong>No community posts yet.</strong>
+
+      <br><br>
+
+      Be the first person to share God's Word,
+      a testimony, encouragement or prayer.
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   ERROR MESSAGE
 ===================================================== */
 
 function showErrorMessage(message){
@@ -460,11 +506,36 @@ function showErrorMessage(message){
 
       <br><br>
 
-      ${message}
+      ${escapeHTML(message)}
 
     </div>
 
   `;
+
+}
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
 
 }
 
@@ -483,42 +554,47 @@ async function loadCurrentUserProfile(){
 
   }
 
+
   try{
 
-    const userReference =
+    const profileReference =
     doc(
       db,
       "users",
       currentUser.uid
     );
 
-    const userSnapshot =
-    await getDoc(userReference);
+
+    const profileSnapshot =
+    await getDoc(profileReference);
 
 
-    if(userSnapshot.exists()){
+    if(profileSnapshot.exists()){
 
       currentUserProfile = {
-        id:userSnapshot.id,
-        ...userSnapshot.data()
+
+        uid:
+        currentUser.uid,
+
+        ...profileSnapshot.data()
+
       };
 
     }else{
 
       currentUserProfile = {
 
-        id:currentUser.uid,
+        uid:
+        currentUser.uid,
 
-        uid:currentUser.uid,
-
-        fullName:
+        name:
         currentUser.displayName ||
         "Community Member",
 
         email:
         currentUser.email || "",
 
-        profilePhoto:
+        profilePicture:
         currentUser.photoURL ||
         defaultProfilePicture
 
@@ -529,24 +605,24 @@ async function loadCurrentUserProfile(){
   }catch(error){
 
     console.error(
-      "Current profile loading error:",
+      "Profile loading error:",
       error
     );
 
+
     currentUserProfile = {
 
-      id:currentUser.uid,
+      uid:
+      currentUser.uid,
 
-      uid:currentUser.uid,
-
-      fullName:
+      name:
       currentUser.displayName ||
       "Community Member",
 
       email:
       currentUser.email || "",
 
-      profilePhoto:
+      profilePicture:
       currentUser.photoURL ||
       defaultProfilePicture
 
@@ -558,7 +634,7 @@ async function loadCurrentUserProfile(){
 
 
 /* =====================================================
-   AUTHENTICATION CHECK
+   START FEED AFTER AUTHENTICATION
 ===================================================== */
 
 showLoadingMessage();
@@ -566,15 +642,24 @@ showLoadingMessage();
 
 onAuthStateChanged(
   auth,
+
   async(user)=>{
 
-    currentUser = user || null;
+    currentUser =
+    user || null;
+
 
     await loadCurrentUserProfile();
 
-    loadCommunityPosts();
+
+    /*
+      initializeFeed() is written in Part 2.
+    */
+
+    initializeFeed();
 
   },
+
   (error)=>{
 
     console.error(
@@ -582,23 +667,24 @@ onAuthStateChanged(
       error
     );
 
+
     showErrorMessage(
       "Authentication failed. Please refresh the page."
     );
 
   }
 );
-
 /* =====================================================
-   PART 2: LOAD COMMUNITY POSTS
+   PART 2 OF 6
+   LOAD COMMUNITY POSTS FROM FIRESTORE
 ===================================================== */
 
-function loadCommunityPosts(){
 
-  showLoadingMessage();
+/* =====================================================
+   STOP OLD POST LISTENER
+===================================================== */
 
-
-  /* Stop the previous listener before creating another */
+function stopPostsListener(){
 
   if(unsubscribePosts){
 
@@ -608,90 +694,169 @@ function loadCommunityPosts(){
 
   }
 
+}
+
+
+/* =====================================================
+   STOP OLD LIKE LISTENERS
+===================================================== */
+
+function stopAllLikeListeners(){
+
+  for(
+    const unsubscribeLike
+    of likeListeners.values()
+  ){
+
+    unsubscribeLike();
+
+  }
+
+
+  likeListeners.clear();
+
+}
+
+
+/* =====================================================
+   INITIALIZE FEED
+===================================================== */
+
+function initializeFeed(){
+
+  stopPostsListener();
+
+  stopAllLikeListeners();
+
+  loadCommunityPosts();
+
+}
+
+
+/* =====================================================
+   LOAD COMMUNITY POSTS
+===================================================== */
+
+function loadCommunityPosts(){
+
+  showLoadingMessage();
+
+  stopPostsListener();
+
+  stopAllLikeListeners();
+
 
   try{
 
-    const postsCollection =
+    const postsReference =
     collection(
       db,
       "communityPosts"
     );
 
 
+    /*
+      Your create-post page saves the date
+      inside the field named "timestamp".
+    */
+
     const postsQuery =
     query(
-      postsCollection,
-      orderBy("createdAt","desc")
+      postsReference,
+      orderBy(
+        "timestamp",
+        "desc"
+      )
     );
 
 
     unsubscribePosts =
     onSnapshot(
+
       postsQuery,
 
       async(snapshot)=>{
 
-        if(snapshot.empty){
+        try{
 
-          postsContainer.innerHTML = `
+          if(snapshot.empty){
 
-            <div class="emptyMessage">
+            showEmptyMessage();
 
-              <strong>No community posts yet.</strong>
+            return;
 
-              <br><br>
-
-              Be the first person to share God's Word,
-              a testimony, encouragement or prayer.
-
-            </div>
-
-          `;
-
-          return;
-
-        }
+          }
 
 
-        postsContainer.innerHTML = "";
+          postsContainer.innerHTML = "";
 
 
-        for(const postDocument of snapshot.docs){
+          for(
+            const postDocument
+            of snapshot.docs
+          ){
 
-          const postData = {
+            const postData = {
 
-            id:postDocument.id,
+              id:
+              postDocument.id,
 
-            ...postDocument.data()
+              ...postDocument.data()
 
-          };
-
-for(const postDocument of snapshot.docs){
-
-  const postData = {
-
-    id:postDocument.id,
-
-    ...postDocument.data()
-
-  };
+            };
 
 
-  const postCard =
-  await createPostCard(postData);
+            /*
+              createPostCard() is written
+              in Part 3.
+            */
+
+            const postCard =
+            await createPostCard(
+              postData
+            );
 
 
-  postsContainer.appendChild(
-    postCard
-  );
+            postsContainer.appendChild(
+              postCard
+            );
 
-}
+          }
 
 
-setTimeout(
-  scrollToSharedPost,
-  300
-);
+          /*
+            scrollToSharedPost() is written
+            in Part 5.
+          */
+
+          setTimeout(
+            ()=>{
+
+              if(
+                typeof scrollToSharedPost ===
+                "function"
+              ){
+
+                scrollToSharedPost();
+
+              }
+
+            },
+            300
+          );
+
+        }catch(error){
+
+          console.error(
+            "Post display error:",
+            error
+          );
+
+
+          showErrorMessage(
+            error.message ||
+            "The posts were found, but they could not be displayed."
+          );
 
         }
 
@@ -700,54 +865,66 @@ setTimeout(
       (error)=>{
 
         console.error(
-          "Community posts listener error:",
+          "Firestore posts error:",
           error
         );
 
 
-        let errorMessage =
+        let message =
         "Please check your internet connection and try again.";
 
 
-        if(error.code === "permission-denied"){
+        if(
+          error.code ===
+          "permission-denied"
+        ){
 
-          errorMessage =
-          "Firestore permission was denied. Please check your Firestore security rules.";
+          message =
+          "Firebase denied permission to read community posts. Check your Firestore security rules.";
 
-        }else if(error.code === "failed-precondition"){
+        }else if(
+          error.code ===
+          "failed-precondition"
+        ){
 
-          errorMessage =
-          "Firestore needs an index for these posts. Check the Firebase console error message.";
+          message =
+          "Firebase needs an index for the community posts query.";
+
+        }else if(
+          error.code ===
+          "unavailable"
+        ){
+
+          message =
+          "Firebase is temporarily unavailable. Please try again.";
 
         }else if(error.message){
 
-          errorMessage =
+          message =
           error.message;
 
         }
 
 
         showErrorMessage(
-          errorMessage
+          message
         );
 
       }
+
     );
 
   }catch(error){
 
     console.error(
-      "Community posts loading error:",
+      "Feed initialization error:",
       error
     );
 
 
     showErrorMessage(
-
       error.message ||
-
-      "An unexpected error occurred while loading posts."
-
+      "An unexpected error occurred while loading community posts."
     );
 
   }
@@ -756,7 +933,7 @@ setTimeout(
 
 
 /* =====================================================
-   MANUAL REFRESH
+   REFRESH BUTTON
 ===================================================== */
 
 refreshButton.addEventListener(
@@ -769,7 +946,7 @@ refreshButton.addEventListener(
     "⏳ Refreshing...";
 
 
-    loadCommunityPosts();
+    initializeFeed();
 
 
     setTimeout(
@@ -787,61 +964,57 @@ refreshButton.addEventListener(
   }
 );
 /* =====================================================
-   PART 3: CREATE AND DISPLAY EACH POST
+   PART 3 OF 6
+   CREATE AND DISPLAY EACH COMMUNITY POST
 ===================================================== */
-
-
-/* Prevent HTML code from being inserted through posts */
-
-function escapeHTML(value){
-
-  return String(value ?? "")
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
-
-}
 
 
 /* =====================================================
    FORMAT POST DATE
 ===================================================== */
 
-function formatPostDate(dateValue){
+function formatPostDate(value){
 
-  if(!dateValue){
+  if(!value){
 
     return "Recently";
 
   }
+
 
   try{
 
     let date;
 
 
-    if(typeof dateValue.toDate === "function"){
+    if(
+      typeof value.toDate ===
+      "function"
+    ){
 
-      date = dateValue.toDate();
+      date =
+      value.toDate();
 
-    }else if(dateValue.seconds){
+    }else if(value.seconds){
 
       date =
       new Date(
-        dateValue.seconds * 1000
+        value.seconds * 1000
       );
 
     }else{
 
       date =
-      new Date(dateValue);
+      new Date(value);
 
     }
 
 
-    if(Number.isNaN(date.getTime())){
+    if(
+      Number.isNaN(
+        date.getTime()
+      )
+    ){
 
       return "Recently";
 
@@ -866,6 +1039,7 @@ function formatPostDate(dateValue){
       error
     );
 
+
     return "Recently";
 
   }
@@ -874,55 +1048,47 @@ function formatPostDate(dateValue){
 
 
 /* =====================================================
-   LOAD POST AUTHOR PROFILE
+   LOAD THE POST AUTHOR'S PROFILE
 ===================================================== */
 
 async function loadPostAuthorProfile(postData){
 
   const authorId =
-
-  postData.authorId ||
-
-  postData.userId ||
-
-  postData.uid ||
-
-  postData.ownerId ||
-
-  "";
+  getFirstValue(
+    postData.userId,
+    postData.authorId,
+    postData.uid,
+    postData.ownerId
+  );
 
 
   let authorProfile = {
 
-    uid:authorId,
+    uid:
+    authorId,
 
-    fullName:
+    name:
+    getFirstValue(
+      postData.name,
+      postData.fullName,
+      postData.authorName,
+      postData.displayName,
+      "Community Member"
+    ),
 
-    postData.authorName ||
-
-    postData.fullName ||
-
-    postData.userName ||
-
-    postData.name ||
-
-    "Community Member",
-
-    profilePhoto:
-
-    postData.authorPhoto ||
-
-    postData.profilePhoto ||
-
-    postData.photoURL ||
-
-    postData.userPhoto ||
-
-    defaultProfilePicture,
+    picture:
+    getFirstValue(
+      postData.picture,
+      postData.profilePicture,
+      postData.profilePhoto,
+      postData.photoURL,
+      defaultProfilePicture
+    ),
 
     country:
-
-    postData.country || ""
+    getFirstValue(
+      postData.country
+    )
 
   };
 
@@ -936,7 +1102,7 @@ async function loadPostAuthorProfile(postData){
 
   try{
 
-    const userReference =
+    const profileReference =
     doc(
       db,
       "users",
@@ -944,45 +1110,47 @@ async function loadPostAuthorProfile(postData){
     );
 
 
-    const userSnapshot =
-    await getDoc(userReference);
+    const profileSnapshot =
+    await getDoc(
+      profileReference
+    );
 
 
-    if(userSnapshot.exists()){
+    if(profileSnapshot.exists()){
 
-      const userData =
-      userSnapshot.data();
+      const profileData =
+      profileSnapshot.data();
 
 
       authorProfile = {
 
-        uid:authorId,
+        uid:
+        authorId,
 
-        fullName:
+        name:
+        getFirstValue(
+          profileData.name,
+          profileData.fullName,
+          profileData.displayName,
+          authorProfile.name
+        ),
 
-        userData.fullName ||
-
-        userData.displayName ||
-
-        userData.name ||
-
-        authorProfile.fullName,
-
-        profilePhoto:
-
-        userData.profilePhoto ||
-
-        userData.photoURL ||
-
-        userData.photo ||
-
-        authorProfile.profilePhoto,
+        picture:
+        getFirstValue(
+          profileData.profilePicture,
+          profileData.picture,
+          profileData.photoURL,
+          profileData.profileImage,
+          profileData.profilePhoto,
+          authorProfile.picture,
+          defaultProfilePicture
+        ),
 
         country:
-
-        userData.country ||
-
-        authorProfile.country
+        getFirstValue(
+          profileData.country,
+          authorProfile.country
+        )
 
       };
 
@@ -991,7 +1159,7 @@ async function loadPostAuthorProfile(postData){
   }catch(error){
 
     console.error(
-      "Post author profile loading error:",
+      "Author profile loading error:",
       error
     );
 
@@ -1004,48 +1172,18 @@ async function loadPostAuthorProfile(postData){
 
 
 /* =====================================================
-   GET POST VALUES
+   READ POST VALUES
 ===================================================== */
 
 function getPostMessage(postData){
 
-  return (
-
-    postData.message ||
-
-    postData.postText ||
-
-    postData.content ||
-
-    postData.text ||
-
-    postData.description ||
-
-    ""
-
-  );
-
-}
-
-
-function getPostImage(postData){
-
-  return (
-
-    postData.imageUrl ||
-
-    postData.imageURL ||
-
-    postData.postImage ||
-
-    postData.photoUrl ||
-
-    postData.photoURL ||
-
-    postData.image ||
-
-    ""
-
+  return getFirstValue(
+    postData.post,
+    postData.message,
+    postData.postText,
+    postData.content,
+    postData.text,
+    postData.description
   );
 
 }
@@ -1053,16 +1191,24 @@ function getPostImage(postData){
 
 function getPostCategory(postData){
 
-  return (
+  return getFirstValue(
+    postData.category,
+    postData.postCategory,
+    postData.type
+  );
 
-    postData.category ||
+}
 
-    postData.postCategory ||
 
-    postData.type ||
+function getPostImage(postData){
 
-    ""
-
+  return getFirstValue(
+    postData.imageUrl,
+    postData.imageURL,
+    postData.postImage,
+    postData.photoUrl,
+    postData.photoURL,
+    postData.image
   );
 
 }
@@ -1075,75 +1221,42 @@ function getPostCategory(postData){
 async function createPostCard(postData){
 
   const authorProfile =
-  await loadPostAuthorProfile(postData);
+  await loadPostAuthorProfile(
+    postData
+  );
 
 
   const postMessage =
-  getPostMessage(postData);
-
-
-  const postImage =
-  getPostImage(postData);
+  getPostMessage(
+    postData
+  );
 
 
   const postCategory =
-  getPostCategory(postData);
+  getPostCategory(
+    postData
+  );
+
+
+  const postImage =
+  getPostImage(
+    postData
+  );
 
 
   const postDate =
   formatPostDate(
-
-    postData.createdAt ||
-
     postData.timestamp ||
-
+    postData.createdAt ||
     postData.dateCreated ||
-
     postData.postedAt
-
   );
-
-
-  const safeAuthorName =
-  escapeHTML(authorProfile.fullName);
-
-
-  const safeAuthorPhoto =
-  escapeHTML(
-
-    authorProfile.profilePhoto ||
-
-    defaultProfilePicture
-
-  );
-
-
-  const safeCountry =
-  escapeHTML(authorProfile.country);
-
-
-  const safeMessage =
-  escapeHTML(postMessage);
-
-
-  const safeImage =
-  escapeHTML(postImage);
-
-
-  const safeCategory =
-  escapeHTML(postCategory);
-
-
-  const safeAuthorId =
-  escapeHTML(authorProfile.uid);
-
-
-  const safePostId =
-  escapeHTML(postData.id);
 
 
   const postCard =
-  document.createElement("article");
+  document.createElement(
+    "article"
+  );
 
 
   postCard.className =
@@ -1151,11 +1264,67 @@ async function createPostCard(postData){
 
 
   postCard.dataset.postId =
-  postData.id;
+  postData.id || "";
 
 
   postCard.dataset.authorId =
   authorProfile.uid || "";
+
+
+  const safePostId =
+  escapeHTML(
+    postData.id || ""
+  );
+
+
+  const safeAuthorId =
+  escapeHTML(
+    authorProfile.uid || ""
+  );
+
+
+  const safeAuthorName =
+  escapeHTML(
+    authorProfile.name ||
+    "Community Member"
+  );
+
+
+  const safeAuthorPicture =
+  escapeHTML(
+    authorProfile.picture ||
+    defaultProfilePicture
+  );
+
+
+  const safeCountry =
+  escapeHTML(
+    authorProfile.country || ""
+  );
+
+
+  const safePostMessage =
+  escapeHTML(
+    postMessage || ""
+  );
+
+
+  const safePostCategory =
+  escapeHTML(
+    postCategory || ""
+  );
+
+
+  const safePostImage =
+  escapeHTML(
+    postImage || ""
+  );
+
+
+  const safePostDate =
+  escapeHTML(
+    postDate
+  );
 
 
   postCard.innerHTML = `
@@ -1164,7 +1333,7 @@ async function createPostCard(postData){
 
       <img
         class="authorPicture"
-        src="${safeAuthorPhoto}"
+        src="${safeAuthorPicture}"
         alt="${safeAuthorName}'s profile picture"
         data-author-id="${safeAuthorId}"
       >
@@ -1175,19 +1344,18 @@ async function createPostCard(postData){
           class="authorName"
           data-author-id="${safeAuthorId}"
         >
-
           ${safeAuthorName}
-
         </div>
 
         <div class="postDetails">
 
-          ${safeCountry
+          ${
+            safeCountry
             ? `${safeCountry} • `
             : ""
           }
 
-          ${escapeHTML(postDate)}
+          ${safePostDate}
 
         </div>
 
@@ -1196,13 +1364,12 @@ async function createPostCard(postData){
     </div>
 
 
-    ${safeCategory
+    ${
+      safePostCategory
       ? `
 
         <div class="postCategory">
-
-          ${safeCategory}
-
+          ${safePostCategory}
         </div>
 
       `
@@ -1210,13 +1377,12 @@ async function createPostCard(postData){
     }
 
 
-    ${safeMessage
+    ${
+      safePostMessage
       ? `
 
         <div class="postMessage">
-
-          ${safeMessage}
-
+          ${safePostMessage}
         </div>
 
       `
@@ -1224,12 +1390,13 @@ async function createPostCard(postData){
     }
 
 
-    ${safeImage
+    ${
+      safePostImage
       ? `
 
         <img
           class="communityPostImage"
-          src="${safeImage}"
+          src="${safePostImage}"
           alt="Community post image"
           loading="lazy"
         >
@@ -1246,31 +1413,23 @@ async function createPostCard(postData){
         class="likeButton"
         data-post-id="${safePostId}"
       >
-
         🤍 Like (0)
-
       </button>
-
 
       <button
         type="button"
         class="commentButton"
         data-post-id="${safePostId}"
       >
-
         💬 Comments
-
       </button>
-
 
       <button
         type="button"
         class="shareButton"
         data-post-id="${safePostId}"
       >
-
         ↗ Share
-
       </button>
 
     </div>
@@ -1278,7 +1437,9 @@ async function createPostCard(postData){
   `;
 
 
-  /* Use default picture when an image cannot load */
+  /* ===================================================
+     FALLBACK PROFILE PICTURE
+  =================================================== */
 
   const authorPicture =
   postCard.querySelector(
@@ -1286,21 +1447,27 @@ async function createPostCard(postData){
   );
 
 
-  authorPicture.addEventListener(
-    "error",
-    ()=>{
+  if(authorPicture){
 
-      authorPicture.src =
-      defaultProfilePicture;
+    authorPicture.addEventListener(
+      "error",
+      ()=>{
 
-    },
-    {
-      once:true
-    }
-  );
+        authorPicture.src =
+        defaultProfilePicture;
+
+      },
+      {
+        once:true
+      }
+    );
+
+  }
 
 
-  /* Hide a broken post image */
+  /* ===================================================
+     REMOVE BROKEN POST IMAGE
+  =================================================== */
 
   const communityPostImage =
   postCard.querySelector(
@@ -1325,9 +1492,11 @@ async function createPostCard(postData){
   }
 
 
-  /* Open the author's profile */
+  /* ===================================================
+     OPEN MEMBER PROFILE
+  =================================================== */
 
-  const openProfile = ()=>{
+  const openAuthorProfile = ()=>{
 
     const authorId =
     authorProfile.uid;
@@ -1345,18 +1514,22 @@ async function createPostCard(postData){
 
 
     window.location.href =
-
     "profile.html?uid=" +
-
-    encodeURIComponent(authorId);
+    encodeURIComponent(
+      authorId
+    );
 
   };
 
 
-  authorPicture.addEventListener(
-    "click",
-    openProfile
-  );
+  if(authorPicture){
+
+    authorPicture.addEventListener(
+      "click",
+      openAuthorProfile
+    );
+
+  }
 
 
   const authorName =
@@ -1365,66 +1538,47 @@ async function createPostCard(postData){
   );
 
 
-  authorName.addEventListener(
-    "click",
-    openProfile
-  );
+  if(authorName){
+
+    authorName.addEventListener(
+      "click",
+      openAuthorProfile
+    );
+
+  }
 
 
   /*
-    Part 4 will activate the real Like button.
-
-    Part 5 will activate Comments and Share.
+    setupLikeButton() is written in Part 4.
+    setupPostActions() is written in Part 5.
   */
 
-  if(
-    typeof setupLikeButton ===
-    "function"
-  ){
-
-    setupLikeButton(
-      postData,
-      postCard
-    );
-
-  }
+  setupLikeButton(
+    postData,
+    postCard
+  );
 
 
-  if(
-    typeof setupPostActions ===
-    "function"
-  ){
-
-    setupPostActions(
-      postData,
-      postCard
-    );
-
-  }
+  setupPostActions(
+    postData,
+    postCard
+  );
 
 
   return postCard;
 
 }
 /* =====================================================
-   PART 4: REAL LIKE SYSTEM
+   PART 4 OF 6
+   COMPLETE LIKE SYSTEM
 ===================================================== */
-
-
-/*
-  Store every Like listener so that duplicate listeners
-  can be stopped when posts are loaded again.
-*/
-
-const likeListeners =
-new Map();
 
 
 /* =====================================================
-   STOP AN OLD LIKE LISTENER
+   STOP OLD LIKE LISTENER FOR ONE POST
 ===================================================== */
 
-function stopOldLikeListener(postId){
+function stopLikeListener(postId){
 
   const oldListener =
   likeListeners.get(postId);
@@ -1442,13 +1596,18 @@ function stopOldLikeListener(postId){
 
 
 /* =====================================================
-   SET UP THE LIKE BUTTON
+   SET UP LIKE BUTTON
 ===================================================== */
 
-function setupLikeButton(postData,postCard){
+function setupLikeButton(
+  postData,
+  postCard
+){
 
   const likeButton =
-  postCard.querySelector(".likeButton");
+  postCard.querySelector(
+    ".likeButton"
+  );
 
 
   if(!likeButton){
@@ -1474,15 +1633,12 @@ function setupLikeButton(postData,postCard){
   }
 
 
-  /*
-    Stop a previous listener for this post before
-    starting a new listener.
-  */
-
-  stopOldLikeListener(postId);
+  stopLikeListener(
+    postId
+  );
 
 
-  const likesCollection =
+  const likesReference =
   collection(
     db,
     "communityPosts",
@@ -1491,14 +1647,14 @@ function setupLikeButton(postData,postCard){
   );
 
 
-  /*
-    Listen continuously to the number of Likes.
-  */
+  /* ===================================================
+     LIVE LIKE COUNT
+  =================================================== */
 
   const unsubscribeLikes =
   onSnapshot(
 
-    likesCollection,
+    likesReference,
 
     (snapshot)=>{
 
@@ -1506,59 +1662,66 @@ function setupLikeButton(postData,postCard){
       snapshot.size;
 
 
-      const userHasLiked =
+      let currentUserLiked =
+      false;
 
-      currentUser
 
-      ? snapshot.docs.some(
+      if(currentUser){
 
+        currentUserLiked =
+        snapshot.docs.some(
           likeDocument =>
-
           likeDocument.id ===
           currentUser.uid
+        );
 
-        )
-
-      : false;
+      }
 
 
-      likeButton.textContent =
-
-      userHasLiked
-
-      ? `❤️ Liked (${totalLikes})`
-
-      : `🤍 Like (${totalLikes})`;
+      likeButton.dataset.liked =
+      currentUserLiked
+      ? "true"
+      : "false";
 
 
       likeButton.classList.toggle(
         "liked",
-        userHasLiked
+        currentUserLiked
       );
 
 
-      likeButton.dataset.liked =
-      userHasLiked
-      ? "true"
-      : "false";
+      likeButton.textContent =
+      currentUserLiked
+      ? `❤️ Liked (${totalLikes})`
+      : `🤍 Like (${totalLikes})`;
 
     },
 
     (error)=>{
 
       console.error(
-        `Likes loading error for post ${postId}:`,
+        `Like listener error for post ${postId}:`,
         error
       );
 
 
-      likeButton.textContent =
-      "🤍 Like";
+      const oldLikes =
+      Number(
+        postData.likes
+      ) || 0;
+
+
+      likeButton.dataset.liked =
+      "false";
 
 
       likeButton.classList.remove(
         "liked"
       );
+
+
+      likeButton.textContent =
+      `🤍 Like (${oldLikes})`;
 
     }
 
@@ -1590,7 +1753,7 @@ function setupLikeButton(postData,postCard){
       }
 
 
-      const currentUserLike =
+      const userLikeReference =
       doc(
         db,
         "communityPosts",
@@ -1600,58 +1763,59 @@ function setupLikeButton(postData,postCard){
       );
 
 
-      const userHasLiked =
-
+      const hasLiked =
       likeButton.dataset.liked ===
       "true";
 
 
-      likeButton.disabled = true;
+      likeButton.disabled =
+      true;
 
 
       try{
 
-        if(userHasLiked){
-
-          /*
-            Remove the Like.
-          */
+        if(hasLiked){
 
           await deleteDoc(
-            currentUserLike
+            userLikeReference
           );
 
         }else{
 
-          /*
-            Add the Like.
-          */
+          const likerName =
+          getFirstValue(
+            currentUserProfile?.name,
+            currentUserProfile?.fullName,
+            currentUserProfile?.displayName,
+            currentUser.displayName,
+            "Community Member"
+          );
+
+
+          const likerPicture =
+          getFirstValue(
+            currentUserProfile?.profilePicture,
+            currentUserProfile?.picture,
+            currentUserProfile?.photoURL,
+            currentUserProfile?.profileImage,
+            currentUserProfile?.profilePhoto,
+            currentUser.photoURL,
+            defaultProfilePicture
+          );
+
 
           await setDoc(
-            currentUserLike,
+            userLikeReference,
             {
 
               userId:
               currentUser.uid,
 
-              uid:
-              currentUser.uid,
+              name:
+              likerName,
 
-              fullName:
-
-              currentUserProfile?.fullName ||
-
-              currentUser.displayName ||
-
-              "Community Member",
-
-              profilePhoto:
-
-              currentUserProfile?.profilePhoto ||
-
-              currentUser.photoURL ||
-
-              defaultProfilePicture,
+              picture:
+              likerPicture,
 
               likedAt:
               serverTimestamp()
@@ -1679,16 +1843,24 @@ function setupLikeButton(postData,postCard){
         ){
 
           message =
-          "Firebase denied permission to update this Like. Please check your Firestore rules.";
+          "Firebase denied permission to update the Like. Check your Firestore security rules.";
+
+        }else if(error.message){
+
+          message =
+          error.message;
 
         }
 
 
-        alert(message);
+        alert(
+          message
+        );
 
       }finally{
 
-        likeButton.disabled = false;
+        likeButton.disabled =
+        false;
 
       }
 
@@ -1696,41 +1868,9 @@ function setupLikeButton(postData,postCard){
   );
 
 }
-
-
 /* =====================================================
-   CLEAN UP LISTENERS WHEN LEAVING THE PAGE
-===================================================== */
-
-window.addEventListener(
-  "beforeunload",
-  ()=>{
-
-    for(
-      const unsubscribeLike
-      of likeListeners.values()
-    ){
-
-      unsubscribeLike();
-
-    }
-
-
-    likeListeners.clear();
-
-
-    if(unsubscribePosts){
-
-      unsubscribePosts();
-
-      unsubscribePosts = null;
-
-    }
-
-  }
-);
-/* =====================================================
-   PART 5: COMMENTS, SHARE AND PAGE BUTTONS
+   PART 5 OF 6
+   COMMENTS, SHARE AND PAGE BUTTONS
 ===================================================== */
 
 
@@ -1738,13 +1878,21 @@ window.addEventListener(
    SET UP COMMENTS AND SHARE FOR EACH POST
 ===================================================== */
 
-function setupPostActions(postData,postCard){
+function setupPostActions(
+  postData,
+  postCard
+){
 
   const commentButton =
-  postCard.querySelector(".commentButton");
+  postCard.querySelector(
+    ".commentButton"
+  );
+
 
   const shareButton =
-  postCard.querySelector(".shareButton");
+  postCard.querySelector(
+    ".shareButton"
+  );
 
 
   const postId =
@@ -1773,10 +1921,10 @@ function setupPostActions(postData,postCard){
 
 
         window.location.href =
-
         "comments.html?postId=" +
-
-        encodeURIComponent(postId);
+        encodeURIComponent(
+          postId
+        );
 
       }
     );
@@ -1806,26 +1954,26 @@ function setupPostActions(postData,postCard){
 
 
         const postLink =
-
         window.location.origin +
-
         window.location.pathname +
-
         "?postId=" +
-
-        encodeURIComponent(postId);
+        encodeURIComponent(
+          postId
+        );
 
 
         const postMessage =
-        getPostMessage(postData);
+        getPostMessage(
+          postData
+        );
 
 
         const shareText =
-
         postMessage
-
-        ? postMessage.slice(0,180)
-
+        ? postMessage.slice(
+            0,
+            180
+          )
         : "View this community post";
 
 
@@ -1846,7 +1994,9 @@ function setupPostActions(postData,postCard){
 
             });
 
-          }else{
+          }else if(
+            navigator.clipboard
+          ){
 
             await navigator.clipboard.writeText(
               postLink
@@ -1855,6 +2005,13 @@ function setupPostActions(postData,postCard){
 
             alert(
               "Post link copied successfully."
+            );
+
+          }else{
+
+            prompt(
+              "Copy this post link:",
+              postLink
             );
 
           }
@@ -1879,19 +2036,32 @@ function setupPostActions(postData,postCard){
 
           try{
 
-            await navigator.clipboard.writeText(
-              postLink
-            );
+            if(
+              navigator.clipboard
+            ){
+
+              await navigator.clipboard.writeText(
+                postLink
+              );
 
 
-            alert(
-              "Post link copied successfully."
-            );
+              alert(
+                "Post link copied successfully."
+              );
+
+            }else{
+
+              prompt(
+                "Copy this post link:",
+                postLink
+              );
+
+            }
 
           }catch(copyError){
 
             console.error(
-              "Post link copying error:",
+              "Copying link error:",
               copyError
             );
 
@@ -1940,7 +2110,7 @@ createPostButton.addEventListener(
 
 
 /* =====================================================
-   BACK TO COMMUNITY BUTTON
+   BACK BUTTON
 ===================================================== */
 
 backButton.addEventListener(
@@ -1955,7 +2125,7 @@ backButton.addEventListener(
 
 
 /* =====================================================
-   OPEN A SPECIFIC POST FROM A SHARED LINK
+   OPEN A POST FROM A SHARED LINK
 ===================================================== */
 
 function scrollToSharedPost(){
@@ -1967,7 +2137,9 @@ function scrollToSharedPost(){
 
 
   const sharedPostId =
-  parameters.get("postId");
+  parameters.get(
+    "postId"
+  );
 
 
   if(!sharedPostId){
@@ -1977,12 +2149,28 @@ function scrollToSharedPost(){
   }
 
 
-  const sharedPost =
-  document.querySelector(
+  let sharedPost = null;
 
-    `[data-post-id="${CSS.escape(sharedPostId)}"]`
 
-  );
+  try{
+
+    sharedPost =
+    document.querySelector(
+
+      `[data-post-id="${CSS.escape(sharedPostId)}"]`
+
+    );
+
+  }catch(error){
+
+    console.error(
+      "Shared post selector error:",
+      error
+    );
+
+    return;
+
+  }
 
 
   if(!sharedPost){
@@ -1994,9 +2182,11 @@ function scrollToSharedPost(){
 
   sharedPost.scrollIntoView({
 
-    behavior:"smooth",
+    behavior:
+    "smooth",
 
-    block:"center"
+    block:
+    "center"
 
   });
 
@@ -2005,11 +2195,19 @@ function scrollToSharedPost(){
   "4px solid #0874d1";
 
 
+  sharedPost.style.outlineOffset =
+  "4px";
+
+
   setTimeout(
     ()=>{
 
       sharedPost.style.outline =
       "none";
+
+
+      sharedPost.style.outlineOffset =
+      "0";
 
     },
     3500
@@ -2017,7 +2215,8 @@ function scrollToSharedPost(){
 
 }
 /* =====================================================
-   PART 6: FINAL ERROR HANDLING AND PAGE CLEANUP
+   PART 6 OF 6
+   FINAL CLEANUP, CONNECTION STATUS AND PAGE END
 ===================================================== */
 
 
@@ -2032,6 +2231,7 @@ window.addEventListener(
     console.warn(
       "Internet connection lost."
     );
+
 
     if(
       postsContainer &&
@@ -2056,14 +2256,15 @@ window.addEventListener(
       "Internet connection restored."
     );
 
-    loadCommunityPosts();
+
+    initializeFeed();
 
   }
 );
 
 
 /* =====================================================
-   CATCH JAVASCRIPT ERRORS
+   HANDLE JAVASCRIPT ERRORS
 ===================================================== */
 
 window.addEventListener(
@@ -2072,7 +2273,8 @@ window.addEventListener(
 
     console.error(
       "Feed page error:",
-      event.error || event.message
+      event.error ||
+      event.message
     );
 
   }
@@ -2080,7 +2282,7 @@ window.addEventListener(
 
 
 /* =====================================================
-   CATCH PROMISE ERRORS
+   HANDLE PROMISE ERRORS
 ===================================================== */
 
 window.addEventListener(
@@ -2097,7 +2299,23 @@ window.addEventListener(
 
 
 /* =====================================================
-   CHECK REQUIRED PAGE ELEMENTS
+   CLEAN UP FIREBASE LISTENERS
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+
+    stopPostsListener();
+
+    stopAllLikeListeners();
+
+  }
+);
+
+
+/* =====================================================
+   FINAL ELEMENT CHECK
 ===================================================== */
 
 if(!postsContainer){
@@ -2137,7 +2355,7 @@ if(!backButton){
 
 
 /* =====================================================
-   FINAL PAGE MESSAGE
+   FEED READY MESSAGE
 ===================================================== */
 
 console.log(
