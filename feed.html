@@ -334,13 +334,12 @@ Share God's Word, testimonies, encouragement and prayer with believers around th
 </section>
 
 <section class="wallControls">
-
-<button
-type="button"
-id="createPostButton"
-class="controlButton createPostButton">
-✍️ Create New Post
-</button>
+<a
+  href="https://sabasabawk.github.io/create-post.html"
+  class="createPostButton"
+>
+  ✍️ Create New Post
+</a>
 
 <button
 type="button"
@@ -405,9 +404,6 @@ import {
 
 const postsContainer =
 document.getElementById("postsContainer");
-
-const createPostButton =
-document.getElementById("createPostButton");
 
 const refreshButton =
 document.getElementById("refreshButton");
@@ -2087,21 +2083,6 @@ function setupPostActions(
    CREATE NEW POST BUTTON
 ===================================================== */
 
-if(createPostButton){
-
-  createPostButton.addEventListener(
-    "click",
-    ()=>{
-
-      console.log(
-        "Create Post button clicked."
-      );
-
-      window.location.href =
-      "./create-post.html";
-
-    }
-  );
 
 }else{
 
@@ -2330,13 +2311,6 @@ if(!postsContainer){
 }
 
 
-if(!createPostButton){
-
-  console.error(
-    "createPostButton was not found."
-  );
-
-}
 
 
 if(!refreshButton){
