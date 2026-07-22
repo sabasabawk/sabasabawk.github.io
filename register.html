@@ -119,85 +119,212 @@ Login
 <script type="module">
 
 import {
-auth,
-createUserWithEmailAndPassword
-}
-from "./firebase.js";
+  auth,
+  db,
+  createUserWithEmailAndPassword,
+  doc,
+  setDoc,
+  serverTimestamp
+} from "./firebase.js";
 
-import {
-getFirestore,
-doc,
-setDoc
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const db = getFirestore();
+window.register = async function(){
 
-window.register = function(){
+  const name =
+  document
+  .getElementById("name")
+  .value
+  .trim();
 
-let name =
-document.getElementById("name").value;
 
-let email =
-document.getElementById("email").value;
+  const email =
+  document
+  .getElementById("email")
+  .value
+  .trim();
 
-let password =
-document.getElementById("password").value;
 
-if(name=="" || email=="" || password==""){
+  const password =
+  document
+  .getElementById("password")
+  .value;
 
-document.getElementById("message").innerHTML =
-"Please fill in all fields.";
 
-return;
+  const message =
+  document.getElementById("message");
 
-}
 
-createUserWithEmailAndPassword(auth,email,password)
+  if(
+    name === "" ||
+    email === "" ||
+    password === ""
+  ){
 
-.then(async(userCredential)=>{
+    message.style.color =
+    "red";
 
-const user = userCredential.user;
+    message.innerHTML =
+    "Please fill in all fields.";
 
-await setDoc(doc(db,"users",user.uid),{
+    return;
 
-fullName:name,
-email:email,
-bio:"",
-favoriteVerse:"",
-profilePicture:"",
-joined:new Date().toLocaleString(),
-totalPosts:0,
-certificates:0
+  }
 
-});
 
-localStorage.setItem("userName",name);
-localStorage.setItem("userEmail",email);
+  if(password.length < 6){
 
-document.getElementById("message").style.color="green";
+    message.style.color =
+    "red";
 
-document.getElementById("message").innerHTML =
-"✅ Registration successful!";
+    message.innerHTML =
+    "Password must contain at least 6 characters.";
 
-setTimeout(function(){
+    return;
 
-window.location.href="login.html";
+  }
 
-},1500);
 
-})
+  message.style.color =
+  "";
 
-.catch((error)=>{
+  message.innerHTML =
+  "Creating your account...";
 
-document.getElementById("message").style.color="red";
 
-document.getElementById("message").innerHTML =
-error.message;
+  try{
 
-});
+    const userCredential =
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-}
-window.register = register;
+
+    const user =
+    userCredential.user;
+
+
+    await setDoc(
+
+      doc(
+        db,
+        "users",
+        user.uid
+      ),
+
+      {
+
+        fullName:
+        name,
+
+        email:
+        email,
+
+        bio:
+        "",
+
+        about:
+        "",
+
+        country:
+        "",
+
+        favoriteVerse:
+        "",
+
+        profilePicture:
+        "",
+
+        totalPosts:
+        0,
+
+        certificates:
+        0,
+
+        joinedAt:
+        serverTimestamp()
+
+      }
+
+    );
+
+
+    localStorage.setItem(
+      "userName",
+      name
+    );
+
+
+    localStorage.setItem(
+      "userEmail",
+      email
+    );
+
+
+    message.style.color =
+    "green";
+
+    message.innerHTML =
+    "✅ Registration successful!";
+
+
+    setTimeout(()=>{
+
+      window.location.href =
+      "login.html";
+
+    },1500);
+
+
+  }catch(error){
+
+    console.error(
+      "Registration error:",
+      error
+    );
+
+
+    message.style.color =
+    "red";
+
+
+    if(
+      error.code ===
+      "auth/email-already-in-use"
+    ){
+
+      message.innerHTML =
+      "This email address is already registered.";
+
+    }else if(
+      error.code ===
+      "auth/invalid-email"
+    ){
+
+      message.innerHTML =
+      "Please enter a valid email address.";
+
+    }else if(
+      error.code ===
+      "auth/weak-password"
+    ){
+
+      message.innerHTML =
+      "Please choose a stronger password.";
+
+    }else{
+
+      message.innerHTML =
+      error.message ||
+      "Registration failed.";
+
+    }
+
+  }
+
+};
+
 </script>
 
 </body>
