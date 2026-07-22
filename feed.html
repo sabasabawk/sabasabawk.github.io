@@ -2087,26 +2087,29 @@ function setupPostActions(
    CREATE NEW POST BUTTON
 ===================================================== */
 
-createPostButton.addEventListener(
-  "click",
-  ()=>{
+if(createPostButton){
 
-    if(!currentUser){
+  createPostButton.addEventListener(
+    "click",
+    ()=>{
 
-      alert(
-        "Please sign in before creating a post."
+      console.log(
+        "Create Post button clicked."
       );
 
-      return;
+      window.location.href =
+      "./create-post.html";
 
     }
+  );
 
+}else{
 
-    window.location.href =
-    "create-post.html";
+  console.error(
+    "Create Post button was not found. Check id='createPostButton'."
+  );
 
-  }
-);
+}
 
 
 /* =====================================================
