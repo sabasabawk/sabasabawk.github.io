@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -6,312 +7,364 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-<title>
-Community Wall | SABASABA Gospel Ministry
-</title>
+<title>Community Wall</title>
+
 
 <style>
 
+/* =====================================================
+   GENERAL PAGE
+===================================================== */
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:#eef3f8;
-color:#222;
-min-height:100vh;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+  background:#eef3f8;
+  color:#222;
 }
 
 button{
-font-family:inherit;
-cursor:pointer;
+  font-family:inherit;
 }
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
 
 .pageContainer{
-width:100%;
-max-width:920px;
-margin:0 auto;
-padding:20px;
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:22px 18px 50px;
 }
 
+
+/* =====================================================
+   COMMUNITY WALL HEADER
+===================================================== */
+
 .wallHeader{
-background:linear-gradient(135deg,#0874d1,#004d99);
-color:white;
-padding:38px 25px;
-border-radius:24px;
-text-align:center;
-margin-bottom:24px;
-box-shadow:0 7px 18px rgba(0,0,0,.15);
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:white;
+  padding:38px 24px;
+  border-radius:30px;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.16);
 }
 
 .wallHeader h1{
-font-size:38px;
-margin-bottom:14px;
+  margin:0;
+  font-size:42px;
+  line-height:1.2;
 }
 
 .wallHeader p{
-max-width:730px;
-margin:auto;
-font-size:18px;
-line-height:1.65;
+  margin:22px auto 0;
+  max-width:560px;
+  font-size:24px;
+  line-height:1.55;
 }
 
-.wallControls{
-display:flex;
-align-items:center;
-gap:14px;
-margin-bottom:25px;
+
+/* =====================================================
+   REFRESH CONTROL
+===================================================== */
+
+.feedControls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:28px 0;
 }
 
-.controlButton{
-border:none;
-color:white;
-padding:17px 16px;
-border-radius:14px;
-font-size:18px;
-font-weight:bold;
-box-shadow:0 4px 10px rgba(0,0,0,.12);
-transition:.2s;
-}
-
-.controlButton:active{
-transform:scale(.98);
-}
-.likeButton.liked{
-  background:#ffe9ee;
-  color:#d6003d;
+#refreshButton{
+  min-width:230px;
+  padding:17px 30px;
+  border:none;
+  border-radius:18px;
+  background:#22a943;
+  color:white;
+  font-size:22px;
   font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(0,0,0,.15);
 }
 
-.likeButton:disabled{
-  opacity:0.6;
+#refreshButton:hover{
+  background:#188b35;
+}
+
+#refreshButton:active{
+  transform:scale(.98);
+}
+
+#refreshButton:disabled{
+  opacity:.7;
   cursor:not-allowed;
 }
-.createPostButton{
-flex:1;
-background:#0874d1;
+
+
+/* =====================================================
+   POSTS CONTAINER
+===================================================== */
+
+#postsContainer{
+  width:100%;
 }
 
-.createPostButton:hover{
-background:#005eb8;
+
+/* =====================================================
+   LOADING, EMPTY AND ERROR BOXES
+===================================================== */
+
+.statusCard{
+  background:white;
+  padding:45px 25px;
+  border-radius:28px;
+  text-align:center;
+  font-size:22px;
+  color:#777;
+  box-shadow:0 7px 20px rgba(0,0,0,.09);
 }
 
-.refreshButton{
-min-width:155px;
-background:#28a745;
+.statusCard.error{
+  color:#b00020;
 }
 
-.refreshButton:hover{
-background:#218838;
-}
-.postsContainer{
-width:100%;
+.statusCard.empty{
+  color:#555;
 }
 
-.loadingMessage,
-.emptyMessage,
-.errorMessage{
-background:white;
-padding:45px 25px;
-text-align:center;
-border-radius:22px;
-font-size:18px;
-line-height:1.6;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
 
-.loadingMessage,
-.emptyMessage{
-color:#777;
-}
-
-.errorMessage{
-color:#b00020;
-}
+/* =====================================================
+   POST CARD
+===================================================== */
 
 .postCard{
-background:white;
-border-radius:22px;
-padding:22px;
-margin-bottom:24px;
-box-shadow:0 5px 15px rgba(0,0,0,.10);
-overflow:hidden;
+  background:white;
+  margin-bottom:28px;
+  padding:26px;
+  border-radius:28px;
+  box-shadow:0 7px 22px rgba(0,0,0,.11);
+  overflow:hidden;
 }
 
 .postHeader{
-display:flex;
-align-items:center;
-gap:14px;
-margin-bottom:17px;
+  display:flex;
+  align-items:center;
+  gap:16px;
 }
 
 .authorPicture{
-width:62px;
-height:62px;
-border-radius:50%;
-object-fit:cover;
-background:#ddd;
-border:3px solid #e5edf5;
-flex-shrink:0;
-cursor:pointer;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  object-fit:cover;
+  border:5px solid #d8efff;
+  cursor:pointer;
+  flex-shrink:0;
 }
 
 .authorInformation{
-flex:1;
-min-width:0;
+  min-width:0;
 }
 
 .authorName{
-font-size:21px;
-font-weight:bold;
-color:#0066cc;
-cursor:pointer;
-word-break:break-word;
-}
-
-.authorName:hover{
-text-decoration:underline;
+  color:#0873c9;
+  font-size:25px;
+  font-weight:bold;
+  line-height:1.2;
+  cursor:pointer;
+  word-break:break-word;
 }
 
 .postDetails{
-font-size:14px;
-color:#777;
-margin-top:5px;
-line-height:1.45;
+  margin-top:8px;
+  color:#777;
+  font-size:18px;
+  line-height:1.45;
 }
+
+
+/* =====================================================
+   POST CATEGORY
+===================================================== */
 
 .postCategory{
-display:inline-block;
-padding:7px 13px;
-margin-bottom:13px;
-background:#eaf3ff;
-color:#0066cc;
-border-radius:20px;
-font-size:14px;
-font-weight:bold;
+  display:inline-block;
+  margin-top:24px;
+  padding:10px 18px;
+  border-radius:25px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:18px;
+  font-weight:bold;
 }
+
+
+/* =====================================================
+   POST MESSAGE
+===================================================== */
 
 .postMessage{
-font-size:17px;
-line-height:1.75;
-white-space:pre-wrap;
-word-break:break-word;
-margin-bottom:15px;
+  margin-top:26px;
+  font-size:21px;
+  line-height:1.75;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
+
+
+/* =====================================================
+   POST IMAGE
+===================================================== */
 
 .communityPostImage{
-display:block;
-width:100%;
-max-height:620px;
-object-fit:cover;
-border-radius:16px;
-margin-top:15px;
-background:#eee;
+  display:block;
+  width:100%;
+  max-height:520px;
+  margin-top:24px;
+  border-radius:18px;
+  object-fit:cover;
 }
 
+
+/* =====================================================
+   POST ACTION BUTTONS
+===================================================== */
+
 .postActions{
-display:flex;
-gap:10px;
-margin-top:20px;
-padding-top:16px;
-border-top:1px solid #e5e5e5;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid #ddd;
 }
 
 .postActions button{
-flex:1;
-border:none;
-padding:13px 8px;
-border-radius:12px;
-font-size:16px;
-font-weight:bold;
-color:white;
+  border:none;
+  border-radius:14px;
+  padding:13px 8px;
+  background:#edf3f8;
+  color:#333;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.likeButton{
-background:#1877f2;
+.postActions button:hover{
+  background:#ddeaf4;
 }
 
-.commentButton{
-background:#28a745;
+.likeButton.liked{
+  background:#ffe4e8;
+  color:#c2183b;
 }
 
-.shareButton{
-background:#ff9800;
+.postActions button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
 }
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
 .backSection{
-text-align:center;
-margin:32px 0;
+  display:flex;
+  justify-content:center;
+  margin-top:35px;
 }
 
-.backButton{
-padding:15px 30px;
-border:none;
-border-radius:13px;
-background:#666;
-color:white;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
+#backButton{
+  min-width:320px;
+  padding:17px 28px;
+  border:none;
+  border-radius:18px;
+  background:#707070;
+  color:white;
+  font-size:21px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.backButton:hover{
-background:#555;
+#backButton:hover{
+  background:#555;
 }
 
-@media(max-width:700px){
 
-.pageContainer{
-padding:16px;
-}
+/* =====================================================
+   MOBILE DESIGN
+===================================================== */
 
-.wallHeader{
-padding:31px 18px;
-}
+@media(max-width:600px){
 
-.wallHeader h1{
-font-size:31px;
-}
+  .pageContainer{
+    padding:20px 14px 45px;
+  }
 
-.wallHeader p{
-font-size:17px;
-}
+  .wallHeader{
+    padding:32px 18px;
+    border-radius:26px;
+  }
 
-.wallControls{
-gap:10px;
-}
+  .wallHeader h1{
+    font-size:34px;
+  }
 
-.controlButton{
-font-size:16px;
-padding:15px 10px;
-}
+  .wallHeader p{
+    font-size:20px;
+  }
 
-.refreshButton{
-min-width:0;
-flex:.65;
-}
+  .postCard{
+    padding:21px;
+    border-radius:25px;
+  }
 
-.postCard{
-padding:19px;
-}
+  .authorPicture{
+    width:70px;
+    height:70px;
+  }
 
-.authorPicture{
-width:58px;
-height:58px;
-}
+  .authorName{
+    font-size:22px;
+  }
 
-.postActions{
-flex-direction:column;
-}
+  .postDetails{
+    font-size:16px;
+  }
 
-.postActions button{
-width:100%;
-}
+  .postMessage{
+    font-size:19px;
+  }
+
+  .postActions{
+    grid-template-columns:1fr;
+  }
+
+  .postActions button{
+    font-size:17px;
+  }
+
+  #backButton{
+    min-width:100%;
+  }
 
 }
 
@@ -321,62 +374,84 @@ width:100%;
 
 <body>
 
-<main class="pageContainer">
+<div class="pageContainer">
 
-<section class="wallHeader">
+    <!-- ==========================================
+         COMMUNITY HEADER
+    =========================================== -->
 
-<h1>📰 Community Wall</h1>
+    <header class="wallHeader">
 
-<p>
-Share God's Word, testimonies, encouragement and prayer with believers around the world.
-</p>
+        <h1>
+            📰 Community Wall
+        </h1>
 
-</section>
+        <p>
+            Share God's Word, testimonies,
+            encouragement and prayer with
+            believers around the world.
+        </p>
 
-<section class="wallControls">
-<a
-  href="https://sabasabawk.github.io/create-post.html"
-  class="createPostButton"
->
-  ✍️ Create New Post
-</a>
+    </header>
 
-<button
-type="button"
-id="refreshButton"
-class="controlButton refreshButton">
-🔄 Refresh
-</button>
 
-</section>
+    <!-- ==========================================
+         REFRESH BUTTON
+    =========================================== -->
 
-<section
-id="postsContainer"
-class="postsContainer">
+    <div class="feedControls">
 
-<div class="loadingMessage">
-Loading community posts...
+        <button
+            type="button"
+            id="refreshButton">
+
+            🔄 Refresh
+
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         POSTS WILL APPEAR HERE
+    =========================================== -->
+
+    <main
+        id="postsContainer">
+
+        <div class="statusCard">
+
+            Loading community posts...
+
+        </div>
+
+    </main>
+
+
+    <!-- ==========================================
+         BACK BUTTON
+    =========================================== -->
+
+    <div class="backSection">
+
+        <button
+            type="button"
+            id="backButton">
+
+            ← Back to Community
+
+        </button>
+
+    </div>
+
 </div>
 
-</section>
 
-<section class="backSection">
-
-<button
-type="button"
-id="backButton"
-class="backButton">
-⬅ Back to Community
-</button>
-
-</section>
-
-</main>
- <script type="module">
+<script type="module">
 
 /* =====================================================
-   PART 1 OF 6
-   FIREBASE SETUP, PAGE ELEMENTS AND AUTHENTICATION
+   PART 3 OF 6
+   FIREBASE SETUP AND BASIC HELPERS
 ===================================================== */
 
 import {
@@ -403,13 +478,19 @@ import {
 ===================================================== */
 
 const postsContainer =
-document.getElementById("postsContainer");
+document.getElementById(
+  "postsContainer"
+);
 
 const refreshButton =
-document.getElementById("refreshButton");
+document.getElementById(
+  "refreshButton"
+);
 
 const backButton =
-document.getElementById("backButton");
+document.getElementById(
+  "backButton"
+);
 
 
 /* =====================================================
@@ -418,7 +499,7 @@ document.getElementById("backButton");
 
 let currentUser = null;
 
-let currentUserProfile = null;
+let currentUserProfile = {};
 
 let unsubscribePosts = null;
 
@@ -427,88 +508,6 @@ new Map();
 
 const defaultProfilePicture =
 "images/profile.png";
-
-
-/* =====================================================
-   HTML SAFETY
-===================================================== */
-
-function escapeHTML(value){
-
-  return String(value ?? "")
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
-
-}
-
-
-/* =====================================================
-   LOADING MESSAGE
-===================================================== */
-
-function showLoadingMessage(){
-
-  postsContainer.innerHTML = `
-
-    <div class="loadingMessage">
-
-      Loading community posts...
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   EMPTY MESSAGE
-===================================================== */
-
-function showEmptyMessage(){
-
-  postsContainer.innerHTML = `
-
-    <div class="emptyMessage">
-
-      <strong>No community posts yet.</strong>
-
-      <br><br>
-
-      Be the first person to share God's Word,
-      a testimony, encouragement or prayer.
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   ERROR MESSAGE
-===================================================== */
-
-function showErrorMessage(message){
-
-  postsContainer.innerHTML = `
-
-    <div class="errorMessage">
-
-      <strong>Community posts could not be loaded.</strong>
-
-      <br><br>
-
-      ${escapeHTML(message)}
-
-    </div>
-
-  `;
-
-}
 
 
 /* =====================================================
@@ -537,14 +536,75 @@ function getFirstValue(...values){
 
 
 /* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+  const temporaryElement =
+  document.createElement("div");
+
+  temporaryElement.textContent =
+  String(value ?? "");
+
+  return temporaryElement.innerHTML;
+
+}
+
+
+/* =====================================================
+   STATUS MESSAGES
+===================================================== */
+
+function showLoadingMessage(){
+
+  postsContainer.innerHTML = `
+
+    <div class="statusCard">
+      Loading community posts...
+    </div>
+
+  `;
+
+}
+
+
+function showEmptyMessage(){
+
+  postsContainer.innerHTML = `
+
+    <div class="statusCard empty">
+      No community posts are available yet.
+    </div>
+
+  `;
+
+}
+
+
+function showErrorMessage(message){
+
+  postsContainer.innerHTML = `
+
+    <div class="statusCard error">
+      ${escapeHTML(message)}
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
    LOAD CURRENT USER PROFILE
 ===================================================== */
 
 async function loadCurrentUserProfile(){
 
-  if(!currentUser){
+  currentUserProfile = {};
 
-    currentUserProfile = null;
+
+  if(!currentUser){
 
     return;
 
@@ -562,67 +622,24 @@ async function loadCurrentUserProfile(){
 
 
     const profileSnapshot =
-    await getDoc(profileReference);
+    await getDoc(
+      profileReference
+    );
 
 
     if(profileSnapshot.exists()){
 
-      currentUserProfile = {
-
-        uid:
-        currentUser.uid,
-
-        ...profileSnapshot.data()
-
-      };
-
-    }else{
-
-      currentUserProfile = {
-
-        uid:
-        currentUser.uid,
-
-        name:
-        currentUser.displayName ||
-        "Community Member",
-
-        email:
-        currentUser.email || "",
-
-        profilePicture:
-        currentUser.photoURL ||
-        defaultProfilePicture
-
-      };
+      currentUserProfile =
+      profileSnapshot.data();
 
     }
 
   }catch(error){
 
     console.error(
-      "Profile loading error:",
+      "Current profile loading error:",
       error
     );
-
-
-    currentUserProfile = {
-
-      uid:
-      currentUser.uid,
-
-      name:
-      currentUser.displayName ||
-      "Community Member",
-
-      email:
-      currentUser.email || "",
-
-      profilePicture:
-      currentUser.photoURL ||
-      defaultProfilePicture
-
-    };
 
   }
 
@@ -630,49 +647,24 @@ async function loadCurrentUserProfile(){
 
 
 /* =====================================================
-   START FEED AFTER AUTHENTICATION
+   AUTHENTICATION STATE
 ===================================================== */
-
-showLoadingMessage();
-
 
 onAuthStateChanged(
   auth,
-
   async(user)=>{
 
-    currentUser =
-    user || null;
-
+    currentUser = user || null;
 
     await loadCurrentUserProfile();
 
-
-    /*
-      initializeFeed() is written in Part 2.
-    */
-
     initializeFeed();
-
-  },
-
-  (error)=>{
-
-    console.error(
-      "Authentication error:",
-      error
-    );
-
-
-    showErrorMessage(
-      "Authentication failed. Please refresh the page."
-    );
 
   }
 );
-/* =====================================================
-   PART 2 OF 6
-   LOAD COMMUNITY POSTS FROM FIRESTORE
+    /* =====================================================
+   PART 4 OF 6
+   LOAD POSTS AND CREATE POST CARDS
 ===================================================== */
 
 
@@ -694,7 +686,7 @@ function stopPostsListener(){
 
 
 /* =====================================================
-   STOP OLD LIKE LISTENERS
+   STOP ALL LIKE LISTENERS
 ===================================================== */
 
 function stopAllLikeListeners(){
@@ -708,14 +700,13 @@ function stopAllLikeListeners(){
 
   }
 
-
   likeListeners.clear();
 
 }
 
 
 /* =====================================================
-   INITIALIZE FEED
+   INITIALIZE COMMUNITY FEED
 ===================================================== */
 
 function initializeFeed(){
@@ -750,11 +741,6 @@ function loadCommunityPosts(){
       "communityPosts"
     );
 
-
-    /*
-      Your create-post page saves the date
-      inside the field named "timestamp".
-    */
 
     const postsQuery =
     query(
@@ -802,11 +788,6 @@ function loadCommunityPosts(){
             };
 
 
-            /*
-              createPostCard() is written
-              in Part 3.
-            */
-
             const postCard =
             await createPostCard(
               postData
@@ -820,24 +801,8 @@ function loadCommunityPosts(){
           }
 
 
-          /*
-            scrollToSharedPost() is written
-            in Part 5.
-          */
-
           setTimeout(
-            ()=>{
-
-              if(
-                typeof scrollToSharedPost ===
-                "function"
-              ){
-
-                scrollToSharedPost();
-
-              }
-
-            },
+            scrollToSharedPost,
             300
           );
 
@@ -851,7 +816,7 @@ function loadCommunityPosts(){
 
           showErrorMessage(
             error.message ||
-            "The posts were found, but they could not be displayed."
+            "Posts were found, but they could not be displayed."
           );
 
         }
@@ -861,13 +826,13 @@ function loadCommunityPosts(){
       (error)=>{
 
         console.error(
-          "Firestore posts error:",
+          "Firestore post-loading error:",
           error
         );
 
 
         let message =
-        "Please check your internet connection and try again.";
+        "Community posts could not be loaded.";
 
 
         if(
@@ -876,7 +841,7 @@ function loadCommunityPosts(){
         ){
 
           message =
-          "Firebase denied permission to read community posts. Check your Firestore security rules.";
+          "Firebase denied permission to read community posts.";
 
         }else if(
           error.code ===
@@ -884,7 +849,7 @@ function loadCommunityPosts(){
         ){
 
           message =
-          "Firebase needs an index for the community posts query.";
+          "Firebase requires a Firestore index for this query.";
 
         }else if(
           error.code ===
@@ -892,7 +857,7 @@ function loadCommunityPosts(){
         ){
 
           message =
-          "Firebase is temporarily unavailable. Please try again.";
+          "Firebase is temporarily unavailable. Please check your internet connection.";
 
         }else if(error.message){
 
@@ -913,56 +878,19 @@ function loadCommunityPosts(){
   }catch(error){
 
     console.error(
-      "Feed initialization error:",
+      "Community feed initialization error:",
       error
     );
 
 
     showErrorMessage(
       error.message ||
-      "An unexpected error occurred while loading community posts."
+      "An unexpected error occurred while opening the Community Wall."
     );
 
   }
 
 }
-
-
-/* =====================================================
-   REFRESH BUTTON
-===================================================== */
-
-refreshButton.addEventListener(
-  "click",
-  ()=>{
-
-    refreshButton.disabled = true;
-
-    refreshButton.textContent =
-    "⏳ Refreshing...";
-
-
-    initializeFeed();
-
-
-    setTimeout(
-      ()=>{
-
-        refreshButton.disabled = false;
-
-        refreshButton.textContent =
-        "🔄 Refresh";
-
-      },
-      1200
-    );
-
-  }
-);
-/* =====================================================
-   PART 3 OF 6
-   CREATE AND DISPLAY EACH COMMUNITY POST
-===================================================== */
 
 
 /* =====================================================
@@ -1031,10 +959,9 @@ function formatPostDate(value){
   }catch(error){
 
     console.error(
-      "Date formatting error:",
+      "Post date error:",
       error
     );
-
 
     return "Recently";
 
@@ -1044,7 +971,7 @@ function formatPostDate(value){
 
 
 /* =====================================================
-   LOAD THE POST AUTHOR'S PROFILE
+   LOAD POST AUTHOR PROFILE
 ===================================================== */
 
 async function loadPostAuthorProfile(postData){
@@ -1053,8 +980,7 @@ async function loadPostAuthorProfile(postData){
   getFirstValue(
     postData.userId,
     postData.authorId,
-    postData.uid,
-    postData.ownerId
+    postData.uid
   );
 
 
@@ -1067,7 +993,6 @@ async function loadPostAuthorProfile(postData){
     getFirstValue(
       postData.name,
       postData.fullName,
-      postData.authorName,
       postData.displayName,
       "Community Member"
     ),
@@ -1076,7 +1001,6 @@ async function loadPostAuthorProfile(postData){
     getFirstValue(
       postData.picture,
       postData.profilePicture,
-      postData.profilePhoto,
       postData.photoURL,
       defaultProfilePicture
     ),
@@ -1155,7 +1079,7 @@ async function loadPostAuthorProfile(postData){
   }catch(error){
 
     console.error(
-      "Author profile loading error:",
+      "Post author profile error:",
       error
     );
 
@@ -1176,7 +1100,6 @@ function getPostMessage(postData){
   return getFirstValue(
     postData.post,
     postData.message,
-    postData.postText,
     postData.content,
     postData.text,
     postData.description
@@ -1243,9 +1166,7 @@ async function createPostCard(postData){
   const postDate =
   formatPostDate(
     postData.timestamp ||
-    postData.createdAt ||
-    postData.dateCreated ||
-    postData.postedAt
+    postData.createdAt
   );
 
 
@@ -1261,10 +1182,6 @@ async function createPostCard(postData){
 
   postCard.dataset.postId =
   postData.id || "";
-
-
-  postCard.dataset.authorId =
-  authorProfile.uid || "";
 
 
   const safePostId =
@@ -1299,15 +1216,15 @@ async function createPostCard(postData){
   );
 
 
-  const safePostMessage =
-  escapeHTML(
-    postMessage || ""
-  );
-
-
   const safePostCategory =
   escapeHTML(
     postCategory || ""
+  );
+
+
+  const safePostMessage =
+  escapeHTML(
+    postMessage || ""
   );
 
 
@@ -1433,10 +1350,6 @@ async function createPostCard(postData){
   `;
 
 
-  /* ===================================================
-     FALLBACK PROFILE PICTURE
-  =================================================== */
-
   const authorPicture =
   postCard.querySelector(
     ".authorPicture"
@@ -1461,10 +1374,6 @@ async function createPostCard(postData){
   }
 
 
-  /* ===================================================
-     REMOVE BROKEN POST IMAGE
-  =================================================== */
-
   const communityPostImage =
   postCard.querySelector(
     ".communityPostImage"
@@ -1488,21 +1397,9 @@ async function createPostCard(postData){
   }
 
 
-  /* ===================================================
-     OPEN MEMBER PROFILE
-  =================================================== */
-
   const openAuthorProfile = ()=>{
 
-    const authorId =
-    authorProfile.uid;
-
-
-    if(!authorId){
-
-      alert(
-        "This member's profile is unavailable."
-      );
+    if(!authorProfile.uid){
 
       return;
 
@@ -1512,7 +1409,7 @@ async function createPostCard(postData){
     window.location.href =
     "profile.html?uid=" +
     encodeURIComponent(
-      authorId
+      authorProfile.uid
     );
 
   };
@@ -1544,11 +1441,6 @@ async function createPostCard(postData){
   }
 
 
-  /*
-    setupLikeButton() is written in Part 4.
-    setupPostActions() is written in Part 5.
-  */
-
   setupLikeButton(
     postData,
     postCard
@@ -1563,15 +1455,15 @@ async function createPostCard(postData){
 
   return postCard;
 
-}
+}     
 /* =====================================================
-   PART 4 OF 6
-   COMPLETE LIKE SYSTEM
+   PART 5 OF 6
+   LIKE, COMMENTS, SHARE, REFRESH AND BACK
 ===================================================== */
 
 
 /* =====================================================
-   STOP OLD LIKE LISTENER FOR ONE POST
+   STOP ONE OLD LIKE LISTENER
 ===================================================== */
 
 function stopLikeListener(postId){
@@ -1629,9 +1521,7 @@ function setupLikeButton(
   }
 
 
-  stopLikeListener(
-    postId
-  );
+  stopLikeListener(postId);
 
 
   const likesReference =
@@ -1642,10 +1532,6 @@ function setupLikeButton(
     "likes"
   );
 
-
-  /* ===================================================
-     LIVE LIKE COUNT
-  =================================================== */
 
   const unsubscribeLikes =
   onSnapshot(
@@ -1696,12 +1582,12 @@ function setupLikeButton(
     (error)=>{
 
       console.error(
-        `Like listener error for post ${postId}:`,
+        "Like listener error:",
         error
       );
 
 
-      const oldLikes =
+      const oldLikeCount =
       Number(
         postData.likes
       ) || 0;
@@ -1717,7 +1603,7 @@ function setupLikeButton(
 
 
       likeButton.textContent =
-      `🤍 Like (${oldLikes})`;
+      `🤍 Like (${oldLikeCount})`;
 
     }
 
@@ -1729,10 +1615,6 @@ function setupLikeButton(
     unsubscribeLikes
   );
 
-
-  /* ===================================================
-     LIKE BUTTON CLICK
-  =================================================== */
 
   likeButton.addEventListener(
     "click",
@@ -1764,8 +1646,7 @@ function setupLikeButton(
       "true";
 
 
-      likeButton.disabled =
-      true;
+      likeButton.disabled = true;
 
 
       try{
@@ -1829,34 +1710,14 @@ function setupLikeButton(
         );
 
 
-        let message =
-        "The Like could not be updated. Please try again.";
-
-
-        if(
-          error.code ===
-          "permission-denied"
-        ){
-
-          message =
-          "Firebase denied permission to update the Like. Check your Firestore security rules.";
-
-        }else if(error.message){
-
-          message =
-          error.message;
-
-        }
-
-
         alert(
-          message
+          error.message ||
+          "The Like could not be updated."
         );
 
       }finally{
 
-        likeButton.disabled =
-        false;
+        likeButton.disabled = false;
 
       }
 
@@ -1864,14 +1725,10 @@ function setupLikeButton(
   );
 
 }
-/* =====================================================
-   PART 5 OF 6
-   COMMENTS, SHARE AND PAGE BUTTONS
-===================================================== */
 
 
 /* =====================================================
-   SET UP COMMENTS AND SHARE FOR EACH POST
+   COMMENTS AND SHARE
 ===================================================== */
 
 function setupPostActions(
@@ -1895,10 +1752,6 @@ function setupPostActions(
   postData.id;
 
 
-  /* ===================================================
-     OPEN COMMENTS PAGE
-  =================================================== */
-
   if(commentButton){
 
     commentButton.addEventListener(
@@ -1918,19 +1771,13 @@ function setupPostActions(
 
         window.location.href =
         "comments.html?postId=" +
-        encodeURIComponent(
-          postId
-        );
+        encodeURIComponent(postId);
 
       }
     );
 
   }
 
-
-  /* ===================================================
-     SHARE POST
-  =================================================== */
 
   if(shareButton){
 
@@ -1953,23 +1800,16 @@ function setupPostActions(
         window.location.origin +
         window.location.pathname +
         "?postId=" +
-        encodeURIComponent(
-          postId
-        );
+        encodeURIComponent(postId);
 
 
         const postMessage =
-        getPostMessage(
-          postData
-        );
+        getPostMessage(postData);
 
 
         const shareText =
         postMessage
-        ? postMessage.slice(
-            0,
-            180
-          )
+        ? postMessage.slice(0,180)
         : "View this community post";
 
 
@@ -1990,9 +1830,7 @@ function setupPostActions(
 
             });
 
-          }else if(
-            navigator.clipboard
-          ){
+          }else if(navigator.clipboard){
 
             await navigator.clipboard.writeText(
               postLink
@@ -2014,10 +1852,7 @@ function setupPostActions(
 
         }catch(error){
 
-          if(
-            error.name ===
-            "AbortError"
-          ){
+          if(error.name === "AbortError"){
 
             return;
 
@@ -2030,44 +1865,10 @@ function setupPostActions(
           );
 
 
-          try{
-
-            if(
-              navigator.clipboard
-            ){
-
-              await navigator.clipboard.writeText(
-                postLink
-              );
-
-
-              alert(
-                "Post link copied successfully."
-              );
-
-            }else{
-
-              prompt(
-                "Copy this post link:",
-                postLink
-              );
-
-            }
-
-          }catch(copyError){
-
-            console.error(
-              "Copying link error:",
-              copyError
-            );
-
-
-            prompt(
-              "Copy this post link:",
-              postLink
-            );
-
-          }
+          prompt(
+            "Copy this post link:",
+            postLink
+          );
 
         }
 
@@ -2080,14 +1881,37 @@ function setupPostActions(
 
 
 /* =====================================================
-   CREATE NEW POST BUTTON
+   REFRESH BUTTON
 ===================================================== */
 
+if(refreshButton){
 
-}else{
+  refreshButton.addEventListener(
+    "click",
+    ()=>{
 
-  console.error(
-    "Create Post button was not found. Check id='createPostButton'."
+      refreshButton.disabled = true;
+
+      refreshButton.textContent =
+      "⏳ Refreshing...";
+
+
+      initializeFeed();
+
+
+      setTimeout(
+        ()=>{
+
+          refreshButton.disabled = false;
+
+          refreshButton.textContent =
+          "🔄 Refresh";
+
+        },
+        1200
+      );
+
+    }
   );
 
 }
@@ -2097,19 +1921,23 @@ function setupPostActions(
    BACK BUTTON
 ===================================================== */
 
-backButton.addEventListener(
-  "click",
-  ()=>{
+if(backButton){
 
-    window.location.href =
-    "feed.html";
+  backButton.addEventListener(
+    "click",
+    ()=>{
 
-  }
-);
+      window.location.href =
+      "community.html";
+
+    }
+  );
+
+}
 
 
 /* =====================================================
-   OPEN A POST FROM A SHARED LINK
+   OPEN SHARED POST
 ===================================================== */
 
 function scrollToSharedPost(){
@@ -2121,9 +1949,7 @@ function scrollToSharedPost(){
 
 
   const sharedPostId =
-  parameters.get(
-    "postId"
-  );
+  parameters.get("postId");
 
 
   if(!sharedPostId){
@@ -2140,9 +1966,7 @@ function scrollToSharedPost(){
 
     sharedPost =
     document.querySelector(
-
       `[data-post-id="${CSS.escape(sharedPostId)}"]`
-
     );
 
   }catch(error){
@@ -2166,11 +1990,9 @@ function scrollToSharedPost(){
 
   sharedPost.scrollIntoView({
 
-    behavior:
-    "smooth",
+    behavior:"smooth",
 
-    block:
-    "center"
+    block:"center"
 
   });
 
@@ -2200,7 +2022,7 @@ function scrollToSharedPost(){
 }
 /* =====================================================
    PART 6 OF 6
-   FINAL CLEANUP, CONNECTION STATUS AND PAGE END
+   CLEANUP, CONNECTION STATUS AND PAGE END
 ===================================================== */
 
 
@@ -2256,7 +2078,7 @@ window.addEventListener(
   (event)=>{
 
     console.error(
-      "Feed page error:",
+      "Community Wall error:",
       event.error ||
       event.message
     );
@@ -2274,7 +2096,7 @@ window.addEventListener(
   (event)=>{
 
     console.error(
-      "Feed promise error:",
+      "Community Wall promise error:",
       event.reason
     );
 
@@ -2311,8 +2133,6 @@ if(!postsContainer){
 }
 
 
-
-
 if(!refreshButton){
 
   console.error(
@@ -2332,11 +2152,11 @@ if(!backButton){
 
 
 /* =====================================================
-   FEED READY MESSAGE
+   COMMUNITY WALL READY
 ===================================================== */
 
 console.log(
-  "SABASABA Community Feed is ready."
+  "SABASABA Community Wall is ready."
 );
 
 </script>
