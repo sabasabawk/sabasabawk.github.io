@@ -8,64 +8,611 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="Photos shared on the Sabasaba Gospel Ministry Community Wall"
+    >
+
     <title>Photos | Sabasaba Gospel Ministry</title>
-
-    <link rel="stylesheet" href="style.css">
-
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #222;
+        * {
+            box-sizing: border-box;
         }
 
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f5f7;
+            color: #222222;
+        }
+
+        button,
+        a {
+            font-family: inherit;
+        }
+
+        .photos-page {
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+    </style>
+    <style>
         .photos-header {
-            background: #ffffff;
-            padding: 16px;
-            border-bottom: 1px solid #dddddd;
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #dddddd;
         }
 
-        .photos-header h1 {
-            margin: 0;
+        .photos-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #f0f2f5;
             font-size: 22px;
+            cursor: pointer;
         }
 
-        .photos-header p {
-            margin: 5px 0 0;
+        .photos-title {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .photos-subtitle {
+            margin: 3px 0 0;
             color: #666666;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .photos-container {
-            max-width: 900px;
+        .feed-link {
+            padding: 9px 13px;
+            border-radius: 8px;
+            background: #0b57d0;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+    <style>
+        .photos-main {
+            width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 16px;
         }
+
+        .photos-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .photo-button {
+            width: 100%;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .photo-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: block;
+            object-fit: cover;
+            background: #dddddd;
+        }
+
+        .photo-information {
+            padding: 10px;
+        }
+
+        .photo-author {
+            margin: 0 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .photo-caption {
+            margin: 0 0 6px;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #333333;
+        }
+
+        .photo-date {
+            color: #777777;
+            font-size: 12px;
+        }
+
+        @media screen and (min-width: 700px) {
+            .photos-gallery {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 14px;
+            }
+        }
+
+        @media screen and (min-width: 950px) {
+            .photos-gallery {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+    </style>
+    <style>
+        .photos-status {
+            padding: 40px 15px;
+            text-align: center;
+            color: #666666;
+        }
+
+        .photos-status-icon {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 42px;
+        }
+
+        .photos-status-title {
+            margin: 0 0 7px;
+            font-size: 18px;
+            color: #333333;
+        }
+
+        .photos-status-text {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .loading-spinner {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 15px;
+            border: 4px solid #dddddd;
+            border-top-color: #0b57d0;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+    <style>
+        .photo-viewer {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.92);
+        }
+
+        .photo-viewer-content {
+            width: 100%;
+            max-width: 900px;
+            max-height: 95vh;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .viewer-image {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .viewer-details {
+            max-width: 700px;
+            margin: 12px auto 0;
+            color: #ffffff;
+        }
+
+        .viewer-author {
+            margin: 0 0 6px;
+            font-weight: bold;
+        }
+
+        .viewer-caption {
+            margin: 0 0 6px;
+            line-height: 1.5;
+        }
+
+        .viewer-date {
+            color: #cccccc;
+            font-size: 13px;
+        }
+
+        .viewer-close {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-size: 26px;
+            cursor: pointer;
+        }
     </style>
 </head>
-
 <body>
 
+<div class="photos-page">
+
     <header class="photos-header">
-        <h1>Ministry Photos</h1>
-        <p>Pictures shared on the Community Wall</p>
+
+        <div class="photos-header-left">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton"
+                aria-label="Go back"
+            >
+                ←
+            </button>
+
+            <div>
+                <h1 class="photos-title">Photos</h1>
+
+                <p class="photos-subtitle">
+                    Pictures shared on the Community Wall
+                </p>
+            </div>
+
+        </div>
+
+        <a href="feed.html" class="feed-link">
+            Community Wall
+        </a>
+
     </header>
+    <main class="photos-main">
 
-    <main class="photos-container">
+        <section
+            id="photosGallery"
+            class="photos-gallery"
+            aria-label="Ministry photo gallery"
+        >
+            <!-- Photos will be inserted here using JavaScript -->
+        </section>
+        <section id="loadingMessage" class="photos-status">
 
-        <section id="photosGallery" class="photos-gallery">
-            <!-- Picture posts will appear here -->
+            <div class="loading-spinner"></div>
+
+            <h2 class="photos-status-title">
+                Loading photos
+            </h2>
+
+            <p class="photos-status-text">
+                Please wait while the pictures are being prepared.
+            </p>
+
+        </section>
+        <section
+            id="emptyMessage"
+            class="photos-status hidden"
+        >
+
+            <span class="photos-status-icon">
+                📷
+            </span>
+
+            <h2 class="photos-status-title">
+                No photos yet
+            </h2>
+
+            <p class="photos-status-text">
+                Pictures posted from createpost.html will appear here.
+            </p>
+
+        </section>
+        <section
+            id="errorMessage"
+            class="photos-status hidden"
+        >
+
+            <span class="photos-status-icon">
+                ⚠️
+            </span>
+
+            <h2 class="photos-status-title">
+                Photos could not be loaded
+            </h2>
+
+            <p class="photos-status-text">
+                Please check your internet connection and try again.
+            </p>
+
         </section>
 
-        <p id="photosMessage" class="photos-message">
-            Loading photos...
-        </p>
-
     </main>
+    <section
+        id="photoViewer"
+        class="photo-viewer hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Photo viewer"
+    >
+
+        <button
+            type="button"
+            id="closeViewerButton"
+            class="viewer-close"
+            aria-label="Close photo viewer"
+        >
+            ×
+        </button>
+
+        <div class="photo-viewer-content">
+
+            <img
+                id="viewerImage"
+                class="viewer-image"
+                src=""
+                alt="Selected ministry photo"
+            >
+
+            <div class="viewer-details">
+
+                <p
+                    id="viewerAuthor"
+                    class="viewer-author"
+                ></p>
+
+                <p
+                    id="viewerCaption"
+                    class="viewer-caption"
+                ></p>
+
+                <span
+                    id="viewerDate"
+                    class="viewer-date"
+                ></span>
+
+            </div>
+
+        </div>
+
+    </section>
+<script>
+    const backButton = document.getElementById("backButton");
+
+    backButton.addEventListener("click", function () {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "feed.html";
+        }
+    });
+</script>
+<script>
+    const photoViewer = document.getElementById("photoViewer");
+    const closeViewerButton =
+        document.getElementById("closeViewerButton");
+
+    const viewerImage =
+        document.getElementById("viewerImage");
+
+    const viewerAuthor =
+        document.getElementById("viewerAuthor");
+
+    const viewerCaption =
+        document.getElementById("viewerCaption");
+
+    const viewerDate =
+        document.getElementById("viewerDate");
+
+    function openPhotoViewer(photo) {
+        viewerImage.src = photo.imageUrl;
+        viewerImage.alt =
+            photo.caption || "Sabasaba Gospel Ministry photo";
+
+        viewerAuthor.textContent =
+            photo.author || "Sabasaba Gospel Ministry";
+
+        viewerCaption.textContent =
+            photo.caption || "";
+
+        viewerDate.textContent =
+            photo.formattedDate || "";
+
+        photoViewer.classList.remove("hidden");
+
+        document.body.style.overflow = "hidden";
+    }
+
+    function closePhotoViewer() {
+        photoViewer.classList.add("hidden");
+
+        viewerImage.src = "";
+        viewerAuthor.textContent = "";
+        viewerCaption.textContent = "";
+        viewerDate.textContent = "";
+
+        document.body.style.overflow = "";
+    }
+
+    closeViewerButton.addEventListener(
+        "click",
+        closePhotoViewer
+    );
+
+    photoViewer.addEventListener("click", function (event) {
+        if (event.target === photoViewer) {
+            closePhotoViewer();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closePhotoViewer();
+        }
+    });
+</script>
+<script>
+    const photosGallery =
+        document.getElementById("photosGallery");
+
+    const loadingMessage =
+        document.getElementById("loadingMessage");
+
+    const emptyMessage =
+        document.getElementById("emptyMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+    function createPhotoCard(photo) {
+        const photoCard =
+            document.createElement("article");
+
+        photoCard.className = "photo-card";
+
+        const photoButton =
+            document.createElement("button");
+
+        photoButton.type = "button";
+        photoButton.className = "photo-button";
+
+        const image =
+            document.createElement("img");
+
+        image.className = "photo-image";
+        image.src = photo.imageUrl;
+        image.alt =
+            photo.caption || "Ministry photo";
+        image.loading = "lazy";
+
+        photoButton.appendChild(image);
+
+        const information =
+            document.createElement("div");
+
+        information.className = "photo-information";
+
+        const author =
+            document.createElement("p");
+
+        author.className = "photo-author";
+        author.textContent =
+            photo.author || "Sabasaba Gospel Ministry";
+
+        const caption =
+            document.createElement("p");
+
+        caption.className = "photo-caption";
+        caption.textContent =
+            photo.caption || "";
+
+        const date =
+            document.createElement("span");
+
+        date.className = "photo-date";
+        date.textContent =
+            photo.formattedDate || "";
+
+        information.appendChild(author);
+
+        if (photo.caption) {
+            information.appendChild(caption);
+        }
+
+        information.appendChild(date);
+
+        photoCard.appendChild(photoButton);
+        photoCard.appendChild(information);
+
+        photoButton.addEventListener(
+            "click",
+            function () {
+                openPhotoViewer(photo);
+            }
+        );
+
+        return photoCard;
+    }
+</script>
+<script>
+    function displayPhotos(photos) {
+        photosGallery.innerHTML = "";
+
+        loadingMessage.classList.add("hidden");
+        errorMessage.classList.add("hidden");
+
+        if (!photos || photos.length === 0) {
+            emptyMessage.classList.remove("hidden");
+            return;
+        }
+
+        emptyMessage.classList.add("hidden");
+
+        photos.forEach(function (photo) {
+            const photoCard = createPhotoCard(photo);
+            photosGallery.appendChild(photoCard);
+        });
+    }
+
+    function showPhotosError(error) {
+        console.error("Photos loading error:", error);
+
+        loadingMessage.classList.add("hidden");
+        emptyMessage.classList.add("hidden");
+        errorMessage.classList.remove("hidden");
+    }
+</script>
+<script>
+    const testPhotos = [
+        {
+            imageUrl: "images/sample-photo-1.jpg",
+            author: "Sabasaba Gospel Ministry",
+            caption: "Sharing the Word of God with the community.",
+            formattedDate: "Posted recently"
+        },
+        {
+            imageUrl: "images/sample-photo-2.jpg",
+            author: "Sabasaba Gospel Ministry",
+            caption: "A special ministry programme.",
+            formattedDate: "Posted recently"
+        }
+    ];
+
+    displayPhotos(testPhotos);
+</script>
+</div>
 
 </body>
 </html>
