@@ -1,137 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Post</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="Create and publish a post on the Sabasaba Gospel Ministry Community Wall"
+>
+
+<title>Create Post | Sabasaba Gospel Ministry</title>
+
 
 <style>
 
+/* ========================================
+   GENERAL PAGE STYLE
+======================================== */
+
+*{
+box-sizing:border-box;
+}
+
 body{
-font-family:Arial,sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 background:#eef3f8;
 margin:0;
 padding:20px;
+color:#222;
 }
 
 .container{
+width:100%;
 max-width:700px;
 margin:auto;
-background:white;
+background:#ffffff;
 padding:25px;
-border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
+border-radius:16px;
+box-shadow:0 4px 14px rgba(0,0,0,.1);
 }
 
 h1{
+margin-top:0;
+margin-bottom:8px;
 text-align:center;
 color:#0066cc;
+font-size:28px;
 }
+
+.page-description{
+margin:0 0 25px;
+text-align:center;
+color:#666;
+font-size:14px;
+line-height:1.5;
+}
+
+
+/* ========================================
+   FORM ELEMENTS
+======================================== */
 
 label{
 display:block;
-margin-top:15px;
+margin-top:16px;
 font-weight:bold;
+color:#333;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
 width:100%;
 padding:12px;
-margin-top:6px;
-border:1px solid #ccc;
-border-radius:8px;
+margin-top:7px;
+border:1px solid #c8d1dc;
+border-radius:9px;
+font-family:inherit;
 font-size:16px;
-box-sizing:border-box;
+background:#ffffff;
+outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:#0066cc;
+box-shadow:0 0 0 3px rgba(0,102,204,.12);
 }
 
 textarea{
 height:180px;
 resize:vertical;
+line-height:1.5;
 }
+
+
+/* ========================================
+   MEDIA SECTION
+======================================== */
+
+.media-options{
+margin-top:18px;
+padding:16px;
+background:#f7f9fc;
+border:1px solid #dce4ec;
+border-radius:11px;
+}
+
+.media-options label{
+margin-top:0;
+}
+
+.media-help{
+margin:8px 0 0;
+font-size:13px;
+color:#666;
+line-height:1.5;
+}
+
+#mediaPreview{
+display:none;
+margin-top:16px;
+padding:12px;
+background:#f7f9fc;
+border:1px solid #dce4ec;
+border-radius:11px;
+text-align:center;
+}
+
+#mediaPreview img,
+#mediaPreview video{
+display:block;
+width:100%;
+max-height:430px;
+object-fit:contain;
+border-radius:9px;
+background:#000000;
+}
+
+.preview-name{
+margin:10px 0 0;
+font-size:13px;
+color:#555;
+word-break:break-word;
+}
+
+
+/* ========================================
+   BUTTONS
+======================================== */
 
 button{
+font-family:inherit;
+}
+
+.publish-button{
+width:100%;
 margin-top:20px;
+padding:13px 20px;
 background:#0066cc;
-color:white;
+color:#ffffff;
 border:none;
-padding:12px 20px;
-border-radius:8px;
+border-radius:9px;
 cursor:pointer;
 font-size:18px;
+font-weight:bold;
 }
 
-button:hover{
-background:#004d99;
+.publish-button:hover{
+background:#004f9e;
 }
+
+.publish-button:disabled{
+background:#8da9c4;
+cursor:not-allowed;
+}
+
+.remove-media-button{
+margin-top:12px;
+padding:9px 16px;
+background:#d93025;
+color:#ffffff;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+font-weight:bold;
+}
+
+.remove-media-button:hover{
+background:#aa2118;
+}
+
+.back-button{
+display:block;
+width:100%;
+margin-top:12px;
+padding:12px 20px;
+background:#e7edf4;
+color:#1f2933;
+border:none;
+border-radius:9px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+}
+
+.back-button:hover{
+background:#d8e2ec;
+}
+
+
+/* ========================================
+   UPLOAD PROGRESS
+======================================== */
+
+#uploadArea{
+display:none;
+margin-top:17px;
+padding:14px;
+background:#f7f9fc;
+border:1px solid #dce4ec;
+border-radius:10px;
+}
+
+.progress-container{
+width:100%;
+height:13px;
+overflow:hidden;
+background:#dce4ec;
+border-radius:20px;
+}
+
+#uploadProgress{
+width:0%;
+height:100%;
+background:#0066cc;
+transition:width .2s ease;
+}
+
+#uploadText{
+margin:9px 0 0;
+font-size:14px;
+color:#555;
+text-align:center;
+}
+
+
+/* ========================================
+   SUCCESS AND ERROR MESSAGE
+======================================== */
 
 #message{
-margin-top:20px;
-font-size:18px;
+min-height:24px;
+margin-top:18px;
+font-size:16px;
 font-weight:bold;
-color:green;
 text-align:center;
+line-height:1.5;
 }
 
+.success-message{
+color:#138a36;
+}
+
+.error-message{
+color:#d93025;
+}
+
+
+/* ========================================
+   BACK SECTION
+======================================== */
+
 .back{
+margin-top:20px;
 text-align:center;
-margin-top:30px;
 }
 
 .back a{
 text-decoration:none;
 }
 
+
+/* ========================================
+   MOBILE SCREEN
+======================================== */
+
+@media screen and (max-width:600px){
+
+body{
+padding:12px;
+}
+
+.container{
+padding:20px 16px;
+border-radius:13px;
+}
+
+h1{
+font-size:24px;
+}
+
+textarea{
+height:160px;
+}
+
+}
+
 </style>
 
 </head>
-
 <body>
 
 <div class="container">
 
 <h1>✍️ Create a Post</h1>
 
-<label>Your Name</label>
+<p class="page-description">
+Share encouragement, Bible verses, testimonies, prayer requests,
+announcements, questions, photos, or videos with the community.
+</p>
 
-<input type="text" id="name" placeholder="Enter your name">
 
-<label>Category</label>
+<!-- ========================================
+     USER NAME
+======================================== -->
+
+<label for="name">
+Your Name
+</label>
+
+<input
+type="text"
+id="name"
+placeholder="Enter your name"
+autocomplete="name"
+>
+
+
+<!-- ========================================
+     POST CATEGORY
+======================================== -->
+
+<label for="category">
+Category
+</label>
 
 <select id="category">
 
-<option>Encouragement</option>
+<option value="Encouragement">
+Encouragement
+</option>
 
-<option>Bible Verse</option>
+<option value="Bible Verse">
+Bible Verse
+</option>
 
-<option>Prayer Request</option>
+<option value="Prayer Request">
+Prayer Request
+</option>
 
-<option>Testimony</option>
+<option value="Testimony">
+Testimony
+</option>
 
-<option>Announcement</option>
+<option value="Announcement">
+Announcement
+</option>
 
-<option>Question</option>
+<option value="Question">
+Question
+</option>
 
 </select>
 
-<label>Your Post</label>
 
-<textarea id="post" placeholder="Write your message here..."></textarea>
+<!-- ========================================
+     POST MESSAGE
+======================================== -->
 
-<label>Add Photo (Coming Soon)</label>
+<label for="post">
+Your Post
+</label>
 
-<input type="file" disabled>
+<textarea
+id="post"
+maxlength="5000"
+placeholder="Write your message here..."
+></textarea>
 
-<button id="publishBtn">📢 Publish Post</button>
 
-<p id="message"></p>
+<!-- ========================================
+     PHOTO OR VIDEO
+======================================== -->
+
+<div class="media-options">
+
+<label for="mediaFile">
+Add Photo or Video
+</label>
+
+<input
+type="file"
+id="mediaFile"
+accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+>
+
+<p class="media-help">
+You may attach one photo or one video.
+Photos must be 10 MB or smaller.
+Videos must be 100 MB or smaller.
+</p>
+
+</div>
+
+
+<!-- ========================================
+     MEDIA PREVIEW
+======================================== -->
+
+<div id="mediaPreview">
+
+<div id="previewContent"></div>
+
+<p
+id="previewFileName"
+class="preview-name"
+></p>
+
+<button
+type="button"
+id="removeMediaBtn"
+class="remove-media-button"
+>
+❌ Remove Media
+</button>
+
+</div>
+
+
+<!-- ========================================
+     UPLOAD PROGRESS
+======================================== -->
+
+<div id="uploadArea">
+
+<div class="progress-container">
+
+<div id="uploadProgress"></div>
+
+</div>
+
+<p id="uploadText">
+Preparing upload...
+</p>
+
+</div>
+
+
+<!-- ========================================
+     PUBLISH BUTTON
+======================================== -->
+
+<button
+type="button"
+id="publishBtn"
+class="publish-button"
+>
+📢 Publish Post
+</button>
+
+
+<!-- ========================================
+     SUCCESS OR ERROR MESSAGE
+======================================== -->
+
+<p
+id="message"
+aria-live="polite"
+></p>
+
+
+<!-- ========================================
+     BACK TO COMMUNITY
+======================================== -->
 
 <div class="back">
 
 <a href="feed.html">
 
-<button type="button">
-  ⬅ Back to Community
+<button
+type="button"
+class="back-button"
+>
+⬅ Back to Community
 </button>
 
 </a>
@@ -139,12 +509,16 @@ text-decoration:none;
 </div>
 
 </div>
-
 <script type="module">
+
+/* ========================================
+   FIREBASE IMPORTS
+======================================== */
 
 import {
   auth,
   db,
+  storage,
   collection,
   addDoc,
   doc,
@@ -156,29 +530,97 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
+
+/* ========================================
+   VARIABLES
+======================================== */
 
 let currentUser = null;
+
 let currentProfile = null;
+
+let selectedMediaFile = null;
+
+let selectedMediaType = "none";
+
+let mediaPreviewUrl = "";
+
+
+/* ========================================
+   PAGE ELEMENTS
+======================================== */
+
+const nameInput =
+document.getElementById("name");
+
+const categoryInput =
+document.getElementById("category");
+
+const postInput =
+document.getElementById("post");
+
+const mediaFileInput =
+document.getElementById("mediaFile");
+
+const mediaPreview =
+document.getElementById("mediaPreview");
+
+const previewContent =
+document.getElementById("previewContent");
+
+const previewFileName =
+document.getElementById("previewFileName");
+
+const removeMediaBtn =
+document.getElementById("removeMediaBtn");
+
+const uploadArea =
+document.getElementById("uploadArea");
+
+const uploadProgress =
+document.getElementById("uploadProgress");
+
+const uploadText =
+document.getElementById("uploadText");
+
+const publishBtn =
+document.getElementById("publishBtn");
+
+const messageElement =
+document.getElementById("message");
 
 
 /* ========================================
    CHECK LOGGED-IN USER
 ======================================== */
 
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(
 
-  if(!user){
+auth,
 
-    location.href = "login.html";
-    return;
+async(user)=>{
 
-  }
+if(!user){
 
-  currentUser = user;
+location.href = "login.html";
 
-  await loadCurrentProfile();
+return;
 
-});
+}
+
+currentUser = user;
+
+await loadCurrentProfile();
+
+}
+
+);
 
 
 /* ========================================
@@ -187,56 +629,448 @@ onAuthStateChanged(auth, async(user)=>{
 
 async function loadCurrentProfile(){
 
-  try{
+try{
 
-    /*
-      Change "users" below only if your
-      member profiles use another collection name.
-    */
+const profileReference =
 
-    const profileReference =
-    doc(db,"users",currentUser.uid);
+doc(
+db,
+"users",
+currentUser.uid
+);
 
-    const profileSnapshot =
-    await getDoc(profileReference);
+const profileSnapshot =
+
+await getDoc(profileReference);
 
 
-    if(profileSnapshot.exists()){
+if(profileSnapshot.exists()){
 
-      currentProfile =
-      profileSnapshot.data();
+currentProfile =
+profileSnapshot.data();
 
-      const savedName =
-      getFirstValue(
-        currentProfile.name,
-        currentProfile.fullName,
-        currentProfile.displayName,
-        currentUser.displayName
-      );
+const savedName =
+getFirstValue(
 
-      if(savedName){
+currentProfile.name,
 
-        document.getElementById("name").value =
-        savedName;
+currentProfile.fullName,
 
-      }
+currentProfile.displayName,
 
-    }else{
+currentUser.displayName
 
-      currentProfile = {};
+);
 
-    }
+if(savedName){
 
-  }catch(error){
+nameInput.value =
+savedName;
 
-    console.error(
-      "Profile loading error:",
-      error
-    );
+}
 
-    currentProfile = {};
+}else{
 
-  }
+currentProfile = {};
+
+}
+
+}catch(error){
+
+console.error(
+"Profile loading error:",
+error
+);
+
+currentProfile = {};
+
+}
+
+}
+/* ========================================
+   SELECT PHOTO OR VIDEO
+======================================== */
+
+mediaFileInput.addEventListener(
+
+"change",
+
+function(event){
+
+const file =
+event.target.files[0];
+
+if(!file){
+
+clearSelectedMedia();
+return;
+
+}
+
+const isImage =
+file.type.startsWith("image/");
+
+const isVideo =
+file.type.startsWith("video/");
+
+if(!isImage && !isVideo){
+
+alert(
+"Please select a valid photo or video."
+);
+
+clearSelectedMedia();
+return;
+
+}
+
+const maxImageSize =
+10 * 1024 * 1024;
+
+const maxVideoSize =
+100 * 1024 * 1024;
+
+if(
+isImage &&
+file.size > maxImageSize
+){
+
+alert(
+"Photos must not be larger than 10 MB."
+);
+
+clearSelectedMedia();
+return;
+
+}
+
+if(
+isVideo &&
+file.size > maxVideoSize
+){
+
+alert(
+"Videos must not be larger than 100 MB."
+);
+
+clearSelectedMedia();
+return;
+
+}
+
+selectedMediaFile =
+file;
+
+selectedMediaType =
+isImage ? "image" : "video";
+
+if(mediaPreviewUrl){
+
+URL.revokeObjectURL(
+mediaPreviewUrl
+);
+
+}
+
+mediaPreviewUrl =
+URL.createObjectURL(file);
+
+showMediaPreview();
+
+}
+
+);
+
+
+/* ========================================
+   SHOW PREVIEW
+======================================== */
+
+function showMediaPreview(){
+
+previewContent.innerHTML = "";
+
+previewFileName.textContent =
+selectedMediaFile.name;
+
+if(selectedMediaType === "image"){
+
+const image =
+document.createElement("img");
+
+image.src =
+mediaPreviewUrl;
+
+image.alt =
+"Selected photo";
+
+previewContent.appendChild(
+image
+);
+
+}
+
+if(selectedMediaType === "video"){
+
+const video =
+document.createElement("video");
+
+video.src =
+mediaPreviewUrl;
+
+video.controls = true;
+
+video.playsInline = true;
+
+video.preload =
+"metadata";
+
+previewContent.appendChild(
+video
+);
+
+}
+
+mediaPreview.style.display =
+"block";
+
+}
+
+
+/* ========================================
+   REMOVE MEDIA
+======================================== */
+
+function clearSelectedMedia(){
+
+selectedMediaFile = null;
+
+selectedMediaType = "none";
+
+mediaFileInput.value = "";
+
+previewContent.innerHTML = "";
+
+previewFileName.textContent = "";
+
+mediaPreview.style.display =
+"none";
+
+if(mediaPreviewUrl){
+
+URL.revokeObjectURL(
+mediaPreviewUrl
+);
+
+mediaPreviewUrl = "";
+
+}
+
+}
+
+removeMediaBtn.addEventListener(
+
+"click",
+
+clearSelectedMedia
+
+);
+
+
+/* ========================================
+   HELPER FUNCTION
+======================================== */
+
+function getFirstValue(...values){
+
+for(const value of values){
+
+if(
+
+value !== undefined &&
+
+value !== null &&
+
+String(value).trim() !== ""
+
+){
+
+return String(value).trim();
+
+}
+
+}
+
+return "";
+
+}
+/* ========================================
+   UPLOAD MEDIA TO FIREBASE STORAGE
+======================================== */
+
+function uploadPostMedia(file){
+
+return new Promise(
+
+function(resolve,reject){
+
+if(!file){
+
+resolve({
+
+mediaUrl:"",
+mediaType:"none",
+mediaName:""
+
+});
+
+return;
+
+}
+
+const safeFileName =
+
+file.name.replace(
+
+/[^a-zA-Z0-9._-]/g,
+
+"_"
+
+);
+
+const storagePath =
+
+"communityMedia/" +
+
+currentUser.uid +
+
+"/" +
+
+Date.now() +
+
+"_" +
+
+safeFileName;
+
+const mediaReference =
+
+ref(
+
+storage,
+
+storagePath
+
+);
+
+const uploadTask =
+
+uploadBytesResumable(
+
+mediaReference,
+
+file,
+
+{
+
+contentType:file.type
+
+}
+
+);
+
+uploadArea.style.display =
+"block";
+
+uploadProgress.style.width =
+"0%";
+
+uploadText.textContent =
+"Preparing upload...";
+
+uploadTask.on(
+
+"state_changed",
+
+function(snapshot){
+
+const percentage =
+
+Math.round(
+
+(
+
+snapshot.bytesTransferred /
+
+snapshot.totalBytes
+
+) * 100
+
+);
+
+uploadProgress.style.width =
+
+percentage + "%";
+
+uploadText.textContent =
+
+"Uploading media: " +
+
+percentage +
+
+"%";
+
+},
+
+function(error){
+
+uploadArea.style.display =
+"none";
+
+reject(error);
+
+},
+
+async function(){
+
+try{
+
+const downloadUrl =
+
+await getDownloadURL(
+
+uploadTask.snapshot.ref
+
+);
+
+uploadProgress.style.width =
+"100%";
+
+uploadText.textContent =
+"Media uploaded successfully.";
+
+resolve({
+
+mediaUrl:downloadUrl,
+
+mediaType:selectedMediaType,
+
+mediaName:safeFileName
+
+});
+
+}catch(error){
+
+reject(error);
+
+}
+
+}
+
+);
+
+}
+
+);
 
 }
 
@@ -247,209 +1081,336 @@ async function loadCurrentProfile(){
 
 async function publishPost(){
 
-  if(!currentUser){
+if(!currentUser){
 
-    alert(
-      "Please wait while your account loads."
-    );
+alert(
+"Please wait while your account loads."
+);
 
-    return;
-
-  }
-
-
-  const name =
-  document
-  .getElementById("name")
-  .value
-  .trim();
-
-
-  const category =
-  document
-  .getElementById("category")
-  .value;
-
-
-  const post =
-  document
-  .getElementById("post")
-  .value
-  .trim();
-
-
-  if(name === "" || post === ""){
-
-    alert(
-      "Please enter your name and write a post."
-    );
-
-    return;
-
-  }
-
-
-  if(post.length > 5000){
-
-    alert(
-      "Your post is too long. Please use 5,000 characters or fewer."
-    );
-
-    return;
-
-  }
-
-
-  const savedPicture =
-  getFirstValue(
-
-    currentProfile?.profilePicture,
-    currentProfile?.picture,
-    currentProfile?.photoURL,
-    currentProfile?.profileImage,
-    currentProfile?.profilePhoto,
-    currentUser.photoURL,
-    ""
-
-  );
-
-
-  /*
-    Never copy a Base64 image into Firestore.
-  */
-
-  const picture =
-
-  savedPicture &&
-  !savedPicture.startsWith("data:image/")
-
-  ? savedPicture
-
-  : "images/profile.png";
-
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        "communityPosts"
-      ),
-
-      {
-
-        userId:
-        currentUser.uid,
-
-        name:
-        name,
-
-        category:
-        category,
-
-        post:
-        post,
-
-        timestamp:
-        serverTimestamp(),
-
-        likes:
-        0,
-
-        picture:
-        picture
-
-      }
-
-    );
-
-
-    let totalPosts =
-    parseInt(
-      localStorage.getItem("posts")
-    ) || 0;
-
-
-    localStorage.setItem(
-      "posts",
-      totalPosts + 1
-    );
-
-
-    document
-    .getElementById("message")
-    .innerHTML =
-
-    "✅ Your post has been published successfully!";
-
-
-    document
-    .getElementById("post")
-    .value = "";
-
-
-    setTimeout(()=>{
-
-      location.href =
-      "feed.html";
-
-    },1200);
-
-  }catch(error){
-
-    console.error(
-      "Post publishing error:",
-      error
-    );
-
-
-    alert(
-      error.message ||
-      "The post could not be published."
-    );
-
-  }
+return;
 
 }
 
+const name =
+nameInput.value.trim();
 
-/* ========================================
-   GET FIRST AVAILABLE VALUE
-======================================== */
+const category =
+categoryInput.value;
 
-function getFirstValue(...values){
+const post =
+postInput.value.trim();
 
-  for(const value of values){
+if(name === ""){
 
-    if(
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ){
+alert(
+"Please enter your name."
+);
 
-      return String(value).trim();
+nameInput.focus();
 
-    }
-
-  }
-
-  return "";
+return;
 
 }
 
+if(
 
+post === "" &&
+
+!selectedMediaFile
+
+){
+
+alert(
+"Please write a message or attach a photo or video."
+);
+
+postInput.focus();
+
+return;
+
+}
+
+if(post.length > 5000){
+
+alert(
+"Your post is too long. Please use 5,000 characters or fewer."
+);
+
+return;
+
+}
+
+const savedPicture =
+
+getFirstValue(
+
+currentProfile?.profilePicture,
+
+currentProfile?.picture,
+
+currentProfile?.photoURL,
+
+currentProfile?.profileImage,
+
+currentProfile?.profilePhoto,
+
+currentUser.photoURL,
+
+""
+
+);
+
+const picture =
+
+savedPicture &&
+
+!savedPicture.startsWith("data:image/")
+
+? savedPicture
+
+: "images/profile.png";
+
+publishBtn.disabled =
+true;
+
+publishBtn.textContent =
+"Publishing...";
+
+messageElement.textContent =
+"";
+
+messageElement.className =
+"";
+
+try{
+
+const mediaResult =
+
+await uploadPostMedia(
+
+selectedMediaFile
+
+);
+
+const imageUrl =
+
+mediaResult.mediaType === "image"
+
+? mediaResult.mediaUrl
+
+: "";
+
+const videoUrl =
+
+mediaResult.mediaType === "video"
+
+? mediaResult.mediaUrl
+
+: "";
+
+await addDoc(
+
+collection(
+
+db,
+
+"communityPosts"
+
+),
+
+{
+
+userId:
+currentUser.uid,
+
+name:
+name,
+
+category:
+category,
+
+post:
+post,
+
+timestamp:
+serverTimestamp(),
+
+likes:
+0,
+
+picture:
+picture,
+
+mediaType:
+mediaResult.mediaType,
+
+mediaUrl:
+mediaResult.mediaUrl,
+
+mediaName:
+mediaResult.mediaName,
+
+imageUrl:
+imageUrl,
+
+videoUrl:
+videoUrl
+
+}
+
+);
+
+let totalPosts =
+
+parseInt(
+
+localStorage.getItem("posts")
+
+) || 0;
+
+localStorage.setItem(
+
+"posts",
+
+totalPosts + 1
+
+);
+
+messageElement.textContent =
+
+"✅ Your post has been published successfully!";
+
+messageElement.className =
+
+"success-message";
+
+postInput.value =
+"";
+
+clearSelectedMedia();
+
+uploadProgress.style.width =
+"0%";
+
+uploadArea.style.display =
+"none";
+
+setTimeout(
+
+function(){
+
+location.href =
+"feed.html";
+
+},
+
+1200
+
+);
+
+}catch(error){
+
+console.error(
+
+"Post publishing error:",
+
+error
+
+);
+
+uploadArea.style.display =
+"none";
+
+messageElement.textContent =
+
+error.message ||
+
+"The post could not be published.";
+
+messageElement.className =
+
+"error-message";
+
+publishBtn.disabled =
+false;
+
+publishBtn.textContent =
+"📢 Publish Post";
+
+}
+
+}
 /* ========================================
    PUBLISH BUTTON
 ======================================== */
 
-document
-.getElementById("publishBtn")
-.addEventListener(
-  "click",
-  publishPost
+publishBtn.addEventListener(
+
+"click",
+
+publishPost
+
 );
 
+
+/* ========================================
+   PRESS CTRL + ENTER TO PUBLISH
+======================================== */
+
+postInput.addEventListener(
+
+"keydown",
+
+function(event){
+
+if(
+
+event.ctrlKey &&
+
+event.key === "Enter"
+
+){
+
+event.preventDefault();
+
+publishPost();
+
+}
+
+}
+
+);
+
+
+/* ========================================
+   CLEAN PREVIEW WHEN LEAVING PAGE
+======================================== */
+
+window.addEventListener(
+
+"beforeunload",
+
+function(){
+
+if(mediaPreviewUrl){
+
+URL.revokeObjectURL(
+mediaPreviewUrl
+);
+
+}
+
+}
+
+);
+
+
+/* ========================================
+   END OF MODULE SCRIPT
+======================================== */
+
 </script>
+
 </body>
+
 </html>
