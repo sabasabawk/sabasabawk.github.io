@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Videos shared on the Sabasaba Gospel Ministry Community Wall"
+    >
+
+    <title>Videos | Sabasaba Gospel Ministry</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f5f7;
+            color: #222222;
+        }
+
+        button,
+        a {
+            font-family: inherit;
+        }
+
+        .videos-page {
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+    <style>
+        .videos-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .videos-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #f0f2f5;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .videos-title {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .videos-subtitle {
+            margin: 3px 0 0;
+            color: #666666;
+            font-size: 13px;
+        }
+
+        .feed-link {
+            padding: 9px 13px;
+            border-radius: 8px;
+            background: #0b57d0;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+    <style>
+        .videos-main {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .videos-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .video-card {
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000000;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            background: #000000;
+        }
+
+        .video-information {
+            padding: 13px 14px 15px;
+        }
+
+        .video-author {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .video-caption {
+            margin: 0 0 8px;
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .video-date {
+            color: #777777;
+            font-size: 12px;
+        }
+
+        @media screen and (min-width: 800px) {
+            .videos-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+    <style>
+        .video-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+            background: #222222;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .video-action-link {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 7px;
+            background: #f0f2f5;
+            color: #222222;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+    </style>
+    <style>
+        .videos-status {
+            padding: 45px 15px;
+            text-align: center;
+            color: #666666;
+        }
+
+        .videos-status-icon {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 42px;
+        }
+
+        .videos-status-title {
+            margin: 0 0 7px;
+            color: #333333;
+            font-size: 18px;
+        }
+
+        .videos-status-text {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .loading-spinner {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 15px;
+            border: 4px solid #dddddd;
+            border-top-color: #0b57d0;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="videos-page">
+
+    <header class="videos-header">
+
+        <div class="videos-header-left">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton"
+                aria-label="Go back"
+            >
+                ←
+            </button>
+
+            <div>
+                <h1 class="videos-title">Videos</h1>
+
+                <p class="videos-subtitle">
+                    Videos shared on the Community Wall
+                </p>
+            </div>
+
+        </div>
+
+        <a href="feed.html" class="feed-link">
+            Community Wall
+        </a>
+
+    </header>
+    <main class="videos-main">
+
+        <section
+            id="videosList"
+            class="videos-list"
+            aria-label="Ministry videos"
+        >
+            <!-- Video posts will be inserted here -->
+        </section>
+        <section
+            id="loadingMessage"
+            class="videos-status"
+        >
+
+            <div class="loading-spinner"></div>
+
+            <h2 class="videos-status-title">
+                Loading videos
+            </h2>
+
+            <p class="videos-status-text">
+                Please wait while the videos are being prepared.
+            </p>
+
+        </section>
+        <section
+            id="emptyMessage"
+            class="videos-status hidden"
+        >
+
+            <span class="videos-status-icon">
+                🎥
+            </span>
+
+            <h2 class="videos-status-title">
+                No videos yet
+            </h2>
+
+            <p class="videos-status-text">
+                Videos posted from createpost.html will appear here.
+            </p>
+
+        </section>
+        <section
+            id="errorMessage"
+            class="videos-status hidden"
+        >
+
+            <span class="videos-status-icon">
+                ⚠️
+            </span>
+
+            <h2 class="videos-status-title">
+                Videos could not be loaded
+            </h2>
+
+            <p class="videos-status-text">
+                Please check your internet connection and try again.
+            </p>
+
+        </section>
+
+    </main>
+<script>
+    const backButton = document.getElementById("backButton");
+
+    backButton.addEventListener("click", function () {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "feed.html";
+        }
+    });
+</script>
+<script>
+    const videosList =
+        document.getElementById("videosList");
+
+    const loadingMessage =
+        document.getElementById("loadingMessage");
+
+    const emptyMessage =
+        document.getElementById("emptyMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+</script>
+<script>
+    function pauseOtherVideos(currentVideo) {
+        const allVideos =
+            document.querySelectorAll(".video-player");
+
+        allVideos.forEach(function (video) {
+            if (video !== currentVideo) {
+                video.pause();
+            }
+        });
+    }
+</script>
+<script>
+    function createVideoCard(videoPost) {
+        const videoCard =
+            document.createElement("article");
+
+        videoCard.className = "video-card";
+
+        const videoWrapper =
+            document.createElement("div");
+
+        videoWrapper.className = "video-wrapper";
+
+        const video =
+            document.createElement("video");
+
+        video.className = "video-player";
+        video.controls = true;
+        video.preload = "metadata";
+        video.playsInline = true;
+
+        video.src = videoPost.videoUrl;
+
+        if (videoPost.thumbnailUrl) {
+            video.poster = videoPost.thumbnailUrl;
+        }
+
+        video.addEventListener("play", function () {
+            pauseOtherVideos(video);
+        });
+
+        video.addEventListener("error", function () {
+            videoWrapper.innerHTML = "";
+
+            const videoError =
+                document.createElement("div");
+
+            videoError.className = "video-error";
+            videoError.textContent =
+                "This video could not be played.";
+
+            videoWrapper.appendChild(videoError);
+        });
+
+        videoWrapper.appendChild(video);
+
+        const information =
+            document.createElement("div");
+
+        information.className = "video-information";
+
+        const author =
+            document.createElement("p");
+
+        author.className = "video-author";
+        author.textContent =
+            videoPost.author ||
+            "Sabasaba Gospel Ministry";
+
+        const caption =
+            document.createElement("p");
+
+        caption.className = "video-caption";
+        caption.textContent =
+            videoPost.caption || "";
+
+        const date =
+            document.createElement("span");
+
+        date.className = "video-date";
+        date.textContent =
+            videoPost.formattedDate || "";
+
+        information.appendChild(author);
+
+        if (videoPost.caption) {
+            information.appendChild(caption);
+        }
+
+        information.appendChild(date);
+
+        if (videoPost.postUrl) {
+            const actions =
+                document.createElement("div");
+
+            actions.className = "video-actions";
+
+            const postLink =
+                document.createElement("a");
+
+            postLink.className = "video-action-link";
+            postLink.href = videoPost.postUrl;
+            postLink.textContent = "View post";
+
+            actions.appendChild(postLink);
+            information.appendChild(actions);
+        }
+
+        videoCard.appendChild(videoWrapper);
+        videoCard.appendChild(information);
+
+        return videoCard;
+    }
+</script>
+<script>
+    function displayVideos(videos) {
+        videosList.innerHTML = "";
+
+        loadingMessage.classList.add("hidden");
+        errorMessage.classList.add("hidden");
+
+        if (!videos || videos.length === 0) {
+            emptyMessage.classList.remove("hidden");
+            return;
+        }
+
+        emptyMessage.classList.add("hidden");
+
+        videos.forEach(function (videoPost) {
+            const videoCard =
+                createVideoCard(videoPost);
+
+            videosList.appendChild(videoCard);
+        });
+    }
+</script>
+<script>
+    function showVideosError(error) {
+        console.error("Videos loading error:", error);
+
+        videosList.innerHTML = "";
+
+        loadingMessage.classList.add("hidden");
+        emptyMessage.classList.add("hidden");
+        errorMessage.classList.remove("hidden");
+    }
+</script>
+<script>
+    const testVideos = [
+        {
+            videoUrl: "videos/sample-video-1.mp4",
+            thumbnailUrl: "",
+            author: "Sabasaba Gospel Ministry",
+            caption: "A message of hope and faith.",
+            formattedDate: "Posted recently",
+            postUrl: "feed.html"
+        },
+        {
+            videoUrl: "videos/sample-video-2.mp4",
+            thumbnailUrl: "",
+            author: "Sabasaba Gospel Ministry",
+            caption: "Sharing the Word of God.",
+            formattedDate: "Posted recently",
+            postUrl: "feed.html"
+        }
+    ];
+
+    displayVideos(testVideos);
+</script>
+<script>
+    const testVideos = [
+        {
+            videoUrl: "videos/sample-video-1.mp4",
+            author: "Sabasaba Gospel Ministry",
+            caption: "Our first ministry video.",
+            formattedDate: "Posted recently"
+        }
+    ];
+
+    displayVideos(testVideos);
+</script>
+<script>
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+            if (document.hidden) {
+                const allVideos =
+                    document.querySelectorAll(
+                        ".video-player"
+                    );
+
+                allVideos.forEach(function (video) {
+                    video.pause();
+                });
+            }
+        }
+    );
+</script>
+</div>
+
+</body>
+</html>
