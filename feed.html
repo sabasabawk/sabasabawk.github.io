@@ -1515,14 +1515,156 @@ function stopLikeListener(postId){
 
   if(oldListener){
 
-    oldListener();
-
+    oldListener()
     likeListeners.delete(postId);
 
   }
 
 }
+/* =====================================================
+   CREATE LIKE NOTIFICATION
+===================================================== */
 
+async function createLikeNotification(
+  postData
+){
+
+  if(
+    !currentUser ||
+    !postData ||
+    !postData.id
+  ){
+
+    return;
+
+  }
+
+
+  const postOwnerId =
+  getFirstValue(
+    postData.userId,
+    postData.authorId,
+    postData.uid
+  );
+
+
+  if(!postOwnerId){
+
+    console.warn(
+      "Like notification skipped: post owner is missing."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Do not notify someone for liking
+    their own post.
+  */
+
+  if(
+    postOwnerId ===
+    currentUser.uid
+  ){
+
+    return;
+
+  }
+
+
+  const senderName =
+  getFirstValue(
+    currentUserProfile?.name,
+    currentUserProfile?.fullName,
+    currentUserProfile?.displayName,
+    currentUser.displayName,
+    "A community member"
+  );
+
+
+  const senderPicture =
+  getFirstValue(
+    currentUserProfile?.profilePicture,
+    currentUserProfile?.picture,
+    currentUserProfile?.photoURL,
+    currentUserProfile?.profileImage,
+    currentUserProfile?.profilePhoto,
+    currentUser.photoURL,
+    defaultProfilePicture
+  );
+
+
+  /*
+    This fixed document ID prevents the same
+    user from creating many duplicate like
+    notifications for the same post.
+  */
+
+  const notificationId =
+  `${postData.id}_${currentUser.uid}_like`;
+
+
+  const notificationReference =
+  doc(
+    db,
+    "notifications",
+    notificationId
+  );
+
+
+  try{
+
+    await setDoc(
+      notificationReference,
+      {
+
+        recipientId:
+        postOwnerId,
+
+        senderId:
+        currentUser.uid,
+
+        senderName:
+        senderName,
+
+        senderPicture:
+        senderPicture,
+
+        type:
+        "like",
+
+        postId:
+        postData.id,
+
+        message:
+        `${senderName} liked your post.`,
+
+        read:
+        false,
+
+        timestamp:
+        serverTimestamp()
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Like notification creation error:",
+      error
+    );
+
+    /*
+      Do not stop the Like feature if
+      notification creation fails.
+    */
+
+  }
+
+}
 
 /* =====================================================
    SET UP LIKE BUTTON
@@ -1740,7 +1882,9 @@ function setupLikeButton(
 
             }
           );
-
+await createLikeNotification(
+  postData
+);
         }
 
       }catch(error){
