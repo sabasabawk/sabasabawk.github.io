@@ -1498,7 +1498,8 @@ async function createPostCard(postData){
 }     
 /* =====================================================
    PART 5 OF 6
-   LIKE, COMMENTS, SHARE, REFRESH AND BACK
+   LIKE, COMMENTS, SHARE, EDIT, DELETE,
+   REFRESH AND BACK
 ===================================================== */
 
 
@@ -1768,7 +1769,7 @@ function setupLikeButton(
 
 
 /* =====================================================
-   COMMENTS AND SHARE
+   COMMENTS, SHARE, EDIT AND DELETE
 ===================================================== */
 
 function setupPostActions(
@@ -1786,20 +1787,27 @@ function setupPostActions(
   postCard.querySelector(
     ".shareButton"
   );
-  
-const editButton =
-postCard.querySelector(
-  ".editButton"
-);
 
 
-const deleteButton =
-postCard.querySelector(
-  ".deleteButton"
-);
+  const editButton =
+  postCard.querySelector(
+    ".editButton"
+  );
+
+
+  const deleteButton =
+  postCard.querySelector(
+    ".deleteButton"
+  );
+
+
   const postId =
   postData.id;
 
+
+  /* ===================================================
+     COMMENTS
+  =================================================== */
 
   if(commentButton){
 
@@ -1827,6 +1835,10 @@ postCard.querySelector(
 
   }
 
+
+  /* ===================================================
+     SHARE
+  =================================================== */
 
   if(shareButton){
 
@@ -1918,347 +1930,232 @@ postCard.querySelector(
             "Copy this post link:",
             postLink
           );
-         /* ===================================================
-   EDIT OWNER'S POST
-=================================================== */
 
-if(editButton){
-
-  editButton.addEventListener(
-    "click",
-    async()=>{
-
-      if(
-        !currentUser ||
-        currentUser.uid !== postData.userId
-      ){
-
-        alert(
-          "You can only edit your own posts."
-        );
-
-        return;
+        }
 
       }
+    );
+
+  }
 
 
-      const currentMessage =
-      getPostMessage(postData);
+  /* ===================================================
+     EDIT OWNER'S POST
+  =================================================== */
+
+  if(editButton){
+
+    editButton.addEventListener(
+      "click",
+      async()=>{
+
+        if(
+          !currentUser ||
+          currentUser.uid !== postData.userId
+        ){
+
+          alert(
+            "You can only edit your own posts."
+          );
+
+          return;
+
+        }
 
 
-      const editedMessage =
-      prompt(
-        "Edit your post:",
-        currentMessage
-      );
+        const currentMessage =
+        getPostMessage(postData);
 
 
-      if(editedMessage === null){
-
-        return;
-
-      }
-
-
-      const cleanMessage =
-      editedMessage.trim();
-
-
-      if(cleanMessage === ""){
-
-        alert(
-          "The post cannot be empty."
-        );
-
-        return;
-
-      }
-
-
-      if(cleanMessage.length > 5000){
-
-        alert(
-          "Please use 5,000 characters or fewer."
-        );
-
-        return;
-
-      }
-
-
-      editButton.disabled = true;
-
-      editButton.textContent =
-      "⏳ Saving...";
-
-
-      try{
-
-        const postReference =
-        doc(
-          db,
-          "communityPosts",
-          postData.id
+        const editedMessage =
+        prompt(
+          "Edit your post:",
+          currentMessage
         );
 
 
-        await updateDoc(
-          postReference,
-          {
-            post:
-            cleanMessage,
+        if(editedMessage === null){
 
-            editedAt:
-            serverTimestamp()
-          }
-        );
+          return;
+
+        }
 
 
-        alert(
-          "Your post has been updated successfully."
-        );
-
-      }catch(error){
-
-        console.error(
-          "Post editing error:",
-          error
-        );
+        const cleanMessage =
+        editedMessage.trim();
 
 
-        alert(
-          error.message ||
-          "The post could not be updated."
-        );
+        if(cleanMessage === ""){
 
-      }finally{
+          alert(
+            "The post cannot be empty."
+          );
 
-        editButton.disabled = false;
+          return;
+
+        }
+
+
+        if(cleanMessage.length > 5000){
+
+          alert(
+            "Please use 5,000 characters or fewer."
+          );
+
+          return;
+
+        }
+
+
+        editButton.disabled = true;
 
         editButton.textContent =
-        "✏️ Edit";
+        "⏳ Saving...";
+
+
+        try{
+
+          const postReference =
+          doc(
+            db,
+            "communityPosts",
+            postId
+          );
+
+
+          await updateDoc(
+            postReference,
+            {
+
+              post:
+              cleanMessage,
+
+              editedAt:
+              serverTimestamp()
+
+            }
+          );
+
+
+          alert(
+            "Your post has been updated successfully."
+          );
+
+        }catch(error){
+
+          console.error(
+            "Post editing error:",
+            error
+          );
+
+
+          alert(
+            error.message ||
+            "The post could not be updated."
+          );
+
+        }finally{
+
+          editButton.disabled = false;
+
+          editButton.textContent =
+          "✏️ Edit";
+
+        }
 
       }
+    );
 
-    }
-  );
-
-}
+  }
 
 
-/* ===================================================
-   EDIT OWNER'S POST
-=================================================== */
+  /* ===================================================
+     DELETE OWNER'S POST
+  =================================================== */
 
-if(editButton){
+  if(deleteButton){
 
-  editButton.addEventListener(
-    "click",
-    async()=>{
+    deleteButton.addEventListener(
+      "click",
+      async()=>{
 
-      if(
-        !currentUser ||
-        currentUser.uid !== postData.userId
-      ){
+        if(
+          !currentUser ||
+          currentUser.uid !== postData.userId
+        ){
 
-        alert(
-          "You can only edit your own posts."
-        );
+          alert(
+            "You can only delete your own posts."
+          );
 
-        return;
+          return;
 
-      }
-
-
-      const currentMessage =
-      getPostMessage(postData);
+        }
 
 
-      const editedMessage =
-      prompt(
-        "Edit your post:",
-        currentMessage
-      );
-
-
-      if(editedMessage === null){
-
-        return;
-
-      }
-
-
-      const cleanMessage =
-      editedMessage.trim();
-
-
-      if(cleanMessage === ""){
-
-        alert(
-          "The post cannot be empty."
-        );
-
-        return;
-
-      }
-
-
-      if(cleanMessage.length > 5000){
-
-        alert(
-          "Please use 5,000 characters or fewer."
-        );
-
-        return;
-
-      }
-
-
-      editButton.disabled = true;
-
-      editButton.textContent =
-      "⏳ Saving...";
-
-
-      try{
-
-        const postReference =
-        doc(
-          db,
-          "communityPosts",
-          postData.id
+        const confirmed =
+        confirm(
+          "Are you sure you want to delete this post? This action cannot be undone."
         );
 
 
-        await updateDoc(
-          postReference,
-          {
-            post:
-            cleanMessage,
+        if(!confirmed){
 
-            editedAt:
-            serverTimestamp()
-          }
-        );
+          return;
+
+        }
 
 
-        alert(
-          "Your post has been updated successfully."
-        );
-
-      }catch(error){
-
-        console.error(
-          "Post editing error:",
-          error
-        );
-
-
-        alert(
-          error.message ||
-          "The post could not be updated."
-        );
-
-      }finally{
-
-        editButton.disabled = false;
-
-        editButton.textContent =
-        "✏️ Edit";
-
-      }
-
-    }
-  );
-
-}
-
-
-/* ===================================================
-   DELETE OWNER'S POST
-=================================================== */
-
-if(deleteButton){
-
-  deleteButton.addEventListener(
-    "click",
-    async()=>{
-
-      if(
-        !currentUser ||
-        currentUser.uid !== postData.userId
-      ){
-
-        alert(
-          "You can only delete your own posts."
-        );
-
-        return;
-
-      }
-
-
-      const confirmed =
-      confirm(
-        "Are you sure you want to delete this post? This action cannot be undone."
-      );
-
-
-      if(!confirmed){
-
-        return;
-
-      }
-
-
-      deleteButton.disabled = true;
-
-      deleteButton.textContent =
-      "⏳ Deleting...";
-
-
-      try{
-
-        const postReference =
-        doc(
-          db,
-          "communityPosts",
-          postData.id
-        );
-
-
-        await deleteDoc(
-          postReference
-        );
-
-
-        alert(
-          "Your post has been deleted successfully."
-        );
-
-      }catch(error){
-
-        console.error(
-          "Post deletion error:",
-          error
-        );
-
-
-        alert(
-          error.message ||
-          "The post could not be deleted."
-        );
-
-
-        deleteButton.disabled = false;
+        deleteButton.disabled = true;
 
         deleteButton.textContent =
-        "🗑️ Delete";
+        "⏳ Deleting...";
+
+
+        try{
+
+          const postReference =
+          doc(
+            db,
+            "communityPosts",
+            postId
+          );
+
+
+          await deleteDoc(
+            postReference
+          );
+
+
+          alert(
+            "Your post has been deleted successfully."
+          );
+
+        }catch(error){
+
+          console.error(
+            "Post deletion error:",
+            error
+          );
+
+
+          alert(
+            error.message ||
+            "The post could not be deleted."
+          );
+
+
+          deleteButton.disabled = false;
+
+          deleteButton.textContent =
+          "🗑️ Delete";
+
+        }
 
       }
+    );
 
-    }
-  );
+  }
 
 }
 
