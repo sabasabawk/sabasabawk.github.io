@@ -1,186 +1,1854 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Notifications</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Notifications | SABASABA Gospel Ministry
+</title>
+
 
 <style>
 
-body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-margin:0;
-padding:20px;
+/* =====================================================
+   GENERAL PAGE STYLE
+===================================================== */
+
+*{
+  box-sizing:border-box;
 }
+
+
+body{
+
+  font-family:
+  Arial,
+  Helvetica,
+  sans-serif;
+
+  background:#eef3f8;
+
+  margin:0;
+
+  padding:20px;
+
+  color:#222;
+
+}
+
 
 .container{
-max-width:800px;
-margin:auto;
+
+  width:100%;
+
+  max-width:800px;
+
+  margin:0 auto;
+
 }
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
 
 .header{
-background:#0066cc;
-color:white;
-padding:20px;
-border-radius:15px;
-text-align:center;
-margin-bottom:20px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #0066cc,
+    #004d99
+  );
+
+  color:white;
+
+  padding:24px 20px;
+
+  border-radius:16px;
+
+  text-align:center;
+
+  margin-bottom:20px;
+
+  box-shadow:
+  0 4px 12px
+  rgba(0,0,0,0.15);
+
 }
 
-.notification{
-background:white;
-padding:18px;
-margin-bottom:15px;
-border-radius:12px;
-box-shadow:0 3px 8px rgba(0,0,0,.1);
-font-size:18px;
+
+.header h1{
+
+  margin:0 0 8px;
+
+  font-size:30px;
+
 }
 
-.back{
-text-align:center;
-margin-top:25px;
+
+.header p{
+
+  margin:0;
+
+  font-size:16px;
+
+  opacity:0.95;
+
 }
+
+
+/* =====================================================
+   TOP ACTIONS
+===================================================== */
+
+.topActions{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:18px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.notificationCount{
+
+  background:white;
+
+  color:#004d99;
+
+  padding:10px 14px;
+
+  border-radius:10px;
+
+  font-weight:bold;
+
+  box-shadow:
+  0 2px 6px
+  rgba(0,0,0,0.08);
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 button{
-background:#0066cc;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-font-size:16px;
-text-decoration:none;
-display:inline-block;
+
+  border:none;
+
+  border-radius:9px;
+
+  padding:11px 16px;
+
+  cursor:pointer;
+
+  font-size:15px;
+
+  font-weight:bold;
+
+  transition:
+  background 0.2s ease,
+  transform 0.2s ease;
+
 }
+
 
 button:hover{
-background:#004d99;
+
+  transform:
+  translateY(-1px);
+
 }
 
-.error {
-background:#ffcccc;
-color:#cc0000;
-padding:15px;
-border-radius:8px;
-margin-top:15px;
+
+button:disabled{
+
+  opacity:0.6;
+
+  cursor:not-allowed;
+
+  transform:none;
+
+}
+
+
+.refreshButton{
+
+  background:#0066cc;
+
+  color:white;
+
+}
+
+
+.refreshButton:hover{
+
+  background:#004d99;
+
+}
+
+
+.markAllButton{
+
+  background:#198754;
+
+  color:white;
+
+}
+
+
+.markAllButton:hover{
+
+  background:#146c43;
+
+}
+
+
+.deleteButton{
+
+  background:#ffe0e0;
+
+  color:#b00020;
+
+  padding:8px 12px;
+
+  font-size:14px;
+
+}
+
+
+.deleteButton:hover{
+
+  background:#ffcaca;
+
+}
+
+
+.openButton{
+
+  background:#e5f1ff;
+
+  color:#0056a6;
+
+  padding:8px 12px;
+
+  font-size:14px;
+
+}
+
+
+.openButton:hover{
+
+  background:#cfe5ff;
+
+}
+
+
+.backButton{
+
+  background:#0066cc;
+
+  color:white;
+
+  padding:12px 20px;
+
+}
+
+
+.backButton:hover{
+
+  background:#004d99;
+
+}
+
+
+/* =====================================================
+   NOTIFICATION CARDS
+===================================================== */
+
+.notification{
+
+  background:white;
+
+  padding:18px;
+
+  margin-bottom:14px;
+
+  border-radius:13px;
+
+  box-shadow:
+  0 3px 9px
+  rgba(0,0,0,0.1);
+
+  border-left:
+  6px solid transparent;
+
+  transition:
+  transform 0.2s ease,
+  box-shadow 0.2s ease;
+
+}
+
+
+.notification:hover{
+
+  transform:
+  translateY(-2px);
+
+  box-shadow:
+  0 5px 14px
+  rgba(0,0,0,0.13);
+
+}
+
+
+.notification.unread{
+
+  background:#f1f8ff;
+
+  border-left-color:#0066cc;
+
+}
+
+
+.notification.read{
+
+  background:white;
+
+  border-left-color:#cccccc;
+
+}
+
+
+.notificationHeader{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+  margin-bottom:9px;
+
+}
+
+
+.notificationType{
+
+  font-size:21px;
+
+}
+
+
+.notificationTime{
+
+  color:#777;
+
+  font-size:13px;
+
+  text-align:right;
+
+}
+
+
+.notificationMessage{
+
+  font-size:17px;
+
+  line-height:1.5;
+
+  overflow-wrap:anywhere;
+
+}
+
+
+.notificationStatus{
+
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:5px 9px;
+
+  border-radius:20px;
+
+  font-size:12px;
+
+  font-weight:bold;
+
+}
+
+
+.notificationStatus.unreadStatus{
+
+  background:#0066cc;
+
+  color:white;
+
+}
+
+
+.notificationStatus.readStatus{
+
+  background:#e3e3e3;
+
+  color:#555;
+
+}
+
+
+/* =====================================================
+   NOTIFICATION ACTIONS
+===================================================== */
+
+.notificationActions{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-top:14px;
+
+}
+
+
+/* =====================================================
+   STATUS AND ERROR CARDS
+===================================================== */
+
+.statusCard{
+
+  background:white;
+
+  padding:22px;
+
+  border-radius:13px;
+
+  text-align:center;
+
+  font-size:17px;
+
+  box-shadow:
+  0 3px 8px
+  rgba(0,0,0,0.08);
+
+}
+
+
+.statusCard.loading{
+
+  color:#0056a6;
+
+}
+
+
+.statusCard.empty{
+
+  color:#555;
+
+}
+
+
+.statusCard.error{
+
+  background:#ffdddd;
+
+  color:#b00020;
+
+  border:
+  1px solid #ffaaaa;
+
+}
+
+
+/* =====================================================
+   BACK SECTION
+===================================================== */
+
+.back{
+
+  text-align:center;
+
+  margin-top:25px;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  body{
+
+    padding:12px;
+
+  }
+
+
+  .header{
+
+    padding:20px 14px;
+
+  }
+
+
+  .header h1{
+
+    font-size:25px;
+
+  }
+
+
+  .topActions{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+
+  .topActions button{
+
+    width:100%;
+
+  }
+
+
+  .notificationCount{
+
+    text-align:center;
+
+  }
+
+
+  .notificationHeader{
+
+    flex-direction:column;
+
+  }
+
+
+  .notificationTime{
+
+    text-align:left;
+
+  }
+
+
+  .notificationActions{
+
+    flex-direction:column;
+
+  }
+
+
+  .notificationActions button{
+
+    width:100%;
+
+  }
+
 }
 
 </style>
 
 </head>
-
 <body>
 
 <div class="container">
 
-<div class="header">
+  <!-- ==================================================
+       PAGE HEADER
+  =================================================== -->
 
-<h1>🔔 Notifications</h1>
+  <div class="header">
 
-<p>Your recent activity</p>
+    <h1>
+      🔔 Notifications
+    </h1>
 
-</div>
+    <p>
+      Stay updated with activity in the community.
+    </p>
 
-<div id="notificationList"></div>
+  </div>
 
-<div class="back">
 
-<button onclick="window.location.href='community.html'">⬅ Back to Community</button>
+  <!-- ==================================================
+       TOP ACTIONS
+  =================================================== -->
 
-</div>
+  <div class="topActions">
+
+    <div
+      id="notificationCount"
+      class="notificationCount"
+    >
+      Notifications: 0
+    </div>
+
+
+    <button
+      id="refreshButton"
+      class="refreshButton"
+      type="button"
+    >
+      🔄 Refresh
+    </button>
+
+
+    <button
+      id="markAllButton"
+      class="markAllButton"
+      type="button"
+    >
+      ✓ Mark All Read
+    </button>
+
+  </div>
+
+
+  <!-- ==================================================
+       NOTIFICATION LIST
+  =================================================== -->
+
+  <div
+    id="notificationList"
+  >
+
+    <div
+      class="statusCard loading"
+    >
+
+      Loading notifications...
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       BACK BUTTON
+  =================================================== -->
+
+  <div class="back">
+
+    <button
+      id="backButton"
+      class="backButton"
+      type="button"
+    >
+
+      ⬅ Back to Community
+
+    </button>
+
+  </div>
 
 </div>
 
 
 <script type="module">
+/* =====================================================
+   PART 3 OF 6
+   FIREBASE SETUP, AUTHENTICATION AND HELPERS
+===================================================== */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
 import {
-getFirestore,
-collection,
-query,
-orderBy,
-onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+  auth,
+  db,
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  writeBatch,
+  onAuthStateChanged
+} from "./firebase.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
-  authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
-  projectId: "sabasaba-gospel-ministry-414e2",
-  storageBucket: "sabasaba-gospel-ministry-414e2.firebasestorage.app",
-  messagingSenderId: "821278457946",
-  appId: "1:821278457946:web:3593bd1743970f44c05863"
-};
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
 
-const list = document.getElementById("notificationList");
-
-const q = query(
-collection(db,"notifications"),
-orderBy("timestamp","desc")
+const notificationList =
+document.getElementById(
+  "notificationList"
 );
 
-onSnapshot(q,function(snapshot){
 
-console.log("Snapshot received:", snapshot.size, "documents");
+const notificationCount =
+document.getElementById(
+  "notificationCount"
+);
 
-list.innerHTML="";
 
-if(snapshot.empty){
+const refreshButton =
+document.getElementById(
+  "refreshButton"
+);
 
-list.innerHTML=
-"<div class='notification'>No notifications yet.</div>";
 
-console.log("No notifications in database");
+const markAllButton =
+document.getElementById(
+  "markAllButton"
+);
 
-return;
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let currentUser = null;
+
+let unsubscribeNotifications = null;
+
+let currentNotifications = [];
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+  const temporaryElement =
+  document.createElement("div");
+
+
+  temporaryElement.textContent =
+  String(value ?? "");
+
+
+  return temporaryElement.innerHTML;
 
 }
 
-snapshot.forEach(function(doc){
 
-const note=doc.data();
+/* =====================================================
+   SHOW LOADING MESSAGE
+===================================================== */
 
-let time="";
+function showLoadingMessage(){
 
-if(note.timestamp){
+  notificationList.innerHTML = `
 
-time=new Date(note.timestamp.toDate()).toLocaleString();
+    <div class="statusCard loading">
+
+      Loading notifications...
+
+    </div>
+
+  `;
 
 }
 
-console.log("Adding notification:", note);
 
-list.innerHTML+=`
+/* =====================================================
+   SHOW EMPTY MESSAGE
+===================================================== */
 
-<div class="notification">
+function showEmptyMessage(){
 
-<div style="color:gray;font-size:14px;">
-${time}
-</div>
+  notificationList.innerHTML = `
 
-<div style="margin-top:8px;">
-${note.message}
-</div>
+    <div class="statusCard empty">
 
-</div>
+      You have no notifications yet.
 
-`;
+    </div>
 
-});
+  `;
 
-}, function(error){
+}
 
-console.error("Firebase error:", error);
 
-list.innerHTML = "<div class='error'><strong>Error loading notifications:</strong> " + error.message + "</div>";
+/* =====================================================
+   SHOW ERROR MESSAGE
+===================================================== */
 
-});
+function showErrorMessage(message){
+
+  notificationList.innerHTML = `
+
+    <div class="statusCard error">
+
+      ${escapeHTML(message)}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   UPDATE NOTIFICATION COUNT
+===================================================== */
+
+function updateNotificationCount(){
+
+  const totalNotifications =
+  currentNotifications.length;
+
+
+  const unreadNotifications =
+  currentNotifications.filter(
+    notification =>
+    notification.read !== true
+  ).length;
+
+
+  notificationCount.textContent =
+  `Notifications: ${totalNotifications} | Unread: ${unreadNotifications}`;
+
+
+  markAllButton.disabled =
+  unreadNotifications === 0;
+
+}
+
+
+/* =====================================================
+   STOP OLD NOTIFICATION LISTENER
+===================================================== */
+
+function stopNotificationListener(){
+
+  if(unsubscribeNotifications){
+
+    unsubscribeNotifications();
+
+    unsubscribeNotifications = null;
+
+  }
+
+}
+
+
+/* =====================================================
+   FORMAT NOTIFICATION DATE
+===================================================== */
+
+function formatNotificationDate(timestamp){
+
+  if(!timestamp){
+
+    return "Just now";
+
+  }
+
+
+  try{
+
+    const date =
+    timestamp.toDate
+    ? timestamp.toDate()
+    : new Date(timestamp);
+
+
+    return date.toLocaleString();
+
+  }catch(error){
+
+    console.error(
+      "Notification date error:",
+      error
+    );
+
+
+    return "Recently";
+
+  }
+
+}
+
+
+/* =====================================================
+   GET NOTIFICATION ICON
+===================================================== */
+
+function getNotificationIcon(type){
+
+  switch(type){
+
+    case "like":
+
+      return "❤️";
+
+
+    case "comment":
+
+      return "💬";
+
+
+    case "follow":
+
+      return "👤";
+
+
+    case "prayer":
+
+      return "🙏";
+
+
+    default:
+
+      return "🔔";
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION STATE
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    currentUser =
+    user || null;
+
+
+    stopNotificationListener();
+
+
+    if(!currentUser){
+
+      currentNotifications = [];
+
+      updateNotificationCount();
+
+
+      showErrorMessage(
+        "Please sign in to view your notifications."
+      );
+
+
+      refreshButton.disabled = true;
+
+      markAllButton.disabled = true;
+
+      return;
+
+    }
+
+
+    refreshButton.disabled = false;
+
+    showLoadingMessage();
+
+    loadNotifications();
+
+  }
+);
+/* =====================================================
+   PART 4 OF 6
+   LOAD AND DISPLAY NOTIFICATIONS
+===================================================== */
+
+
+/* =====================================================
+   LOAD CURRENT USER'S NOTIFICATIONS
+===================================================== */
+
+function loadNotifications(){
+
+  if(!currentUser){
+
+    showErrorMessage(
+      "Please sign in to view your notifications."
+    );
+
+    return;
+
+  }
+
+
+  stopNotificationListener();
+
+
+  const notificationsReference =
+  collection(
+    db,
+    "notifications"
+  );
+
+
+  const notificationsQuery =
+  query(
+
+    notificationsReference,
+
+    where(
+      "recipientId",
+      "==",
+      currentUser.uid
+    ),
+
+    orderBy(
+      "timestamp",
+      "desc"
+    )
+
+  );
+
+
+  unsubscribeNotifications =
+  onSnapshot(
+
+    notificationsQuery,
+
+    snapshot => {
+
+      currentNotifications = [];
+
+
+      snapshot.forEach(
+        notificationDocument => {
+
+          currentNotifications.push({
+
+            id:
+            notificationDocument.id,
+
+            ...notificationDocument.data()
+
+          });
+
+        }
+      );
+
+
+      updateNotificationCount();
+
+
+      if(currentNotifications.length === 0){
+
+        showEmptyMessage();
+
+        return;
+
+      }
+
+
+      displayNotifications();
+
+    },
+
+    error => {
+
+      console.error(
+        "Notification loading error:",
+        error
+      );
+
+
+      currentNotifications = [];
+
+      updateNotificationCount();
+
+
+      if(
+        error.code ===
+        "failed-precondition"
+      ){
+
+        showErrorMessage(
+          "Firebase requires an index for notifications. Open the Firebase error link in the browser console and create the suggested index."
+        );
+
+        return;
+
+      }
+
+
+      if(
+        error.code ===
+        "permission-denied"
+      ){
+
+        showErrorMessage(
+          "You do not have permission to view these notifications. Please check your Firestore security rules."
+        );
+
+        return;
+
+      }
+
+
+      showErrorMessage(
+        error.message ||
+        "Notifications could not be loaded."
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   DISPLAY ALL NOTIFICATIONS
+===================================================== */
+
+function displayNotifications(){
+
+  notificationList.innerHTML = "";
+
+
+  currentNotifications.forEach(
+    notificationData => {
+
+      const notificationCard =
+      createNotificationCard(
+        notificationData
+      );
+
+
+      notificationList.appendChild(
+        notificationCard
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   CREATE ONE NOTIFICATION CARD
+===================================================== */
+
+function createNotificationCard(
+  notificationData
+){
+
+  const card =
+  document.createElement("div");
+
+
+  const notificationId =
+  notificationData.id || "";
+
+
+  const notificationType =
+  notificationData.type || "general";
+
+
+  const notificationMessage =
+  notificationData.message ||
+  "You have a new notification.";
+
+
+  const notificationTime =
+  formatNotificationDate(
+    notificationData.timestamp
+  );
+
+
+  const notificationIcon =
+  getNotificationIcon(
+    notificationType
+  );
+
+
+  const isRead =
+  notificationData.read === true;
+
+
+  card.className =
+  isRead
+  ? "notification read"
+  : "notification unread";
+
+
+  card.dataset.notificationId =
+  notificationId;
+
+
+  card.innerHTML = `
+
+    <div class="notificationHeader">
+
+      <div class="notificationType">
+
+        ${escapeHTML(notificationIcon)}
+
+      </div>
+
+
+      <div class="notificationTime">
+
+        ${escapeHTML(notificationTime)}
+
+      </div>
+
+    </div>
+
+
+    <div class="notificationMessage">
+
+      ${escapeHTML(notificationMessage)}
+
+    </div>
+
+
+    <span
+      class="
+        notificationStatus
+        ${
+          isRead
+          ? "readStatus"
+          : "unreadStatus"
+        }
+      "
+    >
+
+      ${
+        isRead
+        ? "Read"
+        : "Unread"
+      }
+
+    </span>
+
+
+    <div class="notificationActions">
+
+      <button
+        type="button"
+        class="openButton"
+      >
+
+        Open
+
+      </button>
+
+
+      <button
+        type="button"
+        class="deleteButton"
+      >
+
+        🗑 Delete
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  setupNotificationActions(
+    notificationData,
+    card
+  );
+
+
+  return card;
+
+}
+/* =====================================================
+   PART 5 OF 6
+   NOTIFICATION ACTIONS, REFRESH AND BACK
+===================================================== */
+
+
+/* =====================================================
+   SET UP ONE NOTIFICATION CARD
+===================================================== */
+
+function setupNotificationActions(
+  notificationData,
+  card
+){
+
+  const openButton =
+  card.querySelector(
+    ".openButton"
+  );
+
+
+  const deleteButton =
+  card.querySelector(
+    ".deleteButton"
+  );
+
+
+  const notificationId =
+  notificationData.id;
+
+
+  const postId =
+  notificationData.postId;
+
+
+  /* ===================================================
+     OPEN RELATED POST
+  =================================================== */
+
+  if(openButton){
+
+    openButton.addEventListener(
+      "click",
+      async()=>{
+
+        if(!notificationId){
+
+          alert(
+            "This notification cannot be opened."
+          );
+
+          return;
+
+        }
+
+
+        openButton.disabled = true;
+
+        openButton.textContent =
+        "⏳ Opening...";
+
+
+        try{
+
+          if(
+            notificationData.read !== true
+          ){
+
+            const notificationReference =
+            doc(
+              db,
+              "notifications",
+              notificationId
+            );
+
+
+            await updateDoc(
+              notificationReference,
+              {
+                read:true
+              }
+            );
+
+          }
+
+
+          if(postId){
+
+            window.location.href =
+            "feed.html?postId=" +
+            encodeURIComponent(postId);
+
+          }else{
+
+            window.location.href =
+            "community.html";
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "Opening notification error:",
+            error
+          );
+
+
+          alert(
+            error.message ||
+            "The notification could not be opened."
+          );
+
+
+          openButton.disabled = false;
+
+          openButton.textContent =
+          "Open";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ===================================================
+     DELETE ONE NOTIFICATION
+  =================================================== */
+
+  if(deleteButton){
+
+    deleteButton.addEventListener(
+      "click",
+      async()=>{
+
+        if(!notificationId){
+
+          alert(
+            "This notification cannot be deleted."
+          );
+
+          return;
+
+        }
+
+
+        const confirmed =
+        confirm(
+          "Are you sure you want to delete this notification?"
+        );
+
+
+        if(!confirmed){
+
+          return;
+
+        }
+
+
+        deleteButton.disabled = true;
+
+        deleteButton.textContent =
+        "⏳ Deleting...";
+
+
+        try{
+
+          const notificationReference =
+          doc(
+            db,
+            "notifications",
+            notificationId
+          );
+
+
+          await deleteDoc(
+            notificationReference
+          );
+
+        }catch(error){
+
+          console.error(
+            "Notification deletion error:",
+            error
+          );
+
+
+          alert(
+            error.message ||
+            "The notification could not be deleted."
+          );
+
+
+          deleteButton.disabled = false;
+
+          deleteButton.textContent =
+          "🗑 Delete";
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   MARK ALL NOTIFICATIONS AS READ
+===================================================== */
+
+if(markAllButton){
+
+  markAllButton.addEventListener(
+    "click",
+    async()=>{
+
+      if(!currentUser){
+
+        alert(
+          "Please sign in first."
+        );
+
+        return;
+
+      }
+
+
+      const unreadNotifications =
+      currentNotifications.filter(
+        notification =>
+        notification.read !== true
+      );
+
+
+      if(unreadNotifications.length === 0){
+
+        alert(
+          "All notifications are already read."
+        );
+
+        return;
+
+      }
+
+
+      markAllButton.disabled = true;
+
+      markAllButton.textContent =
+      "⏳ Marking...";
+
+
+      try{
+
+        const batch =
+        writeBatch(db);
+
+
+        unreadNotifications.forEach(
+          notification => {
+
+            if(!notification.id){
+
+              return;
+
+            }
+
+
+            const notificationReference =
+            doc(
+              db,
+              "notifications",
+              notification.id
+            );
+
+
+            batch.update(
+              notificationReference,
+              {
+                read:true
+              }
+            );
+
+          }
+        );
+
+
+        await batch.commit();
+
+
+        alert(
+          "All notifications have been marked as read."
+        );
+
+      }catch(error){
+
+        console.error(
+          "Mark-all notification error:",
+          error
+        );
+
+
+        alert(
+          error.message ||
+          "Notifications could not be marked as read."
+        );
+
+      }finally{
+
+        markAllButton.textContent =
+        "✓ Mark All Read";
+
+
+        updateNotificationCount();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   REFRESH BUTTON
+===================================================== */
+
+if(refreshButton){
+
+  refreshButton.addEventListener(
+    "click",
+    ()=>{
+
+      if(!currentUser){
+
+        alert(
+          "Please sign in to refresh notifications."
+        );
+
+        return;
+
+      }
+
+
+      refreshButton.disabled = true;
+
+      refreshButton.textContent =
+      "⏳ Refreshing...";
+
+
+      showLoadingMessage();
+
+      loadNotifications();
+
+
+      setTimeout(
+        ()=>{
+
+          refreshButton.disabled = false;
+
+          refreshButton.textContent =
+          "🔄 Refresh";
+
+        },
+        1200
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+if(backButton){
+
+  backButton.addEventListener(
+    "click",
+    ()=>{
+
+      window.location.href =
+      "community.html";
+
+    }
+  );
+
+}
+/* =====================================================
+   PART 6 OF 6
+   CONNECTION HANDLING, CLEANUP AND CLOSING
+===================================================== */
+
+
+/* =====================================================
+   OFFLINE MESSAGE
+===================================================== */
+
+window.addEventListener(
+  "offline",
+  ()=>{
+
+    console.warn(
+      "The device is offline."
+    );
+
+
+    if(
+      currentNotifications.length === 0
+    ){
+
+      showErrorMessage(
+        "You are offline. Connect to the internet to load notifications."
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ONLINE RELOAD
+===================================================== */
+
+window.addEventListener(
+  "online",
+  ()=>{
+
+    console.log(
+      "Internet connection restored."
+    );
+
+
+    if(currentUser){
+
+      showLoadingMessage();
+
+      loadNotifications();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   GLOBAL JAVASCRIPT ERROR
+===================================================== */
+
+window.addEventListener(
+  "error",
+  event => {
+
+    console.error(
+      "Notifications page error:",
+      event.error ||
+      event.message
+    );
+
+  }
+);
+
+
+/* =====================================================
+   UNHANDLED PROMISE ERROR
+===================================================== */
+
+window.addEventListener(
+  "unhandledrejection",
+  event => {
+
+    console.error(
+      "Unhandled promise error:",
+      event.reason
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP FIREBASE LISTENER
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+
+    stopNotificationListener();
+
+  }
+);
+
+
+/* =====================================================
+   CHECK IMPORTANT PAGE ELEMENTS
+===================================================== */
+
+if(!notificationList){
+
+  console.error(
+    "notificationList element is missing."
+  );
+
+}
+
+
+if(!notificationCount){
+
+  console.error(
+    "notificationCount element is missing."
+  );
+
+}
+
+
+if(!refreshButton){
+
+  console.error(
+    "refreshButton element is missing."
+  );
+
+}
+
+
+if(!markAllButton){
+
+  console.error(
+    "markAllButton element is missing."
+  );
+
+}
+
+
+if(!backButton){
+
+  console.error(
+    "backButton element is missing."
+  );
+
+}
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "SABASABA Notifications page is ready."
+);
 
 </script>
+
 </body>
+
 </html>
