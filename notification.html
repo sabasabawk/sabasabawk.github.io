@@ -1017,22 +1017,17 @@ function loadNotifications(){
 
 
   const notificationsQuery =
-  query(
+query(
 
-    notificationsReference,
+  notificationsReference,
 
-    where(
-      "recipientId",
-      "==",
-      currentUser.uid
-    ),
+  where(
+    "recipientId",
+    "==",
+    currentUser.uid
+  )
 
-    orderBy(
-      "timestamp",
-      "desc"
-    )
-
-  );
+);
 
 
   unsubscribeNotifications =
@@ -1046,22 +1041,84 @@ function loadNotifications(){
 
 
       snapshot.forEach(
-        notificationDocument => {
+  notificationDocument => {
 
-          currentNotifications.push({
+    currentNotifications.push({
 
-            id:
-            notificationDocument.id,
+      id:
+      notificationDocument.id,
 
-            ...notificationDocument.data()
+      ...notificationDocument.data()
 
-          });
+    });
 
-        }
-      );
+  }
+);
 
 
-      updateNotificationCount();
+/* Sort newest notifications first without Firebase index */
+
+currentNotifications.sort(
+  (notificationA, notificationB) => {
+
+    const getTimestampValue =
+    timestamp => {
+
+      if(!timestamp){
+
+        return 0;
+
+      }
+
+
+      if(
+        typeof timestamp.toMillis ===
+        "function"
+      ){
+
+        return timestamp.toMillis();
+
+      }
+
+
+      if(
+        typeof timestamp.toDate ===
+        "function"
+      ){
+
+        return timestamp
+        .toDate()
+        .getTime();
+
+      }
+
+
+      const dateValue =
+      new Date(timestamp).getTime();
+
+
+      return Number.isNaN(dateValue)
+      ? 0
+      : dateValue;
+
+    };
+
+
+    return (
+      getTimestampValue(
+        notificationB.timestamp
+      )
+      -
+      getTimestampValue(
+        notificationA.timestamp
+      )
+    );
+
+  }
+);
+
+
+updateNotificationCount();
 
 
       if(currentNotifications.length === 0){
