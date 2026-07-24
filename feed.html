@@ -1464,19 +1464,44 @@ escapeHTML(
 
 
     ${
-      safePostImage
-      ? `
+  safePostImage
+  ? `
 
-        <img
-          class="communityPostImage"
-          src="${safePostImage}"
-          alt="Community post image"
-          loading="lazy"
-        >
+    <img
+      class="communityPostImage"
+      src="${safePostImage}"
+      alt="Community post image"
+      loading="lazy"
+      data-full-image="${safePostImage}"
+    >
 
-      `
-      : ""
-    }
+  `
+  : ""
+}
+
+
+${
+  safePostVideo
+  ? `
+
+    <video
+      class="communityPostVideo"
+      controls
+      preload="metadata"
+      playsinline
+    >
+
+      <source
+        src="${safePostVideo}"
+      >
+
+      Your browser does not support video playback.
+
+    </video>
+
+  `
+  : ""
+}
 
 
     <div class="postActions">
