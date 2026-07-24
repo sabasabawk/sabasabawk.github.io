@@ -928,11 +928,22 @@ function uploadPostMedia(file){
 
       if(!file){
 
-        resolve("");
+  resolve({
 
-        return;
+    mediaType:
+    "none",
 
-      }
+    mediaUrl:
+    "",
+
+    mediaName:
+    ""
+
+  });
+
+  return;
+
+}
 
 
       const safeFileName =
@@ -1045,7 +1056,18 @@ function uploadPostMedia(file){
             "Media uploaded successfully.";
 
 
-            resolve(downloadURL);
+            resolve({
+
+  mediaType:
+  selectedMediaType,
+
+  mediaUrl:
+  downloadURL,
+
+  mediaName:
+  file.name
+
+});
 
           }catch(error){
 
