@@ -1316,7 +1316,10 @@ async function createPostCard(postData){
     postData
   );
 
-
+const postVideo =
+getPostVideo(
+  postData
+);
   const postDate =
   formatPostDate(
     postData.timestamp ||
@@ -1387,7 +1390,10 @@ async function createPostCard(postData){
     postImage || ""
   );
 
-
+const safePostVideo =
+escapeHTML(
+  postVideo || ""
+);
   const safePostDate =
   escapeHTML(
     postDate
