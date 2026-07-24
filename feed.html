@@ -230,6 +230,12 @@ button{
 
 
 /* =====================================================
+   PART 1 OF 6
+   POST PHOTO AND VIDEO STYLING
+===================================================== */
+
+
+/* =====================================================
    POST IMAGE
 ===================================================== */
 
@@ -239,7 +245,88 @@ button{
   max-height:520px;
   margin-top:24px;
   border-radius:18px;
-  object-fit:cover;
+  object-fit:contain;
+  background:#111;
+  cursor:pointer;
+}
+
+
+/* =====================================================
+   POST VIDEO
+===================================================== */
+
+.communityPostVideo{
+  display:block;
+  width:100%;
+  max-height:520px;
+  margin-top:24px;
+  border-radius:18px;
+  object-fit:contain;
+  background:#000;
+}
+
+
+/* =====================================================
+   MEDIA ERROR MESSAGE
+===================================================== */
+
+.communityMediaError{
+  margin-top:24px;
+  padding:22px 16px;
+  border-radius:18px;
+  background:#f5f5f5;
+  color:#777;
+  text-align:center;
+  font-size:17px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   FULLSCREEN PHOTO VIEWER
+===================================================== */
+
+#photoViewer{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.94);
+}
+
+#photoViewer.open{
+  display:flex;
+}
+
+#photoViewerImage{
+  display:block;
+  max-width:100%;
+  max-height:90vh;
+  object-fit:contain;
+}
+
+#closePhotoViewer{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:48px;
+  height:48px;
+  margin:0;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.2);
+  color:white;
+  font-size:28px;
+  line-height:48px;
+  cursor:pointer;
+}
+
+#closePhotoViewer:hover{
+  background:rgba(255,255,255,.32);
 }
 
 
@@ -462,7 +549,32 @@ button{
 
 </div>
 
+<!-- =====================================================
+     PART 2 OF 6
+     FULLSCREEN PHOTO VIEWER
+===================================================== -->
 
+<div
+  id="photoViewer"
+  aria-hidden="true"
+>
+
+  <button
+    type="button"
+    id="closePhotoViewer"
+    aria-label="Close photo viewer"
+  >
+    ×
+  </button>
+
+
+  <img
+    id="photoViewerImage"
+    src=""
+    alt="Full-size community post photo"
+  >
+
+</div>
 <script type="module">
 
 /* =====================================================
