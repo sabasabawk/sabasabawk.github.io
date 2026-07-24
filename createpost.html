@@ -904,173 +904,167 @@ return String(value).trim();
 return "";
 
 }
-/* ========================================
-   UPLOAD MEDIA TO FIREBASE STORAGE
-======================================== */
+/* =====================================================
+   UPLOAD PHOTO OR VIDEO TO FIREBASE STORAGE
+===================================================== */
 
 function uploadPostMedia(file){
 
-return new Promise(
+  return new Promise(
+    (resolve,reject)=>{
 
-function(resolve,reject){
+      if(!currentUser){
 
-if(!file){
+        reject(
+          new Error(
+            "You must sign in before uploading media."
+          )
+        );
 
-resolve({
+        return;
 
-mediaUrl:"",
-mediaType:"none",
-mediaName:""
+      }
 
-});
 
-return;
+      if(!file){
 
-}
+        resolve("");
 
-const safeFileName =
+        return;
 
-file.name.replace(
+      }
 
-/[^a-zA-Z0-9._-]/g,
 
-"_"
+      const safeFileName =
+      file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
 
-);
 
-const storagePath =
+      const filePath =
+      `communityMedia/${currentUser.uid}/${Date.now()}_${safeFileName}`;
 
-"communityMedia/" +
 
-currentUser.uid +
+      const mediaReference =
+      ref(
+        storage,
+        filePath
+      );
 
-"/" +
 
-Date.now() +
+      const uploadTask =
+      uploadBytesResumable(
+        mediaReference,
+        file
+      );
 
-"_" +
 
-safeFileName;
+      uploadArea.style.display =
+      "block";
 
-const mediaReference =
 
-ref(
+      uploadProgress.style.width =
+      "0%";
 
-storage,
 
-storagePath
+      uploadText.textContent =
+      "Uploading media: 0%";
 
-);
 
-const uploadTask =
+      uploadTask.on(
 
-uploadBytesResumable(
+        "state_changed",
 
-mediaReference,
 
-file,
+        /* UPLOAD PROGRESS */
 
-{
+        (snapshot)=>{
 
-contentType:file.type
+          const progress =
+          Math.round(
 
-}
+            (
+              snapshot.bytesTransferred /
+              snapshot.totalBytes
+            ) * 100
 
-);
+          );
 
-uploadArea.style.display =
-"block";
 
-uploadProgress.style.width =
-"0%";
+          uploadProgress.style.width =
+          `${progress}%`;
 
-uploadText.textContent =
-"Preparing upload...";
 
-uploadTask.on(
+          uploadText.textContent =
+          `Uploading media: ${progress}%`;
 
-"state_changed",
+        },
 
-function(snapshot){
 
-const percentage =
+        /* UPLOAD ERROR */
 
-Math.round(
+        (error)=>{
 
-(
+          console.error(
+            "Firebase Storage upload error:",
+            error
+          );
 
-snapshot.bytesTransferred /
 
-snapshot.totalBytes
+          uploadText.textContent =
+          "Media upload failed.";
 
-) * 100
 
-);
+          reject(error);
 
-uploadProgress.style.width =
+        },
 
-percentage + "%";
 
-uploadText.textContent =
+        /* UPLOAD COMPLETED */
 
-"Uploading media: " +
+        async()=>{
 
-percentage +
+          try{
 
-"%";
+            uploadText.textContent =
+            "Finishing upload...";
 
-},
 
-function(error){
+            const downloadURL =
+            await getDownloadURL(
+              uploadTask.snapshot.ref
+            );
 
-uploadArea.style.display =
-"none";
 
-reject(error);
+            uploadProgress.style.width =
+            "100%";
 
-},
 
-async function(){
+            uploadText.textContent =
+            "Media uploaded successfully.";
 
-try{
 
-const downloadUrl =
+            resolve(downloadURL);
 
-await getDownloadURL(
+          }catch(error){
 
-uploadTask.snapshot.ref
+            console.error(
+              "Download URL error:",
+              error
+            );
 
-);
 
-uploadProgress.style.width =
-"100%";
+            reject(error);
 
-uploadText.textContent =
-"Media uploaded successfully.";
+          }
 
-resolve({
+        }
 
-mediaUrl:downloadUrl,
+      );
 
-mediaType:selectedMediaType,
-
-mediaName:safeFileName
-
-});
-
-}catch(error){
-
-reject(error);
-
-}
-
-}
-
-);
-
-}
-
-);
+    }
+  );
 
 }
 
