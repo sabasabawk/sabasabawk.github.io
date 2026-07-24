@@ -1248,6 +1248,10 @@ function getPostCategory(postData){
 }
 
 
+/* =====================================================
+   READ POST IMAGE
+===================================================== */
+
 function getPostImage(postData){
 
   return getFirstValue(
@@ -1256,11 +1260,32 @@ function getPostImage(postData){
     postData.postImage,
     postData.photoUrl,
     postData.photoURL,
-    postData.image
+    postData.image,
+    postData.mediaType === "image"
+      ? postData.mediaUrl
+      : ""
   );
 
 }
 
+
+/* =====================================================
+   READ POST VIDEO
+===================================================== */
+
+function getPostVideo(postData){
+
+  return getFirstValue(
+    postData.videoUrl,
+    postData.videoURL,
+    postData.postVideo,
+    postData.video,
+    postData.mediaType === "video"
+      ? postData.mediaUrl
+      : ""
+  );
+
+}
 
 /* =====================================================
    CREATE ONE POST CARD
