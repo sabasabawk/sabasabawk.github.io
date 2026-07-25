@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Private Chat</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="Private Christian chat on SABASABA Gospel Ministry"
+>
+
+<title>
+Private Chat | SABASABA Gospel Ministry
+</title>
+
 
 <style>
+
+/* =====================================================
+   GENERAL PAGE
+===================================================== */
 
 *{
 margin:0;
@@ -15,142 +32,422 @@ padding:0;
 box-sizing:border-box;
 }
 
+html,
 body{
-font-family:Arial,sans-serif;
+width:100%;
+height:100%;
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
 background:#eef3f8;
 display:flex;
 flex-direction:column;
-height:100vh;
+overflow:hidden;
 }
 
+
+/* =====================================================
+   CHAT HEADER
+===================================================== */
+
 .header{
-background:#0066cc;
-color:white;
-padding:15px;
 display:flex;
 align-items:center;
-gap:15px;
+gap:14px;
+padding:15px 18px;
+background:#0066cc;
+color:#ffffff;
+box-shadow:0 2px 8px rgba(0,0,0,.12);
+z-index:10;
+}
+
+.back-button{
+width:42px;
+height:42px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,.18);
+color:#ffffff;
+font-size:24px;
+cursor:pointer;
+flex-shrink:0;
+}
+
+.back-button:hover{
+background:rgba(255,255,255,.28);
 }
 
 .avatar{
-width:55px;
-height:55px;
+width:58px;
+height:58px;
 border-radius:50%;
 object-fit:cover;
-background:white;
+background:#ffffff;
+border:2px solid rgba(255,255,255,.8);
+flex-shrink:0;
+}
+
+.header-info{
+min-width:0;
+flex:1;
 }
 
 .name{
-font-size:20px;
+font-size:21px;
 font-weight:bold;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
+
+.status{
+margin-top:4px;
+font-size:13px;
+color:#dbeaff;
+}
+
+
+/* =====================================================
+   CHAT AREA
+===================================================== */
 
 .chatArea{
 flex:1;
 overflow-y:auto;
-padding:20px;
+padding:20px 16px 28px;
 background:#f5f7fb;
 display:flex;
 flex-direction:column;
+scroll-behavior:smooth;
 }
 
 .empty{
-text-align:center;
+margin:auto;
+padding:30px 20px;
 color:#777;
-margin-top:80px;
+font-size:16px;
+line-height:1.6;
+text-align:center;
 }
 
+
+/* =====================================================
+   MESSAGE ROW
+===================================================== */
+
+.message-row{
+width:100%;
+display:flex;
+margin:7px 0;
+}
+
+.message-row.mine-row{
+justify-content:flex-end;
+}
+
+.message-row.other-row{
+justify-content:flex-start;
+}
+
+
+/* =====================================================
+   MESSAGE BUBBLE
+===================================================== */
+
 .message{
-max-width:70%;
-padding:12px 16px;
-margin:8px 0;
-border-radius:15px;
+position:relative;
+max-width:76%;
+padding:12px 15px 8px;
+border-radius:17px;
 word-wrap:break-word;
+overflow-wrap:anywhere;
+line-height:1.45;
+font-size:16px;
+box-shadow:0 1px 3px rgba(0,0,0,.08);
 }
 
 .mine{
-align-self:flex-end;
 background:#0066cc;
-color:white;
+color:#ffffff;
+border-bottom-right-radius:5px;
+padding-right:42px;
 }
 
 .other{
-align-self:flex-start;
 background:#e5e5ea;
-color:black;
+color:#111111;
+border-bottom-left-radius:5px;
 }
+
+
+/* =====================================================
+   MESSAGE TEXT AND TIME
+===================================================== */
+
+.message-text{
+white-space:pre-wrap;
+}
+
+.message-time{
+display:block;
+margin-top:6px;
+font-size:11px;
+opacity:.72;
+text-align:right;
+}
+
+
+/* =====================================================
+   MESSAGE MENU BUTTON
+===================================================== */
+
+.message-menu-button{
+position:absolute;
+top:6px;
+right:7px;
+width:29px;
+height:29px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,.17);
+color:#ffffff;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.message-menu-button:hover{
+background:rgba(255,255,255,.28);
+}
+
+
+/* =====================================================
+   DELETE MENU
+===================================================== */
+
+.message-menu{
+display:none;
+position:absolute;
+top:39px;
+right:7px;
+min-width:145px;
+padding:6px;
+background:#ffffff;
+border-radius:10px;
+box-shadow:0 5px 18px rgba(0,0,0,.22);
+z-index:20;
+}
+
+.message-menu.show{
+display:block;
+}
+
+.delete-message-button{
+width:100%;
+padding:10px 12px;
+border:none;
+border-radius:7px;
+background:#ffffff;
+color:#d93025;
+font-size:14px;
+font-weight:bold;
+text-align:left;
+cursor:pointer;
+}
+
+.delete-message-button:hover{
+background:#fff0ef;
+}
+
+
+/* =====================================================
+   INPUT AREA
+===================================================== */
 
 .inputArea{
 display:flex;
-padding:15px;
-background:white;
-border-top:1px solid #ddd;
+align-items:center;
+gap:10px;
+padding:12px 14px;
+background:#ffffff;
+border-top:1px solid #d9e0e8;
+box-shadow:0 -2px 8px rgba(0,0,0,.05);
 }
 
 .inputArea input{
 flex:1;
-padding:12px;
-border:1px solid #ccc;
+min-width:0;
+padding:13px 17px;
+border:1px solid #c7d0da;
 border-radius:25px;
 font-size:16px;
 outline:none;
+background:#ffffff;
+}
+
+.inputArea input:focus{
+border-color:#0066cc;
+box-shadow:0 0 0 3px rgba(0,102,204,.12);
 }
 
 .inputArea button{
-margin-left:10px;
 padding:12px 22px;
 border:none;
 border-radius:25px;
 background:#0066cc;
-color:white;
+color:#ffffff;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
+}
+
+.inputArea button:hover{
+background:#004f9e;
+}
+
+.inputArea button:disabled{
+background:#8ba8c5;
+cursor:not-allowed;
+}
+
+
+/* =====================================================
+   MOBILE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+.header{
+padding:12px;
+gap:10px;
+}
+
+.avatar{
+width:52px;
+height:52px;
+}
+
+.name{
+font-size:18px;
+}
+
+.chatArea{
+padding:16px 10px 22px;
+}
+
+.message{
+max-width:82%;
+font-size:16px;
+}
+
+.inputArea{
+padding:10px;
+}
+
+.inputArea button{
+padding:12px 17px;
+}
+
 }
 
 </style>
 
 </head>
-
 <body>
 
+
+<!-- =====================================================
+     CHAT HEADER
+===================================================== -->
+
 <div class="header">
+
+<button
+type="button"
+id="backButton"
+class="back-button"
+aria-label="Go back"
+>
+←
+</button>
+
 
 <img
 id="chatAvatar"
 class="avatar"
-src="images/profile.png">
+src="images/profile.png"
+alt="Member profile picture"
+>
+
+
+<div class="header-info">
 
 <div
 class="name"
-id="chatName">
-
+id="chatName"
+>
 Loading...
+</div>
 
+
+<div
+class="status"
+id="chatStatus"
+>
+Private Christian conversation
 </div>
 
 </div>
+
+</div>
+
+
+<!-- =====================================================
+     CHAT MESSAGES
+===================================================== -->
 
 <div
 class="chatArea"
-id="chatArea">
+id="chatArea"
+>
 
 <div class="empty">
 
 No messages yet.<br>
+
 Start your Christian conversation.
 
 </div>
 
 </div>
 
+
+<!-- =====================================================
+     MESSAGE INPUT
+===================================================== -->
+
 <div class="inputArea">
 
 <input
-id="message"
+id="messageInput"
 type="text"
-placeholder="Type your message...">
+maxlength="2000"
+placeholder="Type your message..."
+autocomplete="off"
+>
 
-<button id="sendBtn">
+
+<button
+type="button"
+id="sendButton"
+>
 
 Send
 
@@ -158,183 +455,1166 @@ Send
 
 </div>
 
+
 <script type="module">
+/* =====================================================
+   PART 3 OF 6
+   FIREBASE SETUP AND CHAT MEMBER DETAILS
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
 import {
-auth,
-db,
-doc,
-getDoc,
-collection,
-addDoc,
-query,
-where,
-orderBy,
-onSnapshot,
-serverTimestamp,
-setDoc,
-onAuthStateChanged
+  auth,
+  db,
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+  deleteDoc,
+  onAuthStateChanged
 } from "./firebase.js";
 
-const params = new URLSearchParams(window.location.search);
-const otherUid = params.get("uid");
 
-const chatName = document.getElementById("chatName");
-const chatAvatar = document.getElementById("chatAvatar");
-const chatArea = document.getElementById("chatArea");
-const messageInput = document.getElementById("message");
-const sendBtn = document.getElementById("sendBtn");
+/* =====================================================
+   URL INFORMATION
+===================================================== */
 
-let currentUser = null;
+const pageParameters =
+new URLSearchParams(
+  window.location.search
+);
 
-onAuthStateChanged(auth, async(user)=>{
 
-if(!user){
+const otherUid =
+pageParameters.get(
+  "uid"
+);
 
-window.location.href="login.html";
-return;
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+
+const chatName =
+document.getElementById(
+  "chatName"
+);
+
+
+const chatAvatar =
+document.getElementById(
+  "chatAvatar"
+);
+
+
+const chatStatus =
+document.getElementById(
+  "chatStatus"
+);
+
+
+const chatArea =
+document.getElementById(
+  "chatArea"
+);
+
+
+const messageInput =
+document.getElementById(
+  "messageInput"
+);
+
+
+const sendButton =
+document.getElementById(
+  "sendButton"
+);
+
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let currentUser =
+null;
+
+
+let unsubscribeMessages =
+null;
+
+
+let messageSending =
+false;
+
+
+/* =====================================================
+   CHECK CHAT MEMBER ID
+===================================================== */
+
+if(!otherUid){
+
+  alert(
+    "The selected chat member could not be found."
+  );
+
+
+  window.location.replace(
+    "privatemessages.html"
+  );
 
 }
 
-currentUser = user;
 
-const userSnap = await getDoc(
-doc(db,"users",otherUid)
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    "privatemessages.html";
+
+  }
 );
 
-if(userSnap.exists()){
 
-const other = userSnap.data();
+/* =====================================================
+   LOAD OTHER MEMBER PROFILE
+===================================================== */
 
-chatName.innerText =
-other.fullName || "Unknown User";
+async function loadChatMember(){
 
-chatAvatar.src =
-other.profilePicture || "images/profile.png";
+  try{
+
+    const memberReference =
+    doc(
+      db,
+      "users",
+      otherUid
+    );
+
+
+    const memberSnapshot =
+    await getDoc(
+      memberReference
+    );
+
+
+    if(!memberSnapshot.exists()){
+
+      chatName.textContent =
+      "Unknown Member";
+
+
+      chatStatus.textContent =
+      "Member profile unavailable";
+
+
+      chatAvatar.src =
+      "images/profile.png";
+
+
+      return;
+
+    }
+
+
+    const member =
+    memberSnapshot.data();
+
+
+    chatName.textContent =
+    member.fullName ||
+    member.name ||
+    member.displayName ||
+    "Community Member";
+
+
+    chatAvatar.src =
+    member.profilePicture ||
+    member.picture ||
+    member.photoURL ||
+    "images/profile.png";
+
+
+    chatAvatar.onerror =
+    function(){
+
+      chatAvatar.src =
+      "images/profile.png";
+
+    };
+
+
+    chatStatus.textContent =
+    "Private Christian conversation";
+
+  }catch(error){
+
+    console.error(
+      "Member profile loading error:",
+      error
+    );
+
+
+    chatName.textContent =
+    "Community Member";
+
+
+    chatStatus.textContent =
+    "Private Christian conversation";
+
+
+    chatAvatar.src =
+    "images/profile.png";
+
+  }
 
 }
 
-loadMessages();
 
-});
-function loadMessages(){
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
 
-const q = query(
-collection(db,"messages"),
-orderBy("timestamp","asc")
+onAuthStateChanged(
+  auth,
+  async(user)=>{
+
+    if(!user){
+
+      window.location.replace(
+        "login.html"
+      );
+
+      return;
+
+    }
+
+
+    currentUser =
+    user;
+
+
+    if(
+      currentUser.uid === otherUid
+    ){
+
+      alert(
+        "You cannot open a private chat with yourself."
+      );
+
+
+      window.location.replace(
+        "privatemessages.html"
+      );
+
+      return;
+
+    }
+
+
+    await loadChatMember();
+
+
+    loadMessages();
+
+  }
 );
+/* =====================================================
+   PART 4 OF 6
+   LOAD AND DISPLAY PRIVATE MESSAGES
+===================================================== */
 
-onSnapshot(q,(snapshot)=>{
 
-chatArea.innerHTML="";
+/* =====================================================
+   FORMAT MESSAGE TIME
+===================================================== */
 
-let found = false;
+function formatMessageTime(timestamp){
 
-snapshot.forEach((messageDoc)=>{
+  if(!timestamp){
+    return "Sending...";
+  }
 
-const msg = messageDoc.data();
 
-if(
+  const messageDate =
+  timestamp.toDate
+  ? timestamp.toDate()
+  : new Date(timestamp);
 
-(msg.senderId===currentUser.uid &&
-msg.receiverId===otherUid)
 
-||
+  return messageDate.toLocaleTimeString(
+    [],
+    {
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
 
-(msg.senderId===otherUid &&
-msg.receiverId===currentUser.uid)
+}
 
+
+/* =====================================================
+   CLOSE ALL MESSAGE MENUS
+===================================================== */
+
+function closeAllMessageMenus(){
+
+  const openMenus =
+  document.querySelectorAll(
+    ".message-menu.show"
+  );
+
+
+  openMenus.forEach((menu)=>{
+
+    menu.classList.remove(
+      "show"
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   CREATE ONE MESSAGE BUBBLE
+===================================================== */
+
+function createMessageElement(
+  messageDocument
 ){
 
-found = true;
+  const messageData =
+  messageDocument.data();
 
-const div = document.createElement("div");
 
-div.className =
-"message " +
-(msg.senderId===currentUser.uid ? "mine" : "other");
+  const messageId =
+  messageDocument.id;
 
-div.textContent = msg.message;
 
-chatArea.appendChild(div);
+  const isMine =
+  messageData.senderId ===
+  currentUser.uid;
+
+
+  const messageRow =
+  document.createElement(
+    "div"
+  );
+
+
+  messageRow.className =
+  isMine
+  ? "message-row mine-row"
+  : "message-row other-row";
+
+
+  const messageBubble =
+  document.createElement(
+    "div"
+  );
+
+
+  messageBubble.className =
+  isMine
+  ? "message mine"
+  : "message other";
+
+
+  const messageText =
+  document.createElement(
+    "div"
+  );
+
+
+  messageText.className =
+  "message-text";
+
+
+  messageText.textContent =
+  messageData.message ||
+  "";
+
+
+  messageBubble.appendChild(
+    messageText
+  );
+
+
+  const messageTime =
+  document.createElement(
+    "span"
+  );
+
+
+  messageTime.className =
+  "message-time";
+
+
+  messageTime.textContent =
+  formatMessageTime(
+    messageData.timestamp
+  );
+
+
+  messageBubble.appendChild(
+    messageTime
+  );
+
+
+  /* ===================================================
+     DELETE MENU FOR OWN MESSAGES ONLY
+  =================================================== */
+
+  if(isMine){
+
+    const menuButton =
+    document.createElement(
+      "button"
+    );
+
+
+    menuButton.type =
+    "button";
+
+
+    menuButton.className =
+    "message-menu-button";
+
+
+    menuButton.innerHTML =
+    "⋮";
+
+
+    menuButton.setAttribute(
+      "aria-label",
+      "Message options"
+    );
+
+
+    const messageMenu =
+    document.createElement(
+      "div"
+    );
+
+
+    messageMenu.className =
+    "message-menu";
+
+
+    const deleteButton =
+    document.createElement(
+      "button"
+    );
+
+
+    deleteButton.type =
+    "button";
+
+
+    deleteButton.className =
+    "delete-message-button";
+
+
+    deleteButton.textContent =
+    "🗑 Delete message";
+
+
+    menuButton.addEventListener(
+      "click",
+      function(event){
+
+        event.stopPropagation();
+
+
+        const menuWasOpen =
+        messageMenu.classList.contains(
+          "show"
+        );
+
+
+        closeAllMessageMenus();
+
+
+        if(!menuWasOpen){
+
+          messageMenu.classList.add(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+
+    deleteButton.addEventListener(
+      "click",
+      function(event){
+
+        event.stopPropagation();
+
+
+        messageMenu.classList.remove(
+          "show"
+        );
+
+
+        confirmMessageDeletion(
+          messageId,
+          messageData
+        );
+
+      }
+    );
+
+
+    messageMenu.appendChild(
+      deleteButton
+    );
+
+
+    messageBubble.appendChild(
+      menuButton
+    );
+
+
+    messageBubble.appendChild(
+      messageMenu
+    );
+
+  }
+
+
+  messageRow.appendChild(
+    messageBubble
+  );
+
+
+  return messageRow;
 
 }
 
-});
 
-if(!found){
+/* =====================================================
+   LOAD MESSAGES FROM FIRESTORE
+===================================================== */
 
-chatArea.innerHTML = `
-<div class="empty">
-No messages yet.<br>
-Start your Christian conversation.
-</div>
-`;
+function loadMessages(){
+
+  if(unsubscribeMessages){
+
+    unsubscribeMessages();
+
+  }
+
+
+  const messagesQuery =
+  query(
+    collection(
+      db,
+      "messages"
+    ),
+    orderBy(
+      "timestamp",
+      "asc"
+    )
+  );
+
+
+  unsubscribeMessages =
+  onSnapshot(
+    messagesQuery,
+    (snapshot)=>{
+
+      chatArea.innerHTML =
+      "";
+
+
+      let foundMessage =
+      false;
+
+
+      snapshot.forEach(
+        (messageDocument)=>{
+
+          const messageData =
+          messageDocument.data();
+
+
+          const messageBelongsToChat =
+
+          (
+            messageData.senderId ===
+            currentUser.uid
+
+            &&
+
+            messageData.receiverId ===
+            otherUid
+          )
+
+          ||
+
+          (
+            messageData.senderId ===
+            otherUid
+
+            &&
+
+            messageData.receiverId ===
+            currentUser.uid
+          );
+
+
+          if(!messageBelongsToChat){
+            return;
+          }
+
+
+          foundMessage =
+          true;
+
+
+          const messageElement =
+          createMessageElement(
+            messageDocument
+          );
+
+
+          chatArea.appendChild(
+            messageElement
+          );
+
+        }
+      );
+
+
+      if(!foundMessage){
+
+        chatArea.innerHTML = `
+          <div class="empty">
+            No messages yet.<br>
+            Start your Christian conversation.
+          </div>
+        `;
+
+      }
+
+
+      requestAnimationFrame(
+        ()=>{
+
+          chatArea.scrollTop =
+          chatArea.scrollHeight;
+
+        }
+      );
+
+    },
+    (error)=>{
+
+      console.error(
+        "Message loading error:",
+        error
+      );
+
+
+      chatArea.innerHTML = `
+        <div class="empty">
+          Messages could not be loaded.<br>
+          Please check your internet connection.
+        </div>
+      `;
+
+    }
+  );
 
 }
 
-chatArea.scrollTop = chatArea.scrollHeight;
 
-});
+/* =====================================================
+   CLOSE MENU WHEN USER CLICKS ELSEWHERE
+===================================================== */
+
+document.addEventListener(
+  "click",
+  function(){
+
+    closeAllMessageMenus();
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   DELETE PRIVATE MESSAGES
+===================================================== */
+
+
+/* =====================================================
+   CONFIRM MESSAGE DELETION
+===================================================== */
+
+function confirmMessageDeletion(
+  messageId,
+  messageData
+){
+
+  if(!currentUser){
+    return;
+  }
+
+
+  if(
+    messageData.senderId !==
+    currentUser.uid
+  ){
+
+    alert(
+      "You can delete only messages that you sent."
+    );
+
+    return;
+
+  }
+
+
+  const confirmed =
+  window.confirm(
+    "Are you sure you want to delete this message?"
+  );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  deletePrivateMessage(
+    messageId
+  );
 
 }
 
-sendBtn.addEventListener("click", async()=>{
 
-const text = messageInput.value.trim();
+/* =====================================================
+   DELETE MESSAGE FROM FIRESTORE
+===================================================== */
 
-if(text==="") return;
+async function deletePrivateMessage(
+  messageId
+){
 
-try{
+  try{
 
-// Save message
-await addDoc(collection(db,"messages"),{
+    const messageReference =
+    doc(
+      db,
+      "messages",
+      messageId
+    );
 
-senderId: currentUser.uid,
-receiverId: otherUid,
-message: text,
-timestamp: serverTimestamp()
 
-});
+    const messageSnapshot =
+    await getDoc(
+      messageReference
+    );
 
-// Update conversation
-const ids = [currentUser.uid,otherUid].sort();
 
-const conversationId = ids[0] + "_" + ids[1];
+    if(!messageSnapshot.exists()){
 
-await setDoc(
-doc(db,"conversations",conversationId),
-{
+      alert(
+        "This message no longer exists."
+      );
 
-participants: ids,
-lastMessage: text,
-lastSender: currentUser.uid,
-timestamp: serverTimestamp()
+      return;
+
+    }
+
+
+    const messageData =
+    messageSnapshot.data();
+
+
+    if(
+      messageData.senderId !==
+      currentUser.uid
+    ){
+
+      alert(
+        "You are not allowed to delete this message."
+      );
+
+      return;
+
+    }
+
+
+    await deleteDoc(
+      messageReference
+    );
+
+
+    await updateConversationAfterDeletion();
+
+
+  }catch(error){
+
+    console.error(
+      "Message deletion error:",
+      error
+    );
+
+
+    alert(
+      "The message could not be deleted. Please try again."
+    );
+
+  }
 
 }
 
+
+/* =====================================================
+   UPDATE CONVERSATION AFTER DELETION
+===================================================== */
+
+async function updateConversationAfterDeletion(){
+
+  try{
+
+    const participantIds =
+    [
+      currentUser.uid,
+      otherUid
+    ].sort();
+
+
+    const conversationId =
+    participantIds[0] +
+    "_" +
+    participantIds[1];
+
+
+    const messagesQuery =
+    query(
+      collection(
+        db,
+        "messages"
+      ),
+      orderBy(
+        "timestamp",
+        "asc"
+      )
+    );
+
+
+    let latestMessage =
+    null;
+
+
+    const temporaryUnsubscribe =
+    onSnapshot(
+      messagesQuery,
+      async(snapshot)=>{
+
+        temporaryUnsubscribe();
+
+
+        snapshot.forEach(
+          (messageDocument)=>{
+
+            const messageData =
+            messageDocument.data();
+
+
+            const belongsToConversation =
+
+            (
+              messageData.senderId ===
+              currentUser.uid
+
+              &&
+
+              messageData.receiverId ===
+              otherUid
+            )
+
+            ||
+
+            (
+              messageData.senderId ===
+              otherUid
+
+              &&
+
+              messageData.receiverId ===
+              currentUser.uid
+            );
+
+
+            if(belongsToConversation){
+
+              latestMessage =
+              messageData;
+
+            }
+
+          }
+        );
+
+
+        const conversationReference =
+        doc(
+          db,
+          "conversations",
+          conversationId
+        );
+
+
+        if(latestMessage){
+
+          await setDoc(
+            conversationReference,
+            {
+              participants:
+              participantIds,
+
+              lastMessage:
+              latestMessage.message ||
+              "Message",
+
+              lastSender:
+              latestMessage.senderId,
+
+              timestamp:
+              latestMessage.timestamp ||
+              serverTimestamp()
+            },
+            {
+              merge:true
+            }
+          );
+
+        }else{
+
+          await setDoc(
+            conversationReference,
+            {
+              participants:
+              participantIds,
+
+              lastMessage:
+              "No messages yet",
+
+              lastSender:
+              "",
+
+              timestamp:
+              serverTimestamp()
+            },
+            {
+              merge:true
+            }
+          );
+
+        }
+
+      },
+      (error)=>{
+
+        console.error(
+          "Conversation update error:",
+          error
+        );
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Conversation refresh error:",
+      error
+    );
+
+  }
+
+}
+/* =====================================================
+   PART 6 OF 6
+   SEND MESSAGES
+===================================================== */
+
+async function sendMessage(){
+
+  if(messageSending){
+    return;
+  }
+
+  const text =
+  messageInput.value.trim();
+
+  if(text===""){
+    return;
+  }
+
+  messageSending = true;
+  sendButton.disabled = true;
+
+  try{
+
+    // Save message
+    await addDoc(
+      collection(db,"messages"),
+      {
+        senderId:currentUser.uid,
+        receiverId:otherUid,
+        message:text,
+        timestamp:serverTimestamp()
+      }
+    );
+
+    // Update conversation
+    const ids =
+    [
+      currentUser.uid,
+      otherUid
+    ].sort();
+
+    const conversationId =
+    ids[0] + "_" + ids[1];
+
+    await setDoc(
+      doc(db,"conversations",conversationId),
+      {
+        participants:ids,
+        lastMessage:text,
+        lastSender:currentUser.uid,
+        timestamp:serverTimestamp()
+      },
+      {
+        merge:true
+      }
+    );
+
+    // Create notification
+    await addDoc(
+      collection(db,"notifications"),
+      {
+        userId:otherUid,
+        senderId:currentUser.uid,
+        title:"New Message",
+        message:text,
+        read:false,
+        timestamp:serverTimestamp()
+      }
+    );
+
+    messageInput.value="";
+
+    messageInput.focus();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Unable to send the message. Please try again."
+    );
+
+  }
+
+  messageSending = false;
+  sendButton.disabled = false;
+
+}
+
+
+/* =====================================================
+   BUTTON CLICK
+===================================================== */
+
+sendButton.addEventListener(
+  "click",
+  sendMessage
 );
 
-// Create notification
-await addDoc(collection(db,"notifications"),{
 
-userId: otherUid,
-senderId: currentUser.uid,
-title: "New Message",
-message: text,
-read: false,
-timestamp: serverTimestamp()
+/* =====================================================
+   PRESS ENTER TO SEND
+===================================================== */
 
-});
+messageInput.addEventListener(
+  "keydown",
+  function(event){
 
-messageInput.value="";
+    if(event.key==="Enter"){
 
-}catch(error){
+      event.preventDefault();
 
-alert(error.message);
+      sendMessage();
 
-}
+    }
 
-});
+  }
+);
+
+
+/* =====================================================
+   CLOSE OPEN MENUS WHEN ESC IS PRESSED
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key==="Escape"){
+
+      closeAllMessageMenus();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP LISTENERS
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    if(unsubscribeMessages){
+
+      unsubscribeMessages();
+
+    }
+
+  }
+);
+
 </script>
 
 </body>
