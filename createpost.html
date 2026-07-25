@@ -1203,8 +1203,13 @@ async function uploadPostMedia(file){
   }
 
 
-  const uploadUrl =
-  `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+  const resourceType =
+file.type.startsWith("video/")
+? "video"
+: "image";
+
+const uploadUrl =
+`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
 
 
   const formData =
