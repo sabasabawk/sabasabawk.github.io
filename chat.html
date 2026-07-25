@@ -15,7 +15,9 @@ name="description"
 content="Private Christian messaging for SABASABA Gospel Ministry"
 >
 
-<title>Private Chat | SABASABA Gospel Ministry</title>
+<title>
+Private Chat | SABASABA Gospel Ministry
+</title>
 
 <style>
 
@@ -41,6 +43,12 @@ background:#eef3f8;
 display:flex;
 flex-direction:column;
 overflow:hidden;
+color:#111111;
+}
+
+button,
+input{
+font-family:inherit;
 }
 
 
@@ -51,18 +59,18 @@ overflow:hidden;
 .chat-header{
 display:flex;
 align-items:center;
-gap:13px;
-padding:14px 16px;
+gap:12px;
+padding:12px 15px;
 background:#0066cc;
 color:#ffffff;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-z-index:10;
+box-shadow:0 2px 8px rgba(0,0,0,.16);
+z-index:20;
 flex-shrink:0;
 }
 
 .back-button{
-width:44px;
-height:44px;
+width:43px;
+height:43px;
 border:none;
 border-radius:50%;
 background:rgba(255,255,255,.18);
@@ -79,14 +87,34 @@ flex-shrink:0;
 background:rgba(255,255,255,.30);
 }
 
+.avatar-wrapper{
+position:relative;
+flex-shrink:0;
+}
+
 .chat-avatar{
-width:58px;
-height:58px;
+width:56px;
+height:56px;
 border-radius:50%;
 object-fit:cover;
 background:#ffffff;
-border:2px solid rgba(255,255,255,.85);
-flex-shrink:0;
+border:2px solid rgba(255,255,255,.88);
+display:block;
+}
+
+.online-dot{
+position:absolute;
+right:1px;
+bottom:2px;
+width:15px;
+height:15px;
+border-radius:50%;
+background:#8b9aaa;
+border:3px solid #0066cc;
+}
+
+.online-dot.online{
+background:#20c66b;
 }
 
 .chat-header-info{
@@ -95,7 +123,7 @@ min-width:0;
 }
 
 .chat-name{
-font-size:21px;
+font-size:20px;
 font-weight:bold;
 white-space:nowrap;
 overflow:hidden;
@@ -106,11 +134,14 @@ text-overflow:ellipsis;
 margin-top:4px;
 font-size:13px;
 color:#dcecff;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 
 /* =====================================================
-   MESSAGE AREA
+   CHAT AREA
 ===================================================== */
 
 .chat-area{
@@ -118,7 +149,7 @@ flex:1;
 overflow-y:auto;
 display:flex;
 flex-direction:column;
-padding:18px 14px 28px;
+padding:16px 12px 25px;
 background:#f5f7fb;
 scroll-behavior:smooth;
 }
@@ -128,8 +159,16 @@ margin:auto;
 padding:30px 20px;
 text-align:center;
 color:#777777;
-font-size:17px;
+font-size:16px;
 line-height:1.6;
+}
+
+.loading-message{
+margin:auto;
+padding:25px;
+text-align:center;
+color:#666666;
+font-size:16px;
 }
 
 
@@ -159,7 +198,7 @@ justify-content:flex-start;
 .message-bubble{
 position:relative;
 max-width:78%;
-padding:12px 15px 8px;
+padding:11px 14px 8px;
 border-radius:17px;
 font-size:16px;
 line-height:1.45;
@@ -186,12 +225,129 @@ padding-right:42px;
 white-space:pre-wrap;
 }
 
-.message-time{
-display:block;
+.message-footer{
+display:flex;
+align-items:center;
+justify-content:flex-end;
+gap:5px;
 margin-top:6px;
+min-height:15px;
+}
+
+.message-time{
 font-size:11px;
 opacity:.72;
-text-align:right;
+white-space:nowrap;
+}
+
+.message-status{
+font-size:12px;
+font-weight:bold;
+line-height:1;
+white-space:nowrap;
+}
+
+.status-sent{
+opacity:.72;
+}
+
+.status-delivered{
+opacity:.85;
+}
+
+.status-read{
+color:#a8e2ff;
+}
+
+
+/* =====================================================
+   PHOTO MESSAGE
+===================================================== */
+
+.message-image{
+display:block;
+width:100%;
+max-width:320px;
+max-height:360px;
+object-fit:cover;
+border-radius:12px;
+cursor:pointer;
+background:#dfe5eb;
+}
+
+.media-caption{
+margin-top:8px;
+white-space:pre-wrap;
+}
+
+
+/* =====================================================
+   VIDEO MESSAGE
+===================================================== */
+
+.message-video-wrapper{
+position:relative;
+width:100%;
+max-width:320px;
+border-radius:12px;
+overflow:hidden;
+background:#000000;
+cursor:pointer;
+}
+
+.message-video{
+display:block;
+width:100%;
+max-height:360px;
+background:#000000;
+}
+
+.video-open-overlay{
+position:absolute;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.12);
+pointer-events:none;
+}
+
+.video-play-icon{
+width:58px;
+height:58px;
+border-radius:50%;
+background:rgba(0,0,0,.62);
+color:#ffffff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+padding-left:4px;
+}
+
+
+/* =====================================================
+   VOICE MESSAGE
+===================================================== */
+
+.voice-message{
+display:flex;
+align-items:center;
+gap:9px;
+min-width:230px;
+max-width:310px;
+}
+
+.voice-message audio{
+width:100%;
+max-width:270px;
+height:42px;
+}
+
+.voice-label{
+font-size:12px;
+opacity:.78;
+margin-top:5px;
 }
 
 
@@ -212,6 +368,7 @@ align-items:center;
 justify-content:center;
 font-size:20px;
 cursor:pointer;
+z-index:5;
 }
 
 .mine .message-menu-button{
@@ -233,12 +390,12 @@ display:none;
 position:absolute;
 top:39px;
 right:6px;
-min-width:180px;
+min-width:185px;
 padding:6px;
 background:#ffffff;
 border-radius:11px;
 box-shadow:0 6px 20px rgba(0,0,0,.22);
-z-index:30;
+z-index:40;
 }
 
 .message-menu.show{
@@ -271,6 +428,129 @@ color:#d93025;
 
 
 /* =====================================================
+   MEDIA PREVIEW AREA
+===================================================== */
+
+.media-preview-area{
+display:none;
+position:relative;
+padding:10px 13px;
+background:#ffffff;
+border-top:1px solid #d9e0e8;
+flex-shrink:0;
+}
+
+.media-preview-area.show{
+display:block;
+}
+
+.preview-content{
+display:flex;
+align-items:center;
+gap:12px;
+padding:9px;
+background:#f3f6f9;
+border-radius:12px;
+}
+
+.preview-image{
+width:85px;
+height:85px;
+border-radius:10px;
+object-fit:cover;
+background:#dde4eb;
+}
+
+.preview-video{
+width:120px;
+height:85px;
+border-radius:10px;
+object-fit:cover;
+background:#000000;
+}
+
+.preview-audio{
+width:100%;
+max-width:300px;
+}
+
+.preview-details{
+flex:1;
+min-width:0;
+}
+
+.preview-type{
+font-size:14px;
+font-weight:bold;
+color:#333333;
+}
+
+.preview-name{
+margin-top:5px;
+font-size:13px;
+color:#6d7782;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.remove-preview-button{
+position:absolute;
+top:5px;
+right:8px;
+width:31px;
+height:31px;
+border:none;
+border-radius:50%;
+background:#d93025;
+color:#ffffff;
+font-size:18px;
+cursor:pointer;
+}
+
+
+/* =====================================================
+   UPLOAD PROGRESS
+===================================================== */
+
+.upload-progress-area{
+display:none;
+padding:8px 13px 10px;
+background:#ffffff;
+border-top:1px solid #e1e6eb;
+flex-shrink:0;
+}
+
+.upload-progress-area.show{
+display:block;
+}
+
+.progress-info{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:13px;
+color:#555555;
+margin-bottom:6px;
+}
+
+.progress-track{
+width:100%;
+height:8px;
+border-radius:8px;
+background:#dfe5eb;
+overflow:hidden;
+}
+
+.progress-bar{
+width:0%;
+height:100%;
+background:#0066cc;
+transition:width .2s ease;
+}
+
+
+/* =====================================================
    MESSAGE INPUT AREA
 ===================================================== */
 
@@ -278,20 +558,60 @@ color:#d93025;
 position:relative;
 display:flex;
 align-items:center;
-gap:9px;
-padding:11px 13px;
+gap:7px;
+padding:10px 11px;
 background:#ffffff;
 border-top:1px solid #d9e0e8;
 box-shadow:0 -2px 8px rgba(0,0,0,.05);
 flex-shrink:0;
 }
 
+.icon-button{
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:#eef3f8;
+font-size:21px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+flex-shrink:0;
+}
+
+.icon-button:hover{
+background:#dde7f1;
+}
+
+.icon-button.recording{
+background:#d93025;
+color:#ffffff;
+animation:pulseRecording 1.1s infinite;
+}
+
+@keyframes pulseRecording{
+
+0%{
+box-shadow:0 0 0 0 rgba(217,48,37,.40);
+}
+
+70%{
+box-shadow:0 0 0 10px rgba(217,48,37,0);
+}
+
+100%{
+box-shadow:0 0 0 0 rgba(217,48,37,0);
+}
+
+}
+
 .message-input{
 flex:1;
 min-width:0;
-padding:13px 17px;
+padding:12px 15px;
 border:1px solid #c7d0da;
-border-radius:25px;
+border-radius:24px;
 font-size:16px;
 outline:none;
 }
@@ -302,12 +622,12 @@ box-shadow:0 0 0 3px rgba(0,102,204,.12);
 }
 
 .send-button{
-padding:12px 21px;
+padding:12px 18px;
 border:none;
-border-radius:25px;
+border-radius:24px;
 background:#0066cc;
 color:#ffffff;
-font-size:16px;
+font-size:15px;
 font-weight:bold;
 cursor:pointer;
 flex-shrink:0;
@@ -324,25 +644,47 @@ cursor:not-allowed;
 
 
 /* =====================================================
-   EMOJI BUTTON
+   ATTACHMENT MENU
 ===================================================== */
 
-.emoji-button{
-width:44px;
-height:44px;
-border:none;
-border-radius:50%;
-background:#eef3f8;
-font-size:23px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-flex-shrink:0;
+.attachment-menu{
+display:none;
+position:absolute;
+left:50px;
+bottom:65px;
+width:190px;
+padding:7px;
+background:#ffffff;
+border:1px solid #d9e0e8;
+border-radius:13px;
+box-shadow:0 8px 24px rgba(0,0,0,.18);
+z-index:55;
 }
 
-.emoji-button:hover{
-background:#dde7f1;
+.attachment-menu.show{
+display:block;
+}
+
+.attachment-option{
+width:100%;
+display:flex;
+align-items:center;
+gap:10px;
+padding:11px 12px;
+border:none;
+border-radius:8px;
+background:#ffffff;
+font-size:15px;
+text-align:left;
+cursor:pointer;
+}
+
+.attachment-option:hover{
+background:#f0f4f8;
+}
+
+.attachment-option-icon{
+font-size:21px;
 }
 
 
@@ -353,18 +695,18 @@ background:#dde7f1;
 .emoji-picker{
 display:none;
 position:absolute;
-left:10px;
-bottom:68px;
-width:270px;
-max-width:calc(100vw - 20px);
-max-height:230px;
+left:8px;
+bottom:65px;
+width:280px;
+max-width:calc(100vw - 16px);
+max-height:235px;
 overflow-y:auto;
 padding:10px;
 background:#ffffff;
 border:1px solid #d9e0e8;
 border-radius:14px;
 box-shadow:0 8px 24px rgba(0,0,0,.18);
-z-index:50;
+z-index:60;
 grid-template-columns:repeat(6,1fr);
 gap:7px;
 }
@@ -388,73 +730,261 @@ background:#e4ebf2;
 
 
 /* =====================================================
+   VOICE RECORDING PANEL
+===================================================== */
+
+.voice-recording-panel{
+display:none;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:10px 13px;
+background:#fff5f4;
+border-top:1px solid #f0c1bd;
+flex-shrink:0;
+}
+
+.voice-recording-panel.show{
+display:flex;
+}
+
+.recording-indicator{
+display:flex;
+align-items:center;
+gap:9px;
+font-size:14px;
+font-weight:bold;
+color:#b3261e;
+}
+
+.recording-dot{
+width:12px;
+height:12px;
+border-radius:50%;
+background:#d93025;
+animation:recordingBlink 1s infinite;
+}
+
+@keyframes recordingBlink{
+
+0%,
+100%{
+opacity:1;
+}
+
+50%{
+opacity:.25;
+}
+
+}
+
+.recording-time{
+font-variant-numeric:tabular-nums;
+}
+
+.recording-actions{
+display:flex;
+gap:8px;
+}
+
+.recording-action-button{
+padding:9px 14px;
+border:none;
+border-radius:20px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.cancel-recording-button{
+background:#e6e9ed;
+color:#333333;
+}
+
+.stop-recording-button{
+background:#d93025;
+color:#ffffff;
+}
+
+
+/* =====================================================
+   FULL-SCREEN MEDIA VIEWER
+===================================================== */
+
+.media-viewer{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.94);
+z-index:9999;
+align-items:center;
+justify-content:center;
+padding:60px 15px 20px;
+}
+
+.media-viewer.show{
+display:flex;
+}
+
+.viewer-close-button{
+position:absolute;
+top:15px;
+right:16px;
+width:44px;
+height:44px;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,.16);
+color:#ffffff;
+font-size:28px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+z-index:3;
+}
+
+.viewer-close-button:hover{
+background:rgba(255,255,255,.28);
+}
+
+.viewer-image{
+display:none;
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+border-radius:5px;
+}
+
+.viewer-video{
+display:none;
+width:min(100%,900px);
+max-height:100%;
+background:#000000;
+}
+
+
+/* =====================================================
+   HIDDEN FILE INPUTS
+===================================================== */
+
+.hidden-file-input{
+display:none;
+}
+
+
+/* =====================================================
    MOBILE DESIGN
 ===================================================== */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
 .chat-header{
-padding:12px;
-gap:10px;
+padding:11px 12px;
+gap:9px;
 }
 
 .back-button{
-width:42px;
-height:42px;
+width:41px;
+height:41px;
 }
 
 .chat-avatar{
-width:54px;
-height:54px;
+width:52px;
+height:52px;
 }
 
 .chat-name{
-font-size:19px;
+font-size:18px;
+}
+
+.chat-status{
+font-size:12px;
 }
 
 .chat-area{
-padding:16px 10px 24px;
+padding:14px 9px 22px;
 }
 
 .message-bubble{
-max-width:84%;
-font-size:16px;
+max-width:86%;
+font-size:15px;
+}
+
+.message-image,
+.message-video-wrapper{
+max-width:270px;
+}
+
+.voice-message{
+min-width:210px;
 }
 
 .input-area{
-padding:10px;
-gap:7px;
+padding:9px 8px;
+gap:5px;
 }
 
-.emoji-button{
-width:42px;
-height:42px;
-}
-
-.send-button{
-padding:12px 17px;
-}
-
-.emoji-picker{
-left:8px;
-bottom:65px;
-}
-
-}
-
-@media(max-width:380px){
-
-.send-button{
-padding:12px 13px;
+.icon-button{
+width:39px;
+height:39px;
+font-size:19px;
 }
 
 .message-input{
-padding:12px 13px;
+padding:11px 13px;
+font-size:15px;
 }
 
-.emoji-button{
-width:40px;
-height:40px;
+.send-button{
+padding:11px 14px;
+font-size:14px;
+}
+
+.emoji-picker{
+left:6px;
+bottom:61px;
+}
+
+.attachment-menu{
+left:44px;
+bottom:61px;
+}
+
+.media-viewer{
+padding:58px 8px 15px;
+}
+
+}
+
+
+@media(max-width:390px){
+
+.chat-avatar{
+width:48px;
+height:48px;
+}
+
+.chat-name{
+font-size:17px;
+}
+
+.icon-button{
+width:37px;
+height:37px;
+}
+
+.send-button{
+padding:10px 11px;
+}
+
+.message-input{
+padding:10px 11px;
+}
+
+.message-image,
+.message-video-wrapper{
+max-width:235px;
 }
 
 }
@@ -479,12 +1009,21 @@ aria-label="Back"
 ←
 </button>
 
+<div class="avatar-wrapper">
+
 <img
 id="chatAvatar"
 class="chat-avatar"
 src="images/profile.png"
-alt="Profile Picture"
+alt="Member profile picture"
 >
+
+<span
+id="onlineDot"
+class="online-dot"
+></span>
+
+</div>
 
 <div class="chat-header-info">
 
@@ -499,7 +1038,7 @@ Loading...
 id="chatStatus"
 class="chat-status"
 >
-Private Christian conversation
+Checking status...
 </div>
 
 </div>
@@ -516,11 +1055,9 @@ id="chatArea"
 class="chat-area"
 >
 
-<div class="empty-message">
+<div class="loading-message">
 
-No messages yet.<br>
-
-Start your Christian conversation.
+Loading conversation...
 
 </div>
 
@@ -528,19 +1065,148 @@ Start your Christian conversation.
 
 
 <!-- =====================================================
-     MESSAGE INPUT
+     MEDIA PREVIEW
+===================================================== -->
+
+<section
+id="mediaPreviewArea"
+class="media-preview-area"
+>
+
+<button
+id="removePreviewButton"
+class="remove-preview-button"
+type="button"
+aria-label="Remove selected media"
+>
+×
+</button>
+
+<div
+id="previewContent"
+class="preview-content"
+></div>
+
+</section>
+
+
+<!-- =====================================================
+     UPLOAD PROGRESS
+===================================================== -->
+
+<section
+id="uploadProgressArea"
+class="upload-progress-area"
+>
+
+<div class="progress-info">
+
+<span id="uploadProgressText">
+Uploading media...
+</span>
+
+<span id="uploadProgressPercent">
+0%
+</span>
+
+</div>
+
+<div class="progress-track">
+
+<div
+id="progressBar"
+class="progress-bar"
+></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     VOICE RECORDING PANEL
+===================================================== -->
+
+<section
+id="voiceRecordingPanel"
+class="voice-recording-panel"
+>
+
+<div class="recording-indicator">
+
+<span class="recording-dot"></span>
+
+<span>
+Recording:
+</span>
+
+<span
+id="recordingTime"
+class="recording-time"
+>
+00:00
+</span>
+
+</div>
+
+<div class="recording-actions">
+
+<button
+id="cancelRecordingButton"
+class="recording-action-button cancel-recording-button"
+type="button"
+>
+Cancel
+</button>
+
+<button
+id="stopRecordingButton"
+class="recording-action-button stop-recording-button"
+type="button"
+>
+Stop
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     MESSAGE INPUT AREA
 ===================================================== -->
 
 <footer class="input-area">
 
 <button
 id="emojiButton"
-class="emoji-button"
+class="icon-button"
 type="button"
-aria-label="Emoji"
+aria-label="Open emoji picker"
 >
 😊
 </button>
+
+<button
+id="attachmentButton"
+class="icon-button"
+type="button"
+aria-label="Attach photo or video"
+>
+📎
+</button>
+
+<button
+id="voiceButton"
+class="icon-button"
+type="button"
+aria-label="Record voice message"
+>
+🎤
+</button>
+
+
+<!-- EMOJI PICKER -->
 
 <div
 id="emojiPicker"
@@ -575,7 +1241,59 @@ class="emoji-picker"
 <button type="button">🌍</button>
 <button type="button">🌞</button>
 
+<button type="button">😢</button>
+<button type="button">😭</button>
+<button type="button">😔</button>
+<button type="button">🤗</button>
+<button type="button">💖</button>
+<button type="button">✨</button>
+
 </div>
+
+
+<!-- ATTACHMENT MENU -->
+
+<div
+id="attachmentMenu"
+class="attachment-menu"
+>
+
+<button
+id="selectImageButton"
+class="attachment-option"
+type="button"
+>
+
+<span class="attachment-option-icon">
+📷
+</span>
+
+<span>
+Select picture
+</span>
+
+</button>
+
+<button
+id="selectVideoButton"
+class="attachment-option"
+type="button"
+>
+
+<span class="attachment-option-icon">
+🎥
+</span>
+
+<span>
+Select video
+</span>
+
+</button>
+
+</div>
+
+
+<!-- MESSAGE TEXT -->
 
 <input
 id="messageInput"
@@ -584,7 +1302,11 @@ type="text"
 maxlength="2000"
 placeholder="Type your message..."
 autocomplete="off"
+aria-label="Type your message"
 >
+
+
+<!-- SEND BUTTON -->
 
 <button
 id="sendButton"
@@ -596,29 +1318,98 @@ Send
 
 </footer>
 
+
+<!-- =====================================================
+     HIDDEN FILE INPUTS
+===================================================== -->
+
+<input
+id="imageInput"
+class="hidden-file-input"
+type="file"
+accept="image/*"
+>
+
+<input
+id="videoInput"
+class="hidden-file-input"
+type="file"
+accept="video/*"
+>
+
+
+<!-- =====================================================
+     FULL-SCREEN MEDIA VIEWER
+===================================================== -->
+
+<div
+id="mediaViewer"
+class="media-viewer"
+role="dialog"
+aria-modal="true"
+aria-label="Full-screen media viewer"
+>
+
+<button
+id="viewerCloseButton"
+class="viewer-close-button"
+type="button"
+aria-label="Close media viewer"
+>
+×
+</button>
+
+<img
+id="viewerImage"
+class="viewer-image"
+alt="Full-screen shared picture"
+>
+
+<video
+id="viewerVideo"
+class="viewer-video"
+controls
+playsinline
+></video>
+
+</div>
+
+
 <script type="module">
 /* =====================================================
-   PART 3 OF 6
-   FIREBASE SETUP
+   FIREBASE IMPORTS
 ===================================================== */
 
 import {
-  auth,
-  db,
-  collection,
-  doc,
-  getDoc,
-  addDoc,
-  setDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  arrayUnion,
-  onAuthStateChanged
-} from "./firebase.js";
+auth,
+db,
+collection,
+doc,
+getDoc,
+addDoc,
+setDoc,
+updateDoc,
+deleteDoc,
+query,
+orderBy,
+onSnapshot,
+serverTimestamp,
+arrayUnion,
+onAuthStateChanged
+}
+from "./firebase.js";
+
+
+/* =====================================================
+   CLOUDINARY SETTINGS
+===================================================== */
+
+const CLOUDINARY_CLOUD_NAME = "glq2nymz";
+
+const CLOUDINARY_UPLOAD_PRESET = "sabasaba_community";
+
+const CLOUDINARY_UPLOAD_URL =
+`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
 
 
 /* =====================================================
@@ -631,6 +1422,9 @@ document.getElementById("backButton");
 const chatAvatar =
 document.getElementById("chatAvatar");
 
+const onlineDot =
+document.getElementById("onlineDot");
+
 const chatName =
 document.getElementById("chatName");
 
@@ -639,6 +1433,11 @@ document.getElementById("chatStatus");
 
 const chatArea =
 document.getElementById("chatArea");
+
+
+/* =====================================================
+   MESSAGE INPUT ELEMENTS
+===================================================== */
 
 const messageInput =
 document.getElementById("messageInput");
@@ -652,173 +1451,222 @@ document.getElementById("emojiButton");
 const emojiPicker =
 document.getElementById("emojiPicker");
 
+const attachmentButton =
+document.getElementById("attachmentButton");
+
+const attachmentMenu =
+document.getElementById("attachmentMenu");
+
+const voiceButton =
+document.getElementById("voiceButton");
+
 
 /* =====================================================
-   CHAT VARIABLES
+   IMAGE AND VIDEO ELEMENTS
 ===================================================== */
 
-const urlParameters =
-new URLSearchParams(
-window.location.search
-);
+const selectImageButton =
+document.getElementById("selectImageButton");
 
-const otherUid =
-urlParameters.get("uid");
+const selectVideoButton =
+document.getElementById("selectVideoButton");
+
+const imageInput =
+document.getElementById("imageInput");
+
+const videoInput =
+document.getElementById("videoInput");
+
+const mediaPreviewArea =
+document.getElementById("mediaPreviewArea");
+
+const previewContent =
+document.getElementById("previewContent");
+
+const removePreviewButton =
+document.getElementById("removePreviewButton");
+
+
+/* =====================================================
+   UPLOAD PROGRESS ELEMENTS
+===================================================== */
+
+const uploadProgressArea =
+document.getElementById("uploadProgressArea");
+
+const uploadProgressText =
+document.getElementById("uploadProgressText");
+
+const uploadProgressPercent =
+document.getElementById("uploadProgressPercent");
+
+const progressBar =
+document.getElementById("progressBar");
+
+
+/* =====================================================
+   VOICE RECORDING ELEMENTS
+===================================================== */
+
+const voiceRecordingPanel =
+document.getElementById("voiceRecordingPanel");
+
+const recordingTime =
+document.getElementById("recordingTime");
+
+const cancelRecordingButton =
+document.getElementById("cancelRecordingButton");
+
+const stopRecordingButton =
+document.getElementById("stopRecordingButton");
+
+
+/* =====================================================
+   FULL-SCREEN VIEWER ELEMENTS
+===================================================== */
+
+const mediaViewer =
+document.getElementById("mediaViewer");
+
+const viewerCloseButton =
+document.getElementById("viewerCloseButton");
+
+const viewerImage =
+document.getElementById("viewerImage");
+
+const viewerVideo =
+document.getElementById("viewerVideo");
+
+
+/* =====================================================
+   CURRENT USER AND CHAT VARIABLES
+===================================================== */
 
 let currentUser = null;
 
+let currentProfile = null;
+
+let otherUid = null;
+
+let otherProfile = null;
+
+let conversationId = null;
+
 let unsubscribeMessages = null;
+
+let unsubscribeOtherUser = null;
 
 let sendingMessage = false;
 
 
 /* =====================================================
-   CHECK CHAT MEMBER ID
+   SELECTED MEDIA VARIABLES
 ===================================================== */
 
-if(!otherUid){
+let selectedMediaFile = null;
 
-alert(
-"Chat member was not found."
-);
+let selectedMediaType = "none";
 
-window.location.href =
-"privatemessages.html";
+let selectedMediaPreviewUrl = "";
 
-}
+let uploadedMediaUrl = "";
+
+let uploadedMediaPublicId = "";
+
+
+/* =====================================================
+   VOICE RECORDING VARIABLES
+===================================================== */
+
+let mediaRecorder = null;
+
+let recordingStream = null;
+
+let recordedAudioChunks = [];
+
+let recordedAudioBlob = null;
+
+let recordedAudioFile = null;
+
+let recordingTimerInterval = null;
+
+let recordingSeconds = 0;
+
+let isRecording = false;
+
+
+/* =====================================================
+   URL PARAMETER
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(window.location.search);
+
+otherUid =
+urlParameters.get("uid") ||
+urlParameters.get("userId") ||
+urlParameters.get("member") ||
+urlParameters.get("id");
+
+
+/* =====================================================
+   DEFAULT PROFILE PICTURE
+===================================================== */
+
+const DEFAULT_PROFILE_PICTURE =
+"images/profile.png";
 
 
 /* =====================================================
    BACK BUTTON
 ===================================================== */
 
-backButton.addEventListener(
-"click",
-function(){
+backButton.addEventListener("click", () => {
 
-window.location.href =
-"privatemessages.html";
+if(
+document.referrer &&
+document.referrer !== window.location.href
+){
 
-}
-);
-
-
-/* =====================================================
-   LOAD OTHER MEMBER PROFILE
-===================================================== */
-
-async function loadMemberProfile(){
-
-try{
-
-const memberReference =
-doc(
-db,
-"users",
-otherUid
-);
-
-const memberSnapshot =
-await getDoc(
-memberReference
-);
-
-if(!memberSnapshot.exists()){
-
-chatName.textContent =
-"Unknown Member";
-
-chatStatus.textContent =
-"Profile unavailable";
-
-chatAvatar.src =
-"images/profile.png";
+window.history.back();
 
 return;
 
 }
 
-const memberData =
-memberSnapshot.data();
+window.location.href = "members.html";
 
-chatName.textContent =
-memberData.fullName ||
-memberData.name ||
-memberData.displayName ||
-"Community Member";
+});
 
-chatAvatar.src =
-memberData.profilePicture ||
-memberData.profileImage ||
-memberData.picture ||
-memberData.photoURL ||
-"images/profile.png";
 
-chatAvatar.onerror =
-function(){
+/* =====================================================
+   CREATE SAFE CONVERSATION ID
+===================================================== */
 
-chatAvatar.onerror = null;
+function createConversationId(firstUid, secondUid){
 
-chatAvatar.src =
-"images/profile.png";
-
-};
-
-chatStatus.textContent =
-memberData.country
-? `Christian member from ${memberData.country}`
-: "Private Christian conversation";
-
-}catch(error){
-
-console.error(
-"Member profile loading error:",
-error
-);
-
-chatName.textContent =
-"Community Member";
-
-chatStatus.textContent =
-"Private Christian conversation";
-
-chatAvatar.src =
-"images/profile.png";
-
-}
+return [firstUid, secondUid]
+.sort()
+.join("_");
 
 }
 
 
 /* =====================================================
-   AUTHENTICATION
+   ESCAPE HTML
 ===================================================== */
 
-onAuthStateChanged(
-auth,
-async function(user){
+function escapeHtml(value){
 
-if(!user){
+const temporaryElement =
+document.createElement("div");
 
-window.location.href =
-"login.html";
+temporaryElement.textContent =
+value ?? "";
 
-return;
-
-}
-
-currentUser = user;
-
-await loadMemberProfile();
-
-loadMessages();
+return temporaryElement.innerHTML;
 
 }
-);
-/* =====================================================
-   PART 4 OF 6
-   MESSAGE DISPLAY
-===================================================== */
 
 
 /* =====================================================
@@ -828,13 +1676,34 @@ loadMessages();
 function formatMessageTime(timestamp){
 
 if(!timestamp){
-return "Sending...";
+
+return "";
+
 }
 
-const messageDate =
-timestamp.toDate
-? timestamp.toDate()
-: new Date(timestamp);
+let messageDate;
+
+if(typeof timestamp.toDate === "function"){
+
+messageDate =
+timestamp.toDate();
+
+}else{
+
+messageDate =
+new Date(timestamp);
+
+}
+
+if(
+Number.isNaN(
+messageDate.getTime()
+)
+){
+
+return "";
+
+}
 
 return messageDate.toLocaleTimeString(
 [],
@@ -848,14 +1717,167 @@ minute:"2-digit"
 
 
 /* =====================================================
-   CLOSE ALL MESSAGE MENUS
+   FORMAT LAST SEEN
+===================================================== */
+
+function formatLastSeen(timestamp){
+
+if(!timestamp){
+
+return "Offline";
+
+}
+
+let lastSeenDate;
+
+if(typeof timestamp.toDate === "function"){
+
+lastSeenDate =
+timestamp.toDate();
+
+}else{
+
+lastSeenDate =
+new Date(timestamp);
+
+}
+
+if(
+Number.isNaN(
+lastSeenDate.getTime()
+)
+){
+
+return "Offline";
+
+}
+
+const now =
+new Date();
+
+const differenceMilliseconds =
+now.getTime() -
+lastSeenDate.getTime();
+
+const differenceMinutes =
+Math.floor(
+differenceMilliseconds / 60000
+);
+
+if(differenceMinutes < 1){
+
+return "Last seen just now";
+
+}
+
+if(differenceMinutes < 60){
+
+return `Last seen ${differenceMinutes} minute${
+differenceMinutes === 1 ? "" : "s"
+} ago`;
+
+}
+
+const differenceHours =
+Math.floor(
+differenceMinutes / 60
+);
+
+if(differenceHours < 24){
+
+return `Last seen ${differenceHours} hour${
+differenceHours === 1 ? "" : "s"
+} ago`;
+
+}
+
+const today =
+new Date(
+now.getFullYear(),
+now.getMonth(),
+now.getDate()
+);
+
+const lastSeenDay =
+new Date(
+lastSeenDate.getFullYear(),
+lastSeenDate.getMonth(),
+lastSeenDate.getDate()
+);
+
+const differenceDays =
+Math.floor(
+(today - lastSeenDay) /
+86400000
+);
+
+if(differenceDays === 1){
+
+return `Last seen yesterday at ${
+lastSeenDate.toLocaleTimeString(
+[],
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+)
+}`;
+
+}
+
+return `Last seen ${
+lastSeenDate.toLocaleDateString(
+[],
+{
+day:"numeric",
+month:"short",
+year:
+lastSeenDate.getFullYear() !==
+now.getFullYear()
+?
+"numeric"
+:
+undefined
+}
+)
+} at ${
+lastSeenDate.toLocaleTimeString(
+[],
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+)
+}`;
+
+}
+
+
+/* =====================================================
+   SCROLL TO LATEST MESSAGE
+===================================================== */
+
+function scrollToLatestMessage(){
+
+requestAnimationFrame(() => {
+
+chatArea.scrollTop =
+chatArea.scrollHeight;
+
+});
+
+}
+
+
+/* =====================================================
+   CLOSE MESSAGE MENUS
 ===================================================== */
 
 function closeAllMessageMenus(){
 
 document
 .querySelectorAll(".message-menu.show")
-.forEach(function(menu){
+.forEach((menu) => {
 
 menu.classList.remove("show");
 
@@ -865,203 +1887,2584 @@ menu.classList.remove("show");
 
 
 /* =====================================================
-   CREATE ONE MESSAGE ELEMENT
+   CLOSE EMOJI AND ATTACHMENT MENUS
+===================================================== */
+
+function closeInputMenus(){
+
+emojiPicker.classList.remove("show");
+
+attachmentMenu.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   RESET UPLOAD PROGRESS
+===================================================== */
+
+function resetUploadProgress(){
+
+uploadProgressArea.classList.remove("show");
+
+uploadProgressText.textContent =
+"Uploading media...";
+
+uploadProgressPercent.textContent =
+"0%";
+
+progressBar.style.width =
+"0%";
+
+}
+
+
+/* =====================================================
+   UPDATE UPLOAD PROGRESS
+===================================================== */
+
+function updateUploadProgress(percent, message){
+
+const safePercent =
+Math.max(
+0,
+Math.min(
+100,
+Math.round(percent)
+)
+);
+
+uploadProgressArea.classList.add("show");
+
+uploadProgressText.textContent =
+message || "Uploading media...";
+
+uploadProgressPercent.textContent =
+`${safePercent}%`;
+
+progressBar.style.width =
+`${safePercent}%`;
+
+}
+
+
+/* =====================================================
+   RESET FULL-SCREEN VIEWER
+===================================================== */
+
+function resetMediaViewer(){
+
+viewerVideo.pause();
+
+viewerVideo.removeAttribute("src");
+
+viewerVideo.load();
+
+viewerImage.removeAttribute("src");
+
+viewerImage.style.display =
+"none";
+
+viewerVideo.style.display =
+"none";
+
+mediaViewer.classList.remove("show");
+
+}
+
+
+/* =====================================================
+   OPEN PICTURE FULL SCREEN
+===================================================== */
+
+function openImageViewer(imageUrl){
+
+if(!imageUrl){
+
+return;
+
+}
+
+viewerVideo.pause();
+
+viewerVideo.style.display =
+"none";
+
+viewerImage.src =
+imageUrl;
+
+viewerImage.style.display =
+"block";
+
+mediaViewer.classList.add("show");
+
+}
+
+
+/* =====================================================
+   OPEN VIDEO FULL SCREEN
+===================================================== */
+
+function openVideoViewer(videoUrl){
+
+if(!videoUrl){
+
+return;
+
+}
+
+viewerImage.style.display =
+"none";
+
+viewerVideo.src =
+videoUrl;
+
+viewerVideo.style.display =
+"block";
+
+mediaViewer.classList.add("show");
+
+viewerVideo.play().catch(() => {
+
+});
+
+}
+
+
+/* =====================================================
+   CLOSE FULL-SCREEN VIEWER
+===================================================== */
+
+viewerCloseButton.addEventListener(
+"click",
+resetMediaViewer
+);
+
+mediaViewer.addEventListener(
+"click",
+(event) => {
+
+if(event.target === mediaViewer){
+
+resetMediaViewer();
+
+}
+
+}
+);
+
+document.addEventListener(
+"keydown",
+(event) => {
+
+if(
+event.key === "Escape" &&
+mediaViewer.classList.contains("show")
+){
+
+resetMediaViewer();
+
+}
+
+}
+);
+/* =====================================================
+   LOAD CURRENT USER PROFILE
+===================================================== */
+
+async function loadCurrentUserProfile(){
+
+if(!currentUser){
+
+return;
+
+}
+
+try{
+
+const userReference =
+doc(
+db,
+"users",
+currentUser.uid
+);
+
+const userSnapshot =
+await getDoc(userReference);
+
+if(userSnapshot.exists()){
+
+currentProfile = {
+id:userSnapshot.id,
+...userSnapshot.data()
+};
+
+}else{
+
+currentProfile = {
+id:currentUser.uid,
+name:
+currentUser.displayName ||
+currentUser.email ||
+"Member",
+profilePicture:
+currentUser.photoURL ||
+DEFAULT_PROFILE_PICTURE
+};
+
+}
+
+}catch(error){
+
+console.error(
+"Unable to load current profile:",
+error
+);
+
+currentProfile = {
+id:currentUser.uid,
+name:
+currentUser.displayName ||
+currentUser.email ||
+"Member",
+profilePicture:
+currentUser.photoURL ||
+DEFAULT_PROFILE_PICTURE
+};
+
+}
+
+}
+
+
+/* =====================================================
+   LOAD OTHER MEMBER PROFILE
+===================================================== */
+
+async function loadOtherMemberProfile(){
+
+if(!otherUid){
+
+chatName.textContent =
+"Member not found";
+
+chatStatus.textContent =
+"Invalid chat link";
+
+return;
+
+}
+
+try{
+
+const memberReference =
+doc(
+db,
+"users",
+otherUid
+);
+
+const memberSnapshot =
+await getDoc(memberReference);
+
+if(!memberSnapshot.exists()){
+
+chatName.textContent =
+"Unknown member";
+
+chatStatus.textContent =
+"Profile unavailable";
+
+chatAvatar.src =
+DEFAULT_PROFILE_PICTURE;
+
+return;
+
+}
+
+otherProfile = {
+id:memberSnapshot.id,
+...memberSnapshot.data()
+};
+
+const memberName =
+otherProfile.name ||
+otherProfile.fullName ||
+otherProfile.displayName ||
+otherProfile.username ||
+"Member";
+
+const memberPicture =
+otherProfile.profilePicture ||
+otherProfile.picture ||
+otherProfile.photoURL ||
+otherProfile.imageUrl ||
+DEFAULT_PROFILE_PICTURE;
+
+chatName.textContent =
+memberName;
+
+chatAvatar.src =
+memberPicture;
+
+chatAvatar.onerror = () => {
+
+chatAvatar.src =
+DEFAULT_PROFILE_PICTURE;
+
+};
+
+updateOtherMemberStatus(
+otherProfile
+);
+
+}catch(error){
+
+console.error(
+"Unable to load member profile:",
+error
+);
+
+chatName.textContent =
+"Member";
+
+chatStatus.textContent =
+"Unable to load profile";
+
+chatAvatar.src =
+DEFAULT_PROFILE_PICTURE;
+
+}
+
+}
+
+
+/* =====================================================
+   UPDATE OTHER MEMBER STATUS
+===================================================== */
+
+function updateOtherMemberStatus(profileData){
+
+const isOnline =
+profileData?.online === true;
+
+if(isOnline){
+
+onlineDot.classList.add("online");
+
+chatStatus.textContent =
+"Online";
+
+return;
+
+}
+
+onlineDot.classList.remove("online");
+
+chatStatus.textContent =
+formatLastSeen(
+profileData?.lastSeen
+);
+
+}
+
+
+/* =====================================================
+   WATCH OTHER MEMBER ONLINE STATUS
+===================================================== */
+
+function watchOtherMemberStatus(){
+
+if(!otherUid){
+
+return;
+
+}
+
+if(unsubscribeOtherUser){
+
+unsubscribeOtherUser();
+
+unsubscribeOtherUser = null;
+
+}
+
+const memberReference =
+doc(
+db,
+"users",
+otherUid
+);
+
+unsubscribeOtherUser =
+onSnapshot(
+memberReference,
+(memberSnapshot) => {
+
+if(!memberSnapshot.exists()){
+
+return;
+
+}
+
+otherProfile = {
+id:memberSnapshot.id,
+...memberSnapshot.data()
+};
+
+const updatedName =
+otherProfile.name ||
+otherProfile.fullName ||
+otherProfile.displayName ||
+otherProfile.username ||
+"Member";
+
+const updatedPicture =
+otherProfile.profilePicture ||
+otherProfile.picture ||
+otherProfile.photoURL ||
+otherProfile.imageUrl ||
+DEFAULT_PROFILE_PICTURE;
+
+chatName.textContent =
+updatedName;
+
+chatAvatar.src =
+updatedPicture;
+
+updateOtherMemberStatus(
+otherProfile
+);
+
+},
+(error) => {
+
+console.error(
+"Unable to watch member status:",
+error
+);
+
+}
+);
+
+}
+
+
+/* =====================================================
+   SET CURRENT USER ONLINE
+===================================================== */
+
+async function setCurrentUserOnline(){
+
+if(!currentUser){
+
+return;
+
+}
+
+try{
+
+await setDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+online:true,
+lastSeen:serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+}catch(error){
+
+console.error(
+"Unable to set online status:",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   SET CURRENT USER OFFLINE
+===================================================== */
+
+async function setCurrentUserOffline(){
+
+if(!currentUser){
+
+return;
+
+}
+
+try{
+
+await setDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+online:false,
+lastSeen:serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+}catch(error){
+
+console.error(
+"Unable to set offline status:",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   PAGE VISIBILITY STATUS
+===================================================== */
+
+document.addEventListener(
+"visibilitychange",
+async () => {
+
+if(!currentUser){
+
+return;
+
+}
+
+if(document.visibilityState === "visible"){
+
+await setCurrentUserOnline();
+
+}else{
+
+await setCurrentUserOffline();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   PAGE EXIT STATUS
+===================================================== */
+
+window.addEventListener(
+"beforeunload",
+() => {
+
+if(!currentUser){
+
+return;
+
+}
+
+setDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+online:false,
+lastSeen:serverTimestamp()
+},
+{
+merge:true
+}
+).catch(() => {
+
+});
+
+}
+);
+
+
+/* =====================================================
+   AUTHENTICATION OBSERVER
+===================================================== */
+
+onAuthStateChanged(
+auth,
+async (user) => {
+
+if(!user){
+
+window.location.href =
+"login.html";
+
+return;
+
+}
+
+currentUser =
+user;
+
+if(!otherUid){
+
+chatArea.innerHTML = `
+
+<div class="empty-message">
+
+Unable to open this conversation.<br>
+
+The member identification is missing.
+
+</div>
+
+`;
+
+chatName.textContent =
+"Member not found";
+
+chatStatus.textContent =
+"Invalid chat link";
+
+sendButton.disabled =
+true;
+
+return;
+
+}
+
+if(otherUid === currentUser.uid){
+
+chatArea.innerHTML = `
+
+<div class="empty-message">
+
+You cannot open a private conversation with yourself.
+
+</div>
+
+`;
+
+chatName.textContent =
+"Your profile";
+
+chatStatus.textContent =
+"Private chat unavailable";
+
+sendButton.disabled =
+true;
+
+return;
+
+}
+
+conversationId =
+createConversationId(
+currentUser.uid,
+otherUid
+);
+
+await loadCurrentUserProfile();
+
+await loadOtherMemberProfile();
+
+await setCurrentUserOnline();
+
+watchOtherMemberStatus();
+
+loadMessages();
+
+}
+);
+
+
+/* =====================================================
+   CREATE MEDIA PREVIEW URL
+===================================================== */
+
+function createPreviewUrl(file){
+
+if(!file){
+
+return "";
+
+}
+
+return URL.createObjectURL(file);
+
+}
+
+
+/* =====================================================
+   RELEASE OLD PREVIEW URL
+===================================================== */
+
+function releasePreviewUrl(){
+
+if(selectedMediaPreviewUrl){
+
+URL.revokeObjectURL(
+selectedMediaPreviewUrl
+);
+
+selectedMediaPreviewUrl =
+"";
+
+}
+
+}
+
+
+/* =====================================================
+   CLEAR SELECTED MEDIA
+===================================================== */
+
+function clearSelectedMedia(){
+
+releasePreviewUrl();
+
+selectedMediaFile =
+null;
+
+selectedMediaType =
+"none";
+
+uploadedMediaUrl =
+"";
+
+uploadedMediaPublicId =
+"";
+
+recordedAudioBlob =
+null;
+
+recordedAudioFile =
+null;
+
+imageInput.value =
+"";
+
+videoInput.value =
+"";
+
+previewContent.innerHTML =
+"";
+
+mediaPreviewArea.classList.remove(
+"show"
+);
+
+resetUploadProgress();
+
+}
+
+
+/* =====================================================
+   SHOW IMAGE PREVIEW
+===================================================== */
+
+function showImagePreview(file){
+
+clearSelectedMedia();
+
+selectedMediaFile =
+file;
+
+selectedMediaType =
+"image";
+
+selectedMediaPreviewUrl =
+createPreviewUrl(file);
+
+previewContent.innerHTML = `
+
+<img
+class="preview-image"
+src="${selectedMediaPreviewUrl}"
+alt="Selected picture preview"
+>
+
+<div class="preview-details">
+
+<div class="preview-type">
+Picture selected
+</div>
+
+<div class="preview-name">
+${escapeHtml(file.name)}
+</div>
+
+</div>
+
+`;
+
+mediaPreviewArea.classList.add(
+"show"
+);
+
+}
+
+
+/* =====================================================
+   SHOW VIDEO PREVIEW
+===================================================== */
+
+function showVideoPreview(file){
+
+clearSelectedMedia();
+
+selectedMediaFile =
+file;
+
+selectedMediaType =
+"video";
+
+selectedMediaPreviewUrl =
+createPreviewUrl(file);
+
+previewContent.innerHTML = `
+
+<video
+class="preview-video"
+src="${selectedMediaPreviewUrl}"
+muted
+playsinline
+></video>
+
+<div class="preview-details">
+
+<div class="preview-type">
+Video selected
+</div>
+
+<div class="preview-name">
+${escapeHtml(file.name)}
+</div>
+
+</div>
+
+`;
+
+mediaPreviewArea.classList.add(
+"show"
+);
+
+}
+
+
+/* =====================================================
+   SHOW AUDIO PREVIEW
+===================================================== */
+
+function showAudioPreview(file){
+
+clearSelectedMedia();
+
+selectedMediaFile =
+file;
+
+selectedMediaType =
+"audio";
+
+selectedMediaPreviewUrl =
+createPreviewUrl(file);
+
+previewContent.innerHTML = `
+
+<audio
+class="preview-audio"
+src="${selectedMediaPreviewUrl}"
+controls
+></audio>
+
+<div class="preview-details">
+
+<div class="preview-type">
+Voice message ready
+</div>
+
+<div class="preview-name">
+Tap Send to share it
+</div>
+
+</div>
+
+`;
+
+mediaPreviewArea.classList.add(
+"show"
+);
+
+}
+
+
+/* =====================================================
+   IMAGE FILE VALIDATION
+===================================================== */
+
+function validateImageFile(file){
+
+if(!file){
+
+return false;
+
+}
+
+if(!file.type.startsWith("image/")){
+
+alert(
+"Please select a valid picture."
+);
+
+return false;
+
+}
+
+const maximumImageSize =
+12 * 1024 * 1024;
+
+if(file.size > maximumImageSize){
+
+alert(
+"The picture is too large. Please select a picture smaller than 12 MB."
+);
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+/* =====================================================
+   VIDEO FILE VALIDATION
+===================================================== */
+
+function validateVideoFile(file){
+
+if(!file){
+
+return false;
+
+}
+
+if(!file.type.startsWith("video/")){
+
+alert(
+"Please select a valid video."
+);
+
+return false;
+
+}
+
+const maximumVideoSize =
+100 * 1024 * 1024;
+
+if(file.size > maximumVideoSize){
+
+alert(
+"The video is too large. Please select a video smaller than 100 MB."
+);
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+/* =====================================================
+   OPEN ATTACHMENT MENU
+===================================================== */
+
+attachmentButton.addEventListener(
+"click",
+(event) => {
+
+event.stopPropagation();
+
+emojiPicker.classList.remove(
+"show"
+);
+
+attachmentMenu.classList.toggle(
+"show"
+);
+
+}
+);
+
+
+/* =====================================================
+   OPEN EMOJI PICKER
+===================================================== */
+
+emojiButton.addEventListener(
+"click",
+(event) => {
+
+event.stopPropagation();
+
+attachmentMenu.classList.remove(
+"show"
+);
+
+emojiPicker.classList.toggle(
+"show"
+);
+
+}
+);
+
+
+/* =====================================================
+   SELECT PICTURE
+===================================================== */
+
+selectImageButton.addEventListener(
+"click",
+() => {
+
+attachmentMenu.classList.remove(
+"show"
+);
+
+imageInput.click();
+
+}
+);
+
+
+/* =====================================================
+   SELECT VIDEO
+===================================================== */
+
+selectVideoButton.addEventListener(
+"click",
+() => {
+
+attachmentMenu.classList.remove(
+"show"
+);
+
+videoInput.click();
+
+}
+);
+
+
+/* =====================================================
+   HANDLE SELECTED PICTURE
+===================================================== */
+
+imageInput.addEventListener(
+"change",
+() => {
+
+const file =
+imageInput.files?.[0];
+
+if(!validateImageFile(file)){
+
+imageInput.value =
+"";
+
+return;
+
+}
+
+showImagePreview(file);
+
+}
+);
+
+
+/* =====================================================
+   HANDLE SELECTED VIDEO
+===================================================== */
+
+videoInput.addEventListener(
+"change",
+() => {
+
+const file =
+videoInput.files?.[0];
+
+if(!validateVideoFile(file)){
+
+videoInput.value =
+"";
+
+return;
+
+}
+
+showVideoPreview(file);
+
+}
+);
+
+
+/* =====================================================
+   REMOVE MEDIA PREVIEW
+===================================================== */
+
+removePreviewButton.addEventListener(
+"click",
+() => {
+
+clearSelectedMedia();
+
+}
+);
+
+
+/* =====================================================
+   INSERT SELECTED EMOJI
+===================================================== */
+
+emojiPicker
+.querySelectorAll("button")
+.forEach((emojiOption) => {
+
+emojiOption.addEventListener(
+"click",
+() => {
+
+const emoji =
+emojiOption.textContent;
+
+const selectionStart =
+messageInput.selectionStart ??
+messageInput.value.length;
+
+const selectionEnd =
+messageInput.selectionEnd ??
+messageInput.value.length;
+
+const beginningText =
+messageInput.value.slice(
+0,
+selectionStart
+);
+
+const endingText =
+messageInput.value.slice(
+selectionEnd
+);
+
+messageInput.value =
+beginningText +
+emoji +
+endingText;
+
+const newCursorPosition =
+selectionStart +
+emoji.length;
+
+messageInput.focus();
+
+messageInput.setSelectionRange(
+newCursorPosition,
+newCursorPosition
+);
+
+emojiPicker.classList.remove(
+"show"
+);
+
+}
+);
+
+}
+);
+
+
+/* =====================================================
+   CLOSE POPUP MENUS WHEN CLICKING OUTSIDE
+===================================================== */
+
+document.addEventListener(
+"click",
+(event) => {
+
+if(
+!emojiPicker.contains(event.target) &&
+event.target !== emojiButton
+){
+
+emojiPicker.classList.remove(
+"show"
+);
+
+}
+
+if(
+!attachmentMenu.contains(event.target) &&
+event.target !== attachmentButton
+){
+
+attachmentMenu.classList.remove(
+"show"
+);
+
+}
+
+if(
+!event.target.closest(
+".message-menu"
+) &&
+!event.target.closest(
+".message-menu-button"
+)
+){
+
+closeAllMessageMenus();
+
+}
+
+}
+);
+/* =====================================================
+   CLOUDINARY MEDIA UPLOAD
+===================================================== */
+
+function uploadMediaToCloudinary(file){
+
+return new Promise(
+(resolve,reject) => {
+
+if(!file){
+
+reject(
+new Error("No media file selected.")
+);
+
+return;
+
+}
+
+const formData =
+new FormData();
+
+formData.append(
+"file",
+file
+);
+
+formData.append(
+"upload_preset",
+CLOUDINARY_UPLOAD_PRESET
+);
+
+formData.append(
+"folder",
+"sabasaba_private_chat"
+);
+
+const uploadRequest =
+new XMLHttpRequest();
+
+uploadRequest.open(
+"POST",
+CLOUDINARY_UPLOAD_URL,
+true
+);
+
+
+/* =====================================================
+   CLOUDINARY UPLOAD PROGRESS
+===================================================== */
+
+uploadRequest.upload.addEventListener(
+"progress",
+(event) => {
+
+if(!event.lengthComputable){
+
+return;
+
+}
+
+const uploadPercent =
+(event.loaded / event.total) * 100;
+
+updateUploadProgress(
+uploadPercent,
+selectedMediaType === "audio"
+?
+"Uploading voice message..."
+:
+selectedMediaType === "video"
+?
+"Uploading video..."
+:
+"Uploading picture..."
+);
+
+}
+);
+
+
+/* =====================================================
+   CLOUDINARY UPLOAD SUCCESS
+===================================================== */
+
+uploadRequest.addEventListener(
+"load",
+() => {
+
+let responseData = null;
+
+try{
+
+responseData =
+JSON.parse(
+uploadRequest.responseText
+);
+
+}catch(error){
+
+reject(
+new Error(
+"Cloudinary returned an invalid response."
+)
+);
+
+return;
+
+}
+
+if(
+uploadRequest.status >= 200 &&
+uploadRequest.status < 300 &&
+responseData?.secure_url
+){
+
+updateUploadProgress(
+100,
+"Upload complete"
+);
+
+resolve({
+url:responseData.secure_url,
+publicId:responseData.public_id || "",
+resourceType:responseData.resource_type || "",
+format:responseData.format || "",
+duration:responseData.duration || 0
+});
+
+return;
+
+}
+
+const cloudinaryErrorMessage =
+responseData?.error?.message ||
+"Cloudinary upload failed.";
+
+reject(
+new Error(
+cloudinaryErrorMessage
+)
+);
+
+}
+);
+
+
+/* =====================================================
+   CLOUDINARY UPLOAD ERROR
+===================================================== */
+
+uploadRequest.addEventListener(
+"error",
+() => {
+
+reject(
+new Error(
+"Unable to upload media. Check your internet connection."
+)
+);
+
+}
+);
+
+
+/* =====================================================
+   CLOUDINARY UPLOAD CANCELLED
+===================================================== */
+
+uploadRequest.addEventListener(
+"abort",
+() => {
+
+reject(
+new Error(
+"Media upload was cancelled."
+)
+);
+
+}
+);
+
+uploadRequest.send(
+formData
+);
+
+}
+);
+
+}
+
+
+/* =====================================================
+   FORMAT RECORDING TIME
+===================================================== */
+
+function formatRecordingTime(seconds){
+
+const safeSeconds =
+Math.max(
+0,
+Math.floor(seconds)
+);
+
+const minutes =
+Math.floor(
+safeSeconds / 60
+);
+
+const remainingSeconds =
+safeSeconds % 60;
+
+return `${String(minutes).padStart(
+2,
+"0"
+)}:${String(remainingSeconds).padStart(
+2,
+"0"
+)}`;
+
+}
+
+
+/* =====================================================
+   UPDATE RECORDING TIMER
+===================================================== */
+
+function updateRecordingTimer(){
+
+recordingTime.textContent =
+formatRecordingTime(
+recordingSeconds
+);
+
+}
+
+
+/* =====================================================
+   START RECORDING TIMER
+===================================================== */
+
+function startRecordingTimer(){
+
+recordingSeconds =
+0;
+
+updateRecordingTimer();
+
+recordingTimerInterval =
+window.setInterval(
+() => {
+
+recordingSeconds += 1;
+
+updateRecordingTimer();
+
+const maximumRecordingSeconds =
+300;
+
+if(
+recordingSeconds >=
+maximumRecordingSeconds
+){
+
+stopVoiceRecording();
+
+}
+
+},
+1000
+);
+
+}
+
+
+/* =====================================================
+   STOP RECORDING TIMER
+===================================================== */
+
+function stopRecordingTimer(){
+
+if(recordingTimerInterval){
+
+window.clearInterval(
+recordingTimerInterval
+);
+
+recordingTimerInterval =
+null;
+
+}
+
+}
+
+
+/* =====================================================
+   CHOOSE AUDIO MIME TYPE
+===================================================== */
+
+function getSupportedAudioMimeType(){
+
+const possibleTypes = [
+
+"audio/webm;codecs=opus",
+
+"audio/webm",
+
+"audio/ogg;codecs=opus",
+
+"audio/mp4"
+
+];
+
+for(
+const mimeType
+of possibleTypes
+){
+
+if(
+window.MediaRecorder &&
+MediaRecorder.isTypeSupported(
+mimeType
+)
+){
+
+return mimeType;
+
+}
+
+}
+
+return "";
+
+}
+
+
+/* =====================================================
+   GET AUDIO FILE EXTENSION
+===================================================== */
+
+function getAudioFileExtension(mimeType){
+
+if(
+mimeType.includes(
+"ogg"
+)
+){
+
+return "ogg";
+
+}
+
+if(
+mimeType.includes(
+"mp4"
+)
+){
+
+return "m4a";
+
+}
+
+return "webm";
+
+}
+
+
+/* =====================================================
+   RELEASE MICROPHONE STREAM
+===================================================== */
+
+function releaseRecordingStream(){
+
+if(recordingStream){
+
+recordingStream
+.getTracks()
+.forEach((track) => {
+
+track.stop();
+
+});
+
+recordingStream =
+null;
+
+}
+
+}
+
+
+/* =====================================================
+   RESET RECORDING INTERFACE
+===================================================== */
+
+function resetRecordingInterface(){
+
+isRecording =
+false;
+
+voiceButton.classList.remove(
+"recording"
+);
+
+voiceRecordingPanel.classList.remove(
+"show"
+);
+
+stopRecordingTimer();
+
+recordingSeconds =
+0;
+
+updateRecordingTimer();
+
+releaseRecordingStream();
+
+}
+
+
+/* =====================================================
+   START VOICE RECORDING
+===================================================== */
+
+async function startVoiceRecording(){
+
+if(sendingMessage){
+
+return;
+
+}
+
+closeInputMenus();
+
+if(
+!navigator.mediaDevices ||
+!navigator.mediaDevices.getUserMedia
+){
+
+alert(
+"Voice recording is not supported by this browser."
+);
+
+return;
+
+}
+
+if(
+typeof MediaRecorder === "undefined"
+){
+
+alert(
+"Voice recording is not supported on this device."
+);
+
+return;
+
+}
+
+try{
+
+clearSelectedMedia();
+
+recordingStream =
+await navigator.mediaDevices.getUserMedia({
+audio:true
+});
+
+const supportedMimeType =
+getSupportedAudioMimeType();
+
+const mediaRecorderOptions =
+supportedMimeType
+?
+{
+mimeType:supportedMimeType
+}
+:
+undefined;
+
+mediaRecorder =
+new MediaRecorder(
+recordingStream,
+mediaRecorderOptions
+);
+
+recordedAudioChunks =
+[];
+
+recordedAudioBlob =
+null;
+
+recordedAudioFile =
+null;
+
+
+/* =====================================================
+   COLLECT AUDIO DATA
+===================================================== */
+
+mediaRecorder.addEventListener(
+"dataavailable",
+(event) => {
+
+if(
+event.data &&
+event.data.size > 0
+){
+
+recordedAudioChunks.push(
+event.data
+);
+
+}
+
+}
+);
+
+
+/* =====================================================
+   COMPLETE AUDIO RECORDING
+===================================================== */
+
+mediaRecorder.addEventListener(
+"stop",
+() => {
+
+const finalMimeType =
+mediaRecorder.mimeType ||
+supportedMimeType ||
+"audio/webm";
+
+recordedAudioBlob =
+new Blob(
+recordedAudioChunks,
+{
+type:finalMimeType
+}
+);
+
+recordedAudioChunks =
+[];
+
+if(
+recordedAudioBlob.size === 0
+){
+
+resetRecordingInterface();
+
+alert(
+"No sound was recorded. Please try again."
+);
+
+return;
+
+}
+
+const audioExtension =
+getAudioFileExtension(
+finalMimeType
+);
+
+const audioFilename =
+`voice-message-${Date.now()}.${audioExtension}`;
+
+recordedAudioFile =
+new File(
+[recordedAudioBlob],
+audioFilename,
+{
+type:finalMimeType
+}
+);
+
+resetRecordingInterface();
+
+showAudioPreview(
+recordedAudioFile
+);
+
+}
+);
+
+
+/* =====================================================
+   RECORDING ERROR
+===================================================== */
+
+mediaRecorder.addEventListener(
+"error",
+(event) => {
+
+console.error(
+"Voice recording error:",
+event.error
+);
+
+resetRecordingInterface();
+
+alert(
+"Voice recording failed. Please try again."
+);
+
+}
+);
+
+mediaRecorder.start(
+250
+);
+
+isRecording =
+true;
+
+voiceButton.classList.add(
+"recording"
+);
+
+voiceRecordingPanel.classList.add(
+"show"
+);
+
+startRecordingTimer();
+
+}catch(error){
+
+console.error(
+"Unable to start voice recording:",
+error
+);
+
+resetRecordingInterface();
+
+if(
+error?.name ===
+"NotAllowedError"
+){
+
+alert(
+"Microphone permission was denied. Please allow microphone access and try again."
+);
+
+return;
+
+}
+
+if(
+error?.name ===
+"NotFoundError"
+){
+
+alert(
+"No microphone was found on this device."
+);
+
+return;
+
+}
+
+alert(
+"Unable to start voice recording."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   STOP VOICE RECORDING
+===================================================== */
+
+function stopVoiceRecording(){
+
+if(
+!isRecording ||
+!mediaRecorder
+){
+
+return;
+
+}
+
+if(
+mediaRecorder.state !==
+"inactive"
+){
+
+mediaRecorder.stop();
+
+}
+
+isRecording =
+false;
+
+voiceButton.classList.remove(
+"recording"
+);
+
+voiceRecordingPanel.classList.remove(
+"show"
+);
+
+stopRecordingTimer();
+
+}
+
+
+/* =====================================================
+   CANCEL VOICE RECORDING
+===================================================== */
+
+function cancelVoiceRecording(){
+
+if(!isRecording){
+
+resetRecordingInterface();
+
+return;
+
+}
+
+if(mediaRecorder){
+
+mediaRecorder.ondataavailable =
+null;
+
+mediaRecorder.onstop =
+null;
+
+if(
+mediaRecorder.state !==
+"inactive"
+){
+
+mediaRecorder.stop();
+
+}
+
+}
+
+recordedAudioChunks =
+[];
+
+recordedAudioBlob =
+null;
+
+recordedAudioFile =
+null;
+
+resetRecordingInterface();
+
+}
+
+
+/* =====================================================
+   VOICE BUTTON
+===================================================== */
+
+voiceButton.addEventListener(
+"click",
+() => {
+
+if(isRecording){
+
+stopVoiceRecording();
+
+return;
+
+}
+
+startVoiceRecording();
+
+}
+);
+
+
+/* =====================================================
+   STOP RECORDING BUTTON
+===================================================== */
+
+stopRecordingButton.addEventListener(
+"click",
+() => {
+
+stopVoiceRecording();
+
+}
+);
+
+
+/* =====================================================
+   CANCEL RECORDING BUTTON
+===================================================== */
+
+cancelRecordingButton.addEventListener(
+"click",
+() => {
+
+cancelVoiceRecording();
+
+}
+);
+
+
+/* =====================================================
+   PREVENT LEAVING DURING RECORDING
+===================================================== */
+
+window.addEventListener(
+"pagehide",
+() => {
+
+if(isRecording){
+
+cancelVoiceRecording();
+
+}
+
+}
+);
+/* =====================================================
+   GET MESSAGE STATUS
+===================================================== */
+
+function getMessageStatus(messageData){
+
+if(
+messageData.read === true
+){
+
+return {
+symbol:"✓✓",
+className:"status-read",
+label:"Read"
+};
+
+}
+
+if(
+messageData.delivered === true
+){
+
+return {
+symbol:"✓✓",
+className:"status-delivered",
+label:"Delivered"
+};
+
+}
+
+return {
+symbol:"✓",
+className:"status-sent",
+label:"Sent"
+};
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE STATUS HTML
+===================================================== */
+
+function createMessageStatusHtml(
+messageData,
+isMine
+){
+
+if(!isMine){
+
+return "";
+
+}
+
+const status =
+getMessageStatus(
+messageData
+);
+
+return `
+
+<span
+class="message-status ${status.className}"
+title="${status.label}"
+aria-label="${status.label}"
+>
+${status.symbol}
+</span>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE TEXT MESSAGE HTML
+===================================================== */
+
+function createTextMessageHtml(messageData){
+
+const messageText =
+messageData.message ||
+messageData.text ||
+messageData.content ||
+"";
+
+if(!messageText){
+
+return "";
+
+}
+
+return `
+
+<div class="message-text">
+${escapeHtml(messageText)}
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE IMAGE MESSAGE HTML
+===================================================== */
+
+function createImageMessageHtml(messageData){
+
+const imageUrl =
+messageData.mediaUrl ||
+messageData.imageUrl ||
+messageData.imageURL ||
+messageData.photoUrl ||
+messageData.photoURL ||
+"";
+
+if(!imageUrl){
+
+return "";
+
+}
+
+return `
+
+<img
+class="message-image"
+src="${escapeHtml(imageUrl)}"
+alt="Shared picture"
+loading="lazy"
+data-full-image="${escapeHtml(imageUrl)}"
+>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE VIDEO MESSAGE HTML
+===================================================== */
+
+function createVideoMessageHtml(messageData){
+
+const videoUrl =
+messageData.mediaUrl ||
+messageData.videoUrl ||
+messageData.videoURL ||
+"";
+
+if(!videoUrl){
+
+return "";
+
+}
+
+return `
+
+<div
+class="message-video-wrapper"
+data-full-video="${escapeHtml(videoUrl)}"
+>
+
+<video
+class="message-video"
+src="${escapeHtml(videoUrl)}"
+preload="metadata"
+playsinline
+muted
+></video>
+
+<div class="video-open-overlay">
+
+<span class="video-play-icon">
+▶
+</span>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE AUDIO MESSAGE HTML
+===================================================== */
+
+function createAudioMessageHtml(messageData){
+
+const audioUrl =
+messageData.mediaUrl ||
+messageData.audioUrl ||
+messageData.voiceUrl ||
+"";
+
+if(!audioUrl){
+
+return "";
+
+}
+
+return `
+
+<div class="voice-message">
+
+<audio
+src="${escapeHtml(audioUrl)}"
+controls
+preload="metadata"
+></audio>
+
+</div>
+
+<div class="voice-label">
+Voice message
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE MEDIA CAPTION HTML
+===================================================== */
+
+function createMediaCaptionHtml(messageData){
+
+const caption =
+messageData.message ||
+messageData.caption ||
+messageData.text ||
+"";
+
+if(!caption){
+
+return "";
+
+}
+
+return `
+
+<div class="media-caption">
+${escapeHtml(caption)}
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE CONTENT
+===================================================== */
+
+function createMessageContent(
+messageData
+){
+
+const mediaType =
+messageData.mediaType ||
+messageData.type ||
+"none";
+
+if(mediaType === "image"){
+
+return (
+createImageMessageHtml(
+messageData
+) +
+createMediaCaptionHtml(
+messageData
+)
+);
+
+}
+
+if(mediaType === "video"){
+
+return (
+createVideoMessageHtml(
+messageData
+) +
+createMediaCaptionHtml(
+messageData
+)
+);
+
+}
+
+if(
+mediaType === "audio" ||
+mediaType === "voice"
+){
+
+return (
+createAudioMessageHtml(
+messageData
+) +
+createMediaCaptionHtml(
+messageData
+)
+);
+
+}
+
+return createTextMessageHtml(
+messageData
+);
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE MENU
+===================================================== */
+
+function createMessageMenuHtml(
+messageId,
+isMine
+){
+
+return `
+
+<button
+class="message-menu-button"
+type="button"
+aria-label="Message options"
+data-menu-button="${messageId}"
+>
+⋮
+</button>
+
+<div
+class="message-menu"
+data-message-menu="${messageId}"
+>
+
+<button
+class="message-option delete-for-me"
+type="button"
+data-delete-for-me="${messageId}"
+>
+Delete for me
+</button>
+
+${
+isMine
+?
+`
+
+<button
+class="message-option delete-for-everyone"
+type="button"
+data-delete-for-everyone="${messageId}"
+>
+Delete for everyone
+</button>
+
+`
+:
+""
+}
+
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE ELEMENT
 ===================================================== */
 
 function createMessageElement(
-messageDocument
+messageId,
+messageData
 ){
 
-const messageData =
-messageDocument.data();
-
-const messageId =
-messageDocument.id;
+const senderId =
+messageData.senderId ||
+messageData.userId ||
+messageData.authorId ||
+"";
 
 const isMine =
-messageData.senderId === currentUser.uid;
+senderId === currentUser.uid;
 
+const deletedFor =
+Array.isArray(
+messageData.deletedFor
+)
+?
+messageData.deletedFor
+:
+[];
 
-/* MESSAGE ROW */
+if(
+deletedFor.includes(
+currentUser.uid
+)
+){
+
+return null;
+
+}
 
 const messageRow =
 document.createElement("div");
 
 messageRow.className =
+`message-row ${
 isMine
-? "message-row mine-row"
-: "message-row other-row";
+?
+"mine-row"
+:
+"other-row"
+}`;
 
-
-/* MESSAGE BUBBLE */
+messageRow.dataset.messageId =
+messageId;
 
 const messageBubble =
 document.createElement("div");
 
 messageBubble.className =
+`message-bubble ${
 isMine
-? "message-bubble mine"
-: "message-bubble other";
+?
+"mine"
+:
+"other"
+}`;
 
-
-/* MESSAGE TEXT */
-
-const messageText =
-document.createElement("div");
-
-messageText.className =
-"message-text";
-
-messageText.textContent =
-messageData.message ||
-messageData.text ||
-"";
-
-messageBubble.appendChild(
-messageText
-);
-
-
-/* MESSAGE TIME */
-
-const messageTime =
-document.createElement("span");
-
-messageTime.className =
-"message-time";
-
-messageTime.textContent =
-formatMessageTime(
-messageData.timestamp
-);
-
-messageBubble.appendChild(
-messageTime
-);
-
-
-/* MESSAGE MENU BUTTON */
-
-const menuButton =
-document.createElement("button");
-
-menuButton.type =
-"button";
-
-menuButton.className =
-"message-menu-button";
-
-menuButton.textContent =
-"⋮";
-
-menuButton.setAttribute(
-"aria-label",
-"Message options"
-);
-
-
-/* MESSAGE MENU */
-
-const messageMenu =
-document.createElement("div");
-
-messageMenu.className =
-"message-menu";
-
-
-/* DELETE FOR ME BUTTON */
-
-const deleteForMeButton =
-document.createElement("button");
-
-deleteForMeButton.type =
-"button";
-
-deleteForMeButton.className =
-"message-option delete-for-me";
-
-deleteForMeButton.textContent =
-"🗑 Delete for me";
-
-deleteForMeButton.addEventListener(
-"click",
-function(event){
-
-event.stopPropagation();
-
-messageMenu.classList.remove(
-"show"
-);
-
-confirmDeleteForMe(
-messageId
-);
-
-}
-);
-
-messageMenu.appendChild(
-deleteForMeButton
-);
-
-
-/* DELETE FOR EVERYONE BUTTON */
-
-if(isMine){
-
-const deleteForEveryoneButton =
-document.createElement("button");
-
-deleteForEveryoneButton.type =
-"button";
-
-deleteForEveryoneButton.className =
-"message-option delete-for-everyone";
-
-deleteForEveryoneButton.textContent =
-"🗑 Delete for everyone";
-
-deleteForEveryoneButton.addEventListener(
-"click",
-function(event){
-
-event.stopPropagation();
-
-messageMenu.classList.remove(
-"show"
-);
-
-confirmDeleteForEveryone(
-messageId,
+const messageContent =
+createMessageContent(
 messageData
 );
 
-}
+const messageTime =
+formatMessageTime(
+messageData.timestamp ||
+messageData.createdAt
 );
 
-messageMenu.appendChild(
-deleteForEveryoneButton
+messageBubble.innerHTML = `
+
+${createMessageMenuHtml(
+messageId,
+isMine
+)}
+
+${messageContent}
+
+<div class="message-footer">
+
+<span class="message-time">
+${messageTime}
+</span>
+
+${createMessageStatusHtml(
+messageData,
+isMine
+)}
+
+</div>
+
+`;
+
+messageRow.appendChild(
+messageBubble
 );
 
-}
 
+/* =====================================================
+   OPEN MESSAGE MENU
+===================================================== */
 
-/* OPEN OR CLOSE MENU */
+const menuButton =
+messageBubble.querySelector(
+"[data-menu-button]"
+);
 
-menuButton.addEventListener(
+const messageMenu =
+messageBubble.querySelector(
+"[data-message-menu]"
+);
+
+menuButton?.addEventListener(
 "click",
-function(event){
+(event) => {
 
 event.stopPropagation();
 
-const menuWasOpen =
+const alreadyOpen =
 messageMenu.classList.contains(
 "show"
 );
 
 closeAllMessageMenus();
 
-if(!menuWasOpen){
+if(!alreadyOpen){
 
 messageMenu.classList.add(
 "show"
@@ -1073,18 +4476,95 @@ messageMenu.classList.add(
 );
 
 
-/* BUILD MESSAGE */
+/* =====================================================
+   DELETE FOR ME BUTTON
+===================================================== */
 
-messageBubble.appendChild(
-menuButton
+const deleteForMeButton =
+messageBubble.querySelector(
+"[data-delete-for-me]"
 );
 
-messageBubble.appendChild(
-messageMenu
+deleteForMeButton?.addEventListener(
+"click",
+async () => {
+
+messageMenu.classList.remove(
+"show"
 );
 
-messageRow.appendChild(
-messageBubble
+await deleteMessageForMe(
+messageId
+);
+
+}
+);
+
+
+/* =====================================================
+   DELETE FOR EVERYONE BUTTON
+===================================================== */
+
+const deleteForEveryoneButton =
+messageBubble.querySelector(
+"[data-delete-for-everyone]"
+);
+
+deleteForEveryoneButton?.addEventListener(
+"click",
+async () => {
+
+messageMenu.classList.remove(
+"show"
+);
+
+await deleteMessageForEveryone(
+messageId
+);
+
+}
+);
+
+
+/* =====================================================
+   OPEN FULL-SCREEN IMAGE
+===================================================== */
+
+const sharedImage =
+messageBubble.querySelector(
+"[data-full-image]"
+);
+
+sharedImage?.addEventListener(
+"click",
+() => {
+
+openImageViewer(
+sharedImage.dataset.fullImage
+);
+
+}
+);
+
+
+/* =====================================================
+   OPEN FULL-SCREEN VIDEO
+===================================================== */
+
+const sharedVideo =
+messageBubble.querySelector(
+"[data-full-video]"
+);
+
+sharedVideo?.addEventListener(
+"click",
+() => {
+
+openVideoViewer(
+sharedVideo.dataset.fullVideo
+);
+
+}
 );
 
 return messageRow;
@@ -1093,188 +4573,195 @@ return messageRow;
 
 
 /* =====================================================
-   LOAD REAL-TIME MESSAGES
+   MESSAGE COLLECTION REFERENCE
 ===================================================== */
 
-function loadMessages(){
+function getMessagesCollectionReference(){
 
-if(unsubscribeMessages){
-
-unsubscribeMessages();
+return collection(
+db,
+"conversations",
+conversationId,
+"messages"
+);
 
 }
 
-const messagesQuery =
-query(
-collection(db,"messages"),
-orderBy("timestamp","asc")
-);
 
-unsubscribeMessages =
-onSnapshot(
-messagesQuery,
-function(snapshot){
+/* =====================================================
+   MARK MESSAGE AS DELIVERED
+===================================================== */
 
-chatArea.innerHTML = "";
-
-let messageFound =
-false;
-
-snapshot.forEach(
-function(messageDocument){
-
-const messageData =
-messageDocument.data();
-
-
-/* CHECK WHETHER MESSAGE BELONGS TO THIS CHAT */
-
-const belongsToThisChat =
-
-(
-messageData.senderId === currentUser.uid &&
-messageData.receiverId === otherUid
-)
-
-||
-
-(
-messageData.senderId === otherUid &&
-messageData.receiverId === currentUser.uid
-);
-
-
-/* CHECK WHETHER CURRENT USER DELETED THE MESSAGE */
-
-const deletedFor =
-Array.isArray(messageData.deletedFor)
-? messageData.deletedFor
-: [];
-
-const deletedForCurrentUser =
-deletedFor.includes(
-currentUser.uid
-);
-
+async function markMessageAsDelivered(
+messageId,
+messageData
+){
 
 if(
-!belongsToThisChat ||
-deletedForCurrentUser
+!currentUser ||
+messageData.senderId === currentUser.uid ||
+messageData.delivered === true
 ){
 
 return;
 
 }
 
-messageFound = true;
+try{
 
-const messageElement =
-createMessageElement(
-messageDocument
-);
-
-chatArea.appendChild(
-messageElement
-);
-
+await updateDoc(
+doc(
+db,
+"conversations",
+conversationId,
+"messages",
+messageId
+),
+{
+delivered:true,
+deliveredAt:serverTimestamp()
 }
 );
 
-
-/* SHOW EMPTY MESSAGE */
-
-if(!messageFound){
-
-chatArea.innerHTML = `
-<div class="empty-message">
-No messages yet.<br>
-Start your Christian conversation.
-</div>
-`;
-
-}
-
-
-/* SCROLL TO NEWEST MESSAGE */
-
-requestAnimationFrame(
-function(){
-
-chatArea.scrollTop =
-chatArea.scrollHeight;
-
-}
-);
-
-},
-function(error){
+}catch(error){
 
 console.error(
-"Message loading error:",
+"Unable to mark message as delivered:",
 error
 );
 
-chatArea.innerHTML = `
-<div class="empty-message">
-Messages could not be loaded.<br>
-Please check your internet connection.
-</div>
-`;
-
 }
-);
 
 }
 
 
 /* =====================================================
-   CLOSE MENU WHEN CLICKING OUTSIDE
+   MARK MESSAGE AS READ
 ===================================================== */
 
-document.addEventListener(
-"click",
-function(){
-
-closeAllMessageMenus();
-
-}
-);
-/* =====================================================
-   PART 5 OF 6
-   DELETE MESSAGE FUNCTIONS
-===================================================== */
-
-
-/* =====================================================
-   DELETE FOR ME
-===================================================== */
-
-function confirmDeleteForMe(
-messageId
+async function markMessageAsRead(
+messageId,
+messageData
 ){
 
-const confirmed =
-window.confirm(
-"Delete this message only from your chat?"
-);
-
-if(!confirmed){
-return;
-}
-
-deleteMessageForMe(
-messageId
-);
-
-}
-
-
-async function deleteMessageForMe(
-messageId
+if(
+!currentUser ||
+messageData.senderId === currentUser.uid ||
+messageData.read === true
 ){
 
-if(!currentUser){
 return;
+
+}
+
+if(
+document.visibilityState !== "visible"
+){
+
+return;
+
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"conversations",
+conversationId,
+"messages",
+messageId
+),
+{
+delivered:true,
+read:true,
+readAt:serverTimestamp()
+}
+);
+
+}catch(error){
+
+console.error(
+"Unable to mark message as read:",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   UPDATE INCOMING MESSAGE RECEIPTS
+===================================================== */
+
+async function updateIncomingMessageReceipts(
+messageId,
+messageData
+){
+
+if(
+messageData.senderId ===
+currentUser.uid
+){
+
+return;
+
+}
+
+await markMessageAsDelivered(
+messageId,
+messageData
+);
+
+if(
+document.visibilityState ===
+"visible"
+){
+
+await markMessageAsRead(
+messageId,
+messageData
+);
+
+}
+
+}
+
+
+/* =====================================================
+   MARK VISIBLE CONVERSATION AS READ
+===================================================== */
+
+async function markVisibleConversationAsRead(){
+
+if(
+!currentUser ||
+!conversationId ||
+document.visibilityState !== "visible"
+){
+
+return;
+
+}
+
+const unreadRows =
+chatArea.querySelectorAll(
+"[data-message-id]"
+);
+
+for(
+const messageRow
+of unreadRows
+){
+
+const messageId =
+messageRow.dataset.messageId;
+
+if(!messageId){
+
+continue;
+
 }
 
 try{
@@ -1282,12 +4769,247 @@ try{
 const messageReference =
 doc(
 db,
+"conversations",
+conversationId,
 "messages",
 messageId
 );
 
+const messageSnapshot =
+await getDoc(
+messageReference
+);
+
+if(!messageSnapshot.exists()){
+
+continue;
+
+}
+
+const messageData =
+messageSnapshot.data();
+
+if(
+messageData.senderId !== currentUser.uid &&
+messageData.read !== true
+){
+
 await updateDoc(
 messageReference,
+{
+delivered:true,
+read:true,
+readAt:serverTimestamp()
+}
+);
+
+}
+
+}catch(error){
+
+console.error(
+"Unable to update visible message:",
+error
+);
+
+}
+
+}
+
+}
+
+
+/* =====================================================
+   PAGE BECOMES VISIBLE
+===================================================== */
+
+document.addEventListener(
+"visibilitychange",
+() => {
+
+if(
+document.visibilityState === "visible"
+){
+
+markVisibleConversationAsRead();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   LOAD REAL-TIME MESSAGES
+===================================================== */
+
+function loadMessages(){
+
+if(
+!currentUser ||
+!conversationId
+){
+
+return;
+
+}
+
+if(unsubscribeMessages){
+
+unsubscribeMessages();
+
+unsubscribeMessages =
+null;
+
+}
+
+const messagesQuery =
+query(
+getMessagesCollectionReference(),
+orderBy(
+"timestamp",
+"asc"
+)
+);
+
+unsubscribeMessages =
+onSnapshot(
+messagesQuery,
+async (messagesSnapshot) => {
+
+chatArea.innerHTML =
+"";
+
+if(messagesSnapshot.empty){
+
+chatArea.innerHTML = `
+
+<div class="empty-message">
+
+No messages yet.<br>
+
+Start this private conversation.
+
+</div>
+
+`;
+
+return;
+
+}
+
+const receiptUpdates =
+[];
+
+messagesSnapshot.forEach(
+(messageSnapshot) => {
+
+const messageId =
+messageSnapshot.id;
+
+const messageData =
+messageSnapshot.data();
+
+const messageElement =
+createMessageElement(
+messageId,
+messageData
+);
+
+if(messageElement){
+
+chatArea.appendChild(
+messageElement
+);
+
+}
+
+if(
+messageData.senderId !==
+currentUser.uid
+){
+
+receiptUpdates.push(
+updateIncomingMessageReceipts(
+messageId,
+messageData
+)
+);
+
+}
+
+}
+);
+
+await Promise.allSettled(
+receiptUpdates
+);
+
+scrollToLatestMessage();
+
+},
+(error) => {
+
+console.error(
+"Unable to load messages:",
+error
+);
+
+chatArea.innerHTML = `
+
+<div class="empty-message">
+
+Unable to load this conversation.<br>
+
+Please check your connection and refresh the page.
+
+</div>
+
+`;
+
+}
+);
+
+}
+/* =====================================================
+   DELETE MESSAGE FOR ME
+===================================================== */
+
+async function deleteMessageForMe(
+messageId
+){
+
+if(
+!currentUser ||
+!conversationId ||
+!messageId
+){
+
+return;
+
+}
+
+const confirmed =
+window.confirm(
+"Delete this message for you?"
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"conversations",
+conversationId,
+"messages",
+messageId
+),
 {
 deletedFor:
 arrayUnion(
@@ -1299,12 +5021,12 @@ currentUser.uid
 }catch(error){
 
 console.error(
-"Delete for me error:",
+"Unable to delete message for me:",
 error
 );
 
 alert(
-"Message could not be deleted. Please try again."
+"Unable to delete this message. Please try again."
 );
 
 }
@@ -1313,25 +5035,18 @@ alert(
 
 
 /* =====================================================
-   DELETE FOR EVERYONE
+   DELETE MESSAGE FOR EVERYONE
 ===================================================== */
 
-function confirmDeleteForEveryone(
-messageId,
-messageData
+async function deleteMessageForEveryone(
+messageId
 ){
-
-if(!currentUser){
-return;
-}
 
 if(
-messageData.senderId !== currentUser.uid
+!currentUser ||
+!conversationId ||
+!messageId
 ){
-
-alert(
-"You can only delete your own messages for everyone."
-);
 
 return;
 
@@ -1343,33 +5058,6 @@ window.confirm(
 );
 
 if(!confirmed){
-return;
-}
-
-deleteMessageForEveryone(
-messageId,
-messageData
-);
-
-}
-
-
-async function deleteMessageForEveryone(
-messageId,
-messageData
-){
-
-if(!currentUser){
-return;
-}
-
-if(
-messageData.senderId !== currentUser.uid
-){
-
-alert(
-"You are not allowed to delete this message for everyone."
-);
 
 return;
 
@@ -1377,23 +5065,55 @@ return;
 
 try{
 
-await deleteDoc(
+const messageReference =
 doc(
 db,
+"conversations",
+conversationId,
 "messages",
 messageId
-)
+);
+
+const messageSnapshot =
+await getDoc(
+messageReference
+);
+
+if(!messageSnapshot.exists()){
+
+return;
+
+}
+
+const messageData =
+messageSnapshot.data();
+
+if(
+messageData.senderId !==
+currentUser.uid
+){
+
+alert(
+"You can only delete your own messages for everyone."
+);
+
+return;
+
+}
+
+await deleteDoc(
+messageReference
 );
 
 }catch(error){
 
 console.error(
-"Delete for everyone error:",
+"Unable to delete message for everyone:",
 error
 );
 
 alert(
-"Message could not be deleted for everyone. Please try again."
+"Unable to delete this message. Please try again."
 );
 
 }
@@ -1402,43 +5122,199 @@ alert(
 
 
 /* =====================================================
+   GET PROFILE NAME
+===================================================== */
+
+function getProfileName(
+profile,
+fallback = "Member"
+){
+
+return (
+profile?.name ||
+profile?.fullName ||
+profile?.displayName ||
+profile?.username ||
+fallback
+);
+
+}
+
+
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
+function getProfilePicture(
+profile
+){
+
+return (
+profile?.profilePicture ||
+profile?.picture ||
+profile?.photoURL ||
+profile?.imageUrl ||
+DEFAULT_PROFILE_PICTURE
+);
+
+}
+
+
+/* =====================================================
+   GET MESSAGE PREVIEW
+===================================================== */
+
+function getMessagePreview(
+messageText,
+mediaType
+){
+
+const cleanMessage =
+String(
+messageText || ""
+)
+.trim();
+
+if(cleanMessage){
+
+return cleanMessage.length > 80
+?
+`${cleanMessage.slice(
+0,
+80
+)}...`
+:
+cleanMessage;
+
+}
+
+if(mediaType === "image"){
+
+return "📷 Picture";
+
+}
+
+if(mediaType === "video"){
+
+return "🎥 Video";
+
+}
+
+if(
+mediaType === "audio" ||
+mediaType === "voice"
+){
+
+return "🎤 Voice message";
+
+}
+
+return "New message";
+
+}
+
+
+/* =====================================================
    UPDATE CONVERSATION SUMMARY
 ===================================================== */
 
-async function updateConversationSummary(
-senderId,
-receiverId,
-messageText
+async function updateConversationSummary({
+messageText,
+mediaType,
+mediaUrl,
+messageId
+}){
+
+if(
+!currentUser ||
+!otherUid ||
+!conversationId
 ){
 
-const conversationId =
-[
-senderId,
-receiverId
-]
-.sort()
-.join("_");
+return;
 
-const conversationReference =
+}
+
+const currentUserName =
+getProfileName(
+currentProfile,
+currentUser.displayName ||
+currentUser.email ||
+"Member"
+);
+
+const otherUserName =
+getProfileName(
+otherProfile,
+"Member"
+);
+
+const currentUserPicture =
+getProfilePicture(
+currentProfile
+);
+
+const otherUserPicture =
+getProfilePicture(
+otherProfile
+);
+
+const previewText =
+getMessagePreview(
+messageText,
+mediaType
+);
+
+try{
+
+await setDoc(
 doc(
 db,
 "conversations",
 conversationId
-);
-
-await setDoc(
-conversationReference,
+),
 {
+conversationId:
+conversationId,
+
 participants:[
-senderId,
-receiverId
+currentUser.uid,
+otherUid
 ],
 
+participantNames:{
+[currentUser.uid]:
+currentUserName,
+
+[otherUid]:
+otherUserName
+},
+
+participantPictures:{
+[currentUser.uid]:
+currentUserPicture,
+
+[otherUid]:
+otherUserPicture
+},
+
 lastMessage:
-messageText,
+previewText,
+
+lastMessageText:
+messageText || "",
+
+lastMessageType:
+mediaType || "none",
+
+lastMediaUrl:
+mediaUrl || "",
+
+lastMessageId:
+messageId || "",
 
 lastSenderId:
-senderId,
+currentUser.uid,
 
 updatedAt:
 serverTimestamp()
@@ -1448,6 +5324,15 @@ merge:true
 }
 );
 
+}catch(error){
+
+console.error(
+"Unable to update conversation summary:",
+error
+);
+
+}
+
 }
 
 
@@ -1455,10 +5340,39 @@ merge:true
    CREATE MESSAGE NOTIFICATION
 ===================================================== */
 
-async function createMessageNotification(
-receiverId,
-messageText
+async function createMessageNotification({
+messageText,
+mediaType,
+messageId
+}){
+
+if(
+!currentUser ||
+!otherUid
 ){
+
+return;
+
+}
+
+const senderName =
+getProfileName(
+currentProfile,
+currentUser.displayName ||
+currentUser.email ||
+"Member"
+);
+
+const senderPicture =
+getProfilePicture(
+currentProfile
+);
+
+const notificationMessage =
+getMessagePreview(
+messageText,
+mediaType
+);
 
 try{
 
@@ -1469,19 +5383,37 @@ db,
 ),
 {
 userId:
-receiverId,
+otherUid,
+
+receiverId:
+otherUid,
 
 senderId:
 currentUser.uid,
 
+senderName:
+senderName,
+
+senderPicture:
+senderPicture,
+
 type:
-"privateMessage",
+"private_message",
 
 message:
-messageText,
+notificationMessage,
+
+conversationId:
+conversationId,
+
+messageId:
+messageId || "",
 
 read:
 false,
+
+timestamp:
+serverTimestamp(),
 
 createdAt:
 serverTimestamp()
@@ -1491,110 +5423,358 @@ serverTimestamp()
 }catch(error){
 
 console.error(
-"Notification creation error:",
+"Unable to create message notification:",
 error
 );
 
 }
 
 }
+
+
 /* =====================================================
-   PART 6 OF 6
-   SEND MESSAGE
+   SET SEND INTERFACE STATE
+===================================================== */
+
+function setSendingState(
+isSending
+){
+
+sendingMessage =
+isSending;
+
+sendButton.disabled =
+isSending;
+
+messageInput.disabled =
+isSending;
+
+emojiButton.disabled =
+isSending;
+
+attachmentButton.disabled =
+isSending;
+
+voiceButton.disabled =
+isSending;
+
+removePreviewButton.disabled =
+isSending;
+
+sendButton.textContent =
+isSending
+?
+"Sending..."
+:
+"Send";
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE DOCUMENT
+===================================================== */
+
+async function createMessageDocument({
+messageText,
+mediaType,
+mediaUrl,
+mediaPublicId,
+mediaFormat,
+mediaDuration
+}){
+
+const senderName =
+getProfileName(
+currentProfile,
+currentUser.displayName ||
+currentUser.email ||
+"Member"
+);
+
+const senderPicture =
+getProfilePicture(
+currentProfile
+);
+
+const messageReference =
+await addDoc(
+getMessagesCollectionReference(),
+{
+senderId:
+currentUser.uid,
+
+receiverId:
+otherUid,
+
+message:
+messageText || "",
+
+text:
+messageText || "",
+
+mediaType:
+mediaType || "none",
+
+mediaUrl:
+mediaUrl || "",
+
+mediaPublicId:
+mediaPublicId || "",
+
+mediaFormat:
+mediaFormat || "",
+
+mediaDuration:
+mediaDuration || 0,
+
+senderName:
+senderName,
+
+senderPicture:
+senderPicture,
+
+timestamp:
+serverTimestamp(),
+
+createdAt:
+serverTimestamp(),
+
+delivered:
+false,
+
+read:
+false,
+
+deletedFor:
+[]
+}
+);
+
+return messageReference;
+
+}
+
+
+/* =====================================================
+   PREPARE AND SEND MESSAGE
 ===================================================== */
 
 async function sendMessage(){
 
 if(
+sendingMessage ||
 !currentUser ||
 !otherUid ||
-sendingMessage
+!conversationId
 ){
+
 return;
+
 }
 
-const text =
+if(isRecording){
+
+alert(
+"Please stop the voice recording before sending."
+);
+
+return;
+
+}
+
+const messageText =
 messageInput.value.trim();
 
-if(text===""){
+const hasMedia =
+selectedMediaFile &&
+selectedMediaType !== "none";
+
+if(
+!messageText &&
+!hasMedia
+){
+
+messageInput.focus();
+
 return;
+
 }
 
-sendingMessage=true;
+setSendingState(
+true
+);
 
-sendButton.disabled=true;
+closeInputMenus();
 
-messageInput.disabled=true;
+let finalMediaUrl = "";
+
+let finalMediaPublicId = "";
+
+let finalMediaFormat = "";
+
+let finalMediaDuration = 0;
 
 try{
 
-await addDoc(
-collection(db,"messages"),
-{
-senderId:currentUser.uid,
-receiverId:otherUid,
-message:text,
-timestamp:serverTimestamp(),
-deletedFor:[]
+if(hasMedia){
+
+updateUploadProgress(
+0,
+selectedMediaType === "audio"
+?
+"Uploading voice message..."
+:
+selectedMediaType === "video"
+?
+"Uploading video..."
+:
+"Uploading picture..."
+);
+
+const uploadResult =
+await uploadMediaToCloudinary(
+selectedMediaFile
+);
+
+finalMediaUrl =
+uploadResult.url;
+
+finalMediaPublicId =
+uploadResult.publicId;
+
+finalMediaFormat =
+uploadResult.format;
+
+finalMediaDuration =
+uploadResult.duration;
+
+uploadedMediaUrl =
+finalMediaUrl;
+
+uploadedMediaPublicId =
+finalMediaPublicId;
+
 }
-);
 
-await updateConversationSummary(
-currentUser.uid,
-otherUid,
-text
-);
+const messageReference =
+await createMessageDocument({
+messageText:
+messageText,
 
-await createMessageNotification(
-otherUid,
-text
-);
+mediaType:
+hasMedia
+?
+selectedMediaType
+:
+"none",
 
-messageInput.value="";
+mediaUrl:
+finalMediaUrl,
+
+mediaPublicId:
+finalMediaPublicId,
+
+mediaFormat:
+finalMediaFormat,
+
+mediaDuration:
+finalMediaDuration
+});
+
+await Promise.allSettled([
+
+updateConversationSummary({
+messageText:
+messageText,
+
+mediaType:
+hasMedia
+?
+selectedMediaType
+:
+"none",
+
+mediaUrl:
+finalMediaUrl,
+
+messageId:
+messageReference.id
+}),
+
+createMessageNotification({
+messageText:
+messageText,
+
+mediaType:
+hasMedia
+?
+selectedMediaType
+:
+"none",
+
+messageId:
+messageReference.id
+})
+
+]);
+
+messageInput.value =
+"";
+
+clearSelectedMedia();
+
+messageInput.focus();
+
+scrollToLatestMessage();
 
 }catch(error){
 
 console.error(
-"Send message error:",
+"Unable to send message:",
 error
 );
 
+resetUploadProgress();
+
 alert(
-"Unable to send message."
+error?.message ||
+"Unable to send the message. Please try again."
+);
+
+}finally{
+
+setSendingState(
+false
 );
 
 }
 
-finally{
-
-sendingMessage=false;
-
-sendButton.disabled=false;
-
-messageInput.disabled=false;
-
-messageInput.focus();
-
 }
-
-}
-
-
 /* =====================================================
-   SEND EVENTS
+   SEND BUTTON
 ===================================================== */
 
 sendButton.addEventListener(
 "click",
-sendMessage
+() => {
+
+sendMessage();
+
+}
 );
+
+
+/* =====================================================
+   ENTER KEY TO SEND
+===================================================== */
 
 messageInput.addEventListener(
 "keydown",
-function(event){
+(event) => {
 
 if(
-event.key==="Enter" &&
+event.key === "Enter" &&
 !event.shiftKey
 ){
 
@@ -1609,83 +5789,76 @@ sendMessage();
 
 
 /* =====================================================
-   EMOJI PICKER
+   REFRESH READ RECEIPTS WHEN INPUT IS FOCUSED
 ===================================================== */
 
-emojiButton.addEventListener(
-"click",
-function(event){
+messageInput.addEventListener(
+"focus",
+() => {
 
-event.stopPropagation();
-
-emojiPicker.classList.toggle(
-"show"
-);
+markVisibleConversationAsRead();
 
 }
 );
 
-emojiPicker
-.querySelectorAll("button")
-.forEach(function(button){
 
-button.addEventListener(
-"click",
-function(event){
+/* =====================================================
+   UPDATE ONLINE STATUS WHEN WINDOW GAINS FOCUS
+===================================================== */
 
-event.stopPropagation();
+window.addEventListener(
+"focus",
+async () => {
 
-const emoji=
-button.textContent;
+if(!currentUser){
 
-const start=
-messageInput.selectionStart ??
-messageInput.value.length;
+return;
 
-const end=
-messageInput.selectionEnd ??
-messageInput.value.length;
+}
 
-const value=
-messageInput.value;
+await setCurrentUserOnline();
 
-messageInput.value=
-value.substring(0,start)+
-emoji+
-value.substring(end);
-
-const position=
-start+emoji.length;
-
-messageInput.focus();
-
-messageInput.setSelectionRange(
-position,
-position
-);
-
-emojiPicker.classList.remove(
-"show"
-);
+await markVisibleConversationAsRead();
 
 }
 );
 
-});
+
+/* =====================================================
+   UPDATE ONLINE STATUS WHEN WINDOW LOSES FOCUS
+===================================================== */
+
+window.addEventListener(
+"blur",
+async () => {
+
+if(!currentUser){
+
+return;
+
+}
+
+await setCurrentUserOffline();
+
+}
+);
 
 
-document.addEventListener(
-"click",
-function(event){
+/* =====================================================
+   CLOSE VIEWER WHEN BACK BUTTON IS PRESSED
+===================================================== */
+
+window.addEventListener(
+"popstate",
+() => {
 
 if(
-!emojiPicker.contains(event.target) &&
-event.target!==emojiButton
+mediaViewer.classList.contains(
+"show"
+)
 ){
 
-emojiPicker.classList.remove(
-"show"
-);
+resetMediaViewer();
 
 }
 
@@ -1694,35 +5867,191 @@ emojiPicker.classList.remove(
 
 
 /* =====================================================
-   CLEANUP
+   IMAGE VIEWER ERROR
 ===================================================== */
 
-window.addEventListener(
-"beforeunload",
-function(){
+viewerImage.addEventListener(
+"error",
+() => {
+
+alert(
+"Unable to open this picture."
+);
+
+resetMediaViewer();
+
+}
+);
+
+
+/* =====================================================
+   VIDEO VIEWER ERROR
+===================================================== */
+
+viewerVideo.addEventListener(
+"error",
+() => {
+
+alert(
+"Unable to play this video."
+);
+
+resetMediaViewer();
+
+}
+);
+
+
+/* =====================================================
+   STOP OTHER AUDIO PLAYERS
+===================================================== */
+
+chatArea.addEventListener(
+"play",
+(event) => {
+
+if(
+event.target.tagName !== "AUDIO"
+){
+
+return;
+
+}
+
+chatArea
+.querySelectorAll("audio")
+.forEach((audioPlayer) => {
+
+if(
+audioPlayer !== event.target
+){
+
+audioPlayer.pause();
+
+}
+
+});
+
+},
+true
+);
+
+
+/* =====================================================
+   STOP OTHER VIDEOS
+===================================================== */
+
+chatArea.addEventListener(
+"play",
+(event) => {
+
+if(
+event.target.tagName !== "VIDEO"
+){
+
+return;
+
+}
+
+chatArea
+.querySelectorAll("video")
+.forEach((videoPlayer) => {
+
+if(
+videoPlayer !== event.target
+){
+
+videoPlayer.pause();
+
+}
+
+});
+
+},
+true
+);
+
+
+/* =====================================================
+   CLEAN UP BEFORE PAGE CLOSE
+===================================================== */
+
+function cleanUpChatPage(){
 
 if(unsubscribeMessages){
 
 unsubscribeMessages();
 
+unsubscribeMessages =
+null;
+
 }
+
+if(unsubscribeOtherUser){
+
+unsubscribeOtherUser();
+
+unsubscribeOtherUser =
+null;
+
+}
+
+if(isRecording){
+
+cancelVoiceRecording();
+
+}else{
+
+releaseRecordingStream();
+
+stopRecordingTimer();
+
+}
+
+releasePreviewUrl();
+
+resetMediaViewer();
+
+}
+
+
+/* =====================================================
+   PAGE HIDE CLEANUP
+===================================================== */
+
+window.addEventListener(
+"pagehide",
+() => {
+
+cleanUpChatPage();
 
 }
 );
 
 
 /* =====================================================
-   AUTO FOCUS
+   BEFORE UNLOAD CLEANUP
 ===================================================== */
 
 window.addEventListener(
-"load",
-function(){
+"beforeunload",
+() => {
 
-messageInput.focus();
+cleanUpChatPage();
 
 }
 );
+
+
+/* =====================================================
+   INITIAL INPUT STATE
+===================================================== */
+
+messageInput.focus();
+
+updateRecordingTimer();
+
+resetUploadProgress();
 
 </script>
 
