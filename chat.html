@@ -7,7 +7,7 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
 >
 
 <meta
@@ -15,9 +15,8 @@ name="description"
 content="Private Christian messaging for SABASABA Gospel Ministry"
 >
 
-<title>
-Private Chat | SABASABA Gospel Ministry
-</title>
+<title>Private Chat | SABASABA Gospel Ministry</title>
+
 <style>
 
 /* =====================================================
@@ -58,6 +57,7 @@ background:#0066cc;
 color:#ffffff;
 box-shadow:0 2px 8px rgba(0,0,0,.15);
 z-index:10;
+flex-shrink:0;
 }
 
 .back-button{
@@ -76,7 +76,7 @@ flex-shrink:0;
 }
 
 .back-button:hover{
-background:rgba(255,255,255,.3);
+background:rgba(255,255,255,.30);
 }
 
 .chat-avatar{
@@ -165,7 +165,7 @@ font-size:16px;
 line-height:1.45;
 word-wrap:break-word;
 overflow-wrap:anywhere;
-box-shadow:0 1px 4px rgba(0,0,0,.1);
+box-shadow:0 1px 4px rgba(0,0,0,.10);
 }
 
 .mine{
@@ -196,7 +196,7 @@ text-align:right;
 
 
 /* =====================================================
-   THREE-DOT MESSAGE MENU
+   MESSAGE OPTIONS MENU
 ===================================================== */
 
 .message-menu-button{
@@ -225,7 +225,7 @@ color:#333333;
 }
 
 .message-menu-button:hover{
-opacity:.8;
+opacity:.82;
 }
 
 .message-menu{
@@ -233,7 +233,7 @@ display:none;
 position:absolute;
 top:39px;
 right:6px;
-min-width:175px;
+min-width:180px;
 padding:6px;
 background:#ffffff;
 border-radius:11px;
@@ -247,7 +247,7 @@ display:block;
 
 .message-option{
 width:100%;
-padding:10px 12px;
+padding:11px 12px;
 border:none;
 border-radius:7px;
 background:#ffffff;
@@ -255,6 +255,10 @@ font-size:14px;
 font-weight:bold;
 text-align:left;
 cursor:pointer;
+}
+
+.message-option:hover{
+background:#f2f4f7;
 }
 
 .delete-for-me{
@@ -265,23 +269,21 @@ color:#555555;
 color:#d93025;
 }
 
-.message-option:hover{
-background:#f2f4f7;
-}
-
 
 /* =====================================================
-   INPUT AREA
+   MESSAGE INPUT AREA
 ===================================================== */
 
 .input-area{
+position:relative;
 display:flex;
 align-items:center;
-gap:10px;
+gap:9px;
 padding:11px 13px;
 background:#ffffff;
 border-top:1px solid #d9e0e8;
 box-shadow:0 -2px 8px rgba(0,0,0,.05);
+flex-shrink:0;
 }
 
 .message-input{
@@ -308,6 +310,7 @@ color:#ffffff;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
+flex-shrink:0;
 }
 
 .send-button:hover{
@@ -317,6 +320,70 @@ background:#004f9e;
 .send-button:disabled{
 background:#8ba8c5;
 cursor:not-allowed;
+}
+
+
+/* =====================================================
+   EMOJI BUTTON
+===================================================== */
+
+.emoji-button{
+width:44px;
+height:44px;
+border:none;
+border-radius:50%;
+background:#eef3f8;
+font-size:23px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+flex-shrink:0;
+}
+
+.emoji-button:hover{
+background:#dde7f1;
+}
+
+
+/* =====================================================
+   EMOJI PICKER
+===================================================== */
+
+.emoji-picker{
+display:none;
+position:absolute;
+left:10px;
+bottom:68px;
+width:270px;
+max-width:calc(100vw - 20px);
+max-height:230px;
+overflow-y:auto;
+padding:10px;
+background:#ffffff;
+border:1px solid #d9e0e8;
+border-radius:14px;
+box-shadow:0 8px 24px rgba(0,0,0,.18);
+z-index:50;
+grid-template-columns:repeat(6,1fr);
+gap:7px;
+}
+
+.emoji-picker.show{
+display:grid;
+}
+
+.emoji-picker button{
+border:none;
+background:#f4f6f8;
+border-radius:8px;
+font-size:24px;
+padding:7px 4px;
+cursor:pointer;
+}
+
+.emoji-picker button:hover{
+background:#e4ebf2;
 }
 
 
@@ -356,73 +423,42 @@ font-size:16px;
 
 .input-area{
 padding:10px;
+gap:7px;
+}
+
+.emoji-button{
+width:42px;
+height:42px;
 }
 
 .send-button{
 padding:12px 17px;
 }
 
+.emoji-picker{
+left:8px;
+bottom:65px;
 }
-/button>
 
-</footer>
-/* =====================================================
-   EMOJI PICKER
-===================================================== */
+}
 
-.input-area{
-position:relative;
+@media(max-width:380px){
+
+.send-button{
+padding:12px 13px;
+}
+
+.message-input{
+padding:12px 13px;
 }
 
 .emoji-button{
-width:44px;
-height:44px;
-border:none;
-border-radius:50%;
-background:#eef3f8;
-font-size:23px;
-cursor:pointer;
-flex-shrink:0;
+width:40px;
+height:40px;
 }
 
-.emoji-button:hover{
-background:#dde7f1;
 }
 
-.emoji-picker{
-display:none;
-position:absolute;
-left:10px;
-bottom:68px;
-width:260px;
-max-height:220px;
-overflow-y:auto;
-padding:10px;
-background:#ffffff;
-border:1px solid #d9e0e8;
-border-radius:14px;
-box-shadow:0 8px 24px rgba(0,0,0,.18);
-z-index:50;
-grid-template-columns:repeat(6,1fr);
-gap:7px;
-}
-
-.emoji-picker.show{
-display:grid;
-}
-
-.emoji-picker button{
-border:none;
-background:#f4f6f8;
-border-radius:8px;
-font-size:24px;
-padding:7px;
-cursor:pointer;
-}
-
-.emoji-picker button:hover{
-background:#e4ebf2;
-}
 </style>
 
 </head>
@@ -435,10 +471,10 @@ background:#e4ebf2;
 <header class="chat-header">
 
 <button
-type="button"
 id="backButton"
 class="back-button"
-aria-label="Back to private messages"
+type="button"
+aria-label="Back"
 >
 ←
 </button>
@@ -447,7 +483,7 @@ aria-label="Back to private messages"
 id="chatAvatar"
 class="chat-avatar"
 src="images/profile.png"
-alt="Member profile picture"
+alt="Profile Picture"
 >
 
 <div class="chat-header-info">
@@ -472,7 +508,7 @@ Private Christian conversation
 
 
 <!-- =====================================================
-     MESSAGE AREA
+     CHAT AREA
 ===================================================== -->
 
 <main
@@ -492,7 +528,7 @@ Start your Christian conversation.
 
 
 <!-- =====================================================
-     MESSAGE INPUT AREA
+     MESSAGE INPUT
 ===================================================== -->
 
 <footer class="input-area">
@@ -501,7 +537,7 @@ Start your Christian conversation.
 id="emojiButton"
 class="emoji-button"
 type="button"
-aria-label="Open emoji picker"
+aria-label="Emoji"
 >
 😊
 </button>
@@ -510,22 +546,35 @@ aria-label="Open emoji picker"
 id="emojiPicker"
 class="emoji-picker"
 >
+
 <button type="button">😀</button>
 <button type="button">😁</button>
 <button type="button">😂</button>
+<button type="button">🤣</button>
 <button type="button">😊</button>
 <button type="button">😍</button>
+
 <button type="button">🥰</button>
+<button type="button">😘</button>
 <button type="button">😇</button>
 <button type="button">🙏</button>
 <button type="button">❤️</button>
 <button type="button">👍</button>
+
 <button type="button">👏</button>
 <button type="button">🔥</button>
 <button type="button">🎉</button>
 <button type="button">💪</button>
+<button type="button">🙌</button>
+<button type="button">🤝</button>
+
 <button type="button">📖</button>
 <button type="button">✝️</button>
+<button type="button">⛪</button>
+<button type="button">🕊️</button>
+<button type="button">🌍</button>
+<button type="button">🌞</button>
+
 </div>
 
 <input
@@ -535,7 +584,6 @@ type="text"
 maxlength="2000"
 placeholder="Type your message..."
 autocomplete="off"
-aria-label="Type your message"
 >
 
 <button
@@ -554,24 +602,23 @@ Send
    FIREBASE SETUP
 ===================================================== */
 
-import{
-auth,
-db,
-collection,
-doc,
-getDoc,
-addDoc,
-setDoc,
-query,
-orderBy,
-onSnapshot,
-serverTimestamp,
-deleteDoc,
-updateDoc,
-arrayUnion,
-onAuthStateChanged
-}
-from "./firebase.js";
+import {
+  auth,
+  db,
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+  setDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  onAuthStateChanged
+} from "./firebase.js";
 
 
 /* =====================================================
@@ -599,16 +646,24 @@ document.getElementById("messageInput");
 const sendButton =
 document.getElementById("sendButton");
 
+const emojiButton =
+document.getElementById("emojiButton");
+
+const emojiPicker =
+document.getElementById("emojiPicker");
+
 
 /* =====================================================
-   VARIABLES
+   CHAT VARIABLES
 ===================================================== */
 
-const params =
-new URLSearchParams(window.location.search);
+const urlParameters =
+new URLSearchParams(
+window.location.search
+);
 
 const otherUid =
-params.get("uid");
+urlParameters.get("uid");
 
 let currentUser = null;
 
@@ -618,12 +673,14 @@ let sendingMessage = false;
 
 
 /* =====================================================
-   CHECK URL
+   CHECK CHAT MEMBER ID
 ===================================================== */
 
 if(!otherUid){
 
-alert("Chat member not found.");
+alert(
+"Chat member was not found."
+);
 
 window.location.href =
 "privatemessages.html";
@@ -635,28 +692,38 @@ window.location.href =
    BACK BUTTON
 ===================================================== */
 
-backButton.onclick=function(){
+backButton.addEventListener(
+"click",
+function(){
 
-window.location.href=
+window.location.href =
 "privatemessages.html";
 
-};
+}
+);
 
 
 /* =====================================================
-   LOAD MEMBER
+   LOAD OTHER MEMBER PROFILE
 ===================================================== */
 
-async function loadMember(){
+async function loadMemberProfile(){
 
 try{
 
-const memberSnap =
-await getDoc(
-doc(db,"users",otherUid)
+const memberReference =
+doc(
+db,
+"users",
+otherUid
 );
 
-if(!memberSnap.exists()){
+const memberSnapshot =
+await getDoc(
+memberReference
+);
+
+if(!memberSnapshot.exists()){
 
 chatName.textContent =
 "Unknown Member";
@@ -664,45 +731,59 @@ chatName.textContent =
 chatStatus.textContent =
 "Profile unavailable";
 
+chatAvatar.src =
+"images/profile.png";
+
 return;
 
 }
 
-const member =
-memberSnap.data();
+const memberData =
+memberSnapshot.data();
 
 chatName.textContent =
-member.fullName ||
-member.name ||
-member.displayName ||
+memberData.fullName ||
+memberData.name ||
+memberData.displayName ||
 "Community Member";
 
 chatAvatar.src =
-member.profilePicture ||
-member.profileImage ||
-member.picture ||
-member.photoURL ||
+memberData.profilePicture ||
+memberData.profileImage ||
+memberData.picture ||
+memberData.photoURL ||
 "images/profile.png";
 
-chatAvatar.onerror=function(){
+chatAvatar.onerror =
+function(){
 
-chatAvatar.src=
+chatAvatar.onerror = null;
+
+chatAvatar.src =
 "images/profile.png";
 
 };
 
 chatStatus.textContent =
-"Private Christian conversation";
+memberData.country
+? `Christian member from ${memberData.country}`
+: "Private Christian conversation";
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Member profile loading error:",
+error
+);
 
 chatName.textContent =
 "Community Member";
 
 chatStatus.textContent =
 "Private Christian conversation";
+
+chatAvatar.src =
+"images/profile.png";
 
 }
 
@@ -710,25 +791,25 @@ chatStatus.textContent =
 
 
 /* =====================================================
-   LOGIN
+   AUTHENTICATION
 ===================================================== */
 
 onAuthStateChanged(
 auth,
-async(user)=>{
+async function(user){
 
 if(!user){
 
-window.location.href=
+window.location.href =
 "login.html";
 
 return;
 
 }
 
-currentUser=user;
+currentUser = user;
 
-await loadMember();
+await loadMemberProfile();
 
 loadMessages();
 
@@ -736,7 +817,7 @@ loadMessages();
 );
 /* =====================================================
    PART 4 OF 6
-   LOAD AND DISPLAY MESSAGES
+   MESSAGE DISPLAY
 ===================================================== */
 
 
@@ -750,12 +831,12 @@ if(!timestamp){
 return "Sending...";
 }
 
-const date =
+const messageDate =
 timestamp.toDate
 ? timestamp.toDate()
 : new Date(timestamp);
 
-return date.toLocaleTimeString(
+return messageDate.toLocaleTimeString(
 [],
 {
 hour:"2-digit",
@@ -774,7 +855,7 @@ function closeAllMessageMenus(){
 
 document
 .querySelectorAll(".message-menu.show")
-.forEach((menu)=>{
+.forEach(function(menu){
 
 menu.classList.remove("show");
 
@@ -784,7 +865,7 @@ menu.classList.remove("show");
 
 
 /* =====================================================
-   CREATE ONE MESSAGE
+   CREATE ONE MESSAGE ELEMENT
 ===================================================== */
 
 function createMessageElement(
@@ -832,7 +913,9 @@ messageText.className =
 "message-text";
 
 messageText.textContent =
-messageData.message || "";
+messageData.message ||
+messageData.text ||
+"";
 
 messageBubble.appendChild(
 messageText
@@ -857,9 +940,7 @@ messageTime
 );
 
 
-/* =====================================================
-   MESSAGE MENU BUTTON
-===================================================== */
+/* MESSAGE MENU BUTTON */
 
 const menuButton =
 document.createElement("button");
@@ -879,9 +960,7 @@ menuButton.setAttribute(
 );
 
 
-/* =====================================================
-   MESSAGE MENU
-===================================================== */
+/* MESSAGE MENU */
 
 const messageMenu =
 document.createElement("div");
@@ -890,9 +969,7 @@ messageMenu.className =
 "message-menu";
 
 
-/* =====================================================
-   DELETE FOR ME
-===================================================== */
+/* DELETE FOR ME BUTTON */
 
 const deleteForMeButton =
 document.createElement("button");
@@ -928,10 +1005,7 @@ deleteForMeButton
 );
 
 
-/* =====================================================
-   DELETE FOR EVERYONE
-   ONLY FOR MY OWN MESSAGE
-===================================================== */
+/* DELETE FOR EVERYONE BUTTON */
 
 if(isMine){
 
@@ -972,9 +1046,7 @@ deleteForEveryoneButton
 }
 
 
-/* =====================================================
-   OPEN MESSAGE MENU
-===================================================== */
+/* OPEN OR CLOSE MENU */
 
 menuButton.addEventListener(
 "click",
@@ -982,14 +1054,14 @@ function(event){
 
 event.stopPropagation();
 
-const isOpen =
+const menuWasOpen =
 messageMenu.classList.contains(
 "show"
 );
 
 closeAllMessageMenus();
 
-if(!isOpen){
+if(!menuWasOpen){
 
 messageMenu.classList.add(
 "show"
@@ -1001,7 +1073,7 @@ messageMenu.classList.add(
 );
 
 
-/* ADD MENU TO MESSAGE */
+/* BUILD MESSAGE */
 
 messageBubble.appendChild(
 menuButton
@@ -1010,9 +1082,6 @@ menuButton
 messageBubble.appendChild(
 messageMenu
 );
-
-
-/* ADD MESSAGE TO ROW */
 
 messageRow.appendChild(
 messageBubble
@@ -1044,15 +1113,15 @@ orderBy("timestamp","asc")
 unsubscribeMessages =
 onSnapshot(
 messagesQuery,
-(snapshot)=>{
+function(snapshot){
 
 chatArea.innerHTML = "";
 
-let foundMessage =
+let messageFound =
 false;
 
 snapshot.forEach(
-(messageDocument)=>{
+function(messageDocument){
 
 const messageData =
 messageDocument.data();
@@ -1075,7 +1144,7 @@ messageData.receiverId === currentUser.uid
 );
 
 
-/* CHECK WHETHER USER DELETED IT FOR THEMSELVES */
+/* CHECK WHETHER CURRENT USER DELETED THE MESSAGE */
 
 const deletedFor =
 Array.isArray(messageData.deletedFor)
@@ -1097,8 +1166,7 @@ return;
 
 }
 
-foundMessage =
-true;
+messageFound = true;
 
 const messageElement =
 createMessageElement(
@@ -1113,9 +1181,9 @@ messageElement
 );
 
 
-/* EMPTY CHAT */
+/* SHOW EMPTY MESSAGE */
 
-if(!foundMessage){
+if(!messageFound){
 
 chatArea.innerHTML = `
 <div class="empty-message">
@@ -1127,10 +1195,10 @@ Start your Christian conversation.
 }
 
 
-/* AUTO-SCROLL */
+/* SCROLL TO NEWEST MESSAGE */
 
 requestAnimationFrame(
-()=>{
+function(){
 
 chatArea.scrollTop =
 chatArea.scrollHeight;
@@ -1139,7 +1207,7 @@ chatArea.scrollHeight;
 );
 
 },
-(error)=>{
+function(error){
 
 console.error(
 "Message loading error:",
@@ -1160,7 +1228,7 @@ Please check your internet connection.
 
 
 /* =====================================================
-   CLOSE MENU WHEN CLICKING ELSEWHERE
+   CLOSE MENU WHEN CLICKING OUTSIDE
 ===================================================== */
 
 document.addEventListener(
@@ -1179,13 +1247,14 @@ closeAllMessageMenus();
 
 /* =====================================================
    DELETE FOR ME
-   Hides the message only from the current user
 ===================================================== */
 
-function confirmDeleteForMe(messageId){
+function confirmDeleteForMe(
+messageId
+){
 
 const confirmed =
-confirm(
+window.confirm(
 "Delete this message only from your chat?"
 );
 
@@ -1200,7 +1269,9 @@ messageId
 }
 
 
-async function deleteMessageForMe(messageId){
+async function deleteMessageForMe(
+messageId
+){
 
 if(!currentUser){
 return;
@@ -1218,7 +1289,8 @@ messageId
 await updateDoc(
 messageReference,
 {
-deletedFor:arrayUnion(
+deletedFor:
+arrayUnion(
 currentUser.uid
 )
 }
@@ -1242,7 +1314,6 @@ alert(
 
 /* =====================================================
    DELETE FOR EVERYONE
-   Only the sender may completely delete the message
 ===================================================== */
 
 function confirmDeleteForEveryone(
@@ -1267,7 +1338,7 @@ return;
 }
 
 const confirmed =
-confirm(
+window.confirm(
 "Delete this message for everyone?"
 );
 
@@ -1332,7 +1403,6 @@ alert(
 
 /* =====================================================
    UPDATE CONVERSATION SUMMARY
-   Used after sending a new message
 ===================================================== */
 
 async function updateConversationSummary(
@@ -1342,7 +1412,10 @@ messageText
 ){
 
 const conversationId =
-[senderId,receiverId]
+[
+senderId,
+receiverId
+]
 .sort()
 .join("_");
 
@@ -1379,7 +1452,7 @@ merge:true
 
 
 /* =====================================================
-   CREATE RECEIVER NOTIFICATION
+   CREATE MESSAGE NOTIFICATION
 ===================================================== */
 
 async function createMessageNotification(
@@ -1418,7 +1491,7 @@ serverTimestamp()
 }catch(error){
 
 console.error(
-"Notification error:",
+"Notification creation error:",
 error
 );
 
@@ -1427,12 +1500,7 @@ error
 }
 /* =====================================================
    PART 6 OF 6
-   SEND MESSAGES
-===================================================== */
-
-
-/* =====================================================
-   SEND ONE MESSAGE
+   SEND MESSAGE
 ===================================================== */
 
 async function sendMessage(){
@@ -1445,39 +1513,28 @@ sendingMessage
 return;
 }
 
-const messageText =
+const text =
 messageInput.value.trim();
 
-if(!messageText){
+if(text===""){
 return;
 }
 
-sendingMessage = true;
+sendingMessage=true;
 
-sendButton.disabled = true;
+sendButton.disabled=true;
 
-messageInput.disabled = true;
+messageInput.disabled=true;
 
 try{
 
 await addDoc(
-collection(
-db,
-"messages"
-),
+collection(db,"messages"),
 {
-senderId:
-currentUser.uid,
-
-receiverId:
-otherUid,
-
-message:
-messageText,
-
-timestamp:
-serverTimestamp(),
-
+senderId:currentUser.uid,
+receiverId:otherUid,
+message:text,
+timestamp:serverTimestamp(),
 deletedFor:[]
 }
 );
@@ -1485,15 +1542,15 @@ deletedFor:[]
 await updateConversationSummary(
 currentUser.uid,
 otherUid,
-messageText
+text
 );
 
 await createMessageNotification(
 otherUid,
-messageText
+text
 );
 
-messageInput.value = "";
+messageInput.value="";
 
 }catch(error){
 
@@ -1503,16 +1560,18 @@ error
 );
 
 alert(
-"Message could not be sent. Please check your internet connection and try again."
+"Unable to send message."
 );
 
-}finally{
+}
 
-sendingMessage = false;
+finally{
 
-sendButton.disabled = false;
+sendingMessage=false;
 
-messageInput.disabled = false;
+sendButton.disabled=false;
+
+messageInput.disabled=false;
 
 messageInput.focus();
 
@@ -1522,7 +1581,7 @@ messageInput.focus();
 
 
 /* =====================================================
-   SEND BUTTON
+   SEND EVENTS
 ===================================================== */
 
 sendButton.addEventListener(
@@ -1530,17 +1589,12 @@ sendButton.addEventListener(
 sendMessage
 );
 
-
-/* =====================================================
-   PRESS ENTER TO SEND
-===================================================== */
-
 messageInput.addEventListener(
 "keydown",
 function(event){
 
 if(
-event.key === "Enter" &&
+event.key==="Enter" &&
 !event.shiftKey
 ){
 
@@ -1555,7 +1609,92 @@ sendMessage();
 
 
 /* =====================================================
-   PAGE CLEANUP
+   EMOJI PICKER
+===================================================== */
+
+emojiButton.addEventListener(
+"click",
+function(event){
+
+event.stopPropagation();
+
+emojiPicker.classList.toggle(
+"show"
+);
+
+}
+);
+
+emojiPicker
+.querySelectorAll("button")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(event){
+
+event.stopPropagation();
+
+const emoji=
+button.textContent;
+
+const start=
+messageInput.selectionStart ??
+messageInput.value.length;
+
+const end=
+messageInput.selectionEnd ??
+messageInput.value.length;
+
+const value=
+messageInput.value;
+
+messageInput.value=
+value.substring(0,start)+
+emoji+
+value.substring(end);
+
+const position=
+start+emoji.length;
+
+messageInput.focus();
+
+messageInput.setSelectionRange(
+position,
+position
+);
+
+emojiPicker.classList.remove(
+"show"
+);
+
+}
+);
+
+});
+
+
+document.addEventListener(
+"click",
+function(event){
+
+if(
+!emojiPicker.contains(event.target) &&
+event.target!==emojiButton
+){
+
+emojiPicker.classList.remove(
+"show"
+);
+
+}
+
+}
+);
+
+
+/* =====================================================
+   CLEANUP
 ===================================================== */
 
 window.addEventListener(
@@ -1573,7 +1712,7 @@ unsubscribeMessages();
 
 
 /* =====================================================
-   FOCUS MESSAGE INPUT
+   AUTO FOCUS
 ===================================================== */
 
 window.addEventListener(
@@ -1584,63 +1723,7 @@ messageInput.focus();
 
 }
 );
-/* =====================================================
-   EMOJI PICKER
-===================================================== */
 
-.input-area{
-position:relative;
-}
-
-.emoji-button{
-width:44px;
-height:44px;
-border:none;
-border-radius:50%;
-background:#eef3f8;
-font-size:23px;
-cursor:pointer;
-flex-shrink:0;
-}
-
-.emoji-button:hover{
-background:#dde7f1;
-}
-
-.emoji-picker{
-display:none;
-position:absolute;
-left:10px;
-bottom:68px;
-width:260px;
-max-height:220px;
-overflow-y:auto;
-padding:10px;
-background:#ffffff;
-border:1px solid #d9e0e8;
-border-radius:14px;
-box-shadow:0 8px 24px rgba(0,0,0,.18);
-z-index:50;
-grid-template-columns:repeat(6,1fr);
-gap:7px;
-}
-
-.emoji-picker.show{
-display:grid;
-}
-
-.emoji-picker button{
-border:none;
-background:#f4f6f8;
-border-radius:8px;
-font-size:24px;
-padding:7px;
-cursor:pointer;
-}
-
-.emoji-picker button:hover{
-background:#e4ebf2;
-}
 </script>
 
 </body>
