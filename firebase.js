@@ -28,6 +28,7 @@ import {
   updateDoc,
   deleteDoc,
   increment,
+  arrayUnion,
   query,
   where,
   orderBy,
@@ -35,6 +36,11 @@ import {
   serverTimestamp,
   writeBatch
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+/* =====================================================
+   FIREBASE CONFIGURATION
+===================================================== */
 
 const firebaseConfig = {
   apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
@@ -45,17 +51,29 @@ const firebaseConfig = {
   appId: "1:821278457946:web:3593bd1743970f44c05863"
 };
 
+
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
+
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+
 const db = getFirestore(app);
+
 const storage = getStorage(app);
+
+
+/* =====================================================
+   EXPORT FIREBASE SERVICES AND FUNCTIONS
+===================================================== */
 
 export {
   auth,
   db,
   storage,
-  writeBatch,
+
   ref,
   uploadBytes,
   uploadBytesResumable,
@@ -71,11 +89,13 @@ export {
   updateDoc,
   deleteDoc,
   increment,
+  arrayUnion,
   query,
   where,
   orderBy,
   onSnapshot,
   serverTimestamp,
+  writeBatch,
 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
