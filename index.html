@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+name="description"
+content="SABASABA Gospel Ministry Christian Community"
+>
+
+<title>SABASABA Gospel Ministry</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,
+body{
+width:100%;
+height:100%;
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(135deg,#0b3d91,#1e90ff);
+color:#ffffff;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.loading-container{
+width:100%;
+max-width:430px;
+text-align:center;
+}
+
+.ministry-logo{
+width:95px;
+height:95px;
+margin:0 auto 20px;
+border-radius:50%;
+background:#ffffff;
+color:#0b3d91;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:46px;
+box-shadow:0 8px 25px rgba(0,0,0,.22);
+}
+
+h1{
+font-size:30px;
+line-height:1.3;
+letter-spacing:1px;
+}
+
+p{
+margin-top:12px;
+font-size:17px;
+color:#e5f1ff;
+}
+
+.loading-spinner{
+width:48px;
+height:48px;
+margin:30px auto 18px;
+border:5px solid rgba(255,255,255,.35);
+border-top-color:#ffffff;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+.open-button{
+display:inline-block;
+margin-top:16px;
+padding:14px 28px;
+border-radius:30px;
+background:#ffffff;
+color:#0b3d91;
+font-size:16px;
+font-weight:bold;
+text-decoration:none;
+box-shadow:0 5px 16px rgba(0,0,0,.18);
+}
+
+.open-button:hover{
+background:#f1f6ff;
+}
+
+.small-text{
+margin-top:25px;
+font-size:13px;
+opacity:.82;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="loading-container">
+
+<div class="ministry-logo">
+✝️
+</div>
+
+<h1>
+SABASABA GOSPEL MINISTRY
+</h1>
+
+<p>
+Opening the Christian Community Wall...
+</p>
+
+<div class="loading-spinner"></div>
+
+<a
+class="open-button"
+href="feed.html"
+>
+Open Community Wall
+</a>
+
+<div class="small-text">
+Preaching Jesus Christ to the World
+</div>
+
+</main>
+
+<script>
+
+window.setTimeout(() => {
+
+window.location.replace("feed.html");
+
+}, 700);
+
+</script>
+
+</body>
+
+</html>
