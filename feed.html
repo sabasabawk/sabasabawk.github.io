@@ -1190,7 +1190,15 @@ const backButton =
 document.getElementById(
   "backButton"
 );
+const quickPostButton =
+document.getElementById(
+  "quickPostButton"
+);
 
+const quickPostAvatar =
+document.getElementById(
+  "quickPostAvatar"
+);
 
 /* =====================================================
    GLOBAL VARIABLES
@@ -1330,7 +1338,36 @@ async function loadCurrentUserProfile(){
 
       currentUserProfile =
       profileSnapshot.data();
+const quickPicture =
+getFirstValue(
+  currentUserProfile.profilePicture,
+  currentUserProfile.picture,
+  currentUserProfile.photoURL,
+  currentUser.photoURL,
+  defaultProfilePicture
+);
 
+if(quickPostAvatar){
+
+  quickPostAvatar.src =
+  quickPicture;
+
+}
+const quickPicture =
+getFirstValue(
+  currentUserProfile.profilePicture,
+  currentUserProfile.picture,
+  currentUserProfile.photoURL,
+  currentUser.photoURL,
+  defaultProfilePicture
+);
+
+if(quickPostAvatar){
+
+  quickPostAvatar.src =
+  quickPicture;
+
+}
     }
 
   }catch(error){
