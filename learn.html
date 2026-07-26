@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabasaba Gospel Ministry</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #eef3ff, #f7f9fc);
+      color: #222;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0b3d91, #1e90ff);
+      color: white;
+      text-align: center;
+      padding: 70px 20px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 42px;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-top: 10px;
+    }
+
+    /* HERO BUTTONS */
+    .hero-buttons a {
+      display: inline-block;
+      margin: 12px;
+      padding: 12px 22px;
+      background: white;
+      color: #0b3d91;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .hero-buttons a:hover {
+      background: gold;
+      color: black;
+      transform: scale(1.05);
+    }
+
+    /* SECTION */
+    section {
+      padding: 40px 15px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    /* CARDS */
+    .card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 25px;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* HEADINGS */
+    h2 {
+      color: #0b3d91;
+      margin-bottom: 12px;
+      border-left: 5px solid #1e90ff;
+      padding-left: 10px;
+    }
+
+    h3 {
+      color: #0b3d91;
+    }
+
+    /* BIBLE STUDY LESSONS TITLE - CLICKABLE */
+    .lessons-title {
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .lessons-title:hover {
+      background: #e0eaff;
+      transform: scale(1.05);
+    }
+
+    /* LESSONS GRID */
+    .lessons-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .lessons-grid.active {
+      display: grid;
+    }
+
+    .lesson-card {
+      background: linear-gradient(135deg, #1e90ff, #0b3d91);
+      color: white;
+      padding: 30px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 150px;
+      text-decoration: none;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      background: linear-gradient(135deg, #0b3d91, #1e90ff);
+    }
+
+    .lesson-card .number {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .lesson-card .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .lesson-card .description {
+      font-size: 12px;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
+    /* VERSE BOX */
+    .verse {
+      background: #eaf2ff;
+      border-left: 6px solid #1e90ff;
+      font-style: italic;
+    }
+
+    /* SOCIAL LINKS */
+    .social-links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 18px;
+      background: #0b3d91;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .social-links a:hover {
+      background: #1e90ff;
+      transform: scale(1.05);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      background: #0b3d91;
+      color: white;
+      padding: 20px;
+      margin-top: 40px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 30px;
+      }
+
+      .hero-buttons a,
+      .social-links a {
+        display: block;
+        width: 90%;
+        margin: 10px auto;
+        text-align: center;
+      }
+
+      .lessons-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+    }
+.certificates-section{
+    background:white;
+    margin:20px;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    text-align:center;
+}
+
+.certificates-section h2{
+    color:#0066cc;
+    margin-bottom:15px;
+}
+
+.certificates-section p{
+    line-height:1.8;
+}
+.start-btn{
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.start-btn:hover{
+    transform: scale(1.05);
+}
+
+.start-btn:active{
+    transform: scale(0.98);
+}
+  </style>
+</head>
+<body>
+<div class="card">
+
+<div class="icon">🤝</div>
+
+<h2>Christian Community</h2>
+
+<p>
+Connect with believers around the world. Share testimonies, prayer requests, Bible discussions, encouragement, and ministry updates while growing together in Christ.
+</p>
+
+<a href="community.html">
+<button class="start-btn">🚀 Join Community</button>
+</a>
+
+</div>
+</div>
+</div>
+  <header>
+    <h1>SABASABA GOSPEL MINISTRY</h1>
+    <p>Preaching Jesus Christ to the World</p>
+    <div class="hero-buttons">
+      <a href="bible.html">📖 Read the Bible</a>
+      <a href="https://whatsapp.com/channel/0029VbCqWJoL7UVVpofHfC27" target="_blank">Join WhatsApp Channel</a>
+      <a href="https://www.youtube.com/@sabasabawilfred863" target="_blank">Watch Sermons</a>
+    </div>
+  </header>
+
+  <div style="background:#006400;
+              color:white;
+              padding:20px;
+              margin:15px;
+              border-radius:10px;
+              text-align:center;
+              box-shadow:0 4px 8px rgba(0,0,0,0.3);">
+
+<div class="card">
+    <h2>🎵 Gospel Hymns</h2>
+
+    <p>
+        Sing and study classic Christian hymns that have inspired believers for generations.
+    </p>
+
+    <a href="hymnal.html" class="btn">
+        Open Hymnal
+    </a>
+</div>
+<div class="card">
+    <h2>📖 Bible Reading Plan</h2>
+    <p>Follow a daily Bible reading journey and grow spiritually every day.</p>
+
+    <a href="bible-reading.html" class="btn">
+        <button class="start-btn">🚀 Start Learning</button>
+
+<a href="certificate.html?course=Bible Reading">
+🏆 Get Certificate
+</a>
+</div>
+<div class="card">
+    <h2>📖 Bible Dictionary</h2>
+    <p>Explore important Bible words and their meanings.</p>
+
+    <a href="bible-dictionary.html">
+        Open Bible Dictionary
+    </a>
+</div>
+
+</div>
+
+<h2>28 Fundamental Beliefs</h2>
+<p>Learn the teachings of the Seventh-day Adventist Church</p>
+
+<a href="fundamental-beliefs.html"
+   style="background:white;
+          color:#006400;
+          padding:10px 20px;
+          text-decoration:none;
+          border-radius:5px;
+          font-weight:bold;
+          display:inline-block;">
+
+    <button class="start-btn">🚀 Start Learning</button>
+
+</a>
+<div class="card">
+    <h2>🌿 Adventist Health Message</h2>
+    <p>Learn God's principles for healthy living.</p>
+
+    <a href="health.html">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+    <h2>💰 Christian Stewardship Course</h2>
+
+    <p>
+        Discover God's plan for managing time, talents, money, health,
+        relationships, possessions, and mission. Learn how faithful
+        stewardship prepares believers for Christ's soon return.
+    </p>
+
+    <a href="stewardship.html" class="btn">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+    <h2>👥 Youth Ministry Course</h2>
+    <p>Equip young people to grow in Christ, develop Christian character, discover their purpose, and become effective witnesses for God.</p>
+
+    <a href="youth.html">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+    <h3>🙏 Prayer Course</h3>
+
+    <p>
+        Learn how to pray effectively, strengthen your faith,
+        and deepen your relationship with God through this
+        12-lesson Bible-based course.
+    </p>
+
+    <a href="prayer.html">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+<h2>📖 Spirit of Prophecy</h2>
+
+<p>
+Study the prophetic ministry of Ellen G. White and discover how God has guided His church through the gift of prophecy.
+</p>
+
+<a href="sop.html" class="btn">
+<button class="start-btn">🚀 Start Learning</button>
+</a>
+</div>
+<div class="card">
+      <h2>History of SDA Church</h2>
+      <p>Learn how the Seventh-day Adventist Church began and grew worldwide</p>
+
+      <a href="sda-history.html"
+         style="background:white;
+                color:#8B0000;
+                padding:10px 20px;
+                text-decoration:none;
+                border-radius:5px;
+                font-weight:bold;">
+        <button class="start-btn">🚀 Start Learning</button>
+      </a>
+      </div>
+<div class="course-card">
+    <h3>💍 Marriage Course</h3>
+    <p>
+        Discover God's plan for marriage, relationships, communication,
+        family life, faithfulness, and building a Christ-centered home.
+    </p>
+
+    <a href="marriage.html">
+    <button class="start-btn">💍 Start Marriage Course</button>
+</a>
+</div>
+<div class="card">
+    <h2>👨‍👩‍👧‍👦 Adventist Family Life</h2>
+
+    <p>
+        Discover God's plan for marriage, parenting, family worship,
+        Christian relationships, stewardship, and preparing your family
+        for Christ's return.
+    </p>
+
+    <a href="family-life.html" class="btn">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+    <h2>📖 Daniel & Revelation Prophecy Course</h2>
+    <p>Discover God's prophetic messages for the last days and prepare for Christ's soon return.</p>
+
+    <a href="prophecy.html">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<div class="card">
+
+<h2>💰 Biblical Economics Course</h2>
+
+<p>
+Discover God's principles for work, stewardship, budgeting, debt, generosity, and managing finances according to the Bible.
+</p>
+
+<a href="economics.html">
+<button class="start-btn">🚀 Start Learning</button>
+</a>
+
+</div>
+<div class="card">
+
+<div class="icon">👑</div>
+
+<h2>Christian Leadership Course</h2>
+
+<p>
+Discover how to become a Christ-centered leader by following the example of Jesus. Learn biblical leadership, integrity, servant leadership, teamwork, prayer, conflict resolution, and how to lead with wisdom and humility.
+</p>
+
+<a href="leadership.html">
+<button class="start-btn">🚀 Start Learning</button>
+</a>
+
+</div>
+<div class="card">
+
+<div class="icon">🎓</div>
+
+<h2>Seventh-day Adventist Education Course</h2>
+
+<p>
+
+Discover God's plan for true education through the Bible and the Seventh-day Adventist philosophy of education. Learn how Christ-centered education develops the mind, body, character, and spirit while preparing people for service in this world and for God's eternal kingdom.
+
+</p>
+
+<a href="education.html">
+<button class="start-btn">🚀 Start Learning</button>
+</a>
+
+</div>
+<div class="card">
+    <h2>🔮 Magic, Witchcraft & The Bible</h2>
+
+    <p>
+        Discover what the Bible teaches about magic, witchcraft,
+        sorcery, fortune telling, astrology, and spiritual warfare.
+    </p>
+
+    <a href="magic.html">
+        <button class="start-btn">🚀 Start Learning</button>
+    </a>
+</div>
+<section class="certificates-section">
+    <h2>🏆 Certificates</h2><p>
+    Complete Bible-based courses from <strong>SABASABA Gospel Ministry</strong>
+    and earn a Certificate of Completion. Each certificate recognizes your
+    dedication to studying God's Word and growing spiritually.
+</p>
+
+<p>
+    Available certificates include Family Life, SDA History,
+    Spirit of Prophecy, Health Ministry, Christian Stewardship,
+    Bible Reading, Prayer Course, and future courses added to the platform.
+</p>
+
+<p>
+    Study. Learn. Grow. Prepare for Christ's Return.
+</p>
+
+</section>
+    <div style="background:linear-gradient(135deg,#4a148c,#7b1fa2);
+                color:white;
+                padding:20px;
+                margin:15px;
+                border-radius:15px;
+                text-align:center;
+                box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+
+      <h2>🎮 Bible Games</h2>
+      <div class="game-features">
+        <span>📖 Memory Verse</span>
+        <span>🎯 Daily Challenge</span>
+        <span>🏆 Achievements</span>
+        <span>👤 My Profile</span>
+      </div>
+      <p>
+        Test your Bible knowledge, complete challenges,
+        memorize Scripture, and grow in faith while having fun.
+      </p>
+
+      <a href="bible-games.html"
+         style="display:inline-block;
+                background:white;
+                color:#4a148c;
+                padding:12px 25px;
+                border-radius:30px;
+                text-decoration:none;
+                font-weight:bold;">
+        Play Now
+      </a>
+
+    </div>
+
+    <div class="card verse">
+      <h2>Verse of the Day</h2>
+
+      <p id="dailyVerse"></p>
+    </div>
+
+    <div class="card">
+      <h2>Connect With Us</h2>
+
+      <div class="social-links">
+
+        <a href="https://www.facebook.com/share/1ApZVLd2Dv/" target="_blank">Facebook</a>
+
+        <a href="https://www.instagram.com/sabasabawk" target="_blank">Instagram</a>
+
+        <a href="https://whatsapp.com/channel/0029VbCqWJoL7UVVpofHfC27" target="_blank">WhatsApp Channel</a>
+
+        <a href="https://www.youtube.com/@sabasabawilfred863" target="_blank">YouTube</a>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Prayer Requests</h2>
+
+      <p>
+        Need prayer? Contact us directly:
+      </p>
+
+      <br>
+
+      <p>
+        <a href="tel:+255653669337" style="text-decoration:none;color:inherit;">📞 +255653669337</a>
+      </p>
+
+      <br>
+
+      <a href="tel:+255653669337" target="_blank"
+         style="background:blue;color:white;
+         padding:10px 20px;
+         text-decoration:none;
+         border-radius:8px;
+         margin-right:10px;">
+        📞 Call Now
+      </a>
+
+      <a href="https://wa.me/255653669337" target="_blank"
+         style="background:green;color:white;
+         padding:10px 20px;
+         text-decoration:none;
+         border-radius:8px;">
+        Chat on WhatsApp
+      </a>
+    </div>
+
+  </section>
+
+  <footer>
+    <p>
+      © 2026 Sabasaba Gospel Ministry | All Rights Reserved
+    </p>
+  </footer>
+
+  <script>
+    const verses = [
+      "Philippians 4:13 - I can do all things through Christ.",
+      "Jeremiah 29:11 - For I know the plans I have for you.",
+      "Luke 1:37 - For with God nothing shall be impossible.",
+      "Psalm 23:1 - The Lord is my shepherd.",
+      "Isaiah 41:10 - Fear not, for I am with you.",
+      "John 14:6 - Jesus said, I am the way, the truth, and the life.",
+      "Romans 8:28 - All things work together for good."
+    ];
+
+    const today = new Date().getDate();
+
+    document.getElementById("dailyVerse").innerText =
+      verses[today % verses.length];
+
+    // Toggle lessons display
+    function toggleLessons() {
+      const lessonsGrid = document.getElementById('lessonsGrid');
+      lessonsGrid.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
