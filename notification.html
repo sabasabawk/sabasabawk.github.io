@@ -1435,16 +1435,16 @@ function setupNotificationActions(
 
           if(postId){
 
-            window.location.href =
-            "feed.html?postId=" +
-            encodeURIComponent(postId);
+  window.location.href =
+  "feed.html?post=" +
+  encodeURIComponent(postId);
 
-          }else{
+}else{
 
-            window.location.href =
-            "community.html";
+  window.location.href =
+  "feed.html";
 
-          }
+}
 
         }catch(error){
 
