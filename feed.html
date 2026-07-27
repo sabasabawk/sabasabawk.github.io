@@ -1,2285 +1,5 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<title>Community Wall</title>
-
-
-<style>
-
 /* =====================================================
-   GENERAL PAGE
-===================================================== */
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-  background:#eef3f8;
-  color:#222;
-}
-
-button{
-  font-family:inherit;
-}
-
-
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
-
-.pageContainer{
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  padding:22px 18px 50px;
-}
-
-
-/* =====================================================
-   COMMUNITY WALL HEADER
-===================================================== */
-
-.wallHeader{
-  background:linear-gradient(
-    135deg,
-    #087bd1,
-    #0055a5
-  );
-  color:white;
-  padding:38px 24px;
-  border-radius:30px;
-  text-align:center;
-  box-shadow:0 10px 24px rgba(0,0,0,.16);
-}
-
-.wallHeader h1{
-  margin:0;
-  font-size:42px;
-  line-height:1.2;
-}
-
-.wallHeader p{
-  margin:22px auto 0;
-  max-width:560px;
-  font-size:24px;
-  line-height:1.55;
-}
-
-
-/* =====================================================
-   REFRESH CONTROL
-===================================================== */
-
-.feedControls{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:28px 0;
-}
-
-#refreshButton{
-  min-width:230px;
-  padding:17px 30px;
-  border:none;
-  border-radius:18px;
-  background:#22a943;
-  color:white;
-  font-size:22px;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 6px 14px rgba(0,0,0,.15);
-}
-
-#refreshButton:hover{
-  background:#188b35;
-}
-
-#refreshButton:active{
-  transform:scale(.98);
-}
-
-#refreshButton:disabled{
-  opacity:.7;
-  cursor:not-allowed;
-}
-
-
-/* =====================================================
-   POSTS CONTAINER
-===================================================== */
-
-#postsContainer{
-  width:100%;
-}
-
-
-/* =====================================================
-   LOADING, EMPTY AND ERROR BOXES
-===================================================== */
-
-.statusCard{
-  background:white;
-  padding:45px 25px;
-  border-radius:28px;
-  text-align:center;
-  font-size:22px;
-  color:#777;
-  box-shadow:0 7px 20px rgba(0,0,0,.09);
-}
-
-.statusCard.error{
-  color:#b00020;
-}
-
-.statusCard.empty{
-  color:#555;
-}
-
-
-/* =====================================================
-   POST CARD
-===================================================== */
-
-.postCard{
-  background:white;
-  margin-bottom:28px;
-  padding:26px;
-  border-radius:28px;
-  box-shadow:0 7px 22px rgba(0,0,0,.11);
-  overflow:hidden;
-}
-
-.postHeader{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-
-.authorPicture{
-  width:82px;
-  height:82px;
-  border-radius:50%;
-  object-fit:cover;
-  border:5px solid #d8efff;
-  cursor:pointer;
-  flex-shrink:0;
-}
-
-.authorInformation{
-  min-width:0;
-}
-
-.authorName{
-  color:#0873c9;
-  font-size:25px;
-  font-weight:bold;
-  line-height:1.2;
-  cursor:pointer;
-  word-break:break-word;
-}
-
-.postDetails{
-  margin-top:8px;
-  color:#777;
-  font-size:18px;
-  line-height:1.45;
-}
-
-
-/* =====================================================
-   POST CATEGORY
-===================================================== */
-
-.postCategory{
-  display:inline-block;
-  margin-top:24px;
-  padding:10px 18px;
-  border-radius:25px;
-  background:#e7f3ff;
-  color:#0873c9;
-  font-size:18px;
-  font-weight:bold;
-}
-
-
-/* =====================================================
-   POST MESSAGE
-===================================================== */
-
-.postMessage{
-  margin-top:26px;
-  font-size:21px;
-  line-height:1.75;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-
-/* =====================================================
-   PART 1 OF 6
-   POST PHOTO AND VIDEO STYLING
-===================================================== */
-
-
-/* =====================================================
-   POST IMAGE
-===================================================== */
-
-.communityPostImage{
-  display:block;
-  width:100%;
-  max-height:520px;
-  margin-top:24px;
-  border-radius:18px;
-  object-fit:contain;
-  background:#111;
-  cursor:pointer;
-}
-
-
-/* =====================================================
-   POST VIDEO
-===================================================== */
-
-.communityPostVideo{
-  display:block;
-  width:100%;
-  max-height:520px;
-  margin-top:24px;
-  border-radius:18px;
-  object-fit:contain;
-  background:#000;
-}
-
-
-/* =====================================================
-   MEDIA ERROR MESSAGE
-===================================================== */
-
-.communityMediaError{
-  margin-top:24px;
-  padding:22px 16px;
-  border-radius:18px;
-  background:#f5f5f5;
-  color:#777;
-  text-align:center;
-  font-size:17px;
-  line-height:1.5;
-}
-
-
-/* =====================================================
-   FULLSCREEN PHOTO VIEWER
-===================================================== */
-
-#photoViewer{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(0,0,0,.94);
-}
-
-#photoViewer.open{
-  display:flex;
-}
-
-#photoViewerImage{
-  display:block;
-  max-width:100%;
-  max-height:90vh;
-  object-fit:contain;
-}
-
-#closePhotoViewer{
-  position:absolute;
-  top:16px;
-  right:16px;
-  width:48px;
-  height:48px;
-  margin:0;
-  padding:0;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.2);
-  color:white;
-  font-size:28px;
-  line-height:48px;
-  cursor:pointer;
-}
-
-#closePhotoViewer:hover{
-  background:rgba(255,255,255,.32);
-}
-
-
-/* =====================================================
-   POST ACTION BUTTONS
-===================================================== */
-
-.postActions{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:28px;
-  padding-top:20px;
-  border-top:1px solid #ddd;
-}
-
-.postActions button{
-  border:none;
-  border-radius:14px;
-  padding:13px 8px;
-  background:#edf3f8;
-  color:#333;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.postActions button:hover{
-  background:#ddeaf4;
-}
-
-.likeButton.liked{
-  background:#ffe4e8;
-  color:#c2183b;
-}
-.editButton{
-  background:#fff3cd !important;
-  color:#7a5700 !important;
-}
-
-.deleteButton{
-  background:#ffe0e0 !important;
-  color:#b00020 !important;
-}
-
-.editButton:hover{
-  background:#ffe49b !important;
-}
-
-.deleteButton:hover{
-  background:#ffcaca !important;
-}
-.postActions button:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-}
-
-
-/* =====================================================
-   BACK BUTTON
-===================================================== */
-
-.backSection{
-  display:flex;
-  justify-content:center;
-  margin-top:35px;
-}
-
-#backButton{
-  min-width:320px;
-  padding:17px 28px;
-  border:none;
-  border-radius:18px;
-  background:#707070;
-  color:white;
-  font-size:21px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-#backButton:hover{
-  background:#555;
-}
-
-
-/* =====================================================
-   MOBILE DESIGN
-===================================================== */
-
-@media(max-width:600px){
-
-  .pageContainer{
-    padding:20px 14px 45px;
-  }
-
-  .wallHeader{
-    padding:32px 18px;
-    border-radius:26px;
-  }
-
-  .wallHeader h1{
-    font-size:34px;
-  }
-
-  .wallHeader p{
-    font-size:20px;
-  }
-
-  .postCard{
-    padding:21px;
-    border-radius:25px;
-  }
-
-  .authorPicture{
-    width:70px;
-    height:70px;
-  }
-
-  .authorName{
-    font-size:22px;
-  }
-
-  .postDetails{
-    font-size:16px;
-  }
-
-  .postMessage{
-    font-size:19px;
-  }
-
-  .postActions{
-    grid-template-columns:1fr;
-  }
-
-  .postActions button{
-    font-size:17px;
-  }
-
-  #backButton{
-    min-width:100%;
-  }
-
-}
-/* =====================================================
-   FACEBOOK-STYLE TOP NAVIGATION
-===================================================== */
-
-.appTopBar{
-  position:sticky;
-  top:0;
-  z-index:900;
-  width:100%;
-  background:#ffffff;
-  border-bottom:1px solid #d8e0e8;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
-.appTopBarInner{
-  width:100%;
-  max-width:760px;
-  min-height:64px;
-  margin:auto;
-  padding:8px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.appBrand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  min-width:0;
-  text-decoration:none;
-}
-
-.appLogo{
-  width:43px;
-  height:43px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#087bd1,#0055a5);
-  color:#ffffff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-  flex-shrink:0;
-}
-
-.appBrandText{
-  color:#075daa;
-  font-size:17px;
-  font-weight:bold;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.topBarActions{
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-
-.topIconLink{
-  position:relative;
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:#edf3f8;
-  color:#1f2933;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-}
-
-.topIconLink:hover{
-  background:#dce9f4;
-}
-
-.notificationBadge{
-  position:absolute;
-  top:-2px;
-  right:-2px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:10px;
-  background:#d93025;
-  color:#ffffff;
-  font-size:11px;
-  font-weight:bold;
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-
-/* =====================================================
-   CREATE POST QUICK BOX
-===================================================== */
-
-.quickPostBox{
-  background:#ffffff;
-  margin:20px 0 24px;
-  padding:16px;
-  border-radius:22px;
-  box-shadow:0 5px 18px rgba(0,0,0,.09);
-}
-
-.quickPostRow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.quickPostAvatar{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #d8efff;
-  background:#eeeeee;
-  flex-shrink:0;
-}
-
-.quickPostButton{
-  flex:1;
-  min-height:48px;
-  padding:12px 17px;
-  border:1px solid #d5dde5;
-  border-radius:25px;
-  background:#f4f6f8;
-  color:#66717c;
-  font-size:16px;
-  text-align:left;
-  cursor:pointer;
-}
-
-.quickPostButton:hover{
-  background:#e8eef3;
-}
-
-.quickMediaLinks{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-top:13px;
-  padding-top:13px;
-  border-top:1px solid #e4e8ec;
-}
-
-.quickMediaLink{
-  padding:9px 5px;
-  border-radius:10px;
-  color:#34404b;
-  text-decoration:none;
-  text-align:center;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.quickMediaLink:hover{
-  background:#edf3f8;
-}
-
-
-/* =====================================================
-   FLOATING CREATE POST BUTTON
-===================================================== */
-
-.floatingCreateButton{
-  position:fixed;
-  right:18px;
-  bottom:88px;
-  z-index:850;
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#087bd1,#0055a5);
-  color:#ffffff;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:31px;
-  font-weight:bold;
-  box-shadow:0 7px 20px rgba(0,0,0,.28);
-}
-
-.floatingCreateButton:hover{
-  transform:scale(1.05);
-}
-
-
-/* =====================================================
-   FIXED BOTTOM NAVIGATION
-===================================================== */
-
-.bottomNavigation{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:900;
-  background:#ffffff;
-  border-top:1px solid #d7dee6;
-  box-shadow:0 -3px 14px rgba(0,0,0,.10);
-}
-
-.bottomNavigationInner{
-  width:100%;
-  max-width:760px;
-  min-height:68px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-}
-
-.bottomNavItem{
-  position:relative;
-  color:#66717c;
-  text-decoration:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:2px;
-  font-size:11px;
-  font-weight:bold;
-  min-width:0;
-}
-
-.bottomNavIcon{
-  font-size:22px;
-  line-height:1;
-}
-
-.bottomNavItem:hover{
-  background:#eef4f9;
-  color:#0873c9;
-}
-
-.bottomNavItem.active{
-  color:#0873c9;
-}
-
-.bottomNavItem.active::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:18%;
-  right:18%;
-  height:3px;
-  border-radius:0 0 4px 4px;
-  background:#0873c9;
-}
-
-
-/* Give space for the fixed bottom menu */
-
-.pageContainer{
-  padding-bottom:115px;
-}
-
-
-/* Hide the old back button */
-
-.backSection{
-  display:none;
-}
-
-
-/* Make the old large wall heading smaller */
-
-.wallHeader{
-  padding:25px 20px;
-  border-radius:22px;
-}
-
-.wallHeader h1{
-  font-size:30px;
-}
-
-.wallHeader p{
-  margin-top:10px;
-  font-size:17px;
-  line-height:1.5;
-}
-
-
-/* =====================================================
-   SMALL MOBILE SCREENS
-===================================================== */
-
-@media(max-width:430px){
-
-  .appTopBarInner{
-    padding:7px 9px;
-  }
-
-  .appBrandText{
-    font-size:14px;
-    max-width:135px;
-  }
-
-  .topIconLink{
-    width:38px;
-    height:38px;
-    font-size:18px;
-  }
-
-  .bottomNavigationInner{
-    min-height:64px;
-  }
-
-  .bottomNavIcon{
-    font-size:20px;
-  }
-
-  .bottomNavItem{
-    font-size:9px;
-  }
-
-  .floatingCreateButton{
-    right:14px;
-    bottom:80px;
-    width:54px;
-    height:54px;
-  }
-
-}
-</style>
-
-</head>
-
-<body>
-<!-- =====================================================
-     TOP APPLICATION BAR
-===================================================== -->
-
-<nav class="appTopBar">
-
-  <div class="appTopBarInner">
-
-    <a
-      href="feed.html"
-      class="appBrand"
-    >
-
-      <span class="appLogo">
-        ✝️
-      </span>
-
-      <span class="appBrandText">
-        SABASABA Gospel Ministry
-      </span>
-
-    </a>
-
-
-    <div class="topBarActions">
-
-      <a
-        href="members.html"
-        class="topIconLink"
-        aria-label="Search members"
-        title="Search"
-      >
-        🔍
-      </a>
-
-      <a
-        href="notifications.html"
-        class="topIconLink"
-        aria-label="Notifications"
-        title="Notifications"
-      >
-
-        🔔
-
-        <span
-          id="notificationBadge"
-          class="notificationBadge"
-        >
-          0
-        </span>
-
-      </a>
-
-      <a
-        href="members.html"
-        class="topIconLink"
-        aria-label="Private messages"
-        title="Messages"
-      >
-        💬
-      </a>
-
-    </div>
-
-  </div>
-
-</nav>
-<div class="pageContainer">
-<!-- =====================================================
-     QUICK CREATE POST
-===================================================== -->
-
-<section class="quickPostBox">
-
-  <div class="quickPostRow">
-
-    <img
-      id="quickPostAvatar"
-      class="quickPostAvatar"
-      src="images/profile.png"
-      alt="Your profile picture"
-    >
-
-    <button
-      id="quickPostButton"
-      class="quickPostButton"
-      type="button"
-    >
-      Share encouragement, testimony or prayer...
-    </button>
-
-  </div>
-
-
-  <div class="quickMediaLinks">
-
-    <a
-      href="createpost.html?media=image"
-      class="quickMediaLink"
-    >
-      📷 Photo
-    </a>
-
-    <a
-      href="createpost.html?media=video"
-      class="quickMediaLink"
-    >
-      🎥 Video
-    </a>
-
-    <a
-      href="createpost.html"
-      class="quickMediaLink"
-    >
-      ✍️ Post
-    </a>
-
-  </div>
-
-</section>
-    <!-- ==========================================
-         COMMUNITY HEADER
-    =========================================== -->
-
-    <header class="wallHeader">
-
-        <h1>
-            📰 Community Wall
-        </h1>
-
-        <p>
-            Share God's Word, testimonies,
-            encouragement and prayer with
-            believers around the world.
-        </p>
-
-    </header>
-
-
-    <!-- ==========================================
-         REFRESH BUTTON
-    =========================================== -->
-
-    <div class="feedControls">
-
-        <button
-            type="button"
-            id="refreshButton">
-
-            🔄 Refresh
-
-        </button>
-
-    </div>
-
-
-    <!-- ==========================================
-         POSTS WILL APPEAR HERE
-    =========================================== -->
-
-    <main
-        id="postsContainer">
-
-        <div class="statusCard">
-
-            Loading community posts...
-
-        </div>
-
-    </main>
-
-
-    <!-- ==========================================
-         BACK BUTTON
-    =========================================== -->
-
-    <div class="backSection">
-
-        <button
-            type="button"
-            id="backButton">
-
-            ← Back to Community
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- =====================================================
-     PART 2 OF 6
-     FULLSCREEN PHOTO VIEWER
-===================================================== -->
-
-<div
-  id="photoViewer"
-  aria-hidden="true"
->
-
-  <button
-    type="button"
-    id="closePhotoViewer"
-    aria-label="Close photo viewer"
-  >
-    ×
-  </button>
-
-
-  <img
-    id="photoViewerImage"
-    src=""
-    alt="Full-size community post photo"
-  >
-
-</div>
-<!-- =====================================================
-     FLOATING CREATE POST BUTTON
-===================================================== -->
-
-<a
-  href="createpost.html"
-  class="floatingCreateButton"
-  aria-label="Create a new post"
-  title="Create Post"
->
-  +
-</a>
-
-
-<!-- =====================================================
-     BOTTOM APPLICATION NAVIGATION
-===================================================== -->
-
-<nav class="bottomNavigation">
-
-  <div class="bottomNavigationInner">
-
-    <a
-      href="feed.html"
-      class="bottomNavItem active"
-    >
-
-      <span class="bottomNavIcon">
-        🏠
-      </span>
-
-      <span>
-        Home
-      </span>
-
-    </a>
-
-
-    <a
-      href="community.html"
-      class="bottomNavItem"
-    >
-
-      <span class="bottomNavIcon">
-        👥
-      </span>
-
-      <span>
-        Community
-      </span>
-
-    </a>
-
-
-    <a
-      href="learn.html"
-      class="bottomNavItem"
-    >
-
-      <span class="bottomNavIcon">
-        📚
-      </span>
-
-      <span>
-        Learn
-      </span>
-
-    </a>
-
-
-    <a
-      href="https://www.youtube.com/@sabasabawilfred863"
-      class="bottomNavItem"
-      target="_blank"
-      rel="noopener"
-    >
-
-      <span class="bottomNavIcon">
-        🎤
-      </span>
-
-      <span>
-        Sermons
-      </span>
-
-    </a>
-
-
-    <a
-      href="community.html"
-      class="bottomNavItem"
-    >
-
-      <span class="bottomNavIcon">
-        🙏
-      </span>
-
-      <span>
-        Prayer
-      </span>
-
-    </a>
-
-
-    <a
-      href="profile.html"
-      class="bottomNavItem"
-    >
-
-      <span class="bottomNavIcon">
-        👤
-      </span>
-
-      <span>
-        Profile
-      </span>
-
-    </a>
-
-  </div>
-
-</nav>
-<script type="module">
-
-/* =====================================================
-   PART 3 OF 6
-   FIREBASE SETUP AND BASIC HELPERS
-===================================================== */
-
-import {
-  auth,
-  db,
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  onAuthStateChanged
-} from "./firebase.js";
-
-import {
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-
-/* =====================================================
-   PAGE ELEMENTS
-===================================================== */
-
-const postsContainer =
-document.getElementById(
-  "postsContainer"
-);
-
-const refreshButton =
-document.getElementById(
-  "refreshButton"
-);
-
-const backButton =
-document.getElementById(
-  "backButton"
-);
-const quickPostButton =
-document.getElementById(
-  "quickPostButton"
-);
-
-const quickPostAvatar =
-document.getElementById(
-  "quickPostAvatar"
-);
-
-/* =====================================================
-   GLOBAL VARIABLES
-===================================================== */
-
-let currentUser = null;
-
-let currentUserProfile = {};
-
-let unsubscribePosts = null;
-
-const likeListeners =
-new Map();
-
-const defaultProfilePicture =
-"images/profile.png";
-
-
-/* =====================================================
-   GET FIRST AVAILABLE VALUE
-===================================================== */
-
-function getFirstValue(...values){
-
-  for(const value of values){
-
-    if(
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ){
-
-      return String(value).trim();
-
-    }
-
-  }
-
-  return "";
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value){
-
-  const temporaryElement =
-  document.createElement("div");
-
-  temporaryElement.textContent =
-  String(value ?? "");
-
-  return temporaryElement.innerHTML;
-
-}
-
-
-/* =====================================================
-   STATUS MESSAGES
-===================================================== */
-
-function showLoadingMessage(){
-
-  postsContainer.innerHTML = `
-
-    <div class="statusCard">
-      Loading community posts...
-    </div>
-
-  `;
-
-}
-
-
-function showEmptyMessage(){
-
-  postsContainer.innerHTML = `
-
-    <div class="statusCard empty">
-      No community posts are available yet.
-    </div>
-
-  `;
-
-}
-
-
-function showErrorMessage(message){
-
-  postsContainer.innerHTML = `
-
-    <div class="statusCard error">
-      ${escapeHTML(message)}
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   LOAD CURRENT USER PROFILE
-===================================================== */
-
-async function loadCurrentUserProfile(){
-
-  currentUserProfile = {};
-
-
-  if(!currentUser){
-
-    return;
-
-  }
-
-
-  try{
-
-    const profileReference =
-    doc(
-      db,
-      "users",
-      currentUser.uid
-    );
-
-
-    const profileSnapshot =
-    await getDoc(
-      profileReference
-    );
-
-
-    if(profileSnapshot.exists()){
-
-      currentUserProfile =
-      profileSnapshot.data();
-const quickPicture =
-getFirstValue(
-  currentUserProfile.profilePicture,
-  currentUserProfile.picture,
-  currentUserProfile.photoURL,
-  currentUser.photoURL,
-  defaultProfilePicture
-);
-
-if(quickPostAvatar){
-
-  quickPostAvatar.src =
-  quickPicture;
-
-}
-const quickPicture =
-getFirstValue(
-  currentUserProfile.profilePicture,
-  currentUserProfile.picture,
-  currentUserProfile.photoURL,
-  currentUser.photoURL,
-  defaultProfilePicture
-);
-
-if(quickPostAvatar){
-
-  quickPostAvatar.src =
-  quickPicture;
-
-}
-    }
-
-  }catch(error){
-
-    console.error(
-      "Current profile loading error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   AUTHENTICATION STATE
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  async(user)=>{
-
-    currentUser = user || null;
-
-    await loadCurrentUserProfile();
-
-    initializeFeed();
-
-  }
-);
-    /* =====================================================
-   PART 4 OF 6
-   LOAD POSTS AND CREATE POST CARDS
-===================================================== */
-
-
-/* =====================================================
-   STOP OLD POST LISTENER
-===================================================== */
-
-function stopPostsListener(){
-
-  if(unsubscribePosts){
-
-    unsubscribePosts();
-
-    unsubscribePosts = null;
-
-  }
-
-}
-
-
-/* =====================================================
-   STOP ALL LIKE LISTENERS
-===================================================== */
-
-function stopAllLikeListeners(){
-
-  for(
-    const unsubscribeLike
-    of likeListeners.values()
-  ){
-
-    unsubscribeLike();
-
-  }
-
-  likeListeners.clear();
-
-}
-
-
-/* =====================================================
-   INITIALIZE COMMUNITY FEED
-===================================================== */
-
-function initializeFeed(){
-
-  stopPostsListener();
-
-  stopAllLikeListeners();
-
-  loadCommunityPosts();
-
-}
-
-
-/* =====================================================
-   LOAD COMMUNITY POSTS
-===================================================== */
-
-function loadCommunityPosts(){
-
-  showLoadingMessage();
-
-  stopPostsListener();
-
-  stopAllLikeListeners();
-
-
-  try{
-
-    const postsReference =
-    collection(
-      db,
-      "communityPosts"
-    );
-
-
-    const postsQuery =
-    query(
-      postsReference,
-      orderBy(
-        "timestamp",
-        "desc"
-      )
-    );
-
-
-    unsubscribePosts =
-    onSnapshot(
-
-      postsQuery,
-
-      async(snapshot)=>{
-
-        try{
-
-          if(snapshot.empty){
-
-            showEmptyMessage();
-
-            return;
-
-          }
-
-
-          postsContainer.innerHTML = "";
-
-
-          for(
-            const postDocument
-            of snapshot.docs
-          ){
-
-            const postData = {
-
-              id:
-              postDocument.id,
-
-              ...postDocument.data()
-
-            };
-
-
-            const postCard =
-            await createPostCard(
-              postData
-            );
-
-
-            postsContainer.appendChild(
-              postCard
-            );
-
-          }
-
-
-          setTimeout(
-            scrollToSharedPost,
-            300
-          );
-
-        }catch(error){
-
-          console.error(
-            "Post display error:",
-            error
-          );
-
-
-          showErrorMessage(
-            error.message ||
-            "Posts were found, but they could not be displayed."
-          );
-
-        }
-
-      },
-
-      (error)=>{
-
-        console.error(
-          "Firestore post-loading error:",
-          error
-        );
-
-
-        let message =
-        "Community posts could not be loaded.";
-
-
-        if(
-          error.code ===
-          "permission-denied"
-        ){
-
-          message =
-          "Firebase denied permission to read community posts.";
-
-        }else if(
-          error.code ===
-          "failed-precondition"
-        ){
-
-          message =
-          "Firebase requires a Firestore index for this query.";
-
-        }else if(
-          error.code ===
-          "unavailable"
-        ){
-
-          message =
-          "Firebase is temporarily unavailable. Please check your internet connection.";
-
-        }else if(error.message){
-
-          message =
-          error.message;
-
-        }
-
-
-        showErrorMessage(
-          message
-        );
-
-      }
-
-    );
-
-  }catch(error){
-
-    console.error(
-      "Community feed initialization error:",
-      error
-    );
-
-
-    showErrorMessage(
-      error.message ||
-      "An unexpected error occurred while opening the Community Wall."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   FORMAT POST DATE
-===================================================== */
-
-function formatPostDate(value){
-
-  if(!value){
-
-    return "Recently";
-
-  }
-
-
-  try{
-
-    let date;
-
-
-    if(
-      typeof value.toDate ===
-      "function"
-    ){
-
-      date =
-      value.toDate();
-
-    }else if(value.seconds){
-
-      date =
-      new Date(
-        value.seconds * 1000
-      );
-
-    }else{
-
-      date =
-      new Date(value);
-
-    }
-
-
-    if(
-      Number.isNaN(
-        date.getTime()
-      )
-    ){
-
-      return "Recently";
-
-    }
-
-
-    return date.toLocaleString(
-      undefined,
-      {
-        year:"numeric",
-        month:"short",
-        day:"numeric",
-        hour:"numeric",
-        minute:"2-digit"
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Post date error:",
-      error
-    );
-
-    return "Recently";
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD POST AUTHOR PROFILE
-===================================================== */
-
-async function loadPostAuthorProfile(postData){
-
-  const authorId =
-  getFirstValue(
-    postData.userId,
-    postData.authorId,
-    postData.uid
-  );
-
-
-  let authorProfile = {
-
-    uid:
-    authorId,
-
-    name:
-    getFirstValue(
-      postData.name,
-      postData.fullName,
-      postData.displayName,
-      "Community Member"
-    ),
-
-    picture:
-    getFirstValue(
-      postData.picture,
-      postData.profilePicture,
-      postData.photoURL,
-      defaultProfilePicture
-    ),
-
-    country:
-    getFirstValue(
-      postData.country
-    )
-
-  };
-
-
-  if(!authorId){
-
-    return authorProfile;
-
-  }
-
-
-  try{
-
-    const profileReference =
-    doc(
-      db,
-      "users",
-      authorId
-    );
-
-
-    const profileSnapshot =
-    await getDoc(
-      profileReference
-    );
-
-
-    if(profileSnapshot.exists()){
-
-      const profileData =
-      profileSnapshot.data();
-
-
-      authorProfile = {
-
-        uid:
-        authorId,
-
-        name:
-        getFirstValue(
-          profileData.name,
-          profileData.fullName,
-          profileData.displayName,
-          authorProfile.name
-        ),
-
-        picture:
-        getFirstValue(
-          profileData.profilePicture,
-          profileData.picture,
-          profileData.photoURL,
-          profileData.profileImage,
-          profileData.profilePhoto,
-          authorProfile.picture,
-          defaultProfilePicture
-        ),
-
-        country:
-        getFirstValue(
-          profileData.country,
-          authorProfile.country
-        )
-
-      };
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Post author profile error:",
-      error
-    );
-
-  }
-
-
-  return authorProfile;
-
-}
-
-
-/* =====================================================
-   READ POST VALUES
-===================================================== */
-
-function getPostMessage(postData){
-
-  return getFirstValue(
-    postData.post,
-    postData.message,
-    postData.content,
-    postData.text,
-    postData.description
-  );
-
-}
-
-
-function getPostCategory(postData){
-
-  return getFirstValue(
-    postData.category,
-    postData.postCategory,
-    postData.type
-  );
-
-}
-
-
-/* =====================================================
-   READ POST IMAGE
-===================================================== */
-
-function getPostImage(postData){
-
-  return getFirstValue(
-    postData.imageUrl,
-    postData.imageURL,
-    postData.postImage,
-    postData.photoUrl,
-    postData.photoURL,
-    postData.image,
-    postData.mediaType === "image"
-      ? postData.mediaUrl
-      : ""
-  );
-
-}
-
-
-/* =====================================================
-   READ POST VIDEO
-===================================================== */
-
-function getPostVideo(postData){
-
-  return getFirstValue(
-    postData.videoUrl,
-    postData.videoURL,
-    postData.postVideo,
-    postData.video,
-    postData.mediaType === "video"
-      ? postData.mediaUrl
-      : ""
-  );
-
-}
-
-/* =====================================================
-   CREATE ONE POST CARD
-===================================================== */
-
-async function createPostCard(postData){
-
-  const authorProfile =
-  await loadPostAuthorProfile(
-    postData
-  );
-
-
-  const postMessage =
-  getPostMessage(
-    postData
-  );
-
-
-  const postCategory =
-  getPostCategory(
-    postData
-  );
-
-
-  const postImage =
-  getPostImage(
-    postData
-  );
-
-const postVideo =
-getPostVideo(
-  postData
-);
-  const postDate =
-  formatPostDate(
-    postData.timestamp ||
-    postData.createdAt
-  );
-
-
-  const postCard =
-  document.createElement(
-    "article"
-  );
-
-
-  postCard.className =
-  "postCard";
-
-
-  postCard.dataset.postId =
-  postData.id || "";
-
-
-  const safePostId =
-  escapeHTML(
-    postData.id || ""
-  );
-
-
-  const safeAuthorId =
-  escapeHTML(
-    authorProfile.uid || ""
-  );
-
-
-  const safeAuthorName =
-  escapeHTML(
-    authorProfile.name ||
-    "Community Member"
-  );
-
-
-  const safeAuthorPicture =
-  escapeHTML(
-    authorProfile.picture ||
-    defaultProfilePicture
-  );
-
-
-  const safeCountry =
-  escapeHTML(
-    authorProfile.country || ""
-  );
-
-
-  const safePostCategory =
-  escapeHTML(
-    postCategory || ""
-  );
-
-
-  const safePostMessage =
-  escapeHTML(
-    postMessage || ""
-  );
-
-
-  const safePostImage =
-  escapeHTML(
-    postImage || ""
-  );
-
-const safePostVideo =
-escapeHTML(
-  postVideo || ""
-);
-  const safePostDate =
-  escapeHTML(
-    postDate
-  );
-
-
-  postCard.innerHTML = `
-
-    <div class="postHeader">
-
-      <img
-        class="authorPicture"
-        src="${safeAuthorPicture}"
-        alt="${safeAuthorName}'s profile picture"
-        data-author-id="${safeAuthorId}"
-      >
-
-      <div class="authorInformation">
-
-        <div
-          class="authorName"
-          data-author-id="${safeAuthorId}"
-        >
-          ${safeAuthorName}
-        </div>
-
-        <div class="postDetails">
-
-          ${
-            safeCountry
-            ? `${safeCountry} • `
-            : ""
-          }
-
-          ${safePostDate}
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    ${
-      safePostCategory
-      ? `
-
-        <div class="postCategory">
-          ${safePostCategory}
-        </div>
-
-      `
-      : ""
-    }
-
-
-    ${
-      safePostMessage
-      ? `
-
-        <div class="postMessage">
-          ${safePostMessage}
-        </div>
-
-      `
-      : ""
-    }
-
-
-    ${
-  safePostImage
-  ? `
-
-    <img
-      class="communityPostImage"
-      src="${safePostImage}"
-      alt="Community post image"
-      loading="lazy"
-      data-full-image="${safePostImage}"
-    >
-
-  `
-  : ""
-}
-
-
-${
-  safePostVideo
-  ? `
-
-    <video
-      class="communityPostVideo"
-      controls
-      preload="metadata"
-      playsinline
-    >
-
-      <source
-        src="${safePostVideo}"
-      >
-
-      Your browser does not support video playback.
-
-    </video>
-
-  `
-  : ""
-}
-
-
-    <div class="postActions">
-
-      <button
-        type="button"
-        class="likeButton"
-        data-post-id="${safePostId}"
-      >
-        🤍 Like (0)
-      </button>
-
-      <button
-        type="button"
-        class="commentButton"
-        data-post-id="${safePostId}"
-      >
-        💬 Comments
-      </button>
-
-      <button
-        type="button"
-        class="shareButton"
-        data-post-id="${safePostId}"
-      >
-        ↗ Share
-      </button>
-      ${
-  currentUser &&
-  currentUser.uid === authorProfile.uid
-  ? `
-
-    <button
-      type="button"
-      class="editButton"
-      data-post-id="${safePostId}"
-    >
-      ✏️ Edit
-    </button>
-
-    <button
-      type="button"
-      class="deleteButton"
-      data-post-id="${safePostId}"
-    >
-      🗑️ Delete
-    </button>
-
-  `
-  : ""
-}
-    </div>
-
-  `;
-
-
-  const authorPicture =
-  postCard.querySelector(
-    ".authorPicture"
-  );
-
-
-  if(authorPicture){
-
-    authorPicture.addEventListener(
-      "error",
-      ()=>{
-
-        authorPicture.src =
-        defaultProfilePicture;
-
-      },
-      {
-        once:true
-      }
-    );
-
-  }
-
-
-  const communityPostImage =
-  postCard.querySelector(
-    ".communityPostImage"
-  );
-
-
-  if(communityPostImage){
-
-    communityPostImage.addEventListener(
-      "error",
-      ()=>{
-
-        communityPostImage.remove();
-
-      },
-      {
-        once:true
-      }
-    );
-
-  }
-
-
-  const openAuthorProfile = ()=>{
-
-    if(!authorProfile.uid){
-
-      return;
-
-    }
-
-
-    window.location.href =
-    "profile.html?uid=" +
-    encodeURIComponent(
-      authorProfile.uid
-    );
-
-  };
-
-
-  if(authorPicture){
-
-    authorPicture.addEventListener(
-      "click",
-      openAuthorProfile
-    );
-
-  }
-
-
-  const authorName =
-  postCard.querySelector(
-    ".authorName"
-  );
-
-
-  if(authorName){
-
-    authorName.addEventListener(
-      "click",
-      openAuthorProfile
-    );
-
-  }
-
-
-  setupLikeButton(
-    postData,
-    postCard
-  );
-
-
-  setupPostActions(
-    postData,
-    postCard
-  );
-
-
-  return postCard;
-
-}     
-/* =====================================================
-   PART 5 OF 6
-   LIKE, COMMENTS, SHARE, EDIT, DELETE,
-   REFRESH AND BACK
-===================================================== */
-
-
-/* =====================================================
-   STOP ONE OLD LIKE LISTENER
+   STOP ONE LIKE LISTENER
 ===================================================== */
 
 function stopLikeListener(postId){
@@ -2290,12 +10,15 @@ function stopLikeListener(postId){
 
   if(oldListener){
 
-    oldListener()
+    oldListener();
+
     likeListeners.delete(postId);
 
   }
 
 }
+
+
 /* =====================================================
    CREATE LIKE NOTIFICATION
 ===================================================== */
@@ -2323,25 +46,9 @@ async function createLikeNotification(
   );
 
 
-  if(!postOwnerId){
-
-    console.warn(
-      "Like notification skipped: post owner is missing."
-    );
-
-    return;
-
-  }
-
-
-  /*
-    Do not notify someone for liking
-    their own post.
-  */
-
   if(
-    postOwnerId ===
-    currentUser.uid
+    !postOwnerId ||
+    postOwnerId === currentUser.uid
   ){
 
     return;
@@ -2351,9 +58,9 @@ async function createLikeNotification(
 
   const senderName =
   getFirstValue(
-    currentUserProfile?.name,
-    currentUserProfile?.fullName,
-    currentUserProfile?.displayName,
+    currentUserProfile.name,
+    currentUserProfile.fullName,
+    currentUserProfile.displayName,
     currentUser.displayName,
     "A community member"
   );
@@ -2361,38 +68,26 @@ async function createLikeNotification(
 
   const senderPicture =
   getFirstValue(
-    currentUserProfile?.profilePicture,
-    currentUserProfile?.picture,
-    currentUserProfile?.photoURL,
-    currentUserProfile?.profileImage,
-    currentUserProfile?.profilePhoto,
+    currentUserProfile.profilePicture,
+    currentUserProfile.picture,
+    currentUserProfile.photoURL,
     currentUser.photoURL,
     defaultProfilePicture
   );
 
 
-  /*
-    This fixed document ID prevents the same
-    user from creating many duplicate like
-    notifications for the same post.
-  */
-
   const notificationId =
   `${postData.id}_${currentUser.uid}_like`;
-
-
-  const notificationReference =
-  doc(
-    db,
-    "notifications",
-    notificationId
-  );
 
 
   try{
 
     await setDoc(
-      notificationReference,
+      doc(
+        db,
+        "notifications",
+        notificationId
+      ),
       {
 
         recipientId:
@@ -2428,21 +123,17 @@ async function createLikeNotification(
   }catch(error){
 
     console.error(
-      "Like notification creation error:",
+      "Like notification error:",
       error
     );
-
-    /*
-      Do not stop the Like feature if
-      notification creation fails.
-    */
 
   }
 
 }
 
+
 /* =====================================================
-   SET UP LIKE BUTTON
+   LIKE BUTTON
 ===================================================== */
 
 function setupLikeButton(
@@ -2502,20 +193,15 @@ function setupLikeButton(
       snapshot.size;
 
 
-      let currentUserLiked =
-      false;
-
-
-      if(currentUser){
-
-        currentUserLiked =
+      const currentUserLiked =
+      Boolean(
+        currentUser &&
         snapshot.docs.some(
           likeDocument =>
           likeDocument.id ===
           currentUser.uid
-        );
-
-      }
+        )
+      );
 
 
       likeButton.dataset.liked =
@@ -2546,9 +232,7 @@ function setupLikeButton(
 
 
       const oldLikeCount =
-      Number(
-        postData.likes
-      ) || 0;
+      Number(postData.likes) || 0;
 
 
       likeButton.dataset.liked =
@@ -2580,9 +264,8 @@ function setupLikeButton(
 
       if(!currentUser){
 
-        alert(
-          "Please sign in before liking a post."
-        );
+        window.location.href =
+        "login.html";
 
         return;
 
@@ -2619,9 +302,9 @@ function setupLikeButton(
 
           const likerName =
           getFirstValue(
-            currentUserProfile?.name,
-            currentUserProfile?.fullName,
-            currentUserProfile?.displayName,
+            currentUserProfile.name,
+            currentUserProfile.fullName,
+            currentUserProfile.displayName,
             currentUser.displayName,
             "Community Member"
           );
@@ -2629,11 +312,9 @@ function setupLikeButton(
 
           const likerPicture =
           getFirstValue(
-            currentUserProfile?.profilePicture,
-            currentUserProfile?.picture,
-            currentUserProfile?.photoURL,
-            currentUserProfile?.profileImage,
-            currentUserProfile?.profilePhoto,
+            currentUserProfile.profilePicture,
+            currentUserProfile.picture,
+            currentUserProfile.photoURL,
             currentUser.photoURL,
             defaultProfilePicture
           );
@@ -2657,9 +338,12 @@ function setupLikeButton(
 
             }
           );
-await createLikeNotification(
-  postData
-);
+
+
+          await createLikeNotification(
+            postData
+          );
+
         }
 
       }catch(error){
@@ -2693,7 +377,8 @@ await createLikeNotification(
 
 function setupPostActions(
   postData,
-  postCard
+  postCard,
+  authorId
 ){
 
   const commentButton =
@@ -2701,32 +386,24 @@ function setupPostActions(
     ".commentButton"
   );
 
-
   const shareButton =
   postCard.querySelector(
     ".shareButton"
   );
-
 
   const editButton =
   postCard.querySelector(
     ".editButton"
   );
 
-
   const deleteButton =
   postCard.querySelector(
     ".deleteButton"
   );
 
-
   const postId =
   postData.id;
 
-
-  /* ===================================================
-     COMMENTS
-  =================================================== */
 
   if(commentButton){
 
@@ -2744,7 +421,6 @@ function setupPostActions(
 
         }
 
-
         window.location.href =
         "comments.html?postId=" +
         encodeURIComponent(postId);
@@ -2755,10 +431,6 @@ function setupPostActions(
   }
 
 
-  /* ===================================================
-     SHARE
-  =================================================== */
-
   if(shareButton){
 
     shareButton.addEventListener(
@@ -2766,10 +438,6 @@ function setupPostActions(
       async()=>{
 
         if(!postId){
-
-          alert(
-            "This post cannot be shared."
-          );
 
           return;
 
@@ -2790,7 +458,7 @@ function setupPostActions(
         const shareText =
         postMessage
         ? postMessage.slice(0,180)
-        : "View this community post";
+        : "View this SABASABA community post";
 
 
         try{
@@ -2816,7 +484,6 @@ function setupPostActions(
               postLink
             );
 
-
             alert(
               "Post link copied successfully."
             );
@@ -2832,23 +499,14 @@ function setupPostActions(
 
         }catch(error){
 
-          if(error.name === "AbortError"){
+          if(error.name !== "AbortError"){
 
-            return;
+            prompt(
+              "Copy this post link:",
+              postLink
+            );
 
           }
-
-
-          console.error(
-            "Post sharing error:",
-            error
-          );
-
-
-          prompt(
-            "Copy this post link:",
-            postLink
-          );
 
         }
 
@@ -2858,10 +516,6 @@ function setupPostActions(
   }
 
 
-  /* ===================================================
-     EDIT OWNER'S POST
-  =================================================== */
-
   if(editButton){
 
     editButton.addEventListener(
@@ -2870,7 +524,7 @@ function setupPostActions(
 
         if(
           !currentUser ||
-          currentUser.uid !== postData.userId
+          currentUser.uid !== authorId
         ){
 
           alert(
@@ -2904,7 +558,7 @@ function setupPostActions(
         editedMessage.trim();
 
 
-        if(cleanMessage === ""){
+        if(!cleanMessage){
 
           alert(
             "The post cannot be empty."
@@ -2934,16 +588,12 @@ function setupPostActions(
 
         try{
 
-          const postReference =
-          doc(
-            db,
-            "communityPosts",
-            postId
-          );
-
-
           await updateDoc(
-            postReference,
+            doc(
+              db,
+              "communityPosts",
+              postId
+            ),
             {
 
               post:
@@ -2957,7 +607,7 @@ function setupPostActions(
 
 
           alert(
-            "Your post has been updated successfully."
+            "Your post has been updated."
           );
 
         }catch(error){
@@ -2988,10 +638,6 @@ function setupPostActions(
   }
 
 
-  /* ===================================================
-     DELETE OWNER'S POST
-  =================================================== */
-
   if(deleteButton){
 
     deleteButton.addEventListener(
@@ -3000,7 +646,7 @@ function setupPostActions(
 
         if(
           !currentUser ||
-          currentUser.uid !== postData.userId
+          currentUser.uid !== authorId
         ){
 
           alert(
@@ -3014,7 +660,7 @@ function setupPostActions(
 
         const confirmed =
         confirm(
-          "Are you sure you want to delete this post? This action cannot be undone."
+          "Delete this post permanently?"
         );
 
 
@@ -3033,21 +679,17 @@ function setupPostActions(
 
         try{
 
-          const postReference =
-          doc(
-            db,
-            "communityPosts",
-            postId
-          );
-
-
           await deleteDoc(
-            postReference
+            doc(
+              db,
+              "communityPosts",
+              postId
+            )
           );
 
 
           alert(
-            "Your post has been deleted successfully."
+            "Your post has been deleted."
           );
 
         }catch(error){
@@ -3077,10 +719,8 @@ function setupPostActions(
   }
 
 }
-
-
 /* =====================================================
-   REFRESH BUTTON
+   REFRESH POSTS
 ===================================================== */
 
 if(refreshButton){
@@ -3092,19 +732,19 @@ if(refreshButton){
       refreshButton.disabled = true;
 
       refreshButton.textContent =
-      "⏳ Refreshing...";
+      "⏳";
 
 
       initializeFeed();
 
 
-      setTimeout(
+      window.setTimeout(
         ()=>{
 
           refreshButton.disabled = false;
 
           refreshButton.textContent =
-          "🔄 Refresh";
+          "🔄";
 
         },
         1200
@@ -3117,22 +757,116 @@ if(refreshButton){
 
 
 /* =====================================================
-   BACK BUTTON
+   PHOTO VIEWER
 ===================================================== */
 
-if(backButton){
+function openPhotoViewer(imageUrl){
 
-  backButton.addEventListener(
+  if(
+    !photoViewer ||
+    !photoViewerImage ||
+    !imageUrl
+  ){
+
+    return;
+
+  }
+
+
+  photoViewerImage.src =
+  imageUrl;
+
+
+  photoViewer.classList.add(
+    "open"
+  );
+
+
+  photoViewer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+  "hidden";
+
+}
+
+
+function closeViewer(){
+
+  if(
+    !photoViewer ||
+    !photoViewerImage
+  ){
+
+    return;
+
+  }
+
+
+  photoViewer.classList.remove(
+    "open"
+  );
+
+
+  photoViewer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  photoViewerImage.src =
+  "";
+
+
+  document.body.style.overflow =
+  "";
+
+}
+
+
+if(closePhotoViewer){
+
+  closePhotoViewer.addEventListener(
     "click",
-    ()=>{
+    closeViewer
+  );
 
-      window.location.href =
-      "community.html";
+}
+
+
+if(photoViewer){
+
+  photoViewer.addEventListener(
+    "click",
+    (event)=>{
+
+      if(event.target === photoViewer){
+
+        closeViewer();
+
+      }
 
     }
   );
 
 }
+
+
+document.addEventListener(
+  "keydown",
+  (event)=>{
+
+    if(event.key === "Escape"){
+
+      closeViewer();
+
+    }
+
+  }
+);
 
 
 /* =====================================================
@@ -3204,12 +938,11 @@ function scrollToSharedPost(){
   "4px";
 
 
-  setTimeout(
+  window.setTimeout(
     ()=>{
 
       sharedPost.style.outline =
       "none";
-
 
       sharedPost.style.outlineOffset =
       "0";
@@ -3219,14 +952,10 @@ function scrollToSharedPost(){
   );
 
 }
-/* =====================================================
-   PART 6 OF 6
-   CLEANUP, CONNECTION STATUS AND PAGE END
-===================================================== */
 
 
 /* =====================================================
-   INTERNET CONNECTION STATUS
+   INTERNET CONNECTION
 ===================================================== */
 
 window.addEventListener(
@@ -3236,18 +965,6 @@ window.addEventListener(
     console.warn(
       "Internet connection lost."
     );
-
-
-    if(
-      postsContainer &&
-      postsContainer.children.length === 0
-    ){
-
-      showErrorMessage(
-        "You are offline. Please reconnect to the internet."
-      );
-
-    }
 
   }
 );
@@ -3261,7 +978,6 @@ window.addEventListener(
       "Internet connection restored."
     );
 
-
     initializeFeed();
 
   }
@@ -3269,7 +985,7 @@ window.addEventListener(
 
 
 /* =====================================================
-   HANDLE JAVASCRIPT ERRORS
+   ERROR REPORTING
 ===================================================== */
 
 window.addEventListener(
@@ -3286,10 +1002,6 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   HANDLE PROMISE ERRORS
-===================================================== */
-
 window.addEventListener(
   "unhandledrejection",
   (event)=>{
@@ -3304,7 +1016,7 @@ window.addEventListener(
 
 
 /* =====================================================
-   CLEAN UP FIREBASE LISTENERS
+   CLEAN FIREBASE LISTENERS
 ===================================================== */
 
 window.addEventListener(
@@ -3320,7 +1032,7 @@ window.addEventListener(
 
 
 /* =====================================================
-   FINAL ELEMENT CHECK
+   FINAL CHECK
 ===================================================== */
 
 if(!postsContainer){
@@ -3331,28 +1043,6 @@ if(!postsContainer){
 
 }
 
-
-if(!refreshButton){
-
-  console.error(
-    "refreshButton was not found."
-  );
-
-}
-
-
-if(!backButton){
-
-  console.error(
-    "backButton was not found."
-  );
-
-}
-
-
-/* =====================================================
-   COMMUNITY WALL READY
-===================================================== */
 
 console.log(
   "SABASABA Community Wall is ready."
