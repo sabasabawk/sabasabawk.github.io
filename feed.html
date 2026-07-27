@@ -1252,104 +1252,7 @@ a:focus-visible{
 
 </div>
 
-/* =====================================================
-   LOAD LATEST AUTHOR PROFILE PICTURE
-===================================================== */
 
-async function loadLatestAuthorPicture(
-  authorId,
-  imageElement
-){
-
-  if(
-    !authorId ||
-    !imageElement
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    let profileData = {};
-
-
-    /* Use an already loaded profile */
-
-    if(
-      userProfileCache.has(
-        authorId
-      )
-    ){
-
-      profileData =
-      userProfileCache.get(
-        authorId
-      );
-
-    }else{
-
-      const profileReference =
-      doc(
-        db,
-        "users",
-        authorId
-      );
-
-
-      const profileSnapshot =
-      await getDoc(
-        profileReference
-      );
-
-
-      if(profileSnapshot.exists()){
-
-        profileData =
-        profileSnapshot.data();
-
-      }
-
-
-      userProfileCache.set(
-        authorId,
-        profileData
-      );
-
-    }
-
-
-    const latestProfilePicture =
-    getFirstValue(
-      profileData.profilePicture,
-      profileData.picture,
-      profileData.photoURL,
-      profileData.photoUrl,
-      profileData.profileImage,
-      profileData.profilePhoto,
-      profileData.imageUrl
-    );
-
-
-    if(latestProfilePicture){
-
-      imageElement.src =
-      latestProfilePicture;
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Error loading author profile picture:",
-      error
-    );
-
-  }
-
-}
 <!-- =====================================================
    OPEN JAVASCRIPT MODULE
 ===================================================== -->
@@ -1546,7 +1449,104 @@ function protectProfilePicture(imageElement){
 
 }
 
+/* =====================================================
+   LOAD LATEST AUTHOR PROFILE PICTURE
+===================================================== */
 
+async function loadLatestAuthorPicture(
+  authorId,
+  imageElement
+){
+
+  if(
+    !authorId ||
+    !imageElement
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    let profileData = {};
+
+
+    /* Use an already loaded profile */
+
+    if(
+      userProfileCache.has(
+        authorId
+      )
+    ){
+
+      profileData =
+      userProfileCache.get(
+        authorId
+      );
+
+    }else{
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        authorId
+      );
+
+
+      const profileSnapshot =
+      await getDoc(
+        profileReference
+      );
+
+
+      if(profileSnapshot.exists()){
+
+        profileData =
+        profileSnapshot.data();
+
+      }
+
+
+      userProfileCache.set(
+        authorId,
+        profileData
+      );
+
+    }
+
+
+    const latestProfilePicture =
+    getFirstValue(
+      profileData.profilePicture,
+      profileData.picture,
+      profileData.photoURL,
+      profileData.photoUrl,
+      profileData.profileImage,
+      profileData.profilePhoto,
+      profileData.imageUrl
+    );
+
+
+    if(latestProfilePicture){
+
+      imageElement.src =
+      latestProfilePicture;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading author profile picture:",
+      error
+    );
+
+  }
+
+}
 /* =====================================================
    FORMAT FIREBASE DATE
 ===================================================== */
