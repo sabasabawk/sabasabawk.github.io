@@ -1273,6 +1273,7 @@ import{
   auth,
   db,
   collection,
+  addDoc,
   query,
   orderBy,
   onSnapshot,
@@ -1280,6 +1281,7 @@ import{
   getDoc,
   updateDoc,
   deleteDoc,
+  serverTimestamp,
   onAuthStateChanged
 }from "./firebase.js";
 
@@ -2383,10 +2385,13 @@ loadLatestAuthorPicture(
   : "likeButton";
 
   likeButton.dataset.postId =
-  postData.id;
+postData.id;
 
-  likeButton.dataset.likes =
-  JSON.stringify(likes);
+likeButton.dataset.authorId =
+authorId;
+
+likeButton.dataset.likes =
+JSON.stringify(likes);
 
   likeButton.innerHTML =
   `❤️ <span>${likes.length}</span>`;
@@ -2549,7 +2554,89 @@ loadLatestAuthorPicture(
    SHARED POST SCROLLING AND FINAL CLOSING
 ===================================================== */
 
+/* =====================================================
+   CREATE LIKE NOTIFICATION
+===================================================== */
 
+async function createLikeNotification(
+  recipientId,
+  postId
+){
+
+  if(
+    !currentUser ||
+    !recipientId ||
+    !postId
+  ){
+
+    return;
+
+  }
+
+
+  /* Do not notify users about their own likes */
+
+  if(recipientId === currentUser.uid){
+
+    return;
+
+  }
+
+
+  const senderName =
+  getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentUser.displayName,
+    currentUser.email,
+    "A community member"
+  );
+
+
+  try{
+
+    await addDoc(
+      collection(
+        db,
+        "notifications"
+      ),
+      {
+        recipientId:
+        recipientId,
+
+        senderId:
+        currentUser.uid,
+
+        senderName:
+        senderName,
+
+        type:
+        "like",
+
+        postId:
+        postId,
+
+        message:
+        `${senderName} liked your post.`,
+
+        read:
+        false,
+
+        timestamp:
+        serverTimestamp()
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Error creating like notification:",
+      error
+    );
+
+  }
+
+}
 /* =====================================================
    LIKE OR UNLIKE A POST
 ===================================================== */
@@ -2566,13 +2653,16 @@ async function handleLikeButton(button){
   }
 
   const postId =
-  button.dataset.postId;
+button.dataset.postId;
 
-  if(!postId){
+const postAuthorId =
+button.dataset.authorId || "";
 
-    return;
+if(!postId){
 
-  }
+  return;
+
+}
 
   let likes = [];
 
@@ -2660,10 +2750,22 @@ async function handleLikeButton(button){
 
     if(likeCount){
 
-      likeCount.textContent =
-      updatedLikes.length;
+  likeCount.textContent =
+  updatedLikes.length;
 
-    }
+}
+
+
+/* Create notification only when adding a like */
+
+if(!userAlreadyLiked){
+
+  await createLikeNotification(
+    postAuthorId,
+    postId
+  );
+
+}
 
   }catch(error){
 
