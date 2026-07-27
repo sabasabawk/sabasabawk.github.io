@@ -15,18 +15,15 @@
   content="SABASABA Gospel Ministry Community Wall"
 >
 
-<title>Community Wall | SABASABA Gospel Ministry</title>
+<title>
+  Community Wall | SABASABA Gospel Ministry
+</title>
 
 <style>
 
 /* =====================================================
    PART 1 OF 6
-   GENERAL PAGE AND TOP NAVIGATION
-===================================================== */
-
-
-/* =====================================================
-   GENERAL RESET
+   GENERAL PAGE AND MAIN LAYOUT
 ===================================================== */
 
 *{
@@ -41,11 +38,9 @@ html{
 
 body{
   min-height:100vh;
-  margin:0;
-  padding:0;
-  font-family:Arial,Helvetica,sans-serif;
   background:#eef3f8;
   color:#222;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 button,
@@ -61,7 +56,7 @@ a{
 
 
 /* =====================================================
-   TOP APPLICATION BAR
+   TOP BAR
 ===================================================== */
 
 .appTopBar{
@@ -70,14 +65,14 @@ a{
   z-index:900;
   width:100%;
   background:#ffffff;
-  border-bottom:1px solid #d9e1e8;
+  border-bottom:1px solid #d7e0e8;
   box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
 .appTopBarInner{
   width:100%;
   max-width:760px;
-  min-height:65px;
+  min-height:64px;
   margin:auto;
   padding:8px 14px;
   display:flex;
@@ -107,9 +102,9 @@ a{
     #087bd1,
     #0055a5
   );
-  color:white;
-  font-size:24px;
-  box-shadow:0 3px 8px rgba(0,0,0,.16);
+  color:#ffffff;
+  font-size:23px;
+  box-shadow:0 3px 9px rgba(0,0,0,.16);
 }
 
 .appBrandText{
@@ -141,53 +136,34 @@ a{
   color:#1f2933;
   text-decoration:none;
   font-size:20px;
-  transition:.2s;
 }
 
 .topIconLink:hover{
   background:#dce9f4;
-  transform:translateY(-1px);
-}
-
-.notificationBadge{
-  position:absolute;
-  top:-3px;
-  right:-3px;
-  min-width:19px;
-  height:19px;
-  padding:0 5px;
-  border-radius:10px;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:#d93025;
-  color:white;
-  font-size:11px;
-  font-weight:bold;
 }
 
 
 /* =====================================================
-   MAIN PAGE CONTAINER
+   MAIN CONTAINER
 ===================================================== */
 
 .pageContainer{
   width:100%;
   max-width:760px;
   margin:auto;
-  padding:18px 14px 115px;
+  padding:16px 14px 115px;
 }
 
 
 /* =====================================================
-   QUICK CREATE POST BOX
+   QUICK POST BOX
 ===================================================== */
 
 .quickPostBox{
   width:100%;
   padding:16px;
   background:#ffffff;
-  border-radius:22px;
+  border-radius:20px;
   box-shadow:0 5px 18px rgba(0,0,0,.09);
 }
 
@@ -251,12 +227,12 @@ a{
 
 
 /* =====================================================
-   COMPACT COMMUNITY WALL TITLE
+   COMMUNITY WALL HEADING
 ===================================================== */
 
 .wallTitleBar{
   margin:18px 0;
-  padding:16px 18px;
+  padding:15px 17px;
   border-radius:18px;
   display:flex;
   align-items:center;
@@ -267,7 +243,7 @@ a{
     #087bd1,
     #0055a5
   );
-  color:white;
+  color:#ffffff;
   box-shadow:0 6px 16px rgba(0,0,0,.14);
 }
 
@@ -288,8 +264,8 @@ a{
 }
 
 .refreshIconButton{
-  width:45px;
-  height:45px;
+  width:44px;
+  height:44px;
   flex-shrink:0;
   border:none;
   border-radius:50%;
@@ -298,13 +274,9 @@ a{
   justify-content:center;
   background:#ffffff;
   color:#0873c9;
-  font-size:22px;
+  font-size:21px;
   cursor:pointer;
   box-shadow:0 3px 9px rgba(0,0,0,.15);
-}
-
-.refreshIconButton:hover{
-  background:#eaf4ff;
 }
 
 .refreshIconButton:disabled{
@@ -323,17 +295,17 @@ a{
 
 
 /* =====================================================
-   LOADING, EMPTY AND ERROR CARDS
+   STATUS CARDS
 ===================================================== */
 
 .statusCard{
   margin-top:18px;
-  padding:38px 22px;
-  border-radius:24px;
+  padding:36px 22px;
+  border-radius:22px;
   background:#ffffff;
   color:#6e7780;
   text-align:center;
-  font-size:18px;
+  font-size:17px;
   line-height:1.6;
   box-shadow:0 6px 18px rgba(0,0,0,.09);
 }
@@ -347,128 +319,177 @@ a{
 }
 /* =====================================================
    PART 2 OF 6
-   POST CARD STYLES
+   POST CARDS, NAVIGATION AND PHOTO VIEWER
+===================================================== */
+
+
+/* =====================================================
+   POST CARD
 ===================================================== */
 
 .postCard{
-  margin-bottom:22px;
-  padding:21px;
-  border-radius:24px;
+  width:100%;
+  margin-bottom:20px;
+  padding:18px;
   overflow:hidden;
   background:#ffffff;
-  box-shadow:0 6px 20px rgba(0,0,0,.10);
+  border-radius:22px;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
 }
 
 .postHeader{
   display:flex;
   align-items:center;
-  gap:13px;
+  gap:12px;
 }
 
 .authorPicture{
-  width:62px;
-  height:62px;
+  width:56px;
+  height:56px;
   flex-shrink:0;
   border-radius:50%;
   object-fit:cover;
-  background:#e8ecef;
+  background:#e5e9ed;
   border:3px solid #d8efff;
   cursor:pointer;
 }
 
 .authorInformation{
   min-width:0;
+  flex:1;
 }
 
 .authorName{
   color:#0873c9;
-  font-size:20px;
+  font-size:18px;
   font-weight:bold;
-  line-height:1.25;
-  cursor:pointer;
+  line-height:1.3;
   word-break:break-word;
+  cursor:pointer;
 }
 
 .postDetails{
-  margin-top:5px;
-  color:#77818a;
-  font-size:14px;
+  margin-top:4px;
+  color:#747f89;
+  font-size:13px;
+  line-height:1.4;
 }
 
 .postCategory{
   display:inline-block;
-  margin-top:17px;
-  padding:7px 13px;
-  border-radius:20px;
+  margin-top:15px;
+  padding:7px 12px;
+  border-radius:18px;
   background:#e7f3ff;
   color:#0873c9;
-  font-size:14px;
+  font-size:13px;
   font-weight:bold;
 }
 
 .postMessage{
-  margin-top:17px;
-  font-size:18px;
+  margin-top:15px;
+  color:#20252a;
+  font-size:17px;
   line-height:1.65;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
+}
+
+.postMessage:empty{
+  display:none;
+}
+
+
+/* =====================================================
+   POST MEDIA
+===================================================== */
+
+.postMediaContainer{
+  width:100%;
+  margin-top:16px;
+}
+
+.postMediaContainer:empty{
+  display:none;
 }
 
 .communityPostImage,
 .communityPostVideo{
   display:block;
   width:100%;
-  max-height:540px;
-  margin-top:18px;
+  max-height:560px;
   border-radius:16px;
+  background:#000000;
   object-fit:contain;
-  background:#000;
 }
 
 .communityPostImage{
   cursor:pointer;
 }
 
+.communityPostVideo{
+  outline:none;
+}
+
 
 /* =====================================================
-   POST ACTION BUTTONS
+   MAIN POST ACTIONS
 ===================================================== */
 
 .postActions{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:20px;
-  padding-top:18px;
-  border-top:1px solid #e0e4e8;
+  gap:7px;
+  margin-top:17px;
+  padding-top:15px;
+  border-top:1px solid #e1e6eb;
 }
 
 .postActions button{
+  min-height:42px;
+  padding:9px 6px;
   border:none;
-  border-radius:12px;
-  padding:10px;
+  border-radius:11px;
   background:#edf3f8;
-  font-size:14px;
+  color:#35414c;
+  font-size:13px;
   font-weight:bold;
   cursor:pointer;
 }
 
 .postActions button:hover{
-  background:#ddeaf4;
+  background:#dce9f4;
+}
+
+.postActions button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
 }
 
 .likeButton.liked{
-  background:#ffe4e8;
+  background:#ffe5ea;
   color:#c2183b;
+}
+
+
+/* =====================================================
+   OWNER ACTIONS
+===================================================== */
+
+.ownerActions{
+  grid-template-columns:repeat(2,1fr);
+  margin-top:10px;
+  padding-top:0;
+  border-top:none;
 }
 
 .editButton{
   background:#fff3cd !important;
-  color:#7a5700 !important;
+  color:#755600 !important;
 }
 
 .deleteButton{
-  background:#ffe0e0 !important;
+  background:#ffe1e1 !important;
   color:#b00020 !important;
 }
 
@@ -480,20 +501,24 @@ a{
 .floatingCreateButton{
   position:fixed;
   right:18px;
-  bottom:100px;
+  bottom:96px;
+  z-index:850;
   width:58px;
   height:58px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#087bd1,#0055a5);
-  color:white;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
   text-decoration:none;
   font-size:32px;
   font-weight:bold;
   box-shadow:0 8px 22px rgba(0,0,0,.28);
-  z-index:850;
 }
 
 
@@ -506,10 +531,10 @@ a{
   left:0;
   right:0;
   bottom:0;
-  background:#fff;
+  z-index:900;
+  background:#ffffff;
   border-top:1px solid #d7dee6;
   box-shadow:0 -3px 14px rgba(0,0,0,.10);
-  z-index:900;
 }
 
 .bottomNavigationInner{
@@ -521,18 +546,20 @@ a{
 }
 
 .bottomNavItem{
+  min-width:0;
   padding:8px 3px;
-  text-decoration:none;
   color:#66717c;
   text-align:center;
+  text-decoration:none;
   font-size:10px;
   font-weight:bold;
 }
 
 .bottomNavIcon{
   display:block;
-  font-size:22px;
   margin-bottom:3px;
+  font-size:21px;
+  line-height:1;
 }
 
 .bottomNavItem.active{
@@ -541,17 +568,18 @@ a{
 
 
 /* =====================================================
-   PHOTO VIEWER
+   FULLSCREEN PHOTO VIEWER
 ===================================================== */
 
 #photoViewer{
   position:fixed;
   inset:0;
+  z-index:1200;
   display:none;
   align-items:center;
   justify-content:center;
+  padding:15px;
   background:rgba(0,0,0,.95);
-  z-index:1200;
 }
 
 #photoViewer.open{
@@ -559,26 +587,29 @@ a{
 }
 
 #photoViewerImage{
+  display:block;
   max-width:100%;
-  max-height:90vh;
+  max-height:92vh;
+  object-fit:contain;
 }
 
 #closePhotoViewer{
   position:absolute;
-  top:16px;
-  right:16px;
+  top:15px;
+  right:15px;
   width:48px;
   height:48px;
   border:none;
   border-radius:50%;
-  background:rgba(255,255,255,.25);
-  color:white;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
   font-size:28px;
+  cursor:pointer;
 }
 
 
 /* =====================================================
-   MOBILE
+   MOBILE DESIGN
 ===================================================== */
 
 @media(max-width:600px){
@@ -587,15 +618,49 @@ a{
     font-size:15px;
   }
 
-  .authorName{
+  .topIconLink{
+    width:39px;
+    height:39px;
     font-size:18px;
   }
 
-  .postMessage{
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .postCard{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .authorPicture{
+    width:52px;
+    height:52px;
+  }
+
+  .authorName{
     font-size:17px;
   }
 
+  .postMessage{
+    font-size:16px;
+  }
+
+  .bottomNavItem{
+    font-size:9px;
+  }
+
+  .bottomNavIcon{
+    font-size:20px;
+  }
+
 }
+
+
+/* =====================================================
+   CLOSE STYLE AND HEAD
+===================================================== */
 
 </style>
 
@@ -604,7 +669,7 @@ a{
 <body>
 <!-- =====================================================
    PART 3 OF 6
-   PAGE STRUCTURE
+   COMPLETE PAGE STRUCTURE
 ===================================================== -->
 
 
@@ -617,7 +682,7 @@ a{
   <div class="appTopBarInner">
 
     <a
-      href="feed.html"
+      href="index.html"
       class="appBrand"
     >
 
@@ -637,7 +702,7 @@ a{
       <a
         href="members.html"
         class="topIconLink"
-        aria-label="Search members"
+        aria-label="Search community members"
         title="Search members"
       >
         🔍
@@ -647,27 +712,18 @@ a{
       <a
         href="notifications.html"
         class="topIconLink"
-        aria-label="Notifications"
+        aria-label="Open notifications"
         title="Notifications"
       >
-
         🔔
-
-        <span
-          id="notificationBadge"
-          class="notificationBadge"
-        >
-          0
-        </span>
-
       </a>
 
 
       <a
         href="chat.html"
         class="topIconLink"
-        aria-label="Private messages"
-        title="Private messages"
+        aria-label="Open messages"
+        title="Messages"
       >
         💬
       </a>
@@ -680,7 +736,7 @@ a{
 
 
 <!-- =====================================================
-   MAIN PAGE
+   MAIN PAGE CONTENT
 ===================================================== -->
 
 <div class="pageContainer">
@@ -703,9 +759,9 @@ a{
 
 
       <button
+        type="button"
         id="quickPostButton"
         class="quickPostButton"
-        type="button"
       >
         Share encouragement, testimony or prayer...
       </button>
@@ -744,7 +800,7 @@ a{
 
 
   <!-- =================================================
-       COMMUNITY WALL TITLE
+       COMMUNITY WALL HEADING
   ================================================== -->
 
   <section class="wallTitleBar">
@@ -756,7 +812,7 @@ a{
       </h1>
 
       <p>
-        Faith, testimonies, prayer and encouragement
+        Share faith, prayer, testimonies and encouragement
       </p>
 
     </div>
@@ -766,8 +822,8 @@ a{
       type="button"
       id="refreshButton"
       class="refreshIconButton"
-      aria-label="Refresh community posts"
-      title="Refresh community posts"
+      aria-label="Refresh Community Wall"
+      title="Refresh posts"
     >
       🔄
     </button>
@@ -805,7 +861,7 @@ a{
 
 
 <!-- =====================================================
-   BOTTOM NAVIGATION
+   CLEAN BOTTOM NAVIGATION
 ===================================================== -->
 
 <nav class="bottomNavigation">
@@ -814,8 +870,8 @@ a{
 
 
     <a
-      href="feed.html"
-      class="bottomNavItem active"
+      href="index.html"
+      class="bottomNavItem"
     >
 
       <span class="bottomNavIcon">
@@ -830,8 +886,8 @@ a{
 
 
     <a
-      href="community.html"
-      class="bottomNavItem"
+      href="feed.html"
+      class="bottomNavItem active"
     >
 
       <span class="bottomNavIcon">
@@ -947,7 +1003,7 @@ a{
 <script type="module">
 /* =====================================================
    PART 4 OF 6
-   FIREBASE SETUP, USER PROFILE AND POST LOADING
+   FIREBASE SETUP, USER PROFILE AND BASIC FUNCTIONS
 ===================================================== */
 
 
@@ -964,16 +1020,10 @@ import {
   onSnapshot,
   doc,
   getDoc,
-  setDoc,
   updateDoc,
   deleteDoc,
   onAuthStateChanged
 } from "./firebase.js";
-
-
-import {
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* =====================================================
@@ -981,45 +1031,25 @@ import {
 ===================================================== */
 
 const postsContainer =
-document.getElementById(
-  "postsContainer"
-);
-
+document.getElementById("postsContainer");
 
 const refreshButton =
-document.getElementById(
-  "refreshButton"
-);
-
+document.getElementById("refreshButton");
 
 const quickPostButton =
-document.getElementById(
-  "quickPostButton"
-);
-
+document.getElementById("quickPostButton");
 
 const quickPostAvatar =
-document.getElementById(
-  "quickPostAvatar"
-);
-
+document.getElementById("quickPostAvatar");
 
 const photoViewer =
-document.getElementById(
-  "photoViewer"
-);
-
+document.getElementById("photoViewer");
 
 const photoViewerImage =
-document.getElementById(
-  "photoViewerImage"
-);
+document.getElementById("photoViewerImage");
 
-
-const closePhotoViewerButton =
-document.getElementById(
-  "closePhotoViewer"
-);
+const closePhotoViewer =
+document.getElementById("closePhotoViewer");
 
 
 /* =====================================================
@@ -1028,13 +1058,9 @@ document.getElementById(
 
 let currentUser = null;
 
-let currentUserProfile = {};
+let currentProfile = {};
 
 let unsubscribePosts = null;
-
-const likeListeners =
-new Map();
-
 
 const defaultProfilePicture =
 "images/profile.png";
@@ -1066,26 +1092,7 @@ function getFirstValue(...values){
 
 
 /* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value){
-
-  const temporaryElement =
-  document.createElement("div");
-
-
-  temporaryElement.textContent =
-  String(value ?? "");
-
-
-  return temporaryElement.innerHTML;
-
-}
-
-
-/* =====================================================
-   STATUS MESSAGES
+   DISPLAY LOADING MESSAGE
 ===================================================== */
 
 function showLoadingMessage(){
@@ -1103,6 +1110,10 @@ function showLoadingMessage(){
 }
 
 
+/* =====================================================
+   DISPLAY EMPTY MESSAGE
+===================================================== */
+
 function showEmptyMessage(){
 
   postsContainer.innerHTML = `
@@ -1113,23 +1124,8 @@ function showEmptyMessage(){
 
       <br><br>
 
-      Be the first person to share encouragement,
-      testimony or prayer.
-
-    </div>
-
-  `;
-
-}
-
-
-function showErrorMessage(message){
-
-  postsContainer.innerHTML = `
-
-    <div class="statusCard error">
-
-      ${escapeHTML(message)}
+      Be the first person to share a testimony,
+      prayer, encouragement, photo or video.
 
     </div>
 
@@ -1139,12 +1135,34 @@ function showErrorMessage(message){
 
 
 /* =====================================================
-   IMAGE FALLBACK
+   DISPLAY ERROR MESSAGE
 ===================================================== */
 
-function addProfileImageFallback(
-  imageElement
-){
+function showErrorMessage(message){
+
+  postsContainer.innerHTML = "";
+
+  const errorCard =
+  document.createElement("div");
+
+  errorCard.className =
+  "statusCard error";
+
+  errorCard.textContent =
+  message;
+
+  postsContainer.appendChild(
+    errorCard
+  );
+
+}
+
+
+/* =====================================================
+   PROFILE PICTURE ERROR HANDLING
+===================================================== */
+
+function protectProfilePicture(imageElement){
 
   if(!imageElement){
 
@@ -1152,25 +1170,13 @@ function addProfileImageFallback(
 
   }
 
-
   imageElement.addEventListener(
     "error",
-    ()=>{
-
-      /*
-        Prevent an endless error loop if the
-        default profile image is also missing.
-      */
-
-      imageElement.onerror = null;
-
+    function(){
 
       imageElement.src =
       defaultProfilePicture;
 
-    },
-    {
-      once:true
     }
   );
 
@@ -1183,22 +1189,16 @@ function addProfileImageFallback(
 
 async function loadCurrentUserProfile(){
 
-  currentUserProfile = {};
-
+  currentProfile = {};
 
   if(!currentUser){
 
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      defaultProfilePicture;
-
-    }
+    quickPostAvatar.src =
+    defaultProfilePicture;
 
     return;
 
   }
-
 
   try{
 
@@ -1209,339 +1209,39 @@ async function loadCurrentUserProfile(){
       currentUser.uid
     );
 
-
     const profileSnapshot =
     await getDoc(
       profileReference
     );
 
-
     if(profileSnapshot.exists()){
 
-      currentUserProfile =
+      currentProfile =
       profileSnapshot.data();
 
     }
 
-
     const profilePicture =
     getFirstValue(
-      currentUserProfile.profilePicture,
-      currentUserProfile.picture,
-      currentUserProfile.photoURL,
-      currentUserProfile.profileImage,
-      currentUserProfile.profilePhoto,
+      currentProfile.picture,
+      currentProfile.profilePicture,
+      currentProfile.photoURL,
       currentUser.photoURL,
       defaultProfilePicture
     );
 
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      profilePicture;
-
-    }
+    quickPostAvatar.src =
+    profilePicture;
 
   }catch(error){
 
     console.error(
-      "Current user profile loading error:",
+      "Error loading profile:",
       error
     );
 
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      defaultProfilePicture;
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   QUICK CREATE POST BUTTON
-===================================================== */
-
-if(quickPostButton){
-
-  quickPostButton.addEventListener(
-    "click",
-    ()=>{
-
-      if(!currentUser){
-
-        window.location.href =
-        "login.html";
-
-        return;
-
-      }
-
-
-      window.location.href =
-      "createpost.html";
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   QUICK PROFILE IMAGE FALLBACK
-===================================================== */
-
-addProfileImageFallback(
-  quickPostAvatar
-);
-
-
-/* =====================================================
-   AUTHENTICATION STATE
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  async(user)=>{
-
-    currentUser =
-    user || null;
-
-
-    await loadCurrentUserProfile();
-
-
-    initializeFeed();
-
-  }
-);
-
-
-/* =====================================================
-   STOP OLD POST LISTENER
-===================================================== */
-
-function stopPostsListener(){
-
-  if(unsubscribePosts){
-
-    unsubscribePosts();
-
-    unsubscribePosts = null;
-
-  }
-
-}
-
-
-/* =====================================================
-   STOP ALL LIKE LISTENERS
-===================================================== */
-
-function stopAllLikeListeners(){
-
-  for(
-    const unsubscribeLike
-    of likeListeners.values()
-  ){
-
-    unsubscribeLike();
-
-  }
-
-
-  likeListeners.clear();
-
-}
-
-
-/* =====================================================
-   INITIALIZE FEED
-===================================================== */
-
-function initializeFeed(){
-
-  stopPostsListener();
-
-  stopAllLikeListeners();
-
-  loadCommunityPosts();
-
-}
-
-
-/* =====================================================
-   LOAD COMMUNITY POSTS
-===================================================== */
-
-function loadCommunityPosts(){
-
-  showLoadingMessage();
-
-  stopPostsListener();
-
-  stopAllLikeListeners();
-
-
-  try{
-
-    const postsReference =
-    collection(
-      db,
-      "communityPosts"
-    );
-
-
-    const postsQuery =
-    query(
-      postsReference,
-      orderBy(
-        "timestamp",
-        "desc"
-      )
-    );
-
-
-    unsubscribePosts =
-    onSnapshot(
-
-      postsQuery,
-
-      async(snapshot)=>{
-
-        try{
-
-          if(snapshot.empty){
-
-            showEmptyMessage();
-
-            return;
-
-          }
-
-
-          postsContainer.innerHTML = "";
-
-
-          for(
-            const postDocument
-            of snapshot.docs
-          ){
-
-            const postData = {
-
-              id:
-              postDocument.id,
-
-              ...postDocument.data()
-
-            };
-
-
-            const postCard =
-            await createPostCard(
-              postData
-            );
-
-
-            postsContainer.appendChild(
-              postCard
-            );
-
-          }
-
-
-          window.setTimeout(
-            scrollToSharedPost,
-            300
-          );
-
-        }catch(error){
-
-          console.error(
-            "Post display error:",
-            error
-          );
-
-
-          showErrorMessage(
-            error.message ||
-            "Posts were found, but they could not be displayed."
-          );
-
-        }
-
-      },
-
-      (error)=>{
-
-        console.error(
-          "Firestore post-loading error:",
-          error
-        );
-
-
-        let message =
-        "Community posts could not be loaded.";
-
-
-        if(
-          error.code ===
-          "permission-denied"
-        ){
-
-          message =
-          "Firebase denied permission to read community posts.";
-
-        }else if(
-          error.code ===
-          "failed-precondition"
-        ){
-
-          message =
-          "Firebase requires a Firestore index for this query.";
-
-        }else if(
-          error.code ===
-          "unavailable"
-        ){
-
-          message =
-          "Firebase is temporarily unavailable. Please check your internet connection.";
-
-        }else if(error.message){
-
-          message =
-          error.message;
-
-        }
-
-
-        showErrorMessage(
-          message
-        );
-
-      }
-
-    );
-
-  }catch(error){
-
-    console.error(
-      "Community feed initialization error:",
-      error
-    );
-
-
-    showErrorMessage(
-      error.message ||
-      "An unexpected error occurred while opening the Community Wall."
-    );
+    quickPostAvatar.src =
+    defaultProfilePicture;
 
   }
 
@@ -1552,46 +1252,43 @@ function loadCommunityPosts(){
    FORMAT POST DATE
 ===================================================== */
 
-function formatPostDate(value){
+function formatPostDate(timestamp){
 
-  if(!value){
+  if(!timestamp){
 
     return "Recently";
 
   }
 
-
   try{
 
-    let date;
-
+    let postDate;
 
     if(
-      typeof value.toDate ===
+      typeof timestamp.toDate ===
       "function"
     ){
 
-      date =
-      value.toDate();
+      postDate =
+      timestamp.toDate();
 
-    }else if(value.seconds){
+    }else if(timestamp.seconds){
 
-      date =
+      postDate =
       new Date(
-        value.seconds * 1000
+        timestamp.seconds * 1000
       );
 
     }else{
 
-      date =
-      new Date(value);
+      postDate =
+      new Date(timestamp);
 
     }
 
-
     if(
       Number.isNaN(
-        date.getTime()
+        postDate.getTime()
       )
     ){
 
@@ -1599,8 +1296,7 @@ function formatPostDate(value){
 
     }
 
-
-    return date.toLocaleString(
+    return postDate.toLocaleString(
       undefined,
       {
         year:"numeric",
@@ -1614,71 +1310,85 @@ function formatPostDate(value){
   }catch(error){
 
     console.error(
-      "Post date formatting error:",
+      "Date formatting error:",
       error
     );
-
 
     return "Recently";
 
   }
 
 }
-/* =====================================================
-   PART 5 OF 6
-   CREATE POSTS, LIKES, SHARING, EDITING AND DELETING
-===================================================== */
 
 
 /* =====================================================
-   LOAD AUTHOR PROFILE
+   QUICK POST BUTTON
 ===================================================== */
 
-async function getAuthorProfile(
-  authorId
-){
+quickPostButton.addEventListener(
+  "click",
+  function(){
 
-  if(!authorId){
+    if(!currentUser){
 
-    return {};
+      window.location.href =
+      "login.html";
 
-  }
-
-
-  try{
-
-    const authorReference =
-    doc(
-      db,
-      "users",
-      authorId
-    );
-
-
-    const authorSnapshot =
-    await getDoc(
-      authorReference
-    );
-
-
-    if(authorSnapshot.exists()){
-
-      return authorSnapshot.data();
+      return;
 
     }
 
+    window.location.href =
+    "createpost.html";
 
-    return {};
-
-  }catch(error){
-
-    console.error(
-      "Author profile loading error:",
-      error
-    );
+  }
+);
 
 
-    return {};
+/* =====================================================
+   PROTECT QUICK PROFILE PICTURE
+===================================================== */
+
+protectProfilePicture(
+  quickPostAvatar
+);
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+    await loadCurrentUserProfile();
+
+    startCommunityFeed();
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   LOAD POSTS AND CREATE POST CARDS
+===================================================== */
+
+
+/* =====================================================
+   STOP CURRENT POSTS LISTENER
+===================================================== */
+
+function stopPostsListener(){
+
+  if(unsubscribePosts){
+
+    unsubscribePosts();
+
+    unsubscribePosts =
+    null;
 
   }
 
@@ -1686,513 +1396,659 @@ async function getAuthorProfile(
 
 
 /* =====================================================
-   CREATE ONE POST CARD
+   START COMMUNITY FEED
 ===================================================== */
 
-async function createPostCard(
-  post
-){
+function startCommunityFeed(){
 
-  const authorId =
-  getFirstValue(
-    post.userId,
-    post.authorId,
-    post.uid
+  stopPostsListener();
+
+  showLoadingMessage();
+
+  loadCommunityPosts();
+
+}
+
+
+/* =====================================================
+   LOAD COMMUNITY POSTS
+===================================================== */
+
+function loadCommunityPosts(){
+
+  const postsReference =
+  collection(
+    db,
+    "communityPosts"
   );
 
-
-  const authorProfile =
-  await getAuthorProfile(
-    authorId
+  const postsQuery =
+  query(
+    postsReference,
+    orderBy(
+      "timestamp",
+      "desc"
+    )
   );
 
+  unsubscribePosts =
+  onSnapshot(
 
-  const authorName =
-  getFirstValue(
-    post.name,
-    post.fullName,
-    post.displayName,
-    authorProfile.name,
-    authorProfile.fullName,
-    authorProfile.displayName,
-    "Community Member"
+    postsQuery,
+
+    function(snapshot){
+
+      postsContainer.innerHTML =
+      "";
+
+      if(snapshot.empty){
+
+        showEmptyMessage();
+
+        return;
+
+      }
+
+      snapshot.forEach(
+        function(postDocument){
+
+          const postData = {
+
+            id:
+            postDocument.id,
+
+            ...postDocument.data()
+
+          };
+
+          const postCard =
+          createPostCard(postData);
+
+          postsContainer.appendChild(
+            postCard
+          );
+
+        }
+      );
+
+      scrollToSharedPost();
+
+    },
+
+    function(error){
+
+      console.error(
+        "Error loading posts:",
+        error
+      );
+
+      if(
+        error.code ===
+        "permission-denied"
+      ){
+
+        showErrorMessage(
+          "Firebase permission has denied access to community posts."
+        );
+
+        return;
+
+      }
+
+      if(
+        error.code ===
+        "failed-precondition"
+      ){
+
+        showErrorMessage(
+          "Firebase requires an index before the posts can be displayed."
+        );
+
+        return;
+
+      }
+
+      showErrorMessage(
+        "Community posts could not be loaded. Please try again."
+      );
+
+    }
+
   );
 
-
-  const authorPicture =
-  getFirstValue(
-    post.profilePicture,
-    post.picture,
-    post.photoURL,
-    authorProfile.profilePicture,
-    authorProfile.picture,
-    authorProfile.photoURL,
-    authorProfile.profileImage,
-    defaultProfilePicture
-  );
+}
 
 
-  const authorCountry =
-  getFirstValue(
-    post.country,
-    authorProfile.country
-  );
+/* =====================================================
+   CREATE A COMMUNITY POST CARD
+===================================================== */
 
-
-  const message =
-  getFirstValue(
-    post.message,
-    post.content,
-    post.text,
-    post.description
-  );
-
-
-  const category =
-  getFirstValue(
-    post.category,
-    post.postCategory,
-    post.type,
-    "Community"
-  );
-
-
-  const imageURL =
-  getFirstValue(
-    post.imageUrl,
-    post.imageURL,
-    post.postImage,
-    post.photoUrl,
-    post.photoURL,
-    post.image
-  );
-
-
-  const videoURL =
-  getFirstValue(
-    post.videoUrl,
-    post.videoURL,
-    post.postVideo,
-    post.mediaUrl
-  );
-
-
-  const postDate =
-  formatPostDate(
-    post.timestamp ||
-    post.createdAt ||
-    post.date
-  );
-
+function createPostCard(postData){
 
   const postCard =
-  document.createElement(
-    "article"
-  );
-
+  document.createElement("article");
 
   postCard.className =
   "postCard";
 
-
   postCard.id =
-  `post-${post.id}`;
-
+  `post-${postData.id}`;
 
   postCard.dataset.postId =
-  post.id;
+  postData.id;
 
 
-  postCard.innerHTML = `
+  /* =================================================
+     POST OWNER DETAILS
+  ================================================= */
 
-    <div class="postHeader">
-
-      <img
-        class="authorPicture"
-        alt="Profile picture"
-      >
-
-      <div class="authorInformation">
-
-        <div class="authorName"></div>
-
-        <div class="postDetails"></div>
-
-      </div>
-
-    </div>
-
-
-    <div class="postCategory"></div>
-
-
-    <div class="postMessage"></div>
-
-
-    <div class="postMediaContainer"></div>
-
-
-    <div class="postActions">
-
-      <button
-        type="button"
-        class="likeButton"
-      >
-        🤍 Like
-      </button>
-
-
-      <button
-        type="button"
-        class="commentButton"
-      >
-        💬 Comment
-      </button>
-
-
-      <button
-        type="button"
-        class="shareButton"
-      >
-        🔗 Share
-      </button>
-
-    </div>
-
-
-    <div class="ownerActions"></div>
-
-  `;
-
-
-/* =====================================================
-   FILL AUTHOR DETAILS
-===================================================== */
-
-  const authorImageElement =
-  postCard.querySelector(
-    ".authorPicture"
+  const authorId =
+  getFirstValue(
+    postData.userId,
+    postData.authorId,
+    postData.uid
   );
+
+  const authorName =
+  getFirstValue(
+    postData.name,
+    postData.fullName,
+    postData.displayName,
+    "Community Member"
+  );
+
+  const authorPicture =
+  getFirstValue(
+    postData.picture,
+    postData.profilePicture,
+    postData.photoURL,
+    defaultProfilePicture
+  );
+
+  const authorCountry =
+  getFirstValue(
+    postData.country
+  );
+
+  const postDate =
+  formatPostDate(
+    postData.timestamp
+  );
+
+
+  /* =================================================
+     POST CONTENT
+  ================================================= */
+
+  const postMessage =
+  getFirstValue(
+    postData.post,
+    postData.message,
+    postData.content,
+    postData.text,
+    postData.description
+  );
+
+  const postCategory =
+  getFirstValue(
+    postData.category,
+    "General"
+  );
+
+
+  /* =================================================
+     MEDIA INFORMATION
+  ================================================= */
+
+  const mediaType =
+  getFirstValue(
+    postData.mediaType
+  ).toLowerCase();
+
+  let imageUrl = "";
+
+  let videoUrl = "";
+
+
+  if(mediaType === "image"){
+
+    imageUrl =
+    getFirstValue(
+      postData.imageUrl,
+      postData.mediaUrl
+    );
+
+  }else if(mediaType === "video"){
+
+    videoUrl =
+    getFirstValue(
+      postData.videoUrl,
+      postData.mediaUrl
+    );
+
+  }else{
+
+    imageUrl =
+    getFirstValue(
+      postData.imageUrl
+    );
+
+    videoUrl =
+    getFirstValue(
+      postData.videoUrl
+    );
+
+  }
+
+
+  /* =================================================
+     NUMBER OF LIKES
+  ================================================= */
+
+  const likes =
+  Array.isArray(postData.likes)
+  ? postData.likes
+  : [];
+
+  const userHasLiked =
+  Boolean(
+    currentUser &&
+    likes.includes(currentUser.uid)
+  );
+
+
+  /* =================================================
+     POST HEADER
+  ================================================= */
+
+  const postHeader =
+  document.createElement("div");
+
+  postHeader.className =
+  "postHeader";
+
+
+  const profileImage =
+  document.createElement("img");
+
+  profileImage.className =
+  "authorPicture";
+
+  profileImage.src =
+  authorPicture;
+
+  profileImage.alt =
+  `${authorName}'s profile picture`;
+
+  protectProfilePicture(
+    profileImage
+  );
+
+
+  const authorInformation =
+  document.createElement("div");
+
+  authorInformation.className =
+  "authorInformation";
 
 
   const authorNameElement =
-  postCard.querySelector(
-    ".authorName"
-  );
+  document.createElement("div");
 
-
-  const postDetailsElement =
-  postCard.querySelector(
-    ".postDetails"
-  );
-
-
-  authorImageElement.src =
-  authorPicture;
-
-
-  addProfileImageFallback(
-    authorImageElement
-  );
-
+  authorNameElement.className =
+  "authorName";
 
   authorNameElement.textContent =
   authorName;
 
 
-  postDetailsElement.textContent =
+  const postDetails =
+  document.createElement("div");
+
+  postDetails.className =
+  "postDetails";
+
+  postDetails.textContent =
   authorCountry
   ? `${authorCountry} • ${postDate}`
   : postDate;
 
 
-/* =====================================================
-   OPEN AUTHOR PROFILE
-===================================================== */
+  authorInformation.appendChild(
+    authorNameElement
+  );
 
-  if(authorId){
+  authorInformation.appendChild(
+    postDetails
+  );
 
-    authorImageElement.addEventListener(
-      "click",
-      ()=>{
+  postHeader.appendChild(
+    profileImage
+  );
 
-        window.location.href =
-        `profile.html?uid=${encodeURIComponent(authorId)}`;
+  postHeader.appendChild(
+    authorInformation
+  );
 
-      }
-    );
+  postCard.appendChild(
+    postHeader
+  );
 
 
-    authorNameElement.addEventListener(
-      "click",
-      ()=>{
+  /* =================================================
+     CATEGORY
+  ================================================= */
 
-        window.location.href =
-        `profile.html?uid=${encodeURIComponent(authorId)}`;
+  if(postCategory){
 
-      }
+    const categoryElement =
+    document.createElement("div");
+
+    categoryElement.className =
+    "postCategory";
+
+    categoryElement.textContent =
+    postCategory;
+
+    postCard.appendChild(
+      categoryElement
     );
 
   }
 
 
-/* =====================================================
-   FILL CATEGORY AND MESSAGE
-===================================================== */
+  /* =================================================
+     WRITTEN MESSAGE
+  ================================================= */
 
-  const categoryElement =
-  postCard.querySelector(
-    ".postCategory"
-  );
+  if(postMessage){
 
+    const messageElement =
+    document.createElement("div");
 
-  const messageElement =
-  postCard.querySelector(
-    ".postMessage"
-  );
+    messageElement.className =
+    "postMessage";
 
+    messageElement.textContent =
+    postMessage;
 
-  categoryElement.textContent =
-  category;
+    postCard.appendChild(
+      messageElement
+    );
 
-
-  messageElement.textContent =
-  message || "Shared a community update.";
+  }
 
 
-/* =====================================================
-   ADD PHOTO OR VIDEO
-===================================================== */
+  /* =================================================
+     POST PHOTO OR VIDEO
+  ================================================= */
 
   const mediaContainer =
-  postCard.querySelector(
-    ".postMediaContainer"
-  );
+  document.createElement("div");
+
+  mediaContainer.className =
+  "postMediaContainer";
 
 
-  if(videoURL){
+  if(imageUrl){
 
-    const videoElement =
-    document.createElement(
-      "video"
-    );
+    const postImage =
+    document.createElement("img");
 
-
-    videoElement.className =
-    "communityPostVideo";
-
-
-    videoElement.src =
-    videoURL;
-
-
-    videoElement.controls =
-    true;
-
-
-    videoElement.preload =
-    "metadata";
-
-
-    videoElement.playsInline =
-    true;
-
-
-    mediaContainer.appendChild(
-      videoElement
-    );
-
-  }else if(imageURL){
-
-    const imageElement =
-    document.createElement(
-      "img"
-    );
-
-
-    imageElement.className =
+    postImage.className =
     "communityPostImage";
 
+    postImage.src =
+    imageUrl;
 
-    imageElement.src =
-    imageURL;
-
-
-    imageElement.alt =
+    postImage.alt =
     "Community post photo";
 
-
-    imageElement.loading =
+    postImage.loading =
     "lazy";
 
+    postImage.dataset.fullImage =
+    imageUrl;
 
-    imageElement.addEventListener(
-      "click",
-      ()=>{
+    postImage.addEventListener(
+      "error",
+      function(){
 
-        openPhotoViewer(
-          imageURL
-        );
+        mediaContainer.remove();
 
+      },
+      {
+        once:true
       }
     );
 
+    mediaContainer.appendChild(
+      postImage
+    );
+
+  }else if(videoUrl){
+
+    const postVideo =
+    document.createElement("video");
+
+    postVideo.className =
+    "communityPostVideo";
+
+    postVideo.src =
+    videoUrl;
+
+    postVideo.controls =
+    true;
+
+    postVideo.preload =
+    "metadata";
+
+    postVideo.playsInline =
+    true;
+
+    postVideo.addEventListener(
+      "error",
+      function(){
+
+        mediaContainer.remove();
+
+      },
+      {
+        once:true
+      }
+    );
 
     mediaContainer.appendChild(
-      imageElement
+      postVideo
     );
 
   }
 
 
-/* =====================================================
-   POST ACTION BUTTONS
-===================================================== */
+  if(mediaContainer.children.length > 0){
+
+    postCard.appendChild(
+      mediaContainer
+    );
+
+  }
+
+
+  /* =================================================
+     POST ACTION BUTTONS
+  ================================================= */
+
+  const actionsContainer =
+  document.createElement("div");
+
+  actionsContainer.className =
+  "postActions";
+
 
   const likeButton =
-  postCard.querySelector(
-    ".likeButton"
-  );
+  document.createElement("button");
+
+  likeButton.type =
+  "button";
+
+  likeButton.className =
+  userHasLiked
+  ? "likeButton liked"
+  : "likeButton";
+
+  likeButton.dataset.postId =
+  postData.id;
+
+  likeButton.dataset.likes =
+  JSON.stringify(likes);
+
+  likeButton.innerHTML =
+  `❤️ <span>${likes.length}</span>`;
 
 
   const commentButton =
-  postCard.querySelector(
-    ".commentButton"
-  );
+  document.createElement("button");
+
+  commentButton.type =
+  "button";
+
+  commentButton.className =
+  "commentButton";
+
+  commentButton.dataset.postId =
+  postData.id;
+
+  commentButton.innerHTML =
+  "💬 Comment";
 
 
   const shareButton =
-  postCard.querySelector(
-    ".shareButton"
-  );
+  document.createElement("button");
+
+  shareButton.type =
+  "button";
+
+  shareButton.className =
+  "shareButton";
+
+  shareButton.dataset.postId =
+  postData.id;
+
+  shareButton.dataset.message =
+  postMessage;
+
+  shareButton.innerHTML =
+  "🔗 Share";
 
 
-  listenForLikes(
-    post.id,
+  actionsContainer.appendChild(
     likeButton
   );
 
+  actionsContainer.appendChild(
+    commentButton
+  );
 
-  likeButton.addEventListener(
-    "click",
-    ()=>{
+  actionsContainer.appendChild(
+    shareButton
+  );
 
-      togglePostLike(
-        post.id,
-        likeButton
-      );
-
-    }
+  postCard.appendChild(
+    actionsContainer
   );
 
 
-  commentButton.addEventListener(
-    "click",
-    ()=>{
+  /* =================================================
+     EDIT AND DELETE BUTTONS FOR POST OWNER
+  ================================================= */
 
-      window.location.href =
-      `comments.html?post=${encodeURIComponent(post.id)}`;
-
-    }
-  );
-
-
-  shareButton.addEventListener(
-    "click",
-    ()=>{
-
-      shareCommunityPost(
-        post.id,
-        message
-      );
-
-    }
-  );
-
-
-/* =====================================================
-   OWNER EDIT AND DELETE BUTTONS
-===================================================== */
-
-  const ownerActions =
-  postCard.querySelector(
-    ".ownerActions"
-  );
-
-
-  const isPostOwner =
-  Boolean(
+  if(
     currentUser &&
-    authorId &&
-    currentUser.uid === authorId
-  );
+    authorId === currentUser.uid
+  ){
 
-
-  if(isPostOwner){
+    const ownerActions =
+    document.createElement("div");
 
     ownerActions.className =
     "postActions ownerActions";
 
 
-    ownerActions.innerHTML = `
-
-      <button
-        type="button"
-        class="editButton"
-      >
-        ✏️ Edit
-      </button>
-
-
-      <button
-        type="button"
-        class="deleteButton"
-      >
-        🗑️ Delete
-      </button>
-
-    `;
-
-
     const editButton =
-    ownerActions.querySelector(
-      ".editButton"
-    );
+    document.createElement("button");
+
+    editButton.type =
+    "button";
+
+    editButton.className =
+    "editButton";
+
+    editButton.dataset.postId =
+    postData.id;
+
+    editButton.dataset.message =
+    postMessage;
+
+    editButton.innerHTML =
+    "✏️ Edit";
 
 
     const deleteButton =
-    ownerActions.querySelector(
-      ".deleteButton"
+    document.createElement("button");
+
+    deleteButton.type =
+    "button";
+
+    deleteButton.className =
+    "deleteButton";
+
+    deleteButton.dataset.postId =
+    postData.id;
+
+    deleteButton.innerHTML =
+    "🗑️ Delete";
+
+
+    ownerActions.appendChild(
+      editButton
     );
 
+    ownerActions.appendChild(
+      deleteButton
+    );
 
-    editButton.addEventListener(
+    postCard.appendChild(
+      ownerActions
+    );
+
+  }
+
+
+  /* =================================================
+     OPEN MEMBER PROFILE
+  ================================================= */
+
+  if(authorId){
+
+    profileImage.addEventListener(
       "click",
-      ()=>{
+      function(){
 
-        editCommunityPost(
-          post.id,
-          message
-        );
+        window.location.href =
+        `profile.html?uid=${encodeURIComponent(authorId)}`;
 
       }
     );
 
-
-    deleteButton.addEventListener(
+    authorNameElement.addEventListener(
       "click",
-      ()=>{
+      function(){
 
-        deleteCommunityPost(
-          post.id
-        );
+        window.location.href =
+        `profile.html?uid=${encodeURIComponent(authorId)}`;
 
       }
     );
-
-  }else{
-
-    ownerActions.remove();
 
   }
 
@@ -2200,181 +2056,99 @@ async function createPostCard(
   return postCard;
 
 }
+/* =====================================================
+   PART 6A OF 6
+   POST ACTIONS, PHOTO VIEWER AND REFRESH
+===================================================== */
 
 
 /* =====================================================
-   LISTEN FOR LIKES
+   LIKE A POST
 ===================================================== */
 
-function listenForLikes(
-  postId,
-  likeButton
-){
-
-  const oldListener =
-  likeListeners.get(
-    postId
-  );
-
-
-  if(oldListener){
-
-    oldListener();
-
-  }
-
-
-  const likesReference =
-  collection(
-    db,
-    "communityPosts",
-    postId,
-    "likes"
-  );
-
-
-  const unsubscribeLike =
-  onSnapshot(
-
-    likesReference,
-
-    (snapshot)=>{
-
-      const likeCount =
-      snapshot.size;
-
-
-      const currentUserLiked =
-      Boolean(
-        currentUser &&
-        snapshot.docs.some(
-          likeDocument =>
-          likeDocument.id === currentUser.uid
-        )
-      );
-
-
-      likeButton.classList.toggle(
-        "liked",
-        currentUserLiked
-      );
-
-
-      const likeIcon =
-      currentUserLiked
-      ? "❤️"
-      : "🤍";
-
-
-      likeButton.textContent =
-      `${likeIcon} Like${likeCount > 0 ? ` (${likeCount})` : ""}`;
-
-    },
-
-    (error)=>{
-
-      console.error(
-        `Like listener error for post ${postId}:`,
-        error
-      );
-
-    }
-
-  );
-
-
-  likeListeners.set(
-    postId,
-    unsubscribeLike
-  );
-
-}
-
-
-/* =====================================================
-   LIKE OR UNLIKE POST
-===================================================== */
-
-async function togglePostLike(
-  postId,
-  likeButton
-){
+async function handleLikeButton(button){
 
   if(!currentUser){
 
-    alert(
-      "Please sign in before liking a post."
-    );
-
-
     window.location.href =
     "login.html";
-
 
     return;
 
   }
 
+  const postId =
+  button.dataset.postId;
 
-  likeButton.disabled =
-  true;
-
+  let likes = [];
 
   try{
 
-    const likeReference =
+    likes =
+    JSON.parse(
+      button.dataset.likes || "[]"
+    );
+
+  }catch(error){
+
+    likes = [];
+
+  }
+
+  const userId =
+  currentUser.uid;
+
+  const userAlreadyLiked =
+  likes.includes(userId);
+
+  const updatedLikes =
+  userAlreadyLiked
+  ? likes.filter(
+      function(id){
+
+        return id !== userId;
+
+      }
+    )
+  : [
+      ...likes,
+      userId
+    ];
+
+  button.disabled =
+  true;
+
+  try{
+
+    const postReference =
     doc(
       db,
       "communityPosts",
-      postId,
-      "likes",
-      currentUser.uid
+      postId
     );
 
-
-    const likeSnapshot =
-    await getDoc(
-      likeReference
+    await updateDoc(
+      postReference,
+      {
+        likes:
+        updatedLikes
+      }
     );
-
-
-    if(likeSnapshot.exists()){
-
-      await deleteDoc(
-        likeReference
-      );
-
-    }else{
-
-      await setDoc(
-        likeReference,
-        {
-          userId:
-          currentUser.uid,
-
-          timestamp:
-          serverTimestamp()
-        }
-      );
-
-    }
 
   }catch(error){
 
     console.error(
-      "Like update error:",
+      "Error updating likes:",
       error
     );
 
-
     alert(
-      error.message ||
       "The like could not be updated."
     );
 
   }finally{
 
-    likeButton.disabled =
+    button.disabled =
     false;
 
   }
@@ -2383,50 +2157,64 @@ async function togglePostLike(
 
 
 /* =====================================================
-   SHARE COMMUNITY POST
+   OPEN COMMENTS PAGE
 ===================================================== */
 
-async function shareCommunityPost(
-  postId,
-  message
-){
+function handleCommentButton(button){
 
-  const postURL =
+  const postId =
+  button.dataset.postId;
+
+  window.location.href =
+  `comments.html?postId=${encodeURIComponent(postId)}`;
+
+}
+
+
+/* =====================================================
+   SHARE A POST
+===================================================== */
+
+async function handleShareButton(button){
+
+  const postId =
+  button.dataset.postId;
+
+  const postMessage =
+  button.dataset.message || "";
+
+  const postUrl =
   `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
 
-
-  const shareData = {
-
-    title:
-    "SABASABA Gospel Ministry",
-
-    text:
-    message ||
-    "View this Community Wall post.",
-
-    url:
-    postURL
-
-  };
-
+  const shareText =
+  postMessage
+  ? `${postMessage}\n\nSABASABA Gospel Ministry`
+  : "See this post on SABASABA Gospel Ministry.";
 
   try{
 
     if(navigator.share){
 
       await navigator.share(
-        shareData
+        {
+          title:
+          "SABASABA Gospel Ministry",
+
+          text:
+          shareText,
+
+          url:
+          postUrl
+        }
       );
 
       return;
 
     }
 
-
     await navigator.clipboard.writeText(
-      postURL
+      postUrl
     );
-
 
     alert(
       "Post link copied."
@@ -2440,14 +2228,12 @@ async function shareCommunityPost(
     ){
 
       console.error(
-        "Post sharing error:",
+        "Error sharing post:",
         error
       );
 
-
-      window.prompt(
-        "Copy this post link:",
-        postURL
+      alert(
+        "The post could not be shared."
       );
 
     }
@@ -2458,20 +2244,25 @@ async function shareCommunityPost(
 
 
 /* =====================================================
-   EDIT COMMUNITY POST
+   EDIT A POST
 ===================================================== */
 
-async function editCommunityPost(
-  postId,
-  oldMessage
-){
+async function handleEditButton(button){
 
   if(!currentUser){
+
+    window.location.href =
+    "login.html";
 
     return;
 
   }
 
+  const postId =
+  button.dataset.postId;
+
+  const oldMessage =
+  button.dataset.message || "";
 
   const newMessage =
   window.prompt(
@@ -2479,28 +2270,27 @@ async function editCommunityPost(
     oldMessage
   );
 
-
   if(newMessage === null){
 
     return;
 
   }
 
-
   const cleanedMessage =
   newMessage.trim();
-
 
   if(!cleanedMessage){
 
     alert(
-      "The post message cannot be empty."
+      "The post cannot be empty."
     );
 
     return;
 
   }
 
+  button.disabled =
+  true;
 
   try{
 
@@ -2511,75 +2301,29 @@ async function editCommunityPost(
       postId
     );
 
-
-    const postSnapshot =
-    await getDoc(
-      postReference
-    );
-
-
-    if(!postSnapshot.exists()){
-
-      alert(
-        "This post no longer exists."
-      );
-
-      return;
-
-    }
-
-
-    const postData =
-    postSnapshot.data();
-
-
-    const ownerId =
-    getFirstValue(
-      postData.userId,
-      postData.authorId,
-      postData.uid
-    );
-
-
-    if(ownerId !== currentUser.uid){
-
-      alert(
-        "You can edit only your own posts."
-      );
-
-      return;
-
-    }
-
-
     await updateDoc(
       postReference,
       {
-        message:
-        cleanedMessage,
-
-        updatedAt:
-        serverTimestamp()
+        post:
+        cleanedMessage
       }
-    );
-
-
-    alert(
-      "Post updated successfully."
     );
 
   }catch(error){
 
     console.error(
-      "Post editing error:",
+      "Error editing post:",
       error
     );
 
-
     alert(
-      error.message ||
-      "The post could not be updated."
+      "The post could not be edited."
     );
+
+  }finally{
+
+    button.disabled =
+    false;
 
   }
 
@@ -2587,25 +2331,27 @@ async function editCommunityPost(
 
 
 /* =====================================================
-   DELETE COMMUNITY POST
+   DELETE A POST
 ===================================================== */
 
-async function deleteCommunityPost(
-  postId
-){
+async function handleDeleteButton(button){
 
   if(!currentUser){
+
+    window.location.href =
+    "login.html";
 
     return;
 
   }
 
+  const postId =
+  button.dataset.postId;
 
   const confirmed =
   window.confirm(
     "Are you sure you want to delete this post?"
   );
-
 
   if(!confirmed){
 
@@ -2613,6 +2359,8 @@ async function deleteCommunityPost(
 
   }
 
+  button.disabled =
+  true;
 
   try{
 
@@ -2623,176 +2371,153 @@ async function deleteCommunityPost(
       postId
     );
 
-
-    const postSnapshot =
-    await getDoc(
-      postReference
-    );
-
-
-    if(!postSnapshot.exists()){
-
-      alert(
-        "This post has already been deleted."
-      );
-
-      return;
-
-    }
-
-
-    const postData =
-    postSnapshot.data();
-
-
-    const ownerId =
-    getFirstValue(
-      postData.userId,
-      postData.authorId,
-      postData.uid
-    );
-
-
-    if(ownerId !== currentUser.uid){
-
-      alert(
-        "You can delete only your own posts."
-      );
-
-      return;
-
-    }
-
-
     await deleteDoc(
       postReference
-    );
-
-
-    alert(
-      "Post deleted successfully."
     );
 
   }catch(error){
 
     console.error(
-      "Post deletion error:",
+      "Error deleting post:",
       error
     );
 
-
     alert(
-      error.message ||
       "The post could not be deleted."
     );
+
+    button.disabled =
+    false;
 
   }
 
 }
-/* =====================================================
-   PART 6 OF 6
-   REFRESH, PHOTO VIEWER, SHARED POSTS AND CLEANUP
-===================================================== */
 
 
 /* =====================================================
-   REFRESH COMMUNITY POSTS
+   POST ACTION EVENT LISTENER
 ===================================================== */
 
-if(refreshButton){
+postsContainer.addEventListener(
+  "click",
+  function(event){
 
-  refreshButton.addEventListener(
-    "click",
-    async()=>{
+    const likeButton =
+    event.target.closest(
+      ".likeButton"
+    );
 
-      refreshButton.disabled =
-      true;
+    if(likeButton){
 
+      handleLikeButton(
+        likeButton
+      );
 
-      refreshButton.textContent =
-      "⏳";
-
-
-      try{
-
-        initializeFeed();
-
-
-        window.setTimeout(
-          ()=>{
-
-            refreshButton.textContent =
-            "🔄";
-
-
-            refreshButton.disabled =
-            false;
-
-          },
-          1000
-        );
-
-      }catch(error){
-
-        console.error(
-          "Feed refresh error:",
-          error
-        );
-
-
-        refreshButton.textContent =
-        "🔄";
-
-
-        refreshButton.disabled =
-        false;
-
-
-        alert(
-          "The Community Wall could not be refreshed."
-        );
-
-      }
+      return;
 
     }
-  );
 
-}
+    const commentButton =
+    event.target.closest(
+      ".commentButton"
+    );
+
+    if(commentButton){
+
+      handleCommentButton(
+        commentButton
+      );
+
+      return;
+
+    }
+
+    const shareButton =
+    event.target.closest(
+      ".shareButton"
+    );
+
+    if(shareButton){
+
+      handleShareButton(
+        shareButton
+      );
+
+      return;
+
+    }
+
+    const editButton =
+    event.target.closest(
+      ".editButton"
+    );
+
+    if(editButton){
+
+      handleEditButton(
+        editButton
+      );
+
+      return;
+
+    }
+
+    const deleteButton =
+    event.target.closest(
+      ".deleteButton"
+    );
+
+    if(deleteButton){
+
+      handleDeleteButton(
+        deleteButton
+      );
+
+      return;
+
+    }
+
+    const postImage =
+    event.target.closest(
+      ".communityPostImage"
+    );
+
+    if(postImage){
+
+      openPhotoViewer(
+        postImage.dataset.fullImage ||
+        postImage.src
+      );
+
+    }
+
+  }
+);
 
 
 /* =====================================================
    OPEN PHOTO VIEWER
 ===================================================== */
 
-function openPhotoViewer(
-  imageURL
-){
+function openPhotoViewer(imageUrl){
 
-  if(
-    !photoViewer ||
-    !photoViewerImage ||
-    !imageURL
-  ){
+  if(!imageUrl){
 
     return;
 
   }
 
-
   photoViewerImage.src =
-  imageURL;
-
+  imageUrl;
 
   photoViewer.classList.add(
     "open"
   );
 
-
   photoViewer.setAttribute(
     "aria-hidden",
     "false"
   );
-
 
   document.body.style.overflow =
   "hidden";
@@ -2806,30 +2531,17 @@ function openPhotoViewer(
 
 function closePhotoViewer(){
 
-  if(
-    !photoViewer ||
-    !photoViewerImage
-  ){
-
-    return;
-
-  }
-
-
   photoViewer.classList.remove(
     "open"
   );
-
 
   photoViewer.setAttribute(
     "aria-hidden",
     "true"
   );
 
-
   photoViewerImage.src =
   "";
-
 
   document.body.style.overflow =
   "";
@@ -2838,55 +2550,36 @@ function closePhotoViewer(){
 
 
 /* =====================================================
-   PHOTO VIEWER CLOSE BUTTON
+   PHOTO VIEWER EVENTS
 ===================================================== */
 
-if(closePhotoViewerButton){
-
-  closePhotoViewerButton.addEventListener(
-    "click",
-    closePhotoViewer
-  );
-
-}
+closePhotoViewerButton.addEventListener(
+  "click",
+  closePhotoViewer
+);
 
 
-/* =====================================================
-   CLOSE VIEWER BY CLICKING BACKGROUND
-===================================================== */
+photoViewer.addEventListener(
+  "click",
+  function(event){
 
-if(photoViewer){
+    if(event.target === photoViewer){
 
-  photoViewer.addEventListener(
-    "click",
-    event=>{
-
-      if(
-        event.target ===
-        photoViewer
-      ){
-
-        closePhotoViewer();
-
-      }
+      closePhotoViewer();
 
     }
-  );
 
-}
+  }
+);
 
-
-/* =====================================================
-   CLOSE VIEWER WITH ESCAPE KEY
-===================================================== */
 
 document.addEventListener(
   "keydown",
-  event=>{
+  function(event){
 
     if(
-      event.key ===
-      "Escape"
+      event.key === "Escape" &&
+      photoViewer.classList.contains("open")
     ){
 
       closePhotoViewer();
@@ -2898,22 +2591,51 @@ document.addEventListener(
 
 
 /* =====================================================
-   SCROLL TO A SHARED POST
+   REFRESH COMMUNITY WALL
+===================================================== */
+
+refreshButton.addEventListener(
+  "click",
+  function(){
+
+    refreshButton.disabled =
+    true;
+
+    refreshButton.textContent =
+    "⏳";
+
+    startCommunityFeed();
+
+    window.setTimeout(
+      function(){
+
+        refreshButton.disabled =
+        false;
+
+        refreshButton.textContent =
+        "🔄";
+
+      },
+      1000
+    );
+
+  }
+);
+
+
+/* =====================================================
+   SCROLL TO SHARED POST
 ===================================================== */
 
 function scrollToSharedPost(){
 
-  const pageParameters =
+  const urlParameters =
   new URLSearchParams(
     window.location.search
   );
 
-
   const sharedPostId =
-  pageParameters.get(
-    "post"
-  );
-
+  urlParameters.get("post");
 
   if(!sharedPostId){
 
@@ -2921,12 +2643,10 @@ function scrollToSharedPost(){
 
   }
 
-
   const sharedPost =
   document.getElementById(
     `post-${sharedPostId}`
   );
-
 
   if(!sharedPost){
 
@@ -2934,136 +2654,44 @@ function scrollToSharedPost(){
 
   }
 
-
   sharedPost.scrollIntoView(
     {
-      behavior:"smooth",
-      block:"center"
-    }
-  );
+      behavior:
+      "smooth",
 
-
-  sharedPost.animate(
-    [
-      {
-        transform:"scale(1)",
-        boxShadow:
-        "0 6px 20px rgba(0,0,0,.10)"
-      },
-      {
-        transform:"scale(1.02)",
-        boxShadow:
-        "0 0 0 4px rgba(8,123,209,.28)"
-      },
-      {
-        transform:"scale(1)",
-        boxShadow:
-        "0 6px 20px rgba(0,0,0,.10)"
-      }
-    ],
-    {
-      duration:1500,
-      iterations:1
+      block:
+      "center"
     }
   );
 
 }
-
-
 /* =====================================================
-   PREVENT BROKEN POST IMAGES
+   PART 6B OF 6
+   CLEANUP AND FINAL CLOSING
 ===================================================== */
 
-document.addEventListener(
-  "error",
-  event=>{
-
-    const element =
-    event.target;
-
-
-    if(
-      element &&
-      element.classList &&
-      element.classList.contains(
-        "communityPostImage"
-      )
-    ){
-
-      element.style.display =
-      "none";
-
-    }
-
-  },
-  true
-);
-
 
 /* =====================================================
-   PAUSE VIDEOS WHEN PAGE IS HIDDEN
-===================================================== */
-
-document.addEventListener(
-  "visibilitychange",
-  ()=>{
-
-    if(
-      document.visibilityState !==
-      "hidden"
-    ){
-
-      return;
-
-    }
-
-
-    const videos =
-    document.querySelectorAll(
-      ".communityPostVideo"
-    );
-
-
-    videos.forEach(
-      video=>{
-
-        if(!video.paused){
-
-          video.pause();
-
-        }
-
-      }
-    );
-
-  }
-);
-
-
-/* =====================================================
-   CLEAN UP FIREBASE LISTENERS
+   CLEAN UP FIREBASE LISTENER
 ===================================================== */
 
 window.addEventListener(
   "beforeunload",
-  ()=>{
+  function(){
 
     stopPostsListener();
-
-    stopAllLikeListeners();
 
   }
 );
 
 
 /* =====================================================
-   COMMUNITY WALL READY
+   PAGE READY MESSAGE
 ===================================================== */
 
 console.log(
-  "SABASABA Community Wall is ready."
+  "SABASABA Gospel Ministry Community Wall is ready."
 );
-
 </script>
 
 </body>
