@@ -13,15 +13,21 @@
 
 <meta
   name="description"
-  content="Create and publish a post on the Sabasaba Gospel Ministry Community Wall"
+  content="Create and publish a post on the SABASABA Gospel Ministry Community Wall"
 >
 
 <title>
-  Create Post | Sabasaba Gospel Ministry
+  Create Post | SABASABA Gospel Ministry
 </title>
 
 
 <style>
+
+/* =====================================================
+   PART 1 OF 6
+   DOCUMENT SETUP AND MAIN CSS
+===================================================== */
+
 
 /* =====================================================
    GENERAL PAGE
@@ -31,12 +37,16 @@
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
   padding:20px;
   font-family:Arial,Helvetica,sans-serif;
   background:#eef3f8;
-  color:#222;
+  color:#222222;
 }
 
 button,
@@ -44,6 +54,10 @@ input,
 select,
 textarea{
   font-family:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
 }
 
 
@@ -54,11 +68,11 @@ textarea{
 .container{
   width:100%;
   max-width:700px;
-  margin:auto;
+  margin:0 auto;
   padding:25px;
   background:#ffffff;
   border-radius:16px;
-  box-shadow:0 4px 14px rgba(0,0,0,.1);
+  box-shadow:0 4px 14px rgba(0,0,0,.10);
 }
 
 
@@ -75,10 +89,10 @@ h1{
 
 .page-description{
   margin:0 0 25px;
-  text-align:center;
-  color:#666;
+  color:#666666;
   font-size:14px;
-  line-height:1.5;
+  line-height:1.6;
+  text-align:center;
 }
 
 
@@ -89,7 +103,7 @@ h1{
 label{
   display:block;
   margin-top:16px;
-  color:#333;
+  color:#333333;
   font-weight:bold;
 }
 
@@ -102,6 +116,7 @@ textarea{
   border:1px solid #c8d1dc;
   border-radius:9px;
   background:#ffffff;
+  color:#222222;
   font-size:16px;
   outline:none;
 }
@@ -114,14 +129,14 @@ textarea:focus{
 }
 
 textarea{
-  height:180px;
+  min-height:180px;
   resize:vertical;
   line-height:1.5;
 }
 
 
 /* =====================================================
-   MEDIA SELECTION
+   MEDIA SELECTION AREA
 ===================================================== */
 
 .media-options{
@@ -132,13 +147,43 @@ textarea{
   border-radius:11px;
 }
 
-.media-options label{
-  margin-top:0;
+.media-options-title{
+  margin:0;
+  color:#333333;
+  font-weight:bold;
+}
+
+.media-picker-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+.media-picker-button{
+  width:100%;
+  padding:13px 10px;
+  border:1px solid #c8d1dc;
+  border-radius:9px;
+  background:#ffffff;
+  color:#0066cc;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.media-picker-button:hover{
+  background:#edf5ff;
+  border-color:#0066cc;
+}
+
+.media-picker-button:active{
+  transform:scale(.98);
 }
 
 .media-help{
-  margin:8px 0 0;
-  color:#666;
+  margin:12px 0 0;
+  color:#666666;
   font-size:13px;
   line-height:1.5;
 }
@@ -170,7 +215,7 @@ textarea{
 
 .preview-name{
   margin:10px 0 0;
-  color:#555;
+  color:#555555;
   font-size:13px;
   word-break:break-word;
 }
@@ -235,6 +280,10 @@ textarea{
 .back-button:hover{
   background:#d8e2ec;
 }
+/* =====================================================
+   PART 2 OF 6
+   REMAINING CSS AND COMPLETE HTML
+===================================================== */
 
 
 /* =====================================================
@@ -267,7 +316,7 @@ textarea{
 
 #uploadText{
   margin:9px 0 0;
-  color:#555;
+  color:#555555;
   font-size:14px;
   text-align:center;
 }
@@ -305,6 +354,7 @@ textarea{
 }
 
 .back a{
+  display:block;
   text-decoration:none;
 }
 
@@ -329,7 +379,16 @@ textarea{
   }
 
   textarea{
-    height:160px;
+    min-height:160px;
+  }
+
+}
+
+
+@media(max-width:480px){
+
+  .media-picker-buttons{
+    grid-template-columns:1fr;
   }
 
 }
@@ -337,9 +396,16 @@ textarea{
 </style>
 
 </head>
+
+
 <body>
 
 <div class="container">
+
+
+<!-- =====================================================
+     PAGE HEADING
+===================================================== -->
 
 <h1>
 ✍️ Create a Post
@@ -361,16 +427,14 @@ SABASABA Gospel Ministry community.
 ===================================================== -->
 
 <label for="name">
-
 Your Name
-
 </label>
 
 <input
-type="text"
-id="name"
-placeholder="Enter your name"
-autocomplete="name"
+  type="text"
+  id="name"
+  placeholder="Enter your name"
+  autocomplete="name"
 >
 
 
@@ -379,9 +443,7 @@ autocomplete="name"
 ===================================================== -->
 
 <label for="category">
-
 Category
-
 </label>
 
 <select id="category">
@@ -418,15 +480,13 @@ Question
 ===================================================== -->
 
 <label for="post">
-
 Your Post
-
 </label>
 
 <textarea
-id="post"
-maxlength="5000"
-placeholder="Write your message here..."
+  id="post"
+  maxlength="5000"
+  placeholder="Write your message here..."
 ></textarea>
 
 
@@ -436,17 +496,38 @@ placeholder="Write your message here..."
 
 <div class="media-options">
 
-<label for="mediaFile">
-
+<p class="media-options-title">
 Add Photo or Video
+</p>
 
-</label>
+<div class="media-picker-buttons">
+
+<button
+  type="button"
+  id="choosePhotoBtn"
+  class="media-picker-button"
+>
+📷 Choose Photo
+</button>
+
+<button
+  type="button"
+  id="chooseVideoBtn"
+  class="media-picker-button"
+>
+🎥 Choose Video
+</button>
+
+</div>
+
 
 <input
-type="file"
-id="mediaFile"
-accept="image/*,video/*"
+  type="file"
+  id="mediaFile"
+  accept="image/*,video/*"
+  hidden
 >
+
 
 <p class="media-help">
 
@@ -473,18 +554,16 @@ Maximum 100 MB.
 <div id="previewContent"></div>
 
 <p
-id="previewFileName"
-class="preview-name"
+  id="previewFileName"
+  class="preview-name"
 ></p>
 
 <button
-type="button"
-id="removeMediaBtn"
-class="remove-media-button"
+  type="button"
+  id="removeMediaBtn"
+  class="remove-media-button"
 >
-
 ❌ Remove Media
-
 </button>
 
 </div>
@@ -503,9 +582,7 @@ class="remove-media-button"
 </div>
 
 <p id="uploadText">
-
 Preparing upload...
-
 </p>
 
 </div>
@@ -516,13 +593,11 @@ Preparing upload...
 ===================================================== -->
 
 <button
-type="button"
-id="publishBtn"
-class="publish-button"
+  type="button"
+  id="publishBtn"
+  class="publish-button"
 >
-
 📢 Publish Post
-
 </button>
 
 
@@ -531,8 +606,8 @@ class="publish-button"
 ===================================================== -->
 
 <p
-id="message"
-aria-live="polite"
+  id="message"
+  aria-live="polite"
 ></p>
 
 
@@ -545,12 +620,10 @@ aria-live="polite"
 <a href="feed.html">
 
 <button
-type="button"
-class="back-button"
+  type="button"
+  class="back-button"
 >
-
 ⬅ Back to Community
-
 </button>
 
 </a>
@@ -563,7 +636,8 @@ class="back-button"
 <script type="module">
 /* =====================================================
    PART 3 OF 6
-   FIREBASE IMPORTS AND PAGE SETUP
+   FIREBASE IMPORTS, CLOUDINARY SETTINGS
+   AND PAGE SETUP
 ===================================================== */
 
 
@@ -652,6 +726,18 @@ document.getElementById(
 const mediaFileInput =
 document.getElementById(
   "mediaFile"
+);
+
+
+const choosePhotoBtn =
+document.getElementById(
+  "choosePhotoBtn"
+);
+
+
+const chooseVideoBtn =
+document.getElementById(
+  "chooseVideoBtn"
 );
 
 
@@ -764,10 +850,68 @@ function clearMessage(){
   messageElement.textContent =
   "";
 
+
   messageElement.className =
   "";
 
 }
+
+
+/* =====================================================
+   RESET UPLOAD DISPLAY
+===================================================== */
+
+function resetUploadDisplay(){
+
+  uploadArea.style.display =
+  "none";
+
+
+  uploadProgress.style.width =
+  "0%";
+
+
+  uploadText.textContent =
+  "Preparing upload...";
+
+}
+
+
+/* =====================================================
+   ENABLE PUBLISH BUTTON
+===================================================== */
+
+function enablePublishButton(){
+
+  publishBtn.disabled =
+  false;
+
+
+  publishBtn.textContent =
+  "📢 Publish Post";
+
+}
+
+
+/* =====================================================
+   DISABLE PUBLISH BUTTON
+===================================================== */
+
+function disablePublishButton(){
+
+  publishBtn.disabled =
+  true;
+
+
+  publishBtn.textContent =
+  "Publishing...";
+
+}
+/* =====================================================
+   PART 4 OF 6
+   AUTHENTICATION, PROFILE LOADING
+   AND OPENING THE PHONE GALLERY
+===================================================== */
 
 
 /* =====================================================
@@ -845,7 +989,7 @@ async function loadCurrentProfile(){
 
 onAuthStateChanged(
   auth,
-  async(user)=>{
+  async function(user){
 
     if(!user){
 
@@ -866,9 +1010,134 @@ onAuthStateChanged(
 
   }
 );
+
+
 /* =====================================================
-   PART 4 OF 6
-   SELECT AND PREVIEW PHOTO OR VIDEO
+   OPEN PHOTO OR VIDEO PICKER
+===================================================== */
+
+function openMediaPicker(mediaType){
+
+  clearMessage();
+
+
+  mediaFileInput.value =
+  "";
+
+
+  if(mediaType === "image"){
+
+    mediaFileInput.accept =
+    "image/*";
+
+  }else if(mediaType === "video"){
+
+    mediaFileInput.accept =
+    "video/*";
+
+  }else{
+
+    mediaFileInput.accept =
+    "image/*,video/*";
+
+  }
+
+
+  mediaFileInput.click();
+
+}
+
+
+/* =====================================================
+   CHOOSE PHOTO BUTTON
+===================================================== */
+
+choosePhotoBtn.addEventListener(
+  "click",
+  function(){
+
+    openMediaPicker(
+      "image"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CHOOSE VIDEO BUTTON
+===================================================== */
+
+chooseVideoBtn.addEventListener(
+  "click",
+  function(){
+
+    openMediaPicker(
+      "video"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   OPEN REQUESTED PICKER FROM COMMUNITY WALL
+===================================================== */
+
+function openRequestedMediaPicker(){
+
+  const parameters =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+  const requestedMedia =
+  parameters.get(
+    "media"
+  );
+
+
+  if(
+    requestedMedia !== "image" &&
+    requestedMedia !== "video"
+  ){
+
+    return;
+
+  }
+
+
+  window.setTimeout(
+    function(){
+
+      openMediaPicker(
+        requestedMedia
+      );
+
+    },
+    400
+  );
+
+}
+
+
+/* =====================================================
+   RUN REQUESTED PICKER AFTER PAGE LOAD
+===================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    openRequestedMediaPicker();
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   MEDIA SELECTION, PREVIEW
+   AND CLOUDINARY UPLOAD
 ===================================================== */
 
 
@@ -1139,22 +1408,14 @@ removeMediaBtn.addEventListener(
 
       activeUploadRequest.abort();
 
+
       activeUploadRequest =
       null;
 
     }
 
 
-    uploadArea.style.display =
-    "none";
-
-
-    uploadProgress.style.width =
-    "0%";
-
-
-    uploadText.textContent =
-    "Preparing upload...";
+    resetUploadDisplay();
 
 
     clearSelectedMedia();
@@ -1164,10 +1425,6 @@ removeMediaBtn.addEventListener(
 
   }
 );
-/* =====================================================
-   PART 5 OF 6
-   UPLOAD PHOTO OR VIDEO TO CLOUDINARY
-===================================================== */
 
 
 /* =====================================================
@@ -1204,12 +1461,15 @@ async function uploadPostMedia(file){
 
 
   const resourceType =
-file.type.startsWith("video/")
-? "video"
-: "image";
+  file.type.startsWith(
+    "video/"
+  )
+  ? "video"
+  : "image";
 
-const uploadUrl =
-`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
+
+  const uploadUrl =
+  `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
 
 
   const formData =
@@ -1241,7 +1501,7 @@ const uploadUrl =
 
 
   return new Promise(
-    (resolve,reject)=>{
+    function(resolve,reject){
 
       const request =
       new XMLHttpRequest();
@@ -1478,7 +1738,8 @@ const uploadUrl =
 }
 /* =====================================================
    PART 6 OF 6
-   PUBLISH POST TO FIRESTORE
+   PUBLISH POST TO FIRESTORE,
+   REDIRECT AND FINAL CLOSING
 ===================================================== */
 
 
@@ -1553,13 +1814,20 @@ async function publishPost(){
   }
 
 
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
   const savedPicture =
   getFirstValue(
     currentProfile?.profilePicture,
     currentProfile?.picture,
     currentProfile?.photoURL,
+    currentProfile?.photoUrl,
     currentProfile?.profileImage,
     currentProfile?.profilePhoto,
+    currentProfile?.imageUrl,
+    currentProfile?.avatar,
     currentUser.photoURL,
     ""
   );
@@ -1574,18 +1842,18 @@ async function publishPost(){
   : "images/profile.png";
 
 
-  publishBtn.disabled =
-  true;
-
-
-  publishBtn.textContent =
-  "Publishing...";
+  disablePublishButton();
 
 
   clearMessage();
 
 
   try{
+
+
+/* =====================================================
+   UPLOAD MEDIA TO CLOUDINARY
+===================================================== */
 
     const mediaResult =
     await uploadPostMedia(
@@ -1605,6 +1873,10 @@ async function publishPost(){
     : "";
 
 
+/* =====================================================
+   SAVE POST TO FIRESTORE
+===================================================== */
+
     await addDoc(
       collection(
         db,
@@ -1615,7 +1887,16 @@ async function publishPost(){
         userId:
         currentUser.uid,
 
+        authorId:
+        currentUser.uid,
+
+        uid:
+        currentUser.uid,
+
         name:
+        name,
+
+        fullName:
         name,
 
         category:
@@ -1624,13 +1905,22 @@ async function publishPost(){
         post:
         post,
 
+        message:
+        post,
+
         timestamp:
         serverTimestamp(),
 
         likes:
+        [],
+
+        commentCount:
         0,
 
         picture:
+        picture,
+
+        profilePicture:
         picture,
 
         mediaType:
@@ -1652,6 +1942,10 @@ async function publishPost(){
     );
 
 
+/* =====================================================
+   UPDATE LOCAL POST TOTAL
+===================================================== */
+
     let totalPosts =
     parseInt(
       localStorage.getItem(
@@ -1666,11 +1960,19 @@ async function publishPost(){
     );
 
 
+/* =====================================================
+   SHOW SUCCESS MESSAGE
+===================================================== */
+
     showMessage(
       "✅ Your post has been published successfully!",
       "success"
     );
 
+
+/* =====================================================
+   RESET FORM
+===================================================== */
 
     postInput.value =
     "";
@@ -1679,30 +1981,26 @@ async function publishPost(){
     clearSelectedMedia();
 
 
-    uploadProgress.style.width =
-    "0%";
-
-
-    uploadText.textContent =
-    "Preparing upload...";
-
-
-    uploadArea.style.display =
-    "none";
+    resetUploadDisplay();
 
 
     publishBtn.textContent =
-    "Published";
+    "✅ Published";
 
 
-    setTimeout(
+/* =====================================================
+   RETURN TO COMMUNITY WALL
+===================================================== */
+
+    window.setTimeout(
       function(){
 
-        window.location.href =
-        "feed.html";
+        window.location.replace(
+          "feed.html"
+        );
 
       },
-      1200
+      900
     );
 
   }catch(error){
@@ -1713,8 +2011,7 @@ async function publishPost(){
     );
 
 
-    uploadArea.style.display =
-    "none";
+    resetUploadDisplay();
 
 
     showMessage(
@@ -1723,12 +2020,7 @@ async function publishPost(){
     );
 
 
-    publishBtn.disabled =
-    false;
-
-
-    publishBtn.textContent =
-    "📢 Publish Post";
+    enablePublishButton();
 
   }
 
@@ -1762,6 +2054,24 @@ postInput.addEventListener(
 
 
       publishPost();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   PREVENT DOUBLE SUBMISSION
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  function(){
+
+    if(!activeUploadRequest){
+
+      enablePublishButton();
 
     }
 
