@@ -973,13 +973,13 @@ a:focus-visible{
 
 
       <a
-        href="chat.html"
-        class="topIconLink"
-        aria-label="Open messages"
-        title="Messages"
-      >
-        💬
-      </a>
+  href="messages.html"
+  class="topIconLink"
+  aria-label="Open conversations"
+  title="Messages"
+>
+  💬
+</a>
 
     </div>
 
@@ -2158,8 +2158,17 @@ function createPostCard(postData){
   `${authorName}'s profile picture`;
 
   protectProfilePicture(
-    profileImage
-  );
+  profileImage
+);
+
+
+/* Load the author's latest profile picture
+   from users/{authorId} */
+
+loadLatestAuthorPicture(
+  authorId,
+  profileImage
+);
 
 
   const authorInformation =
