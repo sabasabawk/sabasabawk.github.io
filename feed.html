@@ -22,8 +22,13 @@
 <style>
 
 /* =====================================================
-   PART 1 OF 6
-   GENERAL PAGE AND MAIN LAYOUT
+   PART 1 OF 10
+   DOCUMENT SETUP, GENERAL PAGE AND TOP BAR
+===================================================== */
+
+
+/* =====================================================
+   GENERAL RESET
 ===================================================== */
 
 *{
@@ -39,13 +44,14 @@ html{
 body{
   min-height:100vh;
   background:#eef3f8;
-  color:#222;
+  color:#222222;
   font-family:Arial,Helvetica,sans-serif;
 }
 
 button,
 input,
-textarea{
+textarea,
+select{
   font-family:inherit;
 }
 
@@ -54,9 +60,22 @@ a{
   -webkit-tap-highlight-color:transparent;
 }
 
+button{
+  cursor:pointer;
+}
+
+img,
+video{
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+}
+
 
 /* =====================================================
-   TOP BAR
+   MAIN APPLICATION TOP BAR
 ===================================================== */
 
 .appTopBar{
@@ -80,6 +99,11 @@ a{
   justify-content:space-between;
   gap:10px;
 }
+
+
+/* =====================================================
+   MINISTRY BRAND
+===================================================== */
 
 .appBrand{
   min-width:0;
@@ -117,6 +141,11 @@ a{
   text-overflow:ellipsis;
 }
 
+
+/* =====================================================
+   TOP BAR ACTION BUTTONS
+===================================================== */
+
 .topBarActions{
   flex-shrink:0;
   display:flex;
@@ -128,6 +157,7 @@ a{
   position:relative;
   width:42px;
   height:42px;
+  flex-shrink:0;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -136,15 +166,23 @@ a{
   color:#1f2933;
   text-decoration:none;
   font-size:20px;
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
 .topIconLink:hover{
   background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.topIconLink:active{
+  transform:scale(.96);
 }
 
 
 /* =====================================================
-   MAIN CONTAINER
+   MAIN PAGE CONTAINER
 ===================================================== */
 
 .pageContainer{
@@ -153,6 +191,51 @@ a{
   margin:auto;
   padding:16px 14px 115px;
 }
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+a:focus-visible{
+  outline:3px solid rgba(8,123,209,.35);
+  outline-offset:3px;
+}
+
+
+/* =====================================================
+   SMALL-SCREEN TOP BAR
+===================================================== */
+
+@media(max-width:600px){
+
+  .appTopBarInner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .appBrandText{
+    font-size:15px;
+  }
+
+  .topIconLink{
+    width:39px;
+    height:39px;
+    font-size:18px;
+  }
+
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+}
+/* =====================================================
+   PART 2 OF 10
+   QUICK POST BOX, COMMUNITY WALL HEADER
+   AND STATUS CARDS
+===================================================== */
 
 
 /* =====================================================
@@ -189,51 +272,71 @@ a{
   min-height:50px;
   padding:12px 17px;
   border:1px solid #d3dce4;
-  border-radius:27px;
+  border-radius:28px;
   background:#f4f6f8;
   color:#65717c;
   text-align:left;
   font-size:16px;
   line-height:1.4;
-  cursor:pointer;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
 }
 
 .quickPostButton:hover{
   background:#e9eef3;
+  border-color:#bfcdd9;
 }
 
-.quickMediaLinks{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-  margin-top:14px;
-  padding-top:13px;
-  border-top:1px solid #e2e7eb;
-}
-
-.quickMediaLink{
-  padding:10px 5px;
-  border-radius:11px;
-  color:#35414c;
-  text-align:center;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.quickMediaLink:hover{
-  background:#edf3f8;
+.quickPostButton:active{
+  transform:scale(.995);
 }
 
 
 /* =====================================================
-   COMMUNITY WALL HEADING
+   QUICK MEDIA BUTTONS
+===================================================== */
+
+.quickMediaLinks{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:15px;
+  padding-top:14px;
+  border-top:1px solid #e2e7eb;
+}
+
+.quickMediaLink{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:42px;
+  padding:10px 6px;
+  border-radius:12px;
+  color:#35414c;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.quickMediaLink:hover{
+  background:#edf3f8;
+  color:#0873c9;
+}
+
+
+/* =====================================================
+   COMMUNITY WALL HEADER
 ===================================================== */
 
 .wallTitleBar{
   margin:18px 0;
-  padding:15px 17px;
-  border-radius:18px;
+  padding:16px 18px;
+  border-radius:20px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -260,12 +363,17 @@ a{
   margin-top:4px;
   color:#e7f4ff;
   font-size:13px;
-  line-height:1.4;
+  line-height:1.5;
 }
 
-.refreshIconButton{
-  width:44px;
-  height:44px;
+
+/* =====================================================
+   REFRESH BUTTON
+===================================================== */
+
+.refreshButton{
+  width:46px;
+  height:46px;
   flex-shrink:0;
   border:none;
   border-radius:50%;
@@ -275,13 +383,21 @@ a{
   background:#ffffff;
   color:#0873c9;
   font-size:21px;
-  cursor:pointer;
   box-shadow:0 3px 9px rgba(0,0,0,.15);
+  transition:
+    transform .2s ease,
+    background .2s ease;
 }
 
-.refreshIconButton:disabled{
+.refreshButton:hover{
+  background:#eef6ff;
+  transform:rotate(20deg);
+}
+
+.refreshButton:disabled{
   opacity:.65;
   cursor:not-allowed;
+  transform:none;
 }
 
 
@@ -300,13 +416,13 @@ a{
 
 .statusCard{
   margin-top:18px;
-  padding:36px 22px;
+  padding:36px 24px;
   border-radius:22px;
   background:#ffffff;
-  color:#6e7780;
+  color:#66717c;
   text-align:center;
   font-size:17px;
-  line-height:1.6;
+  line-height:1.7;
   box-shadow:0 6px 18px rgba(0,0,0,.09);
 }
 
@@ -315,27 +431,83 @@ a{
 }
 
 .statusCard.empty{
-  color:#505860;
+  color:#4f5963;
+}
+
+.statusCard.loading{
+  color:#0873c9;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .quickPostBox{
+    padding:14px;
+  }
+
+  .quickPostAvatar{
+    width:48px;
+    height:48px;
+  }
+
+  .quickPostButton{
+    font-size:15px;
+  }
+
+  .wallTitleBar{
+    padding:14px 16px;
+  }
+
+  .wallTitleText h1{
+    font-size:20px;
+  }
+
+  .wallTitleText p{
+    font-size:12px;
+  }
+
+  .statusCard{
+    padding:30px 18px;
+    font-size:16px;
+  }
+
 }
 /* =====================================================
-   PART 2 OF 6
-   POST CARDS, NAVIGATION AND PHOTO VIEWER
+   PART 3 OF 10
+   POST CARD, MEDIA AND ACTION BUTTONS
 ===================================================== */
 
 
 /* =====================================================
-   POST CARD
+   COMMUNITY POST CARD
 ===================================================== */
 
 .postCard{
   width:100%;
   margin-bottom:20px;
   padding:18px;
-  overflow:hidden;
   background:#ffffff;
   border-radius:22px;
+  overflow:hidden;
   box-shadow:0 6px 18px rgba(0,0,0,.09);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
+
+.postCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   POST HEADER
+===================================================== */
 
 .postHeader{
   display:flex;
@@ -368,12 +540,21 @@ a{
   cursor:pointer;
 }
 
+.authorName:hover{
+  text-decoration:underline;
+}
+
 .postDetails{
   margin-top:4px;
   color:#747f89;
   font-size:13px;
-  line-height:1.4;
+  line-height:1.5;
 }
+
+
+/* =====================================================
+   POST CATEGORY
+===================================================== */
 
 .postCategory{
   display:inline-block;
@@ -386,11 +567,16 @@ a{
   font-weight:bold;
 }
 
+
+/* =====================================================
+   POST MESSAGE
+===================================================== */
+
 .postMessage{
   margin-top:15px;
   color:#20252a;
   font-size:17px;
-  line-height:1.65;
+  line-height:1.7;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
@@ -433,38 +619,50 @@ a{
 
 
 /* =====================================================
-   MAIN POST ACTIONS
+   MAIN ACTION BUTTONS
 ===================================================== */
 
 .postActions{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-top:17px;
+  gap:8px;
+  margin-top:18px;
   padding-top:15px;
   border-top:1px solid #e1e6eb;
 }
 
 .postActions button{
-  min-height:42px;
-  padding:9px 6px;
+  min-height:44px;
+  padding:10px 8px;
   border:none;
-  border-radius:11px;
+  border-radius:12px;
   background:#edf3f8;
   color:#35414c;
   font-size:13px;
   font-weight:bold;
-  cursor:pointer;
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
 .postActions button:hover{
   background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.postActions button:active{
+  transform:scale(.98);
 }
 
 .postActions button:disabled{
   opacity:.65;
   cursor:not-allowed;
 }
+
+
+/* =====================================================
+   LIKE BUTTON
+===================================================== */
 
 .likeButton.liked{
   background:#ffe5ea;
@@ -488,14 +686,59 @@ a{
   color:#755600 !important;
 }
 
+.editButton:hover{
+  background:#ffe8a3 !important;
+}
+
 .deleteButton{
   background:#ffe1e1 !important;
   color:#b00020 !important;
 }
 
+.deleteButton:hover{
+  background:#ffd2d2 !important;
+}
+
 
 /* =====================================================
-   FLOATING CREATE BUTTON
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .postCard{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .authorPicture{
+    width:52px;
+    height:52px;
+  }
+
+  .authorName{
+    font-size:17px;
+  }
+
+  .postMessage{
+    font-size:16px;
+  }
+
+  .postActions button{
+    font-size:12px;
+    min-height:42px;
+  }
+
+}
+/* =====================================================
+   PART 4 OF 10
+   FLOATING BUTTON, BOTTOM NAVIGATION,
+   PHOTO VIEWER AND RESPONSIVE DESIGN
+===================================================== */
+
+
+/* =====================================================
+   FLOATING CREATE POST BUTTON
 ===================================================== */
 
 .floatingCreateButton{
@@ -503,8 +746,8 @@ a{
   right:18px;
   bottom:96px;
   z-index:850;
-  width:58px;
-  height:58px;
+  width:60px;
+  height:60px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -519,6 +762,17 @@ a{
   font-size:32px;
   font-weight:bold;
   box-shadow:0 8px 22px rgba(0,0,0,.28);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.floatingCreateButton:hover{
+  transform:translateY(-2px) scale(1.04);
+}
+
+.floatingCreateButton:active{
+  transform:scale(.96);
 }
 
 
@@ -548,27 +802,37 @@ a{
 .bottomNavItem{
   min-width:0;
   padding:8px 3px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
   color:#66717c;
   text-align:center;
   text-decoration:none;
   font-size:10px;
   font-weight:bold;
+  transition:
+    background .2s ease,
+    color .2s ease;
 }
 
-.bottomNavIcon{
-  display:block;
-  margin-bottom:3px;
-  font-size:21px;
-  line-height:1;
+.bottomNavItem:hover{
+  background:#f2f7fb;
 }
 
 .bottomNavItem.active{
   color:#0873c9;
 }
 
+.bottomNavIcon{
+  font-size:21px;
+  line-height:1;
+}
+
 
 /* =====================================================
-   FULLSCREEN PHOTO VIEWER
+   FULL SCREEN PHOTO VIEWER
 ===================================================== */
 
 #photoViewer{
@@ -601,50 +865,33 @@ a{
   height:48px;
   border:none;
   border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:rgba(255,255,255,.22);
   color:#ffffff;
   font-size:28px;
   cursor:pointer;
+  transition:background .2s ease;
+}
+
+#closePhotoViewer:hover{
+  background:rgba(255,255,255,.35);
 }
 
 
 /* =====================================================
-   MOBILE DESIGN
+   MOBILE RESPONSIVE DESIGN
 ===================================================== */
 
 @media(max-width:600px){
 
-  .appBrandText{
-    font-size:15px;
-  }
-
-  .topIconLink{
-    width:39px;
-    height:39px;
-    font-size:18px;
-  }
-
-  .pageContainer{
-    padding-left:10px;
-    padding-right:10px;
-  }
-
-  .postCard{
-    padding:16px;
-    border-radius:18px;
-  }
-
-  .authorPicture{
-    width:52px;
-    height:52px;
-  }
-
-  .authorName{
-    font-size:17px;
-  }
-
-  .postMessage{
-    font-size:16px;
+  .floatingCreateButton{
+    width:56px;
+    height:56px;
+    right:15px;
+    bottom:88px;
+    font-size:30px;
   }
 
   .bottomNavItem{
@@ -655,22 +902,28 @@ a{
     font-size:20px;
   }
 
+  #closePhotoViewer{
+    width:44px;
+    height:44px;
+    font-size:26px;
+  }
+
 }
 
 
 /* =====================================================
-   CLOSE STYLE AND HEAD
+   END OF STYLES
 ===================================================== */
 
 </style>
 
 </head>
+<!-- =====================================================
+   PART 5 OF 10
+   COMPLETE HTML PAGE STRUCTURE
+===================================================== -->
 
 <body>
-<!-- =====================================================
-   PART 3 OF 6
-   COMPLETE PAGE STRUCTURE
-===================================================== -->
 
 
 <!-- =====================================================
@@ -821,7 +1074,7 @@ a{
     <button
       type="button"
       id="refreshButton"
-      class="refreshIconButton"
+      class="refreshButton"
       aria-label="Refresh Community Wall"
       title="Refresh posts"
     >
@@ -837,7 +1090,7 @@ a{
 
   <main id="postsContainer">
 
-    <div class="statusCard">
+    <div class="statusCard loading">
       Loading community posts...
     </div>
 
@@ -854,14 +1107,14 @@ a{
   href="createpost.html"
   class="floatingCreateButton"
   aria-label="Create a new post"
-  title="Create Post"
+  title="Create post"
 >
   +
 </a>
 
 
 <!-- =====================================================
-   CLEAN BOTTOM NAVIGATION
+   BOTTOM NAVIGATION
 ===================================================== -->
 
 <nav class="bottomNavigation">
@@ -888,6 +1141,7 @@ a{
     <a
       href="feed.html"
       class="bottomNavItem active"
+      aria-current="page"
     >
 
       <span class="bottomNavIcon">
@@ -976,6 +1230,9 @@ a{
 <div
   id="photoViewer"
   aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Community post photo viewer"
 >
 
   <button
@@ -1002,8 +1259,9 @@ a{
 
 <script type="module">
 /* =====================================================
-   PART 4 OF 6
-   FIREBASE SETUP, USER PROFILE AND BASIC FUNCTIONS
+   PART 6 OF 10
+   FIREBASE IMPORTS, DOM ELEMENTS,
+   GLOBAL VARIABLES AND HELPER FUNCTIONS
 ===================================================== */
 
 
@@ -1011,7 +1269,7 @@ a{
    FIREBASE IMPORTS
 ===================================================== */
 
-import {
+import{
   auth,
   db,
   collection,
@@ -1023,7 +1281,7 @@ import {
   updateDoc,
   deleteDoc,
   onAuthStateChanged
-} from "./firebase.js";
+}from "./firebase.js";
 
 
 /* =====================================================
@@ -1048,7 +1306,7 @@ document.getElementById("photoViewer");
 const photoViewerImage =
 document.getElementById("photoViewerImage");
 
-const closePhotoViewer =
+const closePhotoViewerButton =
 document.getElementById("closePhotoViewer");
 
 
@@ -1067,7 +1325,7 @@ const defaultProfilePicture =
 
 
 /* =====================================================
-   GET FIRST AVAILABLE VALUE
+   RETURN FIRST AVAILABLE VALUE
 ===================================================== */
 
 function getFirstValue(...values){
@@ -1092,14 +1350,14 @@ function getFirstValue(...values){
 
 
 /* =====================================================
-   DISPLAY LOADING MESSAGE
+   SHOW LOADING MESSAGE
 ===================================================== */
 
 function showLoadingMessage(){
 
   postsContainer.innerHTML = `
 
-    <div class="statusCard">
+    <div class="statusCard loading">
 
       Loading community posts...
 
@@ -1111,7 +1369,7 @@ function showLoadingMessage(){
 
 
 /* =====================================================
-   DISPLAY EMPTY MESSAGE
+   SHOW EMPTY MESSAGE
 ===================================================== */
 
 function showEmptyMessage(){
@@ -1124,8 +1382,9 @@ function showEmptyMessage(){
 
       <br><br>
 
-      Be the first person to share a testimony,
-      prayer, encouragement, photo or video.
+      Be the first person to share
+      a testimony, prayer,
+      encouragement, photo or video.
 
     </div>
 
@@ -1135,7 +1394,7 @@ function showEmptyMessage(){
 
 
 /* =====================================================
-   DISPLAY ERROR MESSAGE
+   SHOW ERROR MESSAGE
 ===================================================== */
 
 function showErrorMessage(message){
@@ -1159,7 +1418,7 @@ function showErrorMessage(message){
 
 
 /* =====================================================
-   PROFILE PICTURE ERROR HANDLING
+   PROTECT PROFILE PICTURES
 ===================================================== */
 
 function protectProfilePicture(imageElement){
@@ -1177,6 +1436,9 @@ function protectProfilePicture(imageElement){
       imageElement.src =
       defaultProfilePicture;
 
+    },
+    {
+      once:true
     }
   );
 
@@ -1184,72 +1446,7 @@ function protectProfilePicture(imageElement){
 
 
 /* =====================================================
-   LOAD CURRENT USER PROFILE
-===================================================== */
-
-async function loadCurrentUserProfile(){
-
-  currentProfile = {};
-
-  if(!currentUser){
-
-    quickPostAvatar.src =
-    defaultProfilePicture;
-
-    return;
-
-  }
-
-  try{
-
-    const profileReference =
-    doc(
-      db,
-      "users",
-      currentUser.uid
-    );
-
-    const profileSnapshot =
-    await getDoc(
-      profileReference
-    );
-
-    if(profileSnapshot.exists()){
-
-      currentProfile =
-      profileSnapshot.data();
-
-    }
-
-    const profilePicture =
-    getFirstValue(
-      currentProfile.picture,
-      currentProfile.profilePicture,
-      currentProfile.photoURL,
-      currentUser.photoURL,
-      defaultProfilePicture
-    );
-
-    quickPostAvatar.src =
-    profilePicture;
-
-  }catch(error){
-
-    console.error(
-      "Error loading profile:",
-      error
-    );
-
-    quickPostAvatar.src =
-    defaultProfilePicture;
-
-  }
-
-}
-
-
-/* =====================================================
-   FORMAT POST DATE
+   FORMAT FIREBASE DATE
 ===================================================== */
 
 function formatPostDate(timestamp){
@@ -1264,10 +1461,7 @@ function formatPostDate(timestamp){
 
     let postDate;
 
-    if(
-      typeof timestamp.toDate ===
-      "function"
-    ){
+    if(typeof timestamp.toDate === "function"){
 
       postDate =
       timestamp.toDate();
@@ -1319,6 +1513,77 @@ function formatPostDate(timestamp){
   }
 
 }
+/* =====================================================
+   PART 7 OF 10
+   AUTHENTICATION, CURRENT USER PROFILE
+   AND QUICK POST NAVIGATION
+===================================================== */
+
+
+/* =====================================================
+   LOAD CURRENT USER PROFILE
+===================================================== */
+
+async function loadCurrentUserProfile(){
+
+  currentProfile = {};
+
+  if(!currentUser){
+
+    quickPostAvatar.src =
+    defaultProfilePicture;
+
+    return;
+
+  }
+
+  try{
+
+    const profileReference =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+    const profileSnapshot =
+    await getDoc(
+      profileReference
+    );
+
+    if(profileSnapshot.exists()){
+
+      currentProfile =
+      profileSnapshot.data();
+
+    }
+
+    const profilePicture =
+    getFirstValue(
+      currentProfile.picture,
+      currentProfile.profilePicture,
+      currentProfile.photoURL,
+      currentProfile.photoUrl,
+      currentUser.photoURL,
+      defaultProfilePicture
+    );
+
+    quickPostAvatar.src =
+    profilePicture;
+
+  }catch(error){
+
+    console.error(
+      "Error loading current user profile:",
+      error
+    );
+
+    quickPostAvatar.src =
+    defaultProfilePicture;
+
+  }
+
+}
 
 
 /* =====================================================
@@ -1346,7 +1611,7 @@ quickPostButton.addEventListener(
 
 
 /* =====================================================
-   PROTECT QUICK PROFILE PICTURE
+   QUICK PROFILE PICTURE
 ===================================================== */
 
 protectProfilePicture(
@@ -1355,42 +1620,22 @@ protectProfilePicture(
 
 
 /* =====================================================
-   AUTHENTICATION LISTENER
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  async function(user){
-
-    currentUser =
-    user || null;
-
-    await loadCurrentUserProfile();
-
-    startCommunityFeed();
-
-  }
-);
-/* =====================================================
-   PART 5 OF 6
-   LOAD POSTS AND CREATE POST CARDS
-===================================================== */
-
-
-/* =====================================================
-   STOP CURRENT POSTS LISTENER
+   STOP CURRENT FIRESTORE LISTENER
 ===================================================== */
 
 function stopPostsListener(){
 
-  if(unsubscribePosts){
+  if(
+    typeof unsubscribePosts ===
+    "function"
+  ){
 
     unsubscribePosts();
 
-    unsubscribePosts =
-    null;
-
   }
+
+  unsubscribePosts =
+  null;
 
 }
 
@@ -1411,116 +1656,227 @@ function startCommunityFeed(){
 
 
 /* =====================================================
-   LOAD COMMUNITY POSTS
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+    await loadCurrentUserProfile();
+
+    startCommunityFeed();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication listener error:",
+      error
+    );
+
+    currentUser =
+    null;
+
+    currentProfile =
+    {};
+
+    quickPostAvatar.src =
+    defaultProfilePicture;
+
+    startCommunityFeed();
+
+  }
+);
+/* =====================================================
+   PART 8 OF 10
+   LOAD COMMUNITY POSTS FROM FIRESTORE
+===================================================== */
+
+
+/* =====================================================
+   LOAD POSTS
 ===================================================== */
 
 function loadCommunityPosts(){
 
-  const postsReference =
-  collection(
-    db,
-    "communityPosts"
-  );
+  try{
 
-  const postsQuery =
-  query(
-    postsReference,
-    orderBy(
-      "timestamp",
-      "desc"
-    )
-  );
+    const postsReference =
+    collection(
+      db,
+      "communityPosts"
+    );
 
-  unsubscribePosts =
-  onSnapshot(
+    const postsQuery =
+    query(
+      postsReference,
+      orderBy(
+        "timestamp",
+        "desc"
+      )
+    );
 
-    postsQuery,
 
-    function(snapshot){
+    unsubscribePosts =
+    onSnapshot(
 
-      postsContainer.innerHTML =
-      "";
+      postsQuery,
 
-      if(snapshot.empty){
+      function(snapshot){
 
-        showEmptyMessage();
+        postsContainer.innerHTML =
+        "";
 
-        return;
+        if(snapshot.empty){
 
-      }
+          showEmptyMessage();
 
-      snapshot.forEach(
-        function(postDocument){
-
-          const postData = {
-
-            id:
-            postDocument.id,
-
-            ...postDocument.data()
-
-          };
-
-          const postCard =
-          createPostCard(postData);
-
-          postsContainer.appendChild(
-            postCard
-          );
+          return;
 
         }
-      );
 
-      scrollToSharedPost();
 
-    },
+        snapshot.forEach(
+          function(postDocument){
 
-    function(error){
+            try{
 
-      console.error(
-        "Error loading posts:",
-        error
-      );
+              const postData = {
 
-      if(
-        error.code ===
-        "permission-denied"
-      ){
+                id:
+                postDocument.id,
 
-        showErrorMessage(
-          "Firebase permission has denied access to community posts."
+                ...postDocument.data()
+
+              };
+
+
+              const postCard =
+              createPostCard(
+                postData
+              );
+
+
+              postsContainer.appendChild(
+                postCard
+              );
+
+            }catch(error){
+
+              console.error(
+                "Error creating post card:",
+                error
+              );
+
+            }
+
+          }
         );
 
-        return;
+
+        if(
+          postsContainer.children.length ===
+          0
+        ){
+
+          showErrorMessage(
+            "Community posts were found, but they could not be displayed."
+          );
+
+          return;
+
+        }
+
+
+        scrollToSharedPost();
+
+      },
+
+
+      function(error){
+
+        console.error(
+          "Error loading community posts:",
+          error
+        );
+
+
+        if(
+          error.code ===
+          "permission-denied"
+        ){
+
+          showErrorMessage(
+            "Firebase permission denied access to community posts."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          error.code ===
+          "failed-precondition"
+        ){
+
+          showErrorMessage(
+            "Firebase requires an index before community posts can be displayed."
+          );
+
+          return;
+
+        }
+
+
+        if(
+          error.code ===
+          "unavailable"
+        ){
+
+          showErrorMessage(
+            "The Community Wall is temporarily unavailable. Check your internet connection and try again."
+          );
+
+          return;
+
+        }
+
+
+        showErrorMessage(
+          "Community posts could not be loaded. Please try again."
+        );
 
       }
 
-      if(
-        error.code ===
-        "failed-precondition"
-      ){
+    );
 
-        showErrorMessage(
-          "Firebase requires an index before the posts can be displayed."
-        );
+  }catch(error){
 
-        return;
+    console.error(
+      "Community feed setup error:",
+      error
+    );
 
-      }
+    showErrorMessage(
+      "The Community Wall could not be started."
+    );
 
-      showErrorMessage(
-        "Community posts could not be loaded. Please try again."
-      );
-
-    }
-
-  );
+  }
 
 }
+/* =====================================================
+   PART 9 OF 10
+   CREATE EACH COMMUNITY POST CARD
+===================================================== */
 
 
 /* =====================================================
-   CREATE A COMMUNITY POST CARD
+   CREATE POST CARD
 ===================================================== */
 
 function createPostCard(postData){
@@ -1539,7 +1895,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     POST OWNER DETAILS
+     AUTHOR DETAILS
   ================================================= */
 
   const authorId =
@@ -1562,6 +1918,7 @@ function createPostCard(postData){
     postData.picture,
     postData.profilePicture,
     postData.photoURL,
+    postData.photoUrl,
     defaultProfilePicture
   );
 
@@ -1592,12 +1949,14 @@ function createPostCard(postData){
   const postCategory =
   getFirstValue(
     postData.category,
+    postData.postCategory,
+    postData.type,
     "General"
   );
 
 
   /* =================================================
-     MEDIA INFORMATION
+     MEDIA DETAILS
   ================================================= */
 
   const mediaType =
@@ -1615,6 +1974,11 @@ function createPostCard(postData){
     imageUrl =
     getFirstValue(
       postData.imageUrl,
+      postData.imageURL,
+      postData.photoUrl,
+      postData.photoURL,
+      postData.postImage,
+      postData.image,
       postData.mediaUrl
     );
 
@@ -1623,6 +1987,9 @@ function createPostCard(postData){
     videoUrl =
     getFirstValue(
       postData.videoUrl,
+      postData.videoURL,
+      postData.postVideo,
+      postData.video,
       postData.mediaUrl
     );
 
@@ -1630,19 +1997,27 @@ function createPostCard(postData){
 
     imageUrl =
     getFirstValue(
-      postData.imageUrl
+      postData.imageUrl,
+      postData.imageURL,
+      postData.photoUrl,
+      postData.photoURL,
+      postData.postImage,
+      postData.image
     );
 
     videoUrl =
     getFirstValue(
-      postData.videoUrl
+      postData.videoUrl,
+      postData.videoURL,
+      postData.postVideo,
+      postData.video
     );
 
   }
 
 
   /* =================================================
-     NUMBER OF LIKES
+     LIKES
   ================================================= */
 
   const likes =
@@ -1736,7 +2111,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     CATEGORY
+     POST CATEGORY
   ================================================= */
 
   if(postCategory){
@@ -1758,7 +2133,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     WRITTEN MESSAGE
+     POST MESSAGE
   ================================================= */
 
   if(postMessage){
@@ -1780,7 +2155,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     POST PHOTO OR VIDEO
+     PHOTO OR VIDEO
   ================================================= */
 
   const mediaContainer =
@@ -1875,7 +2250,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     POST ACTION BUTTONS
+     LIKE, COMMENT AND SHARE BUTTONS
   ================================================= */
 
   const actionsContainer =
@@ -1959,7 +2334,7 @@ function createPostCard(postData){
 
 
   /* =================================================
-     EDIT AND DELETE BUTTONS FOR POST OWNER
+     OWNER EDIT AND DELETE BUTTONS
   ================================================= */
 
   if(
@@ -2040,6 +2415,7 @@ function createPostCard(postData){
       }
     );
 
+
     authorNameElement.addEventListener(
       "click",
       function(){
@@ -2057,13 +2433,14 @@ function createPostCard(postData){
 
 }
 /* =====================================================
-   PART 6A OF 6
-   POST ACTIONS, PHOTO VIEWER AND REFRESH
+   PART 10 OF 10
+   POST ACTIONS, PHOTO VIEWER, REFRESH,
+   SHARED POST SCROLLING AND FINAL CLOSING
 ===================================================== */
 
 
 /* =====================================================
-   LIKE A POST
+   LIKE OR UNLIKE A POST
 ===================================================== */
 
 async function handleLikeButton(button){
@@ -2080,43 +2457,63 @@ async function handleLikeButton(button){
   const postId =
   button.dataset.postId;
 
+  if(!postId){
+
+    return;
+
+  }
+
   let likes = [];
 
   try{
 
-    likes =
+    const savedLikes =
     JSON.parse(
       button.dataset.likes || "[]"
     );
 
+    likes =
+    Array.isArray(savedLikes)
+    ? savedLikes
+    : [];
+
   }catch(error){
+
+    console.error(
+      "Could not read post likes:",
+      error
+    );
 
     likes = [];
 
   }
 
-  const userId =
+
+  const currentUserId =
   currentUser.uid;
 
   const userAlreadyLiked =
-  likes.includes(userId);
+  likes.includes(currentUserId);
+
 
   const updatedLikes =
   userAlreadyLiked
   ? likes.filter(
-      function(id){
+      function(userId){
 
-        return id !== userId;
+        return userId !== currentUserId;
 
       }
     )
   : [
       ...likes,
-      userId
+      currentUserId
     ];
+
 
   button.disabled =
   true;
+
 
   try{
 
@@ -2127,6 +2524,7 @@ async function handleLikeButton(button){
       postId
     );
 
+
     await updateDoc(
       postReference,
       {
@@ -2134,6 +2532,27 @@ async function handleLikeButton(button){
         updatedLikes
       }
     );
+
+
+    button.dataset.likes =
+    JSON.stringify(updatedLikes);
+
+
+    button.classList.toggle(
+      "liked",
+      !userAlreadyLiked
+    );
+
+
+    const likeCount =
+    button.querySelector("span");
+
+    if(likeCount){
+
+      likeCount.textContent =
+      updatedLikes.length;
+
+    }
 
   }catch(error){
 
@@ -2165,6 +2584,12 @@ function handleCommentButton(button){
   const postId =
   button.dataset.postId;
 
+  if(!postId){
+
+    return;
+
+  }
+
   window.location.href =
   `comments.html?postId=${encodeURIComponent(postId)}`;
 
@@ -2180,16 +2605,26 @@ async function handleShareButton(button){
   const postId =
   button.dataset.postId;
 
+  if(!postId){
+
+    return;
+
+  }
+
+
   const postMessage =
   button.dataset.message || "";
 
+
   const postUrl =
   `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
+
 
   const shareText =
   postMessage
   ? `${postMessage}\n\nSABASABA Gospel Ministry`
   : "See this post on SABASABA Gospel Ministry.";
+
 
   try{
 
@@ -2212,20 +2647,33 @@ async function handleShareButton(button){
 
     }
 
-    await navigator.clipboard.writeText(
-      postUrl
-    );
 
-    alert(
-      "Post link copied."
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(
+        postUrl
+      );
+
+      alert(
+        "Post link copied."
+      );
+
+      return;
+
+    }
+
+
+    window.prompt(
+      "Copy this post link:",
+      postUrl
     );
 
   }catch(error){
 
-    if(
-      error.name !==
-      "AbortError"
-    ){
+    if(error.name !== "AbortError"){
 
       console.error(
         "Error sharing post:",
@@ -2258,11 +2706,20 @@ async function handleEditButton(button){
 
   }
 
+
   const postId =
   button.dataset.postId;
 
   const oldMessage =
   button.dataset.message || "";
+
+
+  if(!postId){
+
+    return;
+
+  }
+
 
   const newMessage =
   window.prompt(
@@ -2270,14 +2727,17 @@ async function handleEditButton(button){
     oldMessage
   );
 
+
   if(newMessage === null){
 
     return;
 
   }
 
+
   const cleanedMessage =
   newMessage.trim();
+
 
   if(!cleanedMessage){
 
@@ -2289,8 +2749,10 @@ async function handleEditButton(button){
 
   }
 
+
   button.disabled =
   true;
+
 
   try{
 
@@ -2301,6 +2763,7 @@ async function handleEditButton(button){
       postId
     );
 
+
     await updateDoc(
       postReference,
       {
@@ -2308,6 +2771,10 @@ async function handleEditButton(button){
         cleanedMessage
       }
     );
+
+
+    button.dataset.message =
+    cleanedMessage;
 
   }catch(error){
 
@@ -2345,13 +2812,23 @@ async function handleDeleteButton(button){
 
   }
 
+
   const postId =
   button.dataset.postId;
+
+
+  if(!postId){
+
+    return;
+
+  }
+
 
   const confirmed =
   window.confirm(
     "Are you sure you want to delete this post?"
   );
+
 
   if(!confirmed){
 
@@ -2359,8 +2836,10 @@ async function handleDeleteButton(button){
 
   }
 
+
   button.disabled =
   true;
+
 
   try{
 
@@ -2370,6 +2849,7 @@ async function handleDeleteButton(button){
       "communityPosts",
       postId
     );
+
 
     await deleteDoc(
       postReference
@@ -2395,7 +2875,71 @@ async function handleDeleteButton(button){
 
 
 /* =====================================================
-   POST ACTION EVENT LISTENER
+   OPEN PHOTO VIEWER
+===================================================== */
+
+function openPhotoViewer(imageUrl){
+
+  if(!imageUrl){
+
+    return;
+
+  }
+
+
+  photoViewerImage.src =
+  imageUrl;
+
+
+  photoViewer.classList.add(
+    "open"
+  );
+
+
+  photoViewer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+  "hidden";
+
+
+  closePhotoViewerButton.focus();
+
+}
+
+
+/* =====================================================
+   CLOSE PHOTO VIEWER
+===================================================== */
+
+function hidePhotoViewer(){
+
+  photoViewer.classList.remove(
+    "open"
+  );
+
+
+  photoViewer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  photoViewerImage.src =
+  "";
+
+
+  document.body.style.overflow =
+  "";
+
+}
+
+
+/* =====================================================
+   POST ACTION EVENT DELEGATION
 ===================================================== */
 
 postsContainer.addEventListener(
@@ -2417,6 +2961,7 @@ postsContainer.addEventListener(
 
     }
 
+
     const commentButton =
     event.target.closest(
       ".commentButton"
@@ -2431,6 +2976,7 @@ postsContainer.addEventListener(
       return;
 
     }
+
 
     const shareButton =
     event.target.closest(
@@ -2447,6 +2993,7 @@ postsContainer.addEventListener(
 
     }
 
+
     const editButton =
     event.target.closest(
       ".editButton"
@@ -2462,6 +3009,7 @@ postsContainer.addEventListener(
 
     }
 
+
     const deleteButton =
     event.target.closest(
       ".deleteButton"
@@ -2476,6 +3024,7 @@ postsContainer.addEventListener(
       return;
 
     }
+
 
     const postImage =
     event.target.closest(
@@ -2496,66 +3045,12 @@ postsContainer.addEventListener(
 
 
 /* =====================================================
-   OPEN PHOTO VIEWER
-===================================================== */
-
-function openPhotoViewer(imageUrl){
-
-  if(!imageUrl){
-
-    return;
-
-  }
-
-  photoViewerImage.src =
-  imageUrl;
-
-  photoViewer.classList.add(
-    "open"
-  );
-
-  photoViewer.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.style.overflow =
-  "hidden";
-
-}
-
-
-/* =====================================================
-   CLOSE PHOTO VIEWER
-===================================================== */
-
-function closePhotoViewer(){
-
-  photoViewer.classList.remove(
-    "open"
-  );
-
-  photoViewer.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  photoViewerImage.src =
-  "";
-
-  document.body.style.overflow =
-  "";
-
-}
-
-
-/* =====================================================
    PHOTO VIEWER EVENTS
 ===================================================== */
 
 closePhotoViewerButton.addEventListener(
   "click",
-  closePhotoViewer
+  hidePhotoViewer
 );
 
 
@@ -2565,7 +3060,7 @@ photoViewer.addEventListener(
 
     if(event.target === photoViewer){
 
-      closePhotoViewer();
+      hidePhotoViewer();
 
     }
 
@@ -2582,7 +3077,7 @@ document.addEventListener(
       photoViewer.classList.contains("open")
     ){
 
-      closePhotoViewer();
+      hidePhotoViewer();
 
     }
 
@@ -2601,16 +3096,20 @@ refreshButton.addEventListener(
     refreshButton.disabled =
     true;
 
+
     refreshButton.textContent =
     "⏳";
 
+
     startCommunityFeed();
+
 
     window.setTimeout(
       function(){
 
         refreshButton.disabled =
         false;
+
 
         refreshButton.textContent =
         "🔄";
@@ -2624,7 +3123,7 @@ refreshButton.addEventListener(
 
 
 /* =====================================================
-   SCROLL TO SHARED POST
+   SCROLL TO A SHARED POST
 ===================================================== */
 
 function scrollToSharedPost(){
@@ -2634,8 +3133,10 @@ function scrollToSharedPost(){
     window.location.search
   );
 
+
   const sharedPostId =
   urlParameters.get("post");
+
 
   if(!sharedPostId){
 
@@ -2643,10 +3144,12 @@ function scrollToSharedPost(){
 
   }
 
+
   const sharedPost =
   document.getElementById(
     `post-${sharedPostId}`
   );
+
 
   if(!sharedPost){
 
@@ -2654,25 +3157,29 @@ function scrollToSharedPost(){
 
   }
 
-  sharedPost.scrollIntoView(
-    {
-      behavior:
-      "smooth",
 
-      block:
-      "center"
-    }
+  window.setTimeout(
+    function(){
+
+      sharedPost.scrollIntoView(
+        {
+          behavior:
+          "smooth",
+
+          block:
+          "center"
+        }
+      );
+
+    },
+    150
   );
 
 }
-/* =====================================================
-   PART 6B OF 6
-   CLEANUP AND FINAL CLOSING
-===================================================== */
 
 
 /* =====================================================
-   CLEAN UP FIREBASE LISTENER
+   CLEAN UP FIRESTORE LISTENER
 ===================================================== */
 
 window.addEventListener(
@@ -2692,6 +3199,7 @@ window.addEventListener(
 console.log(
   "SABASABA Gospel Ministry Community Wall is ready."
 );
+
 </script>
 
 </body>
