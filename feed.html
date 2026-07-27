@@ -179,7 +179,26 @@ a{
 .topIconLink:active{
   transform:scale(.96);
 }
+/* Notification number badge */
 
+.notificationBadge{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:20px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:#e60023;
+  color:#ffffff;
+  border:2px solid #ffffff;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1;
+}
 
 /* =====================================================
    MAIN PAGE CONTAINER
@@ -963,13 +982,21 @@ a:focus-visible{
 
 
       <a
-        href="notification.html"
-        class="topIconLink"
-        aria-label="Open notifications"
-        title="Notifications"
-      >
-        🔔
-      </a>
+  href="notification.html"
+  class="topIconLink"
+  aria-label="Open notifications"
+  title="Notifications"
+>
+  🔔
+
+  <span
+    id="notificationBadge"
+    class="notificationBadge"
+    aria-label="Unread notifications"
+  >
+    0
+  </span>
+</a>
 
 
       <a
@@ -1275,8 +1302,9 @@ import{
   collection,
   addDoc,
   query,
-  orderBy,
-  onSnapshot,
+where,
+orderBy,
+onSnapshot,
   doc,
   getDoc,
   updateDoc,
@@ -1310,7 +1338,8 @@ document.getElementById("photoViewerImage");
 
 const closePhotoViewerButton =
 document.getElementById("closePhotoViewer");
-
+const notificationBadge =
+document.getElementById("notificationBadge");
 
 /* =====================================================
    GLOBAL VARIABLES
@@ -1321,7 +1350,7 @@ let currentUser = null;
 let currentProfile = {};
 
 let unsubscribePosts = null;
-
+let unsubscribeNotifications = null;
 const defaultProfilePicture =
 "images/profile.png";
 
@@ -1757,7 +1786,111 @@ function startCommunityFeed(){
   loadCommunityPosts();
 
 }
+/* =====================================================
+   STOP NOTIFICATION LISTENER
+===================================================== */
 
+function stopNotificationListener(){
+
+  if(
+    typeof unsubscribeNotifications ===
+    "function"
+  ){
+
+    unsubscribeNotifications();
+
+  }
+
+  unsubscribeNotifications = null;
+
+}
+
+
+/* =====================================================
+   SHOW UNREAD NOTIFICATION NUMBER
+===================================================== */
+
+function startNotificationListener(){
+
+  stopNotificationListener();
+
+  if(!currentUser){
+
+    notificationBadge.style.display =
+    "none";
+
+    notificationBadge.textContent =
+    "0";
+
+    return;
+
+  }
+
+  const unreadNotificationsQuery =
+  query(
+    collection(
+      db,
+      "notifications"
+    ),
+    where(
+      "recipientId",
+      "==",
+      currentUser.uid
+    ),
+    where(
+      "read",
+      "==",
+      false
+    )
+  );
+
+  unsubscribeNotifications =
+  onSnapshot(
+
+    unreadNotificationsQuery,
+
+    function(snapshot){
+
+      const totalUnread =
+      snapshot.size;
+
+      if(totalUnread > 0){
+
+        notificationBadge.style.display =
+        "flex";
+
+        notificationBadge.textContent =
+        totalUnread > 99
+        ? "99+"
+        : String(totalUnread);
+
+      }else{
+
+        notificationBadge.style.display =
+        "none";
+
+        notificationBadge.textContent =
+        "0";
+
+      }
+
+    },
+
+    function(error){
+
+      console.error(
+        "Notification badge error:",
+        error
+      );
+
+      notificationBadge.style.display =
+      "none";
+
+    }
+
+  );
+
+}
 
 /* =====================================================
    AUTHENTICATION LISTENER
@@ -1771,6 +1904,8 @@ onAuthStateChanged(
     user || null;
 
     await loadCurrentUserProfile();
+
+    startNotificationListener();
 
     startCommunityFeed();
 
@@ -1787,7 +1922,10 @@ onAuthStateChanged(
 
     currentProfile =
     {};
+stopNotificationListener();
 
+notificationBadge.style.display =
+"none";
     quickPostAvatar.src =
     defaultProfilePicture;
 
@@ -2614,10 +2752,13 @@ async function createLikeNotification(
         "like",
 
         postId:
-        postId,
+postId,
 
-        message:
-        `${senderName} liked your post.`,
+targetUrl:
+`feed.html?post=${encodeURIComponent(postId)}`,
+
+message:
+`${senderName} liked your post.`,
 
         read:
         false,
@@ -3400,6 +3541,8 @@ window.addEventListener(
   function(){
 
     stopPostsListener();
+
+    stopNotificationListener();
 
   }
 );
