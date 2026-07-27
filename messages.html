@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Private Messages | SABASABA Gospel Ministry</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Private Messages | SABASABA Gospel Ministry
+</title>
 
 <style>
 
@@ -17,21 +22,25 @@ box-sizing:border-box;
 body{
 font-family:Arial,sans-serif;
 background:#eef3f8;
+color:#222;
+min-height:100vh;
 }
 
 .container{
 max-width:900px;
 margin:auto;
 padding:20px;
+padding-bottom:120px;
 }
 
 .header{
 background:#0066cc;
 color:white;
-padding:25px;
+padding:28px 20px;
 border-radius:18px;
 text-align:center;
 margin-bottom:20px;
+box-shadow:0 5px 15px rgba(0,102,204,.18);
 }
 
 .header h1{
@@ -41,6 +50,18 @@ margin-bottom:10px;
 
 .header p{
 font-size:17px;
+line-height:1.5;
+}
+
+#messageBadge{
+background:#e60023;
+color:white;
+border-radius:50px;
+padding:4px 9px;
+font-size:14px;
+display:none;
+margin-left:6px;
+vertical-align:middle;
 }
 
 .search{
@@ -49,82 +70,228 @@ margin-bottom:20px;
 
 .search input{
 width:100%;
-padding:14px;
-border-radius:10px;
-border:1px solid #ccc;
+padding:15px 16px;
+border-radius:12px;
+border:1px solid #c8c8c8;
 font-size:16px;
+outline:none;
+background:white;
+}
+
+.search input:focus{
+border-color:#0066cc;
+box-shadow:0 0 0 3px rgba(0,102,204,.12);
+}
+
+.status-message{
+display:none;
+text-align:center;
+padding:12px;
+margin-bottom:15px;
+border-radius:10px;
+background:#fff3cd;
+color:#765d00;
 }
 
 .chat-list{
 display:flex;
 flex-direction:column;
-gap:15px;
+gap:14px;
 }
-
 .chat-card{
 display:flex;
 align-items:center;
+gap:13px;
 background:white;
-padding:15px;
-border-radius:15px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
+padding:14px;
+border-radius:16px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 cursor:pointer;
-transition:.3s;
+transition:transform .2s,box-shadow .2s;
+position:relative;
 }
 
 .chat-card:hover{
-transform:translateY(-3px);
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+
+.chat-card:active{
+transform:scale(.99);
+}
+
+.avatar-wrapper{
+width:62px;
+height:62px;
+min-width:62px;
+position:relative;
 }
 
 .avatar{
-width:60px;
-height:60px;
+width:62px;
+height:62px;
 border-radius:50%;
-background:#0066cc;
+background:#0877d1;
 color:white;
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:28px;
-margin-right:15px;
+overflow:hidden;
+border:2px solid #e8f2ff;
+}
+
+.avatar img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.online-dot{
+position:absolute;
+right:1px;
+bottom:2px;
+width:16px;
+height:16px;
+border-radius:50%;
+background:#a5a5a5;
+border:3px solid white;
+}
+
+.online-dot.online{
+background:#18b653;
 }
 
 .chat-info{
 flex:1;
+min-width:0;
+}
+
+.chat-name-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
 }
 
 .chat-info h3{
 color:#0066cc;
-margin-bottom:5px;
+font-size:18px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
-.chat-info p{
+.chat-message{
 color:#666;
 font-size:15px;
+margin-top:5px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+max-width:100%;
+}
+
+.chat-message.unread{
+font-weight:bold;
+color:#222;
+}
+
+.chat-side{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:8px;
+min-width:55px;
 }
 
 .time{
-font-size:13px;
-color:gray;
+font-size:12px;
+color:#777;
+white-space:nowrap;
 }
 
+.unread-badge{
+display:none;
+min-width:23px;
+height:23px;
+padding:0 7px;
+border-radius:20px;
+background:#e60023;
+color:white;
+font-size:12px;
+font-weight:bold;
+align-items:center;
+justify-content:center;
+}
+
+.empty-card{
+background:white;
+padding:30px 20px;
+border-radius:18px;
+text-align:center;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.empty-icon{
+width:85px;
+height:85px;
+margin:0 auto 15px;
+border-radius:50%;
+background:#0877d1;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+}
+
+.empty-card h3{
+color:#0066cc;
+font-size:21px;
+margin-bottom:8px;
+}
+
+.empty-card p{
+color:#666;
+font-size:16px;
+line-height:1.5;
+}
+
+.loading{
+background:white;
+padding:25px;
+border-radius:16px;
+text-align:center;
+color:#666;
+box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
 .new-chat{
 position:fixed;
 bottom:25px;
 right:25px;
-width:65px;
-height:65px;
+width:66px;
+height:66px;
 border-radius:50%;
 border:none;
 background:#0066cc;
 color:white;
-font-size:34px;
+font-size:38px;
+line-height:1;
 cursor:pointer;
-box-shadow:0 5px 12px rgba(0,0,0,.25);
+box-shadow:0 6px 17px rgba(0,0,0,.28);
+z-index:20;
+transition:.2s;
 }
 
 .new-chat:hover{
 background:#004d99;
+transform:scale(1.05);
+}
+
+.new-chat:active{
+transform:scale(.95);
 }
 
 .back{
@@ -132,22 +299,62 @@ text-align:center;
 margin-top:30px;
 }
 
-.back button{
+.back-button{
+display:inline-block;
 background:#0066cc;
 color:white;
-padding:12px 24px;
+padding:13px 25px;
 border:none;
-border-radius:10px;
+border-radius:11px;
 font-size:17px;
 cursor:pointer;
+text-decoration:none;
 }
 
-.back button:hover{
+.back-button:hover{
 background:#004d99;
 }
 
-</style>
+@media(max-width:600px){
 
+.container{
+padding:16px;
+padding-bottom:115px;
+}
+
+.header{
+padding:26px 15px;
+}
+
+.header h1{
+font-size:30px;
+}
+
+.chat-card{
+padding:13px 11px;
+}
+
+.avatar-wrapper,
+.avatar{
+width:58px;
+height:58px;
+min-width:58px;
+}
+
+.chat-info h3{
+font-size:17px;
+}
+
+.new-chat{
+width:64px;
+height:64px;
+right:20px;
+bottom:22px;
+}
+
+}
+
+</style>
 </head>
 
 <body>
@@ -158,72 +365,60 @@ background:#004d99;
 
 <h1>
 💬 Private Messages
-<span id="messageBadge"
-style="
-background:red;
-color:white;
-border-radius:50%;
-padding:3px 9px;
-font-size:15px;
-display:none;
-margin-left:8px;
-">
+
+<span id="messageBadge">
 0
 </span>
+
 </h1>
 
-<p>Chat privately with other believers.</p>
+<p>
+Chat privately with other believers.
+</p>
 
+</div>
+
+<div
+class="status-message"
+id="statusMessage">
 </div>
 
 <div class="search">
 
 <input
-type="text"
-placeholder="Search conversations...">
+type="search"
+id="conversationSearch"
+placeholder="Search conversations..."
+autocomplete="off"
+aria-label="Search conversations">
 
 </div>
 
-<div class="chat-list" id="chatList">
+<div
+class="chat-list"
+id="chatList">
 
-<div class="chat-card">
-
-<div class="avatar">
-👤
-</div>
-
-<div class="chat-info">
-
-<h3>No conversations yet</h3>
-
-<p>Your private chats will appear here.</p>
-
-</div>
-
-<div class="time">--</div>
-
+<div class="loading">
+Loading your conversations...
 </div>
 
 </div>
 
 <button
 class="new-chat"
-onclick="window.location.href='findmembers.html'">
-
+id="newChatButton"
+type="button"
+title="Start a new conversation"
+aria-label="Start a new conversation">
 +
-
 </button>
 
 <div class="back">
 
-<a href="community.html">
-
-<button>
-
-⬅ Back to Community
-
-</button>
-
+<a
+href="community.html"
+class="back-button">
+← Back to Community
 </a>
 
 </div>
@@ -244,158 +439,624 @@ doc,
 getDoc
 } from "./firebase.js";
 
-const badge = document.getElementById("messageBadge");
-const chatList = document.getElementById("chatList");
-
-onAuthStateChanged(auth,(user)=>{
-
-if(!user) return;
-
-// Notification badge
-const notificationQuery = query(
-collection(db,"notifications"),
-where("userId","==",user.uid),
-where("read","==",false)
-);
-
-onSnapshot(notificationQuery,(snapshot)=>{
-
-const total = snapshot.size;
-
-if(total>0){
-badge.style.display="inline-block";
-badge.innerText=total;
-}else{
-badge.style.display="none";
-}
-
-});
-
-// Conversation list
-const messageQuery = query(
-collection(db,"messages"),
-orderBy("timestamp")
-);
-
-onSnapshot(messageQuery, async(snapshot)=>{
-
-if(usersShown.size === 0){
-chatList.innerHTML = `
-<div class="chat-card">
-<div class="avatar">👤</div>
-<div class="chat-info">
-<h3>No conversations yet</h3>
-<p>Your private chats will appear here.</p>
-</div>
-<div class="time">--</div>
-</div>`;
-}else{
-chatList.innerHTML = "";
-}
-
-onSnapshot(unreadQuery,(snap)=>{
-
 const badge =
-document.getElementById("badge-"+otherUid);
+document.getElementById("messageBadge");
 
-if(!badge) return;
+const chatList =
+document.getElementById("chatList");
 
-if(snap.size>0){
+const searchInput =
+document.getElementById("conversationSearch");
 
-badge.style.display="inline-block";
-badge.innerText=snap.size;
+const statusMessage =
+document.getElementById("statusMessage");
 
-}else{
+const newChatButton =
+document.getElementById("newChatButton");
 
-badge.style.display="none";
+let currentUser = null;
+let allConversations = [];
+let unsubscribeMessages = null;
+let unsubscribeUnreadMessages = null;
 
-}
-
+newChatButton.addEventListener("click",()=>{
+window.location.href="findmembers.html";
 });
-const usersShown = new Set();
 
-for(const messageDoc of snapshot.docs){
+function showStatus(message){
 
-const msg = messageDoc.data();
+statusMessage.textContent=message;
+statusMessage.style.display="block";
 
-let otherUid=null;
-
-if(msg.senderId===user.uid){
-otherUid=msg.receiverId;
-}else if(msg.receiverId===user.uid){
-otherUid=msg.senderId;
-}else{
-continue;
 }
 
-if(usersShown.has(otherUid)) continue;
+function hideStatus(){
 
-usersShown.add(otherUid);
+statusMessage.textContent="";
+statusMessage.style.display="none";
 
-const userSnap=await getDoc(doc(db,"users",otherUid));
-
-if(!userSnap.exists()) continue;
-
-const other=userSnap.data();
-
-chatList.innerHTML += '
-const notificationQuery = query(
-collection(db,"notifications"),
-where("userId","==",user.uid),
-where("senderId","==",otherUid),
-where("read","==",false)
-);
-
-onSnapshot(notificationQuery,(snap)=>{
-
-const badge = document.getElementById("badge-"+otherUid);
-
-if(!badge) return;
-
-if(snap.size>0){
-badge.innerText = snap.size + " new message(s)";
-}else{
-badge.innerText = "";
 }
 
+function escapeHTML(value){
+
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+function formatTime(timestamp){
+
+if(!timestamp){
+return "";
+}
+
+let date;
+
+if(typeof timestamp.toDate==="function"){
+date=timestamp.toDate();
+}else{
+date=new Date(timestamp);
+}
+
+if(Number.isNaN(date.getTime())){
+return "";
+}
+
+const now=new Date();
+
+const sameDay=
+date.toDateString()===now.toDateString();
+
+if(sameDay){
+
+return date.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
 });
-<div class="chat-card"
-onclick="location.href='chat.html?uid=${otherUid}'">
 
-<div class="avatar">
-<img src="${other.profilePicture || 'images/profile.png'}"
-style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
+}
+
+const yesterday=new Date();
+yesterday.setDate(now.getDate()-1);
+
+if(date.toDateString()===yesterday.toDateString()){
+return "Yesterday";
+}
+
+return date.toLocaleDateString([],{
+day:"numeric",
+month:"short"
+});
+
+}
+
+function getUserName(profile){
+
+return profile.fullName ||
+profile.name ||
+profile.displayName ||
+profile.username ||
+"Community Member";
+
+}
+
+function getProfilePicture(profile){
+
+return profile.profilePicture ||
+profile.photoURL ||
+profile.picture ||
+profile.imageUrl ||
+"";
+
+}
+
+function isUserOnline(profile){
+
+return profile.online===true ||
+profile.isOnline===true ||
+String(profile.status || "").toLowerCase()==="online";
+
+}
+function showEmptyState(searching=false){
+
+chatList.innerHTML=`
+
+<div class="empty-card">
+
+<div class="empty-icon">
+💬
 </div>
 
-<div class="chat-info">
 <h3>
-${other.fullName}
-<span id="badge-${otherUid}"
-style="
-display:none;
-background:red;
-color:white;
-border-radius:50%;
-padding:2px 7px;
-font-size:12px;
-margin-left:8px;
-">
-0
-</span>
+${searching
+? "No matching conversations"
+: "No conversations yet"}
 </h3>
 
-<p>${msg.message}</p>
-</div>
+<p>
+${searching
+? "Try searching for a different name or message."
+: "Tap the blue + button to find a believer and start a private conversation."}
+</p>
 
 </div>
+
 `;
 
 }
 
+function renderConversations(conversations){
+
+chatList.innerHTML="";
+
+if(conversations.length===0){
+
+showEmptyState(searchInput.value.trim()!=="");
+return;
+
+}
+
+for(const conversation of conversations){
+
+const {
+uid,
+name,
+photo,
+online,
+lastMessage,
+time,
+unreadCount
+}=conversation;
+
+const safeUid=encodeURIComponent(uid);
+const safeName=escapeHTML(name);
+const safePhoto=escapeHTML(photo);
+const safeMessage=escapeHTML(
+lastMessage || "Tap to open conversation"
+);
+
+const photoHTML=safePhoto
+? `<img src="${safePhoto}" alt="${safeName}"
+onerror="this.style.display='none';
+this.parentElement.textContent='👤';">`
+: "👤";
+
+const card=document.createElement("div");
+
+card.className="chat-card";
+card.setAttribute("role","button");
+card.setAttribute("tabindex","0");
+
+card.innerHTML=`
+
+<div class="avatar-wrapper">
+
+<div class="avatar">
+${photoHTML}
+</div>
+
+<span class="online-dot ${online ? "online" : ""}">
+</span>
+
+</div>
+
+<div class="chat-info">
+
+<div class="chat-name-row">
+
+<h3>
+${safeName}
+</h3>
+
+</div>
+
+<p class="chat-message ${unreadCount > 0 ? "unread" : ""}">
+${safeMessage}
+</p>
+
+</div>
+
+<div class="chat-side">
+
+<span class="time">
+${escapeHTML(time)}
+</span>
+
+<span
+class="unread-badge"
+style="${unreadCount > 0 ? "display:flex;" : ""}">
+${unreadCount > 99 ? "99+" : unreadCount}
+</span>
+
+</div>
+
+`;
+
+const openChat=()=>{
+
+window.location.href=
+`chat.html?uid=${safeUid}`;
+
+};
+
+card.addEventListener("click",openChat);
+
+card.addEventListener("keydown",(event)=>{
+
+if(event.key==="Enter" || event.key===" "){
+event.preventDefault();
+openChat();
+}
+
 });
+
+chatList.appendChild(card);
+
+}
+
+}
+
+function applySearch(){
+
+const term=
+searchInput.value
+.trim()
+.toLowerCase();
+
+if(!term){
+
+renderConversations(allConversations);
+return;
+
+}
+
+const filtered=
+allConversations.filter(conversation=>{
+
+return conversation.name
+.toLowerCase()
+.includes(term) ||
+
+String(conversation.lastMessage || "")
+.toLowerCase()
+.includes(term);
+
+});
+
+renderConversations(filtered);
+
+}
+
+searchInput.addEventListener(
+"input",
+applySearch
+);
+
+async function buildConversations(
+messageSnapshot,
+unreadSnapshot
+){
+
+const latestMessages=new Map();
+const unreadCounts=new Map();
+
+unreadSnapshot.forEach(messageDoc=>{
+
+const message=messageDoc.data();
+
+if(
+message.receiverId===currentUser.uid &&
+message.senderId
+){
+
+const previous=
+unreadCounts.get(message.senderId) || 0;
+
+unreadCounts.set(
+message.senderId,
+previous+1
+);
+
+}
+
+});
+
+for(const messageDoc of messageSnapshot.docs){
+
+const message=messageDoc.data();
+
+let otherUid=null;
+
+if(message.senderId===currentUser.uid){
+
+otherUid=message.receiverId;
+
+}else if(message.receiverId===currentUser.uid){
+
+otherUid=message.senderId;
+
+}
+
+if(!otherUid){
+continue;
+}
+
+if(!latestMessages.has(otherUid)){
+
+latestMessages.set(otherUid,{
+...message,
+messageId:messageDoc.id
+});
+
+}
+
+}
+
+const conversations=[];
+
+for(const [otherUid,message]
+of latestMessages.entries()){
+
+try{
+
+const userSnapshot=
+await getDoc(doc(db,"users",otherUid));
+
+if(!userSnapshot.exists()){
+continue;
+}
+
+const profile=userSnapshot.data();
+
+conversations.push({
+
+uid:otherUid,
+
+name:getUserName(profile),
+
+photo:getProfilePicture(profile),
+
+online:isUserOnline(profile),
+
+lastMessage:
+message.message ||
+message.text ||
+message.content ||
+(message.imageUrl ? "📷 Photo" : "") ||
+(message.videoUrl ? "🎥 Video" : "") ||
+"New message",
+
+time:formatTime(message.timestamp),
+
+timestamp:
+message.timestamp?.toMillis?.() ||
+new Date(message.timestamp || 0).getTime(),
+
+unreadCount:
+unreadCounts.get(otherUid) || 0
+
+});
+
+}catch(error){
+
+console.error(
+"Could not load user:",
+otherUid,
+error
+);
+
+}
+
+}
+
+conversations.sort(
+(a,b)=>b.timestamp-a.timestamp
+);
+
+allConversations=conversations;
+
+const totalUnread=
+conversations.reduce(
+(total,item)=>total+item.unreadCount,
+0
+);
+
+if(totalUnread>0){
+
+badge.style.display="inline-block";
+
+badge.textContent=
+totalUnread>99 ? "99+" : totalUnread;
+
+}else{
+
+badge.style.display="none";
+badge.textContent="0";
+
+}
+
+applySearch();
+
+}
+onAuthStateChanged(auth,(user)=>{
+
+if(unsubscribeMessages){
+unsubscribeMessages();
+}
+
+if(unsubscribeUnreadMessages){
+unsubscribeUnreadMessages();
+}
+
+if(!user){
+
+currentUser=null;
+allConversations=[];
+
+badge.style.display="none";
+
+chatList.innerHTML=`
+
+<div class="empty-card">
+
+<div class="empty-icon">
+🔒
+</div>
+
+<h3>
+Please sign in
+</h3>
+
+<p>
+You must sign in before using private messages.
+</p>
+
+</div>
+
+`;
+
+showStatus(
+"Please sign in to view your private conversations."
+);
+
+return;
+}
+
+hideStatus();
+
+currentUser=user;
+
+let latestMessageSnapshot=null;
+let latestUnreadSnapshot=null;
+
+const refreshConversations=()=>{
+
+if(
+latestMessageSnapshot &&
+latestUnreadSnapshot
+){
+
+buildConversations(
+latestMessageSnapshot,
+latestUnreadSnapshot
+).catch(error=>{
+
+console.error(
+"Conversation loading error:",
+error
+);
+
+showStatus(
+"Some conversations could not be loaded."
+);
+
+});
+
+}
+
+};
+
+/*
+Loads messages from newest to oldest.
+
+The newest message from each person becomes
+the conversation preview.
+*/
+const messagesQuery=query(
+collection(db,"messages"),
+orderBy("timestamp","desc")
+);
+
+unsubscribeMessages=
+onSnapshot(
+messagesQuery,
+(snapshot)=>{
+
+latestMessageSnapshot=snapshot;
+refreshConversations();
+
+},
+(error)=>{
+
+console.error(
+"Messages listener error:",
+error
+);
+
+chatList.innerHTML=`
+
+<div class="empty-card">
+
+<div class="empty-icon">
+⚠️
+</div>
+
+<h3>
+Messages could not be loaded
+</h3>
+
+<p>
+Please check your internet connection and Firebase permissions.
+</p>
+
+</div>
+
+`;
+
+showStatus(
+"Unable to load private messages."
+);
+
+}
+);
+
+/*
+Loads unread messages sent to the signed-in user.
+*/
+const unreadMessagesQuery=query(
+collection(db,"messages"),
+where("receiverId","==",user.uid),
+where("read","==",false)
+);
+
+unsubscribeUnreadMessages=
+onSnapshot(
+unreadMessagesQuery,
+(snapshot)=>{
+
+latestUnreadSnapshot=snapshot;
+refreshConversations();
+
+},
+(error)=>{
+
+console.warn(
+"Unread-message listener error:",
+error
+);
+
+/*
+Continue showing conversations even when
+the unread query needs a Firebase index.
+*/
+latestUnreadSnapshot={
+forEach(){
+},
+docs:[]
+};
+
+refreshConversations();
+
+}
+);
 
 });
 
 </script>
+
 </body>
 </html>
