@@ -1,4 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
 
 import {
   getAuth,
@@ -8,6 +11,7 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+
 import {
   getStorage,
   ref,
@@ -16,6 +20,7 @@ import {
   getDownloadURL,
   deleteObject
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
 
 import {
   getFirestore,
@@ -29,6 +34,7 @@ import {
   deleteDoc,
   increment,
   arrayUnion,
+  arrayRemove,
   query,
   where,
   orderBy,
@@ -43,12 +49,25 @@ import {
 ===================================================== */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
-  authDomain: "sabasaba-gospel-ministry-414e2.firebaseapp.com",
-  projectId: "sabasaba-gospel-ministry-414e2",
-  storageBucket: "sabasaba-gospel-ministry-414e2.appspot.com",
-  messagingSenderId: "821278457946",
-  appId: "1:821278457946:web:3593bd1743970f44c05863"
+
+  apiKey:
+    "AIzaSyBy7eWmqoTqnNNGfV2YD9h2rabkCg_-QfU",
+
+  authDomain:
+    "sabasaba-gospel-ministry-414e2.firebaseapp.com",
+
+  projectId:
+    "sabasaba-gospel-ministry-414e2",
+
+  storageBucket:
+    "sabasaba-gospel-ministry-414e2.appspot.com",
+
+  messagingSenderId:
+    "821278457946",
+
+  appId:
+    "1:821278457946:web:3593bd1743970f44c05863"
+
 };
 
 
@@ -56,13 +75,20 @@ const firebaseConfig = {
    INITIALIZE FIREBASE
 ===================================================== */
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
 
-const db = getFirestore(app);
+const auth =
+  getAuth(app);
 
-const storage = getStorage(app);
+
+const db =
+  getFirestore(app);
+
+
+const storage =
+  getStorage(app);
 
 
 /* =====================================================
@@ -70,15 +96,22 @@ const storage = getStorage(app);
 ===================================================== */
 
 export {
+
   auth,
   db,
   storage,
+
+
+  /* STORAGE */
 
   ref,
   uploadBytes,
   uploadBytesResumable,
   getDownloadURL,
   deleteObject,
+
+
+  /* FIRESTORE */
 
   collection,
   addDoc,
@@ -90,6 +123,7 @@ export {
   deleteDoc,
   increment,
   arrayUnion,
+  arrayRemove,
   query,
   where,
   orderBy,
@@ -97,8 +131,12 @@ export {
   serverTimestamp,
   writeBatch,
 
+
+  /* AUTHENTICATION */
+
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
+
 };
