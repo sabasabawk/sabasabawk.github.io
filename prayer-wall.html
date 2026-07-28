@@ -1,0 +1,2751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Faith Connect Prayer Wall by SABASABA Gospel Ministry"
+>
+
+<title>
+  Prayer Wall | Faith Connect
+</title>
+
+<style>
+
+/* =====================================================
+   PART 1 OF 8
+   DOCUMENT SETUP, GENERAL PAGE AND TOP BAR
+===================================================== */
+
+
+/* =====================================================
+   GENERAL RESET
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:#eef3f8;
+  color:#222222;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+}
+
+
+/* =====================================================
+   TOP APPLICATION BAR
+===================================================== */
+
+.appTopBar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  width:100%;
+  background:#ffffff;
+  border-bottom:1px solid #d7e0e8;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.appTopBarInner{
+  width:100%;
+  max-width:760px;
+  min-height:64px;
+  margin:auto;
+  padding:8px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+
+/* =====================================================
+   FAITH CONNECT BRAND
+===================================================== */
+
+.appBrand{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+
+.appLogo{
+  width:48px;
+  height:48px;
+  flex-shrink:0;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  border:2px solid #087bd1;
+  box-shadow:0 3px 9px rgba(0,0,0,.16);
+}
+
+.appLogoImage{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+.appBrandText{
+  min-width:0;
+  color:#075daa;
+  font-size:17px;
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   TOP BAR ACTION BUTTONS
+===================================================== */
+
+.topBarActions{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.topIconLink{
+  position:relative;
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#edf3f8;
+  color:#1f2933;
+  text-decoration:none;
+  font-size:20px;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.topIconLink:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.topIconLink:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   PAGE CONTAINER
+===================================================== */
+
+.pageContainer{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:16px 14px 115px;
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:3px solid rgba(8,123,209,.35);
+  outline-offset:3px;
+}
+
+
+/* =====================================================
+   SMALL-SCREEN TOP BAR
+===================================================== */
+
+@media(max-width:600px){
+
+  .appTopBarInner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .appBrandText{
+    font-size:15px;
+  }
+
+  .topIconLink{
+    width:39px;
+    height:39px;
+    font-size:18px;
+  }
+
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+}
+/* =====================================================
+   PART 2 OF 8
+   PRAYER HEADER, BIBLE PROMISE,
+   FILTERS AND PRAYER CARDS
+===================================================== */
+
+
+/* =====================================================
+   PRAYER WALL HEADER
+===================================================== */
+
+.prayerHeader{
+  margin-bottom:18px;
+  padding:20px;
+  border-radius:22px;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  box-shadow:0 6px 18px rgba(0,0,0,.14);
+}
+
+.prayerHeader h1{
+  font-size:25px;
+  line-height:1.3;
+}
+
+.prayerHeader p{
+  margin-top:7px;
+  color:#e9f5ff;
+  font-size:14px;
+  line-height:1.6;
+}
+
+
+/* =====================================================
+   DAILY BIBLE PROMISE
+===================================================== */
+
+.biblePromiseCard{
+  margin-bottom:18px;
+  padding:20px;
+  border-radius:20px;
+  background:#ffffff;
+  border-left:6px solid #087bd1;
+  box-shadow:0 5px 16px rgba(0,0,0,.09);
+}
+
+.biblePromiseLabel{
+  color:#0873c9;
+  font-size:14px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.biblePromiseText{
+  margin-top:10px;
+  color:#26323d;
+  font-size:17px;
+  font-style:italic;
+  line-height:1.7;
+}
+
+.biblePromiseReference{
+  margin-top:10px;
+  color:#075daa;
+  font-size:14px;
+  font-weight:bold;
+  text-align:right;
+}
+
+
+/* =====================================================
+   PRAYER ACTION BAR
+===================================================== */
+
+.prayerActionBar{
+  margin-bottom:18px;
+  padding:14px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:#ffffff;
+  box-shadow:0 5px 16px rgba(0,0,0,.08);
+}
+
+.prayerActionText{
+  min-width:0;
+}
+
+.prayerActionText h2{
+  color:#1f2b35;
+  font-size:18px;
+  line-height:1.3;
+}
+
+.prayerActionText p{
+  margin-top:4px;
+  color:#6c7781;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.requestPrayerButton{
+  flex-shrink:0;
+  min-height:44px;
+  padding:11px 16px;
+  border:none;
+  border-radius:14px;
+  background:#087bd1;
+  color:#ffffff;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.requestPrayerButton:hover{
+  background:#005fae;
+  transform:translateY(-1px);
+}
+
+.requestPrayerButton:active{
+  transform:scale(.98);
+}
+
+
+/* =====================================================
+   CATEGORY FILTERS
+===================================================== */
+
+.prayerFilters{
+  margin-bottom:18px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:5px;
+  scrollbar-width:thin;
+}
+
+.prayerFilterButton{
+  flex-shrink:0;
+  min-height:40px;
+  padding:9px 14px;
+  border:1px solid #cfd9e2;
+  border-radius:20px;
+  background:#ffffff;
+  color:#47535e;
+  font-size:13px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
+}
+
+.prayerFilterButton:hover{
+  background:#edf5fc;
+  border-color:#9fc8e8;
+}
+
+.prayerFilterButton.active{
+  background:#087bd1;
+  color:#ffffff;
+  border-color:#087bd1;
+}
+
+
+/* =====================================================
+   PRAYER REQUESTS CONTAINER
+===================================================== */
+
+#prayerRequestsContainer{
+  width:100%;
+}
+
+
+/* =====================================================
+   PRAYER REQUEST CARD
+===================================================== */
+
+.prayerCard{
+  width:100%;
+  margin-bottom:18px;
+  padding:18px;
+  border-radius:22px;
+  background:#ffffff;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.prayerCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   PRAYER CARD HEADER
+===================================================== */
+
+.prayerCardHeader{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.prayerProfilePicture{
+  width:54px;
+  height:54px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e4e9ee;
+  border:3px solid #d8efff;
+}
+
+.prayerAuthorDetails{
+  min-width:0;
+  flex:1;
+}
+
+.prayerAuthorName{
+  color:#0873c9;
+  font-size:17px;
+  font-weight:bold;
+  line-height:1.3;
+  word-break:break-word;
+}
+
+.prayerDate{
+  margin-top:4px;
+  color:#77838d;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   PRAYER CATEGORY
+===================================================== */
+
+.prayerCategory{
+  display:inline-block;
+  margin-top:14px;
+  padding:7px 12px;
+  border-radius:18px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   PRAYER MESSAGE
+===================================================== */
+
+.prayerMessage{
+  margin-top:14px;
+  color:#222a31;
+  font-size:16px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+
+/* =====================================================
+   ANSWERED PRAYER LABEL
+===================================================== */
+
+.answeredPrayerLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:14px;
+  padding:8px 12px;
+  border-radius:18px;
+  background:#e6f7ea;
+  color:#177435;
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   PRAYER ACTION BUTTONS
+===================================================== */
+
+.prayerCardActions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:17px;
+  padding-top:14px;
+  border-top:1px solid #e2e7eb;
+}
+
+.prayerCardActions button{
+  min-height:43px;
+  padding:10px 8px;
+  border:none;
+  border-radius:12px;
+  background:#edf3f8;
+  color:#35414c;
+  font-size:13px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.prayerCardActions button:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.prayerCardActions button:active{
+  transform:scale(.98);
+}
+
+.prayerCardActions button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+
+/* =====================================================
+   I PRAYED BUTTON
+===================================================== */
+
+.prayedButton.prayed{
+  background:#e4f7e8;
+  color:#176b32;
+}
+
+
+/* =====================================================
+   OWNER BUTTONS
+===================================================== */
+
+.prayerOwnerActions{
+  grid-template-columns:repeat(2,1fr);
+  margin-top:9px;
+  padding-top:0;
+  border-top:none;
+}
+
+.markAnsweredButton{
+  background:#fff4cc !important;
+  color:#705600 !important;
+}
+
+.deletePrayerButton{
+  background:#ffe2e2 !important;
+  color:#b00020 !important;
+}
+
+
+/* =====================================================
+   STATUS CARDS
+===================================================== */
+
+.prayerStatusCard{
+  padding:34px 22px;
+  border-radius:20px;
+  background:#ffffff;
+  color:#68747e;
+  text-align:center;
+  font-size:16px;
+  line-height:1.7;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+}
+
+.prayerStatusCard.loading{
+  color:#0873c9;
+}
+
+.prayerStatusCard.error{
+  color:#b00020;
+}
+
+
+/* =====================================================
+   MOBILE RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  .prayerHeader{
+    padding:18px;
+  }
+
+  .prayerHeader h1{
+    font-size:22px;
+  }
+
+  .biblePromiseText{
+    font-size:16px;
+  }
+
+  .prayerActionBar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .requestPrayerButton{
+    width:100%;
+    text-align:center;
+  }
+
+  .prayerCard{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .prayerProfilePicture{
+    width:50px;
+    height:50px;
+  }
+
+  .prayerMessage{
+    font-size:15px;
+  }
+
+}
+
+
+/* =====================================================
+   END OF STYLES
+===================================================== */
+
+</style>
+
+</head>
+<body>
+
+<!-- =====================================================
+   PART 3 OF 8
+   COMPLETE PAGE STRUCTURE
+===================================================== -->
+
+
+<!-- =====================================================
+   TOP APPLICATION BAR
+===================================================== -->
+
+<nav class="appTopBar">
+
+  <div class="appTopBarInner">
+
+    <a
+      href="index.html"
+      class="appBrand"
+    >
+
+      <span class="appLogo">
+
+        <img
+          src="images/logo.png"
+          alt="Faith Connect Logo"
+          class="appLogoImage"
+        >
+
+      </span>
+
+      <span class="appBrandText">
+        Faith Connect
+      </span>
+
+    </a>
+
+
+    <div class="topBarActions">
+
+      <a
+        href="feed.html"
+        class="topIconLink"
+        title="Community Wall"
+      >
+        👥
+      </a>
+
+      <a
+        href="messages.html"
+        class="topIconLink"
+        title="Messages"
+      >
+        💬
+      </a>
+
+      <a
+        href="notification.html"
+        class="topIconLink"
+        title="Notifications"
+      >
+        🔔
+      </a>
+
+    </div>
+
+  </div>
+
+</nav>
+
+
+<!-- =====================================================
+   MAIN PAGE
+===================================================== -->
+
+<div class="pageContainer">
+
+
+  <!-- =================================================
+       PAGE HEADER
+  ================================================== -->
+
+  <section class="prayerHeader">
+
+    <h1>
+      🙏 Prayer Wall
+    </h1>
+
+    <p>
+      Share your prayer requests, pray for others,
+      and rejoice in answered prayers.
+    </p>
+
+  </section>
+
+
+  <!-- =================================================
+       DAILY BIBLE PROMISE
+  ================================================== -->
+
+  <section class="biblePromiseCard">
+
+    <div class="biblePromiseLabel">
+
+      DAILY BIBLE PROMISE
+
+    </div>
+
+    <div class="biblePromiseText">
+
+      "Do not be anxious about anything,
+      but in everything, by prayer and
+      supplication with thanksgiving,
+      let your requests be made known to God."
+
+    </div>
+
+    <div class="biblePromiseReference">
+
+      Philippians 4:6
+
+    </div>
+
+  </section>
+
+
+  <!-- =================================================
+       REQUEST PRAYER
+  ================================================== -->
+
+  <section class="prayerActionBar">
+
+    <div class="prayerActionText">
+
+      <h2>
+
+        Need Prayer?
+
+      </h2>
+
+      <p>
+
+        Share your request and let the
+        Faith Connect family pray with you.
+
+      </p>
+
+    </div>
+
+
+    <a
+      href="create-prayer.html"
+      class="requestPrayerButton"
+    >
+
+      ➕ Request Prayer
+
+    </a>
+
+  </section>
+
+
+  <!-- =================================================
+       CATEGORY FILTERS
+  ================================================== -->
+
+  <div class="prayerFilters">
+
+    <button
+      class="prayerFilterButton active"
+      data-category="All"
+    >
+      All
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="Family"
+    >
+      👨‍👩‍👧 Family
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="Health"
+    >
+      ❤️ Health
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="Education"
+    >
+      📚 Education
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="Work"
+    >
+      💼 Work
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="Church"
+    >
+      ⛪ Church
+    </button>
+
+    <button
+      class="prayerFilterButton"
+      data-category="World"
+    >
+      🌍 World
+    </button>
+
+  </div>
+
+
+  <!-- =================================================
+       PRAYER REQUESTS
+  ================================================== -->
+
+  <main id="prayerRequestsContainer">
+
+    <div class="prayerStatusCard loading">
+
+      Loading prayer requests...
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- =====================================================
+   FLOATING REQUEST BUTTON
+===================================================== -->
+
+<a
+  href="create-prayer.html"
+  class="floatingCreateButton"
+  aria-label="Request Prayer"
+>
+
+  +
+
+</a>
+
+
+<!-- =====================================================
+   BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottomNavigation">
+
+  <div class="bottomNavigationInner">
+
+    <a
+      href="index.html"
+      class="bottomNavItem"
+    >
+      <span class="bottomNavIcon">🏠</span>
+      <span>Home</span>
+    </a>
+
+    <a
+      href="feed.html"
+      class="bottomNavItem"
+    >
+      <span class="bottomNavIcon">👥</span>
+      <span>Community</span>
+    </a>
+
+    <a
+      href="learn.html"
+      class="bottomNavItem"
+    >
+      <span class="bottomNavIcon">📚</span>
+      <span>Learn</span>
+    </a>
+
+    <a
+      href="sermons.html"
+      class="bottomNavItem"
+    >
+      <span class="bottomNavIcon">🎤</span>
+      <span>Sermons</span>
+    </a>
+
+    <a
+      href="prayer-wall.html"
+      class="bottomNavItem active"
+      aria-current="page"
+    >
+      <span class="bottomNavIcon">🙏</span>
+      <span>Prayer</span>
+    </a>
+
+    <a
+      href="profile.html"
+      class="bottomNavItem"
+    >
+      <span class="bottomNavIcon">👤</span>
+      <span>Profile</span>
+    </a>
+
+  </div>
+
+</nav>
+
+
+<!-- =====================================================
+   OPEN JAVASCRIPT MODULE
+===================================================== -->
+
+<script type="module">
+/* =====================================================
+   PART 4 OF 8
+   FIREBASE IMPORTS, PAGE ELEMENTS,
+   GLOBAL VARIABLES AND HELPER FUNCTIONS
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const prayerRequestsContainer =
+document.getElementById(
+  "prayerRequestsContainer"
+);
+
+const prayerFilterButtons =
+document.querySelectorAll(
+  ".prayerFilterButton"
+);
+
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let selectedPrayerCategory =
+"All";
+
+let unsubscribePrayerRequests =
+null;
+
+const defaultProfilePicture =
+"images/profile.png";
+
+const userProfileCache =
+new Map();
+
+
+/* =====================================================
+   RETURN FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   FORMAT FIREBASE DATE
+===================================================== */
+
+function formatPrayerDate(timestamp){
+
+  if(!timestamp){
+
+    return "Recently";
+
+  }
+
+  try{
+
+    let prayerDate;
+
+    if(
+      typeof timestamp.toDate ===
+      "function"
+    ){
+
+      prayerDate =
+      timestamp.toDate();
+
+    }else if(timestamp.seconds){
+
+      prayerDate =
+      new Date(
+        timestamp.seconds * 1000
+      );
+
+    }else{
+
+      prayerDate =
+      new Date(timestamp);
+
+    }
+
+
+    if(
+      Number.isNaN(
+        prayerDate.getTime()
+      )
+    ){
+
+      return "Recently";
+
+    }
+
+
+    return prayerDate.toLocaleString(
+      undefined,
+      {
+        year:"numeric",
+        month:"short",
+        day:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Prayer date formatting error:",
+      error
+    );
+
+    return "Recently";
+
+  }
+
+}
+
+
+/* =====================================================
+   SHOW LOADING MESSAGE
+===================================================== */
+
+function showPrayerLoading(){
+
+  prayerRequestsContainer.innerHTML = `
+
+    <div class="prayerStatusCard loading">
+
+      Loading prayer requests...
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SHOW EMPTY MESSAGE
+===================================================== */
+
+function showPrayerEmpty(){
+
+  prayerRequestsContainer.innerHTML = `
+
+    <div class="prayerStatusCard">
+
+      No prayer requests are available yet.
+
+      <br><br>
+
+      Be the first person to share
+      a prayer request with the
+      Faith Connect family.
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SHOW ERROR MESSAGE
+===================================================== */
+
+function showPrayerError(message){
+
+  prayerRequestsContainer.innerHTML =
+  "";
+
+  const errorCard =
+  document.createElement("div");
+
+  errorCard.className =
+  "prayerStatusCard error";
+
+  errorCard.textContent =
+  message;
+
+  prayerRequestsContainer.appendChild(
+    errorCard
+  );
+
+}
+
+
+/* =====================================================
+   PROTECT PROFILE PICTURES
+===================================================== */
+
+function protectPrayerProfilePicture(
+  imageElement
+){
+
+  if(!imageElement){
+
+    return;
+
+  }
+
+  imageElement.addEventListener(
+    "error",
+    function(){
+
+      imageElement.src =
+      defaultProfilePicture;
+
+    },
+    {
+      once:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   LOAD LATEST MEMBER PROFILE PICTURE
+===================================================== */
+
+async function loadLatestPrayerProfile(
+  userId,
+  imageElement,
+  nameElement
+){
+
+  if(!userId){
+
+    return;
+
+  }
+
+  try{
+
+    let profileData =
+    {};
+
+
+    if(userProfileCache.has(userId)){
+
+      profileData =
+      userProfileCache.get(userId);
+
+    }else{
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        userId
+      );
+
+      const profileSnapshot =
+      await getDoc(
+        profileReference
+      );
+
+      if(profileSnapshot.exists()){
+
+        profileData =
+        profileSnapshot.data();
+
+      }
+
+      userProfileCache.set(
+        userId,
+        profileData
+      );
+
+    }
+
+
+    const latestPicture =
+    getFirstValue(
+      profileData.profilePicture,
+      profileData.picture,
+      profileData.photoURL,
+      profileData.photoUrl,
+      profileData.profileImage,
+      profileData.profilePhoto
+    );
+
+
+    const latestName =
+    getFirstValue(
+      profileData.fullName,
+      profileData.name,
+      profileData.displayName
+    );
+
+
+    if(
+      latestPicture &&
+      imageElement
+    ){
+
+      imageElement.src =
+      latestPicture;
+
+    }
+
+
+    if(
+      latestName &&
+      nameElement
+    ){
+
+      nameElement.textContent =
+      latestName;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading prayer profile:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   STOP PRAYER REQUEST LISTENER
+===================================================== */
+
+function stopPrayerListener(){
+
+  if(
+    typeof unsubscribePrayerRequests ===
+    "function"
+  ){
+
+    unsubscribePrayerRequests();
+
+  }
+
+  unsubscribePrayerRequests =
+  null;
+
+}
+/* =====================================================
+   PART 5 OF 8
+   AUTHENTICATION, CURRENT MEMBER PROFILE
+   AND PRAYER WALL LISTENER
+===================================================== */
+
+
+/* =====================================================
+   LOAD CURRENT MEMBER PROFILE
+===================================================== */
+
+async function loadCurrentPrayerProfile(
+  user
+){
+
+  currentProfile =
+  {};
+
+  if(!user){
+
+    return;
+
+  }
+
+  try{
+
+    const userReference =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+    const userSnapshot =
+    await getDoc(
+      userReference
+    );
+
+    if(userSnapshot.exists()){
+
+      currentProfile =
+      userSnapshot.data();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading current prayer profile:",
+      error
+    );
+
+    currentProfile =
+    {};
+
+  }
+
+}
+
+
+/* =====================================================
+   GET CURRENT MEMBER NAME
+===================================================== */
+
+function getCurrentPrayerMemberName(){
+
+  return getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentProfile.displayName,
+    currentUser?.displayName,
+    currentUser?.email,
+    "Faith Connect Member"
+  );
+
+}
+
+
+/* =====================================================
+   GET CURRENT MEMBER PROFILE PICTURE
+===================================================== */
+
+function getCurrentPrayerMemberPicture(){
+
+  return getFirstValue(
+    currentProfile.profilePicture,
+    currentProfile.picture,
+    currentProfile.photoURL,
+    currentProfile.photoUrl,
+    currentProfile.profileImage,
+    currentProfile.profilePhoto,
+    currentUser?.photoURL,
+    defaultProfilePicture
+  );
+
+}
+
+
+/* =====================================================
+   GET PRAYER DOCUMENT USER ID
+===================================================== */
+
+function getPrayerOwnerId(
+  prayerData
+){
+
+  return getFirstValue(
+    prayerData.userId,
+    prayerData.authorId,
+    prayerData.uid,
+    prayerData.ownerId
+  );
+
+}
+
+
+/* =====================================================
+   CHECK WHETHER CURRENT MEMBER OWNS PRAYER
+===================================================== */
+
+function isPrayerOwner(
+  prayerData
+){
+
+  if(!currentUser){
+
+    return false;
+
+  }
+
+  const prayerOwnerId =
+  getPrayerOwnerId(
+    prayerData
+  );
+
+  return (
+    prayerOwnerId ===
+    currentUser.uid
+  );
+
+}
+
+
+/* =====================================================
+   GET PRAYER CATEGORY
+===================================================== */
+
+function getPrayerCategory(
+  prayerData
+){
+
+  return getFirstValue(
+    prayerData.category,
+    prayerData.prayerCategory,
+    prayerData.type,
+    "Other"
+  );
+
+}
+
+
+/* =====================================================
+   CHECK WHETHER PRAYER MATCHES FILTER
+===================================================== */
+
+function prayerMatchesSelectedCategory(
+  prayerData
+){
+
+  if(
+    selectedPrayerCategory ===
+    "All"
+  ){
+
+    return true;
+
+  }
+
+  const prayerCategory =
+  getPrayerCategory(
+    prayerData
+  ).toLowerCase();
+
+  return (
+    prayerCategory ===
+    selectedPrayerCategory.toLowerCase()
+  );
+
+}
+
+
+/* =====================================================
+   START PRAYER REQUEST LISTENER
+===================================================== */
+
+function startPrayerRequestListener(){
+
+  stopPrayerListener();
+
+  showPrayerLoading();
+
+
+  const prayerRequestsQuery =
+  query(
+    collection(
+      db,
+      "prayerRequests"
+    ),
+    orderBy(
+      "timestamp",
+      "desc"
+    )
+  );
+
+
+  unsubscribePrayerRequests =
+  onSnapshot(
+
+    prayerRequestsQuery,
+
+    function(snapshot){
+
+      prayerRequestsContainer.innerHTML =
+      "";
+
+      let visiblePrayerCount =
+      0;
+
+
+      snapshot.forEach(
+        function(prayerDocument){
+
+          const prayerData =
+          prayerDocument.data();
+
+
+          if(
+            !prayerMatchesSelectedCategory(
+              prayerData
+            )
+          ){
+
+            return;
+
+          }
+
+
+          visiblePrayerCount++;
+
+
+          createPrayerCard(
+            prayerDocument.id,
+            prayerData
+          );
+
+        }
+      );
+
+
+      if(
+        visiblePrayerCount === 0
+      ){
+
+        showPrayerEmpty();
+
+      }
+
+    },
+
+
+    function(error){
+
+      console.error(
+        "Prayer request listener error:",
+        error
+      );
+
+
+      if(
+        error.code ===
+        "failed-precondition"
+      ){
+
+        showPrayerError(
+          "The Prayer Wall needs a Firestore index. Please open the Firebase link shown in the browser console and create the index."
+        );
+
+        return;
+
+      }
+
+
+      if(
+        error.code ===
+        "permission-denied"
+      ){
+
+        showPrayerError(
+          "You do not have permission to view prayer requests. Please check your Firestore security rules."
+        );
+
+        return;
+
+      }
+
+
+      showPrayerError(
+        "Prayer requests could not be loaded. Please check your internet connection and try again."
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user;
+
+
+    if(user){
+
+      await loadCurrentPrayerProfile(
+        user
+      );
+
+    }else{
+
+      currentProfile =
+      {};
+
+    }
+
+
+    startPrayerRequestListener();
+
+  }
+);
+
+
+/* =====================================================
+   CATEGORY FILTER BUTTON EVENTS
+===================================================== */
+
+prayerFilterButtons.forEach(
+  function(filterButton){
+
+    filterButton.addEventListener(
+      "click",
+      function(){
+
+        selectedPrayerCategory =
+        filterButton.dataset.category ||
+        "All";
+
+
+        prayerFilterButtons.forEach(
+          function(button){
+
+            button.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+        filterButton.classList.add(
+          "active"
+        );
+
+
+        startPrayerRequestListener();
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP FIRESTORE LISTENER
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    stopPrayerListener();
+
+  }
+);
+/* =====================================================
+   PART 6 OF 8
+   CREATE PRAYER CARDS
+===================================================== */
+
+function createPrayerCard(
+  prayerId,
+  prayerData
+){
+
+  const anonymous =
+  prayerData.anonymous === true;
+
+  const memberName =
+  anonymous
+    ? "Anonymous"
+    : getFirstValue(
+        prayerData.name,
+        prayerData.fullName,
+        prayerData.displayName,
+        "Faith Connect Member"
+      );
+
+  const profilePicture =
+  anonymous
+    ? defaultProfilePicture
+    : getFirstValue(
+        prayerData.profilePicture,
+        prayerData.picture,
+        prayerData.photoURL,
+        prayerData.photoUrl,
+        defaultProfilePicture
+      );
+
+  const prayerCategory =
+  getPrayerCategory(
+    prayerData
+  );
+
+  const prayerMessage =
+  getFirstValue(
+    prayerData.request,
+    prayerData.prayer,
+    prayerData.message,
+    prayerData.text
+  );
+
+  const prayerDate =
+  formatPrayerDate(
+    prayerData.timestamp
+  );
+
+  const answered =
+  prayerData.answered === true;
+
+  const prayedBy =
+  Array.isArray(
+    prayerData.prayedBy
+  )
+    ? prayerData.prayedBy
+    : [];
+
+  const prayedCount =
+  prayedBy.length;
+
+  const memberPrayed =
+  currentUser
+    ? prayedBy.includes(
+        currentUser.uid
+      )
+    : false;
+
+  const card =
+  document.createElement("div");
+
+  card.className =
+  "prayerCard";
+
+  card.innerHTML = `
+
+    <div class="prayerCardHeader">
+
+      <img
+        class="prayerProfilePicture"
+        src="${profilePicture}"
+        alt="${memberName}"
+      >
+
+      <div class="prayerAuthorDetails">
+
+        <div class="prayerAuthorName">
+
+          ${memberName}
+
+        </div>
+
+        <div class="prayerDate">
+
+          ${prayerDate}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="prayerCategory">
+
+      🙏 ${prayerCategory}
+
+    </div>
+
+    <div class="prayerMessage">
+
+      ${prayerMessage}
+
+    </div>
+
+    ${
+      answered
+      ? `
+      <div class="answeredPrayerLabel">
+
+        ✅ Answered Prayer
+
+      </div>
+      `
+      : ""
+    }
+
+    <div class="prayerCardActions">
+
+      <button
+        class="prayedButton ${
+          memberPrayed
+          ? "prayed"
+          : ""
+        }"
+        data-id="${prayerId}"
+      >
+
+        🙏 I Prayed (${prayedCount})
+
+      </button>
+
+      <button
+        class="sharePrayerButton"
+        data-id="${prayerId}"
+      >
+
+        📤 Share
+
+      </button>
+
+    </div>
+
+    ${
+      isPrayerOwner(
+        prayerData
+      )
+      ? `
+      <div class="prayerCardActions prayerOwnerActions">
+
+        <button
+          class="markAnsweredButton"
+          data-id="${prayerId}"
+        >
+
+          ✅ Mark Answered
+
+        </button>
+
+        <button
+          class="deletePrayerButton"
+          data-id="${prayerId}"
+        >
+
+          🗑 Delete
+
+        </button>
+
+      </div>
+      `
+      : ""
+    }
+
+  `;
+
+  prayerRequestsContainer.appendChild(
+    card
+  );
+
+  const picture =
+  card.querySelector(
+    ".prayerProfilePicture"
+  );
+
+  protectPrayerProfilePicture(
+    picture
+  );
+
+  if(
+    !anonymous
+  ){
+
+    loadLatestPrayerProfile(
+      getPrayerOwnerId(
+        prayerData
+      ),
+      picture,
+      card.querySelector(
+        ".prayerAuthorName"
+      )
+    );
+
+  }
+
+}
+/* =====================================================
+   PART 7 OF 8
+   PRAYER BUTTON ACTIONS
+===================================================== */
+
+
+/* =====================================================
+   REQUIRE MEMBER LOGIN
+===================================================== */
+
+function requirePrayerLogin(){
+
+  if(currentUser){
+
+    return true;
+
+  }
+
+  alert(
+    "Please sign in before using this Prayer Wall feature."
+  );
+
+  window.location.href =
+  "login.html";
+
+  return false;
+
+}
+
+
+/* =====================================================
+   I PRAYED BUTTON
+===================================================== */
+
+async function handlePrayedButton(
+  prayerId,
+  button
+){
+
+  if(!requirePrayerLogin()){
+
+    return;
+
+  }
+
+  if(
+    !prayerId ||
+    !button
+  ){
+
+    return;
+
+  }
+
+  const originalText =
+  button.textContent;
+
+  button.disabled =
+  true;
+
+  button.textContent =
+  "Updating...";
+
+
+  try{
+
+    const prayerReference =
+    doc(
+      db,
+      "prayerRequests",
+      prayerId
+    );
+
+    const prayerSnapshot =
+    await getDoc(
+      prayerReference
+    );
+
+
+    if(!prayerSnapshot.exists()){
+
+      alert(
+        "This prayer request is no longer available."
+      );
+
+      return;
+
+    }
+
+
+    const prayerData =
+    prayerSnapshot.data();
+
+    const currentPrayedBy =
+    Array.isArray(
+      prayerData.prayedBy
+    )
+      ? prayerData.prayedBy
+      : [];
+
+
+    const alreadyPrayed =
+    currentPrayedBy.includes(
+      currentUser.uid
+    );
+
+
+    let updatedPrayedBy;
+
+
+    if(alreadyPrayed){
+
+      updatedPrayedBy =
+      currentPrayedBy.filter(
+        function(userId){
+
+          return (
+            userId !==
+            currentUser.uid
+          );
+
+        }
+      );
+
+    }else{
+
+      updatedPrayedBy = [
+        ...currentPrayedBy,
+        currentUser.uid
+      ];
+
+    }
+
+
+    await updateDoc(
+      prayerReference,
+      {
+        prayedBy:updatedPrayedBy
+      }
+    );
+
+
+    button.classList.toggle(
+      "prayed",
+      !alreadyPrayed
+    );
+
+
+    button.textContent =
+    `🙏 I Prayed (${updatedPrayedBy.length})`;
+
+  }catch(error){
+
+    console.error(
+      "Error updating prayer response:",
+      error
+    );
+
+    alert(
+      "The prayer response could not be updated. Please try again."
+    );
+
+    button.textContent =
+    originalText;
+
+  }finally{
+
+    button.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   SHARE PRAYER REQUEST
+===================================================== */
+
+async function handleSharePrayer(
+  prayerId,
+  button
+){
+
+  const prayerCard =
+  button.closest(
+    ".prayerCard"
+  );
+
+  if(!prayerCard){
+
+    return;
+
+  }
+
+
+  const authorName =
+  prayerCard.querySelector(
+    ".prayerAuthorName"
+  )?.textContent.trim() ||
+  "Faith Connect Member";
+
+
+  const prayerMessage =
+  prayerCard.querySelector(
+    ".prayerMessage"
+  )?.textContent.trim() ||
+  "";
+
+
+  const prayerCategory =
+  prayerCard.querySelector(
+    ".prayerCategory"
+  )?.textContent.trim() ||
+  "Prayer";
+
+
+  const prayerUrl =
+  `${window.location.origin}${window.location.pathname}?prayer=${encodeURIComponent(prayerId)}`;
+
+
+  const shareText =
+  `${prayerCategory}
+
+Prayer request from ${authorName}:
+
+${prayerMessage}
+
+Pray with us through Faith Connect.
+
+SABASABA Gospel Ministry
+${prayerUrl}`;
+
+
+  try{
+
+    if(navigator.share){
+
+      await navigator.share(
+        {
+          title:
+          "Faith Connect Prayer Request",
+
+          text:
+          shareText,
+
+          url:
+          prayerUrl
+        }
+      );
+
+      return;
+
+    }
+
+
+    await navigator.clipboard.writeText(
+      shareText
+    );
+
+    alert(
+      "Prayer request copied. You can now share it."
+    );
+
+  }catch(error){
+
+    if(
+      error.name ===
+      "AbortError"
+    ){
+
+      return;
+
+    }
+
+
+    console.error(
+      "Prayer sharing error:",
+      error
+    );
+
+
+    try{
+
+      const temporaryTextArea =
+      document.createElement(
+        "textarea"
+      );
+
+      temporaryTextArea.value =
+      shareText;
+
+      temporaryTextArea.style.position =
+      "fixed";
+
+      temporaryTextArea.style.opacity =
+      "0";
+
+      document.body.appendChild(
+        temporaryTextArea
+      );
+
+      temporaryTextArea.select();
+
+      document.execCommand(
+        "copy"
+      );
+
+      temporaryTextArea.remove();
+
+      alert(
+        "Prayer request copied. You can now share it."
+      );
+
+    }catch(copyError){
+
+      console.error(
+        "Prayer copy error:",
+        copyError
+      );
+
+      alert(
+        "The prayer request could not be shared."
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   MARK PRAYER AS ANSWERED
+===================================================== */
+
+async function handleMarkAnswered(
+  prayerId,
+  button
+){
+
+  if(!requirePrayerLogin()){
+
+    return;
+
+  }
+
+  const confirmed =
+  confirm(
+    "Has God answered this prayer request?"
+  );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  const originalText =
+  button.textContent;
+
+  button.disabled =
+  true;
+
+  button.textContent =
+  "Updating...";
+
+
+  try{
+
+    const prayerReference =
+    doc(
+      db,
+      "prayerRequests",
+      prayerId
+    );
+
+    const prayerSnapshot =
+    await getDoc(
+      prayerReference
+    );
+
+
+    if(!prayerSnapshot.exists()){
+
+      alert(
+        "This prayer request is no longer available."
+      );
+
+      return;
+
+    }
+
+
+    const prayerData =
+    prayerSnapshot.data();
+
+
+    if(
+      getPrayerOwnerId(
+        prayerData
+      ) !== currentUser.uid
+    ){
+
+      alert(
+        "Only the owner can mark this prayer as answered."
+      );
+
+      return;
+
+    }
+
+
+    await updateDoc(
+      prayerReference,
+      {
+        answered:true,
+        answeredAt:new Date()
+      }
+    );
+
+
+    alert(
+      "Praise God! This prayer has been marked as answered."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Error marking prayer answered:",
+      error
+    );
+
+    alert(
+      "The prayer could not be marked as answered. Please try again."
+    );
+
+  }finally{
+
+    button.disabled =
+    false;
+
+    button.textContent =
+    originalText;
+
+  }
+
+}
+
+
+/* =====================================================
+   DELETE PRAYER REQUEST
+===================================================== */
+
+async function handleDeletePrayer(
+  prayerId,
+  button
+){
+
+  if(!requirePrayerLogin()){
+
+    return;
+
+  }
+
+
+  const confirmed =
+  confirm(
+    "Are you sure you want to delete this prayer request? This action cannot be undone."
+  );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  const originalText =
+  button.textContent;
+
+  button.disabled =
+  true;
+
+  button.textContent =
+  "Deleting...";
+
+
+  try{
+
+    const prayerReference =
+    doc(
+      db,
+      "prayerRequests",
+      prayerId
+    );
+
+    const prayerSnapshot =
+    await getDoc(
+      prayerReference
+    );
+
+
+    if(!prayerSnapshot.exists()){
+
+      alert(
+        "This prayer request has already been removed."
+      );
+
+      return;
+
+    }
+
+
+    const prayerData =
+    prayerSnapshot.data();
+
+
+    if(
+      getPrayerOwnerId(
+        prayerData
+      ) !== currentUser.uid
+    ){
+
+      alert(
+        "Only the owner can delete this prayer request."
+      );
+
+      return;
+
+    }
+
+
+    await deleteDoc(
+      prayerReference
+    );
+
+
+    alert(
+      "Prayer request deleted successfully."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Error deleting prayer request:",
+      error
+    );
+
+    alert(
+      "The prayer request could not be deleted. Please try again."
+    );
+
+    button.disabled =
+    false;
+
+    button.textContent =
+    originalText;
+
+  }
+
+}
+
+
+/* =====================================================
+   PRAYER WALL BUTTON EVENTS
+===================================================== */
+
+prayerRequestsContainer.addEventListener(
+  "click",
+  async function(event){
+
+    const prayedButton =
+    event.target.closest(
+      ".prayedButton"
+    );
+
+
+    if(prayedButton){
+
+      await handlePrayedButton(
+        prayedButton.dataset.id,
+        prayedButton
+      );
+
+      return;
+
+    }
+
+
+    const shareButton =
+    event.target.closest(
+      ".sharePrayerButton"
+    );
+
+
+    if(shareButton){
+
+      await handleSharePrayer(
+        shareButton.dataset.id,
+        shareButton
+      );
+
+      return;
+
+    }
+
+
+    const answeredButton =
+    event.target.closest(
+      ".markAnsweredButton"
+    );
+
+
+    if(answeredButton){
+
+      await handleMarkAnswered(
+        answeredButton.dataset.id,
+        answeredButton
+      );
+
+      return;
+
+    }
+
+
+    const deleteButton =
+    event.target.closest(
+      ".deletePrayerButton"
+    );
+
+
+    if(deleteButton){
+
+      await handleDeletePrayer(
+        deleteButton.dataset.id,
+        deleteButton
+      );
+
+    }
+
+  }
+);
+/* =====================================================
+   PART 8 OF 8
+   START PAGE, HANDLE SHARED PRAYERS,
+   CLOSE DOCUMENT
+===================================================== */
+
+
+/* =====================================================
+   OPEN SHARED PRAYER
+===================================================== */
+
+function openSharedPrayer(){
+
+  const parameters =
+  new URLSearchParams(
+    window.location.search
+  );
+
+  const prayerId =
+  parameters.get("prayer");
+
+  if(!prayerId){
+
+    return;
+
+  }
+
+  setTimeout(function(){
+
+    const button =
+    document.querySelector(
+      `[data-id="${prayerId}"]`
+    );
+
+    if(button){
+
+      const prayerCard =
+      button.closest(
+        ".prayerCard"
+      );
+
+      if(prayerCard){
+
+        prayerCard.scrollIntoView({
+          behavior:"smooth",
+          block:"center"
+        });
+
+        prayerCard.style.outline =
+        "3px solid #087bd1";
+
+        prayerCard.style.transition =
+        "outline 0.4s";
+
+        setTimeout(function(){
+
+          prayerCard.style.outline =
+          "none";
+
+        },3000);
+
+      }
+
+    }
+
+  },800);
+
+}
+
+
+/* =====================================================
+   START PRAYER WALL
+===================================================== */
+
+function startPrayerWall(){
+
+  openSharedPrayer();
+
+}
+
+startPrayerWall();
+
+
+/* =====================================================
+   END JAVASCRIPT
+===================================================== */
+
+</script>
+
+</body>
+
+</html>
