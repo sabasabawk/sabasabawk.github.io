@@ -3565,7 +3565,102 @@ window.addEventListener(
 console.log(
   "SABASABA Gospel Ministry Community Wall is ready."
 );
+/* =========================================
+   AUTO-PLAY VISIBLE COMMUNITY VIDEOS
+========================================= */
 
+let videoObserver = null;
+
+function startVideoAutoPlay() {
+
+  // Stop the previous observer if it exists
+  if (videoObserver) {
+    videoObserver.disconnect();
+  }
+
+  const communityVideos =
+    document.querySelectorAll(".communityPostVideo");
+
+  if (!communityVideos.length) {
+    return;
+  }
+
+  videoObserver = new IntersectionObserver(
+
+    (entries) => {
+
+      entries.forEach((entry) => {
+
+        const video = entry.target;
+
+        /*
+          Start when at least 70% of the
+          video is visible on the screen.
+        */
+        if (
+          entry.isIntersecting &&
+          entry.intersectionRatio >= 0.7
+        ) {
+
+          // Pause every other video
+          communityVideos.forEach((otherVideo) => {
+
+            if (otherVideo !== video) {
+              otherVideo.pause();
+            }
+
+          });
+
+          /*
+            Autoplay normally requires
+            the video to begin muted.
+          */
+          video.muted = true;
+
+          const playPromise = video.play();
+
+          if (
+            playPromise !== undefined
+          ) {
+
+            playPromise.catch((error) => {
+
+              console.log(
+                "Video autoplay was blocked:",
+                error
+              );
+
+            });
+
+          }
+
+        } else {
+
+          // Pause when it leaves the screen
+          video.pause();
+
+        }
+
+      });
+
+    },
+
+    {
+      threshold: [0, 0.25, 0.5, 0.7, 1]
+    }
+
+  );
+
+  communityVideos.forEach((video) => {
+
+    video.muted = true;
+    video.playsInline = true;
+
+    videoObserver.observe(video);
+
+  });
+
+}
 </script>
 
 </body>
