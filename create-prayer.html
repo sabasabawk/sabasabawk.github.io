@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Submit a prayer request through Faith Connect by SABASABA Gospel Ministry"
+>
+
+<title>
+  Request Prayer | Faith Connect
+</title>
+
+<style>
+
+/* =====================================================
+   PART 1 OF 6
+   PAGE SETUP, TOP BAR AND GENERAL LAYOUT
+===================================================== */
+
+
+/* =====================================================
+   GENERAL RESET
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:#eef3f8;
+  color:#202830;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+}
+
+img{
+  max-width:100%;
+}
+
+
+/* =====================================================
+   TOP APPLICATION BAR
+===================================================== */
+
+.appTopBar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  width:100%;
+  background:#ffffff;
+  border-bottom:1px solid #d7e0e8;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.appTopBarInner{
+  width:100%;
+  max-width:760px;
+  min-height:64px;
+  margin:auto;
+  padding:8px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.backButton{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#edf3f8;
+  color:#075daa;
+  text-decoration:none;
+  font-size:22px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.backButton:hover{
+  background:#dce9f4;
+  transform:translateX(-1px);
+}
+
+.backButton:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+.topBarTitle{
+  min-width:0;
+  flex:1;
+  text-align:center;
+}
+
+.topBarTitle h1{
+  color:#075daa;
+  font-size:18px;
+  line-height:1.3;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.topBarTitle p{
+  margin-top:2px;
+  color:#7b8791;
+  font-size:11px;
+}
+
+
+/* =====================================================
+   TOP PRAYER ICON
+===================================================== */
+
+.topPrayerIcon{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e7f3ff;
+  font-size:21px;
+}
+
+
+/* =====================================================
+   MAIN PAGE CONTAINER
+===================================================== */
+
+.pageContainer{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:18px 14px 70px;
+}
+
+
+/* =====================================================
+   INTRODUCTION CARD
+===================================================== */
+
+.prayerIntroCard{
+  margin-bottom:18px;
+  padding:22px;
+  border-radius:22px;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  box-shadow:0 7px 20px rgba(0,0,0,.14);
+}
+
+.prayerIntroIcon{
+  width:54px;
+  height:54px;
+  margin-bottom:12px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.18);
+  font-size:28px;
+}
+
+.prayerIntroCard h2{
+  font-size:24px;
+  line-height:1.3;
+}
+
+.prayerIntroCard p{
+  margin-top:8px;
+  color:#e9f5ff;
+  font-size:14px;
+  line-height:1.7;
+}
+
+
+/* =====================================================
+   PRIVACY MESSAGE
+===================================================== */
+
+.privacyMessage{
+  margin-bottom:18px;
+  padding:14px 16px;
+  border-radius:16px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:#fff8dc;
+  border:1px solid #f1dc8b;
+  color:#615012;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.privacyMessageIcon{
+  flex-shrink:0;
+  font-size:20px;
+}
+
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.prayerFormCard{
+  padding:20px;
+  border-radius:22px;
+  background:#ffffff;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+}
+
+
+/* =====================================================
+   FORM SECTION TITLE
+===================================================== */
+
+.formSectionTitle{
+  margin-bottom:18px;
+}
+
+.formSectionTitle h2{
+  color:#1f2b35;
+  font-size:20px;
+  line-height:1.3;
+}
+
+.formSectionTitle p{
+  margin-top:5px;
+  color:#75818b;
+  font-size:13px;
+  line-height:1.6;
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:3px solid rgba(8,123,209,.35);
+  outline-offset:3px;
+}
+
+
+/* =====================================================
+   SMALL SCREEN ADJUSTMENTS
+===================================================== */
+
+@media(max-width:600px){
+
+  .appTopBarInner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .prayerIntroCard{
+    padding:19px;
+  }
+
+  .prayerIntroCard h2{
+    font-size:21px;
+  }
+
+  .prayerFormCard{
+    padding:17px;
+    border-radius:18px;
+  }
+
+}
+/* =====================================================
+   PART 2 OF 6
+   FORM FIELDS, CATEGORY OPTIONS,
+   ANONYMOUS OPTION AND BUTTONS
+===================================================== */
+
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.formGroup{
+  margin-bottom:18px;
+}
+
+.formLabel{
+  display:block;
+  margin-bottom:8px;
+  color:#26323d;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.requiredMark{
+  color:#c62828;
+}
+
+
+/* =====================================================
+   FORM INPUTS
+===================================================== */
+
+.formInput,
+.formSelect,
+.formTextarea{
+  width:100%;
+  border:1px solid #cfd9e2;
+  border-radius:14px;
+  background:#f9fbfd;
+  color:#202830;
+  font-size:15px;
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.formInput,
+.formSelect{
+  min-height:48px;
+  padding:11px 13px;
+}
+
+.formTextarea{
+  min-height:170px;
+  padding:14px;
+  resize:vertical;
+  line-height:1.7;
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder{
+  color:#99a4ad;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus{
+  border-color:#087bd1;
+  background:#ffffff;
+  box-shadow:0 0 0 4px rgba(8,123,209,.11);
+  outline:none;
+}
+
+
+/* =====================================================
+   FORM HELP TEXT
+===================================================== */
+
+.formHelpText{
+  margin-top:7px;
+  color:#7b8791;
+  font-size:12px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   CHARACTER COUNTER
+===================================================== */
+
+.characterCounter{
+  margin-top:7px;
+  color:#7b8791;
+  font-size:12px;
+  text-align:right;
+}
+
+.characterCounter.warning{
+  color:#c67a00;
+}
+
+.characterCounter.limit{
+  color:#c62828;
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   CATEGORY OPTIONS
+===================================================== */
+
+.categoryOptions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.categoryOption{
+  position:relative;
+}
+
+.categoryOption input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.categoryOptionLabel{
+  min-height:54px;
+  padding:12px;
+  border:1px solid #cfd9e2;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  background:#f9fbfd;
+  color:#46525d;
+  font-size:13px;
+  font-weight:bold;
+  text-align:center;
+  cursor:pointer;
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.categoryOptionLabel:hover{
+  background:#edf5fc;
+  border-color:#9fc8e8;
+  transform:translateY(-1px);
+}
+
+.categoryOption input:checked +
+.categoryOptionLabel{
+  background:#e4f2ff;
+  border-color:#087bd1;
+  color:#075daa;
+  box-shadow:0 0 0 3px rgba(8,123,209,.1);
+}
+
+
+/* =====================================================
+   ANONYMOUS OPTION
+===================================================== */
+
+.anonymousOption{
+  margin-top:5px;
+  padding:15px;
+  border-radius:16px;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  background:#f1f6fa;
+  border:1px solid #d8e2ea;
+}
+
+.anonymousCheckbox{
+  width:20px;
+  height:20px;
+  margin-top:2px;
+  flex-shrink:0;
+  accent-color:#087bd1;
+}
+
+.anonymousOptionText{
+  min-width:0;
+}
+
+.anonymousOptionText strong{
+  display:block;
+  color:#25313b;
+  font-size:14px;
+}
+
+.anonymousOptionText span{
+  display:block;
+  margin-top:4px;
+  color:#74808a;
+  font-size:12px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   GUIDANCE CARD
+===================================================== */
+
+.prayerGuidanceCard{
+  margin-top:18px;
+  padding:15px;
+  border-radius:16px;
+  background:#eef8ff;
+  border-left:5px solid #087bd1;
+}
+
+.prayerGuidanceCard h3{
+  color:#075daa;
+  font-size:14px;
+}
+
+.prayerGuidanceCard p{
+  margin-top:6px;
+  color:#53616c;
+  font-size:12px;
+  line-height:1.6;
+}
+
+
+/* =====================================================
+   FORM MESSAGE
+===================================================== */
+
+.formMessage{
+  display:none;
+  margin-top:16px;
+  padding:13px 14px;
+  border-radius:13px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.formMessage.show{
+  display:block;
+}
+
+.formMessage.error{
+  background:#ffe7e7;
+  color:#a51414;
+  border:1px solid #f3b3b3;
+}
+
+.formMessage.success{
+  background:#e4f7e8;
+  color:#176b32;
+  border:1px solid #a8dcb5;
+}
+
+.formMessage.info{
+  background:#e7f3ff;
+  color:#075daa;
+  border:1px solid #afd2ef;
+}
+
+
+/* =====================================================
+   FORM ACTIONS
+===================================================== */
+
+.formActions{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1fr 1.5fr;
+  gap:10px;
+}
+
+.cancelButton,
+.submitPrayerButton{
+  min-height:50px;
+  padding:12px 15px;
+  border-radius:14px;
+  font-size:14px;
+  font-weight:bold;
+  text-align:center;
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.cancelButton{
+  border:1px solid #cad5de;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f3f6f8;
+  color:#4b5964;
+  text-decoration:none;
+}
+
+.cancelButton:hover{
+  background:#e6edf2;
+  transform:translateY(-1px);
+}
+
+.submitPrayerButton{
+  border:none;
+  background:#087bd1;
+  color:#ffffff;
+}
+
+.submitPrayerButton:hover{
+  background:#0065b7;
+  transform:translateY(-1px);
+}
+
+.cancelButton:active,
+.submitPrayerButton:active{
+  transform:scale(.98);
+}
+
+.submitPrayerButton:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+
+/* =====================================================
+   LOADING SPINNER
+===================================================== */
+
+.buttonSpinner{
+  width:17px;
+  height:17px;
+  margin-right:8px;
+  border:2px solid rgba(255,255,255,.45);
+  border-top-color:#ffffff;
+  border-radius:50%;
+  display:inline-block;
+  vertical-align:middle;
+  animation:spinPrayerButton .8s linear infinite;
+}
+
+@keyframes spinPrayerButton{
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE FORM DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  .categoryOptions{
+    grid-template-columns:1fr;
+  }
+
+  .formActions{
+    grid-template-columns:1fr;
+  }
+
+  .cancelButton{
+    order:2;
+  }
+
+  .submitPrayerButton{
+    order:1;
+  }
+
+}
+
+
+/* =====================================================
+   END OF STYLES
+===================================================== */
+
+</style>
+
+</head>
+<body>
+
+<!-- =====================================================
+     PART 3 OF 6
+     PAGE STRUCTURE
+===================================================== -->
+
+<nav class="appTopBar">
+
+  <div class="appTopBarInner">
+
+    <a
+      href="prayer-wall.html"
+      class="backButton"
+      aria-label="Back"
+    >
+      ←
+    </a>
+
+    <div class="topBarTitle">
+
+      <h1>
+        Request Prayer
+      </h1>
+
+      <p>
+        Faith Connect
+      </p>
+
+    </div>
+
+    <div class="topPrayerIcon">
+      🙏
+    </div>
+
+  </div>
+
+</nav>
+
+
+<div class="pageContainer">
+
+
+  <!-- INTRODUCTION -->
+
+  <section class="prayerIntroCard">
+
+    <div class="prayerIntroIcon">
+
+      🙏
+
+    </div>
+
+    <h2>
+
+      We Would Love to Pray With You
+
+    </h2>
+
+    <p>
+
+      Share your prayer request with the
+      Faith Connect family. God hears every
+      sincere prayer.
+
+    </p>
+
+  </section>
+
+
+  <!-- PRIVACY -->
+
+  <div class="privacyMessage">
+
+    <div class="privacyMessageIcon">
+
+      🔒
+
+    </div>
+
+    <div>
+
+      Your prayer request is shared only
+      inside the Faith Connect community.
+      You may also choose to post it
+      anonymously.
+
+    </div>
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <form
+    id="prayerForm"
+    class="prayerFormCard"
+  >
+
+    <div class="formSectionTitle">
+
+      <h2>
+
+        Prayer Request
+
+      </h2>
+
+      <p>
+
+        Fill in the information below.
+
+      </p>
+
+    </div>
+
+
+    <!-- TITLE -->
+
+    <div class="formGroup">
+
+      <label
+        class="formLabel"
+        for="prayerTitle"
+      >
+
+        Prayer Title
+        <span class="requiredMark">*</span>
+
+      </label>
+
+      <input
+        id="prayerTitle"
+        class="formInput"
+        type="text"
+        maxlength="100"
+        placeholder="Example: Pray for my family"
+        required
+      >
+
+    </div>
+
+
+    <!-- CATEGORY -->
+
+    <div class="formGroup">
+
+      <label class="formLabel">
+
+        Category
+
+      </label>
+
+      <div class="categoryOptions">
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="Family"
+            checked
+          >
+
+          <span class="categoryOptionLabel">
+
+            👨‍👩‍👧 Family
+
+          </span>
+
+        </label>
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="Health"
+          >
+
+          <span class="categoryOptionLabel">
+
+            ❤️ Health
+
+          </span>
+
+        </label>
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="Education"
+          >
+
+          <span class="categoryOptionLabel">
+
+            📚 Education
+
+          </span>
+
+        </label>
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="Work"
+          >
+
+          <span class="categoryOptionLabel">
+
+            💼 Work
+
+          </span>
+
+        </label>
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="Church"
+          >
+
+          <span class="categoryOptionLabel">
+
+            ⛪ Church
+
+          </span>
+
+        </label>
+
+        <label class="categoryOption">
+
+          <input
+            type="radio"
+            name="category"
+            value="World"
+          >
+
+          <span class="categoryOptionLabel">
+
+            🌍 World
+
+          </span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div class="formGroup">
+
+      <label
+        class="formLabel"
+        for="prayerMessage"
+      >
+
+        Prayer Request
+        <span class="requiredMark">*</span>
+
+      </label>
+
+      <textarea
+        id="prayerMessage"
+        class="formTextarea"
+        maxlength="2000"
+        placeholder="Write your prayer request here..."
+        required
+      ></textarea>
+
+      <div
+        id="characterCounter"
+        class="characterCounter"
+      >
+
+        0 / 2000
+
+      </div>
+
+    </div>
+
+
+    <!-- ANONYMOUS -->
+
+    <div class="anonymousOption">
+
+      <input
+        id="anonymousPrayer"
+        class="anonymousCheckbox"
+        type="checkbox"
+      >
+
+      <div class="anonymousOptionText">
+
+        <strong>
+
+          Post anonymously
+
+        </strong>
+
+        <span>
+
+          Your name and profile picture
+          will be hidden from other members.
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- GUIDANCE -->
+
+    <div class="prayerGuidanceCard">
+
+      <h3>
+
+        Remember
+
+      </h3>
+
+      <p>
+
+        "Therefore confess your sins to
+        each other and pray for each other
+        so that you may be healed.
+        The prayer of a righteous person
+        is powerful and effective."
+
+        <br><br>
+
+        <strong>
+          James 5:16
+        </strong>
+
+      </p>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+      id="formMessage"
+      class="formMessage"
+    ></div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="formActions">
+
+      <a
+        href="prayer-wall.html"
+        class="cancelButton"
+      >
+
+        Cancel
+
+      </a>
+
+      <button
+        id="submitPrayerButton"
+        class="submitPrayerButton"
+        type="submit"
+      >
+
+        🙏 Submit Prayer Request
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<script type="module">
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE IMPORTS, ELEMENTS,
+   VARIABLES AND HELPER FUNCTIONS
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  serverTimestamp,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const prayerForm =
+document.getElementById(
+  "prayerForm"
+);
+
+const prayerTitleInput =
+document.getElementById(
+  "prayerTitle"
+);
+
+const prayerMessageInput =
+document.getElementById(
+  "prayerMessage"
+);
+
+const anonymousPrayerInput =
+document.getElementById(
+  "anonymousPrayer"
+);
+
+const characterCounter =
+document.getElementById(
+  "characterCounter"
+);
+
+const formMessage =
+document.getElementById(
+  "formMessage"
+);
+
+const submitPrayerButton =
+document.getElementById(
+  "submitPrayerButton"
+);
+
+
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let formSubmitting =
+false;
+
+const maximumPrayerLength =
+2000;
+
+const defaultProfilePicture =
+"images/profile.png";
+
+
+/* =====================================================
+   RETURN FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   GET SELECTED CATEGORY
+===================================================== */
+
+function getSelectedPrayerCategory(){
+
+  const selectedCategory =
+  document.querySelector(
+    'input[name="category"]:checked'
+  );
+
+  return selectedCategory
+    ? selectedCategory.value
+    : "Family";
+
+}
+
+
+/* =====================================================
+   GET MEMBER NAME
+===================================================== */
+
+function getPrayerMemberName(){
+
+  return getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentProfile.displayName,
+    currentUser?.displayName,
+    currentUser?.email,
+    "Faith Connect Member"
+  );
+
+}
+
+
+/* =====================================================
+   GET MEMBER PROFILE PICTURE
+===================================================== */
+
+function getPrayerMemberPicture(){
+
+  return getFirstValue(
+    currentProfile.profilePicture,
+    currentProfile.picture,
+    currentProfile.photoURL,
+    currentProfile.photoUrl,
+    currentProfile.profileImage,
+    currentProfile.profilePhoto,
+    currentUser?.photoURL,
+    defaultProfilePicture
+  );
+
+}
+
+
+/* =====================================================
+   SHOW FORM MESSAGE
+===================================================== */
+
+function showFormMessage(
+  message,
+  type = "info"
+){
+
+  formMessage.textContent =
+  message;
+
+  formMessage.className =
+  `formMessage show ${type}`;
+
+}
+
+
+/* =====================================================
+   CLEAR FORM MESSAGE
+===================================================== */
+
+function clearFormMessage(){
+
+  formMessage.textContent =
+  "";
+
+  formMessage.className =
+  "formMessage";
+
+}
+
+
+/* =====================================================
+   UPDATE CHARACTER COUNTER
+===================================================== */
+
+function updateCharacterCounter(){
+
+  const currentLength =
+  prayerMessageInput.value.length;
+
+  characterCounter.textContent =
+  `${currentLength} / ${maximumPrayerLength}`;
+
+  characterCounter.classList.remove(
+    "warning",
+    "limit"
+  );
+
+
+  if(
+    currentLength >=
+    maximumPrayerLength
+  ){
+
+    characterCounter.classList.add(
+      "limit"
+    );
+
+  }else if(
+    currentLength >=
+    maximumPrayerLength - 250
+  ){
+
+    characterCounter.classList.add(
+      "warning"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SET SUBMITTING STATE
+===================================================== */
+
+function setSubmittingState(
+  isSubmitting
+){
+
+  formSubmitting =
+  isSubmitting;
+
+  submitPrayerButton.disabled =
+  isSubmitting;
+
+
+  if(isSubmitting){
+
+    submitPrayerButton.innerHTML = `
+
+      <span class="buttonSpinner"></span>
+
+      Submitting Prayer...
+
+    `;
+
+  }else{
+
+    submitPrayerButton.textContent =
+    "🙏 Submit Prayer Request";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD CURRENT MEMBER PROFILE
+===================================================== */
+
+async function loadCurrentMemberProfile(
+  user
+){
+
+  currentProfile =
+  {};
+
+  if(!user){
+
+    return;
+
+  }
+
+  try{
+
+    const userReference =
+    doc(
+      db,
+      "users",
+      user.uid
+    );
+
+    const userSnapshot =
+    await getDoc(
+      userReference
+    );
+
+    if(userSnapshot.exists()){
+
+      currentProfile =
+      userSnapshot.data();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading member profile:",
+      error
+    );
+
+    currentProfile =
+    {};
+
+  }
+
+}
+/* =====================================================
+   PART 5 OF 6
+   AUTHENTICATION, VALIDATION
+   AND SUBMIT PRAYER REQUEST
+===================================================== */
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user;
+
+
+    if(!user){
+
+      showFormMessage(
+        "Please sign in before submitting a prayer request.",
+        "error"
+      );
+
+      submitPrayerButton.disabled =
+      true;
+
+
+      setTimeout(function(){
+
+        window.location.href =
+        "login.html";
+
+      },1800);
+
+      return;
+
+    }
+
+
+    await loadCurrentMemberProfile(
+      user
+    );
+
+
+    submitPrayerButton.disabled =
+    false;
+
+  }
+);
+
+
+/* =====================================================
+   VALIDATE PRAYER FORM
+===================================================== */
+
+function validatePrayerForm(){
+
+  const prayerTitle =
+  prayerTitleInput.value.trim();
+
+  const prayerMessage =
+  prayerMessageInput.value.trim();
+
+  const prayerCategory =
+  getSelectedPrayerCategory();
+
+
+  if(!currentUser){
+
+    showFormMessage(
+      "Please sign in before submitting a prayer request.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  if(prayerTitle.length < 3){
+
+    showFormMessage(
+      "Please enter a prayer title with at least 3 characters.",
+      "error"
+    );
+
+    prayerTitleInput.focus();
+
+    return false;
+
+  }
+
+
+  if(prayerTitle.length > 100){
+
+    showFormMessage(
+      "The prayer title must not exceed 100 characters.",
+      "error"
+    );
+
+    prayerTitleInput.focus();
+
+    return false;
+
+  }
+
+
+  if(!prayerCategory){
+
+    showFormMessage(
+      "Please choose a prayer category.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  if(prayerMessage.length < 10){
+
+    showFormMessage(
+      "Please write a prayer request with at least 10 characters.",
+      "error"
+    );
+
+    prayerMessageInput.focus();
+
+    return false;
+
+  }
+
+
+  if(
+    prayerMessage.length >
+    maximumPrayerLength
+  ){
+
+    showFormMessage(
+      `The prayer request must not exceed ${maximumPrayerLength} characters.`,
+      "error"
+    );
+
+    prayerMessageInput.focus();
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =====================================================
+   CREATE PRAYER REQUEST DATA
+===================================================== */
+
+function createPrayerRequestData(){
+
+  const anonymous =
+  anonymousPrayerInput.checked;
+
+  const memberName =
+  getPrayerMemberName();
+
+  const memberPicture =
+  getPrayerMemberPicture();
+
+
+  return{
+
+    userId:
+    currentUser.uid,
+
+    authorId:
+    currentUser.uid,
+
+    title:
+    prayerTitleInput.value.trim(),
+
+    request:
+    prayerMessageInput.value.trim(),
+
+    message:
+    prayerMessageInput.value.trim(),
+
+    category:
+    getSelectedPrayerCategory(),
+
+    anonymous:
+    anonymous,
+
+    name:
+    anonymous
+      ? "Anonymous"
+      : memberName,
+
+    fullName:
+    anonymous
+      ? "Anonymous"
+      : memberName,
+
+    profilePicture:
+    anonymous
+      ? defaultProfilePicture
+      : memberPicture,
+
+    prayedBy:
+    [],
+
+    prayedCount:
+    0,
+
+    answered:
+    false,
+
+    timestamp:
+    serverTimestamp()
+
+  };
+
+}
+
+
+/* =====================================================
+   SUBMIT PRAYER REQUEST
+===================================================== */
+
+async function submitPrayerRequest(){
+
+  if(formSubmitting){
+
+    return;
+
+  }
+
+
+  clearFormMessage();
+
+
+  if(!validatePrayerForm()){
+
+    return;
+
+  }
+
+
+  setSubmittingState(
+    true
+  );
+
+
+  try{
+
+    const prayerData =
+    createPrayerRequestData();
+
+
+    const prayerDocument =
+    await addDoc(
+      collection(
+        db,
+        "prayerRequests"
+      ),
+      prayerData
+    );
+
+
+    showFormMessage(
+      "Your prayer request has been submitted successfully.",
+      "success"
+    );
+
+
+    prayerForm.reset();
+
+    updateCharacterCounter();
+
+
+    setTimeout(function(){
+
+      window.location.href =
+      `prayer-wall.html?prayer=${encodeURIComponent(prayerDocument.id)}`;
+
+    },1200);
+
+  }catch(error){
+
+    console.error(
+      "Error submitting prayer request:",
+      error
+    );
+
+
+    if(
+      error.code ===
+      "permission-denied"
+    ){
+
+      showFormMessage(
+        "Your prayer request could not be submitted because Firestore permission was denied. Please check your Firebase security rules.",
+        "error"
+      );
+
+    }else if(
+      error.code ===
+      "unavailable"
+    ){
+
+      showFormMessage(
+        "The prayer request could not be submitted because the internet connection is unavailable.",
+        "error"
+      );
+
+    }else{
+
+      showFormMessage(
+        "The prayer request could not be submitted. Please try again.",
+        "error"
+      );
+
+    }
+
+
+    setSubmittingState(
+      false
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   FORM SUBMIT EVENT
+===================================================== */
+
+prayerForm.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    await submitPrayerRequest();
+
+  }
+);
+/* =====================================================
+   PART 6 OF 6
+   FORM EVENTS, SAFETY CHECKS
+   AND CLOSE DOCUMENT
+===================================================== */
+
+
+/* =====================================================
+   CHARACTER COUNTER EVENT
+===================================================== */
+
+prayerMessageInput.addEventListener(
+  "input",
+  function(){
+
+    updateCharacterCounter();
+
+    if(
+      formMessage.classList.contains(
+        "error"
+      )
+    ){
+
+      clearFormMessage();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CLEAR ERROR WHEN TITLE CHANGES
+===================================================== */
+
+prayerTitleInput.addEventListener(
+  "input",
+  function(){
+
+    if(
+      formMessage.classList.contains(
+        "error"
+      )
+    ){
+
+      clearFormMessage();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CATEGORY CHANGE EVENT
+===================================================== */
+
+document
+.querySelectorAll(
+  'input[name="category"]'
+)
+.forEach(
+  function(categoryInput){
+
+    categoryInput.addEventListener(
+      "change",
+      function(){
+
+        if(
+          formMessage.classList.contains(
+            "error"
+          )
+        ){
+
+          clearFormMessage();
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   ANONYMOUS OPTION EVENT
+===================================================== */
+
+anonymousPrayerInput.addEventListener(
+  "change",
+  function(){
+
+    if(
+      anonymousPrayerInput.checked
+    ){
+
+      showFormMessage(
+        "Your name and profile picture will be hidden from other members.",
+        "info"
+      );
+
+    }else{
+
+      clearFormMessage();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   PREVENT DOUBLE SUBMISSION
+===================================================== */
+
+submitPrayerButton.addEventListener(
+  "click",
+  function(event){
+
+    if(formSubmitting){
+
+      event.preventDefault();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   WARN BEFORE LEAVING DURING SUBMISSION
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(event){
+
+    if(!formSubmitting){
+
+      return;
+
+    }
+
+    event.preventDefault();
+
+    event.returnValue =
+    "";
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL PAGE SETUP
+===================================================== */
+
+updateCharacterCounter();
+
+
+/* =====================================================
+   END JAVASCRIPT
+===================================================== */
+
+</script>
+
+</body>
+
+</html>
