@@ -1017,12 +1017,17 @@ import{
   db,
   collection,
   query,
+  where,
   orderBy,
+  limit,
   onSnapshot,
   doc,
   getDoc,
+  getDocs,
+  addDoc,
   updateDoc,
   deleteDoc,
+  serverTimestamp,
   onAuthStateChanged
 }from "./firebase.js";
 
@@ -2657,6 +2662,7 @@ prayerRequestsContainer.addEventListener(
 
   }
 );
+createPrayerNotification()
 /* =====================================================
    PART 8 OF 8
    START PAGE, HANDLE SHARED PRAYERS,
