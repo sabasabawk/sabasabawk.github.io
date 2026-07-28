@@ -114,21 +114,25 @@ a{
 }
 
 .appLogo{
-  width:44px;
-  height:44px;
+  width:48px;
+  height:48px;
   flex-shrink:0;
   border-radius:50%;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(
-    135deg,
-    #087bd1,
-    #0055a5
-  );
-  color:#ffffff;
-  font-size:23px;
+  background:#ffffff;
+  border:2px solid #087bd1;
   box-shadow:0 3px 9px rgba(0,0,0,.16);
+}
+
+.appLogoImage{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  border-radius:50%;
 }
 
 .appBrandText{
@@ -959,12 +963,18 @@ a:focus-visible{
     >
 
       <span class="appLogo">
-        ✝️
-      </span>
+
+  <img
+    src="images/logo.png"
+    alt="SABASABA Gospel Ministry logo"
+    class="appLogoImage"
+  >
+
+</span>
 
       <span class="appBrandText">
-        SABASABA Gospel Ministry
-      </span>
+  Faith Connect
+</span>
 
     </a>
 
