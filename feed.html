@@ -2043,8 +2043,10 @@ function loadCommunityPosts(){
 
         }
 
+startVideoAutoPlay();
+        startVideoAutoPlay();
 
-        scrollToSharedPost();
+scrollToSharedPost();
 
       },
 
@@ -2474,13 +2476,16 @@ loadLatestAuthorPicture(
     videoUrl;
 
     postVideo.controls =
-    true;
+true;
 
-    postVideo.preload =
-    "metadata";
+postVideo.muted =
+true;
 
-    postVideo.playsInline =
-    true;
+postVideo.preload =
+"metadata";
+
+postVideo.playsInline =
+true;
 
     postVideo.addEventListener(
       "error",
@@ -3563,104 +3568,125 @@ window.addEventListener(
 ===================================================== */
 
 console.log(
-  "SABASABA Gospel Ministry Community Wall is ready."
+  "Faith Connect Community Wall is ready."
 );
+
+
 /* =========================================
    AUTO-PLAY VISIBLE COMMUNITY VIDEOS
 ========================================= */
 
 let videoObserver = null;
 
-function startVideoAutoPlay() {
+function startVideoAutoPlay(){
 
-  // Stop the previous observer if it exists
-  if (videoObserver) {
+  if(videoObserver){
+
     videoObserver.disconnect();
+
   }
 
   const communityVideos =
-    document.querySelectorAll(".communityPostVideo");
+  document.querySelectorAll(
+    ".communityPostVideo"
+  );
 
-  if (!communityVideos.length) {
+  if(!communityVideos.length){
+
     return;
+
   }
 
-  videoObserver = new IntersectionObserver(
+  videoObserver =
+  new IntersectionObserver(
 
-    (entries) => {
+    function(entries){
 
-      entries.forEach((entry) => {
+      entries.forEach(
+        function(entry){
 
-        const video = entry.target;
+          const video =
+          entry.target;
 
-        /*
-          Start when at least 70% of the
-          video is visible on the screen.
-        */
-        if (
-          entry.isIntersecting &&
-          entry.intersectionRatio >= 0.7
-        ) {
+          if(
+            entry.isIntersecting &&
+            entry.intersectionRatio >= 0.7
+          ){
 
-          // Pause every other video
-          communityVideos.forEach((otherVideo) => {
+            communityVideos.forEach(
+              function(otherVideo){
 
-            if (otherVideo !== video) {
-              otherVideo.pause();
-            }
+                if(otherVideo !== video){
 
-          });
+                  otherVideo.pause();
 
-          /*
-            Autoplay normally requires
-            the video to begin muted.
-          */
-          video.muted = true;
+                }
 
-          const playPromise = video.play();
+              }
+            );
 
-          if (
-            playPromise !== undefined
-          ) {
+            video.muted =
+            true;
 
-            playPromise.catch((error) => {
+            const playPromise =
+            video.play();
 
-              console.log(
-                "Video autoplay was blocked:",
-                error
+            if(playPromise !== undefined){
+
+              playPromise.catch(
+                function(error){
+
+                  console.log(
+                    "Video autoplay was blocked:",
+                    error
+                  );
+
+                }
               );
 
-            });
+            }
+
+          }else{
+
+            video.pause();
 
           }
 
-        } else {
-
-          // Pause when it leaves the screen
-          video.pause();
-
         }
-
-      });
+      );
 
     },
 
     {
-      threshold: [0, 0.25, 0.5, 0.7, 1]
+      threshold:[
+        0,
+        0.25,
+        0.5,
+        0.7,
+        1
+      ]
     }
 
   );
 
-  communityVideos.forEach((video) => {
+  communityVideos.forEach(
+    function(video){
 
-    video.muted = true;
-    video.playsInline = true;
+      video.muted =
+      true;
 
-    videoObserver.observe(video);
+      video.playsInline =
+      true;
 
-  });
+      videoObserver.observe(
+        video
+      );
+
+    }
+  );
 
 }
+
 </script>
 
 </body>
