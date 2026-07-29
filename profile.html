@@ -232,19 +232,20 @@ onclick="location.href='community.html'">
 import{
   auth,
   db,
-  storage,
   doc,
   getDoc,
   updateDoc,
-  ref,
-  getDownloadURL,
   onAuthStateChanged
 }from "./firebase.js";
+/* ========================================
+   CLOUDINARY SETTINGS
+======================================== */
 
-import{
-  uploadBytesResumable
-}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+const cloudName =
+"glq2nymz";
 
+const uploadPreset =
+"sabasaba_community";
 
 /* ========================================
    PAGE ELEMENTS
@@ -538,7 +539,7 @@ saveBtn.addEventListener("click",async()=>{
 
 
 /* ========================================
-   UPLOAD PROFILE PICTURE
+   UPLOAD PROFILE PICTURE TO CLOUDINARY
 ======================================== */
 
 function uploadProfilePicture(file){
@@ -546,69 +547,59 @@ function uploadProfilePicture(file){
   return new Promise(
     (resolve,reject)=>{
 
-      const safeFileName =
-      file.name.replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
+      const uploadURL =
+
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+
+      const formData =
+      new FormData();
+
+      formData.append(
+        "file",
+        file
+      );
+
+      formData.append(
+        "upload_preset",
+        uploadPreset
+      );
+
+      formData.append(
+        "folder",
+        "sabasaba/profile-pictures"
       );
 
 
-      const filePath =
-
-      "profilePictures/" +
-      currentUser.uid +
-      "/" +
-      Date.now() +
-      "_" +
-      safeFileName;
+      const request =
+      new XMLHttpRequest();
 
 
-      const storageReference =
-      ref(storage,filePath);
-
-
-      const uploadTask =
-      uploadBytesResumable(
-
-        storageReference,
-        file,
-        {
-          contentType:file.type
-        }
-
+      request.open(
+        "POST",
+        uploadURL,
+        true
       );
 
 
-      /* Stop waiting after 90 seconds */
+      request.upload.addEventListener(
+        "progress",
+        event=>{
 
-      const uploadTimeout =
-      setTimeout(()=>{
-
-        uploadTask.cancel();
-
-        reject(
-          new Error(
-            "The picture upload took too long. Check your internet connection and try again."
-          )
-        );
-
-      },90000);
+          if(!event.lengthComputable){
+            return;
+          }
 
 
-      uploadTask.on(
+          const progress =
+          Math.round(
 
-        "state_changed",
-
-
-        (snapshot)=>{
-
-          const progress = Math.round(
-
-            snapshot.bytesTransferred /
-            snapshot.totalBytes *
+            event.loaded /
+            event.total *
             100
 
           );
+
 
           saveBtn.innerText =
 
@@ -616,45 +607,90 @@ function uploadProfilePicture(file){
           progress +
           "%";
 
-        },
+        }
+      );
 
 
-        (error)=>{
-
-          clearTimeout(
-            uploadTimeout
-          );
-
-          reject(error);
-
-        },
-
-
-        async()=>{
-
-          clearTimeout(
-            uploadTimeout
-          );
+      request.addEventListener(
+        "load",
+        ()=>{
 
           try{
 
-            const downloadURL =
-            await getDownloadURL(
-
-              uploadTask.snapshot.ref
-
+            const response =
+            JSON.parse(
+              request.responseText || "{}"
             );
 
-            resolve(downloadURL);
+
+            if(
+              request.status < 200 ||
+              request.status >= 300 ||
+              !response.secure_url
+            ){
+
+              const message =
+
+              response?.error?.message ||
+              "Cloudinary could not upload the profile picture.";
+
+              reject(
+                new Error(message)
+              );
+
+              return;
+
+            }
+
+
+            resolve(
+              response.secure_url
+            );
 
           }catch(error){
 
-            reject(error);
+            reject(
+              new Error(
+                "Cloudinary returned an invalid upload response."
+              )
+            );
 
           }
 
         }
+      );
 
+
+      request.addEventListener(
+        "error",
+        ()=>{
+
+          reject(
+            new Error(
+              "The profile picture upload failed because of a network problem."
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "abort",
+        ()=>{
+
+          reject(
+            new Error(
+              "The profile picture upload was cancelled."
+            )
+          );
+
+        }
+      );
+
+
+      request.send(
+        formData
       );
 
     }
@@ -663,14 +699,7 @@ function uploadProfilePicture(file){
 }
 
 
-/* ========================================
-   FRIENDLY ERROR MESSAGES
-======================================== */
-
-function getFriendlyErrorMessage(error){
-
-  if(
-    error.code ===
+error.code ===
     "storage/unauthorized"
   ){
 
