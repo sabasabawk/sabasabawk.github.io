@@ -2044,7 +2044,7 @@ function loadCommunityPosts(){
         }
 
 startVideoAutoPlay();
-        startVideoAutoPlay();
+        
 
 scrollToSharedPost();
 
@@ -2669,36 +2669,99 @@ JSON.stringify(likes);
 
 
   /* =================================================
-     OPEN MEMBER PROFILE
-  ================================================= */
+   OPEN MEMBER PUBLIC PROFILE
+================================================= */
 
-  if(authorId){
+if(authorId){
 
-    profileImage.addEventListener(
-      "click",
-      function(){
+  const openMemberProfile = function(){
 
-        window.location.href =
-        `profile.html?uid=${encodeURIComponent(authorId)}`;
+    window.location.href =
+    `user-profile.html?uid=${encodeURIComponent(authorId)}`;
+
+  };
+
+
+  profileImage.setAttribute(
+    "role",
+    "link"
+  );
+
+  profileImage.setAttribute(
+    "tabindex",
+    "0"
+  );
+
+  profileImage.setAttribute(
+    "title",
+    `View ${authorName}'s profile`
+  );
+
+
+  authorNameElement.setAttribute(
+    "role",
+    "link"
+  );
+
+  authorNameElement.setAttribute(
+    "tabindex",
+    "0"
+  );
+
+  authorNameElement.setAttribute(
+    "title",
+    `View ${authorName}'s profile`
+  );
+
+
+  profileImage.addEventListener(
+    "click",
+    openMemberProfile
+  );
+
+
+  authorNameElement.addEventListener(
+    "click",
+    openMemberProfile
+  );
+
+
+  profileImage.addEventListener(
+    "keydown",
+    function(event){
+
+      if(
+        event.key === "Enter" ||
+        event.key === " "
+      ){
+
+        event.preventDefault();
+
+        openMemberProfile();
 
       }
-    );
+
+    }
+  );
 
 
-    authorNameElement.addEventListener(
-      "click",
-      function(){
+  authorNameElement.addEventListener(
+    "keydown",
+    function(event){
 
-        window.location.href =
-        `profile.html?uid=${encodeURIComponent(authorId)}`;
+      if(
+        event.key === "Enter" ||
+        event.key === " "
+      ){
+
+        event.preventDefault();
+
+        openMemberProfile();
 
       }
-    );
 
-  }
-
-
-  return postCard;
+    }
+  );
 
 }
 /* =====================================================
