@@ -2348,39 +2348,48 @@ function uploadSelectedMedia(){
 
 
         if(
-          error?.code ===
-          "storage/unauthorized"
-        ){
+  error?.code ===
+  "permission-denied"
+){
 
-          errorMessage =
-            "Firebase Storage denied the upload. Check your Storage security rules.";
+  errorMessage =
+    "Firestore denied permission to create this Faith Moment.";
 
-        }else if(
-          error?.code ===
-          "storage/retry-limit-exceeded"
-        ){
+}else if(
+  error?.message
+    ?.toLowerCase()
+    .includes("upload preset")
+){
 
-          errorMessage =
-            "The upload took too long. Check your internet connection and try again.";
+  errorMessage =
+    "The Cloudinary upload preset is incorrect or is not set to unsigned.";
 
-        }else if(
-          error?.code ===
-          "permission-denied"
-        ){
+}else if(
+  error?.message
+    ?.toLowerCase()
+    .includes("file size")
+){
 
-          errorMessage =
-            "Firestore denied permission to create this Faith Moment.";
+  errorMessage =
+    "Cloudinary rejected the media because the file is too large.";
 
-        }else if(
-          error?.message
-            ?.toLowerCase()
-            .includes("network")
-        ){
+}else if(
+  error?.message
+    ?.toLowerCase()
+    .includes("network")
+){
 
-          errorMessage =
-            "A network error occurred. Check your internet connection.";
+  errorMessage =
+    "A network error occurred during the Cloudinary upload. Check your internet connection.";
 
-        }
+}else if(
+  error?.message
+){
+
+  errorMessage =
+    error.message;
+
+}
 
 
         showFormMessage(
