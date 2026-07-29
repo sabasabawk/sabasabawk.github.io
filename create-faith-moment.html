@@ -1074,21 +1074,25 @@
   <script type="module">
 
     import{
-      auth,
-      db,
-      storage,
-      collection,
-      addDoc,
-      doc,
-      getDoc,
-      serverTimestamp,
-      ref,
-      uploadBytesResumable,
-      getDownloadURL,
-      onAuthStateChanged
-    }from "./firebase.js";
+  auth,
+  db,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+  onAuthStateChanged
+}from "./firebase.js";
 
+/* =====================================================
+   CLOUDINARY SETTINGS
+===================================================== */
 
+const cloudName =
+  "glq2nymz";
+
+const uploadPreset =
+  "sabasaba_community";
     /* =====================================================
        PAGE ELEMENTS
     ===================================================== */
@@ -1195,20 +1199,19 @@
 
 
     /* =====================================================
-       PAGE STATE
-    ===================================================== */
+   PAGE STATE
+===================================================== */
 
-    let currentUser = null;
-    let currentProfile = null;
+let currentUser = null;
+let currentProfile = null;
 
-    let selectedMomentType = "verse";
+let selectedMomentType = "verse";
 
-    let selectedMediaFile = null;
-    let selectedMediaType = "none";
-    let mediaPreviewUrl = "";
+let selectedMediaFile = null;
+let selectedMediaType = "none";
+let mediaPreviewUrl = "";
 
-    let uploadTask = null;
-    let isPublishing = false;
+let isPublishing = false;
 
 
     /* =====================================================
@@ -1924,133 +1927,200 @@
 
 
     /* =====================================================
-       UPLOAD MEDIA TO FIREBASE STORAGE
-    ===================================================== */
+   UPLOAD MEDIA TO CLOUDINARY
+===================================================== */
 
-    function uploadSelectedMedia(){
+function uploadSelectedMedia(){
 
-      return new Promise(
-        (resolve,reject) => {
+  return new Promise(
+    (resolve,reject) => {
 
-          if(
-            !selectedMediaFile ||
-            selectedMediaType === "none"
-          ){
+      if(
+        !selectedMediaFile ||
+        selectedMediaType === "none"
+      ){
 
-            resolve({
-              imageUrl:"",
-              videoUrl:""
-            });
+        resolve({
+          imageUrl:"",
+          videoUrl:""
+        });
 
+        return;
+
+      }
+
+
+      const resourceType =
+        selectedMediaType === "video"
+          ? "video"
+          : "image";
+
+
+      const uploadUrl =
+        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
+
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "file",
+        selectedMediaFile
+      );
+
+      formData.append(
+        "upload_preset",
+        uploadPreset
+      );
+
+      formData.append(
+        "folder",
+        "sabasaba/faith-moments"
+      );
+
+
+      const request =
+        new XMLHttpRequest();
+
+
+      request.open(
+        "POST",
+        uploadUrl,
+        true
+      );
+
+
+      request.upload.addEventListener(
+        "progress",
+        event => {
+
+          if(!event.lengthComputable){
             return;
-
           }
 
 
-          const safeFileName =
-            createSafeFileName(
-              selectedMediaFile.name
-            );
-
-          const uniqueFileName =
-            `${Date.now()}-${safeFileName}`;
-
-          const storagePath =
-            `faithMoments/${currentUser.uid}/${uniqueFileName}`;
-
-          const mediaReference =
-            ref(
-              storage,
-              storagePath
+          const progress =
+            Math.round(
+              (
+                event.loaded /
+                event.total
+              ) * 100
             );
 
 
-          uploadTask =
-            uploadBytesResumable(
-              mediaReference,
-              selectedMediaFile,
-              {
-                contentType:
-                  selectedMediaFile.type
-              }
-            );
+          showFormMessage(
+            `Uploading ${selectedMediaType}: ${progress}%`,
+            "loading"
+          );
+
+          publishButtonText.textContent =
+            `Uploading ${progress}%`;
+
+        }
+      );
 
 
-          uploadTask.on(
+      request.addEventListener(
+        "load",
+        () => {
 
-            "state_changed",
+          try{
 
-            snapshot => {
-
-              const progress =
-                Math.round(
-                  (
-                    snapshot.bytesTransferred /
-                    snapshot.totalBytes
-                  ) * 100
-                );
-
-              showFormMessage(
-                `Uploading ${selectedMediaType}: ${progress}%`,
-                "loading"
+            const response =
+              JSON.parse(
+                request.responseText || "{}"
               );
 
-              publishButtonText.textContent =
-                `Uploading ${progress}%`;
 
-            },
+            if(
+              request.status < 200 ||
+              request.status >= 300 ||
+              !response.secure_url
+            ){
 
-            error => {
+              const cloudinaryMessage =
+                response?.error?.message ||
+                "Cloudinary could not upload the selected media.";
 
-              console.error(
-                "Media upload error:",
-                error
+              reject(
+                new Error(
+                  cloudinaryMessage
+                )
               );
 
-              reject(error);
-
-            },
-
-            async () => {
-
-              try{
-
-                const downloadUrl =
-                  await getDownloadURL(
-                    uploadTask.snapshot.ref
-                  );
-
-
-                resolve({
-
-                  imageUrl:
-                    selectedMediaType === "photo"
-                      ? downloadUrl
-                      : "",
-
-                  videoUrl:
-                    selectedMediaType === "video"
-                      ? downloadUrl
-                      : ""
-
-                });
-
-              }catch(error){
-
-                reject(error);
-
-              }
+              return;
 
             }
 
+
+            const uploadedUrl =
+              response.secure_url;
+
+
+            resolve({
+
+              imageUrl:
+                selectedMediaType === "photo"
+                  ? uploadedUrl
+                  : "",
+
+              videoUrl:
+                selectedMediaType === "video"
+                  ? uploadedUrl
+                  : ""
+
+            });
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "Cloudinary returned an invalid upload response."
+              )
+            );
+
+          }
+
+        }
+      );
+
+
+      request.addEventListener(
+        "error",
+        () => {
+
+          reject(
+            new Error(
+              "The Cloudinary upload failed because of a network problem."
+            )
           );
 
         }
       );
 
+
+      request.addEventListener(
+        "abort",
+        () => {
+
+          reject(
+            new Error(
+              "The media upload was cancelled."
+            )
+          );
+
+        }
+      );
+
+
+      request.send(
+        formData
+      );
+
     }
+  );
 
-
+}
     /* =====================================================
        CREATE EXPIRY DATE
     ===================================================== */
