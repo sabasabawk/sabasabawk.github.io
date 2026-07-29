@@ -207,7 +207,8 @@ placeholder="Tell other believers about yourself..."></textarea>
 
 <button
 id="saveBtn"
-class="saveBtn">
+class="saveBtn"
+type="button">
 
 💾 Save Changes
 
@@ -234,9 +235,11 @@ import{
   db,
   doc,
   getDoc,
-  updateDoc,
+  setDoc,
   onAuthStateChanged
 }from "./firebase.js";
+
+
 /* ========================================
    CLOUDINARY SETTINGS
 ======================================== */
@@ -246,6 +249,7 @@ const cloudName =
 
 const uploadPreset =
 "sabasaba_community";
+
 
 /* ========================================
    PAGE ELEMENTS
@@ -273,231 +277,176 @@ const saveBtn =
 document.getElementById("saveBtn");
 
 
+/* ========================================
+   PAGE STATE
+======================================== */
+
 let currentUser = null;
 
-let currentPhotoURL = "images/profile.png";
+let currentPhotoURL =
+"images/profile.png";
 
 let previewURL = null;
+
+let isSaving = false;
 
 
 /* ========================================
    LOAD CURRENT PROFILE
 ======================================== */
 
-onAuthStateChanged(auth,async(user)=>{
+onAuthStateChanged(
+  auth,
+  async user => {
 
-  if(!user){
+    if(!user){
 
-    location.href = "login.html";
-    return;
+      window.location.href =
+      "login.html";
 
-  }
-
-  currentUser = user;
-
-  email.value = user.email || "";
-
-  try{
-
-    const profileSnap =
-    await getDoc(
-      doc(db,"users",user.uid)
-    );
-
-    if(profileSnap.exists()){
-
-      const data =
-      profileSnap.data();
-
-      fullName.value =
-      data.fullName || "";
-
-      country.value =
-      data.country || "";
-
-      about.value =
-      data.about || "";
-
-      currentPhotoURL =
-      data.profilePicture ||
-      user.photoURL ||
-      "images/profile.png";
-
-      profileImage.src =
-      currentPhotoURL;
+      return;
 
     }
 
-  }catch(error){
 
-    console.error(
-      "Profile loading error:",
-      error
-    );
+    currentUser = user;
 
-    alert(
-      "Unable to load your profile: " +
-      error.message
-    );
+    email.value =
+    user.email || "";
+
+
+    try{
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+      const profileSnapshot =
+      await getDoc(
+        profileReference
+      );
+
+
+      if(profileSnapshot.exists()){
+
+        const data =
+        profileSnapshot.data();
+
+
+        fullName.value =
+        data.fullName ||
+        data.name ||
+        data.displayName ||
+        user.displayName ||
+        "";
+
+
+        country.value =
+        data.country ||
+        data.location ||
+        "";
+
+
+        about.value =
+        data.about ||
+        data.bio ||
+        "";
+
+
+        currentPhotoURL =
+        data.profilePicture ||
+        data.picture ||
+        data.photoURL ||
+        user.photoURL ||
+        "images/profile.png";
+
+
+        profileImage.src =
+        currentPhotoURL;
+
+      }else{
+
+        fullName.value =
+        user.displayName || "";
+
+        currentPhotoURL =
+        user.photoURL ||
+        "images/profile.png";
+
+        profileImage.src =
+        currentPhotoURL;
+
+      }
+
+
+      saveBtn.disabled = false;
+
+    }catch(error){
+
+      console.error(
+        "Profile loading error:",
+        error
+      );
+
+      alert(
+        "Unable to load your profile: " +
+        (error.message || "Unknown error")
+      );
+
+    }
 
   }
-
-});
+);
 
 
 /* ========================================
    PREVIEW SELECTED PICTURE
 ======================================== */
 
-profileFile.addEventListener("change",()=>{
-
-  const file =
-  profileFile.files[0];
-
-  if(!file){
-
-    return;
-
-  }
-
-
-  /* Allow image files only */
-
-  if(!file.type.startsWith("image/")){
-
-    alert(
-      "Please choose a valid image file."
-    );
-
-    profileFile.value = "";
-    return;
-
-  }
-
-
-  /* Maximum size: 5 MB */
-
-  const maximumSize =
-  5 * 1024 * 1024;
-
-  if(file.size > maximumSize){
-
-    alert(
-      "The picture is too large. Please choose an image smaller than 5 MB."
-    );
-
-    profileFile.value = "";
-    return;
-
-  }
-
-
-  if(previewURL){
-
-    URL.revokeObjectURL(previewURL);
-
-  }
-
-  previewURL =
-  URL.createObjectURL(file);
-
-  profileImage.src =
-  previewURL;
-
-});
-
-
-/* ========================================
-   SAVE PROFILE
-======================================== */
-
-saveBtn.addEventListener("click",async()=>{
-
-  if(!currentUser){
-
-    alert(
-      "Please wait while your account loads."
-    );
-
-    return;
-
-  }
-
-
-  const enteredName =
-  fullName.value.trim();
-
-  if(!enteredName){
-
-    alert(
-      "Please enter your full name."
-    );
-
-    fullName.focus();
-    return;
-
-  }
-
-
-  saveBtn.disabled = true;
-  saveBtn.innerText = "Saving...";
-
-
-  try{
-
-    let photoURL =
-    currentPhotoURL;
+profileFile.addEventListener(
+  "change",
+  () => {
 
     const file =
-    profileFile.files[0];
+    profileFile.files?.[0];
 
 
-    /* Upload a new picture when selected */
+    if(!file){
+      return;
+    }
 
-    if(file){
 
-      photoURL =
-      await uploadProfilePicture(
-        file
+    if(
+      !file.type.startsWith("image/")
+    ){
+
+      alert(
+        "Please choose a valid image file."
       );
+
+      profileFile.value = "";
+      return;
 
     }
 
 
-    /* Update Firestore profile */
-
-    await updateDoc(
-
-      doc(db,"users",currentUser.uid),
-
-      {
-
-        fullName:enteredName,
-
-        country:
-        country.value.trim(),
-
-        about:
-        about.value.trim(),
-
-        email:
-        currentUser.email || email.value,
-
-        profilePicture:
-        photoURL
-
-      }
-
-    );
+    const maximumSize =
+    5 * 1024 * 1024;
 
 
-    currentPhotoURL =
-    photoURL;
+    if(file.size > maximumSize){
 
-    profileImage.src =
-    photoURL;
+      alert(
+        "The picture is too large. Please choose an image smaller than 5 MB."
+      );
 
-    profileFile.value = "";
+      profileFile.value = "";
+      return;
+
+    }
 
 
     if(previewURL){
@@ -506,36 +455,17 @@ saveBtn.addEventListener("click",async()=>{
         previewURL
       );
 
-      previewURL = null;
-
     }
 
 
-    alert(
-      "✅ Profile updated successfully!"
-    );
+    previewURL =
+    URL.createObjectURL(file);
 
-  }catch(error){
-
-    console.error(
-      "Profile saving error:",
-      error
-    );
-
-    alert(
-      getFriendlyErrorMessage(error)
-    );
-
-  }finally{
-
-    saveBtn.disabled = false;
-
-    saveBtn.innerText =
-    "💾 Save Changes";
+    profileImage.src =
+    previewURL;
 
   }
-
-});
+);
 
 
 /* ========================================
@@ -545,25 +475,27 @@ saveBtn.addEventListener("click",async()=>{
 function uploadProfilePicture(file){
 
   return new Promise(
-    (resolve,reject)=>{
+    (resolve,reject) => {
 
       const uploadURL =
-
       `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
 
       const formData =
       new FormData();
 
+
       formData.append(
         "file",
         file
       );
 
+
       formData.append(
         "upload_preset",
         uploadPreset
       );
+
 
       formData.append(
         "folder",
@@ -584,7 +516,7 @@ function uploadProfilePicture(file){
 
       request.upload.addEventListener(
         "progress",
-        event=>{
+        event => {
 
           if(!event.lengthComputable){
             return;
@@ -593,19 +525,15 @@ function uploadProfilePicture(file){
 
           const progress =
           Math.round(
-
-            event.loaded /
-            event.total *
-            100
-
+            (
+              event.loaded /
+              event.total
+            ) * 100
           );
 
 
-          saveBtn.innerText =
-
-          "Uploading picture... " +
-          progress +
-          "%";
+          saveBtn.textContent =
+          `Uploading picture... ${progress}%`;
 
         }
       );
@@ -613,7 +541,7 @@ function uploadProfilePicture(file){
 
       request.addEventListener(
         "load",
-        ()=>{
+        () => {
 
           try{
 
@@ -629,13 +557,15 @@ function uploadProfilePicture(file){
               !response.secure_url
             ){
 
-              const message =
-
+              const cloudinaryError =
               response?.error?.message ||
               "Cloudinary could not upload the profile picture.";
 
+
               reject(
-                new Error(message)
+                new Error(
+                  cloudinaryError
+                )
               );
 
               return;
@@ -651,7 +581,7 @@ function uploadProfilePicture(file){
 
             reject(
               new Error(
-                "Cloudinary returned an invalid upload response."
+                "Cloudinary returned an invalid response."
               )
             );
 
@@ -663,11 +593,11 @@ function uploadProfilePicture(file){
 
       request.addEventListener(
         "error",
-        ()=>{
+        () => {
 
           reject(
             new Error(
-              "The profile picture upload failed because of a network problem."
+              "The picture upload failed because of a network problem."
             )
           );
 
@@ -677,11 +607,11 @@ function uploadProfilePicture(file){
 
       request.addEventListener(
         "abort",
-        ()=>{
+        () => {
 
           reject(
             new Error(
-              "The profile picture upload was cancelled."
+              "The picture upload was cancelled."
             )
           );
 
@@ -699,49 +629,278 @@ function uploadProfilePicture(file){
 }
 
 
-error.code ===
-    "storage/unauthorized"
+/* ========================================
+   SAVE PROFILE
+======================================== */
+
+saveBtn.addEventListener(
+  "click",
+  async () => {
+
+    if(isSaving){
+      return;
+    }
+
+
+    if(!currentUser){
+
+      alert(
+        "Please wait while your account loads."
+      );
+
+      return;
+
+    }
+
+
+    const enteredName =
+    fullName.value.trim();
+
+
+    if(!enteredName){
+
+      alert(
+        "Please enter your full name."
+      );
+
+      fullName.focus();
+      return;
+
+    }
+
+
+    isSaving = true;
+
+    saveBtn.disabled = true;
+
+    saveBtn.textContent =
+    "Saving...";
+
+
+    try{
+
+      let photoURL =
+      currentPhotoURL;
+
+
+      const selectedFile =
+      profileFile.files?.[0];
+
+
+      if(selectedFile){
+
+        photoURL =
+        await uploadProfilePicture(
+          selectedFile
+        );
+
+      }
+
+
+      saveBtn.textContent =
+      "Updating profile...";
+
+
+      await setDoc(
+
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        ),
+
+        {
+
+          uid:
+          currentUser.uid,
+
+          fullName:
+          enteredName,
+
+          name:
+          enteredName,
+
+          displayName:
+          enteredName,
+
+          country:
+          country.value.trim(),
+
+          about:
+          about.value.trim(),
+
+          bio:
+          about.value.trim(),
+
+          email:
+          currentUser.email ||
+          email.value.trim(),
+
+          profilePicture:
+          photoURL,
+
+          picture:
+          photoURL,
+
+          photoURL:
+          photoURL
+
+        },
+
+        {
+          merge:true
+        }
+
+      );
+
+
+      currentPhotoURL =
+      photoURL;
+
+      profileImage.src =
+      photoURL;
+
+      profileFile.value = "";
+
+
+      if(previewURL){
+
+        URL.revokeObjectURL(
+          previewURL
+        );
+
+        previewURL = null;
+
+      }
+
+
+      alert(
+        "✅ Profile updated successfully!"
+      );
+
+    }catch(error){
+
+      console.error(
+        "Profile saving error:",
+        error
+      );
+
+
+      alert(
+        getFriendlyErrorMessage(
+          error
+        )
+      );
+
+    }finally{
+
+      isSaving = false;
+
+      saveBtn.disabled =
+      !currentUser;
+
+      saveBtn.textContent =
+      "💾 Save Changes";
+
+    }
+
+  }
+);
+
+
+/* ========================================
+   FRIENDLY ERROR MESSAGES
+======================================== */
+
+function getFriendlyErrorMessage(error){
+
+  const errorCode =
+  String(
+    error?.code || ""
+  ).toLowerCase();
+
+
+  const errorMessage =
+  String(
+    error?.message || ""
+  );
+
+
+  const lowerMessage =
+  errorMessage.toLowerCase();
+
+
+  if(
+    errorCode.includes(
+      "permission-denied"
+    )
   ){
 
-    return "Firebase Storage denied the upload. Please check your Storage security rules.";
+    return "Firestore denied permission to update your profile.";
 
   }
 
 
   if(
-    error.code ===
-    "storage/canceled"
+    lowerMessage.includes(
+      "upload preset"
+    )
   ){
 
-    return "The picture upload was cancelled or took too long.";
+    return "The Cloudinary upload preset is incorrect or is not set to unsigned.";
 
   }
 
 
   if(
-    error.code ===
-    "storage/retry-limit-exceeded"
+    lowerMessage.includes(
+      "too large"
+    ) ||
+    lowerMessage.includes(
+      "file size"
+    )
   ){
 
-    return "The upload failed because of a weak internet connection. Please try again.";
+    return "Cloudinary rejected the picture because it is too large.";
 
   }
 
 
   if(
-    error.code ===
-    "storage/object-not-found"
+    lowerMessage.includes(
+      "network"
+    )
   ){
 
-    return "The uploaded picture could not be found in Firebase Storage.";
+    return "A network error occurred. Check your internet connection and try again.";
 
   }
 
 
-  return error.message ||
+  return errorMessage ||
   "The profile could not be saved.";
 
 }
+
+
+/* ========================================
+   CLEAN UP PREVIEW
+======================================== */
+
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    if(previewURL){
+
+      URL.revokeObjectURL(
+        previewURL
+      );
+
+    }
+
+  }
+);
 
 </script>
 </body>
