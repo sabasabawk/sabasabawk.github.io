@@ -2679,7 +2679,8 @@ if(authorId){
     function(){
 
       window.location.href =
-      `user-profile.html?uid=${encodeURIComponent(authorId)}`;
+      "user-profile.html?uid=" +
+      encodeURIComponent(authorId);
 
     }
   );
@@ -2690,11 +2691,18 @@ if(authorId){
     function(){
 
       window.location.href =
-      `user-profile.html?uid=${encodeURIComponent(authorId)}`;
+      "user-profile.html?uid=" +
+      encodeURIComponent(authorId);
 
     }
   );
 
+}
+
+
+return postCard;
+
+}
 }
 /* =====================================================
    PART 10 OF 10
