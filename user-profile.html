@@ -1543,6 +1543,373 @@
     </div>
 
   </main>
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE, PAGE ELEMENTS, URL DATA
+   AND GENERAL HELPER FUNCTIONS
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  doc,
+  getDoc,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const pageIntroText =
+document.getElementById(
+  "pageIntroText"
+);
+
+const searchFollowingInput =
+document.getElementById(
+  "searchFollowingInput"
+);
+
+const followingTotal =
+document.getElementById(
+  "followingTotal"
+);
+
+const followingList =
+document.getElementById(
+  "followingList"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let profileOwner =
+{};
+
+let allFollowing =
+[];
+
+let filteredFollowing =
+[];
+
+
+/* =====================================================
+   GET PROFILE OWNER UID
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const memberUid =
+urlParameters.get(
+  "uid"
+);
+
+
+/* =====================================================
+   HANDLE MISSING UID
+===================================================== */
+
+if(!memberUid){
+
+  followingList.innerHTML = `
+
+    <div class="statusCard error">
+
+      <div class="statusIcon">
+        ⚠️
+      </div>
+
+      <h3 class="statusTitle">
+        Member not found
+      </h3>
+
+      <p class="statusText">
+        The profile identification is missing.
+      </p>
+
+    </div>
+
+  `;
+
+  searchFollowingInput.disabled =
+  true;
+
+  throw new Error(
+    "Missing member UID."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    if(
+      window.history.length > 1
+    ){
+
+      window.history.back();
+
+    }else{
+
+      window.location.href =
+      `user-profile.html?uid=${encodeURIComponent(
+        memberUid
+      )}`;
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+  const temporaryElement =
+  document.createElement(
+    "div"
+  );
+
+  temporaryElement.textContent =
+  String(value || "");
+
+  return temporaryElement.innerHTML;
+
+}
+
+
+/* =====================================================
+   SHOW LOADING STATE
+===================================================== */
+
+function showLoadingState(){
+
+  followingList.innerHTML = `
+
+    <div class="statusCard">
+
+      <div class="statusIcon">
+        ⏳
+      </div>
+
+      <h3 class="statusTitle">
+        Loading following
+      </h3>
+
+      <p class="statusText">
+        Please wait while we load the people this member follows.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SHOW EMPTY STATE
+===================================================== */
+
+function showEmptyState(){
+
+  followingList.innerHTML = `
+
+    <div class="statusCard">
+
+      <div class="statusIcon">
+        ➕
+      </div>
+
+      <h3 class="statusTitle">
+        Not following anyone yet
+      </h3>
+
+      <p class="statusText">
+        This Faith Connect member is not following anyone yet.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SHOW SEARCH EMPTY STATE
+===================================================== */
+
+function showSearchEmptyState(){
+
+  followingList.innerHTML = `
+
+    <div class="statusCard">
+
+      <div class="statusIcon">
+        🔍
+      </div>
+
+      <h3 class="statusTitle">
+        No matching members
+      </h3>
+
+      <p class="statusText">
+        Try searching with another name or country.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SHOW ERROR STATE
+===================================================== */
+
+function showErrorState(
+  message
+){
+
+  followingList.innerHTML = `
+
+    <div class="statusCard error">
+
+      <div class="statusIcon">
+        ⚠️
+      </div>
+
+      <h3 class="statusTitle">
+        Following list could not load
+      </h3>
+
+      <p class="statusText">
+        ${escapeHtml(
+          message ||
+          "Please check your internet connection and try again."
+        )}
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   OPEN MEMBER PROFILE
+===================================================== */
+
+function openMemberProfile(
+  userId
+){
+
+  if(!userId){
+
+    return;
+
+  }
+
+  window.location.href =
+  `user-profile.html?uid=${encodeURIComponent(
+    userId
+  )}`;
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  function(user){
+
+    currentUser =
+    user || null;
+
+    loadFollowingPage();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+    currentUser =
+    null;
+
+    loadFollowingPage();
+
+  }
+);
 <script type="module">
 
 /* =====================================================
