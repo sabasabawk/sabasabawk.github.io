@@ -525,13 +525,55 @@
     }
 
 
-    .profileName{
+    /* =====================================================
+   VERIFIED ACCOUNT BADGE
+===================================================== */
 
-      font-size:23px;
-      font-weight:900;
-      line-height:1.25;
+.profileNameRow{
 
-    }
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  flex-wrap:wrap;
+
+}
+
+
+.verifiedBadge{
+
+  display:none;
+
+  min-height:23px;
+  padding:5px 9px;
+
+  border-radius:999px;
+
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+
+  background:#e7f3ff;
+  color:var(--primary);
+
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+
+}
+
+
+.verifiedBadge.show{
+  display:inline-flex;
+}
+
+
+.verifiedBadge.ministry{
+
+  background:#eaf7ee;
+  color:var(--success);
+
+}
 
 
     .profileCountry{
