@@ -37,6 +37,7 @@
       box-sizing:border-box;
     }
 
+
     :root{
 
       --primary:#087bd1;
@@ -97,6 +98,12 @@
     }
 
 
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
     a{
       color:inherit;
       text-decoration:none;
@@ -107,6 +114,22 @@
     video{
       display:block;
       max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible{
+
+      outline:
+        3px solid
+        rgba(8,123,209,.30);
+
+      outline-offset:3px;
+
     }
 
 
@@ -244,7 +267,8 @@
       font-size:20px;
 
       box-shadow:
-        0 5px 14px rgba(8,123,209,.22);
+        0 5px 14px
+        rgba(8,123,209,.22);
 
     }
 
@@ -259,6 +283,7 @@
       max-width:760px;
 
       margin:auto;
+
       padding:
         18px
         14px
@@ -268,25 +293,34 @@
 
 
     /* =====================================================
-       LOADING MESSAGE
+       PAGE MESSAGE
     ===================================================== */
 
     .pageMessage{
 
       padding:18px;
 
-      border:1px solid var(--border);
-      border-radius:var(--radius-medium);
+      border:
+        1px solid
+        var(--border);
 
-      background:var(--surface);
+      border-radius:
+        var(--radius-medium);
 
-      color:var(--muted);
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
 
       text-align:center;
+
       font-size:13px;
       font-weight:800;
+      line-height:1.5;
 
-      box-shadow:var(--shadow);
+      box-shadow:
+        var(--shadow);
 
     }
 
@@ -325,574 +359,614 @@
 
     @media(max-width:520px){
 
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
       .pageContainer{
         padding-left:10px;
         padding-right:10px;
       }
+
 
       .headerTitle{
         font-size:16px;
       }
 
     }
-<style>
 
-  /* =====================================================
-     PART 2 OF 6
-     PROFILE CARD, FOLLOW SYSTEM
-     AND MEMBER INFORMATION
-  ===================================================== */
+  </style>
+  <style>
 
+    /* =====================================================
+       PART 2 OF 6
+       PROFILE CARD, FOLLOW SYSTEM
+       AND MEMBER INFORMATION
+    ===================================================== */
 
-  /* =====================================================
-     PROFILE CARD
-  ===================================================== */
 
-  .profileCard{
+    /* =====================================================
+       PROFILE CARD
+    ===================================================== */
 
-    overflow:hidden;
+    .profileCard{
 
-    border:1px solid var(--border);
-    border-radius:var(--radius-large);
+      overflow:hidden;
 
-    background:var(--surface);
+      border:
+        1px solid
+        var(--border);
 
-    box-shadow:var(--shadow);
+      border-radius:
+        var(--radius-large);
 
-  }
+      background:
+        var(--surface);
 
+      box-shadow:
+        var(--shadow);
 
-  .profileCover{
+    }
 
-    min-height:145px;
-
-    padding:24px 18px 65px;
-
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-
-    background:
-      linear-gradient(
-        135deg,
-        #087bd1,
-        #45a9eb
-      );
-
-    color:#ffffff;
-
-    text-align:center;
-
-  }
-
-
-  .profileCoverText{
-    max-width:500px;
-  }
-
-
-  .profileCoverTitle{
-
-    font-size:24px;
-    font-weight:900;
-
-  }
-
-
-  .profileCoverSubtitle{
-
-    margin-top:7px;
-
-    font-size:12px;
-    line-height:1.5;
-
-    opacity:.92;
-
-  }
-
-
-  /* =====================================================
-     PROFILE PICTURE
-  ===================================================== */
-
-  .profilePictureArea{
-
-    margin-top:-58px;
-
-    display:flex;
-    justify-content:center;
-
-  }
-
-
-  .profilePictureFrame{
-
-    width:122px;
-    height:122px;
-
-    padding:5px;
-
-    border-radius:50%;
-
-    background:#ffffff;
-
-    box-shadow:
-      0 6px 18px rgba(18,47,66,.18);
-
-  }
-
-
-  .profilePicture{
-
-    width:100%;
-    height:100%;
-
-    border-radius:50%;
-
-    object-fit:cover;
-
-    background:#dce4ea;
-
-  }
-
-
-  /* =====================================================
-     MEMBER INFORMATION
-  ===================================================== */
-
-  .profileInformation{
-
-    padding:
-      16px
-      20px
-      22px;
-
-    text-align:center;
-
-  }
-
-
-  .profileName{
-
-    font-size:23px;
-    font-weight:900;
-    line-height:1.25;
-
-  }
-
-
-  .profileCountry{
-
-    margin-top:7px;
-
-    color:var(--muted);
-
-    font-size:13px;
-    font-weight:800;
-
-  }
-
-
-  .profileCountry.hidden{
-    display:none;
-  }
-
-
-  .profileAbout{
-
-    margin-top:18px;
-    padding:15px;
-
-    border-radius:14px;
-
-    background:#f4f8fb;
-    color:#3f4d56;
-
-    text-align:left;
-
-    font-size:13px;
-    line-height:1.65;
-
-    white-space:pre-wrap;
-
-  }
-
-
-  .profileAbout.hidden{
-    display:none;
-  }
-
-
-  /* =====================================================
-     FOLLOW AND FOLLOWING STATISTICS
-  ===================================================== */
-
-  .followStatistics{
-
-    margin-top:17px;
-
-    display:grid;
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0,1fr)
-      );
-
-    gap:9px;
-
-  }
-
-
-  .followStatisticButton{
-
-    min-height:64px;
-    padding:10px 8px;
-
-    border:1px solid var(--border);
-    border-radius:14px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-
-    background:#f8fbfd;
-    color:var(--text);
-
-    transition:
-      background .2s ease,
-      border-color .2s ease,
-      transform .2s ease;
-
-  }
-
-
-  .followStatisticButton:hover{
-
-    border-color:#9bcbe9;
-    background:var(--primary-light);
-
-  }
-
-
-  .followStatisticButton:active{
-    transform:scale(.97);
-  }
-
-
-  .followStatisticNumber{
-
-    color:var(--primary);
-
-    font-size:20px;
-    font-weight:900;
-    line-height:1;
-
-  }
-
-
-  .followStatisticLabel{
-
-    color:var(--muted);
-
-    font-size:11px;
-    font-weight:800;
-
-  }
-
-
-  /* =====================================================
-     PROFILE ACTIONS
-  ===================================================== */
-
-  .profileActions{
-
-    margin-top:18px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
-
-  }
-
-
-  .profileActionButton{
-
-    min-height:44px;
-    padding:10px 16px;
-
-    border:0;
-    border-radius:13px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:7px;
-
-    background:var(--primary);
-    color:#ffffff;
-
-    font-size:12px;
-    font-weight:900;
-
-    box-shadow:
-      0 4px 12px rgba(8,123,209,.20);
-
-    transition:
-      background .2s ease,
-      border-color .2s ease,
-      color .2s ease,
-      transform .2s ease;
-
-  }
-
-
-  .profileActionButton:hover{
-    background:var(--primary-dark);
-  }
-
-
-  .profileActionButton:active{
-    transform:scale(.97);
-  }
-
-
-  .profileActionButton:disabled{
-
-    cursor:not-allowed;
-    opacity:.65;
-
-  }
-
-
-  .profileActionButton.secondary{
-
-    border:1px solid var(--border);
-
-    background:#ffffff;
-    color:var(--text);
-
-    box-shadow:none;
-
-  }
-
-
-  .profileActionButton.secondary:hover{
-    background:#edf4f8;
-  }
-
-
-  /* =====================================================
-     FOLLOW BUTTON
-  ===================================================== */
-
-  .followButton{
-
-    min-width:125px;
-
-    background:var(--primary);
-    color:#ffffff;
-
-  }
-
-
-  .followButton.following{
-
-    border:1px solid #a9d7b9;
-
-    background:#e9f7ee;
-    color:var(--success);
-
-    box-shadow:none;
-
-  }
-
-
-  .followButton.following:hover{
-
-    border-color:#e1aaaa;
-
-    background:#fdecec;
-    color:var(--danger);
-
-  }
-
-
-  .followButton.hidden{
-    display:none;
-  }
-
-
-  /* =====================================================
-     PROFILE CONTRIBUTION STATISTICS
-  ===================================================== */
-
-  .profileStats{
-
-    margin-top:18px;
-
-    display:grid;
-    grid-template-columns:
-      repeat(
-        3,
-        minmax(0,1fr)
-      );
-
-    gap:9px;
-
-  }
-
-
-  .profileStat{
-
-    padding:13px 8px;
-
-    border:1px solid var(--border);
-    border-radius:13px;
-
-    background:#ffffff;
-
-    text-align:center;
-
-  }
-
-
-  .profileStatNumber{
-
-    display:block;
-
-    color:var(--primary);
-
-    font-size:19px;
-    font-weight:900;
-
-  }
-
-
-  .profileStatLabel{
-
-    display:block;
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:10px;
-    font-weight:800;
-
-  }
-
-
-  /* =====================================================
-     SECTION TITLE
-  ===================================================== */
-
-  .contentSection{
-
-    margin-top:18px;
-
-    padding:18px;
-
-    border:1px solid var(--border);
-    border-radius:var(--radius-large);
-
-    background:var(--surface);
-
-    box-shadow:var(--shadow);
-
-  }
-
-
-  .sectionHeadingRow{
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-
-    margin-bottom:14px;
-
-  }
-
-
-  .sectionHeading{
-
-    font-size:17px;
-    font-weight:900;
-
-  }
-
-
-  .sectionCount{
-
-    min-width:30px;
-    min-height:25px;
-
-    padding:5px 9px;
-
-    border-radius:999px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:var(--primary-light);
-    color:var(--primary);
-
-    font-size:10px;
-    font-weight:900;
-
-  }
-
-
-  /* =====================================================
-     RESPONSIVE
-  ===================================================== */
-
-  @media(max-width:480px){
 
     .profileCover{
-      padding-left:14px;
-      padding-right:14px;
+
+      min-height:145px;
+
+      padding:
+        24px
+        18px
+        65px;
+
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #087bd1,
+          #45a9eb
+        );
+
+      color:#ffffff;
+
+      text-align:center;
+
     }
+
+
+    .profileCoverText{
+      max-width:500px;
+    }
+
+
+    .profileCoverTitle{
+
+      font-size:24px;
+      font-weight:900;
+
+    }
+
+
+    .profileCoverSubtitle{
+
+      margin-top:7px;
+
+      font-size:12px;
+      line-height:1.5;
+
+      opacity:.92;
+
+    }
+
+
+    /* =====================================================
+       PROFILE PICTURE
+    ===================================================== */
+
+    .profilePictureArea{
+
+      margin-top:-58px;
+
+      display:flex;
+      justify-content:center;
+
+    }
+
+
+    .profilePictureFrame{
+
+      width:122px;
+      height:122px;
+
+      padding:5px;
+
+      border-radius:50%;
+
+      background:#ffffff;
+
+      box-shadow:
+        0 6px 18px
+        rgba(18,47,66,.18);
+
+    }
+
+
+    .profilePicture{
+
+      width:100%;
+      height:100%;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+    }
+
+
+    /* =====================================================
+       MEMBER INFORMATION
+    ===================================================== */
 
     .profileInformation{
-      padding-left:14px;
-      padding-right:14px;
+
+      padding:
+        16px
+        20px
+        22px;
+
+      text-align:center;
+
     }
 
-    .profileStats{
-      grid-template-columns:1fr;
+
+    .profileName{
+
+      font-size:23px;
+      font-weight:900;
+      line-height:1.25;
+
     }
+
+
+    .profileCountry{
+
+      margin-top:7px;
+
+      color:var(--muted);
+
+      font-size:13px;
+      font-weight:800;
+
+    }
+
+
+    .profileCountry.hidden{
+      display:none;
+    }
+
+
+    .profileAbout{
+
+      margin-top:18px;
+      padding:15px;
+
+      border-radius:14px;
+
+      background:#f4f8fb;
+      color:#3f4d56;
+
+      text-align:left;
+
+      font-size:13px;
+      line-height:1.65;
+
+      white-space:pre-wrap;
+
+    }
+
+
+    .profileAbout.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       FOLLOW STATISTICS
+    ===================================================== */
+
+    .followStatistics{
+
+      margin-top:17px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:9px;
+
+    }
+
+
+    .followStatisticButton{
+
+      min-height:64px;
+      padding:10px 8px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:14px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+
+      background:#f8fbfd;
+      color:var(--text);
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .followStatisticButton:hover{
+
+      border-color:#9bcbe9;
+      background:var(--primary-light);
+
+    }
+
+
+    .followStatisticButton:active{
+      transform:scale(.97);
+    }
+
+
+    .followStatisticNumber{
+
+      color:var(--primary);
+
+      font-size:20px;
+      font-weight:900;
+      line-height:1;
+
+    }
+
+
+    .followStatisticLabel{
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:800;
+
+    }
+
+
+    /* =====================================================
+       PROFILE ACTIONS
+    ===================================================== */
+
+    .profileActions{
+
+      margin-top:18px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+
+    }
+
 
     .profileActionButton{
-      width:100%;
+
+      min-height:44px;
+      padding:10px 16px;
+
+      border:0;
+      border-radius:13px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:12px;
+      font-weight:900;
+
+      box-shadow:
+        0 4px 12px
+        rgba(8,123,209,.20);
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
     }
 
-    .followStatistics{
-      grid-template-columns:1fr 1fr;
+
+    .profileActionButton:hover{
+      background:var(--primary-dark);
     }
 
-  }
 
-
-  @media(max-width:340px){
-
-    .followStatistics{
-      grid-template-columns:1fr;
+    .profileActionButton:active{
+      transform:scale(.97);
     }
 
-  }
 
-</style>
+    .profileActionButton:disabled{
 
-<style>
-  
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .profileActionButton.secondary{
+
+      border:
+        1px solid
+        var(--border);
+
+      background:#ffffff;
+      color:var(--text);
+
+      box-shadow:none;
+
+    }
+
+
+    .profileActionButton.secondary:hover{
+      background:#edf4f8;
+    }
+
+
+    /* =====================================================
+       FOLLOW BUTTON
+    ===================================================== */
+
+    .followButton{
+
+      min-width:125px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+    }
+
+
+    .followButton.following{
+
+      border:
+        1px solid
+        #a9d7b9;
+
+      background:#e9f7ee;
+      color:var(--success);
+
+      box-shadow:none;
+
+    }
+
+
+    .followButton.following:hover{
+
+      border-color:#e1aaaa;
+
+      background:#fdecec;
+      color:var(--danger);
+
+    }
+
+
+    .followButton.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       PROFILE CONTRIBUTION STATISTICS
+    ===================================================== */
+
+    .profileStats{
+
+      margin-top:18px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:9px;
+
+    }
+
+
+    .profileStat{
+
+      padding:13px 8px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:13px;
+
+      background:#ffffff;
+
+      text-align:center;
+
+    }
+
+
+    .profileStatNumber{
+
+      display:block;
+
+      color:var(--primary);
+
+      font-size:19px;
+      font-weight:900;
+
+    }
+
+
+    .profileStatLabel{
+
+      display:block;
+      margin-top:4px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    /* =====================================================
+       CONTENT SECTION
+    ===================================================== */
+
+    .contentSection{
+
+      margin-top:18px;
+
+      padding:18px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        var(--radius-large);
+
+      background:
+        var(--surface);
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .sectionHeadingRow{
+
+      margin-bottom:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .sectionHeading{
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .sectionCount{
+
+      min-width:30px;
+      min-height:25px;
+
+      padding:5px 9px;
+
+      border-radius:999px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:var(--primary-light);
+      color:var(--primary);
+
+      font-size:10px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:480px){
+
+      .profileCover{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+
+      .profileInformation{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+
+      .profileStats{
+        grid-template-columns:1fr;
+      }
+
+
+      .profileActionButton{
+        width:100%;
+      }
+
+
+      .followStatistics{
+        grid-template-columns:1fr 1fr;
+      }
+
+    }
+
+
+    @media(max-width:340px){
+
+      .followStatistics{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+  <style>
+
     /* =====================================================
        PART 3 OF 6
-       COMMUNITY POSTS AND FAITH MOMENT CARDS
+       COMMUNITY POSTS, FAITH MOMENTS
+       AND CONTENT CARDS
     ===================================================== */
 
 
@@ -920,7 +994,7 @@
 
 
     /* =====================================================
-       CONTENT LISTS
+       CONTENT LIST
     ===================================================== */
 
     .contentList{
@@ -945,17 +1019,35 @@
 
       background:#ffffff;
 
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.05);
+
     }
 
 
     .communityPostHeader{
 
-      padding:13px 14px 9px;
+      padding:13px 14px 10px;
 
       display:flex;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
       gap:10px;
+
+    }
+
+
+    .communityPostCategory{
+
+      padding:5px 10px;
+
+      border-radius:999px;
+
+      background:var(--primary-light);
+      color:var(--primary);
+
+      font-size:10px;
+      font-weight:900;
 
     }
 
@@ -970,27 +1062,12 @@
     }
 
 
-    .communityPostCategory{
-
-      padding:5px 9px;
-
-      border-radius:999px;
-
-      background:var(--primary-light);
-      color:var(--primary);
-
-      font-size:9px;
-      font-weight:900;
-
-    }
-
-
     .communityPostMessage{
 
       padding:
         0
         14px
-        13px;
+        14px;
 
       color:#33414a;
 
@@ -1006,7 +1083,7 @@
     .communityPostMedia{
 
       width:100%;
-      max-height:480px;
+      max-height:500px;
 
       object-fit:contain;
 
@@ -1017,14 +1094,13 @@
 
     .communityPostFooter{
 
-      padding:11px 14px;
+      padding:12px 14px;
 
       border-top:1px solid var(--border);
 
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
 
       color:var(--muted);
 
@@ -1047,16 +1123,19 @@
 
       background:#ffffff;
 
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.05);
+
     }
 
 
     .faithMomentTop{
 
-      padding:13px 14px 9px;
+      padding:13px 14px 10px;
 
       display:flex;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
       gap:10px;
 
     }
@@ -1064,14 +1143,14 @@
 
     .faithMomentType{
 
-      padding:5px 9px;
+      padding:5px 10px;
 
       border-radius:999px;
 
       background:#fff4d9;
       color:#9b6900;
 
-      font-size:9px;
+      font-size:10px;
       font-weight:900;
 
     }
@@ -1092,7 +1171,7 @@
       padding:
         0
         14px
-        11px;
+        12px;
 
       color:#33414a;
 
@@ -1110,18 +1189,22 @@
       margin:
         0
         14px
-        13px;
+        14px;
 
-      padding:11px 12px;
+      padding:12px;
 
       border-left:4px solid var(--primary);
+
       border-radius:10px;
 
       background:var(--primary-light);
+
       color:#155f94;
 
       font-size:11px;
       font-weight:900;
+
+      line-height:1.6;
 
     }
 
@@ -1129,7 +1212,7 @@
     .faithMomentMedia{
 
       width:100%;
-      max-height:480px;
+      max-height:500px;
 
       object-fit:contain;
 
@@ -1140,14 +1223,13 @@
 
     .faithMomentFooter{
 
-      padding:11px 14px;
+      padding:12px 14px;
 
       border-top:1px solid var(--border);
 
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
 
       color:var(--muted);
 
@@ -1164,6 +1246,7 @@
     .privateProfileNotice{
 
       margin-top:18px;
+
       padding:16px;
 
       border:1px solid #f0d9aa;
@@ -1176,7 +1259,7 @@
 
       font-size:12px;
       font-weight:800;
-      line-height:1.55;
+      line-height:1.6;
 
     }
 
@@ -1192,7 +1275,7 @@
 
     .mediaFallback{
 
-      padding:22px;
+      padding:24px;
 
       background:#f3f6f8;
       color:var(--muted);
@@ -1217,6 +1300,7 @@
 
       .communityPostHeader,
       .faithMomentTop{
+        flex-direction:column;
         align-items:flex-start;
       }
 
@@ -1224,6 +1308,7 @@
       .faithMomentFooter{
         flex-direction:column;
         align-items:flex-start;
+        gap:6px;
       }
 
     }
@@ -1232,6 +1317,12 @@
 </head>
 
 <body>
+
+  <!-- =====================================================
+       PART 4A OF 6
+       PAGE HEADER, PROFILE CARD
+       AND FOLLOW CONTROLS
+  ====================================================== -->
 
 
   <!-- =====================================================
@@ -1284,7 +1375,9 @@
   <main class="pageContainer">
 
 
-    <!-- Loading or error message -->
+    <!-- =================================================
+         PAGE MESSAGE
+    ================================================== -->
 
     <div
       id="pageMessage"
@@ -1294,7 +1387,9 @@
     </div>
 
 
-    <!-- Profile content -->
+    <!-- =================================================
+         PROFILE PAGE CONTENT
+    ================================================== -->
 
     <div
       id="profilePageContent"
@@ -1308,6 +1403,8 @@
 
       <section class="profileCard">
 
+
+        <!-- PROFILE COVER -->
 
         <div class="profileCover">
 
@@ -1327,6 +1424,8 @@
         </div>
 
 
+        <!-- PROFILE PICTURE -->
+
         <div class="profilePictureArea">
 
           <div class="profilePictureFrame">
@@ -1334,7 +1433,7 @@
             <img
               id="profilePicture"
               class="profilePicture"
-              src="https://ui-avatars.com/api/?name=Member&background=dce4ea&color=31424d&size=240"
+              src="images/profile.png"
               alt="Member profile picture"
             >
 
@@ -1342,6 +1441,8 @@
 
         </div>
 
+
+        <!-- PROFILE INFORMATION -->
 
         <div class="profileInformation">
 
@@ -1367,9 +1468,83 @@
           ></div>
 
 
-          <!-- Profile action buttons -->
+          <!-- =================================================
+               FOLLOWERS AND FOLLOWING
+          ================================================== -->
+
+          <div class="followStatistics">
+
+            <button
+              id="followersButton"
+              class="followStatisticButton"
+              type="button"
+              aria-label="View followers"
+            >
+
+              <span
+                id="followersCount"
+                class="followStatisticNumber"
+              >
+                0
+              </span>
+
+              <span class="followStatisticLabel">
+                Followers
+              </span>
+
+            </button>
+
+
+            <button
+              id="followingButton"
+              class="followStatisticButton"
+              type="button"
+              aria-label="View following"
+            >
+
+              <span
+                id="followingCount"
+                class="followStatisticNumber"
+              >
+                0
+              </span>
+
+              <span class="followStatisticLabel">
+                Following
+              </span>
+
+            </button>
+
+          </div>
+
+
+          <!-- =================================================
+               PROFILE ACTION BUTTONS
+          ================================================== -->
 
           <div class="profileActions">
+
+
+            <!-- FOLLOW BUTTON -->
+
+            <button
+              id="followMemberButton"
+              class="profileActionButton followButton"
+              type="button"
+            >
+
+              <span id="followButtonIcon">
+                ➕
+              </span>
+
+              <span id="followButtonText">
+                Follow
+              </span>
+
+            </button>
+
+
+            <!-- MESSAGE BUTTON -->
 
             <button
               id="messageMemberButton"
@@ -1379,6 +1554,8 @@
               💬 Message
             </button>
 
+
+            <!-- SHARE PROFILE BUTTON -->
 
             <button
               id="shareProfileButton"
@@ -1391,7 +1568,9 @@
           </div>
 
 
-          <!-- Profile statistics -->
+          <!-- =================================================
+               PROFILE CONTRIBUTION STATISTICS
+          ================================================== -->
 
           <div class="profileStats">
 
@@ -1460,8 +1639,6 @@
         This member has chosen not to display their
         public posts and Faith Moments.
       </div>
-
-
       <!-- =================================================
            COMMUNITY POSTS
       ================================================== -->
@@ -1493,7 +1670,9 @@
         >
 
           <div class="emptyContentMessage">
-            Loading community posts...
+
+            Loading Community Posts...
+
           </div>
 
         </div>
@@ -1532,7 +1711,9 @@
         >
 
           <div class="emptyContentMessage">
+
             Loading Faith Moments...
+
           </div>
 
         </div>
@@ -1543,379 +1724,18 @@
     </div>
 
   </main>
+
+
+  <script type="module">
 /* =====================================================
-   PART 4 OF 6
-   FIREBASE, PAGE ELEMENTS, URL DATA
-   AND GENERAL HELPER FUNCTIONS
+   PART 5 OF 6
+   FIREBASE, PAGE ELEMENTS, PROFILE LOADING
+   AND COMMUNITY POSTS
 ===================================================== */
 
 
 /* =====================================================
    FIREBASE IMPORTS
-===================================================== */
-
-import{
-  auth,
-  db,
-  doc,
-  getDoc,
-  onAuthStateChanged
-}from "./firebase.js";
-
-
-/* =====================================================
-   PAGE ELEMENTS
-===================================================== */
-
-const backButton =
-document.getElementById(
-  "backButton"
-);
-
-const headerTitle =
-document.getElementById(
-  "headerTitle"
-);
-
-const pageIntroText =
-document.getElementById(
-  "pageIntroText"
-);
-
-const searchFollowingInput =
-document.getElementById(
-  "searchFollowingInput"
-);
-
-const followingTotal =
-document.getElementById(
-  "followingTotal"
-);
-
-const followingList =
-document.getElementById(
-  "followingList"
-);
-
-
-/* =====================================================
-   PAGE STATE
-===================================================== */
-
-let currentUser =
-null;
-
-let profileOwner =
-{};
-
-let allFollowing =
-[];
-
-let filteredFollowing =
-[];
-
-
-/* =====================================================
-   GET PROFILE OWNER UID
-===================================================== */
-
-const urlParameters =
-new URLSearchParams(
-  window.location.search
-);
-
-const memberUid =
-urlParameters.get(
-  "uid"
-);
-
-
-/* =====================================================
-   HANDLE MISSING UID
-===================================================== */
-
-if(!memberUid){
-
-  followingList.innerHTML = `
-
-    <div class="statusCard error">
-
-      <div class="statusIcon">
-        ⚠️
-      </div>
-
-      <h3 class="statusTitle">
-        Member not found
-      </h3>
-
-      <p class="statusText">
-        The profile identification is missing.
-      </p>
-
-    </div>
-
-  `;
-
-  searchFollowingInput.disabled =
-  true;
-
-  throw new Error(
-    "Missing member UID."
-  );
-
-}
-
-
-/* =====================================================
-   BACK BUTTON
-===================================================== */
-
-backButton.addEventListener(
-  "click",
-  function(){
-
-    if(
-      window.history.length > 1
-    ){
-
-      window.history.back();
-
-    }else{
-
-      window.location.href =
-      `user-profile.html?uid=${encodeURIComponent(
-        memberUid
-      )}`;
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   GET FIRST AVAILABLE VALUE
-===================================================== */
-
-function getFirstValue(
-  ...values
-){
-
-  for(const value of values){
-
-    if(
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ){
-
-      return String(value).trim();
-
-    }
-
-  }
-
-  return "";
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(value){
-
-  const temporaryElement =
-  document.createElement(
-    "div"
-  );
-
-  temporaryElement.textContent =
-  String(value || "");
-
-  return temporaryElement.innerHTML;
-
-}
-
-
-/* =====================================================
-   SHOW LOADING STATE
-===================================================== */
-
-function showLoadingState(){
-
-  followingList.innerHTML = `
-
-    <div class="statusCard">
-
-      <div class="statusIcon">
-        ⏳
-      </div>
-
-      <h3 class="statusTitle">
-        Loading following
-      </h3>
-
-      <p class="statusText">
-        Please wait while we load the people this member follows.
-      </p>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   SHOW EMPTY STATE
-===================================================== */
-
-function showEmptyState(){
-
-  followingList.innerHTML = `
-
-    <div class="statusCard">
-
-      <div class="statusIcon">
-        ➕
-      </div>
-
-      <h3 class="statusTitle">
-        Not following anyone yet
-      </h3>
-
-      <p class="statusText">
-        This Faith Connect member is not following anyone yet.
-      </p>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   SHOW SEARCH EMPTY STATE
-===================================================== */
-
-function showSearchEmptyState(){
-
-  followingList.innerHTML = `
-
-    <div class="statusCard">
-
-      <div class="statusIcon">
-        🔍
-      </div>
-
-      <h3 class="statusTitle">
-        No matching members
-      </h3>
-
-      <p class="statusText">
-        Try searching with another name or country.
-      </p>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   SHOW ERROR STATE
-===================================================== */
-
-function showErrorState(
-  message
-){
-
-  followingList.innerHTML = `
-
-    <div class="statusCard error">
-
-      <div class="statusIcon">
-        ⚠️
-      </div>
-
-      <h3 class="statusTitle">
-        Following list could not load
-      </h3>
-
-      <p class="statusText">
-        ${escapeHtml(
-          message ||
-          "Please check your internet connection and try again."
-        )}
-      </p>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =====================================================
-   OPEN MEMBER PROFILE
-===================================================== */
-
-function openMemberProfile(
-  userId
-){
-
-  if(!userId){
-
-    return;
-
-  }
-
-  window.location.href =
-  `user-profile.html?uid=${encodeURIComponent(
-    userId
-  )}`;
-
-}
-
-
-/* =====================================================
-   AUTHENTICATION
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  function(user){
-
-    currentUser =
-    user || null;
-
-    loadFollowingPage();
-
-  },
-  function(error){
-
-    console.error(
-      "Authentication error:",
-      error
-    );
-
-    currentUser =
-    null;
-
-    loadFollowingPage();
-
-  }
-);
-<script type="module">
-
-/* =====================================================
-   PART 5 OF 6
-   FIREBASE, AUTHENTICATION, PROFILE DATA
-   AND FOLLOW INFORMATION
 ===================================================== */
 
 import{
@@ -1975,9 +1795,24 @@ document.getElementById(
   "headerTitle"
 );
 
+const privateProfileNotice =
+document.getElementById(
+  "privateProfileNotice"
+);
+
+const communityPostsSection =
+document.getElementById(
+  "communityPostsSection"
+);
+
 const communityPostsList =
 document.getElementById(
   "communityPostsList"
+);
+
+const faithMomentsSection =
+document.getElementById(
+  "faithMomentsSection"
 );
 
 const faithMomentsList =
@@ -2015,21 +1850,6 @@ document.getElementById(
   "backButton"
 );
 
-const messageMemberButton =
-document.getElementById(
-  "messageMemberButton"
-);
-
-const shareProfileButton =
-document.getElementById(
-  "shareProfileButton"
-);
-
-
-/* =====================================================
-   FOLLOW ELEMENTS
-===================================================== */
-
 const followMemberButton =
 document.getElementById(
   "followMemberButton"
@@ -2065,6 +1885,16 @@ document.getElementById(
   "followingCount"
 );
 
+const messageMemberButton =
+document.getElementById(
+  "messageMemberButton"
+);
+
+const shareProfileButton =
+document.getElementById(
+  "shareProfileButton"
+);
+
 
 /* =====================================================
    PAGE STATE
@@ -2093,7 +1923,7 @@ false;
 
 
 /* =====================================================
-   GET MEMBER UID FROM URL
+   MEMBER UID FROM URL
 ===================================================== */
 
 const urlParameters =
@@ -2121,14 +1951,14 @@ if(!memberUid){
   );
 
   throw new Error(
-    "The member UID is missing."
+    "Member UID is missing."
   );
 
 }
 
 
 /* =====================================================
-   GET FIRST AVAILABLE VALUE
+   GENERAL HELPERS
 ===================================================== */
 
 function getFirstValue(
@@ -2150,6 +1980,103 @@ function getFirstValue(
   }
 
   return "";
+
+}
+
+
+function escapeHtml(value){
+
+  const temporaryElement =
+  document.createElement(
+    "div"
+  );
+
+  temporaryElement.textContent =
+  String(value || "");
+
+  return temporaryElement.innerHTML;
+
+}
+
+
+function getTimestampDate(
+  timestamp
+){
+
+  if(!timestamp){
+
+    return null;
+
+  }
+
+
+  if(
+    typeof timestamp.toDate ===
+    "function"
+  ){
+
+    return timestamp.toDate();
+
+  }
+
+
+  if(timestamp.seconds){
+
+    return new Date(
+      timestamp.seconds * 1000
+    );
+
+  }
+
+
+  const parsedDate =
+  new Date(timestamp);
+
+
+  return Number.isNaN(
+    parsedDate.getTime()
+  )
+  ? null
+  : parsedDate;
+
+}
+
+
+function formatDocumentDate(
+  data
+){
+
+  const timestamp =
+  data.timestamp ||
+  data.createdAt ||
+  data.date ||
+  null;
+
+
+  const date =
+  getTimestampDate(
+    timestamp
+  );
+
+
+  if(!date){
+
+    return (
+      data.dateText ||
+      "Recently"
+    );
+
+  }
+
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric"
+    }
+  );
 
 }
 
@@ -2188,6 +2115,7 @@ async function loadCurrentUserProfile(){
   currentProfile =
   {};
 
+
   if(!currentUser){
 
     return;
@@ -2211,15 +2139,19 @@ async function loadCurrentUserProfile(){
       currentProfileSnapshot.exists()
     ){
 
-      currentProfile =
-      currentProfileSnapshot.data();
+      currentProfile = {
+        id:
+        currentProfileSnapshot.id,
+
+        ...currentProfileSnapshot.data()
+      };
 
     }
 
   }catch(error){
 
     console.error(
-      "Current profile loading error:",
+      "Current user profile error:",
       error
     );
 
@@ -2299,6 +2231,32 @@ function updateFollowButton(){
 
 
 /* =====================================================
+   UPDATE TOTAL CONTRIBUTIONS
+===================================================== */
+
+function updateTotalContributions(){
+
+  const posts =
+  Number(
+    communityPostCount.textContent
+  ) || 0;
+
+
+  const moments =
+  Number(
+    faithMomentCount.textContent
+  ) || 0;
+
+
+  totalContentCount.textContent =
+  String(
+    posts + moments
+  );
+
+}
+
+
+/* =====================================================
    LOAD MEMBER PROFILE
 ===================================================== */
 
@@ -2369,6 +2327,9 @@ async function loadMemberProfile(){
     profilePicture.src =
     memberPhoto;
 
+    profilePicture.alt =
+    `${memberName}'s profile picture`;
+
 
     const memberCountry =
     getFirstValue(
@@ -2387,6 +2348,9 @@ async function loadMemberProfile(){
       );
 
     }else{
+
+      profileCountry.textContent =
+      "";
 
       profileCountry.classList.add(
         "hidden"
@@ -2444,20 +2408,71 @@ async function loadMemberProfile(){
     updateFollowButton();
 
 
+    const profileIsPrivate =
+    Boolean(
+      memberProfile.privateProfile ||
+      memberProfile.profilePrivate
+    );
+
+
+    const viewingOwnProfile =
+    Boolean(
+      currentUser &&
+      currentUser.uid === memberUid
+    );
+
+
+    if(
+      profileIsPrivate &&
+      !viewingOwnProfile
+    ){
+
+      privateProfileNotice.classList.remove(
+        "hidden"
+      );
+
+      communityPostsSection.style.display =
+      "none";
+
+      faithMomentsSection.style.display =
+      "none";
+
+      communityPostCount.textContent =
+      "0";
+
+      faithMomentCount.textContent =
+      "0";
+
+      updateTotalContributions();
+
+    }else{
+
+      privateProfileNotice.classList.add(
+        "hidden"
+      );
+
+      communityPostsSection.style.display =
+      "";
+
+      faithMomentsSection.style.display =
+      "";
+
+      await Promise.all(
+        [
+          loadCommunityPosts(),
+          loadFaithMoments()
+        ]
+      );
+
+    }
+
+
     pageMessage.classList.add(
       "hidden"
     );
 
     profilePageContent.classList.add(
       "show"
-    );
-
-
-    await Promise.all(
-      [
-        loadCommunityPosts(),
-        loadFaithMoments()
-      ]
     );
 
   }catch(error){
@@ -2524,8 +2539,15 @@ onAuthStateChanged(
 
 async function loadCommunityPosts(){
 
-  communityPostsList.innerHTML =
-  "";
+  communityPostsList.innerHTML = `
+
+    <div class="emptyContentMessage">
+
+      Loading Community Posts...
+
+    </div>
+
+  `;
 
 
   try{
@@ -2550,28 +2572,93 @@ async function loadCommunityPosts(){
     );
 
 
+    const posts =
+    postsSnapshot.docs.map(
+      function(postDocument){
+
+        return {
+          id:
+          postDocument.id,
+
+          ...postDocument.data()
+        };
+
+      }
+    );
+
+
+    posts.sort(
+      function(firstPost,secondPost){
+
+        const firstDate =
+        getTimestampDate(
+          firstPost.timestamp ||
+          firstPost.createdAt
+        );
+
+
+        const secondDate =
+        getTimestampDate(
+          secondPost.timestamp ||
+          secondPost.createdAt
+        );
+
+
+        return (
+          secondDate?.getTime() || 0
+        ) - (
+          firstDate?.getTime() || 0
+        );
+
+      }
+    );
+
+
     communityPostCount.textContent =
     String(
-      postsSnapshot.size
+      posts.length
     );
 
     communityPostSectionCount.textContent =
     String(
-      postsSnapshot.size
+      posts.length
     );
 
 
-    postsSnapshot.forEach(
-      function(postDocument){
+    communityPostsList.innerHTML =
+    "";
 
-        const post =
-        postDocument.data();
 
+    if(
+      posts.length === 0
+    ){
+
+      communityPostsList.innerHTML = `
+
+        <div class="emptyContentMessage">
+
+          This member has not shared any
+          Community Posts yet.
+
+        </div>
+
+      `;
+
+      updateTotalContributions();
+
+      return;
+
+    }
+
+
+    posts.forEach(
+      function(post){
 
         const card =
         document.createElement(
-          "div"
+          "article"
         );
+
 
         card.className =
         "communityPostCard";
@@ -2582,7 +2669,17 @@ async function loadCommunityPosts(){
           post.post,
           post.message,
           post.content,
-          post.text
+          post.text,
+          post.description
+        );
+
+
+        const category =
+        getFirstValue(
+          post.category,
+          post.postCategory,
+          post.type,
+          "Community"
         );
 
 
@@ -2608,16 +2705,17 @@ async function loadCommunityPosts(){
         );
 
 
-        let media = "";
+        let mediaHtml =
+        "";
 
 
         if(imageUrl){
 
-          media = `
+          mediaHtml = `
 
             <img
               class="communityPostMedia"
-              src="${imageUrl}"
+              src="${escapeHtml(imageUrl)}"
               alt="Community post image"
               loading="lazy"
             >
@@ -2626,11 +2724,11 @@ async function loadCommunityPosts(){
 
         }else if(videoUrl){
 
-          media = `
+          mediaHtml = `
 
             <video
               class="communityPostMedia"
-              src="${videoUrl}"
+              src="${escapeHtml(videoUrl)}"
               controls
               playsinline
               preload="metadata"
@@ -2646,21 +2744,43 @@ async function loadCommunityPosts(){
           <div class="communityPostHeader">
 
             <span class="communityPostCategory">
-              ${post.category || "Community"}
+              ${escapeHtml(category)}
             </span>
 
             <span class="communityPostDate">
-              ${formatDocumentDate(post)}
+              ${escapeHtml(
+                formatDocumentDate(post)
+              )}
             </span>
 
           </div>
 
 
-          <div class="communityPostMessage">
-            ${postMessage}
-          </div>
+          ${
+            postMessage
+            ? `
+              <div class="communityPostMessage">
+                ${escapeHtml(postMessage)}
+              </div>
+            `
+            : ""
+          }
 
-          ${media}
+
+          ${mediaHtml}
+
+
+          <div class="communityPostFooter">
+
+            <span>
+              📰 Community Post
+            </span>
+
+            <span>
+              SABASABA Gospel Ministry
+            </span>
+
+          </div>
 
         `;
 
@@ -2673,32 +2793,21 @@ async function loadCommunityPosts(){
     );
 
 
-    if(
-      postsSnapshot.empty
-    ){
-
-      communityPostsList.innerHTML = `
-
-        <div class="emptyContentMessage">
-
-          This member has not shared any
-          Community Posts yet.
-
-        </div>
-
-      `;
-
-    }
-
-
     updateTotalContributions();
 
   }catch(error){
 
     console.error(
-      "Community posts loading error:",
+      "Community Posts loading error:",
       error
     );
+
+
+    communityPostCount.textContent =
+    "0";
+
+    communityPostSectionCount.textContent =
+    "0";
 
 
     communityPostsList.innerHTML = `
@@ -2711,13 +2820,16 @@ async function loadCommunityPosts(){
 
     `;
 
+
+    updateTotalContributions();
+
   }
 
 }
 /* =====================================================
    PART 6 OF 6
-   FAITH MOMENTS, FOLLOW ACTIONS,
-   NOTIFICATIONS AND FINAL CLOSING
+   FAITH MOMENTS, FOLLOW SYSTEM,
+   BUTTON EVENTS AND FINAL CLOSING
 ===================================================== */
 
 
@@ -2727,8 +2839,15 @@ async function loadCommunityPosts(){
 
 async function loadFaithMoments(){
 
-  faithMomentsList.innerHTML =
-  "";
+  faithMomentsList.innerHTML = `
+
+    <div class="emptyContentMessage">
+
+      Loading Faith Moments...
+
+    </div>
+
+  `;
 
 
   try{
@@ -2753,6 +2872,13 @@ async function loadFaithMoments(){
     );
 
 
+    const viewingOwnProfile =
+    Boolean(
+      currentUser &&
+      currentUser.uid === memberUid
+    );
+
+
     const visibleMoments =
     [];
 
@@ -2760,22 +2886,15 @@ async function loadFaithMoments(){
     momentsSnapshot.forEach(
       function(momentDocument){
 
-        const moment =
+        const momentData =
         momentDocument.data();
 
 
         const privacy =
         String(
-          moment.privacy ||
+          momentData.privacy ||
           "everyone"
         ).toLowerCase();
-
-
-        const viewingOwnProfile =
-        Boolean(
-          currentUser &&
-          currentUser.uid === memberUid
-        );
 
 
         if(
@@ -2788,11 +2907,38 @@ async function loadFaithMoments(){
               id:
               momentDocument.id,
 
-              ...moment
+              ...momentData
             }
           );
 
         }
+
+      }
+    );
+
+
+    visibleMoments.sort(
+      function(firstMoment,secondMoment){
+
+        const firstDate =
+        getTimestampDate(
+          firstMoment.timestamp ||
+          firstMoment.createdAt
+        );
+
+
+        const secondDate =
+        getTimestampDate(
+          secondMoment.timestamp ||
+          secondMoment.createdAt
+        );
+
+
+        return (
+          secondDate?.getTime() || 0
+        ) - (
+          firstDate?.getTime() || 0
+        );
 
       }
     );
@@ -2810,12 +2956,39 @@ async function loadFaithMoments(){
     );
 
 
+    faithMomentsList.innerHTML =
+    "";
+
+
+    if(
+      visibleMoments.length === 0
+    ){
+
+      faithMomentsList.innerHTML = `
+
+        <div class="emptyContentMessage">
+
+          This member has not shared any
+          public Faith Moments yet.
+
+        </div>
+
+      `;
+
+
+      updateTotalContributions();
+
+      return;
+
+    }
+
+
     visibleMoments.forEach(
       function(moment){
 
         const card =
         document.createElement(
-          "div"
+          "article"
         );
 
 
@@ -2841,7 +3014,7 @@ async function loadFaithMoments(){
         );
 
 
-        const verse =
+        const verseReference =
         getFirstValue(
           moment.verseReference,
           moment.reference,
@@ -2867,16 +3040,38 @@ async function loadFaithMoments(){
         );
 
 
-        let media = "";
+        let verseHtml =
+        "";
+
+
+        if(verseReference){
+
+          verseHtml = `
+
+            <div class="faithMomentVerse">
+
+              📖 ${escapeHtml(
+                verseReference
+              )}
+
+            </div>
+
+          `;
+
+        }
+
+
+        let mediaHtml =
+        "";
 
 
         if(imageUrl){
 
-          media = `
+          mediaHtml = `
 
             <img
               class="faithMomentMedia"
-              src="${imageUrl}"
+              src="${escapeHtml(imageUrl)}"
               alt="Faith Moment image"
               loading="lazy"
             >
@@ -2885,31 +3080,15 @@ async function loadFaithMoments(){
 
         }else if(videoUrl){
 
-          media = `
+          mediaHtml = `
 
             <video
               class="faithMomentMedia"
-              src="${videoUrl}"
+              src="${escapeHtml(videoUrl)}"
               controls
               playsinline
               preload="metadata"
             ></video>
-
-          `;
-
-        }
-
-
-        let verseHtml = "";
-
-
-        if(verse){
-
-          verseHtml = `
-
-            <div class="faithMomentVerse">
-              📖 ${verse}
-            </div>
 
           `;
 
@@ -2921,24 +3100,34 @@ async function loadFaithMoments(){
           <div class="faithMomentTop">
 
             <span class="faithMomentType">
-              ${momentType}
+              ${escapeHtml(momentType)}
             </span>
 
             <span class="faithMomentDate">
-              ${formatDocumentDate(moment)}
+
+              ${escapeHtml(
+                formatDocumentDate(moment)
+              )}
+
             </span>
 
           </div>
 
 
-          <div class="faithMomentMessage">
-            ${message}
-          </div>
+          ${
+            message
+            ? `
+              <div class="faithMomentMessage">
+                ${escapeHtml(message)}
+              </div>
+            `
+            : ""
+          }
 
 
           ${verseHtml}
 
-          ${media}
+          ${mediaHtml}
 
 
           <div class="faithMomentFooter">
@@ -2964,24 +3153,6 @@ async function loadFaithMoments(){
     );
 
 
-    if(
-      visibleMoments.length === 0
-    ){
-
-      faithMomentsList.innerHTML = `
-
-        <div class="emptyContentMessage">
-
-          This member has not shared any
-          public Faith Moments yet.
-
-        </div>
-
-      `;
-
-    }
-
-
     updateTotalContributions();
 
   }catch(error){
@@ -2990,6 +3161,13 @@ async function loadFaithMoments(){
       "Faith Moments loading error:",
       error
     );
+
+
+    faithMomentCount.textContent =
+    "0";
+
+    faithMomentSectionCount.textContent =
+    "0";
 
 
     faithMomentsList.innerHTML = `
@@ -3002,145 +3180,10 @@ async function loadFaithMoments(){
 
     `;
 
-  }
 
-}
-
-
-/* =====================================================
-   FORMAT FIRESTORE DATE
-===================================================== */
-
-function formatDocumentDate(data){
-
-  try{
-
-    const timestamp =
-    data.timestamp ||
-    data.createdAt ||
-    data.date ||
-    null;
-
-
-    if(
-      timestamp &&
-      typeof timestamp.toDate ===
-      "function"
-    ){
-
-      return timestamp
-      .toDate()
-      .toLocaleDateString(
-        undefined,
-        {
-          year:
-          "numeric",
-
-          month:
-          "short",
-
-          day:
-          "numeric"
-        }
-      );
-
-    }
-
-
-    if(
-      timestamp &&
-      timestamp.seconds
-    ){
-
-      return new Date(
-        timestamp.seconds * 1000
-      ).toLocaleDateString(
-        undefined,
-        {
-          year:
-          "numeric",
-
-          month:
-          "short",
-
-          day:
-          "numeric"
-        }
-      );
-
-    }
-
-
-    if(timestamp){
-
-      const date =
-      new Date(timestamp);
-
-
-      if(
-        !Number.isNaN(
-          date.getTime()
-        )
-      ){
-
-        return date.toLocaleDateString(
-          undefined,
-          {
-            year:
-            "numeric",
-
-            month:
-            "short",
-
-            day:
-            "numeric"
-          }
-        );
-
-      }
-
-    }
-
-
-    return data.dateText || "";
-
-  }catch(error){
-
-    console.error(
-      "Date formatting error:",
-      error
-    );
-
-
-    return "";
+    updateTotalContributions();
 
   }
-
-}
-
-
-/* =====================================================
-   UPDATE TOTAL CONTRIBUTIONS
-===================================================== */
-
-function updateTotalContributions(){
-
-  const posts =
-  Number(
-    communityPostCount.textContent
-  ) || 0;
-
-
-  const moments =
-  Number(
-    faithMomentCount.textContent
-  ) || 0;
-
-
-  totalContentCount.textContent =
-  String(
-    posts + moments
-  );
 
 }
 
@@ -3167,7 +3210,7 @@ async function createFollowNotification(){
     currentProfile.name,
     currentProfile.displayName,
     currentUser.displayName,
-    currentUser.email,
+    currentUser.email?.split("@")[0],
     "A Faith Connect member"
   );
 
@@ -3427,7 +3470,7 @@ async function handleFollowMember(){
 
 
 /* =====================================================
-   FOLLOW BUTTON EVENT
+   FOLLOW BUTTON
 ===================================================== */
 
 followMemberButton.addEventListener(
@@ -3437,7 +3480,7 @@ followMemberButton.addEventListener(
 
 
 /* =====================================================
-   OPEN FOLLOWERS LIST
+   OPEN FOLLOWERS PAGE
 ===================================================== */
 
 followersButton.addEventListener(
@@ -3454,7 +3497,7 @@ followersButton.addEventListener(
 
 
 /* =====================================================
-   OPEN FOLLOWING LIST
+   OPEN FOLLOWING PAGE
 ===================================================== */
 
 followingButton.addEventListener(
@@ -3502,7 +3545,7 @@ messageMemberButton.addEventListener(
 
 
     window.location.href =
-    `chat.html?user=${encodeURIComponent(
+    `messages.html?uid=${encodeURIComponent(
       memberUid
     )}`;
 
@@ -3511,7 +3554,7 @@ messageMemberButton.addEventListener(
 
 
 /* =====================================================
-   SHARE MEMBER PROFILE
+   SHARE PROFILE
 ===================================================== */
 
 shareProfileButton.addEventListener(
@@ -3522,7 +3565,7 @@ shareProfileButton.addEventListener(
     window.location.href;
 
 
-    const shareData = {
+    const shareInformation = {
 
       title:
       `${profileName.textContent} | SABASABA Gospel Ministry`,
@@ -3541,7 +3584,7 @@ shareProfileButton.addEventListener(
       if(navigator.share){
 
         await navigator.share(
-          shareData
+          shareInformation
         );
 
         return;
@@ -3559,7 +3602,7 @@ shareProfileButton.addEventListener(
         );
 
 
-        const originalText =
+        const originalButtonText =
         shareProfileButton.textContent;
 
 
@@ -3571,7 +3614,7 @@ shareProfileButton.addEventListener(
           function(){
 
             shareProfileButton.textContent =
-            originalText;
+            originalButtonText;
 
           },
           2000
@@ -3626,26 +3669,67 @@ profilePicture.addEventListener(
 
   },
   {
-    once:
-    true
+    once:true
   }
 );
 
 
 /* =====================================================
-   PAGE CLEANUP
+   MEDIA ERROR FALLBACK
 ===================================================== */
 
-window.addEventListener(
-  "pagehide",
-  function(){
+profilePageContent.addEventListener(
+  "error",
+  function(event){
 
-    followActionRunning =
-    false;
+    const mediaElement =
+    event.target;
 
-  }
+
+    if(
+      !mediaElement.classList.contains(
+        "communityPostMedia"
+      ) &&
+      !mediaElement.classList.contains(
+        "faithMomentMedia"
+      )
+    ){
+
+      return;
+
+    }
+
+
+    const fallback =
+    document.createElement(
+      "div"
+    );
+
+
+    fallback.className =
+    "mediaFallback";
+
+
+    fallback.textContent =
+    "This media could not be displayed.";
+
+
+    mediaElement.replaceWith(
+      fallback
+    );
+
+  },
+  true
 );
 
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect member profile is ready."
+);
 
 </script>
 
