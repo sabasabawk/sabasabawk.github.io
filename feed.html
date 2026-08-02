@@ -562,7 +562,41 @@ a:focus-visible{
   word-break:break-word;
   cursor:pointer;
 }
+/* =====================================================
+   VERIFIED ACCOUNT BADGE
+===================================================== */
 
+.authorNameRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.verifiedBadge{
+  display:none;
+  min-height:20px;
+  padding:4px 7px;
+  border-radius:999px;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:9px;
+  font-weight:bold;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.verifiedBadge.show{
+  display:inline-flex;
+}
+
+.verifiedBadge.ministry{
+  background:#eaf7ee;
+  color:#27874f;
+}
 .authorName:hover{
   text-decoration:underline;
 }
@@ -1491,12 +1525,13 @@ function protectProfilePicture(imageElement){
 }
 
 /* =====================================================
-   LOAD LATEST AUTHOR PROFILE PICTURE
+   LOAD LATEST AUTHOR PROFILE INFORMATION
 ===================================================== */
 
 async function loadLatestAuthorPicture(
   authorId,
-  imageElement
+  imageElement,
+  verifiedBadgeElement = null
 ){
 
   if(
@@ -1543,7 +1578,9 @@ async function loadLatestAuthorPicture(
       );
 
 
-      if(profileSnapshot.exists()){
+      if(
+        profileSnapshot.exists()
+      ){
 
         profileData =
         profileSnapshot.data();
@@ -1558,6 +1595,8 @@ async function loadLatestAuthorPicture(
 
     }
 
+
+    /* Latest profile picture */
 
     const latestProfilePicture =
     getFirstValue(
@@ -1578,10 +1617,64 @@ async function loadLatestAuthorPicture(
 
     }
 
+
+    /* Verification information */
+
+    const accountIsVerified =
+    profileData.verified === true;
+
+
+    const accountType =
+    getFirstValue(
+      profileData.accountType,
+      profileData.userType,
+      profileData.profileType,
+      "member"
+    ).toLowerCase();
+
+
+    if(verifiedBadgeElement){
+
+      verifiedBadgeElement.classList.remove(
+        "show",
+        "ministry"
+      );
+
+
+      if(accountIsVerified){
+
+        verifiedBadgeElement.classList.add(
+          "show"
+        );
+
+
+        if(
+          accountType === "ministry"
+        ){
+
+          verifiedBadgeElement.classList.add(
+            "ministry"
+          );
+
+
+          verifiedBadgeElement.textContent =
+          "✔ Ministry";
+
+        }else{
+
+          verifiedBadgeElement.textContent =
+          "✔ Verified";
+
+        }
+
+      }
+
+    }
+
   }catch(error){
 
     console.error(
-      "Error loading author profile picture:",
+      "Error loading author profile information:",
       error
     );
 
@@ -2159,6 +2252,7 @@ function createPostCard(postData){
     postData.uid
   );
 
+
   const authorName =
   getFirstValue(
     postData.name,
@@ -2166,6 +2260,7 @@ function createPostCard(postData){
     postData.displayName,
     "Community Member"
   );
+
 
   const authorPicture =
   getFirstValue(
@@ -2176,10 +2271,12 @@ function createPostCard(postData){
     defaultProfilePicture
   );
 
+
   const authorCountry =
   getFirstValue(
     postData.country
   );
+
 
   const postDate =
   formatPostDate(
@@ -2200,6 +2297,7 @@ function createPostCard(postData){
     postData.description
   );
 
+
   const postCategory =
   getFirstValue(
     postData.category,
@@ -2218,9 +2316,12 @@ function createPostCard(postData){
     postData.mediaType
   ).toLowerCase();
 
-  let imageUrl = "";
 
-  let videoUrl = "";
+  let imageUrl =
+  "";
+
+  let videoUrl =
+  "";
 
 
   if(mediaType === "image"){
@@ -2259,6 +2360,7 @@ function createPostCard(postData){
       postData.image
     );
 
+
     videoUrl =
     getFirstValue(
       postData.videoUrl,
@@ -2275,14 +2377,19 @@ function createPostCard(postData){
   ================================================= */
 
   const likes =
-  Array.isArray(postData.likes)
+  Array.isArray(
+    postData.likes
+  )
   ? postData.likes
   : [];
+
 
   const userHasLiked =
   Boolean(
     currentUser &&
-    likes.includes(currentUser.uid)
+    likes.includes(
+      currentUser.uid
+    )
   );
 
 
@@ -2297,6 +2404,8 @@ function createPostCard(postData){
   "postHeader";
 
 
+  /* Profile picture */
+
   const profileImage =
   document.createElement("img");
 
@@ -2309,25 +2418,28 @@ function createPostCard(postData){
   profileImage.alt =
   `${authorName}'s profile picture`;
 
+
   protectProfilePicture(
-  profileImage
-);
+    profileImage
+  );
 
 
-/* Load the author's latest profile picture
-   from users/{authorId} */
-
-loadLatestAuthorPicture(
-  authorId,
-  profileImage
-);
-
+  /* Author information container */
 
   const authorInformation =
   document.createElement("div");
 
   authorInformation.className =
   "authorInformation";
+
+
+  /* Author name row */
+
+  const authorNameRow =
+  document.createElement("div");
+
+  authorNameRow.className =
+  "authorNameRow";
 
 
   const authorNameElement =
@@ -2339,6 +2451,29 @@ loadLatestAuthorPicture(
   authorNameElement.textContent =
   authorName;
 
+
+  /* Verified account badge */
+
+  const verifiedBadge =
+  document.createElement("span");
+
+  verifiedBadge.className =
+  "verifiedBadge";
+
+  verifiedBadge.textContent =
+  "✔ Verified";
+
+
+  authorNameRow.appendChild(
+    authorNameElement
+  );
+
+  authorNameRow.appendChild(
+    verifiedBadge
+  );
+
+
+  /* Country and post date */
 
   const postDetails =
   document.createElement("div");
@@ -2353,12 +2488,13 @@ loadLatestAuthorPicture(
 
 
   authorInformation.appendChild(
-    authorNameElement
+    authorNameRow
   );
 
   authorInformation.appendChild(
     postDetails
   );
+
 
   postHeader.appendChild(
     profileImage
@@ -2370,6 +2506,16 @@ loadLatestAuthorPicture(
 
   postCard.appendChild(
     postHeader
+  );
+
+
+  /* Load latest profile picture
+     and verification information */
+
+  loadLatestAuthorPicture(
+    authorId,
+    profileImage,
+    verifiedBadge
   );
 
 
@@ -2387,6 +2533,7 @@ loadLatestAuthorPicture(
 
     categoryElement.textContent =
     postCategory;
+
 
     postCard.appendChild(
       categoryElement
@@ -2409,6 +2556,7 @@ loadLatestAuthorPicture(
 
     messageElement.textContent =
     postMessage;
+
 
     postCard.appendChild(
       messageElement
@@ -2448,6 +2596,7 @@ loadLatestAuthorPicture(
     postImage.dataset.fullImage =
     imageUrl;
 
+
     postImage.addEventListener(
       "error",
       function(){
@@ -2459,6 +2608,7 @@ loadLatestAuthorPicture(
         once:true
       }
     );
+
 
     mediaContainer.appendChild(
       postImage
@@ -2476,16 +2626,17 @@ loadLatestAuthorPicture(
     videoUrl;
 
     postVideo.controls =
-true;
+    true;
 
-postVideo.muted =
-true;
+    postVideo.muted =
+    true;
 
-postVideo.preload =
-"metadata";
+    postVideo.preload =
+    "metadata";
 
-postVideo.playsInline =
-true;
+    postVideo.playsInline =
+    true;
+
 
     postVideo.addEventListener(
       "error",
@@ -2499,6 +2650,7 @@ true;
       }
     );
 
+
     mediaContainer.appendChild(
       postVideo
     );
@@ -2506,7 +2658,10 @@ true;
   }
 
 
-  if(mediaContainer.children.length > 0){
+  if(
+    mediaContainer.children.length >
+    0
+  ){
 
     postCard.appendChild(
       mediaContainer
@@ -2526,6 +2681,8 @@ true;
   "postActions";
 
 
+  /* Like button */
+
   const likeButton =
   document.createElement("button");
 
@@ -2538,17 +2695,21 @@ true;
   : "likeButton";
 
   likeButton.dataset.postId =
-postData.id;
+  postData.id;
 
-likeButton.dataset.authorId =
-authorId;
+  likeButton.dataset.authorId =
+  authorId;
 
-likeButton.dataset.likes =
-JSON.stringify(likes);
+  likeButton.dataset.likes =
+  JSON.stringify(
+    likes
+  );
 
   likeButton.innerHTML =
   `❤️ <span>${likes.length}</span>`;
 
+
+  /* Comment button */
 
   const commentButton =
   document.createElement("button");
@@ -2565,6 +2726,8 @@ JSON.stringify(likes);
   commentButton.innerHTML =
   "💬 Comment";
 
+
+  /* Share button */
 
   const shareButton =
   document.createElement("button");
@@ -2596,6 +2759,7 @@ JSON.stringify(likes);
   actionsContainer.appendChild(
     shareButton
   );
+
 
   postCard.appendChild(
     actionsContainer
@@ -2661,6 +2825,7 @@ JSON.stringify(likes);
       deleteButton
     );
 
+
     postCard.appendChild(
       ownerActions
     );
@@ -2669,38 +2834,42 @@ JSON.stringify(likes);
 
 
   /* =================================================
-   OPEN MEMBER PROFILE
-================================================= */
+     OPEN MEMBER PROFILE
+  ================================================= */
 
-if(authorId){
+  if(authorId){
 
-  profileImage.addEventListener(
-    "click",
-    function(){
+    profileImage.addEventListener(
+      "click",
+      function(){
 
-      window.location.href =
-      "user-profile.html?uid=" +
-      encodeURIComponent(authorId);
+        window.location.href =
+        "user-profile.html?uid=" +
+        encodeURIComponent(
+          authorId
+        );
 
-    }
-  );
-
-
-  authorNameElement.addEventListener(
-    "click",
-    function(){
-
-      window.location.href =
-      "user-profile.html?uid=" +
-      encodeURIComponent(authorId);
-
-    }
-  );
-
-}
+      }
+    );
 
 
-return postCard;
+    authorNameElement.addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+        "user-profile.html?uid=" +
+        encodeURIComponent(
+          authorId
+        );
+
+      }
+    );
+
+  }
+
+
+  return postCard;
 
 }
 /* =====================================================
