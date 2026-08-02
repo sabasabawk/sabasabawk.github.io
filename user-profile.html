@@ -335,411 +335,559 @@
       }
 
     }
+<style>
 
-  </style>
-  <style>
-
-    /* =====================================================
-       PART 2 OF 6
-       PROFILE CARD AND MEMBER INFORMATION
-    ===================================================== */
+  /* =====================================================
+     PART 2 OF 6
+     PROFILE CARD, FOLLOW SYSTEM
+     AND MEMBER INFORMATION
+  ===================================================== */
 
 
-    /* =====================================================
-       PROFILE CARD
-    ===================================================== */
+  /* =====================================================
+     PROFILE CARD
+  ===================================================== */
 
-    .profileCard{
+  .profileCard{
 
-      overflow:hidden;
+    overflow:hidden;
 
-      border:1px solid var(--border);
-      border-radius:var(--radius-large);
+    border:1px solid var(--border);
+    border-radius:var(--radius-large);
 
-      background:var(--surface);
+    background:var(--surface);
 
-      box-shadow:var(--shadow);
+    box-shadow:var(--shadow);
 
-    }
+  }
 
+
+  .profileCover{
+
+    min-height:145px;
+
+    padding:24px 18px 65px;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+
+    background:
+      linear-gradient(
+        135deg,
+        #087bd1,
+        #45a9eb
+      );
+
+    color:#ffffff;
+
+    text-align:center;
+
+  }
+
+
+  .profileCoverText{
+    max-width:500px;
+  }
+
+
+  .profileCoverTitle{
+
+    font-size:24px;
+    font-weight:900;
+
+  }
+
+
+  .profileCoverSubtitle{
+
+    margin-top:7px;
+
+    font-size:12px;
+    line-height:1.5;
+
+    opacity:.92;
+
+  }
+
+
+  /* =====================================================
+     PROFILE PICTURE
+  ===================================================== */
+
+  .profilePictureArea{
+
+    margin-top:-58px;
+
+    display:flex;
+    justify-content:center;
+
+  }
+
+
+  .profilePictureFrame{
+
+    width:122px;
+    height:122px;
+
+    padding:5px;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    box-shadow:
+      0 6px 18px rgba(18,47,66,.18);
+
+  }
+
+
+  .profilePicture{
+
+    width:100%;
+    height:100%;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    background:#dce4ea;
+
+  }
+
+
+  /* =====================================================
+     MEMBER INFORMATION
+  ===================================================== */
+
+  .profileInformation{
+
+    padding:
+      16px
+      20px
+      22px;
+
+    text-align:center;
+
+  }
+
+
+  .profileName{
+
+    font-size:23px;
+    font-weight:900;
+    line-height:1.25;
+
+  }
+
+
+  .profileCountry{
+
+    margin-top:7px;
+
+    color:var(--muted);
+
+    font-size:13px;
+    font-weight:800;
+
+  }
+
+
+  .profileCountry.hidden{
+    display:none;
+  }
+
+
+  .profileAbout{
+
+    margin-top:18px;
+    padding:15px;
+
+    border-radius:14px;
+
+    background:#f4f8fb;
+    color:#3f4d56;
+
+    text-align:left;
+
+    font-size:13px;
+    line-height:1.65;
+
+    white-space:pre-wrap;
+
+  }
+
+
+  .profileAbout.hidden{
+    display:none;
+  }
+
+
+  /* =====================================================
+     FOLLOW AND FOLLOWING STATISTICS
+  ===================================================== */
+
+  .followStatistics{
+
+    margin-top:17px;
+
+    display:grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+
+    gap:9px;
+
+  }
+
+
+  .followStatisticButton{
+
+    min-height:64px;
+    padding:10px 8px;
+
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+
+    background:#f8fbfd;
+    color:var(--text);
+
+    transition:
+      background .2s ease,
+      border-color .2s ease,
+      transform .2s ease;
+
+  }
+
+
+  .followStatisticButton:hover{
+
+    border-color:#9bcbe9;
+    background:var(--primary-light);
+
+  }
+
+
+  .followStatisticButton:active{
+    transform:scale(.97);
+  }
+
+
+  .followStatisticNumber{
+
+    color:var(--primary);
+
+    font-size:20px;
+    font-weight:900;
+    line-height:1;
+
+  }
+
+
+  .followStatisticLabel{
+
+    color:var(--muted);
+
+    font-size:11px;
+    font-weight:800;
+
+  }
+
+
+  /* =====================================================
+     PROFILE ACTIONS
+  ===================================================== */
+
+  .profileActions{
+
+    margin-top:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+
+  }
+
+
+  .profileActionButton{
+
+    min-height:44px;
+    padding:10px 16px;
+
+    border:0;
+    border-radius:13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+
+    background:var(--primary);
+    color:#ffffff;
+
+    font-size:12px;
+    font-weight:900;
+
+    box-shadow:
+      0 4px 12px rgba(8,123,209,.20);
+
+    transition:
+      background .2s ease,
+      border-color .2s ease,
+      color .2s ease,
+      transform .2s ease;
+
+  }
+
+
+  .profileActionButton:hover{
+    background:var(--primary-dark);
+  }
+
+
+  .profileActionButton:active{
+    transform:scale(.97);
+  }
+
+
+  .profileActionButton:disabled{
+
+    cursor:not-allowed;
+    opacity:.65;
+
+  }
+
+
+  .profileActionButton.secondary{
+
+    border:1px solid var(--border);
+
+    background:#ffffff;
+    color:var(--text);
+
+    box-shadow:none;
+
+  }
+
+
+  .profileActionButton.secondary:hover{
+    background:#edf4f8;
+  }
+
+
+  /* =====================================================
+     FOLLOW BUTTON
+  ===================================================== */
+
+  .followButton{
+
+    min-width:125px;
+
+    background:var(--primary);
+    color:#ffffff;
+
+  }
+
+
+  .followButton.following{
+
+    border:1px solid #a9d7b9;
+
+    background:#e9f7ee;
+    color:var(--success);
+
+    box-shadow:none;
+
+  }
+
+
+  .followButton.following:hover{
+
+    border-color:#e1aaaa;
+
+    background:#fdecec;
+    color:var(--danger);
+
+  }
+
+
+  .followButton.hidden{
+    display:none;
+  }
+
+
+  /* =====================================================
+     PROFILE CONTRIBUTION STATISTICS
+  ===================================================== */
+
+  .profileStats{
+
+    margin-top:18px;
+
+    display:grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+
+    gap:9px;
+
+  }
+
+
+  .profileStat{
+
+    padding:13px 8px;
+
+    border:1px solid var(--border);
+    border-radius:13px;
+
+    background:#ffffff;
+
+    text-align:center;
+
+  }
+
+
+  .profileStatNumber{
+
+    display:block;
+
+    color:var(--primary);
+
+    font-size:19px;
+    font-weight:900;
+
+  }
+
+
+  .profileStatLabel{
+
+    display:block;
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:10px;
+    font-weight:800;
+
+  }
+
+
+  /* =====================================================
+     SECTION TITLE
+  ===================================================== */
+
+  .contentSection{
+
+    margin-top:18px;
+
+    padding:18px;
+
+    border:1px solid var(--border);
+    border-radius:var(--radius-large);
+
+    background:var(--surface);
+
+    box-shadow:var(--shadow);
+
+  }
+
+
+  .sectionHeadingRow{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:14px;
+
+  }
+
+
+  .sectionHeading{
+
+    font-size:17px;
+    font-weight:900;
+
+  }
+
+
+  .sectionCount{
+
+    min-width:30px;
+    min-height:25px;
+
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:var(--primary-light);
+    color:var(--primary);
+
+    font-size:10px;
+    font-weight:900;
+
+  }
+
+
+  /* =====================================================
+     RESPONSIVE
+  ===================================================== */
+
+  @media(max-width:480px){
 
     .profileCover{
-
-      min-height:145px;
-
-      padding:24px 18px 65px;
-
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-
-      background:
-        linear-gradient(
-          135deg,
-          #087bd1,
-          #45a9eb
-        );
-
-      color:#ffffff;
-
-      text-align:center;
-
+      padding-left:14px;
+      padding-right:14px;
     }
-
-
-    .profileCoverText{
-
-      max-width:500px;
-
-    }
-
-
-    .profileCoverTitle{
-
-      font-size:24px;
-      font-weight:900;
-
-    }
-
-
-    .profileCoverSubtitle{
-
-      margin-top:7px;
-
-      font-size:12px;
-      line-height:1.5;
-
-      opacity:.92;
-
-    }
-
-
-    /* =====================================================
-       PROFILE PICTURE
-    ===================================================== */
-
-    .profilePictureArea{
-
-      margin-top:-58px;
-
-      display:flex;
-      justify-content:center;
-
-    }
-
-
-    .profilePictureFrame{
-
-      width:122px;
-      height:122px;
-
-      padding:5px;
-
-      border-radius:50%;
-
-      background:#ffffff;
-
-      box-shadow:
-        0 6px 18px rgba(18,47,66,.18);
-
-    }
-
-
-    .profilePicture{
-
-      width:100%;
-      height:100%;
-
-      border-radius:50%;
-
-      object-fit:cover;
-
-      background:#dce4ea;
-
-    }
-
-
-    /* =====================================================
-       MEMBER INFORMATION
-    ===================================================== */
 
     .profileInformation{
-
-      padding:
-        16px
-        20px
-        22px;
-
-      text-align:center;
-
+      padding-left:14px;
+      padding-right:14px;
     }
-
-
-    .profileName{
-
-      font-size:23px;
-      font-weight:900;
-      line-height:1.25;
-
-    }
-
-
-    .profileCountry{
-
-      margin-top:7px;
-
-      color:var(--muted);
-
-      font-size:13px;
-      font-weight:800;
-
-    }
-
-
-    .profileCountry.hidden{
-      display:none;
-    }
-
-
-    .profileAbout{
-
-      margin-top:18px;
-      padding:15px;
-
-      border-radius:14px;
-
-      background:#f4f8fb;
-      color:#3f4d56;
-
-      text-align:left;
-
-      font-size:13px;
-      line-height:1.65;
-
-      white-space:pre-wrap;
-
-    }
-
-
-    .profileAbout.hidden{
-      display:none;
-    }
-
-
-    /* =====================================================
-       PROFILE ACTIONS
-    ===================================================== */
-
-    .profileActions{
-
-      margin-top:18px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-
-    }
-
-
-    .profileActionButton{
-
-      min-height:44px;
-      padding:10px 16px;
-
-      border:0;
-      border-radius:13px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-
-      background:var(--primary);
-      color:#ffffff;
-
-      font-size:12px;
-      font-weight:900;
-
-      box-shadow:
-        0 4px 12px rgba(8,123,209,.20);
-
-    }
-
-
-    .profileActionButton.secondary{
-
-      border:1px solid var(--border);
-
-      background:#ffffff;
-      color:var(--text);
-
-      box-shadow:none;
-
-    }
-
-
-    .profileActionButton:hover{
-      background:var(--primary-dark);
-    }
-
-
-    .profileActionButton.secondary:hover{
-      background:#edf4f8;
-    }
-
-
-    /* =====================================================
-       PROFILE STATISTICS
-    ===================================================== */
 
     .profileStats{
-
-      margin-top:18px;
-
-      display:grid;
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
-
-      gap:9px;
-
+      grid-template-columns:1fr;
     }
 
-
-    .profileStat{
-
-      padding:13px 8px;
-
-      border:1px solid var(--border);
-      border-radius:13px;
-
-      background:#ffffff;
-
-      text-align:center;
-
+    .profileActionButton{
+      width:100%;
     }
 
-
-    .profileStatNumber{
-
-      display:block;
-
-      color:var(--primary);
-
-      font-size:19px;
-      font-weight:900;
-
+    .followStatistics{
+      grid-template-columns:1fr 1fr;
     }
 
+  }
 
-    .profileStatLabel{
 
-      display:block;
-      margin-top:4px;
+  @media(max-width:340px){
 
-      color:var(--muted);
-
-      font-size:10px;
-      font-weight:800;
-
+    .followStatistics{
+      grid-template-columns:1fr;
     }
 
+  }
 
-    /* =====================================================
-       SECTION TITLE
-    ===================================================== */
-
-    .contentSection{
-
-      margin-top:18px;
-
-      padding:18px;
-
-      border:1px solid var(--border);
-      border-radius:var(--radius-large);
-
-      background:var(--surface);
-
-      box-shadow:var(--shadow);
-
-    }
-
-
-    .sectionHeadingRow{
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-
-      margin-bottom:14px;
-
-    }
-
-
-    .sectionHeading{
-
-      font-size:17px;
-      font-weight:900;
-
-    }
-
-
-    .sectionCount{
-
-      min-width:30px;
-      min-height:25px;
-
-      padding:5px 9px;
-
-      border-radius:999px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:var(--primary-light);
-      color:var(--primary);
-
-      font-size:10px;
-      font-weight:900;
-
-    }
-
-
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media(max-width:480px){
-
-      .profileCover{
-        padding-left:14px;
-        padding-right:14px;
-      }
-
-      .profileInformation{
-        padding-left:14px;
-        padding-right:14px;
-      }
-
-      .profileStats{
-        grid-template-columns:1fr;
-      }
-
-      .profileActionButton{
-        width:100%;
-      }
-
-    }
-
-  </style>
-  <style>
-
+</style>
+  
     /* =====================================================
        PART 3 OF 6
        COMMUNITY POSTS AND FAITH MOMENT CARDS
@@ -1083,10 +1231,7 @@
 
 <body>
 
-  <!-- =====================================================
-       PART 4 OF 6
-       HTML PAGE STRUCTURE
-  ====================================================== -->
+  ===== -->
 
 
   <!-- =====================================================
@@ -1400,9 +1545,12 @@
   </main>
 <script type="module">
 
+<script type="module">
+
 /* =====================================================
    PART 5 OF 6
-   FIREBASE, PROFILE LOADING AND DATA RETRIEVAL
+   FIREBASE, AUTHENTICATION, PROFILE DATA
+   AND FOLLOW INFORMATION
 ===================================================== */
 
 import{
@@ -1410,10 +1558,16 @@ import{
   db,
   doc,
   getDoc,
+  updateDoc,
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  addDoc,
+  arrayUnion,
+  arrayRemove,
+  serverTimestamp,
+  onAuthStateChanged
 }from "./firebase.js";
 
 
@@ -1421,77 +1575,216 @@ import{
    PAGE ELEMENTS
 ===================================================== */
 
-const pageMessage=
-document.getElementById("pageMessage");
+const pageMessage =
+document.getElementById(
+  "pageMessage"
+);
 
-const profilePageContent=
-document.getElementById("profilePageContent");
+const profilePageContent =
+document.getElementById(
+  "profilePageContent"
+);
 
-const profilePicture=
-document.getElementById("profilePicture");
+const profilePicture =
+document.getElementById(
+  "profilePicture"
+);
 
-const profileName=
-document.getElementById("profileName");
+const profileName =
+document.getElementById(
+  "profileName"
+);
 
-const profileCountry=
-document.getElementById("profileCountry");
+const profileCountry =
+document.getElementById(
+  "profileCountry"
+);
 
-const profileAbout=
-document.getElementById("profileAbout");
+const profileAbout =
+document.getElementById(
+  "profileAbout"
+);
 
-const headerTitle=
-document.getElementById("headerTitle");
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
 
-const communityPostsList=
-document.getElementById("communityPostsList");
+const communityPostsList =
+document.getElementById(
+  "communityPostsList"
+);
 
-const faithMomentsList=
-document.getElementById("faithMomentsList");
+const faithMomentsList =
+document.getElementById(
+  "faithMomentsList"
+);
 
-const communityPostCount=
-document.getElementById("communityPostCount");
+const communityPostCount =
+document.getElementById(
+  "communityPostCount"
+);
 
-const faithMomentCount=
-document.getElementById("faithMomentCount");
+const faithMomentCount =
+document.getElementById(
+  "faithMomentCount"
+);
 
-const totalContentCount=
-document.getElementById("totalContentCount");
+const totalContentCount =
+document.getElementById(
+  "totalContentCount"
+);
 
-const communityPostSectionCount=
-document.getElementById("communityPostSectionCount");
+const communityPostSectionCount =
+document.getElementById(
+  "communityPostSectionCount"
+);
 
-const faithMomentSectionCount=
-document.getElementById("faithMomentSectionCount");
+const faithMomentSectionCount =
+document.getElementById(
+  "faithMomentSectionCount"
+);
 
-const backButton=
-document.getElementById("backButton");
+const backButton =
+document.getElementById(
+  "backButton"
+);
 
-const messageMemberButton=
-document.getElementById("messageMemberButton");
+const messageMemberButton =
+document.getElementById(
+  "messageMemberButton"
+);
 
-const shareProfileButton=
-document.getElementById("shareProfileButton");
+const shareProfileButton =
+document.getElementById(
+  "shareProfileButton"
+);
 
 
 /* =====================================================
-   GET MEMBER UID
+   FOLLOW ELEMENTS
 ===================================================== */
 
-const urlParams=
-new URLSearchParams(window.location.search);
+const followMemberButton =
+document.getElementById(
+  "followMemberButton"
+);
 
-const memberUid=
-urlParams.get("uid");
+const followButtonIcon =
+document.getElementById(
+  "followButtonIcon"
+);
 
+const followButtonText =
+document.getElementById(
+  "followButtonText"
+);
+
+const followersButton =
+document.getElementById(
+  "followersButton"
+);
+
+const followingButton =
+document.getElementById(
+  "followingButton"
+);
+
+const followersCount =
+document.getElementById(
+  "followersCount"
+);
+
+const followingCount =
+document.getElementById(
+  "followingCount"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let memberProfile =
+{};
+
+let memberFollowers =
+[];
+
+let memberFollowing =
+[];
+
+let currentUserIsFollowing =
+false;
+
+let followActionRunning =
+false;
+
+
+/* =====================================================
+   GET MEMBER UID FROM URL
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const memberUid =
+urlParameters.get(
+  "uid"
+);
+
+
+/* =====================================================
+   HANDLE MISSING MEMBER UID
+===================================================== */
 
 if(!memberUid){
 
-  pageMessage.textContent=
+  pageMessage.textContent =
   "Member not found.";
 
-  pageMessage.classList.add("error");
+  pageMessage.classList.add(
+    "error"
+  );
 
-  throw new Error("Missing uid");
+  throw new Error(
+    "The member UID is missing."
+  );
+
+}
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
 
 }
 
@@ -1500,19 +1793,144 @@ if(!memberUid){
    BACK BUTTON
 ===================================================== */
 
-backButton.onclick=()=>{
+backButton.addEventListener(
+  "click",
+  function(){
 
-  if(history.length>1){
+    if(
+      window.history.length > 1
+    ){
 
-    history.back();
+      window.history.back();
 
-  }else{
+    }else{
 
-    location.href="feed.html";
+      window.location.href =
+      "feed.html";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   LOAD SIGNED-IN USER PROFILE
+===================================================== */
+
+async function loadCurrentUserProfile(){
+
+  currentProfile =
+  {};
+
+  if(!currentUser){
+
+    return;
 
   }
 
-};
+
+  try{
+
+    const currentProfileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      )
+    );
+
+
+    if(
+      currentProfileSnapshot.exists()
+    ){
+
+      currentProfile =
+      currentProfileSnapshot.data();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Current profile loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   UPDATE FOLLOW COUNTS
+===================================================== */
+
+function updateFollowCounts(){
+
+  followersCount.textContent =
+  String(
+    memberFollowers.length
+  );
+
+  followingCount.textContent =
+  String(
+    memberFollowing.length
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE FOLLOW BUTTON
+===================================================== */
+
+function updateFollowButton(){
+
+  if(
+    !currentUser ||
+    currentUser.uid === memberUid
+  ){
+
+    followMemberButton.classList.add(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
+  followMemberButton.classList.remove(
+    "hidden"
+  );
+
+
+  currentUserIsFollowing =
+  memberFollowers.includes(
+    currentUser.uid
+  );
+
+
+  followMemberButton.classList.toggle(
+    "following",
+    currentUserIsFollowing
+  );
+
+
+  followButtonIcon.textContent =
+  currentUserIsFollowing
+  ? "✓"
+  : "➕";
+
+
+  followButtonText.textContent =
+  currentUserIsFollowing
+  ? "Following"
+  : "Follow";
+
+}
 
 
 /* =====================================================
@@ -1523,82 +1941,216 @@ async function loadMemberProfile(){
 
   try{
 
-    const snapshot=
+    const memberSnapshot =
     await getDoc(
-      doc(db,"users",memberUid)
+      doc(
+        db,
+        "users",
+        memberUid
+      )
     );
 
-    if(!snapshot.exists()){
 
-      pageMessage.textContent=
+    if(
+      !memberSnapshot.exists()
+    ){
+
+      pageMessage.textContent =
       "This member does not exist.";
 
-      pageMessage.classList.add("error");
+      pageMessage.classList.add(
+        "error"
+      );
 
       return;
 
     }
 
-    const user=snapshot.data();
 
-    profileName.textContent=
-      user.fullName ||
-      user.displayName ||
-      "Faith Connect Member";
+    memberProfile = {
+      id:
+      memberSnapshot.id,
 
-    headerTitle.textContent=
-      profileName.textContent;
+      ...memberSnapshot.data()
+    };
 
-    const photo=
-      user.profilePicture ||
-      user.picture ||
-      user.photoURL ||
+
+    const memberName =
+    getFirstValue(
+      memberProfile.fullName,
+      memberProfile.name,
+      memberProfile.displayName,
+      "Faith Connect Member"
+    );
+
+
+    profileName.textContent =
+    memberName;
+
+    headerTitle.textContent =
+    memberName;
+
+
+    const memberPhoto =
+    getFirstValue(
+      memberProfile.profilePicture,
+      memberProfile.picture,
+      memberProfile.photoURL,
+      memberProfile.photoUrl,
+      "images/profile.png"
+    );
+
+
+    profilePicture.src =
+    memberPhoto;
+
+
+    const memberCountry =
+    getFirstValue(
+      memberProfile.country,
+      memberProfile.location
+    );
+
+
+    if(memberCountry){
+
+      profileCountry.textContent =
+      `🌍 ${memberCountry}`;
+
+      profileCountry.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      profileCountry.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    const memberAbout =
+    getFirstValue(
+      memberProfile.about,
+      memberProfile.bio
+    );
+
+
+    if(memberAbout){
+
+      profileAbout.textContent =
+      memberAbout;
+
+      profileAbout.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      profileAbout.textContent =
       "";
 
-    if(photo){
-
-      profilePicture.src=photo;
-
-    }
-
-    if(user.country){
-
-      profileCountry.textContent=
-      "🌍 "+user.country;
-
-      profileCountry.classList.remove("hidden");
+      profileAbout.classList.add(
+        "hidden"
+      );
 
     }
 
-    if(user.about){
 
-      profileAbout.textContent=
-      user.about;
+    memberFollowers =
+    Array.isArray(
+      memberProfile.followers
+    )
+    ? memberProfile.followers
+    : [];
 
-      profileAbout.classList.remove("hidden");
 
-    }
+    memberFollowing =
+    Array.isArray(
+      memberProfile.following
+    )
+    ? memberProfile.following
+    : [];
 
-    pageMessage.classList.add("hidden");
 
-    profilePageContent.classList.add("show");
+    updateFollowCounts();
 
-    await loadCommunityPosts();
+    updateFollowButton();
 
-    await loadFaithMoments();
+
+    pageMessage.classList.add(
+      "hidden"
+    );
+
+    profilePageContent.classList.add(
+      "show"
+    );
+
+
+    await Promise.all(
+      [
+        loadCommunityPosts(),
+        loadFaithMoments()
+      ]
+    );
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Member profile loading error:",
+      error
+    );
 
-    pageMessage.textContent=
+
+    pageMessage.textContent =
     "Unable to load this profile.";
 
-    pageMessage.classList.add("error");
+    pageMessage.classList.add(
+      "error"
+    );
 
   }
 
 }
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    await loadCurrentUserProfile();
+
+    await loadMemberProfile();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    currentUser =
+    null;
+
+    currentProfile =
+    {};
+
+
+    loadMemberProfile();
+
+  }
+);
 
 
 /* =====================================================
@@ -1607,88 +2159,200 @@ async function loadMemberProfile(){
 
 async function loadCommunityPosts(){
 
-  communityPostsList.innerHTML="";
+  communityPostsList.innerHTML =
+  "";
 
-  const q=query(
-    collection(db,"communityPosts"),
-    where("userId","==",memberUid)
-  );
 
-  const snap=await getDocs(q);
+  try{
 
-  communityPostCount.textContent=snap.size;
-  communityPostSectionCount.textContent=snap.size;
+    const postsQuery =
+    query(
+      collection(
+        db,
+        "communityPosts"
+      ),
+      where(
+        "userId",
+        "==",
+        memberUid
+      )
+    );
 
-  snap.forEach(docSnap=>{
 
-    const post=docSnap.data();
+    const postsSnapshot =
+    await getDocs(
+      postsQuery
+    );
 
-    const card=document.createElement("div");
-    card.className="communityPostCard";
 
-    let media="";
+    communityPostCount.textContent =
+    String(
+      postsSnapshot.size
+    );
 
-    if(post.imageUrl){
+    communityPostSectionCount.textContent =
+    String(
+      postsSnapshot.size
+    );
 
-      media=`
-      <img
-        class="communityPostMedia"
-        src="${post.imageUrl}"
-      >`;
 
-    }else if(post.videoUrl){
+    postsSnapshot.forEach(
+      function(postDocument){
 
-      media=`
-      <video
-        class="communityPostMedia"
-        controls
-        playsinline
-        preload="metadata"
-      >
-        <source src="${post.videoUrl}">
-      </video>`;
+        const post =
+        postDocument.data();
+
+
+        const card =
+        document.createElement(
+          "div"
+        );
+
+        card.className =
+        "communityPostCard";
+
+
+        const postMessage =
+        getFirstValue(
+          post.post,
+          post.message,
+          post.content,
+          post.text
+        );
+
+
+        const imageUrl =
+        getFirstValue(
+          post.imageUrl,
+          post.imageURL,
+          post.photoUrl,
+          post.photoURL,
+          post.mediaType === "image"
+          ? post.mediaUrl
+          : ""
+        );
+
+
+        const videoUrl =
+        getFirstValue(
+          post.videoUrl,
+          post.videoURL,
+          post.mediaType === "video"
+          ? post.mediaUrl
+          : ""
+        );
+
+
+        let media = "";
+
+
+        if(imageUrl){
+
+          media = `
+
+            <img
+              class="communityPostMedia"
+              src="${imageUrl}"
+              alt="Community post image"
+              loading="lazy"
+            >
+
+          `;
+
+        }else if(videoUrl){
+
+          media = `
+
+            <video
+              class="communityPostMedia"
+              src="${videoUrl}"
+              controls
+              playsinline
+              preload="metadata"
+            ></video>
+
+          `;
+
+        }
+
+
+        card.innerHTML = `
+
+          <div class="communityPostHeader">
+
+            <span class="communityPostCategory">
+              ${post.category || "Community"}
+            </span>
+
+            <span class="communityPostDate">
+              ${formatDocumentDate(post)}
+            </span>
+
+          </div>
+
+
+          <div class="communityPostMessage">
+            ${postMessage}
+          </div>
+
+          ${media}
+
+        `;
+
+
+        communityPostsList.appendChild(
+          card
+        );
+
+      }
+    );
+
+
+    if(
+      postsSnapshot.empty
+    ){
+
+      communityPostsList.innerHTML = `
+
+        <div class="emptyContentMessage">
+
+          This member has not shared any
+          Community Posts yet.
+
+        </div>
+
+      `;
 
     }
 
-    card.innerHTML=`
 
-      <div class="communityPostHeader">
+    updateTotalContributions();
 
-        <span class="communityPostCategory">
-          ${post.category||"Community"}
-        </span>
+  }catch(error){
 
-        <span class="communityPostDate">
-          ${post.dateText||""}
-        </span>
+    console.error(
+      "Community posts loading error:",
+      error
+    );
+
+
+    communityPostsList.innerHTML = `
+
+      <div class="emptyContentMessage">
+
+        Community Posts could not be loaded.
 
       </div>
-
-      <div class="communityPostMessage">
-        ${post.message||""}
-      </div>
-
-      ${media}
 
     `;
-
-    communityPostsList.appendChild(card);
-
-  });
-
-  if(!snap.size){
-
-    communityPostsList.innerHTML=
-    `<div class="emptyContentMessage">
-      No Community Posts yet.
-    </div>`;
 
   }
 
 }
 /* =====================================================
    PART 6 OF 6
-   FAITH MOMENTS, BUTTONS AND PAGE INITIALIZATION
+   FAITH MOMENTS, FOLLOW ACTIONS,
+   NOTIFICATIONS AND FINAL CLOSING
 ===================================================== */
 
 
@@ -1698,111 +2362,254 @@ async function loadCommunityPosts(){
 
 async function loadFaithMoments(){
 
-  faithMomentsList.innerHTML="";
-
-  const q=query(
-    collection(db,"faithMoments"),
-    where("userId","==",memberUid)
-  );
-
-  const snap=await getDocs(q);
-
-  faithMomentCount.textContent=snap.size;
-  faithMomentSectionCount.textContent=snap.size;
-
-  snap.forEach(docSnap=>{
-
-    const moment=docSnap.data();
-
-    const card=
-    document.createElement("div");
-
-    card.className="faithMomentCard";
+  faithMomentsList.innerHTML =
+  "";
 
 
-    const message=
-      moment.message ||
-      moment.content ||
-      moment.text ||
-      moment.description ||
-      "";
+  try{
+
+    const momentsQuery =
+    query(
+      collection(
+        db,
+        "faithMoments"
+      ),
+      where(
+        "userId",
+        "==",
+        memberUid
+      )
+    );
 
 
-    const momentType=
-      moment.category ||
-      moment.type ||
-      moment.momentType ||
-      "Faith Moment";
+    const momentsSnapshot =
+    await getDocs(
+      momentsQuery
+    );
 
 
-    const verse=
-      moment.verse ||
-      moment.bibleVerse ||
-      moment.scripture ||
-      "";
+    const visibleMoments =
+    [];
 
 
-    const imageUrl=
-      moment.imageUrl ||
-      moment.imageURL ||
-      moment.photoUrl ||
-      moment.photoURL ||
-      "";
+    momentsSnapshot.forEach(
+      function(momentDocument){
+
+        const moment =
+        momentDocument.data();
 
 
-    const videoUrl=
-      moment.videoUrl ||
-      moment.videoURL ||
-      "";
+        const privacy =
+        String(
+          moment.privacy ||
+          "everyone"
+        ).toLowerCase();
 
 
-    let media="";
+        const viewingOwnProfile =
+        Boolean(
+          currentUser &&
+          currentUser.uid === memberUid
+        );
 
 
-    if(imageUrl){
+        if(
+          privacy === "everyone" ||
+          viewingOwnProfile
+        ){
 
-      media=`
+          visibleMoments.push(
+            {
+              id:
+              momentDocument.id,
 
-        <img
-          class="faithMomentMedia"
-          src="${imageUrl}"
-          alt="Faith Moment image"
-          loading="lazy"
-        >
+              ...moment
+            }
+          );
 
-      `;
+        }
 
-    }else if(videoUrl){
-
-      media=`
-
-        <video
-          class="faithMomentMedia"
-          controls
-          playsinline
-          preload="metadata"
-        >
-
-          <source src="${videoUrl}">
-
-          Your browser does not support video playback.
-
-        </video>
-
-      `;
-
-    }
+      }
+    );
 
 
-    let verseHtml="";
+    faithMomentCount.textContent =
+    String(
+      visibleMoments.length
+    );
 
 
-    if(verse){
+    faithMomentSectionCount.textContent =
+    String(
+      visibleMoments.length
+    );
 
-      verseHtml=`
 
-        <div class="faithMomentVerse">
-          📖 ${verse}
+    visibleMoments.forEach(
+      function(moment){
+
+        const card =
+        document.createElement(
+          "div"
+        );
+
+
+        card.className =
+        "faithMomentCard";
+
+
+        const message =
+        getFirstValue(
+          moment.message,
+          moment.content,
+          moment.text,
+          moment.description
+        );
+
+
+        const momentType =
+        getFirstValue(
+          moment.category,
+          moment.type,
+          moment.momentType,
+          "Faith Moment"
+        );
+
+
+        const verse =
+        getFirstValue(
+          moment.verseReference,
+          moment.reference,
+          moment.verse,
+          moment.bibleVerse,
+          moment.scripture
+        );
+
+
+        const imageUrl =
+        getFirstValue(
+          moment.imageUrl,
+          moment.imageURL,
+          moment.photoUrl,
+          moment.photoURL
+        );
+
+
+        const videoUrl =
+        getFirstValue(
+          moment.videoUrl,
+          moment.videoURL
+        );
+
+
+        let media = "";
+
+
+        if(imageUrl){
+
+          media = `
+
+            <img
+              class="faithMomentMedia"
+              src="${imageUrl}"
+              alt="Faith Moment image"
+              loading="lazy"
+            >
+
+          `;
+
+        }else if(videoUrl){
+
+          media = `
+
+            <video
+              class="faithMomentMedia"
+              src="${videoUrl}"
+              controls
+              playsinline
+              preload="metadata"
+            ></video>
+
+          `;
+
+        }
+
+
+        let verseHtml = "";
+
+
+        if(verse){
+
+          verseHtml = `
+
+            <div class="faithMomentVerse">
+              📖 ${verse}
+            </div>
+
+          `;
+
+        }
+
+
+        card.innerHTML = `
+
+          <div class="faithMomentTop">
+
+            <span class="faithMomentType">
+              ${momentType}
+            </span>
+
+            <span class="faithMomentDate">
+              ${formatDocumentDate(moment)}
+            </span>
+
+          </div>
+
+
+          <div class="faithMomentMessage">
+            ${message}
+          </div>
+
+
+          ${verseHtml}
+
+          ${media}
+
+
+          <div class="faithMomentFooter">
+
+            <span>
+              🙏 Faith Moment
+            </span>
+
+            <span>
+              SABASABA Gospel Ministry
+            </span>
+
+          </div>
+
+        `;
+
+
+        faithMomentsList.appendChild(
+          card
+        );
+
+      }
+    );
+
+
+    if(
+      visibleMoments.length === 0
+    ){
+
+      faithMomentsList.innerHTML = `
+
+        <div class="emptyContentMessage">
+
+          This member has not shared any
+          public Faith Moments yet.
+
         </div>
 
       `;
@@ -1810,68 +2617,27 @@ async function loadFaithMoments(){
     }
 
 
-    card.innerHTML=`
+    updateTotalContributions();
 
-      <div class="faithMomentTop">
+  }catch(error){
 
-        <span class="faithMomentType">
-          ${momentType}
-        </span>
-
-        <span class="faithMomentDate">
-          ${formatDocumentDate(moment)}
-        </span>
-
-      </div>
+    console.error(
+      "Faith Moments loading error:",
+      error
+    );
 
 
-      <div class="faithMomentMessage">
-        ${message}
-      </div>
-
-
-      ${verseHtml}
-
-      ${media}
-
-
-      <div class="faithMomentFooter">
-
-        <span>
-          🙏 Faith Moment
-        </span>
-
-        <span>
-          SABASABA Gospel Ministry
-        </span>
-
-      </div>
-
-    `;
-
-
-    faithMomentsList.appendChild(card);
-
-  });
-
-
-  if(!snap.size){
-
-    faithMomentsList.innerHTML=`
+    faithMomentsList.innerHTML = `
 
       <div class="emptyContentMessage">
 
-        This member has not shared any
-        Faith Moments yet.
+        Faith Moments could not be loaded.
 
       </div>
 
     `;
 
   }
-
-
-  updateTotalContributions();
 
 }
 
@@ -1884,42 +2650,85 @@ function formatDocumentDate(data){
 
   try{
 
-    const timestamp=
-      data.timestamp ||
-      data.createdAt ||
-      data.date ||
-      null;
+    const timestamp =
+    data.timestamp ||
+    data.createdAt ||
+    data.date ||
+    null;
 
 
-    if(timestamp?.toDate){
+    if(
+      timestamp &&
+      typeof timestamp.toDate ===
+      "function"
+    ){
 
       return timestamp
-        .toDate()
-        .toLocaleDateString(
-          undefined,
-          {
-            year:"numeric",
-            month:"short",
-            day:"numeric"
-          }
-        );
+      .toDate()
+      .toLocaleDateString(
+        undefined,
+        {
+          year:
+          "numeric",
+
+          month:
+          "short",
+
+          day:
+          "numeric"
+        }
+      );
+
+    }
+
+
+    if(
+      timestamp &&
+      timestamp.seconds
+    ){
+
+      return new Date(
+        timestamp.seconds * 1000
+      ).toLocaleDateString(
+        undefined,
+        {
+          year:
+          "numeric",
+
+          month:
+          "short",
+
+          day:
+          "numeric"
+        }
+      );
 
     }
 
 
     if(timestamp){
 
-      const date=
+      const date =
       new Date(timestamp);
 
-      if(!Number.isNaN(date.getTime())){
+
+      if(
+        !Number.isNaN(
+          date.getTime()
+        )
+      ){
 
         return date.toLocaleDateString(
           undefined,
           {
-            year:"numeric",
-            month:"short",
-            day:"numeric"
+            year:
+            "numeric",
+
+            month:
+            "short",
+
+            day:
+            "numeric"
           }
         );
 
@@ -1937,6 +2746,7 @@ function formatDocumentDate(data){
       error
     );
 
+
     return "";
 
   }
@@ -1945,127 +2755,532 @@ function formatDocumentDate(data){
 
 
 /* =====================================================
-   TOTAL CONTRIBUTIONS
+   UPDATE TOTAL CONTRIBUTIONS
 ===================================================== */
 
 function updateTotalContributions(){
 
-  const posts=
-    Number(
-      communityPostCount.textContent
-    ) || 0;
+  const posts =
+  Number(
+    communityPostCount.textContent
+  ) || 0;
 
-  const moments=
-    Number(
-      faithMomentCount.textContent
-    ) || 0;
 
-  totalContentCount.textContent=
-    posts + moments;
+  const moments =
+  Number(
+    faithMomentCount.textContent
+  ) || 0;
+
+
+  totalContentCount.textContent =
+  String(
+    posts + moments
+  );
 
 }
 
 
 /* =====================================================
-   MESSAGE MEMBER BUTTON
+   CREATE FOLLOW NOTIFICATION
 ===================================================== */
 
-messageMemberButton.onclick=()=>{
+async function createFollowNotification(){
 
-  location.href=
-  `messages.html?uid=${encodeURIComponent(memberUid)}`;
+  if(
+    !currentUser ||
+    currentUser.uid === memberUid
+  ){
 
-};
+    return;
+
+  }
 
 
-/* =====================================================
-   SHARE PROFILE BUTTON
-===================================================== */
-
-shareProfileButton.onclick=async()=>{
-
-  const profileUrl=
-  window.location.href;
-
-  const shareData={
-
-    title:
-      `${profileName.textContent} | SABASABA Gospel Ministry`,
-
-    text:
-      `View ${profileName.textContent}'s Faith Connect profile.`,
-
-    url:profileUrl
-
-  };
+  const senderName =
+  getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentProfile.displayName,
+    currentUser.displayName,
+    currentUser.email,
+    "A Faith Connect member"
+  );
 
 
   try{
 
-    if(navigator.share){
+    await addDoc(
+      collection(
+        db,
+        "notifications"
+      ),
+      {
 
-      await navigator.share(shareData);
+        recipientId:
+        memberUid,
 
-    }else{
+        senderId:
+        currentUser.uid,
 
-      await navigator.clipboard.writeText(
-        profileUrl
-      );
+        senderName:
+        senderName,
 
-      const originalText=
-      shareProfileButton.textContent;
+        type:
+        "follow",
 
-      shareProfileButton.textContent=
-      "✅ Link Copied";
+        message:
+        `${senderName} started following you.`,
 
-      setTimeout(()=>{
+        targetUrl:
+        `user-profile.html?uid=${encodeURIComponent(
+          currentUser.uid
+        )}`,
 
-        shareProfileButton.textContent=
-        originalText;
+        read:
+        false,
 
-      },2000);
+        timestamp:
+        serverTimestamp()
 
-    }
+      }
+    );
 
   }catch(error){
 
-    if(error.name!=="AbortError"){
+    console.error(
+      "Follow notification error:",
+      error
+    );
 
-      console.error(
-        "Profile sharing error:",
-        error
+  }
+
+}
+
+
+/* =====================================================
+   FOLLOW OR UNFOLLOW MEMBER
+===================================================== */
+
+async function handleFollowMember(){
+
+  if(followActionRunning){
+
+    return;
+
+  }
+
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+
+  if(
+    currentUser.uid === memberUid
+  ){
+
+    return;
+
+  }
+
+
+  followActionRunning =
+  true;
+
+
+  followMemberButton.disabled =
+  true;
+
+
+  followButtonText.textContent =
+  currentUserIsFollowing
+  ? "Unfollowing..."
+  : "Following...";
+
+
+  try{
+
+    const memberReference =
+    doc(
+      db,
+      "users",
+      memberUid
+    );
+
+
+    const currentUserReference =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+
+    if(currentUserIsFollowing){
+
+      await Promise.all(
+        [
+
+          updateDoc(
+            memberReference,
+            {
+              followers:
+              arrayRemove(
+                currentUser.uid
+              )
+            }
+          ),
+
+          updateDoc(
+            currentUserReference,
+            {
+              following:
+              arrayRemove(
+                memberUid
+              )
+            }
+          )
+
+        ]
       );
+
+
+      memberFollowers =
+      memberFollowers.filter(
+        function(userId){
+
+          return userId !==
+          currentUser.uid;
+
+        }
+      );
+
+
+      currentUserIsFollowing =
+      false;
+
+    }else{
+
+      await Promise.all(
+        [
+
+          updateDoc(
+            memberReference,
+            {
+              followers:
+              arrayUnion(
+                currentUser.uid
+              )
+            }
+          ),
+
+          updateDoc(
+            currentUserReference,
+            {
+              following:
+              arrayUnion(
+                memberUid
+              )
+            }
+          )
+
+        ]
+      );
+
+
+      if(
+        !memberFollowers.includes(
+          currentUser.uid
+        )
+      ){
+
+        memberFollowers.push(
+          currentUser.uid
+        );
+
+      }
+
+
+      currentUserIsFollowing =
+      true;
+
+
+      await createFollowNotification();
+
+    }
+
+
+    updateFollowCounts();
+
+    updateFollowButton();
+
+  }catch(error){
+
+    console.error(
+      "Follow action error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
 
       alert(
-        "Unable to share this profile."
+        "Firestore denied permission to update the Follow information."
       );
+
+    }else{
+
+      alert(
+        "The Follow action could not be completed. Please try again."
+      );
+
+    }
+
+
+    updateFollowButton();
+
+  }finally{
+
+    followActionRunning =
+    false;
+
+
+    followMemberButton.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   FOLLOW BUTTON EVENT
+===================================================== */
+
+followMemberButton.addEventListener(
+  "click",
+  handleFollowMember
+);
+
+
+/* =====================================================
+   OPEN FOLLOWERS LIST
+===================================================== */
+
+followersButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `followers.html?uid=${encodeURIComponent(
+      memberUid
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   OPEN FOLLOWING LIST
+===================================================== */
+
+followingButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `following.html?uid=${encodeURIComponent(
+      memberUid
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   MESSAGE MEMBER
+===================================================== */
+
+messageMemberButton.addEventListener(
+  "click",
+  function(){
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    if(
+      currentUser.uid === memberUid
+    ){
+
+      alert(
+        "This is your own profile."
+      );
+
+      return;
+
+    }
+
+
+    window.location.href =
+    `chat.html?user=${encodeURIComponent(
+      memberUid
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   SHARE MEMBER PROFILE
+===================================================== */
+
+shareProfileButton.addEventListener(
+  "click",
+  async function(){
+
+    const profileUrl =
+    window.location.href;
+
+
+    const shareData = {
+
+      title:
+      `${profileName.textContent} | SABASABA Gospel Ministry`,
+
+      text:
+      `View ${profileName.textContent}'s Faith Connect profile.`,
+
+      url:
+      profileUrl
+
+    };
+
+
+    try{
+
+      if(navigator.share){
+
+        await navigator.share(
+          shareData
+        );
+
+        return;
+
+      }
+
+
+      if(
+        navigator.clipboard &&
+        window.isSecureContext
+      ){
+
+        await navigator.clipboard.writeText(
+          profileUrl
+        );
+
+
+        const originalText =
+        shareProfileButton.textContent;
+
+
+        shareProfileButton.textContent =
+        "✅ Link Copied";
+
+
+        window.setTimeout(
+          function(){
+
+            shareProfileButton.textContent =
+            originalText;
+
+          },
+          2000
+        );
+
+
+        return;
+
+      }
+
+
+      window.prompt(
+        "Copy this profile link:",
+        profileUrl
+      );
+
+    }catch(error){
+
+      if(
+        error?.name !==
+        "AbortError"
+      ){
+
+        console.error(
+          "Profile sharing error:",
+          error
+        );
+
+
+        alert(
+          "Unable to share this profile."
+        );
+
+      }
 
     }
 
   }
-
-};
-
-
-/* =====================================================
-   IMAGE ERROR FALLBACK
-===================================================== */
-
-profilePicture.onerror=()=>{
-
-  profilePicture.onerror=null;
-
-  profilePicture.src=
-  "https://ui-avatars.com/api/?name=Member&background=dce4ea&color=31424d&size=240";
-
-};
+);
 
 
 /* =====================================================
-   START PAGE
+   PROFILE PICTURE FALLBACK
 ===================================================== */
 
-loadMemberProfile();
+profilePicture.addEventListener(
+  "error",
+  function(){
+
+    profilePicture.src =
+    "images/profile.png";
+
+  },
+  {
+    once:
+    true
+  }
+);
+
+
+/* =====================================================
+   PAGE CLEANUP
+===================================================== */
+
+window.addEventListener(
+  "pagehide",
+  function(){
+
+    followActionRunning =
+    false;
+
+  }
+);
+
 
 </script>
 
