@@ -3010,8 +3010,10 @@ import{
   collection,
   doc,
   getDoc,
-  addDoc,
-  setDoc,
+  getDoc,
+getDocs,
+addDoc,
+setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -9211,6 +9213,30 @@ clearChatButton.addEventListener(
   }
 );
 
+/* =====================================================
+   TYPING LISTENER STATE
+===================================================== */
+
+let unsubscribeTyping =
+null;
+
+
+/* =====================================================
+   TYPING DOCUMENT REFERENCE
+===================================================== */
+
+function getTypingDocumentReference(){
+
+  return doc(
+    db,
+    "conversations",
+    conversationId,
+    "typing",
+    "status"
+  );
+
+}
+
 
 /* =====================================================
    SEND TYPING STATUS
@@ -9224,33 +9250,34 @@ async function updateTypingStatus(
     !conversationId ||
     !currentUser
   ){
+
     return;
+
   }
+
 
   try{
 
     await setDoc(
-
-      doc(
-        db,
-        "conversations",
-        conversationId,
-        "typing"
-      ),
-
+      getTypingDocumentReference(),
       {
-        [currentUser.uid]:typing
-      },
+        [currentUser.uid]:
+        typing,
 
+        updatedAt:
+        serverTimestamp()
+      },
       {
         merge:true
       }
-
     );
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Typing status update error:",
+      error
+    );
 
   }
 
@@ -9272,22 +9299,26 @@ messageInput.addEventListener(
       currentUserTyping =
       true;
 
+
       updateTypingStatus(
         true
       );
 
     }
 
-    clearTimeout(
+
+    window.clearTimeout(
       typingStopTimer
     );
 
+
     typingStopTimer =
-    setTimeout(
+    window.setTimeout(
       function(){
 
         currentUserTyping =
         false;
+
 
         updateTypingStatus(
           false
@@ -9302,25 +9333,50 @@ messageInput.addEventListener(
 
 
 /* =====================================================
+   STOP TYPING LISTENER
+===================================================== */
+
+function stopTypingListener(){
+
+  if(
+    typeof unsubscribeTyping ===
+    "function"
+  ){
+
+    unsubscribeTyping();
+
+  }
+
+
+  unsubscribeTyping =
+  null;
+
+}
+
+
+/* =====================================================
    LISTEN FOR OTHER USER TYPING
 ===================================================== */
 
 function startTypingListener(){
 
+  stopTypingListener();
+
+
   if(
-    !conversationId
+    !conversationId ||
+    !otherUid
   ){
+
     return;
+
   }
 
+
+  unsubscribeTyping =
   onSnapshot(
 
-    doc(
-      db,
-      "conversations",
-      conversationId,
-      "typing"
-    ),
+    getTypingDocumentReference(),
 
     function(snapshot){
 
@@ -9328,29 +9384,43 @@ function startTypingListener(){
         !snapshot.exists()
       ){
 
-        typingIndicator.style.display =
-        "none";
+        typingIndicator.classList.remove(
+          "show"
+        );
+
 
         return;
 
       }
 
-      const data =
+
+      const typingData =
       snapshot.data();
 
-      if(
-        data?.[otherUid]
-      ){
 
-        typingIndicator.style.display =
-        "flex";
+      const otherMemberIsTyping =
+      typingData?.[otherUid] ===
+      true;
 
-      }else{
 
-        typingIndicator.style.display =
-        "none";
+      typingIndicator.classList.toggle(
+        "show",
+        otherMemberIsTyping
+      );
 
-      }
+    },
+
+    function(error){
+
+      console.error(
+        "Typing listener error:",
+        error
+      );
+
+
+      typingIndicator.classList.remove(
+        "show"
+      );
 
     }
 
@@ -9369,7 +9439,29 @@ function cleanUpChatPage(){
 
   stopOtherMemberListener();
 
-  releasePreviewUrl();
+stopTypingListener();
+
+window.clearTimeout(
+  typingStopTimer
+);
+
+typingStopTimer =
+null;
+
+if(
+  currentUserTyping
+){
+
+  currentUserTyping =
+  false;
+
+  updateTypingStatus(
+    false
+  );
+
+}
+
+releasePreviewUrl();
 
   resetMediaViewer();
 
