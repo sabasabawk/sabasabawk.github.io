@@ -1884,6 +1884,11 @@ function startCommunityFeed(){
 
   stopPostsListener();
 
+  /* Clear old profile information so verification,
+     account type and profile pictures reload from Firebase */
+
+  userProfileCache.clear();
+
   showLoadingMessage();
 
   loadCommunityPosts();
