@@ -1,0 +1,3043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="View Bible Study Group details on Faith Connect."
+  >
+
+  <title>
+    Bible Study Group | SABASABA Gospel Ministry
+  </title>
+
+  <style>
+
+    /* =====================================================
+       PART 1 OF 6
+       GENERAL PAGE, VARIABLES AND TOP HEADER
+    ===================================================== */
+
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#eef3f8;
+      --surface:#ffffff;
+
+      --text:#1f2b34;
+      --muted:#687680;
+
+      --border:#dce4ea;
+
+      --success:#27874f;
+      --danger:#c84444;
+      --warning:#9b6900;
+
+      --shadow:
+        0 6px 20px rgba(25,55,75,.10);
+
+      --radius-large:22px;
+      --radius-medium:16px;
+      --radius-small:12px;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      background:var(--background);
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    }
+
+
+    button,
+    input,
+    textarea,
+    select{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    img,
+    video{
+      display:block;
+      max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible{
+
+      outline:
+        3px solid
+        rgba(8,123,209,.30);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:sticky;
+      top:0;
+      z-index:1000;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(12px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      max-width:760px;
+      min-height:62px;
+
+      margin:auto;
+      padding:8px 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#edf3f7;
+      color:var(--text);
+
+      font-size:23px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+      background:#dfeaf1;
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:2px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:700;
+
+    }
+
+
+    .headerIcon{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--primary),
+          #4ca9e5
+        );
+
+      color:#ffffff;
+      font-size:20px;
+
+      box-shadow:
+        0 5px 14px
+        rgba(8,123,209,.22);
+
+    }
+
+
+    /* =====================================================
+       MAIN PAGE CONTAINER
+    ===================================================== */
+
+    .pageContainer{
+
+      width:100%;
+      max-width:760px;
+
+      margin:auto;
+
+      padding:
+        18px
+        14px
+        40px;
+
+    }
+
+
+    /* =====================================================
+       PAGE MESSAGE
+    ===================================================== */
+
+    .pageMessage{
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-medium);
+
+      background:var(--surface);
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:13px;
+      font-weight:800;
+      line-height:1.5;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .pageMessage.error{
+
+      background:#fdecec;
+      color:#a52f2f;
+      border-color:#f3caca;
+
+    }
+
+
+    .pageMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       GROUP PAGE VISIBILITY
+    ===================================================== */
+
+    .groupPageContent{
+      display:none;
+    }
+
+
+    .groupPageContent.show{
+      display:block;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .pageContainer{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .headerTitle{
+        font-size:16px;
+      }
+
+    }
+
+  </style>
+  <style>
+
+    /* =====================================================
+       PART 2 OF 6
+       GROUP COVER, INFORMATION,
+       ACTIONS, SCHEDULE AND ADMIN CONTROLS
+    ===================================================== */
+
+
+    /* =====================================================
+       GROUP CARD
+    ===================================================== */
+
+    .groupCard{
+
+      overflow:hidden;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-large);
+
+      background:var(--surface);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    /* =====================================================
+       GROUP COVER
+    ===================================================== */
+
+    .groupCover{
+
+      position:relative;
+
+      min-height:220px;
+
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+
+      overflow:hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #087bd1,
+          #45a9eb
+        );
+
+    }
+
+
+    .groupCoverImage{
+
+      position:absolute;
+      inset:0;
+
+      width:100%;
+      height:100%;
+
+      object-fit:cover;
+
+    }
+
+
+    .groupCoverOverlay{
+
+      position:absolute;
+      inset:0;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,.08),
+          rgba(0,0,0,.66)
+        );
+
+    }
+
+
+    .groupCoverFallback{
+
+      position:absolute;
+      inset:0;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:#ffffff;
+
+      font-size:72px;
+
+    }
+
+
+    .groupCoverContent{
+
+      position:relative;
+      z-index:2;
+
+      width:100%;
+
+      padding:
+        28px
+        20px
+        20px;
+
+      color:#ffffff;
+
+      text-align:center;
+
+    }
+
+
+    .groupName{
+
+      font-size:27px;
+      font-weight:900;
+      line-height:1.25;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .groupTopic{
+
+      margin-top:7px;
+
+      color:#e8f6ff;
+
+      font-size:13px;
+      font-weight:800;
+      line-height:1.5;
+
+    }
+
+
+    .groupTopic.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       GROUP INFORMATION
+    ===================================================== */
+
+    .groupInformation{
+
+      padding:
+        18px
+        20px
+        22px;
+
+    }
+
+
+    .groupBadges{
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:8px;
+
+    }
+
+
+    .groupBadge{
+
+      min-height:27px;
+      padding:6px 10px;
+
+      border-radius:999px;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+
+      background:var(--primary-light);
+      color:var(--primary);
+
+      font-size:10px;
+      font-weight:900;
+
+    }
+
+
+    .groupBadge.private{
+
+      background:#fff4d9;
+      color:var(--warning);
+
+    }
+
+
+    .groupDescription{
+
+      margin-top:18px;
+      padding:16px;
+
+      border-radius:14px;
+
+      background:#f4f8fb;
+      color:#3f4d56;
+
+      font-size:13px;
+      line-height:1.7;
+
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+
+    }
+
+
+    /* =====================================================
+       GROUP STATISTICS
+    ===================================================== */
+
+    .groupStats{
+
+      margin-top:18px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:9px;
+
+    }
+
+
+    .groupStat{
+
+      padding:13px 8px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#ffffff;
+
+      text-align:center;
+
+    }
+
+
+    .groupStatNumber{
+
+      display:block;
+
+      color:var(--primary);
+
+      font-size:19px;
+      font-weight:900;
+
+    }
+
+
+    .groupStatLabel{
+
+      display:block;
+      margin-top:4px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    /* =====================================================
+       GROUP ACTIONS
+    ===================================================== */
+
+    .groupActions{
+
+      margin-top:18px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+    }
+
+
+    .groupActionButton{
+
+      min-height:46px;
+      padding:11px 14px;
+
+      border:0;
+      border-radius:13px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:12px;
+      font-weight:900;
+
+      box-shadow:
+        0 4px 12px
+        rgba(8,123,209,.20);
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .groupActionButton:hover{
+      background:var(--primary-dark);
+    }
+
+
+    .groupActionButton:active{
+      transform:scale(.97);
+    }
+
+
+    .groupActionButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .groupActionButton.secondary{
+
+      border:1px solid var(--border);
+
+      background:#ffffff;
+      color:var(--text);
+
+      box-shadow:none;
+
+    }
+
+
+    .groupActionButton.secondary:hover{
+      background:#edf4f8;
+    }
+
+
+    .groupActionButton.joined{
+
+      border:1px solid #a9d7b9;
+
+      background:#e9f7ee;
+      color:var(--success);
+
+      box-shadow:none;
+
+    }
+
+
+    .groupActionButton.joined:hover{
+
+      border-color:#e1aaaa;
+
+      background:#fdecec;
+      color:var(--danger);
+
+    }
+
+
+    .groupActionButton.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       INFORMATION SECTIONS
+    ===================================================== */
+
+    .informationSection{
+
+      margin-top:18px;
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-large);
+
+      background:var(--surface);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .sectionHeading{
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .sectionText{
+
+      margin-top:10px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      line-height:1.6;
+
+    }
+
+
+    /* =====================================================
+       SCHEDULE DETAILS
+    ===================================================== */
+
+    .scheduleGrid{
+
+      margin-top:14px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+    }
+
+
+    .scheduleItem{
+
+      padding:14px;
+
+      border:1px solid var(--border);
+      border-radius:14px;
+
+      background:#f8fbfd;
+
+    }
+
+
+    .scheduleLabel{
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    .scheduleValue{
+
+      margin-top:5px;
+
+      color:var(--text);
+
+      font-size:14px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       CREATOR INFORMATION
+    ===================================================== */
+
+    .creatorCard{
+
+      margin-top:14px;
+
+      padding:14px;
+
+      border:1px solid var(--border);
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      gap:12px;
+
+      background:#f8fbfd;
+
+    }
+
+
+    .creatorAvatar{
+
+      width:52px;
+      height:52px;
+      flex-shrink:0;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+      border:3px solid #d8efff;
+
+      cursor:pointer;
+
+    }
+
+
+    .creatorInformation{
+
+      min-width:0;
+      flex:1;
+
+    }
+
+
+    .creatorName{
+
+      color:var(--primary);
+
+      font-size:14px;
+      font-weight:900;
+
+      overflow-wrap:anywhere;
+
+      cursor:pointer;
+
+    }
+
+
+    .creatorName:hover{
+      text-decoration:underline;
+    }
+
+
+    .creatorRole{
+
+      margin-top:4px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    /* =====================================================
+       ADMIN CONTROLS
+    ===================================================== */
+
+    .adminSection{
+
+      margin-top:18px;
+
+      padding:18px;
+
+      border:1px solid #f0d9aa;
+      border-radius:var(--radius-large);
+
+      background:#fff8e9;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .adminSection.hidden{
+      display:none;
+    }
+
+
+    .adminHeading{
+
+      color:#775514;
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .adminText{
+
+      margin-top:8px;
+
+      color:#8a6a2d;
+
+      font-size:11px;
+      line-height:1.6;
+
+    }
+
+
+    .adminActions{
+
+      margin-top:14px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+    }
+
+
+    .adminButton{
+
+      min-height:44px;
+      padding:10px 12px;
+
+      border:1px solid #e6cf9c;
+      border-radius:12px;
+
+      background:#ffffff;
+      color:#775514;
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    .adminButton:hover{
+      background:#fff2d2;
+    }
+
+
+    .adminButton.danger{
+
+      border-color:#efc5c5;
+
+      background:#fff5f5;
+      color:var(--danger);
+
+    }
+
+
+    .adminButton.danger:hover{
+      background:#fdecec;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .groupCover{
+        min-height:190px;
+      }
+
+
+      .groupCoverContent{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+
+      .groupName{
+        font-size:23px;
+      }
+
+
+      .groupInformation{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+
+      .groupStats{
+        grid-template-columns:1fr;
+      }
+
+
+      .groupActions{
+        grid-template-columns:1fr;
+      }
+
+
+      .scheduleGrid{
+        grid-template-columns:1fr;
+      }
+
+
+      .adminActions{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       PART 3 OF 6
+       COMPLETE HTML PAGE STRUCTURE
+  ====================================================== -->
+
+
+  <!-- =====================================================
+       TOP HEADER
+  ====================================================== -->
+
+  <header class="topHeader">
+
+    <div class="topHeaderInner">
+
+      <button
+        id="backButton"
+        class="backButton"
+        type="button"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+
+      <div class="headerTitleArea">
+
+        <div
+          id="headerTitle"
+          class="headerTitle"
+        >
+          Bible Study Group
+        </div>
+
+        <div class="headerSubtitle">
+          SABASABA Gospel Ministry
+        </div>
+
+      </div>
+
+
+      <div class="headerIcon">
+        📖
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN PAGE
+  ====================================================== -->
+
+  <main class="pageContainer">
+
+
+    <!-- =================================================
+         PAGE MESSAGE
+    ================================================== -->
+
+    <div
+      id="pageMessage"
+      class="pageMessage"
+      aria-live="polite"
+    >
+      Loading Bible Study Group...
+    </div>
+
+
+    <!-- =================================================
+         GROUP PAGE CONTENT
+    ================================================== -->
+
+    <div
+      id="groupPageContent"
+      class="groupPageContent"
+    >
+
+
+      <!-- =================================================
+           GROUP CARD
+      ================================================== -->
+
+      <section class="groupCard">
+
+
+        <!-- GROUP COVER -->
+
+        <div class="groupCover">
+
+
+          <div
+            id="groupCoverFallback"
+            class="groupCoverFallback"
+          >
+            📖
+          </div>
+
+
+          <img
+            id="groupCoverImage"
+            class="groupCoverImage"
+            src=""
+            alt="Bible Study Group cover"
+          >
+
+
+          <div class="groupCoverOverlay"></div>
+
+
+          <div class="groupCoverContent">
+
+            <h1
+              id="groupName"
+              class="groupName"
+            >
+              Bible Study Group
+            </h1>
+
+
+            <div
+              id="groupTopic"
+              class="groupTopic hidden"
+            >
+              Bible Study Topic
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- GROUP INFORMATION -->
+
+        <div class="groupInformation">
+
+
+          <!-- GROUP BADGES -->
+
+          <div class="groupBadges">
+
+            <span
+              id="privacyBadge"
+              class="groupBadge"
+            >
+              🌍 Public
+            </span>
+
+
+            <span
+              id="membershipBadge"
+              class="groupBadge"
+            >
+              👥 Open Membership
+            </span>
+
+          </div>
+
+
+          <!-- GROUP DESCRIPTION -->
+
+          <div
+            id="groupDescription"
+            class="groupDescription"
+          >
+            Loading group description...
+          </div>
+
+
+          <!-- GROUP STATISTICS -->
+
+          <div class="groupStats">
+
+            <div class="groupStat">
+
+              <span
+                id="memberCount"
+                class="groupStatNumber"
+              >
+                0
+              </span>
+
+              <span class="groupStatLabel">
+                Members
+              </span>
+
+            </div>
+
+
+            <div class="groupStat">
+
+              <span
+                id="maximumMembers"
+                class="groupStatNumber"
+              >
+                ∞
+              </span>
+
+              <span class="groupStatLabel">
+                Maximum Members
+              </span>
+
+            </div>
+
+
+            <div class="groupStat">
+
+              <span
+                id="adminCount"
+                class="groupStatNumber"
+              >
+                1
+              </span>
+
+              <span class="groupStatLabel">
+                Group Admins
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- GROUP ACTIONS -->
+
+          <div class="groupActions">
+
+            <button
+              id="joinGroupButton"
+              class="groupActionButton"
+              type="button"
+            >
+              ➕ Join Group
+            </button>
+
+
+            <button
+              id="openChatButton"
+              class="groupActionButton secondary"
+              type="button"
+            >
+              💬 Open Group Chat
+            </button>
+
+
+            <button
+              id="viewMembersButton"
+              class="groupActionButton secondary"
+              type="button"
+            >
+              👥 View Members
+            </button>
+
+
+            <button
+              id="shareGroupButton"
+              class="groupActionButton secondary"
+              type="button"
+            >
+              🔗 Share Group
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           GROUP SCHEDULE
+      ================================================== -->
+
+      <section class="informationSection">
+
+        <h2 class="sectionHeading">
+          📅 Bible Study Schedule
+        </h2>
+
+        <p class="sectionText">
+          Regular meeting information for this Bible Study Group.
+        </p>
+
+
+        <div class="scheduleGrid">
+
+          <div class="scheduleItem">
+
+            <div class="scheduleLabel">
+              Meeting Day
+            </div>
+
+            <div
+              id="meetingDay"
+              class="scheduleValue"
+            >
+              Not specified
+            </div>
+
+          </div>
+
+
+          <div class="scheduleItem">
+
+            <div class="scheduleLabel">
+              Meeting Time
+            </div>
+
+            <div
+              id="meetingTime"
+              class="scheduleValue"
+            >
+              Not specified
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           GROUP CREATOR
+      ================================================== -->
+
+      <section class="informationSection">
+
+        <h2 class="sectionHeading">
+          👤 Group Creator
+        </h2>
+
+        <p class="sectionText">
+          The member who created and leads this Bible Study Group.
+        </p>
+
+
+        <div class="creatorCard">
+
+          <img
+            id="creatorAvatar"
+            class="creatorAvatar"
+            src="images/profile.png"
+            alt="Group creator profile picture"
+          >
+
+
+          <div class="creatorInformation">
+
+            <div
+              id="creatorName"
+              class="creatorName"
+            >
+              Faith Connect Member
+            </div>
+
+            <div class="creatorRole">
+              Group Creator and Administrator
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           ADMIN CONTROLS
+      ================================================== -->
+
+      <section
+        id="adminSection"
+        class="adminSection hidden"
+      >
+
+        <h2 class="adminHeading">
+          ⚙️ Group Administration
+        </h2>
+
+        <p class="adminText">
+          These controls are visible only to group administrators.
+        </p>
+
+
+        <div class="adminActions">
+
+          <button
+            id="editGroupButton"
+            class="adminButton"
+            type="button"
+          >
+            ✏️ Edit Group
+          </button>
+
+
+          <button
+            id="manageMembersButton"
+            class="adminButton"
+            type="button"
+          >
+            👥 Manage Members
+          </button>
+
+
+          <button
+            id="groupSettingsButton"
+            class="adminButton"
+            type="button"
+          >
+            ⚙️ Group Settings
+          </button>
+
+
+          <button
+            id="deleteGroupButton"
+            class="adminButton danger"
+            type="button"
+          >
+            🗑️ Delete Group
+          </button>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       OPEN JAVASCRIPT MODULE
+  ====================================================== -->
+
+  <script type="module">
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE, PAGE ELEMENTS, GROUP ID,
+   HELPERS, AUTHENTICATION AND GROUP LOADING
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  arrayUnion,
+  arrayRemove,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const pageMessage =
+document.getElementById(
+  "pageMessage"
+);
+
+const groupPageContent =
+document.getElementById(
+  "groupPageContent"
+);
+
+const groupCoverImage =
+document.getElementById(
+  "groupCoverImage"
+);
+
+const groupCoverFallback =
+document.getElementById(
+  "groupCoverFallback"
+);
+
+const groupName =
+document.getElementById(
+  "groupName"
+);
+
+const groupTopic =
+document.getElementById(
+  "groupTopic"
+);
+
+const privacyBadge =
+document.getElementById(
+  "privacyBadge"
+);
+
+const membershipBadge =
+document.getElementById(
+  "membershipBadge"
+);
+
+const groupDescription =
+document.getElementById(
+  "groupDescription"
+);
+
+const memberCount =
+document.getElementById(
+  "memberCount"
+);
+
+const maximumMembers =
+document.getElementById(
+  "maximumMembers"
+);
+
+const adminCount =
+document.getElementById(
+  "adminCount"
+);
+
+const joinGroupButton =
+document.getElementById(
+  "joinGroupButton"
+);
+
+const openChatButton =
+document.getElementById(
+  "openChatButton"
+);
+
+const viewMembersButton =
+document.getElementById(
+  "viewMembersButton"
+);
+
+const shareGroupButton =
+document.getElementById(
+  "shareGroupButton"
+);
+
+const meetingDay =
+document.getElementById(
+  "meetingDay"
+);
+
+const meetingTime =
+document.getElementById(
+  "meetingTime"
+);
+
+const creatorAvatar =
+document.getElementById(
+  "creatorAvatar"
+);
+
+const creatorName =
+document.getElementById(
+  "creatorName"
+);
+
+const adminSection =
+document.getElementById(
+  "adminSection"
+);
+
+const editGroupButton =
+document.getElementById(
+  "editGroupButton"
+);
+
+const manageMembersButton =
+document.getElementById(
+  "manageMembersButton"
+);
+
+const groupSettingsButton =
+document.getElementById(
+  "groupSettingsButton"
+);
+
+const deleteGroupButton =
+document.getElementById(
+  "deleteGroupButton"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let groupData =
+{};
+
+let groupMembers =
+[];
+
+let groupAdmins =
+[];
+
+let currentUserJoined =
+false;
+
+let currentUserIsAdmin =
+false;
+
+let membershipActionRunning =
+false;
+
+
+/* =====================================================
+   GET GROUP ID FROM URL
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const groupId =
+urlParameters.get(
+  "id"
+);
+
+
+/* =====================================================
+   HANDLE MISSING GROUP ID
+===================================================== */
+
+if(!groupId){
+
+  pageMessage.textContent =
+  "Bible Study Group not found.";
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  throw new Error(
+    "Group ID is missing."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    if(
+      window.history.length > 1
+    ){
+
+      window.history.back();
+
+    }else{
+
+      window.location.href =
+      "groups.html";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   SHOW ERROR MESSAGE
+===================================================== */
+
+function showErrorMessage(
+  message
+){
+
+  pageMessage.textContent =
+  message;
+
+  pageMessage.classList.remove(
+    "hidden"
+  );
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  groupPageContent.classList.remove(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   SHOW GROUP PAGE
+===================================================== */
+
+function showGroupPage(){
+
+  pageMessage.classList.add(
+    "hidden"
+  );
+
+  pageMessage.classList.remove(
+    "error"
+  );
+
+  groupPageContent.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   FORMAT MEETING TIME
+===================================================== */
+
+function formatMeetingTime(
+  timeValue
+){
+
+  if(!timeValue){
+
+    return "Not specified";
+
+  }
+
+
+  try{
+
+    const parts =
+    timeValue.split(":");
+
+
+    if(parts.length < 2){
+
+      return timeValue;
+
+    }
+
+
+    const date =
+    new Date();
+
+
+    date.setHours(
+      Number(parts[0]),
+      Number(parts[1]),
+      0,
+      0
+    );
+
+
+    return date.toLocaleTimeString(
+      undefined,
+      {
+        hour:"numeric",
+        minute:"2-digit"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Meeting time formatting error:",
+      error
+    );
+
+    return timeValue;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD CURRENT USER PROFILE
+===================================================== */
+
+async function loadCurrentUserProfile(){
+
+  currentProfile =
+  {};
+
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+
+  try{
+
+    const profileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      )
+    );
+
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      currentProfile = {
+        id:
+        profileSnapshot.id,
+
+        ...profileSnapshot.data()
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Current user profile loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD GROUP CREATOR PROFILE
+===================================================== */
+
+async function loadCreatorProfile(){
+
+  const creatorId =
+  getFirstValue(
+    groupData.createdBy,
+    groupData.creatorId,
+    groupData.adminId
+  );
+
+
+  if(!creatorId){
+
+    creatorName.textContent =
+    getFirstValue(
+      groupData.creatorName,
+      "Faith Connect Member"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const creatorSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        creatorId
+      )
+    );
+
+
+    if(
+      creatorSnapshot.exists()
+    ){
+
+      const creatorProfile =
+      creatorSnapshot.data();
+
+
+      creatorName.textContent =
+      getFirstValue(
+        creatorProfile.fullName,
+        creatorProfile.name,
+        creatorProfile.displayName,
+        groupData.creatorName,
+        "Faith Connect Member"
+      );
+
+
+      const creatorPicture =
+      getFirstValue(
+        creatorProfile.profilePicture,
+        creatorProfile.picture,
+        creatorProfile.photoURL,
+        creatorProfile.photoUrl,
+        "images/profile.png"
+      );
+
+
+      creatorAvatar.src =
+      creatorPicture;
+
+    }else{
+
+      creatorName.textContent =
+      getFirstValue(
+        groupData.creatorName,
+        "Faith Connect Member"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Group creator loading error:",
+      error
+    );
+
+
+    creatorName.textContent =
+    getFirstValue(
+      groupData.creatorName,
+      "Faith Connect Member"
+    );
+
+  }
+
+
+  creatorAvatar.addEventListener(
+    "click",
+    function(){
+
+      window.location.href =
+      `user-profile.html?uid=${encodeURIComponent(
+        creatorId
+      )}`;
+
+    }
+  );
+
+
+  creatorName.addEventListener(
+    "click",
+    function(){
+
+      window.location.href =
+      `user-profile.html?uid=${encodeURIComponent(
+        creatorId
+      )}`;
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE MEMBERSHIP DISPLAY
+===================================================== */
+
+function updateMembershipDisplay(){
+
+  memberCount.textContent =
+  String(
+    groupMembers.length
+  );
+
+
+  adminCount.textContent =
+  String(
+    groupAdmins.length
+  );
+
+
+  currentUserJoined =
+  Boolean(
+    currentUser &&
+    groupMembers.includes(
+      currentUser.uid
+    )
+  );
+
+
+  currentUserIsAdmin =
+  Boolean(
+    currentUser &&
+    groupAdmins.includes(
+      currentUser.uid
+    )
+  );
+
+
+  joinGroupButton.classList.toggle(
+    "joined",
+    currentUserJoined
+  );
+
+
+  joinGroupButton.textContent =
+  currentUserJoined
+  ? "✓ Joined"
+  : "➕ Join Group";
+
+
+  if(currentUserIsAdmin){
+
+    adminSection.classList.remove(
+      "hidden"
+    );
+
+  }else{
+
+    adminSection.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(
+    currentUserIsAdmin ||
+    currentUserJoined
+  ){
+
+    openChatButton.disabled =
+    false;
+
+  }else{
+
+    openChatButton.disabled =
+    true;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD GROUP DOCUMENT
+===================================================== */
+
+async function loadGroup(){
+
+  try{
+
+    const groupSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      )
+    );
+
+
+    if(
+      !groupSnapshot.exists()
+    ){
+
+      showErrorMessage(
+        "This Bible Study Group does not exist."
+      );
+
+      return;
+
+    }
+
+
+    groupData = {
+      id:
+      groupSnapshot.id,
+
+      ...groupSnapshot.data()
+    };
+
+
+    const loadedGroupName =
+    getFirstValue(
+      groupData.name,
+      groupData.groupName,
+      groupData.title,
+      "Bible Study Group"
+    );
+
+
+    groupName.textContent =
+    loadedGroupName;
+
+    headerTitle.textContent =
+    loadedGroupName;
+
+
+    const topic =
+    getFirstValue(
+      groupData.topic,
+      groupData.studyTopic
+    );
+
+
+    if(topic){
+
+      groupTopic.textContent =
+      topic;
+
+      groupTopic.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      groupTopic.textContent =
+      "";
+
+      groupTopic.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    groupDescription.textContent =
+    getFirstValue(
+      groupData.description,
+      groupData.about,
+      "No group description is available."
+    );
+
+
+    const imageUrl =
+    getFirstValue(
+      groupData.imageUrl,
+      groupData.imageURL,
+      groupData.coverImage
+    );
+
+
+    if(imageUrl){
+
+      groupCoverImage.src =
+      imageUrl;
+
+      groupCoverImage.style.display =
+      "block";
+
+      groupCoverFallback.style.display =
+      "none";
+
+    }else{
+
+      groupCoverImage.src =
+      "";
+
+      groupCoverImage.style.display =
+      "none";
+
+      groupCoverFallback.style.display =
+      "flex";
+
+    }
+
+
+    const privacy =
+    getFirstValue(
+      groupData.privacy,
+      groupData.groupPrivacy,
+      "public"
+    ).toLowerCase();
+
+
+    privacyBadge.classList.toggle(
+      "private",
+      privacy === "private"
+    );
+
+
+    privacyBadge.textContent =
+    privacy === "private"
+    ? "🔒 Private"
+    : "🌍 Public";
+
+
+    groupMembers =
+    Array.isArray(
+      groupData.members
+    )
+    ? groupData.members
+    : [];
+
+
+    groupAdmins =
+    Array.isArray(
+      groupData.admins
+    )
+    ? groupData.admins
+    : [];
+
+
+    const maximumMemberValue =
+    Number(
+      groupData.maximumMembers
+    );
+
+
+    maximumMembers.textContent =
+    Number.isFinite(
+      maximumMemberValue
+    ) &&
+    maximumMemberValue > 0
+    ? String(maximumMemberValue)
+    : "∞";
+
+
+    membershipBadge.textContent =
+    maximumMemberValue > 0 &&
+    groupMembers.length >=
+    maximumMemberValue
+    ? "🚫 Group Full"
+    : "👥 Open Membership";
+
+
+    meetingDay.textContent =
+    getFirstValue(
+      groupData.meetingDay,
+      "Not specified"
+    );
+
+
+    meetingTime.textContent =
+    formatMeetingTime(
+      getFirstValue(
+        groupData.meetingTime
+      )
+    );
+
+
+    updateMembershipDisplay();
+
+    await loadCreatorProfile();
+
+    showGroupPage();
+
+  }catch(error){
+
+    console.error(
+      "Bible Study Group loading error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showErrorMessage(
+        "Firestore denied access to this Bible Study Group."
+      );
+
+    }else{
+
+      showErrorMessage(
+        "The Bible Study Group could not be loaded."
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    await loadCurrentUserProfile();
+
+    await loadGroup();
+
+  },
+  async function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    currentUser =
+    null;
+
+    currentProfile =
+    {};
+
+
+    await loadGroup();
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   JOIN OR LEAVE GROUP, NAVIGATION,
+   SHARING AND ADMIN BUTTONS
+===================================================== */
+
+
+/* =====================================================
+   JOIN OR LEAVE GROUP
+===================================================== */
+
+async function handleJoinGroup(){
+
+  if(membershipActionRunning){
+
+    return;
+
+  }
+
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+
+  if(currentUserIsAdmin){
+
+    return;
+
+  }
+
+
+  const maximumMemberValue =
+  Number(
+    groupData.maximumMembers
+  );
+
+
+  if(
+    !currentUserJoined &&
+    Number.isFinite(
+      maximumMemberValue
+    ) &&
+    maximumMemberValue > 0 &&
+    groupMembers.length >=
+    maximumMemberValue
+  ){
+
+    alert(
+      "This Bible Study Group has reached its maximum number of members."
+    );
+
+    return;
+
+  }
+
+
+  membershipActionRunning =
+  true;
+
+
+  joinGroupButton.disabled =
+  true;
+
+
+  joinGroupButton.textContent =
+  currentUserJoined
+  ? "Leaving..."
+  : "Joining...";
+
+
+  try{
+
+    const groupReference =
+    doc(
+      db,
+      "bibleStudyGroups",
+      groupId
+    );
+
+
+    if(currentUserJoined){
+
+      await updateDoc(
+        groupReference,
+        {
+          members:
+          arrayRemove(
+            currentUser.uid
+          )
+        }
+      );
+
+
+      groupMembers =
+      groupMembers.filter(
+        function(memberId){
+
+          return memberId !==
+          currentUser.uid;
+
+        }
+      );
+
+    }else{
+
+      await updateDoc(
+        groupReference,
+        {
+          members:
+          arrayUnion(
+            currentUser.uid
+          )
+        }
+      );
+
+
+      if(
+        !groupMembers.includes(
+          currentUser.uid
+        )
+      ){
+
+        groupMembers.push(
+          currentUser.uid
+        );
+
+      }
+
+    }
+
+
+    updateMembershipDisplay();
+
+  }catch(error){
+
+    console.error(
+      "Group membership update error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      alert(
+        "Firestore denied permission to update this group."
+      );
+
+    }else{
+
+      alert(
+        "The group membership could not be updated."
+      );
+
+    }
+
+
+    updateMembershipDisplay();
+
+  }finally{
+
+    membershipActionRunning =
+    false;
+
+
+    joinGroupButton.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   JOIN BUTTON EVENT
+===================================================== */
+
+joinGroupButton.addEventListener(
+  "click",
+  handleJoinGroup
+);
+
+
+/* =====================================================
+   OPEN GROUP CHAT
+===================================================== */
+
+openChatButton.addEventListener(
+  "click",
+  function(){
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    if(
+      !currentUserJoined &&
+      !currentUserIsAdmin
+    ){
+
+      alert(
+        "Join this group before opening the group chat."
+      );
+
+      return;
+
+    }
+
+
+    window.location.href =
+    `group-chat.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   VIEW GROUP MEMBERS
+===================================================== */
+
+viewMembersButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-members.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   SHARE GROUP
+===================================================== */
+
+shareGroupButton.addEventListener(
+  "click",
+  async function(){
+
+    const groupUrl =
+    window.location.href;
+
+
+    const shareData = {
+
+      title:
+      `${groupName.textContent} | SABASABA Gospel Ministry`,
+
+      text:
+      `Join the Bible Study Group "${groupName.textContent}" on Faith Connect.`,
+
+      url:
+      groupUrl
+
+    };
+
+
+    try{
+
+      if(navigator.share){
+
+        await navigator.share(
+          shareData
+        );
+
+        return;
+
+      }
+
+
+      if(
+        navigator.clipboard &&
+        window.isSecureContext
+      ){
+
+        await navigator.clipboard.writeText(
+          groupUrl
+        );
+
+
+        const originalText =
+        shareGroupButton.textContent;
+
+
+        shareGroupButton.textContent =
+        "✅ Link Copied";
+
+
+        window.setTimeout(
+          function(){
+
+            shareGroupButton.textContent =
+            originalText;
+
+          },
+          2000
+        );
+
+
+        return;
+
+      }
+
+
+      window.prompt(
+        "Copy this group link:",
+        groupUrl
+      );
+
+    }catch(error){
+
+      if(
+        error?.name !==
+        "AbortError"
+      ){
+
+        console.error(
+          "Group sharing error:",
+          error
+        );
+
+
+        alert(
+          "The group could not be shared."
+        );
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   EDIT GROUP
+===================================================== */
+
+editGroupButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `edit-group.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   MANAGE MEMBERS
+===================================================== */
+
+manageMembersButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-members.html?id=${encodeURIComponent(
+      groupId
+    )}&manage=true`;
+
+  }
+);
+
+
+/* =====================================================
+   GROUP SETTINGS
+===================================================== */
+
+groupSettingsButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-settings.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   DELETE GROUP
+===================================================== */
+
+deleteGroupButton.addEventListener(
+  "click",
+  async function(){
+
+    if(
+      !currentUser ||
+      !currentUserIsAdmin
+    ){
+
+      return;
+
+    }
+
+
+    const confirmed =
+    window.confirm(
+      "Are you sure you want to permanently delete this Bible Study Group?"
+    );
+
+
+    if(!confirmed){
+
+      return;
+
+    }
+
+
+    deleteGroupButton.disabled =
+    true;
+
+
+    deleteGroupButton.textContent =
+    "Deleting...";
+
+
+    try{
+
+      await deleteDoc(
+        doc(
+          db,
+          "bibleStudyGroups",
+          groupId
+        )
+      );
+
+
+      window.location.href =
+      "groups.html";
+
+    }catch(error){
+
+      console.error(
+        "Group deletion error:",
+        error
+      );
+
+
+      if(
+        error?.code ===
+        "permission-denied"
+      ){
+
+        alert(
+          "Firestore denied permission to delete this group."
+        );
+
+      }else{
+
+        alert(
+          "The Bible Study Group could not be deleted."
+        );
+
+      }
+
+
+      deleteGroupButton.disabled =
+      false;
+
+
+      deleteGroupButton.textContent =
+      "🗑️ Delete Group";
+
+    }
+
+  }
+);
+/* =====================================================
+   PART 6 OF 6
+   IMAGE FALLBACKS, PAGE RESTORATION,
+   CLEANUP AND FINAL CLOSING
+===================================================== */
+
+
+/* =====================================================
+   GROUP COVER IMAGE FALLBACK
+===================================================== */
+
+groupCoverImage.addEventListener(
+  "error",
+  function(){
+
+    groupCoverImage.src =
+    "";
+
+    groupCoverImage.style.display =
+    "none";
+
+    groupCoverFallback.style.display =
+    "flex";
+
+  }
+);
+
+
+/* =====================================================
+   CREATOR PROFILE PICTURE FALLBACK
+===================================================== */
+
+creatorAvatar.addEventListener(
+  "error",
+  function(){
+
+    creatorAvatar.src =
+    "images/profile.png";
+
+  },
+  {
+    once:true
+  }
+);
+
+
+/* =====================================================
+   RESTORE PAGE WHEN RETURNING
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  function(event){
+
+    if(event.persisted){
+
+      membershipActionRunning =
+      false;
+
+      joinGroupButton.disabled =
+      false;
+
+      deleteGroupButton.disabled =
+      false;
+
+      loadGroup();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CLEANUP
+===================================================== */
+
+window.addEventListener(
+  "pagehide",
+  function(){
+
+    membershipActionRunning =
+    false;
+
+  }
+);
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect Bible Study Group details page is ready."
+);
+
+
+</script>
+
+</body>
+
+</html>
