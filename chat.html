@@ -1331,7 +1331,245 @@ textarea:focus-visible{
   .messageBubble{
     max-width:89%;
   }
+/* =====================================================
+   INCOMING VOICE CALL OVERLAY
+===================================================== */
 
+.incomingCallOverlay{
+
+  position:fixed;
+  inset:0;
+
+  z-index:10000;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:
+    rgba(4,18,29,.88);
+
+  backdrop-filter:
+    blur(8px);
+
+}
+
+
+.incomingCallOverlay.show{
+  display:flex;
+}
+
+
+.incomingCallCard{
+
+  width:100%;
+  max-width:360px;
+
+  padding:
+    30px
+    22px
+    26px;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0b3150,
+      #071d30
+    );
+
+  color:#ffffff;
+
+  text-align:center;
+
+  box-shadow:
+    0 18px 50px
+    rgba(0,0,0,.42);
+
+}
+
+
+.incomingCallTitle{
+
+  color:#bce6ff;
+
+  font-size:14px;
+  font-weight:900;
+
+  text-transform:uppercase;
+  letter-spacing:1px;
+
+}
+
+
+.incomingCallerAvatarFrame{
+
+  width:120px;
+  height:120px;
+
+  margin:
+    24px
+    auto
+    0;
+
+  padding:5px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.20);
+
+  animation:
+    incomingCallPulse
+    1.5s
+    infinite;
+
+}
+
+
+@keyframes incomingCallPulse{
+
+  0%,
+  100%{
+
+    box-shadow:
+      0 0 0 0
+      rgba(53,180,111,.35);
+
+  }
+
+  50%{
+
+    box-shadow:
+      0 0 0 18px
+      rgba(53,180,111,0);
+
+  }
+
+}
+
+
+.incomingCallerAvatar{
+
+  width:100%;
+  height:100%;
+
+  border-radius:50%;
+
+  object-fit:cover;
+
+  background:#dce4ea;
+
+}
+
+
+.incomingCallerName{
+
+  margin-top:20px;
+
+  font-size:23px;
+  font-weight:900;
+
+  overflow-wrap:anywhere;
+
+}
+
+
+.incomingCallText{
+
+  margin-top:8px;
+
+  color:#b8cad8;
+
+  font-size:13px;
+  font-weight:700;
+
+}
+
+
+.incomingCallActions{
+
+  margin-top:28px;
+
+  display:grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:18px;
+
+}
+
+
+.incomingCallAction{
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+
+}
+
+
+.incomingCallActionButton{
+
+  width:70px;
+  height:70px;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#ffffff;
+
+  font-size:28px;
+
+  box-shadow:
+    0 9px 24px
+    rgba(0,0,0,.28);
+
+}
+
+
+.incomingCallActionButton.decline{
+  background:#df4545;
+}
+
+
+.incomingCallActionButton.accept{
+  background:#2fb36d;
+}
+
+
+.incomingCallActionButton:active{
+  transform:scale(.95);
+}
+
+
+.incomingCallActionButton:disabled{
+
+  cursor:not-allowed;
+  opacity:.55;
+
+}
+
+
+.incomingCallActionLabel{
+
+  color:#d6e3ec;
+
+  font-size:11px;
+  font-weight:900;
+
+}
 
   .messageImage,
   .messageVideoWrapper{
@@ -2983,7 +3221,90 @@ textarea:focus-visible{
     </div>
 
   </div>
+<!-- =====================================================
+   INCOMING VOICE CALL OVERLAY
+===================================================== -->
 
+<div
+  id="incomingCallOverlay"
+  class="incomingCallOverlay"
+  aria-hidden="true"
+>
+
+  <div class="incomingCallCard">
+
+    <div class="incomingCallTitle">
+      Incoming Voice Call
+    </div>
+
+
+    <div class="incomingCallerAvatarFrame">
+
+      <img
+        id="incomingCallerAvatar"
+        class="incomingCallerAvatar"
+        src="images/profile.png"
+        alt="Incoming caller profile picture"
+      >
+
+    </div>
+
+
+    <div
+      id="incomingCallerName"
+      class="incomingCallerName"
+    >
+      Faith Connect Member
+    </div>
+
+
+    <div class="incomingCallText">
+      is calling you...
+    </div>
+
+
+    <div class="incomingCallActions">
+
+      <div class="incomingCallAction">
+
+        <button
+          id="declineIncomingCallButton"
+          class="incomingCallActionButton decline"
+          type="button"
+          aria-label="Decline incoming call"
+        >
+          📵
+        </button>
+
+        <span class="incomingCallActionLabel">
+          Decline
+        </span>
+
+      </div>
+
+
+      <div class="incomingCallAction">
+
+        <button
+          id="acceptIncomingCallButton"
+          class="incomingCallActionButton accept"
+          type="button"
+          aria-label="Accept incoming call"
+        >
+          📞
+        </button>
+
+        <span class="incomingCallActionLabel">
+          Accept
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 </div>
 
 
