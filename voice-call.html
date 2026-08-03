@@ -1127,512 +1127,329 @@
   </style>
   <style>
 
-    /* =====================================================
-       PART 2 OF 6
-       CALL CONTROLS, INCOMING CALL ACTIONS,
-       MUTE, SPEAKER AND RESPONSIVE DESIGN
-    ===================================================== */
+    <!-- =====================================================
+   PART 3 OF 6
+   COMPLETE HTML PAGE STRUCTURE
+===================================================== -->
 
+</head>
 
-    /* =====================================================
-       CONTROLS AREA
-    ===================================================== */
+<body>
 
-    .controlsArea{
 
-      width:100%;
-      max-width:560px;
+<!-- =====================================================
+   TOP HEADER
+===================================================== -->
 
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
+<header class="topHeader">
 
-    }
+  <div class="topHeaderInner">
 
+    <button
+      id="backButton"
+      class="backButton"
+      type="button"
+      aria-label="Go back"
+    >
+      ←
+    </button>
 
-    /* =====================================================
-       ACTIVE CALL CONTROLS
-    ===================================================== */
 
-    .activeCallControls{
+    <div class="headerTitleArea">
 
-      width:100%;
+      <div
+        id="headerTitle"
+        class="headerTitle"
+      >
+        Voice Call
+      </div>
 
-      display:grid;
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
+      <div
+        id="headerSubtitle"
+        class="headerSubtitle"
+      >
+        Faith Connect private call
+      </div>
 
-      gap:14px;
+    </div>
 
-    }
 
+    <div
+      class="securityIcon"
+      title="Private voice call"
+      aria-label="Private voice call"
+    >
+      🔒
+    </div>
 
-    .callControlButton{
+  </div>
 
-      min-height:88px;
-      padding:12px 8px;
+</header>
 
-      border:1px solid var(--border);
-      border-radius:20px;
 
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
+<!-- =====================================================
+   MAIN CALL PAGE
+===================================================== -->
 
-      background:
-        rgba(255,255,255,.08);
+<main class="callPage">
 
-      color:#ffffff;
 
-      font-size:11px;
-      font-weight:900;
+  <!-- =================================================
+       CALL INFORMATION
+  ================================================== -->
 
-      transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+  <section class="callInformation">
 
-    }
+    <div
+      id="callStatus"
+      class="callStatus"
+      aria-live="polite"
+    >
+      Preparing call...
+    </div>
 
 
-    .callControlButton:hover{
+    <div class="memberProfile">
 
-      background:
-        rgba(255,255,255,.15);
+      <div
+        id="memberAvatarFrame"
+        class="memberAvatarFrame"
+      >
 
-    }
+        <img
+          id="memberAvatar"
+          class="memberAvatar"
+          src="images/profile.png"
+          alt="Call participant profile picture"
+        >
 
+      </div>
 
-    .callControlButton:active{
-      transform:scale(.97);
-    }
 
+      <h1
+        id="memberName"
+        class="memberName"
+      >
+        Faith Connect Member
+      </h1>
 
-    .callControlButton.active{
 
-      border-color:
-        rgba(53,180,111,.55);
+      <div
+        id="memberCountry"
+        class="memberCountry hidden"
+      ></div>
 
-      background:
-        rgba(53,180,111,.18);
 
-      color:#a9f5c5;
+      <div
+        id="callTimer"
+        class="callTimer"
+      >
+        00:00
+      </div>
 
-    }
+    </div>
 
 
-    .callControlButton.warning{
+    <div
+      id="connectionIndicator"
+      class="connectionIndicator"
+    >
 
-      border-color:
-        rgba(240,185,72,.52);
+      <span
+        id="connectionDot"
+        class="connectionDot"
+      ></span>
 
-      background:
-        rgba(240,185,72,.16);
+      <span id="connectionText">
+        Waiting for connection
+      </span>
 
-      color:#ffe39b;
+    </div>
 
-    }
 
+    <div
+      id="permissionNotice"
+      class="permissionNotice"
+    >
+      Allow microphone access when your browser asks.
+    </div>
 
-    .callControlButton:disabled{
 
-      cursor:not-allowed;
-      opacity:.48;
+    <div
+      id="callMessage"
+      class="callMessage hidden"
+      aria-live="polite"
+    ></div>
 
-    }
+  </section>
 
 
-    .callControlIcon{
+  <!-- =================================================
+       CALL CONTROLS
+  ================================================== -->
 
-      width:48px;
-      height:48px;
+  <section class="controlsArea">
 
-      border-radius:50%;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    <div
+      id="activeCallControls"
+      class="activeCallControls"
+    >
 
-      background:
-        rgba(255,255,255,.10);
+      <button
+        id="muteButton"
+        class="callControlButton"
+        type="button"
+        disabled
+      >
 
-      font-size:22px;
+        <span
+          id="muteIcon"
+          class="callControlIcon"
+        >
+          🎙️
+        </span>
 
-    }
+        <span id="muteLabel">
+          Mute
+        </span>
 
+      </button>
 
-    /* =====================================================
-       END CALL BUTTON
-    ===================================================== */
 
-    .endCallButton{
+      <button
+        id="speakerButton"
+        class="callControlButton"
+        type="button"
+        disabled
+      >
 
-      width:76px;
-      height:76px;
+        <span
+          id="speakerIcon"
+          class="callControlIcon"
+        >
+          🔊
+        </span>
 
-      border:0;
-      border-radius:50%;
+        <span id="speakerLabel">
+          Speaker
+        </span>
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      </button>
 
-      background:var(--danger);
-      color:#ffffff;
 
-      font-size:30px;
+      <button
+        id="audioRouteButton"
+        class="callControlButton"
+        type="button"
+        disabled
+      >
 
-      box-shadow:
-        0 10px 28px
-        rgba(227,79,79,.36);
+        <span
+          id="audioRouteIcon"
+          class="callControlIcon"
+        >
+          🎧
+        </span>
 
-      transition:
-        background .2s ease,
-        transform .2s ease;
+        <span id="audioRouteLabel">
+          Audio
+        </span>
 
-    }
+      </button>
 
+    </div>
 
-    .endCallButton:hover{
-      background:#c93d3d;
-    }
 
+    <!-- =================================================
+         INCOMING CALL BUTTONS
+    ================================================== -->
 
-    .endCallButton:active{
-      transform:scale(.95);
-    }
+    <div
+      id="incomingCallControls"
+      class="incomingCallControls"
+    >
 
+      <div class="incomingAction">
 
-    .endCallButton:disabled{
+        <button
+          id="rejectCallButton"
+          class="incomingActionButton reject"
+          type="button"
+          aria-label="Reject call"
+        >
+          📵
+        </button>
 
-      cursor:not-allowed;
-      opacity:.55;
+        <span class="incomingActionLabel">
+          Reject
+        </span>
 
-    }
+      </div>
 
 
-    /* =====================================================
-       INCOMING CALL CONTROLS
-    ===================================================== */
+      <div class="incomingAction">
 
-    .incomingCallControls{
+        <button
+          id="acceptCallButton"
+          class="incomingActionButton accept"
+          type="button"
+          aria-label="Accept call"
+        >
+          📞
+        </button>
 
-      width:100%;
+        <span class="incomingActionLabel">
+          Accept
+        </span>
 
-      display:none;
-      grid-template-columns:
-        repeat(
-          2,
-          minmax(0,1fr)
-        );
+      </div>
 
-      gap:20px;
+    </div>
 
-    }
 
+    <!-- =================================================
+         END CALL BUTTON
+    ================================================== -->
 
-    .incomingCallControls.show{
-      display:grid;
-    }
+    <div
+      id="outgoingCallControls"
+      class="outgoingCallControls"
+    >
 
+      <button
+        id="endCallButton"
+        class="endCallButton"
+        type="button"
+        aria-label="End call"
+        disabled
+      >
+        📵
+      </button>
 
-    .incomingAction{
+    </div>
 
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
+  </section>
 
-    }
+</main>
 
 
-    .incomingActionButton{
+<!-- =====================================================
+   REMOTE AUDIO
+===================================================== -->
 
-      width:76px;
-      height:76px;
+<audio
+  id="remoteAudio"
+  class="remoteAudio"
+  autoplay
+  playsinline
+></audio>
 
-      border:0;
-      border-radius:50%;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+<!-- =====================================================
+   OPEN JAVASCRIPT MODULE
+===================================================== -->
 
-      color:#ffffff;
-
-      font-size:30px;
-
-      box-shadow:
-        0 10px 28px
-        rgba(0,0,0,.28);
-
-      transition:
-        transform .2s ease,
-        filter .2s ease;
-
-    }
-
-
-    .incomingActionButton:hover{
-      filter:brightness(1.08);
-    }
-
-
-    .incomingActionButton:active{
-      transform:scale(.95);
-    }
-
-
-    .incomingActionButton.accept{
-      background:var(--success);
-    }
-
-
-    .incomingActionButton.reject{
-      background:var(--danger);
-    }
-
-
-    .incomingActionButton:disabled{
-
-      cursor:not-allowed;
-      opacity:.55;
-
-    }
-
-
-    .incomingActionLabel{
-
-      color:var(--muted);
-
-      font-size:11px;
-      font-weight:900;
-
-    }
-
-
-    /* =====================================================
-       OUTGOING CALL CONTROLS
-    ===================================================== */
-
-    .outgoingCallControls{
-
-      width:100%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-    }
-
-
-    .outgoingCallControls.hidden{
-      display:none;
-    }
-
-
-    /* =====================================================
-       CONNECTION INDICATOR
-    ===================================================== */
-
-    .connectionIndicator{
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-
-      color:var(--muted);
-
-      font-size:10px;
-      font-weight:800;
-
-    }
-
-
-    .connectionDot{
-
-      width:9px;
-      height:9px;
-
-      border-radius:50%;
-
-      background:#748b9a;
-
-    }
-
-
-    .connectionDot.connecting{
-
-      background:var(--warning);
-
-      animation:
-        connectionBlink
-        1s
-        ease-in-out
-        infinite;
-
-    }
-
-
-    .connectionDot.connected{
-      background:var(--success);
-    }
-
-
-    .connectionDot.failed{
-      background:var(--danger);
-    }
-
-
-    @keyframes connectionBlink{
-
-      0%,
-      100%{
-        opacity:.35;
-      }
-
-      50%{
-        opacity:1;
-      }
-
-    }
-
-
-    /* =====================================================
-       CALL PERMISSION NOTICE
-    ===================================================== */
-
-    .permissionNotice{
-
-      width:100%;
-      max-width:520px;
-
-      padding:13px 14px;
-
-      border:1px solid
-        rgba(240,185,72,.45);
-
-      border-radius:var(--radius-medium);
-
-      background:
-        rgba(240,185,72,.13);
-
-      color:#ffe5a9;
-
-      text-align:center;
-
-      font-size:11px;
-      font-weight:800;
-      line-height:1.55;
-
-    }
-
-
-    .permissionNotice.hidden{
-      display:none;
-    }
-
-
-    /* =====================================================
-       HIDDEN ELEMENT
-    ===================================================== */
-
-    .hidden{
-      display:none !important;
-    }
-
-
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media(max-width:520px){
-
-      .controlsArea{
-        max-width:100%;
-      }
-
-
-      .activeCallControls{
-        gap:9px;
-      }
-
-
-      .callControlButton{
-
-        min-height:80px;
-        padding-left:5px;
-        padding-right:5px;
-
-        font-size:10px;
-
-      }
-
-
-      .callControlIcon{
-
-        width:44px;
-        height:44px;
-
-        font-size:20px;
-
-      }
-
-
-      .endCallButton,
-      .incomingActionButton{
-
-        width:70px;
-        height:70px;
-
-        font-size:27px;
-
-      }
-
-    }
-
-
-    @media(max-width:360px){
-
-      .activeCallControls{
-        gap:6px;
-      }
-
-
-      .callControlButton{
-
-        min-height:74px;
-
-        font-size:9px;
-
-      }
-
-
-      .callControlIcon{
-
-        width:40px;
-        height:40px;
-
-        font-size:18px;
-
-      }
-
-
-      .incomingCallControls{
-        gap:12px;
-      }
-
-    }
-
-  </style>
 <script type="module">
 /* =====================================================
    PART 4 OF 6
