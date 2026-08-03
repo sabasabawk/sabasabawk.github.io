@@ -1,0 +1,3864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Bible Study Group discussion on Faith Connect."
+  >
+
+  <title>
+    Group Chat | SABASABA Gospel Ministry
+  </title>
+
+  <style>
+
+    /* =====================================================
+       PART 1 OF 6
+       GENERAL PAGE, VARIABLES AND TOP HEADER
+    ===================================================== */
+
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#eef3f8;
+      --surface:#ffffff;
+
+      --text:#1f2b34;
+      --muted:#687680;
+
+      --border:#dce4ea;
+
+      --success:#27874f;
+      --danger:#c84444;
+      --warning:#9b6900;
+
+      --shadow:
+        0 6px 20px rgba(25,55,75,.10);
+
+      --radius-large:22px;
+      --radius-medium:16px;
+      --radius-small:12px;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      background:var(--background);
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    }
+
+
+    button,
+    input,
+    textarea,
+    select{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    img,
+    video{
+      display:block;
+      max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible,
+    textarea:focus-visible,
+    input:focus-visible{
+
+      outline:
+        3px solid
+        rgba(8,123,209,.30);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       PAGE LAYOUT
+    ===================================================== */
+
+    body{
+
+      display:flex;
+      flex-direction:column;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:sticky;
+      top:0;
+      z-index:1000;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border-bottom:
+        1px solid var(--border);
+
+      box-shadow:
+        0 2px 10px rgba(0,0,0,.07);
+
+      backdrop-filter:
+        blur(12px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      max-width:760px;
+      min-height:64px;
+
+      margin:auto;
+      padding:8px 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#edf3f7;
+      color:var(--text);
+
+      font-size:23px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+      background:#dfeaf1;
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    .headerGroupAvatar{
+
+      width:44px;
+      height:44px;
+      flex-shrink:0;
+
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--primary),
+          #4ca9e5
+        );
+
+      color:#ffffff;
+      font-size:21px;
+
+      box-shadow:
+        0 5px 14px
+        rgba(8,123,209,.20);
+
+    }
+
+
+    .headerGroupAvatar img{
+
+      width:100%;
+      height:100%;
+
+      object-fit:cover;
+
+    }
+
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:16px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:3px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    .headerMembersButton{
+
+      min-width:42px;
+      height:42px;
+      padding:0 10px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:13px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+
+      background:var(--primary-light);
+      color:var(--primary);
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    .headerMembersButton:hover{
+      background:#d9eefc;
+    }
+
+
+    /* =====================================================
+       MAIN CHAT PAGE
+    ===================================================== */
+
+    .chatPage{
+
+      width:100%;
+      max-width:760px;
+
+      min-height:
+        calc(100vh - 64px);
+
+      margin:auto;
+
+      display:flex;
+      flex-direction:column;
+
+    }
+
+
+    /* =====================================================
+       PAGE MESSAGE
+    ===================================================== */
+
+    .pageMessage{
+
+      margin:
+        16px
+        14px
+        0;
+
+      padding:16px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-medium);
+
+      background:var(--surface);
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+      line-height:1.55;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .pageMessage.error{
+
+      background:#fdecec;
+      color:#a52f2f;
+      border-color:#f3caca;
+
+    }
+
+
+    .pageMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       CHAT CONTENT VISIBILITY
+    ===================================================== */
+
+    .chatContent{
+
+      min-height:0;
+      flex:1;
+
+      display:none;
+      flex-direction:column;
+
+    }
+
+
+    .chatContent.show{
+      display:flex;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .pageMessage{
+        margin-left:10px;
+        margin-right:10px;
+      }
+
+
+      .headerTitle{
+        font-size:15px;
+      }
+
+
+      .headerMembersButton{
+        min-width:39px;
+        height:39px;
+        padding-left:8px;
+        padding-right:8px;
+      }
+
+    }
+
+  </style>
+  <style>
+
+    /* =====================================================
+       PART 2 OF 6
+       MESSAGE LIST, CHAT BUBBLES,
+       VERSE CARDS, IMAGES AND COMPOSER
+    ===================================================== */
+
+
+    /* =====================================================
+       CHAT MESSAGES AREA
+    ===================================================== */
+
+    .messagesArea{
+
+      min-height:0;
+      flex:1;
+
+      padding:
+        16px
+        14px
+        140px;
+
+      overflow-y:auto;
+
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+
+    }
+
+
+    .messagesArea:empty::before{
+
+      content:
+        "No group messages yet. Start the Bible study discussion.";
+
+      padding:24px;
+
+      border:1px dashed var(--border);
+      border-radius:16px;
+
+      background:#f8fbfd;
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+      line-height:1.6;
+
+    }
+
+
+    /* =====================================================
+       DATE DIVIDER
+    ===================================================== */
+
+    .dateDivider{
+
+      align-self:center;
+
+      margin:4px 0;
+
+      padding:6px 10px;
+
+      border-radius:999px;
+
+      background:#dfe8ef;
+      color:#5f6d77;
+
+      font-size:10px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       MESSAGE ROW
+    ===================================================== */
+
+    .messageRow{
+
+      width:100%;
+
+      display:flex;
+      align-items:flex-end;
+      gap:9px;
+
+    }
+
+
+    .messageRow.own{
+
+      justify-content:flex-end;
+
+    }
+
+
+    .messageAvatar{
+
+      width:36px;
+      height:36px;
+      flex-shrink:0;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+      border:2px solid #d8efff;
+
+      cursor:pointer;
+
+    }
+
+
+    .messageRow.own .messageAvatar{
+      display:none;
+    }
+
+
+    /* =====================================================
+       MESSAGE WRAPPER
+    ===================================================== */
+
+    .messageWrapper{
+
+      max-width:78%;
+
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+
+    }
+
+
+    .messageRow.own .messageWrapper{
+      align-items:flex-end;
+    }
+
+
+    .messageSender{
+
+      padding-left:4px;
+
+      color:var(--primary);
+
+      font-size:10px;
+      font-weight:900;
+
+      cursor:pointer;
+
+    }
+
+
+    .messageSender:hover{
+      text-decoration:underline;
+    }
+
+
+    .messageRow.own .messageSender{
+      display:none;
+    }
+
+
+    /* =====================================================
+       MESSAGE BUBBLE
+    ===================================================== */
+
+    .messageBubble{
+
+      min-width:70px;
+
+      padding:10px 12px;
+
+      border:1px solid var(--border);
+      border-radius:
+        16px
+        16px
+        16px
+        5px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      box-shadow:
+        0 3px 10px
+        rgba(25,55,75,.08);
+
+      overflow:hidden;
+
+    }
+
+
+    .messageRow.own .messageBubble{
+
+      border-color:#b8dcf3;
+
+      border-radius:
+        16px
+        16px
+        5px
+        16px;
+
+      background:var(--primary-light);
+
+    }
+
+
+    .messageText{
+
+      font-size:13px;
+      line-height:1.6;
+
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+
+    }
+
+
+    /* =====================================================
+       BIBLE VERSE CARD
+    ===================================================== */
+
+    .verseCard{
+
+      margin-top:8px;
+      padding:11px 12px;
+
+      border-left:4px solid var(--primary);
+      border-radius:10px;
+
+      background:#f3f9fd;
+      color:#155f94;
+
+    }
+
+
+    .verseReference{
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    .verseText{
+
+      margin-top:6px;
+
+      color:#38576c;
+
+      font-size:12px;
+      line-height:1.6;
+
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+
+    }
+
+
+    /* =====================================================
+       MESSAGE IMAGE
+    ===================================================== */
+
+    .messageImage{
+
+      width:100%;
+      max-width:320px;
+      max-height:360px;
+
+      margin-top:8px;
+
+      border-radius:12px;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+      cursor:pointer;
+
+    }
+
+
+    /* =====================================================
+       MESSAGE META
+    ===================================================== */
+
+    .messageMeta{
+
+      margin-top:6px;
+
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:7px;
+
+      color:var(--muted);
+
+      font-size:9px;
+      font-weight:800;
+
+    }
+
+
+    .deleteMessageButton{
+
+      border:0;
+
+      background:transparent;
+      color:var(--danger);
+
+      font-size:9px;
+      font-weight:900;
+
+    }
+
+
+    .deleteMessageButton:hover{
+      text-decoration:underline;
+    }
+
+
+    /* =====================================================
+       MESSAGE STATUS
+    ===================================================== */
+
+    .messageStatus{
+
+      align-self:center;
+
+      padding:24px;
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+      line-height:1.6;
+
+    }
+
+
+    .messageStatus.error{
+      color:var(--danger);
+    }
+
+
+    /* =====================================================
+       MESSAGE COMPOSER
+    ===================================================== */
+
+    .composerBar{
+
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:950;
+
+      padding:
+        10px
+        12px
+        calc(10px + env(safe-area-inset-bottom));
+
+      background:
+        rgba(255,255,255,.98);
+
+      border-top:
+        1px solid var(--border);
+
+      box-shadow:
+        0 -4px 16px
+        rgba(0,0,0,.09);
+
+      backdrop-filter:
+        blur(12px);
+
+    }
+
+
+    .composerInner{
+
+      width:100%;
+      max-width:760px;
+
+      margin:auto;
+
+    }
+
+
+    .composerPreview{
+
+      display:none;
+
+      margin-bottom:8px;
+      padding:10px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#f8fbfd;
+
+    }
+
+
+    .composerPreview.show{
+      display:block;
+    }
+
+
+    .composerPreviewImage{
+
+      width:80px;
+      height:80px;
+
+      border-radius:11px;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+    }
+
+
+    .composerPreviewTop{
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+
+    }
+
+
+    .removeComposerImageButton{
+
+      min-height:34px;
+      padding:7px 10px;
+
+      border:1px solid #efc5c5;
+      border-radius:10px;
+
+      background:#fff5f5;
+      color:var(--danger);
+
+      font-size:10px;
+      font-weight:900;
+
+    }
+
+
+    .verseInputs{
+
+      display:none;
+
+      margin-bottom:8px;
+
+      grid-template-columns:
+        1fr
+        1.6fr;
+
+      gap:8px;
+
+    }
+
+
+    .verseInputs.show{
+      display:grid;
+    }
+
+
+    .composerInput,
+    .composerTextarea{
+
+      width:100%;
+
+      border:1px solid var(--border);
+      border-radius:12px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      outline:none;
+
+      font-size:12px;
+
+    }
+
+
+    .composerInput{
+
+      min-height:42px;
+      padding:10px 11px;
+
+    }
+
+
+    .composerTextarea{
+
+      min-height:70px;
+      padding:10px 11px;
+
+      resize:vertical;
+      line-height:1.5;
+
+    }
+
+
+    .composerInput:focus,
+    .composerTextarea:focus{
+
+      border-color:var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8,123,209,.11);
+
+    }
+
+
+    .composerMainRow{
+
+      display:flex;
+      align-items:flex-end;
+      gap:8px;
+
+    }
+
+
+    .composerTools{
+
+      display:flex;
+      align-items:center;
+      gap:6px;
+
+    }
+
+
+    .composerToolButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:1px solid var(--border);
+      border-radius:12px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#f4f8fb;
+      color:var(--primary);
+
+      font-size:18px;
+
+    }
+
+
+    .composerToolButton:hover{
+      background:var(--primary-light);
+    }
+
+
+    .messageInput{
+
+      min-height:44px;
+      max-height:130px;
+
+      flex:1;
+
+      padding:11px 13px;
+
+      border:1px solid var(--border);
+      border-radius:16px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      outline:none;
+
+      resize:none;
+
+      font-size:13px;
+      line-height:1.5;
+
+    }
+
+
+    .messageInput:focus{
+
+      border-color:var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8,123,209,.11);
+
+    }
+
+
+    .sendMessageButton{
+
+      width:46px;
+      height:46px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:20px;
+
+      box-shadow:
+        0 4px 12px
+        rgba(8,123,209,.24);
+
+    }
+
+
+    .sendMessageButton:hover{
+      background:var(--primary-dark);
+    }
+
+
+    .sendMessageButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .hiddenFileInput{
+      display:none;
+    }
+
+
+    /* =====================================================
+       FULLSCREEN IMAGE VIEWER
+    ===================================================== */
+
+    .imageViewer{
+
+      position:fixed;
+      inset:0;
+      z-index:1300;
+
+      display:none;
+      align-items:center;
+      justify-content:center;
+
+      padding:16px;
+
+      background:rgba(0,0,0,.94);
+
+    }
+
+
+    .imageViewer.open{
+      display:flex;
+    }
+
+
+    .imageViewerImage{
+
+      max-width:100%;
+      max-height:92vh;
+
+      object-fit:contain;
+
+    }
+
+
+    .closeImageViewerButton{
+
+      position:absolute;
+      top:14px;
+      right:14px;
+
+      width:46px;
+      height:46px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:rgba(255,255,255,.20);
+      color:#ffffff;
+
+      font-size:27px;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .messagesArea{
+
+        padding-left:10px;
+        padding-right:10px;
+
+      }
+
+
+      .messageWrapper{
+        max-width:84%;
+      }
+
+
+      .verseInputs{
+        grid-template-columns:1fr;
+      }
+
+
+      .composerBar{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .composerToolButton{
+
+        width:40px;
+        height:40px;
+
+      }
+
+
+      .sendMessageButton{
+
+        width:44px;
+        height:44px;
+
+      }
+
+    }
+
+
+    @media(max-width:380px){
+
+      .composerMainRow{
+        gap:6px;
+      }
+
+
+      .composerTools{
+        gap:4px;
+      }
+
+
+      .composerToolButton{
+
+        width:38px;
+        height:38px;
+
+        font-size:16px;
+
+      }
+
+
+      .messageAvatar{
+
+        width:32px;
+        height:32px;
+
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       PART 3 OF 6
+       COMPLETE HTML PAGE STRUCTURE
+  ====================================================== -->
+
+
+  <!-- =====================================================
+       TOP HEADER
+  ====================================================== -->
+
+  <header class="topHeader">
+
+    <div class="topHeaderInner">
+
+      <button
+        id="backButton"
+        class="backButton"
+        type="button"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+
+      <div
+        id="headerGroupAvatar"
+        class="headerGroupAvatar"
+        aria-hidden="true"
+      >
+        📖
+      </div>
+
+
+      <div class="headerTitleArea">
+
+        <div
+          id="headerTitle"
+          class="headerTitle"
+        >
+          Bible Study Group
+        </div>
+
+        <div
+          id="headerSubtitle"
+          class="headerSubtitle"
+        >
+          Loading group information...
+        </div>
+
+      </div>
+
+
+      <button
+        id="headerMembersButton"
+        class="headerMembersButton"
+        type="button"
+        aria-label="View group members"
+      >
+        👥
+        <span id="headerMemberCount">
+          0
+        </span>
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN CHAT PAGE
+  ====================================================== -->
+
+  <main class="chatPage">
+
+
+    <!-- =================================================
+         PAGE MESSAGE
+    ================================================== -->
+
+    <div
+      id="pageMessage"
+      class="pageMessage"
+      aria-live="polite"
+    >
+      Loading Bible Study Group chat...
+    </div>
+
+
+    <!-- =================================================
+         CHAT CONTENT
+    ================================================== -->
+
+    <div
+      id="chatContent"
+      class="chatContent"
+    >
+
+
+      <!-- =================================================
+           MESSAGES AREA
+      ================================================== -->
+
+      <section
+        id="messagesArea"
+        class="messagesArea"
+        aria-live="polite"
+        aria-label="Bible Study Group messages"
+      >
+
+        <div class="messageStatus">
+          Loading messages...
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       MESSAGE COMPOSER
+  ====================================================== -->
+
+  <section
+    id="composerBar"
+    class="composerBar"
+  >
+
+    <div class="composerInner">
+
+
+      <!-- =================================================
+           IMAGE PREVIEW
+      ================================================== -->
+
+      <div
+        id="composerPreview"
+        class="composerPreview"
+      >
+
+        <div class="composerPreviewTop">
+
+          <img
+            id="composerPreviewImage"
+            class="composerPreviewImage"
+            src=""
+            alt="Selected message image preview"
+          >
+
+
+          <button
+            id="removeComposerImageButton"
+            class="removeComposerImageButton"
+            type="button"
+          >
+            Remove Image
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           BIBLE VERSE INPUTS
+      ================================================== -->
+
+      <div
+        id="verseInputs"
+        class="verseInputs"
+      >
+
+        <input
+          id="verseReferenceInput"
+          class="composerInput"
+          type="text"
+          maxlength="80"
+          placeholder="Verse reference, e.g. John 3:16"
+          autocomplete="off"
+        >
+
+
+        <textarea
+          id="verseTextInput"
+          class="composerTextarea"
+          maxlength="700"
+          placeholder="Write the Bible verse text..."
+        ></textarea>
+
+      </div>
+
+
+      <!-- =================================================
+           MAIN COMPOSER ROW
+      ================================================== -->
+
+      <div class="composerMainRow">
+
+
+        <div class="composerTools">
+
+          <button
+            id="toggleVerseButton"
+            class="composerToolButton"
+            type="button"
+            aria-label="Add a Bible verse"
+            title="Add Bible verse"
+          >
+            📖
+          </button>
+
+
+          <button
+            id="selectImageButton"
+            class="composerToolButton"
+            type="button"
+            aria-label="Select an image"
+            title="Select image"
+          >
+            🖼️
+          </button>
+
+
+          <input
+            id="messageImageInput"
+            class="hiddenFileInput"
+            type="file"
+            accept="image/*"
+          >
+
+        </div>
+
+
+        <textarea
+          id="messageInput"
+          class="messageInput"
+          rows="1"
+          maxlength="1500"
+          placeholder="Write a Bible study message..."
+          aria-label="Write a group message"
+        ></textarea>
+
+
+        <button
+          id="sendMessageButton"
+          class="sendMessageButton"
+          type="button"
+          aria-label="Send message"
+          title="Send message"
+        >
+          ➤
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FULLSCREEN IMAGE VIEWER
+  ====================================================== -->
+
+  <div
+    id="imageViewer"
+    class="imageViewer"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-label="Group message image viewer"
+  >
+
+    <button
+      id="closeImageViewerButton"
+      class="closeImageViewerButton"
+      type="button"
+      aria-label="Close image viewer"
+    >
+      ×
+    </button>
+
+
+    <img
+      id="imageViewerImage"
+      class="imageViewerImage"
+      src=""
+      alt="Full-size group message image"
+    >
+
+  </div>
+
+
+  <!-- =====================================================
+       OPEN JAVASCRIPT MODULE
+  ====================================================== -->
+
+  <script type="module">
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE, PAGE ELEMENTS, GROUP ID,
+   AUTHENTICATION, ACCESS CHECKS AND HELPERS
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  storage,
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
+  deleteDoc,
+  serverTimestamp,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerGroupAvatar =
+document.getElementById(
+  "headerGroupAvatar"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const headerSubtitle =
+document.getElementById(
+  "headerSubtitle"
+);
+
+const headerMembersButton =
+document.getElementById(
+  "headerMembersButton"
+);
+
+const headerMemberCount =
+document.getElementById(
+  "headerMemberCount"
+);
+
+const pageMessage =
+document.getElementById(
+  "pageMessage"
+);
+
+const chatContent =
+document.getElementById(
+  "chatContent"
+);
+
+const messagesArea =
+document.getElementById(
+  "messagesArea"
+);
+
+const composerBar =
+document.getElementById(
+  "composerBar"
+);
+
+const composerPreview =
+document.getElementById(
+  "composerPreview"
+);
+
+const composerPreviewImage =
+document.getElementById(
+  "composerPreviewImage"
+);
+
+const removeComposerImageButton =
+document.getElementById(
+  "removeComposerImageButton"
+);
+
+const verseInputs =
+document.getElementById(
+  "verseInputs"
+);
+
+const verseReferenceInput =
+document.getElementById(
+  "verseReferenceInput"
+);
+
+const verseTextInput =
+document.getElementById(
+  "verseTextInput"
+);
+
+const toggleVerseButton =
+document.getElementById(
+  "toggleVerseButton"
+);
+
+const selectImageButton =
+document.getElementById(
+  "selectImageButton"
+);
+
+const messageImageInput =
+document.getElementById(
+  "messageImageInput"
+);
+
+const messageInput =
+document.getElementById(
+  "messageInput"
+);
+
+const sendMessageButton =
+document.getElementById(
+  "sendMessageButton"
+);
+
+const imageViewer =
+document.getElementById(
+  "imageViewer"
+);
+
+const imageViewerImage =
+document.getElementById(
+  "imageViewerImage"
+);
+
+const closeImageViewerButton =
+document.getElementById(
+  "closeImageViewerButton"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let groupData =
+{};
+
+let groupMembers =
+[];
+
+let groupAdmins =
+[];
+
+let selectedMessageImage =
+null;
+
+let selectedMessageImagePreviewUrl =
+"";
+
+let verseComposerOpen =
+false;
+
+let messageIsSending =
+false;
+
+let unsubscribeMessages =
+null;
+
+
+/* =====================================================
+   GET GROUP ID FROM URL
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const groupId =
+urlParameters.get(
+  "id"
+);
+
+
+/* =====================================================
+   HANDLE MISSING GROUP ID
+===================================================== */
+
+if(!groupId){
+
+  pageMessage.textContent =
+  "Bible Study Group not found.";
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  composerBar.style.display =
+  "none";
+
+  throw new Error(
+    "Group ID is missing."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    if(
+      window.history.length > 1
+    ){
+
+      window.history.back();
+
+    }else{
+
+      window.location.href =
+      `group-details.html?id=${encodeURIComponent(
+        groupId
+      )}`;
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   VIEW GROUP MEMBERS
+===================================================== */
+
+headerMembersButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-members.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   SHOW PAGE ERROR
+===================================================== */
+
+function showPageError(
+  message
+){
+
+  pageMessage.textContent =
+  message;
+
+  pageMessage.classList.remove(
+    "hidden"
+  );
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  chatContent.classList.remove(
+    "show"
+  );
+
+  composerBar.style.display =
+  "none";
+
+}
+
+
+/* =====================================================
+   SHOW CHAT PAGE
+===================================================== */
+
+function showChatPage(){
+
+  pageMessage.classList.add(
+    "hidden"
+  );
+
+  pageMessage.classList.remove(
+    "error"
+  );
+
+  chatContent.classList.add(
+    "show"
+  );
+
+  composerBar.style.display =
+  "";
+
+}
+
+
+/* =====================================================
+   FORMAT MESSAGE TIME
+===================================================== */
+
+function formatMessageTime(
+  timestamp
+){
+
+  if(!timestamp){
+
+    return "Sending...";
+
+  }
+
+
+  try{
+
+    let messageDate;
+
+
+    if(
+      typeof timestamp.toDate ===
+      "function"
+    ){
+
+      messageDate =
+      timestamp.toDate();
+
+    }else if(
+      timestamp.seconds
+    ){
+
+      messageDate =
+      new Date(
+        timestamp.seconds * 1000
+      );
+
+    }else{
+
+      messageDate =
+      new Date(timestamp);
+
+    }
+
+
+    if(
+      Number.isNaN(
+        messageDate.getTime()
+      )
+    ){
+
+      return "";
+
+    }
+
+
+    return messageDate.toLocaleTimeString(
+      undefined,
+      {
+        hour:"numeric",
+        minute:"2-digit"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Message time formatting error:",
+      error
+    );
+
+    return "";
+
+  }
+
+}
+
+
+/* =====================================================
+   FORMAT MESSAGE DATE
+===================================================== */
+
+function formatMessageDate(
+  timestamp
+){
+
+  if(!timestamp){
+
+    return "Today";
+
+  }
+
+
+  try{
+
+    let messageDate;
+
+
+    if(
+      typeof timestamp.toDate ===
+      "function"
+    ){
+
+      messageDate =
+      timestamp.toDate();
+
+    }else if(
+      timestamp.seconds
+    ){
+
+      messageDate =
+      new Date(
+        timestamp.seconds * 1000
+      );
+
+    }else{
+
+      messageDate =
+      new Date(timestamp);
+
+    }
+
+
+    if(
+      Number.isNaN(
+        messageDate.getTime()
+      )
+    ){
+
+      return "Today";
+
+    }
+
+
+    const today =
+    new Date();
+
+
+    const yesterday =
+    new Date();
+
+
+    yesterday.setDate(
+      today.getDate() - 1
+    );
+
+
+    const sameDay =
+    messageDate.toDateString() ===
+    today.toDateString();
+
+
+    const wasYesterday =
+    messageDate.toDateString() ===
+    yesterday.toDateString();
+
+
+    if(sameDay){
+
+      return "Today";
+
+    }
+
+
+    if(wasYesterday){
+
+      return "Yesterday";
+
+    }
+
+
+    return messageDate.toLocaleDateString(
+      undefined,
+      {
+        year:"numeric",
+        month:"short",
+        day:"numeric"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Message date formatting error:",
+      error
+    );
+
+    return "Today";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD CURRENT USER PROFILE
+===================================================== */
+
+async function loadCurrentUserProfile(){
+
+  currentProfile =
+  {};
+
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+
+  try{
+
+    const profileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      )
+    );
+
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      currentProfile = {
+        id:
+        profileSnapshot.id,
+
+        ...profileSnapshot.data()
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Current user profile loading error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD GROUP AND CHECK ACCESS
+===================================================== */
+
+async function loadGroupAndCheckAccess(){
+
+  try{
+
+    const groupSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      )
+    );
+
+
+    if(
+      !groupSnapshot.exists()
+    ){
+
+      showPageError(
+        "This Bible Study Group does not exist."
+      );
+
+      return false;
+
+    }
+
+
+    groupData = {
+      id:
+      groupSnapshot.id,
+
+      ...groupSnapshot.data()
+    };
+
+
+    groupMembers =
+    Array.isArray(
+      groupData.members
+    )
+    ? groupData.members
+    : [];
+
+
+    groupAdmins =
+    Array.isArray(
+      groupData.admins
+    )
+    ? groupData.admins
+    : [];
+
+
+    const userIsMember =
+    Boolean(
+      currentUser &&
+      groupMembers.includes(
+        currentUser.uid
+      )
+    );
+
+
+    const userIsAdmin =
+    Boolean(
+      currentUser &&
+      groupAdmins.includes(
+        currentUser.uid
+      )
+    );
+
+
+    if(
+      !userIsMember &&
+      !userIsAdmin
+    ){
+
+      showPageError(
+        "Join this Bible Study Group before opening the group chat."
+      );
+
+      return false;
+
+    }
+
+
+    const loadedGroupName =
+    getFirstValue(
+      groupData.name,
+      groupData.groupName,
+      groupData.title,
+      "Bible Study Group"
+    );
+
+
+    headerTitle.textContent =
+    loadedGroupName;
+
+
+    headerMemberCount.textContent =
+    String(
+      groupMembers.length
+    );
+
+
+    headerSubtitle.textContent =
+    `${groupMembers.length} member${
+      groupMembers.length === 1
+      ? ""
+      : "s"
+    } • Bible Study Discussion`;
+
+
+    const groupImage =
+    getFirstValue(
+      groupData.imageUrl,
+      groupData.imageURL,
+      groupData.coverImage
+    );
+
+
+    if(groupImage){
+
+      headerGroupAvatar.innerHTML = `
+
+        <img
+          src="${groupImage}"
+          alt="${loadedGroupName} group image"
+        >
+
+      `;
+
+    }else{
+
+      headerGroupAvatar.textContent =
+      "📖";
+
+    }
+
+
+    showChatPage();
+
+    startMessagesListener();
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "Group access loading error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showPageError(
+        "Firestore denied access to this group chat."
+      );
+
+    }else{
+
+      showPageError(
+        "The Bible Study Group chat could not be opened."
+      );
+
+    }
+
+    return false;
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    await loadCurrentUserProfile();
+
+    await loadGroupAndCheckAccess();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    showPageError(
+      "Your account could not be confirmed. Please sign in again."
+    );
+
+  }
+);
+
+
+/* =====================================================
+   TOGGLE VERSE COMPOSER
+===================================================== */
+
+toggleVerseButton.addEventListener(
+  "click",
+  function(){
+
+    verseComposerOpen =
+    !verseComposerOpen;
+
+
+    verseInputs.classList.toggle(
+      "show",
+      verseComposerOpen
+    );
+
+
+    if(verseComposerOpen){
+
+      verseReferenceInput.focus();
+
+    }else{
+
+      verseReferenceInput.value =
+      "";
+
+      verseTextInput.value =
+      "";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   SELECT MESSAGE IMAGE
+===================================================== */
+
+selectImageButton.addEventListener(
+  "click",
+  function(){
+
+    messageImageInput.click();
+
+  }
+);
+
+
+/* =====================================================
+   MESSAGE IMAGE CHANGE
+===================================================== */
+
+messageImageInput.addEventListener(
+  "change",
+  function(){
+
+    const selectedFile =
+    messageImageInput.files?.[0] ||
+    null;
+
+
+    if(!selectedFile){
+
+      return;
+
+    }
+
+
+    if(
+      !selectedFile.type.startsWith(
+        "image/"
+      )
+    ){
+
+      alert(
+        "Please select a valid image."
+      );
+
+      messageImageInput.value =
+      "";
+
+      return;
+
+    }
+
+
+    const maximumImageSize =
+    5 * 1024 * 1024;
+
+
+    if(
+      selectedFile.size >
+      maximumImageSize
+    ){
+
+      alert(
+        "The message image must be smaller than 5 MB."
+      );
+
+      messageImageInput.value =
+      "";
+
+      return;
+
+    }
+
+
+    selectedMessageImage =
+    selectedFile;
+
+
+    if(
+      selectedMessageImagePreviewUrl
+    ){
+
+      URL.revokeObjectURL(
+        selectedMessageImagePreviewUrl
+      );
+
+    }
+
+
+    selectedMessageImagePreviewUrl =
+    URL.createObjectURL(
+      selectedFile
+    );
+
+
+    composerPreviewImage.src =
+    selectedMessageImagePreviewUrl;
+
+
+    composerPreview.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CLEAR SELECTED IMAGE
+===================================================== */
+
+function clearSelectedMessageImage(){
+
+  selectedMessageImage =
+  null;
+
+
+  messageImageInput.value =
+  "";
+
+
+  composerPreviewImage.src =
+  "";
+
+
+  composerPreview.classList.remove(
+    "show"
+  );
+
+
+  if(
+    selectedMessageImagePreviewUrl
+  ){
+
+    URL.revokeObjectURL(
+      selectedMessageImagePreviewUrl
+    );
+
+    selectedMessageImagePreviewUrl =
+    "";
+
+  }
+
+}
+
+
+removeComposerImageButton.addEventListener(
+  "click",
+  clearSelectedMessageImage
+);
+
+
+/* =====================================================
+   AUTO-GROW MESSAGE INPUT
+===================================================== */
+
+messageInput.addEventListener(
+  "input",
+  function(){
+
+    messageInput.style.height =
+    "auto";
+
+
+    messageInput.style.height =
+    `${Math.min(
+      messageInput.scrollHeight,
+      130
+    )}px`;
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   REAL-TIME MESSAGES, MESSAGE CARDS,
+   IMAGE VIEWER AND MESSAGE SENDING
+===================================================== */
+
+
+/* =====================================================
+   STOP MESSAGE LISTENER
+===================================================== */
+
+function stopMessagesListener(){
+
+  if(
+    typeof unsubscribeMessages ===
+    "function"
+  ){
+
+    unsubscribeMessages();
+
+  }
+
+  unsubscribeMessages =
+  null;
+
+}
+
+
+/* =====================================================
+   SCROLL TO LATEST MESSAGE
+===================================================== */
+
+function scrollToLatestMessage(){
+
+  window.setTimeout(
+    function(){
+
+      messagesArea.scrollTop =
+      messagesArea.scrollHeight;
+
+    },
+    80
+  );
+
+}
+
+
+/* =====================================================
+   CREATE MESSAGE ROW
+===================================================== */
+
+function createMessageRow(
+  messageData
+){
+
+  const senderId =
+  getFirstValue(
+    messageData.senderId,
+    messageData.userId,
+    messageData.uid
+  );
+
+
+  const senderName =
+  getFirstValue(
+    messageData.senderName,
+    messageData.name,
+    messageData.fullName,
+    "Faith Connect Member"
+  );
+
+
+  const senderPicture =
+  getFirstValue(
+    messageData.senderPicture,
+    messageData.profilePicture,
+    messageData.picture,
+    messageData.photoURL,
+    "images/profile.png"
+  );
+
+
+  const messageText =
+  getFirstValue(
+    messageData.message,
+    messageData.text,
+    messageData.content
+  );
+
+
+  const verseReference =
+  getFirstValue(
+    messageData.verseReference,
+    messageData.reference
+  );
+
+
+  const verseText =
+  getFirstValue(
+    messageData.verseText,
+    messageData.scriptureText
+  );
+
+
+  const imageUrl =
+  getFirstValue(
+    messageData.imageUrl,
+    messageData.imageURL,
+    messageData.photoUrl
+  );
+
+
+  const isOwnMessage =
+  Boolean(
+    currentUser &&
+    senderId === currentUser.uid
+  );
+
+
+  const messageRow =
+  document.createElement(
+    "div"
+  );
+
+
+  messageRow.className =
+  isOwnMessage
+  ? "messageRow own"
+  : "messageRow";
+
+
+  /* Sender avatar */
+
+  const avatar =
+  document.createElement(
+    "img"
+  );
+
+
+  avatar.className =
+  "messageAvatar";
+
+
+  avatar.src =
+  senderPicture;
+
+
+  avatar.alt =
+  `${senderName}'s profile picture`;
+
+
+  avatar.loading =
+  "lazy";
+
+
+  avatar.addEventListener(
+    "error",
+    function(){
+
+      avatar.src =
+      "images/profile.png";
+
+    },
+    {
+      once:true
+    }
+  );
+
+
+  if(senderId){
+
+    avatar.addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+        `user-profile.html?uid=${encodeURIComponent(
+          senderId
+        )}`;
+
+      }
+    );
+
+  }
+
+
+  /* Message wrapper */
+
+  const messageWrapper =
+  document.createElement(
+    "div"
+  );
+
+
+  messageWrapper.className =
+  "messageWrapper";
+
+
+  const senderElement =
+  document.createElement(
+    "div"
+  );
+
+
+  senderElement.className =
+  "messageSender";
+
+
+  senderElement.textContent =
+  senderName;
+
+
+  if(senderId){
+
+    senderElement.addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+        `user-profile.html?uid=${encodeURIComponent(
+          senderId
+        )}`;
+
+      }
+    );
+
+  }
+
+
+  const messageBubble =
+  document.createElement(
+    "div"
+  );
+
+
+  messageBubble.className =
+  "messageBubble";
+
+
+  if(messageText){
+
+    const textElement =
+    document.createElement(
+      "div"
+    );
+
+
+    textElement.className =
+    "messageText";
+
+
+    textElement.textContent =
+    messageText;
+
+
+    messageBubble.appendChild(
+      textElement
+    );
+
+  }
+
+
+  /* Bible verse */
+
+  if(
+    verseReference ||
+    verseText
+  ){
+
+    const verseCard =
+    document.createElement(
+      "div"
+    );
+
+
+    verseCard.className =
+    "verseCard";
+
+
+    if(verseReference){
+
+      const referenceElement =
+      document.createElement(
+        "div"
+      );
+
+
+      referenceElement.className =
+      "verseReference";
+
+
+      referenceElement.textContent =
+      `📖 ${verseReference}`;
+
+
+      verseCard.appendChild(
+        referenceElement
+      );
+
+    }
+
+
+    if(verseText){
+
+      const verseTextElement =
+      document.createElement(
+        "div"
+      );
+
+
+      verseTextElement.className =
+      "verseText";
+
+
+      verseTextElement.textContent =
+      verseText;
+
+
+      verseCard.appendChild(
+        verseTextElement
+      );
+
+    }
+
+
+    messageBubble.appendChild(
+      verseCard
+    );
+
+  }
+
+
+  /* Message image */
+
+  if(imageUrl){
+
+    const imageElement =
+    document.createElement(
+      "img"
+    );
+
+
+    imageElement.className =
+    "messageImage";
+
+
+    imageElement.src =
+    imageUrl;
+
+
+    imageElement.alt =
+    "Bible Study Group message image";
+
+
+    imageElement.loading =
+    "lazy";
+
+
+    imageElement.addEventListener(
+      "click",
+      function(){
+
+        openImageViewer(
+          imageUrl
+        );
+
+      }
+    );
+
+
+    imageElement.addEventListener(
+      "error",
+      function(){
+
+        imageElement.remove();
+
+      },
+      {
+        once:true
+      }
+    );
+
+
+    messageBubble.appendChild(
+      imageElement
+    );
+
+  }
+
+
+  /* Message metadata */
+
+  const messageMeta =
+  document.createElement(
+    "div"
+  );
+
+
+  messageMeta.className =
+  "messageMeta";
+
+
+  const timeElement =
+  document.createElement(
+    "span"
+  );
+
+
+  timeElement.textContent =
+  formatMessageTime(
+    messageData.timestamp ||
+    messageData.createdAt
+  );
+
+
+  messageMeta.appendChild(
+    timeElement
+  );
+
+
+  if(isOwnMessage){
+
+    const deleteButton =
+    document.createElement(
+      "button"
+    );
+
+
+    deleteButton.type =
+    "button";
+
+
+    deleteButton.className =
+    "deleteMessageButton";
+
+
+    deleteButton.textContent =
+    "Delete";
+
+
+    deleteButton.addEventListener(
+      "click",
+      async function(){
+
+        await deleteGroupMessage(
+          messageData.id,
+          deleteButton
+        );
+
+      }
+    );
+
+
+    messageMeta.appendChild(
+      deleteButton
+    );
+
+  }
+
+
+  messageBubble.appendChild(
+    messageMeta
+  );
+
+
+  messageWrapper.appendChild(
+    senderElement
+  );
+
+
+  messageWrapper.appendChild(
+    messageBubble
+  );
+
+
+  messageRow.appendChild(
+    avatar
+  );
+
+
+  messageRow.appendChild(
+    messageWrapper
+  );
+
+
+  return messageRow;
+
+}
+
+
+/* =====================================================
+   START REAL-TIME MESSAGE LISTENER
+===================================================== */
+
+function startMessagesListener(){
+
+  stopMessagesListener();
+
+
+  messagesArea.innerHTML = `
+
+    <div class="messageStatus">
+      Loading messages...
+    </div>
+
+  `;
+
+
+  const messagesQuery =
+  query(
+    collection(
+      db,
+      "groupMessages"
+    ),
+    where(
+      "groupId",
+      "==",
+      groupId
+    ),
+    orderBy(
+      "timestamp",
+      "asc"
+    )
+  );
+
+
+  unsubscribeMessages =
+  onSnapshot(
+
+    messagesQuery,
+
+    function(snapshot){
+
+      messagesArea.innerHTML =
+      "";
+
+
+      if(snapshot.empty){
+
+        scrollToLatestMessage();
+
+        return;
+
+      }
+
+
+      let lastDateLabel =
+      "";
+
+
+      snapshot.forEach(
+        function(messageDocument){
+
+          const messageData = {
+            id:
+            messageDocument.id,
+
+            ...messageDocument.data()
+          };
+
+
+          const dateLabel =
+          formatMessageDate(
+            messageData.timestamp ||
+            messageData.createdAt
+          );
+
+
+          if(
+            dateLabel !==
+            lastDateLabel
+          ){
+
+            const dateDivider =
+            document.createElement(
+              "div"
+            );
+
+
+            dateDivider.className =
+            "dateDivider";
+
+
+            dateDivider.textContent =
+            dateLabel;
+
+
+            messagesArea.appendChild(
+              dateDivider
+            );
+
+
+            lastDateLabel =
+            dateLabel;
+
+          }
+
+
+          const messageRow =
+          createMessageRow(
+            messageData
+          );
+
+
+          messagesArea.appendChild(
+            messageRow
+          );
+
+        }
+      );
+
+
+      scrollToLatestMessage();
+
+    },
+
+    function(error){
+
+      console.error(
+        "Group messages listener error:",
+        error
+      );
+
+
+      messagesArea.innerHTML = `
+
+        <div class="messageStatus error">
+
+          Group messages could not be loaded.
+
+        </div>
+
+      `;
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   OPEN IMAGE VIEWER
+===================================================== */
+
+function openImageViewer(
+  imageUrl
+){
+
+  if(!imageUrl){
+
+    return;
+
+  }
+
+
+  imageViewerImage.src =
+  imageUrl;
+
+
+  imageViewer.classList.add(
+    "open"
+  );
+
+
+  imageViewer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+  "hidden";
+
+
+  closeImageViewerButton.focus();
+
+}
+
+
+/* =====================================================
+   CLOSE IMAGE VIEWER
+===================================================== */
+
+function closeImageViewer(){
+
+  imageViewer.classList.remove(
+    "open"
+  );
+
+
+  imageViewer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  imageViewerImage.src =
+  "";
+
+
+  document.body.style.overflow =
+  "";
+
+}
+
+
+/* =====================================================
+   IMAGE VIEWER EVENTS
+===================================================== */
+
+closeImageViewerButton.addEventListener(
+  "click",
+  closeImageViewer
+);
+
+
+imageViewer.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target === imageViewer
+    ){
+
+      closeImageViewer();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape" &&
+      imageViewer.classList.contains(
+        "open"
+      )
+    ){
+
+      closeImageViewer();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   UPLOAD MESSAGE IMAGE
+===================================================== */
+
+async function uploadMessageImage(){
+
+  if(!selectedMessageImage){
+
+    return "";
+
+  }
+
+
+  const safeFileName =
+  selectedMessageImage.name
+  .replace(
+    /[^a-zA-Z0-9._-]/g,
+    "_"
+  );
+
+
+  const imagePath =
+  `groupMessages/${groupId}/${currentUser.uid}/${Date.now()}_${safeFileName}`;
+
+
+  const imageReference =
+  ref(
+    storage,
+    imagePath
+  );
+
+
+  await uploadBytes(
+    imageReference,
+    selectedMessageImage
+  );
+
+
+  return await getDownloadURL(
+    imageReference
+  );
+
+}
+
+
+/* =====================================================
+   SET MESSAGE SENDING STATE
+===================================================== */
+
+function setMessageSendingState(
+  sending
+){
+
+  messageIsSending =
+  sending;
+
+
+  sendMessageButton.disabled =
+  sending;
+
+
+  toggleVerseButton.disabled =
+  sending;
+
+
+  selectImageButton.disabled =
+  sending;
+
+
+  removeComposerImageButton.disabled =
+  sending;
+
+
+  sendMessageButton.textContent =
+  sending
+  ? "…"
+  : "➤";
+
+}
+
+
+/* =====================================================
+   SEND GROUP MESSAGE
+===================================================== */
+
+async function sendGroupMessage(){
+
+  if(messageIsSending){
+
+    return;
+
+  }
+
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+
+  const messageText =
+  messageInput.value.trim();
+
+
+  const verseReference =
+  verseReferenceInput.value.trim();
+
+
+  const verseText =
+  verseTextInput.value.trim();
+
+
+  if(
+    !messageText &&
+    !verseReference &&
+    !verseText &&
+    !selectedMessageImage
+  ){
+
+    return;
+
+  }
+
+
+  setMessageSendingState(
+    true
+  );
+
+
+  try{
+
+    const imageUrl =
+    await uploadMessageImage();
+
+
+    const senderName =
+    getFirstValue(
+      currentProfile.fullName,
+      currentProfile.name,
+      currentProfile.displayName,
+      currentUser.displayName,
+      currentUser.email?.split("@")[0],
+      "Faith Connect Member"
+    );
+
+
+    const senderPicture =
+    getFirstValue(
+      currentProfile.profilePicture,
+      currentProfile.picture,
+      currentProfile.photoURL,
+      currentProfile.photoUrl,
+      currentUser.photoURL,
+      "images/profile.png"
+    );
+
+
+    await addDoc(
+      collection(
+        db,
+        "groupMessages"
+      ),
+      {
+
+        groupId:
+        groupId,
+
+        senderId:
+        currentUser.uid,
+
+        senderName:
+        senderName,
+
+        senderPicture:
+        senderPicture,
+
+        message:
+        messageText,
+
+        verseReference:
+        verseReference,
+
+        verseText:
+        verseText,
+
+        imageUrl:
+        imageUrl,
+
+        timestamp:
+        serverTimestamp()
+
+      }
+    );
+
+
+    messageInput.value =
+    "";
+
+
+    messageInput.style.height =
+    "auto";
+
+
+    verseReferenceInput.value =
+    "";
+
+
+    verseTextInput.value =
+    "";
+
+
+    verseComposerOpen =
+    false;
+
+
+    verseInputs.classList.remove(
+      "show"
+    );
+
+
+    clearSelectedMessageImage();
+
+
+    messageInput.focus();
+
+  }catch(error){
+
+    console.error(
+      "Group message sending error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      alert(
+        "Firestore denied permission to send this message."
+      );
+
+    }else if(
+      error?.code ===
+      "storage/unauthorized"
+    ){
+
+      alert(
+        "Firebase Storage denied permission to upload the image."
+      );
+
+    }else{
+
+      alert(
+        "The group message could not be sent."
+      );
+
+    }
+
+  }finally{
+
+    setMessageSendingState(
+      false
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SEND BUTTON EVENT
+===================================================== */
+
+sendMessageButton.addEventListener(
+  "click",
+  sendGroupMessage
+);
+
+
+/* =====================================================
+   SEND WITH ENTER
+===================================================== */
+
+messageInput.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      sendGroupMessage();
+
+    }
+
+  }
+);
+/* =====================================================
+   PART 6 OF 6
+   MESSAGE DELETION, PAGE RESTORATION,
+   CLEANUP, SAFEGUARDS AND FINAL CLOSING
+===================================================== */
+
+
+/* =====================================================
+   DELETE GROUP MESSAGE
+===================================================== */
+
+async function deleteGroupMessage(
+  messageId,
+  deleteButton
+){
+
+  if(
+    !currentUser ||
+    !messageId
+  ){
+
+    return;
+
+  }
+
+
+  const confirmed =
+  window.confirm(
+    "Delete this group message?"
+  );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  deleteButton.disabled =
+  true;
+
+
+  deleteButton.textContent =
+  "Deleting...";
+
+
+  try{
+
+    await deleteDoc(
+      doc(
+        db,
+        "groupMessages",
+        messageId
+      )
+    );
+
+  }catch(error){
+
+    console.error(
+      "Group message deletion error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      alert(
+        "Firestore denied permission to delete this message."
+      );
+
+    }else{
+
+      alert(
+        "The group message could not be deleted."
+      );
+
+    }
+
+
+    deleteButton.disabled =
+    false;
+
+
+    deleteButton.textContent =
+    "Delete";
+
+  }
+
+}
+
+
+/* =====================================================
+   MESSAGE IMAGE PREVIEW FALLBACK
+===================================================== */
+
+composerPreviewImage.addEventListener(
+  "error",
+  function(){
+
+    alert(
+      "The selected image could not be previewed."
+    );
+
+
+    clearSelectedMessageImage();
+
+  }
+);
+
+
+/* =====================================================
+   HEADER GROUP IMAGE FALLBACK
+===================================================== */
+
+headerGroupAvatar.addEventListener(
+  "error",
+  function(event){
+
+    if(
+      event.target.tagName !==
+      "IMG"
+    ){
+
+      return;
+
+    }
+
+
+    headerGroupAvatar.innerHTML =
+    "📖";
+
+  },
+  true
+);
+
+
+/* =====================================================
+   RESTORE PAGE WHEN RETURNING
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  async function(event){
+
+    if(!event.persisted){
+
+      return;
+
+    }
+
+
+    setMessageSendingState(
+      false
+    );
+
+
+    closeImageViewer();
+
+
+    if(currentUser){
+
+      await loadGroupAndCheckAccess();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP FIRESTORE LISTENER
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    stopMessagesListener();
+
+  }
+);
+
+
+/* =====================================================
+   FINAL PAGE CLEANUP
+===================================================== */
+
+window.addEventListener(
+  "pagehide",
+  function(){
+
+    stopMessagesListener();
+
+
+    messageIsSending =
+    false;
+
+
+    if(
+      selectedMessageImagePreviewUrl
+    ){
+
+      URL.revokeObjectURL(
+        selectedMessageImagePreviewUrl
+      );
+
+
+      selectedMessageImagePreviewUrl =
+      "";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect Bible Study Group chat is ready."
+);
+
+
+</script>
+
+</body>
+
+</html>
