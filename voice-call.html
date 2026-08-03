@@ -1,0 +1,6031 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Faith Connect private voice call."
+  >
+
+  <title>
+    Voice Call | SABASABA Gospel Ministry
+  </title>
+
+  <style>
+
+    /* =====================================================
+       PART 1 OF 6
+       GENERAL PAGE, VARIABLES, HEADER
+       AND MAIN CALL SCREEN
+    ===================================================== */
+
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#071522;
+      --surface:#102536;
+      --surface-light:#17364c;
+
+      --text:#ffffff;
+      --muted:#b6c8d6;
+
+      --border:
+        rgba(255,255,255,.12);
+
+      --success:#35b46f;
+      --danger:#e34f4f;
+      --warning:#f0b948;
+
+      --shadow:
+        0 12px 32px
+        rgba(0,0,0,.32);
+
+      --radius-large:26px;
+      --radius-medium:17px;
+      --radius-small:12px;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #16486c,
+          #071522 58%
+        );
+
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display:flex;
+      flex-direction:column;
+
+    }
+
+
+    button,
+    input{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    img{
+      display:block;
+      max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible{
+
+      outline:
+        3px solid
+        rgba(255,255,255,.35);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:relative;
+      z-index:100;
+
+      width:100%;
+
+      background:
+        rgba(4,18,29,.78);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(14px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      max-width:760px;
+      min-height:64px;
+
+      margin:auto;
+      padding:8px 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:1px solid var(--border);
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.09);
+
+      color:#ffffff;
+
+      font-size:22px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+      background:
+        rgba(255,255,255,.17);
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+      text-align:center;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:16px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:3px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    .securityIcon{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:1px solid var(--border);
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:#ffffff;
+
+      font-size:18px;
+
+    }
+
+
+    /* =====================================================
+       MAIN CALL PAGE
+    ===================================================== */
+
+    .callPage{
+
+      width:100%;
+      max-width:760px;
+
+      min-height:
+        calc(100vh - 64px);
+
+      margin:auto;
+
+      padding:
+        24px
+        16px
+        30px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+
+    }
+
+
+    /* =====================================================
+       CALL INFORMATION
+    ===================================================== */
+
+    .callInformation{
+
+      width:100%;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+
+      text-align:center;
+
+    }
+
+
+    .callStatus{
+
+      min-height:28px;
+      padding:7px 13px;
+
+      border:1px solid var(--border);
+      border-radius:999px;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    .callStatus.ringing{
+      color:#ffe39b;
+    }
+
+
+    .callStatus.connected{
+      color:#9df0bc;
+    }
+
+
+    .callStatus.ended{
+      color:#ffaaaa;
+    }
+
+
+    /* =====================================================
+       MEMBER PROFILE
+    ===================================================== */
+
+    .memberProfile{
+
+      margin-top:30px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+
+    }
+
+
+    .memberAvatarFrame{
+
+      width:164px;
+      height:164px;
+
+      padding:7px;
+
+      border-radius:50%;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.30),
+          rgba(255,255,255,.06)
+        );
+
+      box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.38);
+
+    }
+
+
+    .memberAvatarFrame.ringing{
+
+      animation:
+        ringPulse
+        1.6s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    @keyframes ringPulse{
+
+      0%,
+      100%{
+
+        box-shadow:
+          0 0 0 0
+          rgba(255,255,255,.18),
+          0 12px 35px
+          rgba(0,0,0,.38);
+
+      }
+
+      50%{
+
+        box-shadow:
+          0 0 0 18px
+          rgba(255,255,255,0),
+          0 12px 35px
+          rgba(0,0,0,.38);
+
+      }
+
+    }
+
+
+    .memberAvatar{
+
+      width:100%;
+      height:100%;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+    }
+
+
+    .memberName{
+
+      margin-top:20px;
+
+      max-width:100%;
+
+      font-size:25px;
+      font-weight:900;
+      line-height:1.25;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .memberCountry{
+
+      margin-top:7px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      font-weight:800;
+
+    }
+
+
+    .memberCountry.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       CALL TIMER
+    ===================================================== */
+
+    .callTimer{
+
+      margin-top:16px;
+
+      min-height:30px;
+
+      color:#dff3ff;
+
+      font-size:18px;
+      font-weight:900;
+
+      letter-spacing:1px;
+
+    }
+
+
+    /* =====================================================
+       CALL MESSAGE
+    ===================================================== */
+
+    .callMessage{
+
+      width:100%;
+      max-width:520px;
+
+      margin-top:18px;
+      padding:14px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-medium);
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+      line-height:1.55;
+
+    }
+
+
+    .callMessage.error{
+
+      border-color:
+        rgba(227,79,79,.55);
+
+      background:
+        rgba(227,79,79,.14);
+
+      color:#ffbaba;
+
+    }
+
+
+    .callMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       REMOTE AUDIO
+    ===================================================== */
+
+    .remoteAudio{
+      display:none;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .callPage{
+
+        padding-left:12px;
+        padding-right:12px;
+
+      }
+
+
+      .memberAvatarFrame{
+
+        width:142px;
+        height:142px;
+
+      }
+
+
+      .memberName{
+        font-size:22px;
+      }
+
+    }
+
+
+    @media(max-width:360px){
+
+      .memberAvatarFrame{
+
+        width:125px;
+        height:125px;
+
+      }
+
+
+      .memberName{
+        font-size:20px;
+      }
+
+    }
+
+  </style>
+  <style>
+
+    /* =====================================================
+       PART 2 OF 6
+       CALL CONTROLS, INCOMING CALL ACTIONS,
+       MUTE, SPEAKER AND RESPONSIVE DESIGN
+    ===================================================== */
+
+
+    /* =====================================================
+       CONTROLS AREA
+    ===================================================== */
+
+    .controlsArea{
+
+      width:100%;
+      max-width:560px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+
+    }
+
+
+    /* =====================================================
+       ACTIVE CALL CONTROLS
+    ===================================================== */
+
+    .activeCallControls{
+
+      width:100%;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:14px;
+
+    }
+
+
+    .callControlButton{
+
+      min-height:88px;
+      padding:12px 8px;
+
+      border:1px solid var(--border);
+      border-radius:20px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:#ffffff;
+
+      font-size:11px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .callControlButton:hover{
+
+      background:
+        rgba(255,255,255,.15);
+
+    }
+
+
+    .callControlButton:active{
+      transform:scale(.97);
+    }
+
+
+    .callControlButton.active{
+
+      border-color:
+        rgba(53,180,111,.55);
+
+      background:
+        rgba(53,180,111,.18);
+
+      color:#a9f5c5;
+
+    }
+
+
+    .callControlButton.warning{
+
+      border-color:
+        rgba(240,185,72,.52);
+
+      background:
+        rgba(240,185,72,.16);
+
+      color:#ffe39b;
+
+    }
+
+
+    .callControlButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.48;
+
+    }
+
+
+    .callControlIcon{
+
+      width:48px;
+      height:48px;
+
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.10);
+
+      font-size:22px;
+
+    }
+
+
+    /* =====================================================
+       END CALL BUTTON
+    ===================================================== */
+
+    .endCallButton{
+
+      width:76px;
+      height:76px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:var(--danger);
+      color:#ffffff;
+
+      font-size:30px;
+
+      box-shadow:
+        0 10px 28px
+        rgba(227,79,79,.36);
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .endCallButton:hover{
+      background:#c93d3d;
+    }
+
+
+    .endCallButton:active{
+      transform:scale(.95);
+    }
+
+
+    .endCallButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.55;
+
+    }
+
+
+    /* =====================================================
+       INCOMING CALL CONTROLS
+    ===================================================== */
+
+    .incomingCallControls{
+
+      width:100%;
+
+      display:none;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:20px;
+
+    }
+
+
+    .incomingCallControls.show{
+      display:grid;
+    }
+
+
+    .incomingAction{
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+
+    }
+
+
+    .incomingActionButton{
+
+      width:76px;
+      height:76px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:#ffffff;
+
+      font-size:30px;
+
+      box-shadow:
+        0 10px 28px
+        rgba(0,0,0,.28);
+
+      transition:
+        transform .2s ease,
+        filter .2s ease;
+
+    }
+
+
+    .incomingActionButton:hover{
+      filter:brightness(1.08);
+    }
+
+
+    .incomingActionButton:active{
+      transform:scale(.95);
+    }
+
+
+    .incomingActionButton.accept{
+      background:var(--success);
+    }
+
+
+    .incomingActionButton.reject{
+      background:var(--danger);
+    }
+
+
+    .incomingActionButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.55;
+
+    }
+
+
+    .incomingActionLabel{
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       OUTGOING CALL CONTROLS
+    ===================================================== */
+
+    .outgoingCallControls{
+
+      width:100%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+    }
+
+
+    .outgoingCallControls.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       CONNECTION INDICATOR
+    ===================================================== */
+
+    .connectionIndicator{
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    .connectionDot{
+
+      width:9px;
+      height:9px;
+
+      border-radius:50%;
+
+      background:#748b9a;
+
+    }
+
+
+    .connectionDot.connecting{
+
+      background:var(--warning);
+
+      animation:
+        connectionBlink
+        1s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    .connectionDot.connected{
+      background:var(--success);
+    }
+
+
+    .connectionDot.failed{
+      background:var(--danger);
+    }
+
+
+    @keyframes connectionBlink{
+
+      0%,
+      100%{
+        opacity:.35;
+      }
+
+      50%{
+        opacity:1;
+      }
+
+    }
+
+
+    /* =====================================================
+       CALL PERMISSION NOTICE
+    ===================================================== */
+
+    .permissionNotice{
+
+      width:100%;
+      max-width:520px;
+
+      padding:13px 14px;
+
+      border:1px solid
+        rgba(240,185,72,.45);
+
+      border-radius:var(--radius-medium);
+
+      background:
+        rgba(240,185,72,.13);
+
+      color:#ffe5a9;
+
+      text-align:center;
+
+      font-size:11px;
+      font-weight:800;
+      line-height:1.55;
+
+    }
+
+
+    .permissionNotice.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       HIDDEN ELEMENT
+    ===================================================== */
+
+    .hidden{
+      display:none !important;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .controlsArea{
+        max-width:100%;
+      }
+
+
+      .activeCallControls{
+        gap:9px;
+      }
+
+
+      .callControlButton{
+
+        min-height:80px;
+        padding-left:5px;
+        padding-right:5px;
+
+        font-size:10px;
+
+      }
+
+
+      .callControlIcon{
+
+        width:44px;
+        height:44px;
+
+        font-size:20px;
+
+      }
+
+
+      .endCallButton,
+      .incomingActionButton{
+
+        width:70px;
+        height:70px;
+
+        font-size:27px;
+
+      }
+
+    }
+
+
+    @media(max-width:360px){
+
+      .activeCallControls{
+        gap:6px;
+      }
+
+
+      .callControlButton{
+
+        min-height:74px;
+
+        font-size:9px;
+
+      }
+
+
+      .callControlIcon{
+
+        width:40px;
+        height:40px;
+
+        font-size:18px;
+
+      }
+
+
+      .incomingCallControls{
+        gap:12px;
+      }
+
+    }
+
+  </style>
+  <style>
+
+    /* =====================================================
+       PART 2 OF 6
+       CALL CONTROLS, INCOMING CALL ACTIONS,
+       MUTE, SPEAKER AND RESPONSIVE DESIGN
+    ===================================================== */
+
+
+    /* =====================================================
+       CONTROLS AREA
+    ===================================================== */
+
+    .controlsArea{
+
+      width:100%;
+      max-width:560px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+
+    }
+
+
+    /* =====================================================
+       ACTIVE CALL CONTROLS
+    ===================================================== */
+
+    .activeCallControls{
+
+      width:100%;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:14px;
+
+    }
+
+
+    .callControlButton{
+
+      min-height:88px;
+      padding:12px 8px;
+
+      border:1px solid var(--border);
+      border-radius:20px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:#ffffff;
+
+      font-size:11px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .callControlButton:hover{
+
+      background:
+        rgba(255,255,255,.15);
+
+    }
+
+
+    .callControlButton:active{
+      transform:scale(.97);
+    }
+
+
+    .callControlButton.active{
+
+      border-color:
+        rgba(53,180,111,.55);
+
+      background:
+        rgba(53,180,111,.18);
+
+      color:#a9f5c5;
+
+    }
+
+
+    .callControlButton.warning{
+
+      border-color:
+        rgba(240,185,72,.52);
+
+      background:
+        rgba(240,185,72,.16);
+
+      color:#ffe39b;
+
+    }
+
+
+    .callControlButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.48;
+
+    }
+
+
+    .callControlIcon{
+
+      width:48px;
+      height:48px;
+
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.10);
+
+      font-size:22px;
+
+    }
+
+
+    /* =====================================================
+       END CALL BUTTON
+    ===================================================== */
+
+    .endCallButton{
+
+      width:76px;
+      height:76px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:var(--danger);
+      color:#ffffff;
+
+      font-size:30px;
+
+      box-shadow:
+        0 10px 28px
+        rgba(227,79,79,.36);
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .endCallButton:hover{
+      background:#c93d3d;
+    }
+
+
+    .endCallButton:active{
+      transform:scale(.95);
+    }
+
+
+    .endCallButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.55;
+
+    }
+
+
+    /* =====================================================
+       INCOMING CALL CONTROLS
+    ===================================================== */
+
+    .incomingCallControls{
+
+      width:100%;
+
+      display:none;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:20px;
+
+    }
+
+
+    .incomingCallControls.show{
+      display:grid;
+    }
+
+
+    .incomingAction{
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+
+    }
+
+
+    .incomingActionButton{
+
+      width:76px;
+      height:76px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:#ffffff;
+
+      font-size:30px;
+
+      box-shadow:
+        0 10px 28px
+        rgba(0,0,0,.28);
+
+      transition:
+        transform .2s ease,
+        filter .2s ease;
+
+    }
+
+
+    .incomingActionButton:hover{
+      filter:brightness(1.08);
+    }
+
+
+    .incomingActionButton:active{
+      transform:scale(.95);
+    }
+
+
+    .incomingActionButton.accept{
+      background:var(--success);
+    }
+
+
+    .incomingActionButton.reject{
+      background:var(--danger);
+    }
+
+
+    .incomingActionButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.55;
+
+    }
+
+
+    .incomingActionLabel{
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       OUTGOING CALL CONTROLS
+    ===================================================== */
+
+    .outgoingCallControls{
+
+      width:100%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+    }
+
+
+    .outgoingCallControls.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       CONNECTION INDICATOR
+    ===================================================== */
+
+    .connectionIndicator{
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    .connectionDot{
+
+      width:9px;
+      height:9px;
+
+      border-radius:50%;
+
+      background:#748b9a;
+
+    }
+
+
+    .connectionDot.connecting{
+
+      background:var(--warning);
+
+      animation:
+        connectionBlink
+        1s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    .connectionDot.connected{
+      background:var(--success);
+    }
+
+
+    .connectionDot.failed{
+      background:var(--danger);
+    }
+
+
+    @keyframes connectionBlink{
+
+      0%,
+      100%{
+        opacity:.35;
+      }
+
+      50%{
+        opacity:1;
+      }
+
+    }
+
+
+    /* =====================================================
+       CALL PERMISSION NOTICE
+    ===================================================== */
+
+    .permissionNotice{
+
+      width:100%;
+      max-width:520px;
+
+      padding:13px 14px;
+
+      border:1px solid
+        rgba(240,185,72,.45);
+
+      border-radius:var(--radius-medium);
+
+      background:
+        rgba(240,185,72,.13);
+
+      color:#ffe5a9;
+
+      text-align:center;
+
+      font-size:11px;
+      font-weight:800;
+      line-height:1.55;
+
+    }
+
+
+    .permissionNotice.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       HIDDEN ELEMENT
+    ===================================================== */
+
+    .hidden{
+      display:none !important;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .controlsArea{
+        max-width:100%;
+      }
+
+
+      .activeCallControls{
+        gap:9px;
+      }
+
+
+      .callControlButton{
+
+        min-height:80px;
+        padding-left:5px;
+        padding-right:5px;
+
+        font-size:10px;
+
+      }
+
+
+      .callControlIcon{
+
+        width:44px;
+        height:44px;
+
+        font-size:20px;
+
+      }
+
+
+      .endCallButton,
+      .incomingActionButton{
+
+        width:70px;
+        height:70px;
+
+        font-size:27px;
+
+      }
+
+    }
+
+
+    @media(max-width:360px){
+
+      .activeCallControls{
+        gap:6px;
+      }
+
+
+      .callControlButton{
+
+        min-height:74px;
+
+        font-size:9px;
+
+      }
+
+
+      .callControlIcon{
+
+        width:40px;
+        height:40px;
+
+        font-size:18px;
+
+      }
+
+
+      .incomingCallControls{
+        gap:12px;
+      }
+
+    }
+
+  </style>
+<script type="module">
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE, PAGE ELEMENTS, URL INFORMATION,
+   AUTHENTICATION, MICROPHONE AND WEBRTC SETUP
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  onSnapshot,
+  serverTimestamp,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const headerSubtitle =
+document.getElementById(
+  "headerSubtitle"
+);
+
+const callStatus =
+document.getElementById(
+  "callStatus"
+);
+
+const memberAvatarFrame =
+document.getElementById(
+  "memberAvatarFrame"
+);
+
+const memberAvatar =
+document.getElementById(
+  "memberAvatar"
+);
+
+const memberName =
+document.getElementById(
+  "memberName"
+);
+
+const memberCountry =
+document.getElementById(
+  "memberCountry"
+);
+
+const callTimer =
+document.getElementById(
+  "callTimer"
+);
+
+const connectionDot =
+document.getElementById(
+  "connectionDot"
+);
+
+const connectionText =
+document.getElementById(
+  "connectionText"
+);
+
+const permissionNotice =
+document.getElementById(
+  "permissionNotice"
+);
+
+const callMessage =
+document.getElementById(
+  "callMessage"
+);
+
+const activeCallControls =
+document.getElementById(
+  "activeCallControls"
+);
+
+const incomingCallControls =
+document.getElementById(
+  "incomingCallControls"
+);
+
+const outgoingCallControls =
+document.getElementById(
+  "outgoingCallControls"
+);
+
+const muteButton =
+document.getElementById(
+  "muteButton"
+);
+
+const muteIcon =
+document.getElementById(
+  "muteIcon"
+);
+
+const muteLabel =
+document.getElementById(
+  "muteLabel"
+);
+
+const speakerButton =
+document.getElementById(
+  "speakerButton"
+);
+
+const speakerIcon =
+document.getElementById(
+  "speakerIcon"
+);
+
+const speakerLabel =
+document.getElementById(
+  "speakerLabel"
+);
+
+const audioRouteButton =
+document.getElementById(
+  "audioRouteButton"
+);
+
+const audioRouteIcon =
+document.getElementById(
+  "audioRouteIcon"
+);
+
+const audioRouteLabel =
+document.getElementById(
+  "audioRouteLabel"
+);
+
+const rejectCallButton =
+document.getElementById(
+  "rejectCallButton"
+);
+
+const acceptCallButton =
+document.getElementById(
+  "acceptCallButton"
+);
+
+const endCallButton =
+document.getElementById(
+  "endCallButton"
+);
+
+const remoteAudio =
+document.getElementById(
+  "remoteAudio"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentProfile =
+{};
+
+let otherMemberId =
+"";
+
+let otherMemberProfile =
+{};
+
+let callId =
+"";
+
+let callRole =
+"caller";
+
+let callData =
+{};
+
+let localStream =
+null;
+
+let remoteStream =
+null;
+
+let peerConnection =
+null;
+
+let unsubscribeCall =
+null;
+
+let unsubscribeCallerCandidates =
+null;
+
+let unsubscribeReceiverCandidates =
+null;
+
+let microphoneMuted =
+false;
+
+let speakerMuted =
+false;
+
+let callStartedAt =
+null;
+
+let callTimerInterval =
+null;
+
+let callActionRunning =
+false;
+
+let pageIsClosing =
+false;
+
+
+/* =====================================================
+   WEBRTC CONFIGURATION
+===================================================== */
+
+const rtcConfiguration = {
+
+  iceServers:[
+    {
+      urls:
+      "stun:stun.l.google.com:19302"
+    },
+    {
+      urls:
+      "stun:stun1.l.google.com:19302"
+    }
+  ],
+
+  iceCandidatePoolSize:
+  10
+
+};
+
+
+/* =====================================================
+   READ URL INFORMATION
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+
+/* A new outgoing call uses:
+   voice-call.html?user=MEMBER_UID */
+
+const requestedMemberId =
+getFirstValue(
+  urlParameters.get("user"),
+  urlParameters.get("uid")
+);
+
+
+/* An incoming call uses:
+   voice-call.html?call=CALL_DOCUMENT_ID */
+
+const requestedCallId =
+getFirstValue(
+  urlParameters.get("call"),
+  urlParameters.get("callId")
+);
+
+
+if(requestedCallId){
+
+  callId =
+  requestedCallId;
+
+  callRole =
+  "receiver";
+
+}else if(requestedMemberId){
+
+  otherMemberId =
+  requestedMemberId;
+
+  callRole =
+  "caller";
+
+}else{
+
+  showCallError(
+    "The voice-call information is missing."
+  );
+
+  throw new Error(
+    "Missing member ID or call ID."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  async function(){
+
+    if(
+      callId &&
+      !pageIsClosing
+    ){
+
+      await endVoiceCall(
+        "ended"
+      );
+
+    }
+
+
+    if(
+      window.history.length > 1
+    ){
+
+      window.history.back();
+
+    }else{
+
+      window.location.href =
+      "messages.html";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   DISPLAY CALL MESSAGE
+===================================================== */
+
+function showCallMessage(
+  message,
+  isError = false
+){
+
+  callMessage.textContent =
+  message;
+
+  callMessage.classList.remove(
+    "hidden",
+    "error"
+  );
+
+
+  if(isError){
+
+    callMessage.classList.add(
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   HIDE CALL MESSAGE
+===================================================== */
+
+function hideCallMessage(){
+
+  callMessage.textContent =
+  "";
+
+  callMessage.classList.add(
+    "hidden"
+  );
+
+  callMessage.classList.remove(
+    "error"
+  );
+
+}
+
+
+/* =====================================================
+   SHOW CALL ERROR
+===================================================== */
+
+function showCallError(
+  message
+){
+
+  showCallMessage(
+    message,
+    true
+  );
+
+
+  callStatus.textContent =
+  "Call unavailable";
+
+  callStatus.className =
+  "callStatus ended";
+
+
+  connectionDot.className =
+  "connectionDot failed";
+
+  connectionText.textContent =
+  "Connection failed";
+
+
+  permissionNotice.classList.add(
+    "hidden"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  activeCallControls.classList.add(
+    "hidden"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  endCallButton.disabled =
+  false;
+
+}
+
+
+/* =====================================================
+   UPDATE CONNECTION DISPLAY
+===================================================== */
+
+function updateConnectionDisplay(
+  state
+){
+
+  connectionDot.className =
+  "connectionDot";
+
+
+  if(state === "connecting"){
+
+    connectionDot.classList.add(
+      "connecting"
+    );
+
+    connectionText.textContent =
+    "Connecting voice call";
+
+  }else if(state === "connected"){
+
+    connectionDot.classList.add(
+      "connected"
+    );
+
+    connectionText.textContent =
+    "Voice call connected";
+
+  }else if(state === "failed"){
+
+    connectionDot.classList.add(
+      "failed"
+    );
+
+    connectionText.textContent =
+    "Connection failed";
+
+  }else if(state === "ended"){
+
+    connectionDot.classList.add(
+      "failed"
+    );
+
+    connectionText.textContent =
+    "Call ended";
+
+  }else{
+
+    connectionText.textContent =
+    "Waiting for connection";
+
+  }
+
+}
+
+
+/* =====================================================
+   UPDATE CALL STATUS
+===================================================== */
+
+function updateCallStatus(
+  status,
+  text
+){
+
+  callStatus.className =
+  "callStatus";
+
+
+  if(status){
+
+    callStatus.classList.add(
+      status
+    );
+
+  }
+
+
+  callStatus.textContent =
+  text;
+
+}
+
+
+/* =====================================================
+   LOAD USER PROFILE
+===================================================== */
+
+async function loadUserProfile(
+  userId
+){
+
+  if(!userId){
+
+    return {};
+
+  }
+
+
+  try{
+
+    const profileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        userId
+      )
+    );
+
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      return {
+        id:
+        profileSnapshot.id,
+
+        ...profileSnapshot.data()
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "User profile loading error:",
+      error
+    );
+
+  }
+
+
+  return {
+    id:userId
+  };
+
+}
+
+
+/* =====================================================
+   DISPLAY OTHER MEMBER
+===================================================== */
+
+function displayOtherMember(){
+
+  const displayedName =
+  getFirstValue(
+    otherMemberProfile.fullName,
+    otherMemberProfile.name,
+    otherMemberProfile.displayName,
+    "Faith Connect Member"
+  );
+
+
+  const displayedPicture =
+  getFirstValue(
+    otherMemberProfile.profilePicture,
+    otherMemberProfile.picture,
+    otherMemberProfile.photoURL,
+    otherMemberProfile.photoUrl,
+    "images/profile.png"
+  );
+
+
+  const displayedCountry =
+  getFirstValue(
+    otherMemberProfile.country,
+    otherMemberProfile.location
+  );
+
+
+  memberName.textContent =
+  displayedName;
+
+  memberAvatar.src =
+  displayedPicture;
+
+  headerTitle.textContent =
+  displayedName;
+
+
+  if(displayedCountry){
+
+    memberCountry.textContent =
+    `🌍 ${displayedCountry}`;
+
+    memberCountry.classList.remove(
+      "hidden"
+    );
+
+  }else{
+
+    memberCountry.textContent =
+    "";
+
+    memberCountry.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PROFILE PICTURE FALLBACK
+===================================================== */
+
+memberAvatar.addEventListener(
+  "error",
+  function(){
+
+    memberAvatar.src =
+    "images/profile.png";
+
+  },
+  {
+    once:true
+  }
+);
+
+
+/* =====================================================
+   REQUEST MICROPHONE ACCESS
+===================================================== */
+
+async function requestMicrophone(){
+
+  if(localStream){
+
+    return localStream;
+
+  }
+
+
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+
+    throw new Error(
+      "Microphone access is not supported by this browser."
+    );
+
+  }
+
+
+  try{
+
+    localStream =
+    await navigator.mediaDevices
+    .getUserMedia(
+      {
+        audio:{
+          echoCancellation:true,
+          noiseSuppression:true,
+          autoGainControl:true
+        },
+
+        video:false
+      }
+    );
+
+
+    permissionNotice.classList.add(
+      "hidden"
+    );
+
+
+    muteButton.disabled =
+    false;
+
+
+    return localStream;
+
+  }catch(error){
+
+    console.error(
+      "Microphone permission error:",
+      error
+    );
+
+
+    if(
+      error?.name ===
+      "NotAllowedError"
+    ){
+
+      throw new Error(
+        "Microphone permission was denied. Allow microphone access and try again."
+      );
+
+    }
+
+
+    if(
+      error?.name ===
+      "NotFoundError"
+    ){
+
+      throw new Error(
+        "No microphone was found on this device."
+      );
+
+    }
+
+
+    throw new Error(
+      "The microphone could not be opened."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CREATE WEBRTC PEER CONNECTION
+===================================================== */
+
+async function createPeerConnection(){
+
+  if(peerConnection){
+
+    return peerConnection;
+
+  }
+
+
+  peerConnection =
+  new RTCPeerConnection(
+    rtcConfiguration
+  );
+
+
+  remoteStream =
+  new MediaStream();
+
+
+  remoteAudio.srcObject =
+  remoteStream;
+
+
+  const microphoneStream =
+  await requestMicrophone();
+
+
+  microphoneStream
+  .getTracks()
+  .forEach(
+    function(track){
+
+      peerConnection.addTrack(
+        track,
+        microphoneStream
+      );
+
+    }
+  );
+
+
+  peerConnection.addEventListener(
+    "track",
+    function(event){
+
+      event.streams
+      .forEach(
+        function(stream){
+
+          stream
+          .getTracks()
+          .forEach(
+            function(track){
+
+              const trackAlreadyAdded =
+              remoteStream
+              .getTracks()
+              .some(
+                function(existingTrack){
+
+                  return (
+                    existingTrack.id ===
+                    track.id
+                  );
+
+                }
+              );
+
+
+              if(!trackAlreadyAdded){
+
+                remoteStream.addTrack(
+                  track
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+      remoteAudio.play()
+      .catch(
+        function(error){
+
+          console.log(
+            "Remote audio playback requires user interaction:",
+            error
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  peerConnection.addEventListener(
+    "connectionstatechange",
+    function(){
+
+      const state =
+      peerConnection.connectionState;
+
+
+      if(state === "connected"){
+
+        updateConnectionDisplay(
+          "connected"
+        );
+
+        updateCallStatus(
+          "connected",
+          "Connected"
+        );
+
+        memberAvatarFrame.classList.remove(
+          "ringing"
+        );
+
+        enableConnectedCallControls();
+
+        startCallTimer();
+
+      }else if(
+        state === "connecting"
+      ){
+
+        updateConnectionDisplay(
+          "connecting"
+        );
+
+      }else if(
+        state === "failed"
+      ){
+
+        updateConnectionDisplay(
+          "failed"
+        );
+
+        showCallMessage(
+          "The voice connection failed. End the call and try again.",
+          true
+        );
+
+      }else if(
+        state === "disconnected"
+      ){
+
+        connectionText.textContent =
+        "Voice connection interrupted";
+
+      }else if(
+        state === "closed"
+      ){
+
+        updateConnectionDisplay(
+          "ended"
+        );
+
+      }
+
+    }
+  );
+
+
+  peerConnection.addEventListener(
+    "iceconnectionstatechange",
+    function(){
+
+      const iceState =
+      peerConnection
+      .iceConnectionState;
+
+
+      console.log(
+        "Voice-call ICE state:",
+        iceState
+      );
+
+
+      if(
+        iceState === "failed"
+      ){
+
+        updateConnectionDisplay(
+          "failed"
+        );
+
+      }
+
+    }
+  );
+
+
+  return peerConnection;
+
+}
+
+
+/* =====================================================
+   ENABLE CONNECTED CALL CONTROLS
+===================================================== */
+
+function enableConnectedCallControls(){
+
+  muteButton.disabled =
+  false;
+
+  speakerButton.disabled =
+  false;
+
+  audioRouteButton.disabled =
+  false;
+
+  endCallButton.disabled =
+  false;
+
+
+  activeCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* =====================================================
+   CALL TIMER
+===================================================== */
+
+function startCallTimer(){
+
+  if(callTimerInterval){
+
+    return;
+
+  }
+
+
+  callStartedAt =
+  Date.now();
+
+
+  callTimer.textContent =
+  "00:00";
+
+
+  callTimerInterval =
+  window.setInterval(
+    function(){
+
+      const totalSeconds =
+      Math.floor(
+        (
+          Date.now() -
+          callStartedAt
+        ) / 1000
+      );
+
+
+      const minutes =
+      Math.floor(
+        totalSeconds / 60
+      );
+
+
+      const seconds =
+      totalSeconds % 60;
+
+
+      callTimer.textContent =
+      `${String(minutes).padStart(
+        2,
+        "0"
+      )}:${String(seconds).padStart(
+        2,
+        "0"
+      )}`;
+
+    },
+    1000
+  );
+
+}
+
+
+/* =====================================================
+   STOP CALL TIMER
+===================================================== */
+
+function stopCallTimer(){
+
+  if(callTimerInterval){
+
+    window.clearInterval(
+      callTimerInterval
+    );
+
+  }
+
+
+  callTimerInterval =
+  null;
+
+}
+
+
+/* =====================================================
+   LOAD OUTGOING CALL MEMBER
+===================================================== */
+
+async function prepareOutgoingCall(){
+
+  if(
+    !otherMemberId ||
+    otherMemberId === currentUser.uid
+  ){
+
+    showCallError(
+      "You cannot start a voice call with this account."
+    );
+
+    return;
+
+  }
+
+
+  otherMemberProfile =
+  await loadUserProfile(
+    otherMemberId
+  );
+
+
+  displayOtherMember();
+
+
+  updateCallStatus(
+    "ringing",
+    "Starting voice call..."
+  );
+
+
+  memberAvatarFrame.classList.add(
+    "ringing"
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  endCallButton.disabled =
+  false;
+
+
+  await startOutgoingCall();
+
+}
+
+
+/* =====================================================
+   LOAD INCOMING CALL INFORMATION
+===================================================== */
+
+async function prepareIncomingCall(){
+
+  try{
+
+    const callSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "voiceCalls",
+        callId
+      )
+    );
+
+
+    if(
+      !callSnapshot.exists()
+    ){
+
+      showCallError(
+        "This voice call no longer exists."
+      );
+
+      return;
+
+    }
+
+
+    callData = {
+      id:
+      callSnapshot.id,
+
+      ...callSnapshot.data()
+    };
+
+
+    if(
+      callData.receiverId !==
+      currentUser.uid
+    ){
+
+      showCallError(
+        "You are not the receiver of this voice call."
+      );
+
+      return;
+
+    }
+
+
+    otherMemberId =
+    callData.callerId;
+
+
+    otherMemberProfile =
+    await loadUserProfile(
+      otherMemberId
+    );
+
+
+    displayOtherMember();
+
+
+    updateCallStatus(
+      "ringing",
+      "Incoming voice call"
+    );
+
+
+    headerSubtitle.textContent =
+    "Incoming private voice call";
+
+
+    memberAvatarFrame.classList.add(
+      "ringing"
+    );
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    incomingCallControls.classList.add(
+      "show"
+    );
+
+
+    outgoingCallControls.classList.add(
+      "hidden"
+    );
+
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+
+    permissionNotice.classList.remove(
+      "hidden"
+    );
+
+
+    startCallDocumentListener();
+
+  }catch(error){
+
+    console.error(
+      "Incoming call loading error:",
+      error
+    );
+
+
+    showCallError(
+      "The incoming voice call could not be opened."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    currentProfile =
+    await loadUserProfile(
+      currentUser.uid
+    );
+
+
+    if(callRole === "caller"){
+
+      await prepareOutgoingCall();
+
+    }else{
+
+      await prepareIncomingCall();
+
+    }
+
+  },
+  function(error){
+
+    console.error(
+      "Voice-call authentication error:",
+      error
+    );
+
+
+    showCallError(
+      "Your account could not be confirmed. Please sign in again."
+    );
+
+  }
+);
+/* =====================================================
+   PART 5A OF 6
+   CREATE OUTGOING CALL, WEBRTC OFFER
+   AND FIRESTORE CALL DOCUMENT
+===================================================== */
+
+
+/* =====================================================
+   PREVENT MULTIPLE CALL CREATION
+===================================================== */
+
+let outgoingCallStarted =
+false;
+
+
+/* =====================================================
+   GET CURRENT USER DISPLAY INFORMATION
+===================================================== */
+
+function getCurrentCallerInformation(){
+
+  const callerName =
+  getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentProfile.displayName,
+    currentUser?.displayName,
+    currentUser?.email,
+    "Faith Connect Member"
+  );
+
+
+  const callerPicture =
+  getFirstValue(
+    currentProfile.profilePicture,
+    currentProfile.picture,
+    currentProfile.photoURL,
+    currentProfile.photoUrl,
+    currentUser?.photoURL,
+    "images/profile.png"
+  );
+
+
+  const callerCountry =
+  getFirstValue(
+    currentProfile.country,
+    currentProfile.location
+  );
+
+
+  return {
+    callerName,
+    callerPicture,
+    callerCountry
+  };
+
+}
+
+
+/* =====================================================
+   CREATE OUTGOING CALL
+===================================================== */
+
+async function startOutgoingCall(){
+
+  if(
+    outgoingCallStarted ||
+    callActionRunning
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !currentUser ||
+    !otherMemberId
+  ){
+
+    showCallError(
+      "The voice call could not be started."
+    );
+
+    return;
+
+  }
+
+
+  outgoingCallStarted =
+  true;
+
+  callActionRunning =
+  true;
+
+
+  hideCallMessage();
+
+
+  updateCallStatus(
+    "ringing",
+    "Calling..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  headerSubtitle.textContent =
+  "Outgoing private voice call";
+
+
+  try{
+
+    /* Open microphone and create peer connection */
+
+    const connection =
+    await createPeerConnection();
+
+
+    /* Create an empty Firestore call document */
+
+    const newCallReference =
+    doc(
+      collection(
+        db,
+        "voiceCalls"
+      )
+    );
+
+
+    callId =
+    newCallReference.id;
+
+
+    const callerInformation =
+    getCurrentCallerInformation();
+
+
+    const receiverName =
+    getFirstValue(
+      otherMemberProfile.fullName,
+      otherMemberProfile.name,
+      otherMemberProfile.displayName,
+      "Faith Connect Member"
+    );
+
+
+    const receiverPicture =
+    getFirstValue(
+      otherMemberProfile.profilePicture,
+      otherMemberProfile.picture,
+      otherMemberProfile.photoURL,
+      otherMemberProfile.photoUrl,
+      "images/profile.png"
+    );
+
+
+    /* =================================================
+       SAVE CALLER ICE CANDIDATES
+    ================================================= */
+
+    connection.addEventListener(
+      "icecandidate",
+      async function(event){
+
+        if(
+          !event.candidate ||
+          !callId
+        ){
+
+          return;
+
+        }
+
+
+        try{
+
+          await addDoc(
+            collection(
+              db,
+              "voiceCalls",
+              callId,
+              "callerCandidates"
+            ),
+            event.candidate.toJSON()
+          );
+
+        }catch(error){
+
+          console.error(
+            "Caller ICE candidate saving error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================================
+       CREATE WEBRTC OFFER
+    ================================================= */
+
+    const offerDescription =
+    await connection.createOffer(
+      {
+        offerToReceiveAudio:true
+      }
+    );
+
+
+    await connection.setLocalDescription(
+      offerDescription
+    );
+
+
+    const offer = {
+
+      type:
+      offerDescription.type,
+
+      sdp:
+      offerDescription.sdp
+
+    };
+
+
+    /* =================================================
+       CREATE FIRESTORE CALL DOCUMENT
+    ================================================= */
+
+    await setDoc(
+      newCallReference,
+      {
+
+        callerId:
+        currentUser.uid,
+
+        callerName:
+        callerInformation.callerName,
+
+        callerPicture:
+        callerInformation.callerPicture,
+
+        callerCountry:
+        callerInformation.callerCountry,
+
+        receiverId:
+        otherMemberId,
+
+        receiverName:
+        receiverName,
+
+        receiverPicture:
+        receiverPicture,
+
+        type:
+        "voice",
+
+        status:
+        "ringing",
+
+        offer:
+        offer,
+
+        answer:
+        null,
+
+        acceptedAt:
+        null,
+
+        endedAt:
+        null,
+
+        endedBy:
+        null,
+
+        createdAt:
+        serverTimestamp(),
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    callData = {
+
+      id:
+      callId,
+
+      callerId:
+      currentUser.uid,
+
+      receiverId:
+      otherMemberId,
+
+      status:
+      "ringing",
+
+      offer:
+      offer
+
+    };
+
+
+    /* =================================================
+       START LIVE CALL DOCUMENT LISTENER
+    ================================================= */
+
+    startCallDocumentListener();
+
+
+    /* =================================================
+       LISTEN FOR RECEIVER ICE CANDIDATES
+    ================================================= */
+
+    startReceiverCandidateListener();
+
+
+    /* =================================================
+       UPDATE SCREEN
+    ================================================= */
+
+    updateCallStatus(
+      "ringing",
+      "Ringing..."
+    );
+
+
+    memberAvatarFrame.classList.add(
+      "ringing"
+    );
+
+
+    endCallButton.disabled =
+    false;
+
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+
+    showCallMessage(
+      `Calling ${receiverName}...`
+    );
+
+
+    console.log(
+      "Outgoing voice call created:",
+      callId
+    );
+
+  }catch(error){
+
+    console.error(
+      "Outgoing voice call creation error:",
+      error
+    );
+
+
+    outgoingCallStarted =
+    false;
+
+
+    if(
+      error?.message?.includes(
+        "Microphone"
+      ) ||
+      error?.message?.includes(
+        "microphone"
+      )
+    ){
+
+      showCallError(
+        error.message
+      );
+
+    }else if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallError(
+        "Firebase denied permission to create the voice call."
+      );
+
+    }else{
+
+      showCallError(
+        "The voice call could not be started. Please try again."
+      );
+
+    }
+
+
+    cleanupLocalMedia();
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   STOP CALL DOCUMENT LISTENER
+===================================================== */
+
+function stopCallDocumentListener(){
+
+  if(
+    typeof unsubscribeCall ===
+    "function"
+  ){
+
+    unsubscribeCall();
+
+  }
+
+
+  unsubscribeCall =
+  null;
+
+}
+
+
+/* =====================================================
+   STOP CALLER CANDIDATE LISTENER
+===================================================== */
+
+function stopCallerCandidateListener(){
+
+  if(
+    typeof unsubscribeCallerCandidates ===
+    "function"
+  ){
+
+    unsubscribeCallerCandidates();
+
+  }
+
+
+  unsubscribeCallerCandidates =
+  null;
+
+}
+
+
+/* =====================================================
+   STOP RECEIVER CANDIDATE LISTENER
+===================================================== */
+
+function stopReceiverCandidateListener(){
+
+  if(
+    typeof unsubscribeReceiverCandidates ===
+    "function"
+  ){
+
+    unsubscribeReceiverCandidates();
+
+  }
+
+
+  unsubscribeReceiverCandidates =
+  null;
+
+}
+
+
+/* =====================================================
+   CLEAN UP LOCAL MICROPHONE
+===================================================== */
+
+function cleanupLocalMedia(){
+
+  if(localStream){
+
+    localStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        track.stop();
+
+      }
+    );
+
+  }
+
+
+  localStream =
+  null;
+
+}
+
+
+/* =====================================================
+   CLEAN UP REMOTE AUDIO
+===================================================== */
+
+function cleanupRemoteAudio(){
+
+  if(remoteAudio){
+
+    remoteAudio.pause();
+
+    remoteAudio.srcObject =
+    null;
+
+  }
+
+
+  if(remoteStream){
+
+    remoteStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        track.stop();
+
+      }
+    );
+
+  }
+
+
+  remoteStream =
+  null;
+
+}
+/* =====================================================
+   PART 5B OF 6
+   ACCEPT OR REJECT INCOMING CALL
+   AND CREATE WEBRTC ANSWER
+===================================================== */
+
+
+/* =====================================================
+   ACCEPT INCOMING VOICE CALL
+===================================================== */
+
+async function acceptIncomingCall(){
+
+  if(
+    callActionRunning ||
+    !currentUser ||
+    !callId
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  acceptCallButton.disabled =
+  true;
+
+  rejectCallButton.disabled =
+  true;
+
+
+  acceptCallButton.textContent =
+  "…";
+
+
+  hideCallMessage();
+
+
+  updateCallStatus(
+    "ringing",
+    "Connecting..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  try{
+
+    const callReference =
+    doc(
+      db,
+      "voiceCalls",
+      callId
+    );
+
+
+    const callSnapshot =
+    await getDoc(
+      callReference
+    );
+
+
+    if(
+      !callSnapshot.exists()
+    ){
+
+      throw new Error(
+        "This voice call no longer exists."
+      );
+
+    }
+
+
+    const latestCallData =
+    callSnapshot.data();
+
+
+    if(
+      latestCallData.receiverId !==
+      currentUser.uid
+    ){
+
+      throw new Error(
+        "You are not allowed to accept this call."
+      );
+
+    }
+
+
+    if(
+      latestCallData.status ===
+      "ended" ||
+      latestCallData.status ===
+      "rejected" ||
+      latestCallData.status ===
+      "cancelled"
+    ){
+
+      throw new Error(
+        "This voice call has already ended."
+      );
+
+    }
+
+
+    if(
+      !latestCallData.offer
+    ){
+
+      throw new Error(
+        "The caller's voice connection information is missing."
+      );
+
+    }
+
+
+    callData = {
+      id:
+      callId,
+
+      ...latestCallData
+    };
+
+
+    const connection =
+    await createPeerConnection();
+
+
+    /* =================================================
+       SAVE RECEIVER ICE CANDIDATES
+    ================================================= */
+
+    connection.addEventListener(
+      "icecandidate",
+      async function(event){
+
+        if(
+          !event.candidate ||
+          !callId
+        ){
+
+          return;
+
+        }
+
+
+        try{
+
+          await addDoc(
+            collection(
+              db,
+              "voiceCalls",
+              callId,
+              "receiverCandidates"
+            ),
+            event.candidate.toJSON()
+          );
+
+        }catch(error){
+
+          console.error(
+            "Receiver ICE candidate saving error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================================
+       APPLY CALLER OFFER
+    ================================================= */
+
+    const remoteOffer =
+    new RTCSessionDescription(
+      latestCallData.offer
+    );
+
+
+    await connection.setRemoteDescription(
+      remoteOffer
+    );
+
+
+    /* =================================================
+       CREATE RECEIVER ANSWER
+    ================================================= */
+
+    const answerDescription =
+    await connection.createAnswer();
+
+
+    await connection.setLocalDescription(
+      answerDescription
+    );
+
+
+    const answer = {
+
+      type:
+      answerDescription.type,
+
+      sdp:
+      answerDescription.sdp
+
+    };
+
+
+    /* =================================================
+       SAVE ANSWER AND ACCEPTED STATUS
+    ================================================= */
+
+    await updateDoc(
+      callReference,
+      {
+
+        answer:
+        answer,
+
+        status:
+        "accepted",
+
+        acceptedAt:
+        serverTimestamp(),
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    callData.answer =
+    answer;
+
+    callData.status =
+    "accepted";
+
+
+    /* Listen for caller ICE candidates */
+
+    startCallerCandidateListener();
+
+
+    /* Keep watching call status */
+
+    startCallDocumentListener();
+
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+
+    activeCallControls.classList.remove(
+      "hidden"
+    );
+
+
+    endCallButton.disabled =
+    false;
+
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+
+    updateCallStatus(
+      "ringing",
+      "Connecting..."
+    );
+
+
+    showCallMessage(
+      "Voice call accepted. Connecting audio..."
+    );
+
+
+    remoteAudio.play()
+    .catch(
+      function(error){
+
+        console.log(
+          "Remote audio playback is waiting for the connection:",
+          error
+        );
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Incoming voice-call acceptance error:",
+      error
+    );
+
+
+    if(
+      error?.message
+    ){
+
+      showCallError(
+        error.message
+      );
+
+    }else if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallError(
+        "Firebase denied permission to accept this voice call."
+      );
+
+    }else{
+
+      showCallError(
+        "The voice call could not be accepted."
+      );
+
+    }
+
+
+    cleanupPeerConnection();
+
+    cleanupLocalMedia();
+
+    cleanupRemoteAudio();
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+
+    acceptCallButton.disabled =
+    false;
+
+    rejectCallButton.disabled =
+    false;
+
+
+    acceptCallButton.textContent =
+    "📞";
+
+  }
+
+}
+
+
+/* =====================================================
+   REJECT INCOMING VOICE CALL
+===================================================== */
+
+async function rejectIncomingCall(){
+
+  if(
+    callActionRunning ||
+    !currentUser ||
+    !callId
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  acceptCallButton.disabled =
+  true;
+
+  rejectCallButton.disabled =
+  true;
+
+
+  rejectCallButton.textContent =
+  "…";
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "voiceCalls",
+        callId
+      ),
+      {
+
+        status:
+        "rejected",
+
+        endedAt:
+        serverTimestamp(),
+
+        endedBy:
+        currentUser.uid,
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    updateCallStatus(
+      "ended",
+      "Call rejected"
+    );
+
+
+    updateConnectionDisplay(
+      "ended"
+    );
+
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+
+    endCallButton.disabled =
+    true;
+
+
+    showCallMessage(
+      "You rejected this voice call."
+    );
+
+
+    cleanupVoiceCallResources();
+
+
+    window.setTimeout(
+      function(){
+
+        window.location.href =
+        "messages.html";
+
+      },
+      1200
+    );
+
+  }catch(error){
+
+    console.error(
+      "Incoming voice-call rejection error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallMessage(
+        "Firebase denied permission to reject this call.",
+        true
+      );
+
+    }else{
+
+      showCallMessage(
+        "The voice call could not be rejected.",
+        true
+      );
+
+    }
+
+
+    acceptCallButton.disabled =
+    false;
+
+    rejectCallButton.disabled =
+    false;
+
+
+    rejectCallButton.textContent =
+    "📵";
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   ACCEPT AND REJECT BUTTON EVENTS
+===================================================== */
+
+acceptCallButton.addEventListener(
+  "click",
+  acceptIncomingCall
+);
+
+
+rejectCallButton.addEventListener(
+  "click",
+  rejectIncomingCall
+);
+
+
+/* =====================================================
+   CLEAN UP PEER CONNECTION
+===================================================== */
+
+function cleanupPeerConnection(){
+
+  if(peerConnection){
+
+    try{
+
+      peerConnection.ontrack =
+      null;
+
+      peerConnection.onicecandidate =
+      null;
+
+      peerConnection.close();
+
+    }catch(error){
+
+      console.error(
+        "Peer connection cleanup error:",
+        error
+      );
+
+    }
+
+  }
+
+
+  peerConnection =
+  null;
+
+}
+
+
+/* =====================================================
+   CLEAN UP ALL VOICE-CALL RESOURCES
+===================================================== */
+
+function cleanupVoiceCallResources(){
+
+  stopCallTimer();
+
+  stopCallDocumentListener();
+
+  stopCallerCandidateListener();
+
+  stopReceiverCandidateListener();
+
+  cleanupPeerConnection();
+
+  cleanupLocalMedia();
+
+  cleanupRemoteAudio();
+
+}
+/* =====================================================
+   PART 5C OF 6
+   CALLER AND RECEIVER ICE CANDIDATE
+   SYNCHRONIZATION
+===================================================== */
+
+
+/* =====================================================
+   ICE CANDIDATE STATE
+===================================================== */
+
+const processedCallerCandidateIds =
+new Set();
+
+
+const processedReceiverCandidateIds =
+new Set();
+
+
+const pendingCallerCandidates =
+[];
+
+
+const pendingReceiverCandidates =
+[];
+
+
+/* =====================================================
+   CHECK REMOTE DESCRIPTION
+===================================================== */
+
+function peerHasRemoteDescription(){
+
+  return Boolean(
+    peerConnection &&
+    peerConnection.remoteDescription &&
+    peerConnection.remoteDescription.type
+  );
+
+}
+
+
+/* =====================================================
+   ADD REMOTE ICE CANDIDATE
+===================================================== */
+
+async function addRemoteIceCandidate(
+  candidateData,
+  pendingList
+){
+
+  if(
+    !candidateData ||
+    !peerConnection
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const iceCandidate =
+    new RTCIceCandidate(
+      candidateData
+    );
+
+
+    if(
+      peerHasRemoteDescription()
+    ){
+
+      await peerConnection.addIceCandidate(
+        iceCandidate
+      );
+
+    }else{
+
+      pendingList.push(
+        iceCandidate
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Remote ICE candidate error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   APPLY PENDING ICE CANDIDATES
+===================================================== */
+
+async function applyPendingCandidates(
+  pendingList
+){
+
+  if(
+    !peerConnection ||
+    !peerHasRemoteDescription()
+  ){
+
+    return;
+
+  }
+
+
+  while(
+    pendingList.length > 0
+  ){
+
+    const candidate =
+    pendingList.shift();
+
+
+    try{
+
+      await peerConnection.addIceCandidate(
+        candidate
+      );
+
+    }catch(error){
+
+      console.error(
+        "Pending ICE candidate error:",
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   START CALLER-CANDIDATE LISTENER
+   Used by the receiver
+===================================================== */
+
+function startCallerCandidateListener(){
+
+  stopCallerCandidateListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const callerCandidatesReference =
+  collection(
+    db,
+    "voiceCalls",
+    callId,
+    "callerCandidates"
+  );
+
+
+  unsubscribeCallerCandidates =
+  onSnapshot(
+
+    callerCandidatesReference,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          if(
+            change.type !== "added"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            processedCallerCandidateIds.has(
+              change.doc.id
+            )
+          ){
+
+            return;
+
+          }
+
+
+          processedCallerCandidateIds.add(
+            change.doc.id
+          );
+
+
+          addRemoteIceCandidate(
+            change.doc.data(),
+            pendingCallerCandidates
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Caller ICE candidate listener error:",
+        error
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   START RECEIVER-CANDIDATE LISTENER
+   Used by the caller
+===================================================== */
+
+function startReceiverCandidateListener(){
+
+  stopReceiverCandidateListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const receiverCandidatesReference =
+  collection(
+    db,
+    "voiceCalls",
+    callId,
+    "receiverCandidates"
+  );
+
+
+  unsubscribeReceiverCandidates =
+  onSnapshot(
+
+    receiverCandidatesReference,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          if(
+            change.type !== "added"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            processedReceiverCandidateIds.has(
+              change.doc.id
+            )
+          ){
+
+            return;
+
+          }
+
+
+          processedReceiverCandidateIds.add(
+            change.doc.id
+          );
+
+
+          addRemoteIceCandidate(
+            change.doc.data(),
+            pendingReceiverCandidates
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Receiver ICE candidate listener error:",
+        error
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   APPLY CALLER CANDIDATES AFTER OFFER
+===================================================== */
+
+async function applyPendingCallerCandidates(){
+
+  await applyPendingCandidates(
+    pendingCallerCandidates
+  );
+
+}
+
+
+/* =====================================================
+   APPLY RECEIVER CANDIDATES AFTER ANSWER
+===================================================== */
+
+async function applyPendingReceiverCandidates(){
+
+  await applyPendingCandidates(
+    pendingReceiverCandidates
+  );
+
+}
+
+
+/* =====================================================
+   RESET ICE CANDIDATE STATE
+===================================================== */
+
+function resetIceCandidateState(){
+
+  processedCallerCandidateIds.clear();
+
+  processedReceiverCandidateIds.clear();
+
+
+  pendingCallerCandidates.splice(
+    0,
+    pendingCallerCandidates.length
+  );
+
+
+  pendingReceiverCandidates.splice(
+    0,
+    pendingReceiverCandidates.length
+  );
+
+}
+/* =====================================================
+   PART 5D1 OF 6
+   LIVE CALL DOCUMENT LISTENER
+   AND APPLY RECEIVER ANSWER
+===================================================== */
+
+
+/* =====================================================
+   CALL DOCUMENT STATE
+===================================================== */
+
+let receiverAnswerApplied =
+false;
+
+let lastCallStatus =
+"";
+
+
+/* =====================================================
+   APPLY RECEIVER ANSWER TO CALLER
+===================================================== */
+
+async function applyReceiverAnswer(
+  answerData
+){
+
+  if(
+    callRole !== "caller" ||
+    !answerData ||
+    !peerConnection ||
+    receiverAnswerApplied
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const remoteAnswer =
+    new RTCSessionDescription(
+      answerData
+    );
+
+
+    await peerConnection.setRemoteDescription(
+      remoteAnswer
+    );
+
+
+    receiverAnswerApplied =
+    true;
+
+
+    await applyPendingReceiverCandidates();
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    updateCallStatus(
+      "ringing",
+      "Connecting..."
+    );
+
+
+    hideCallMessage();
+
+
+    console.log(
+      "Receiver WebRTC answer applied."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Receiver answer application error:",
+      error
+    );
+
+
+    showCallMessage(
+      "The receiver answered, but the voice connection could not be completed.",
+      true
+    );
+
+
+    updateConnectionDisplay(
+      "failed"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PROCESS LATEST CALL DOCUMENT
+===================================================== */
+
+async function processCallDocument(
+  latestCallData
+){
+
+  if(!latestCallData){
+
+    return;
+
+  }
+
+
+  callData = {
+
+    id:
+    callId,
+
+    ...latestCallData
+
+  };
+
+
+  const latestStatus =
+  getFirstValue(
+    latestCallData.status,
+    "ringing"
+  ).toLowerCase();
+
+
+  /*
+     The caller receives the answer created
+     by the receiver.
+  */
+
+  if(
+    callRole === "caller" &&
+    latestCallData.answer &&
+    !receiverAnswerApplied
+  ){
+
+    await applyReceiverAnswer(
+      latestCallData.answer
+    );
+
+  }
+
+
+  /*
+     This function will be created in Part 5D2.
+     It handles ringing, accepted, rejected,
+     cancelled and ended states.
+  */
+
+  if(
+    typeof handleLiveCallStatus ===
+    "function"
+  ){
+
+    await handleLiveCallStatus(
+      latestStatus,
+      latestCallData
+    );
+
+  }
+
+
+  lastCallStatus =
+  latestStatus;
+
+}
+
+
+/* =====================================================
+   START LIVE CALL DOCUMENT LISTENER
+===================================================== */
+
+function startCallDocumentListener(){
+
+  stopCallDocumentListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const callReference =
+  doc(
+    db,
+    "voiceCalls",
+    callId
+  );
+
+
+  unsubscribeCall =
+  onSnapshot(
+
+    callReference,
+
+    async function(snapshot){
+
+      if(
+        !snapshot.exists()
+      ){
+
+        showCallError(
+          "This voice call no longer exists."
+        );
+
+        cleanupVoiceCallResources();
+
+        return;
+
+      }
+
+
+      try{
+
+        await processCallDocument(
+          snapshot.data()
+        );
+
+      }catch(error){
+
+        console.error(
+          "Live call document processing error:",
+          error
+        );
+
+      }
+
+    },
+
+    function(error){
+
+      console.error(
+        "Voice-call document listener error:",
+        error
+      );
+
+
+      if(
+        error?.code ===
+        "permission-denied"
+      ){
+
+        showCallError(
+          "Firebase denied access to this voice call."
+        );
+
+      }else{
+
+        showCallMessage(
+          "The live call status could not be updated.",
+          true
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   RESET LIVE CALL STATE
+===================================================== */
+
+function resetLiveCallState(){
+
+  receiverAnswerApplied =
+  false;
+
+  lastCallStatus =
+  "";
+
+}
+/* =====================================================
+   PART 5D2 OF 6
+   LIVE CALL STATUS HANDLING,
+   SCREEN UPDATES AND CALL CLEANUP
+===================================================== */
+
+
+/* =====================================================
+   FINISH CALL SCREEN
+===================================================== */
+
+function finishCallScreen(
+  statusText,
+  messageText
+){
+
+  stopCallTimer();
+
+
+  memberAvatarFrame.classList.remove(
+    "ringing"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  activeCallControls.classList.add(
+    "hidden"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  muteButton.disabled =
+  true;
+
+
+  speakerButton.disabled =
+  true;
+
+
+  audioRouteButton.disabled =
+  true;
+
+
+  endCallButton.disabled =
+  true;
+
+
+  updateCallStatus(
+    "ended",
+    statusText
+  );
+
+
+  updateConnectionDisplay(
+    "ended"
+  );
+
+
+  if(messageText){
+
+    showCallMessage(
+      messageText
+    );
+
+  }
+
+
+  cleanupVoiceCallResources();
+
+}
+
+
+/* =====================================================
+   HANDLE RINGING STATUS
+===================================================== */
+
+function handleRingingStatus(){
+
+  updateCallStatus(
+    "ringing",
+    callRole === "caller"
+    ? "Ringing..."
+    : "Incoming voice call"
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  memberAvatarFrame.classList.add(
+    "ringing"
+  );
+
+
+  if(callRole === "receiver"){
+
+    incomingCallControls.classList.add(
+      "show"
+    );
+
+
+    outgoingCallControls.classList.add(
+      "hidden"
+    );
+
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+  }else{
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+
+    endCallButton.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE ACCEPTED STATUS
+===================================================== */
+
+async function handleAcceptedStatus(
+  latestCallData
+){
+
+  memberAvatarFrame.classList.remove(
+    "ringing"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  activeCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  endCallButton.disabled =
+  false;
+
+
+  updateCallStatus(
+    "ringing",
+    "Connecting..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  hideCallMessage();
+
+
+  /*
+     Receiver already applied the offer while accepting.
+     Caller must apply the receiver's answer here.
+  */
+
+  if(
+    callRole === "caller" &&
+    latestCallData.answer &&
+    !receiverAnswerApplied
+  ){
+
+    await applyReceiverAnswer(
+      latestCallData.answer
+    );
+
+  }
+
+
+  /*
+     Apply any ICE candidates that arrived before
+     the remote session description was ready.
+  */
+
+  if(callRole === "caller"){
+
+    await applyPendingReceiverCandidates();
+
+  }else{
+
+    await applyPendingCallerCandidates();
+
+  }
+
+
+  if(
+    peerConnection &&
+    peerConnection.connectionState ===
+    "connected"
+  ){
+
+    updateCallStatus(
+      "connected",
+      "Connected"
+    );
+
+
+    updateConnectionDisplay(
+      "connected"
+    );
+
+
+    enableConnectedCallControls();
+
+    startCallTimer();
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE REJECTED STATUS
+===================================================== */
+
+function handleRejectedStatus(){
+
+  const message =
+  callRole === "caller"
+  ? "The member rejected your voice call."
+  : "You rejected this voice call.";
+
+
+  finishCallScreen(
+    "Call rejected",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE CANCELLED STATUS
+===================================================== */
+
+function handleCancelledStatus(){
+
+  const message =
+  callRole === "receiver"
+  ? "The caller cancelled the voice call."
+  : "The voice call was cancelled.";
+
+
+  finishCallScreen(
+    "Call cancelled",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE ENDED STATUS
+===================================================== */
+
+function handleEndedStatus(
+  latestCallData
+){
+
+  const endedBy =
+  getFirstValue(
+    latestCallData.endedBy
+  );
+
+
+  let message =
+  "The voice call has ended.";
+
+
+  if(
+    currentUser &&
+    endedBy === currentUser.uid
+  ){
+
+    message =
+    "You ended the voice call.";
+
+  }else if(endedBy){
+
+    message =
+    "The other member ended the voice call.";
+
+  }
+
+
+  finishCallScreen(
+    "Call ended",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE MISSED STATUS
+===================================================== */
+
+function handleMissedStatus(){
+
+  const message =
+  callRole === "caller"
+  ? "The member did not answer your voice call."
+  : "You missed this voice call.";
+
+
+  finishCallScreen(
+    "Missed call",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE FAILED STATUS
+===================================================== */
+
+function handleFailedStatus(){
+
+  stopCallTimer();
+
+
+  memberAvatarFrame.classList.remove(
+    "ringing"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  activeCallControls.classList.add(
+    "hidden"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  endCallButton.disabled =
+  false;
+
+
+  updateCallStatus(
+    "ended",
+    "Connection failed"
+  );
+
+
+  updateConnectionDisplay(
+    "failed"
+  );
+
+
+  showCallMessage(
+    "The voice connection failed. End the call and try again.",
+    true
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE LIVE CALL STATUS
+===================================================== */
+
+async function handleLiveCallStatus(
+  status,
+  latestCallData
+){
+
+  switch(status){
+
+    case "ringing":
+
+      handleRingingStatus();
+
+      break;
+
+
+    case "accepted":
+
+    case "connecting":
+
+      await handleAcceptedStatus(
+        latestCallData
+      );
+
+      break;
+
+
+    case "connected":
+
+      memberAvatarFrame.classList.remove(
+        "ringing"
+      );
+
+
+      incomingCallControls.classList.remove(
+        "show"
+      );
+
+
+      outgoingCallControls.classList.remove(
+        "hidden"
+      );
+
+
+      activeCallControls.classList.remove(
+        "hidden"
+      );
+
+
+      updateCallStatus(
+        "connected",
+        "Connected"
+      );
+
+
+      updateConnectionDisplay(
+        "connected"
+      );
+
+
+      enableConnectedCallControls();
+
+      startCallTimer();
+
+      break;
+
+
+    case "rejected":
+
+      handleRejectedStatus();
+
+      break;
+
+
+    case "cancelled":
+
+      handleCancelledStatus();
+
+      break;
+
+
+    case "ended":
+
+      handleEndedStatus(
+        latestCallData
+      );
+
+      break;
+
+
+    case "missed":
+
+      handleMissedStatus();
+
+      break;
+
+
+    case "failed":
+
+      handleFailedStatus();
+
+      break;
+
+
+    default:
+
+      console.log(
+        "Unknown voice-call status:",
+        status
+      );
+
+  }
+
+}
+/* =====================================================
+   PART 6 OF 6
+   MUTE, SPEAKER, END CALL,
+   CLEANUP AND FINAL CLOSING
+===================================================== */
+
+
+/* =====================================================
+   MUTE OR UNMUTE MICROPHONE
+===================================================== */
+
+function toggleMicrophoneMute(){
+
+  if(
+    !localStream
+  ){
+
+    return;
+
+  }
+
+
+  const audioTracks =
+  localStream.getAudioTracks();
+
+
+  if(
+    audioTracks.length === 0
+  ){
+
+    return;
+
+  }
+
+
+  microphoneMuted =
+  !microphoneMuted;
+
+
+  audioTracks.forEach(
+    function(track){
+
+      track.enabled =
+      !microphoneMuted;
+
+    }
+  );
+
+
+  muteButton.classList.toggle(
+    "warning",
+    microphoneMuted
+  );
+
+
+  muteButton.classList.toggle(
+    "active",
+    !microphoneMuted
+  );
+
+
+  muteIcon.textContent =
+  microphoneMuted
+  ? "🔇"
+  : "🎙️";
+
+
+  muteLabel.textContent =
+  microphoneMuted
+  ? "Unmute"
+  : "Mute";
+
+}
+
+
+muteButton.addEventListener(
+  "click",
+  toggleMicrophoneMute
+);
+
+
+/* =====================================================
+   MUTE OR RESTORE REMOTE SPEAKER AUDIO
+===================================================== */
+
+function toggleSpeakerAudio(){
+
+  speakerMuted =
+  !speakerMuted;
+
+
+  remoteAudio.muted =
+  speakerMuted;
+
+
+  speakerButton.classList.toggle(
+    "warning",
+    speakerMuted
+  );
+
+
+  speakerButton.classList.toggle(
+    "active",
+    !speakerMuted
+  );
+
+
+  speakerIcon.textContent =
+  speakerMuted
+  ? "🔈"
+  : "🔊";
+
+
+  speakerLabel.textContent =
+  speakerMuted
+  ? "Unmute Sound"
+  : "Speaker";
+
+
+  if(!speakerMuted){
+
+    remoteAudio.play()
+    .catch(
+      function(error){
+
+        console.log(
+          "Remote audio playback could not restart:",
+          error
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+speakerButton.addEventListener(
+  "click",
+  toggleSpeakerAudio
+);
+
+
+/* =====================================================
+   AUDIO OUTPUT INFORMATION
+===================================================== */
+
+audioRouteButton.addEventListener(
+  "click",
+  async function(){
+
+    /*
+      Mobile browsers normally control whether sound uses
+      the phone speaker, earpiece, Bluetooth or headphones.
+
+      A website cannot reliably force a specific audio route
+      on every Android or iPhone browser.
+    */
+
+    if(
+      typeof remoteAudio.setSinkId ===
+      "function" &&
+      navigator.mediaDevices &&
+      typeof navigator.mediaDevices.enumerateDevices ===
+      "function"
+    ){
+
+      try{
+
+        const devices =
+        await navigator.mediaDevices
+        .enumerateDevices();
+
+
+        const audioOutputs =
+        devices.filter(
+          function(device){
+
+            return device.kind ===
+            "audiooutput";
+
+          }
+        );
+
+
+        if(audioOutputs.length > 1){
+
+          const options =
+          audioOutputs.map(
+            function(device,index){
+
+              return `${index + 1}. ${
+                device.label ||
+                `Audio output ${index + 1}`
+              }`;
+
+            }
+          );
+
+
+          const selectedValue =
+          window.prompt(
+            `Choose an audio output:\n\n${options.join(
+              "\n"
+            )}`,
+            "1"
+          );
+
+
+          if(selectedValue === null){
+
+            return;
+
+          }
+
+
+          const selectedIndex =
+          Number(selectedValue) - 1;
+
+
+          if(
+            !Number.isInteger(
+              selectedIndex
+            ) ||
+            !audioOutputs[
+              selectedIndex
+            ]
+          ){
+
+            alert(
+              "Please select a valid audio output number."
+            );
+
+            return;
+
+          }
+
+
+          await remoteAudio.setSinkId(
+            audioOutputs[
+              selectedIndex
+            ].deviceId
+          );
+
+
+          audioRouteButton.classList.add(
+            "active"
+          );
+
+
+          audioRouteIcon.textContent =
+          "✅";
+
+
+          audioRouteLabel.textContent =
+          "Audio Set";
+
+
+          window.setTimeout(
+            function(){
+
+              audioRouteIcon.textContent =
+              "🎧";
+
+
+              audioRouteLabel.textContent =
+              "Audio";
+
+            },
+            1800
+          );
+
+
+          return;
+
+        }
+
+      }catch(error){
+
+        console.error(
+          "Audio output selection error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    alert(
+      "Use your phone's volume, speaker, Bluetooth or headphone controls to choose the audio output."
+    );
+
+  }
+);
+
+
+/* =====================================================
+   DETERMINE END STATUS
+===================================================== */
+
+function getCallEndStatus(){
+
+  const currentStatus =
+  getFirstValue(
+    callData.status,
+    lastCallStatus,
+    "ringing"
+  ).toLowerCase();
+
+
+  if(
+    currentStatus === "ringing" &&
+    callRole === "caller"
+  ){
+
+    return "cancelled";
+
+  }
+
+
+  if(
+    currentStatus === "ringing" &&
+    callRole === "receiver"
+  ){
+
+    return "rejected";
+
+  }
+
+
+  return "ended";
+
+}
+
+
+/* =====================================================
+   END OR CANCEL VOICE CALL
+===================================================== */
+
+async function endVoiceCall(
+  forcedStatus = ""
+){
+
+  if(
+    callActionRunning ||
+    pageIsClosing
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  endCallButton.disabled =
+  true;
+
+
+  acceptCallButton.disabled =
+  true;
+
+
+  rejectCallButton.disabled =
+  true;
+
+
+  const finalStatus =
+  forcedStatus ||
+  getCallEndStatus();
+
+
+  try{
+
+    if(callId){
+
+      await updateDoc(
+        doc(
+          db,
+          "voiceCalls",
+          callId
+        ),
+        {
+
+          status:
+          finalStatus,
+
+          endedAt:
+          serverTimestamp(),
+
+          endedBy:
+          currentUser?.uid ||
+          "",
+
+          updatedAt:
+          serverTimestamp()
+
+        }
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Voice-call ending error:",
+      error
+    );
+
+  }
+
+
+  memberAvatarFrame.classList.remove(
+    "ringing"
+  );
+
+
+  incomingCallControls.classList.remove(
+    "show"
+  );
+
+
+  activeCallControls.classList.add(
+    "hidden"
+  );
+
+
+  outgoingCallControls.classList.remove(
+    "hidden"
+  );
+
+
+  updateConnectionDisplay(
+    "ended"
+  );
+
+
+  if(finalStatus === "cancelled"){
+
+    updateCallStatus(
+      "ended",
+      "Call cancelled"
+    );
+
+
+    showCallMessage(
+      "You cancelled the voice call."
+    );
+
+  }else if(finalStatus === "rejected"){
+
+    updateCallStatus(
+      "ended",
+      "Call rejected"
+    );
+
+
+    showCallMessage(
+      "You rejected the voice call."
+    );
+
+  }else{
+
+    updateCallStatus(
+      "ended",
+      "Call ended"
+    );
+
+
+    showCallMessage(
+      "The voice call has ended."
+    );
+
+  }
+
+
+  cleanupVoiceCallResources();
+
+  resetIceCandidateState();
+
+  resetLiveCallState();
+
+
+  callActionRunning =
+  false;
+
+
+  window.setTimeout(
+    function(){
+
+      if(
+        window.history.length > 1
+      ){
+
+        window.history.back();
+
+      }else{
+
+        window.location.href =
+        "messages.html";
+
+      }
+
+    },
+    900
+  );
+
+}
+
+
+/* =====================================================
+   END CALL BUTTON
+===================================================== */
+
+endCallButton.addEventListener(
+  "click",
+  function(){
+
+    endVoiceCall();
+
+  }
+);
+
+
+/* =====================================================
+   RESET CALL CONTROL DISPLAY
+===================================================== */
+
+function resetCallControls(){
+
+  microphoneMuted =
+  false;
+
+
+  speakerMuted =
+  false;
+
+
+  muteButton.classList.remove(
+    "active",
+    "warning"
+  );
+
+
+  speakerButton.classList.remove(
+    "active",
+    "warning"
+  );
+
+
+  audioRouteButton.classList.remove(
+    "active",
+    "warning"
+  );
+
+
+  muteIcon.textContent =
+  "🎙️";
+
+
+  muteLabel.textContent =
+  "Mute";
+
+
+  speakerIcon.textContent =
+  "🔊";
+
+
+  speakerLabel.textContent =
+  "Speaker";
+
+
+  audioRouteIcon.textContent =
+  "🎧";
+
+
+  audioRouteLabel.textContent =
+  "Audio";
+
+
+  remoteAudio.muted =
+  false;
+
+}
+
+
+/* =====================================================
+   HANDLE REMOTE AUDIO PLAYBACK
+===================================================== */
+
+remoteAudio.addEventListener(
+  "playing",
+  function(){
+
+    speakerButton.disabled =
+    false;
+
+  }
+);
+
+
+remoteAudio.addEventListener(
+  "error",
+  function(error){
+
+    console.error(
+      "Remote audio element error:",
+      error
+    );
+
+
+    showCallMessage(
+      "The other member's audio could not be played.",
+      true
+    );
+
+  }
+);
+
+
+/* =====================================================
+   PAGE RESTORATION
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  function(event){
+
+    if(!event.persisted){
+
+      return;
+
+    }
+
+
+    pageIsClosing =
+    false;
+
+
+    callActionRunning =
+    false;
+
+
+    resetCallControls();
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP WHEN PAGE CLOSES
+===================================================== */
+
+window.addEventListener(
+  "pagehide",
+  function(){
+
+    pageIsClosing =
+    true;
+
+
+    cleanupVoiceCallResources();
+
+    resetIceCandidateState();
+
+    resetLiveCallState();
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP BEFORE BROWSER CLOSES
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    pageIsClosing =
+    true;
+
+
+    cleanupVoiceCallResources();
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL CONTROL STATE
+===================================================== */
+
+resetCallControls();
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect private voice-call page is ready."
+);
+
+
+</script>
+
+</body>
+
+</html>
