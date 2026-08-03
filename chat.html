@@ -3016,6 +3016,7 @@ import{
   updateDoc,
   deleteDoc,
   query,
+  where,
   orderBy,
   onSnapshot,
   serverTimestamp,
@@ -3348,7 +3349,11 @@ null;
 
 let unsubscribeOtherUser =
 null;
+let unsubscribeIncomingCalls =
+null;
 
+let openedIncomingCallId =
+"";
 
 let sendingMessage =
 false;
@@ -4913,7 +4918,126 @@ async function prepareConversation(){
   }
 
 }
+/* =====================================================
+   LISTEN FOR INCOMING VOICE CALLS
+===================================================== */
 
+function stopIncomingCallListener(){
+
+  if(
+    typeof unsubscribeIncomingCalls ===
+    "function"
+  ){
+
+    unsubscribeIncomingCalls();
+
+  }
+
+  unsubscribeIncomingCalls =
+  null;
+
+}
+
+
+function startIncomingCallListener(){
+
+  stopIncomingCallListener();
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+  const incomingCallsQuery =
+  query(
+    collection(
+      db,
+      "voiceCalls"
+    ),
+    where(
+      "receiverId",
+      "==",
+      currentUser.uid
+    ),
+    where(
+      "status",
+      "==",
+      "ringing"
+    )
+  );
+
+  unsubscribeIncomingCalls =
+  onSnapshot(
+    incomingCallsQuery,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          if(
+            change.type !==
+            "added"
+          ){
+
+            return;
+
+          }
+
+          const incomingCallId =
+          change.doc.id;
+
+          if(
+            incomingCallId ===
+            openedIncomingCallId
+          ){
+
+            return;
+
+          }
+
+          openedIncomingCallId =
+          incomingCallId;
+
+          const incomingCall =
+          change.doc.data();
+
+          const callerName =
+          incomingCall.callerName ||
+          "A Faith Connect member";
+
+          const openCall =
+          window.confirm(
+            `${callerName} is calling you.\n\nOpen the incoming voice call?`
+          );
+
+          if(openCall){
+
+            window.location.href =
+            `voice-call.html?call=${encodeURIComponent(
+              incomingCallId
+            )}`;
+
+          }
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Incoming voice-call listener error:",
+        error
+      );
+
+    }
+  );
+
+}
 
 /* =====================================================
    AUTHENTICATION LISTENER
@@ -4934,13 +5058,13 @@ onAuthStateChanged(
 
 
     currentUser =
-    user;
+user;
 
+disableChatControls();
 
-    disableChatControls();
+startIncomingCallListener();
 
-
-    await prepareConversation();
+await prepareConversation();
 
   },
 
@@ -9433,7 +9557,7 @@ function startTypingListener(){
 ===================================================== */
 
 function cleanUpChatPage(){
-
+stopIncomingCallListener();
   stopMessagesListener();
 
   stopOtherMemberListener();
