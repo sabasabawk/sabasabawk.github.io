@@ -5362,19 +5362,10 @@ function startIncomingCallListener(){
           incomingCall.callerName ||
           "A Faith Connect member";
 
-          const openCall =
-          window.confirm(
-            `${callerName} is calling you.\n\nOpen the incoming voice call?`
-          );
-
-          if(openCall){
-
-            window.location.href =
-            `voice-call.html?call=${encodeURIComponent(
-              incomingCallId
-            )}`;
-
-          }
+          showIncomingCallOverlay(
+  incomingCallId,
+  incomingCall
+);
 
         }
       );
@@ -5392,7 +5383,170 @@ function startIncomingCallListener(){
   );
 
 }
+/* =====================================================
+   SHOW INCOMING CALL OVERLAY
+===================================================== */
 
+function showIncomingCallOverlay(
+  callId,
+  callData
+){
+
+  currentIncomingCallId =
+  callId;
+
+
+  currentIncomingCallData =
+  callData || {};
+
+
+  const callerName =
+  getFirstValue(
+    currentIncomingCallData.callerName,
+    "Faith Connect Member"
+  );
+
+
+  const callerPicture =
+  getFirstValue(
+    currentIncomingCallData.callerPicture,
+    "images/profile.png"
+  );
+
+
+  incomingCallerName.textContent =
+  callerName;
+
+
+  incomingCallerAvatar.src =
+  callerPicture;
+
+
+  incomingCallerAvatar.onerror =
+  function(){
+
+    incomingCallerAvatar.src =
+    "images/profile.png";
+
+  };
+
+
+  acceptIncomingCallButton.disabled =
+  false;
+
+
+  declineIncomingCallButton.disabled =
+  false;
+
+
+  incomingCallOverlay.classList.add(
+    "show"
+  );
+
+
+  incomingCallOverlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
+
+
+/* =====================================================
+   HIDE INCOMING CALL OVERLAY
+===================================================== */
+
+function hideIncomingCallOverlay(){
+
+  incomingCallOverlay.classList.remove(
+    "show"
+  );
+
+
+  incomingCallOverlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  acceptIncomingCallButton.disabled =
+  false;
+
+
+  declineIncomingCallButton.disabled =
+  false;
+
+
+  currentIncomingCallId =
+  "";
+
+
+  currentIncomingCallData =
+  null;
+
+}
+/* =====================================================
+   ACCEPT INCOMING CALL
+===================================================== */
+
+acceptIncomingCallButton.addEventListener(
+  "click",
+  function(){
+
+    if(!currentIncomingCallId){
+      return;
+    }
+
+    hideIncomingCallOverlay();
+
+    window.location.href =
+    `voice-call.html?call=${encodeURIComponent(
+      currentIncomingCallId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   DECLINE INCOMING CALL
+===================================================== */
+
+declineIncomingCallButton.addEventListener(
+  "click",
+  async function(){
+
+    if(!currentIncomingCallId){
+      return;
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "voiceCalls",
+          currentIncomingCallId
+        ),
+        {
+          status:"declined",
+          declinedAt:serverTimestamp()
+        }
+      );
+
+    }catch(error){
+
+      console.error(
+        "Unable to decline call:",
+        error
+      );
+
+    }
+
+    hideIncomingCallOverlay();
+
+  }
+);
 /* =====================================================
    AUTHENTICATION LISTENER
 ===================================================== */
