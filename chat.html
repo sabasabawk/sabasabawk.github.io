@@ -3637,7 +3637,34 @@ document.getElementById(
   "chatBusyText"
 );
 
+/* =====================================================
+   INCOMING CALL OVERLAY ELEMENTS
+===================================================== */
 
+const incomingCallOverlay =
+document.getElementById(
+  "incomingCallOverlay"
+);
+
+const incomingCallerAvatar =
+document.getElementById(
+  "incomingCallerAvatar"
+);
+
+const incomingCallerName =
+document.getElementById(
+  "incomingCallerName"
+);
+
+const acceptIncomingCallButton =
+document.getElementById(
+  "acceptIncomingCallButton"
+);
+
+const declineIncomingCallButton =
+document.getElementById(
+  "declineIncomingCallButton"
+);
 /* =====================================================
    CURRENT USER AND CHAT STATE
 ===================================================== */
@@ -3667,6 +3694,14 @@ null;
 
 
 let unsubscribeOtherUser =
+null;
+let unsubscribeIncomingCalls =
+null;
+
+let currentIncomingCallId =
+"";
+
+let currentIncomingCallData =
 null;
 let unsubscribeIncomingCalls =
 null;
