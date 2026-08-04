@@ -5295,11 +5295,13 @@ function startIncomingCallListener(){
 
   stopIncomingCallListener();
 
+
   if(!currentUser){
 
     return;
 
   }
+
 
   const incomingCallsQuery =
   query(
@@ -5311,16 +5313,13 @@ function startIncomingCallListener(){
       "receiverId",
       "==",
       currentUser.uid
-    ),
-    where(
-      "status",
-      "==",
-      "ringing"
     )
   );
 
+
   unsubscribeIncomingCalls =
   onSnapshot(
+
     incomingCallsQuery,
 
     function(snapshot){
@@ -5329,41 +5328,117 @@ function startIncomingCallListener(){
       .forEach(
         function(change){
 
-          if(
-            change.type !==
-            "added"
-          ){
-
-            return;
-
-          }
-
           const incomingCallId =
           change.doc.id;
 
-          if(
-            incomingCallId ===
-            openedIncomingCallId
-          ){
-
-            return;
-
-          }
-
-          openedIncomingCallId =
-          incomingCallId;
 
           const incomingCall =
           change.doc.data();
 
-          const callerName =
-          incomingCall.callerName ||
-          "A Faith Connect member";
+
+          const callStatus =
+          String(
+            incomingCall.status ||
+            ""
+          ).toLowerCase();
+
+
+          /*
+             Hide the overlay when this call
+             is no longer ringing.
+          */
+
+          if(
+            incomingCallId ===
+            currentIncomingCallId &&
+            callStatus !==
+            "ringing"
+          ){
+
+            hideIncomingCallOverlay();
+
+            return;
+
+          }
+
+
+          /*
+             Ignore ended or unrelated calls.
+          */
+
+          if(
+            callStatus !==
+            "ringing" ||
+            incomingCall.receiverId !==
+            currentUser.uid
+          ){
+
+            return;
+
+          }
+
+
+          /*
+             Avoid showing the same call twice.
+          */
+
+          if(
+            incomingCallId ===
+            currentIncomingCallId
+          ){
+
+            return;
+
+          }
+
+
+          openedIncomingCallId =
+          incomingCallId;
+
+
+          /*
+             Safety check for missing overlay HTML.
+          */
+
+          if(
+            !incomingCallOverlay ||
+            !incomingCallerName ||
+            !incomingCallerAvatar
+          ){
+
+            console.error(
+              "Incoming-call overlay elements are missing."
+            );
+
+
+            const openCall =
+            window.confirm(
+              `${
+                incomingCall.callerName ||
+                "A Faith Connect member"
+              } is calling you.\n\nOpen the voice call?`
+            );
+
+
+            if(openCall){
+
+              window.location.href =
+              `voice-call.html?call=${encodeURIComponent(
+                incomingCallId
+              )}`;
+
+            }
+
+
+            return;
+
+          }
+
 
           showIncomingCallOverlay(
-  incomingCallId,
-  incomingCall
-);
+            incomingCallId,
+            incomingCall
+          );
 
         }
       );
@@ -5377,7 +5452,20 @@ function startIncomingCallListener(){
         error
       );
 
+
+      if(
+        error?.code ===
+        "permission-denied"
+      ){
+
+        console.error(
+          "Firebase rules denied access to incoming voice calls."
+        );
+
+      }
+
     }
+
   );
 
 }
