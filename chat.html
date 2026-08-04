@@ -5447,10 +5447,20 @@ function startIncomingCallListener(){
 
     function(error){
 
-      console.error(
-        "Incoming voice-call listener error:",
-        error
-      );
+  console.error(
+    "Incoming voice-call listener error:",
+    error
+  );
+
+  alert(
+    `Incoming call listener failed:\n\n${
+      error?.code || "Unknown error"
+    }\n\n${
+      error?.message || "No error message"
+    }`
+  );
+
+}
 
 
       if(
