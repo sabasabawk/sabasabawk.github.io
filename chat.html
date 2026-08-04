@@ -5491,15 +5491,31 @@ acceptIncomingCallButton.addEventListener(
   "click",
   function(){
 
-    if(!currentIncomingCallId){
+    const acceptedCallId =
+    currentIncomingCallId;
+
+
+    if(!acceptedCallId){
+
       return;
+
     }
+
+
+    acceptIncomingCallButton.disabled =
+    true;
+
+
+    declineIncomingCallButton.disabled =
+    true;
+
 
     hideIncomingCallOverlay();
 
+
     window.location.href =
     `voice-call.html?call=${encodeURIComponent(
-      currentIncomingCallId
+      acceptedCallId
     )}`;
 
   }
@@ -5514,9 +5530,27 @@ declineIncomingCallButton.addEventListener(
   "click",
   async function(){
 
-    if(!currentIncomingCallId){
+    const declinedCallId =
+    currentIncomingCallId;
+
+
+    if(
+      !declinedCallId ||
+      !currentUser
+    ){
+
       return;
+
     }
+
+
+    acceptIncomingCallButton.disabled =
+    true;
+
+
+    declineIncomingCallButton.disabled =
+    true;
+
 
     try{
 
@@ -5524,24 +5558,49 @@ declineIncomingCallButton.addEventListener(
         doc(
           db,
           "voiceCalls",
-          currentIncomingCallId
+          declinedCallId
         ),
         {
-          status:"declined",
-          declinedAt:serverTimestamp()
+
+          status:
+          "rejected",
+
+          endedBy:
+          currentUser.uid,
+
+          endedAt:
+          serverTimestamp(),
+
+          updatedAt:
+          serverTimestamp()
+
         }
       );
+
+
+      hideIncomingCallOverlay();
 
     }catch(error){
 
       console.error(
-        "Unable to decline call:",
+        "Unable to reject incoming call:",
         error
       );
 
-    }
 
-    hideIncomingCallOverlay();
+      acceptIncomingCallButton.disabled =
+      false;
+
+
+      declineIncomingCallButton.disabled =
+      false;
+
+
+      alert(
+        "Unable to decline this call. Please try again."
+      );
+
+    }
 
   }
 );
