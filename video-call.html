@@ -1,0 +1,9588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Faith Connect private video call."
+  >
+
+  <title>
+    Video Call | SABASABA Gospel Ministry
+  </title>
+
+
+  <style>
+
+    /* =====================================================
+       PART 1 OF 6
+       GENERAL PAGE, VARIABLES, HEADER,
+       REMOTE VIDEO AND LOCAL VIDEO PREVIEW
+    ===================================================== */
+
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#050d14;
+      --surface:#102536;
+      --surface-light:#17364c;
+
+      --text:#ffffff;
+      --muted:#b6c8d6;
+
+      --border:
+        rgba(255,255,255,.14);
+
+      --success:#35b46f;
+      --danger:#e34f4f;
+      --warning:#f0b948;
+
+      --shadow:
+        0 12px 32px
+        rgba(0,0,0,.38);
+
+      --radius-large:26px;
+      --radius-medium:17px;
+      --radius-small:12px;
+
+    }
+
+
+    html,
+    body{
+
+      width:100%;
+      height:100%;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      overflow:hidden;
+
+      background:#050d14;
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display:flex;
+      flex-direction:column;
+
+    }
+
+
+    button,
+    input{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    img,
+    video{
+      display:block;
+      max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible{
+
+      outline:
+        3px solid
+        rgba(255,255,255,.42);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:relative;
+      z-index:300;
+
+      width:100%;
+      flex-shrink:0;
+
+      background:
+        rgba(4,18,29,.86);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(14px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      min-height:64px;
+
+      margin:auto;
+      padding:8px 13px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:11px;
+
+    }
+
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.10);
+
+      color:#ffffff;
+
+      font-size:22px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+
+      background:
+        rgba(255,255,255,.19);
+
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    /* =====================================================
+       HEADER TITLE
+    ===================================================== */
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+      text-align:center;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:16px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:3px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:10px;
+      font-weight:800;
+
+    }
+
+
+    /* =====================================================
+       SECURITY ICON
+    ===================================================== */
+
+    .securityIcon{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:#ffffff;
+
+      font-size:18px;
+
+    }
+
+
+    /* =====================================================
+       VIDEO CALL PAGE
+    ===================================================== */
+
+    .videoCallPage{
+
+      position:relative;
+
+      min-height:0;
+      flex:1;
+
+      overflow:hidden;
+
+      display:flex;
+      flex-direction:column;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #153f5c,
+          #050d14 62%
+        );
+
+    }
+
+
+    /* =====================================================
+       REMOTE VIDEO AREA
+    ===================================================== */
+
+    .remoteVideoArea{
+
+      position:absolute;
+      inset:0;
+
+      overflow:hidden;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#050d14;
+
+    }
+
+
+    .remoteVideo{
+
+      width:100%;
+      height:100%;
+
+      object-fit:cover;
+
+      background:#050d14;
+
+    }
+
+
+    .remoteVideo.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       REMOTE VIDEO PLACEHOLDER
+    ===================================================== */
+
+    .remoteVideoPlaceholder{
+
+      position:absolute;
+      inset:0;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+
+      padding:
+        80px
+        20px
+        150px;
+
+      text-align:center;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #174b70,
+          #071522 60%
+        );
+
+    }
+
+
+    .remoteVideoPlaceholder.hidden{
+      display:none;
+    }
+
+
+    .remoteAvatarFrame{
+
+      width:150px;
+      height:150px;
+
+      padding:6px;
+
+      border-radius:50%;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.30),
+          rgba(255,255,255,.07)
+        );
+
+      box-shadow:
+        0 14px 38px
+        rgba(0,0,0,.40);
+
+    }
+
+
+    .remoteAvatarFrame.ringing{
+
+      animation:
+        videoRingPulse
+        1.6s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    @keyframes videoRingPulse{
+
+      0%,
+      100%{
+
+        box-shadow:
+          0 0 0 0
+          rgba(53,180,111,.25),
+          0 14px 38px
+          rgba(0,0,0,.40);
+
+      }
+
+      50%{
+
+        box-shadow:
+          0 0 0 20px
+          rgba(53,180,111,0),
+          0 14px 38px
+          rgba(0,0,0,.40);
+
+      }
+
+    }
+
+
+    .remoteAvatar{
+
+      width:100%;
+      height:100%;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+    }
+
+
+    .remoteMemberName{
+
+      max-width:100%;
+
+      font-size:24px;
+      font-weight:900;
+      line-height:1.25;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .remoteMemberCountry{
+
+      color:var(--muted);
+
+      font-size:12px;
+      font-weight:800;
+
+    }
+
+
+    .remoteMemberCountry.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       CALL STATUS AREA
+    ===================================================== */
+
+    .callStatusArea{
+
+      position:absolute;
+
+      top:18px;
+      left:50%;
+
+      z-index:100;
+
+      width:
+        calc(
+          100% - 120px
+        );
+
+      max-width:520px;
+
+      transform:
+        translateX(-50%);
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+
+      pointer-events:none;
+
+    }
+
+
+    .callStatus{
+
+      min-height:29px;
+
+      padding:
+        7px
+        13px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:999px;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+
+      background:
+        rgba(4,18,29,.72);
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:900;
+
+      backdrop-filter:
+        blur(10px);
+
+    }
+
+
+    .callStatus.ringing{
+      color:#ffe39b;
+    }
+
+
+    .callStatus.connected{
+      color:#9df0bc;
+    }
+
+
+    .callStatus.ended{
+      color:#ffaaaa;
+    }
+
+
+    .callTimer{
+
+      min-height:24px;
+
+      color:#ffffff;
+
+      font-size:15px;
+      font-weight:900;
+
+      letter-spacing:1px;
+
+      text-shadow:
+        0 2px 5px
+        rgba(0,0,0,.65);
+
+    }
+
+
+    /* =====================================================
+       LOCAL VIDEO PREVIEW
+    ===================================================== */
+
+    .localVideoContainer{
+
+      position:absolute;
+
+      top:22px;
+      right:13px;
+
+      z-index:150;
+
+      width:112px;
+      height:158px;
+
+      overflow:hidden;
+
+      border:
+        2px solid
+        rgba(255,255,255,.80);
+
+      border-radius:17px;
+
+      background:#102536;
+
+      box-shadow:
+        0 8px 24px
+        rgba(0,0,0,.42);
+
+      transition:
+        width .2s ease,
+        height .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .localVideoContainer:active{
+      transform:scale(.97);
+    }
+
+
+    .localVideo{
+
+      width:100%;
+      height:100%;
+
+      object-fit:cover;
+
+      background:#102536;
+
+      transform:scaleX(-1);
+
+    }
+
+
+    .localVideo.backCamera{
+      transform:none;
+    }
+
+
+    .localVideo.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       LOCAL CAMERA OFF PLACEHOLDER
+    ===================================================== */
+
+    .localCameraPlaceholder{
+
+      position:absolute;
+      inset:0;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+
+      padding:8px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #17364c,
+          #0a1d2b
+        );
+
+      color:#d5e8f5;
+
+      text-align:center;
+
+      font-size:10px;
+      font-weight:900;
+
+    }
+
+
+    .localCameraPlaceholder.hidden{
+      display:none;
+    }
+
+
+    .localCameraPlaceholderIcon{
+      font-size:28px;
+    }
+
+
+    /* =====================================================
+       LOCAL VIDEO LABEL
+    ===================================================== */
+
+    .localVideoLabel{
+
+      position:absolute;
+
+      left:6px;
+      bottom:6px;
+
+      padding:
+        4px
+        7px;
+
+      border-radius:999px;
+
+      background:
+        rgba(0,0,0,.58);
+
+      color:#ffffff;
+
+      font-size:8px;
+      font-weight:900;
+
+    }
+
+
+    /* =====================================================
+       CALL INFORMATION MESSAGE
+    ===================================================== */
+
+    .callMessage{
+
+      position:absolute;
+
+      left:50%;
+      bottom:128px;
+
+      z-index:120;
+
+      width:
+        calc(
+          100% - 30px
+        );
+
+      max-width:520px;
+
+      transform:
+        translateX(-50%);
+
+      padding:13px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        var(--radius-medium);
+
+      background:
+        rgba(4,18,29,.78);
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:11px;
+      font-weight:800;
+      line-height:1.55;
+
+      backdrop-filter:
+        blur(10px);
+
+    }
+
+
+    .callMessage.error{
+
+      border-color:
+        rgba(227,79,79,.60);
+
+      background:
+        rgba(96,20,20,.84);
+
+      color:#ffc0c0;
+
+    }
+
+
+    .callMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       PERMISSION NOTICE
+    ===================================================== */
+
+    .permissionNotice{
+
+      position:absolute;
+
+      left:50%;
+      bottom:128px;
+
+      z-index:125;
+
+      width:
+        calc(
+          100% - 30px
+        );
+
+      max-width:520px;
+
+      transform:
+        translateX(-50%);
+
+      padding:
+        13px
+        14px;
+
+      border:
+        1px solid
+        rgba(240,185,72,.48);
+
+      border-radius:
+        var(--radius-medium);
+
+      background:
+        rgba(83,59,13,.86);
+
+      color:#ffe5a9;
+
+      text-align:center;
+
+      font-size:11px;
+      font-weight:800;
+      line-height:1.55;
+
+      backdrop-filter:
+        blur(10px);
+
+    }
+
+
+    .permissionNotice.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       HIDDEN ELEMENT
+    ===================================================== */
+
+    .hidden{
+      display:none !important;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE DESIGN
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+
+        padding-left:10px;
+        padding-right:10px;
+
+      }
+
+
+      .remoteAvatarFrame{
+
+        width:132px;
+        height:132px;
+
+      }
+
+
+      .remoteMemberName{
+        font-size:21px;
+      }
+
+
+      .localVideoContainer{
+
+        top:14px;
+        right:9px;
+
+        width:95px;
+        height:137px;
+
+        border-radius:15px;
+
+      }
+
+
+      .callStatusArea{
+
+        top:13px;
+
+        width:
+          calc(
+            100% - 110px
+          );
+
+      }
+
+
+      .callMessage,
+      .permissionNotice{
+
+        bottom:118px;
+
+      }
+
+    }
+
+
+    @media(max-width:380px){
+
+      .localVideoContainer{
+
+        width:84px;
+        height:122px;
+
+      }
+
+
+      .callStatusArea{
+
+        width:
+          calc(
+            100% - 98px
+          );
+
+      }
+
+
+      .callStatus{
+
+        padding:
+          6px
+          9px;
+
+        font-size:9px;
+
+      }
+
+
+      .remoteAvatarFrame{
+
+        width:116px;
+        height:116px;
+
+      }
+
+
+      .remoteMemberName{
+        font-size:19px;
+      }
+
+    }
+
+  </style>
+<style>
+
+/* =====================================================
+   PART 2 OF 6
+   VIDEO CALL CONTROLS, CAMERA BUTTON,
+   MICROPHONE, CAMERA SWITCH,
+   ACCEPT, REJECT AND END CALL
+===================================================== */
+
+
+/* =====================================================
+   CALL CONTROLS AREA
+===================================================== */
+
+.videoControlsArea{
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  z-index:200;
+
+  width:100%;
+
+  padding:
+    18px
+    14px
+    calc(
+      18px +
+      env(safe-area-inset-bottom)
+    );
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(3,12,20,.96),
+      rgba(3,12,20,.72),
+      rgba(3,12,20,0)
+    );
+
+}
+
+
+/* =====================================================
+   ACTIVE VIDEO CALL CONTROLS
+===================================================== */
+
+.activeVideoControls{
+
+  width:100%;
+  max-width:560px;
+
+  display:grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
+
+  gap:10px;
+
+}
+
+
+.videoControlButton{
+
+  min-height:78px;
+
+  padding:
+    9px
+    5px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:18px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  background:
+    rgba(255,255,255,.10);
+
+  color:#ffffff;
+
+  font-size:10px;
+  font-weight:900;
+
+  backdrop-filter:
+    blur(9px);
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+
+}
+
+
+.videoControlButton:hover{
+
+  background:
+    rgba(255,255,255,.18);
+
+}
+
+
+.videoControlButton:active{
+  transform:scale(.96);
+}
+
+
+.videoControlButton.active{
+
+  border-color:
+    rgba(53,180,111,.60);
+
+  background:
+    rgba(53,180,111,.20);
+
+  color:#b6f7ce;
+
+}
+
+
+.videoControlButton.warning{
+
+  border-color:
+    rgba(240,185,72,.62);
+
+  background:
+    rgba(240,185,72,.20);
+
+  color:#ffe39b;
+
+}
+
+
+.videoControlButton.danger{
+
+  border-color:
+    rgba(227,79,79,.68);
+
+  background:
+    rgba(227,79,79,.20);
+
+  color:#ffc1c1;
+
+}
+
+
+.videoControlButton:disabled{
+
+  cursor:not-allowed;
+  opacity:.48;
+
+}
+
+
+.videoControlIcon{
+
+  width:46px;
+  height:46px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.12);
+
+  font-size:21px;
+
+}
+
+
+/* =====================================================
+   CAMERA OFF BUTTON STATE
+===================================================== */
+
+.videoControlButton.cameraOff{
+
+  border-color:
+    rgba(227,79,79,.62);
+
+  background:
+    rgba(227,79,79,.18);
+
+  color:#ffb8b8;
+
+}
+
+
+/* =====================================================
+   MICROPHONE MUTED BUTTON STATE
+===================================================== */
+
+.videoControlButton.microphoneMuted{
+
+  border-color:
+    rgba(240,185,72,.60);
+
+  background:
+    rgba(240,185,72,.18);
+
+  color:#ffe29a;
+
+}
+
+
+/* =====================================================
+   SWITCH CAMERA BUTTON
+===================================================== */
+
+.switchCameraButton{
+
+  position:relative;
+
+}
+
+
+.switchCameraButton.switching{
+
+  pointer-events:none;
+  opacity:.65;
+
+}
+
+
+.switchCameraButton.switching
+.videoControlIcon{
+
+  animation:
+    switchCameraSpin
+    .8s
+    linear
+    infinite;
+
+}
+
+
+@keyframes switchCameraSpin{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+/* =====================================================
+   END VIDEO CALL BUTTON
+===================================================== */
+
+.endVideoCallButton{
+
+  width:76px;
+  height:76px;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--danger);
+  color:#ffffff;
+
+  font-size:30px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(227,79,79,.42);
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+
+}
+
+
+.endVideoCallButton:hover{
+  background:#c93d3d;
+}
+
+
+.endVideoCallButton:active{
+  transform:scale(.94);
+}
+
+
+.endVideoCallButton:disabled{
+
+  cursor:not-allowed;
+  opacity:.54;
+
+}
+
+
+/* =====================================================
+   OUTGOING VIDEO CALL CONTROLS
+===================================================== */
+
+.outgoingVideoControls{
+
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+}
+
+
+.outgoingVideoControls.hidden{
+  display:none;
+}
+
+
+/* =====================================================
+   INCOMING VIDEO CALL CONTROLS
+===================================================== */
+
+.incomingVideoControls{
+
+  width:100%;
+  max-width:460px;
+
+  display:none;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:28px;
+
+}
+
+
+.incomingVideoControls.show{
+  display:grid;
+}
+
+
+.incomingVideoAction{
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+
+}
+
+
+.incomingVideoActionButton{
+
+  width:76px;
+  height:76px;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#ffffff;
+
+  font-size:29px;
+
+  box-shadow:
+    0 10px 28px
+    rgba(0,0,0,.34);
+
+  transition:
+    filter .2s ease,
+    transform .2s ease;
+
+}
+
+
+.incomingVideoActionButton:hover{
+  filter:brightness(1.08);
+}
+
+
+.incomingVideoActionButton:active{
+  transform:scale(.94);
+}
+
+
+.incomingVideoActionButton.accept{
+  background:var(--success);
+}
+
+
+.incomingVideoActionButton.reject{
+  background:var(--danger);
+}
+
+
+.incomingVideoActionButton:disabled{
+
+  cursor:not-allowed;
+  opacity:.55;
+
+}
+
+
+.incomingVideoActionLabel{
+
+  color:#d6e3ec;
+
+  font-size:11px;
+  font-weight:900;
+
+}
+
+
+/* =====================================================
+   CONNECTION INDICATOR
+===================================================== */
+
+.connectionIndicator{
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  color:var(--muted);
+
+  font-size:10px;
+  font-weight:800;
+
+}
+
+
+.connectionDot{
+
+  width:9px;
+  height:9px;
+
+  border-radius:50%;
+
+  background:#748b9a;
+
+}
+
+
+.connectionDot.connecting{
+
+  background:var(--warning);
+
+  animation:
+    connectionBlink
+    1s
+    ease-in-out
+    infinite;
+
+}
+
+
+.connectionDot.connected{
+  background:var(--success);
+}
+
+
+.connectionDot.failed{
+  background:var(--danger);
+}
+
+
+@keyframes connectionBlink{
+
+  0%,
+  100%{
+    opacity:.35;
+  }
+
+  50%{
+    opacity:1;
+  }
+
+}
+
+
+/* =====================================================
+   CAMERA PERMISSION ERROR
+===================================================== */
+
+.cameraPermissionError{
+
+  position:absolute;
+
+  left:50%;
+  bottom:128px;
+
+  z-index:130;
+
+  width:
+    calc(
+      100% - 30px
+    );
+
+  max-width:520px;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    13px
+    14px;
+
+  border:
+    1px solid
+    rgba(227,79,79,.58);
+
+  border-radius:
+    var(--radius-medium);
+
+  background:
+    rgba(92,17,17,.88);
+
+  color:#ffc4c4;
+
+  text-align:center;
+
+  font-size:11px;
+  font-weight:800;
+  line-height:1.55;
+
+  backdrop-filter:
+    blur(10px);
+
+}
+
+
+.cameraPermissionError.hidden{
+  display:none;
+}
+
+
+/* =====================================================
+   CALL CONTROL LABEL
+===================================================== */
+
+.controlLabel{
+
+  max-width:100%;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:520px){
+
+  .videoControlsArea{
+
+    padding-left:9px;
+    padding-right:9px;
+
+    gap:13px;
+
+  }
+
+
+  .activeVideoControls{
+    gap:7px;
+  }
+
+
+  .videoControlButton{
+
+    min-height:70px;
+
+    padding-left:3px;
+    padding-right:3px;
+
+    border-radius:15px;
+
+    font-size:9px;
+
+  }
+
+
+  .videoControlIcon{
+
+    width:42px;
+    height:42px;
+
+    font-size:19px;
+
+  }
+
+
+  .endVideoCallButton,
+  .incomingVideoActionButton{
+
+    width:70px;
+    height:70px;
+
+    font-size:27px;
+
+  }
+
+
+  .cameraPermissionError{
+    bottom:118px;
+  }
+
+}
+
+
+@media(max-width:380px){
+
+  .activeVideoControls{
+    gap:5px;
+  }
+
+
+  .videoControlButton{
+
+    min-height:65px;
+
+    font-size:8px;
+
+  }
+
+
+  .videoControlIcon{
+
+    width:38px;
+    height:38px;
+
+    font-size:17px;
+
+  }
+
+
+  .incomingVideoControls{
+    gap:18px;
+  }
+
+
+  .endVideoCallButton,
+  .incomingVideoActionButton{
+
+    width:66px;
+    height:66px;
+
+    font-size:25px;
+
+  }
+
+}
+
+</style>
+<!-- =====================================================
+   PART 3 OF 6
+   COMPLETE VIDEO CALL PAGE STRUCTURE
+===================================================== -->
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+   VIDEO CALL PAGE
+===================================================== -->
+
+<main class="videoCallPage">
+
+
+  <!-- =================================================
+       REMOTE VIDEO AREA
+  ================================================== -->
+
+  <section class="remoteVideoArea">
+
+    <video
+      id="remoteVideo"
+      class="remoteVideo"
+      autoplay
+      playsinline
+    ></video>
+
+
+    <!-- Remote video placeholder -->
+
+    <div
+      id="remoteVideoPlaceholder"
+      class="remoteVideoPlaceholder"
+    >
+
+      <div
+        id="remoteAvatarFrame"
+        class="remoteAvatarFrame"
+      >
+
+        <img
+          id="remoteAvatar"
+          class="remoteAvatar"
+          src="images/profile.png"
+          alt="Call participant profile picture"
+        >
+
+      </div>
+
+
+      <h1
+        id="remoteMemberName"
+        class="remoteMemberName"
+      >
+        Faith Connect Member
+      </h1>
+
+
+      <div
+        id="remoteMemberCountry"
+        class="remoteMemberCountry hidden"
+      ></div>
+
+    </div>
+
+
+    <!-- Dark video overlay -->
+
+    <div class="videoScreenShade"></div>
+
+
+    <!-- =================================================
+         TOP VIDEO HEADER
+    ================================================== -->
+
+    <header class="videoCallHeader">
+
+      <button
+        id="backButton"
+        class="backButton"
+        type="button"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+
+      <div class="videoHeaderInformation">
+
+        <div
+          id="headerTitle"
+          class="videoHeaderTitle"
+        >
+          Video Call
+        </div>
+
+
+        <div
+          id="headerSubtitle"
+          class="videoHeaderSubtitle"
+        >
+          Faith Connect private video call
+        </div>
+
+      </div>
+
+
+      <div
+        class="securityIcon"
+        title="Private video call"
+        aria-label="Private video call"
+      >
+        🔒
+      </div>
+
+    </header>
+
+
+    <!-- =================================================
+         CALL STATUS
+    ================================================== -->
+
+    <div class="videoStatusArea">
+
+      <div
+        id="callStatus"
+        class="callStatus"
+        aria-live="polite"
+      >
+        Preparing video call...
+      </div>
+
+
+      <div
+        id="callTimer"
+        class="callTimer"
+      >
+        00:00
+      </div>
+
+
+      <div
+        id="connectionIndicator"
+        class="connectionIndicator"
+      >
+
+        <span
+          id="connectionDot"
+          class="connectionDot"
+        ></span>
+
+
+        <span id="connectionText">
+          Waiting for connection
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         LOCAL CAMERA PREVIEW
+    ================================================== -->
+
+    <div
+      id="localVideoContainer"
+      class="localVideoContainer"
+    >
+
+      <video
+        id="localVideo"
+        class="localVideo"
+        autoplay
+        muted
+        playsinline
+      ></video>
+
+
+      <div
+        id="localVideoPlaceholder"
+        class="localVideoPlaceholder"
+      >
+        Camera Off
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CALL MESSAGE
+    ================================================== -->
+
+    <div
+      id="callMessage"
+      class="callMessage hidden"
+      aria-live="polite"
+    ></div>
+
+
+    <!-- =================================================
+         CAMERA PERMISSION ERROR
+    ================================================== -->
+
+    <div
+      id="cameraPermissionError"
+      class="cameraPermissionError hidden"
+      aria-live="assertive"
+    >
+      Camera or microphone permission could not be opened.
+    </div>
+
+
+    <!-- =================================================
+         VIDEO CONTROLS AREA
+    ================================================== -->
+
+    <section class="videoControlsArea">
+
+
+      <!-- Connection status -->
+
+      <div
+        id="bottomConnectionIndicator"
+        class="connectionIndicator"
+      >
+
+        <span
+          id="bottomConnectionDot"
+          class="connectionDot"
+        ></span>
+
+
+        <span id="bottomConnectionText">
+          Waiting for connection
+        </span>
+
+      </div>
+
+
+      <!-- =================================================
+           ACTIVE VIDEO CALL CONTROLS
+      ================================================== -->
+
+      <div
+        id="activeVideoControls"
+        class="activeVideoControls"
+      >
+
+        <!-- Microphone -->
+
+        <button
+          id="microphoneButton"
+          class="videoControlButton"
+          type="button"
+          disabled
+        >
+
+          <span
+            id="microphoneIcon"
+            class="videoControlIcon"
+          >
+            🎙️
+          </span>
+
+
+          <span
+            id="microphoneLabel"
+            class="controlLabel"
+          >
+            Mute
+          </span>
+
+        </button>
+
+
+        <!-- Camera -->
+
+        <button
+          id="cameraButton"
+          class="videoControlButton"
+          type="button"
+          disabled
+        >
+
+          <span
+            id="cameraIcon"
+            class="videoControlIcon"
+          >
+            📹
+          </span>
+
+
+          <span
+            id="cameraLabel"
+            class="controlLabel"
+          >
+            Camera
+          </span>
+
+        </button>
+
+
+        <!-- Switch camera -->
+
+        <button
+          id="switchCameraButton"
+          class="videoControlButton switchCameraButton"
+          type="button"
+          disabled
+        >
+
+          <span
+            id="switchCameraIcon"
+            class="videoControlIcon"
+          >
+            🔄
+          </span>
+
+
+          <span
+            id="switchCameraLabel"
+            class="controlLabel"
+          >
+            Switch
+          </span>
+
+        </button>
+
+
+        <!-- Speaker -->
+
+        <button
+          id="speakerButton"
+          class="videoControlButton"
+          type="button"
+          disabled
+        >
+
+          <span
+            id="speakerIcon"
+            class="videoControlIcon"
+          >
+            🔊
+          </span>
+
+
+          <span
+            id="speakerLabel"
+            class="controlLabel"
+          >
+            Speaker
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           INCOMING VIDEO CALL CONTROLS
+      ================================================== -->
+
+      <div
+        id="incomingVideoControls"
+        class="incomingVideoControls"
+      >
+
+        <div class="incomingVideoAction">
+
+          <button
+            id="rejectVideoCallButton"
+            class="incomingVideoActionButton reject"
+            type="button"
+            aria-label="Reject video call"
+          >
+            📵
+          </button>
+
+
+          <span class="incomingVideoActionLabel">
+            Reject
+          </span>
+
+        </div>
+
+
+        <div class="incomingVideoAction">
+
+          <button
+            id="acceptVideoCallButton"
+            class="incomingVideoActionButton accept"
+            type="button"
+            aria-label="Accept video call"
+          >
+            📹
+          </button>
+
+
+          <span class="incomingVideoActionLabel">
+            Accept
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           END VIDEO CALL CONTROL
+      ================================================== -->
+
+      <div
+        id="outgoingVideoControls"
+        class="outgoingVideoControls"
+      >
+
+        <button
+          id="endVideoCallButton"
+          class="endVideoCallButton"
+          type="button"
+          aria-label="End video call"
+          disabled
+        >
+          📵
+        </button>
+
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+
+<!-- =====================================================
+   REMOTE AUDIO FALLBACK
+===================================================== -->
+
+<audio
+  id="remoteAudio"
+  autoplay
+  playsinline
+  hidden
+></audio>
+
+
+<!-- =====================================================
+   OPEN JAVASCRIPT MODULE
+===================================================== -->
+
+<script type="module">
+
+/* =====================================================
+   PART 4 OF 6
+   FIREBASE, PAGE ELEMENTS, URL INFORMATION,
+   CAMERA, MICROPHONE AND WEBRTC SETUP
+===================================================== */
+/* =====================================================
+   PART 4A OF 6
+   FIREBASE IMPORTS, PAGE ELEMENTS,
+   PAGE STATE AND URL INFORMATION
+===================================================== */
+
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  onSnapshot,
+  serverTimestamp,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   HEADER ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+
+const headerSubtitle =
+document.getElementById(
+  "headerSubtitle"
+);
+
+
+/* =====================================================
+   CALL INFORMATION ELEMENTS
+===================================================== */
+
+const callStatus =
+document.getElementById(
+  "callStatus"
+);
+
+
+const memberName =
+document.getElementById(
+  "memberName"
+);
+
+
+const memberCountry =
+document.getElementById(
+  "memberCountry"
+);
+
+
+const callTimer =
+document.getElementById(
+  "callTimer"
+);
+
+
+const connectionDot =
+document.getElementById(
+  "connectionDot"
+);
+
+
+const connectionText =
+document.getElementById(
+  "connectionText"
+);
+
+
+const permissionNotice =
+document.getElementById(
+  "permissionNotice"
+);
+
+
+const callMessage =
+document.getElementById(
+  "callMessage"
+);
+
+
+/* =====================================================
+   VIDEO ELEMENTS
+===================================================== */
+
+const remoteVideo =
+document.getElementById(
+  "remoteVideo"
+);
+
+
+const localVideo =
+document.getElementById(
+  "localVideo"
+);
+
+
+const videoStage =
+document.getElementById(
+  "videoStage"
+);
+
+
+const localVideoContainer =
+document.getElementById(
+  "localVideoContainer"
+);
+
+
+const remoteVideoPlaceholder =
+document.getElementById(
+  "remoteVideoPlaceholder"
+);
+
+
+const remoteMemberAvatar =
+document.getElementById(
+  "remoteMemberAvatar"
+);
+
+
+const localVideoLabel =
+document.getElementById(
+  "localVideoLabel"
+);
+
+
+/* =====================================================
+   CALL CONTROLS
+===================================================== */
+
+const activeCallControls =
+document.getElementById(
+  "activeCallControls"
+);
+
+
+const incomingCallControls =
+document.getElementById(
+  "incomingCallControls"
+);
+
+
+const outgoingCallControls =
+document.getElementById(
+  "outgoingCallControls"
+);
+
+
+const microphoneButton =
+document.getElementById(
+  "microphoneButton"
+);
+
+
+const microphoneIcon =
+document.getElementById(
+  "microphoneIcon"
+);
+
+
+const microphoneLabel =
+document.getElementById(
+  "microphoneLabel"
+);
+
+
+const cameraButton =
+document.getElementById(
+  "cameraButton"
+);
+
+
+const cameraIcon =
+document.getElementById(
+  "cameraIcon"
+);
+
+
+const cameraLabel =
+document.getElementById(
+  "cameraLabel"
+);
+
+
+const switchCameraButton =
+document.getElementById(
+  "switchCameraButton"
+);
+
+
+const switchCameraIcon =
+document.getElementById(
+  "switchCameraIcon"
+);
+
+
+const switchCameraLabel =
+document.getElementById(
+  "switchCameraLabel"
+);
+
+
+const speakerButton =
+document.getElementById(
+  "speakerButton"
+);
+
+
+const speakerIcon =
+document.getElementById(
+  "speakerIcon"
+);
+
+
+const speakerLabel =
+document.getElementById(
+  "speakerLabel"
+);
+
+
+const rejectCallButton =
+document.getElementById(
+  "rejectCallButton"
+);
+
+
+const acceptCallButton =
+document.getElementById(
+  "acceptCallButton"
+);
+
+
+const endCallButton =
+document.getElementById(
+  "endCallButton"
+);
+
+
+/* =====================================================
+   CURRENT USER AND MEMBER STATE
+===================================================== */
+
+let currentUser =
+null;
+
+
+let currentProfile =
+{};
+
+
+let otherMemberId =
+"";
+
+
+let otherMemberProfile =
+{};
+
+
+/* =====================================================
+   CALL DOCUMENT STATE
+===================================================== */
+
+let callId =
+"";
+
+
+let callRole =
+"caller";
+
+
+let callData =
+{};
+
+
+let unsubscribeCall =
+null;
+
+
+let unsubscribeCallerCandidates =
+null;
+
+
+let unsubscribeReceiverCandidates =
+null;
+
+
+/* =====================================================
+   WEBRTC MEDIA STATE
+===================================================== */
+
+let localStream =
+null;
+
+
+let remoteStream =
+null;
+
+
+let peerConnection =
+null;
+
+
+let currentFacingMode =
+"user";
+
+
+let microphoneMuted =
+false;
+
+
+let cameraDisabled =
+false;
+
+
+let speakerMuted =
+false;
+
+
+let remoteVideoReceived =
+false;
+
+
+/* =====================================================
+   TIMER AND ACTION STATE
+===================================================== */
+
+let callStartedAt =
+null;
+
+
+let callTimerInterval =
+null;
+
+
+let callActionRunning =
+false;
+
+
+let outgoingCallStarted =
+false;
+
+
+let pageIsClosing =
+false;
+
+
+/* =====================================================
+   ICE CANDIDATE STATE
+===================================================== */
+
+const processedCallerCandidateIds =
+new Set();
+
+
+const processedReceiverCandidateIds =
+new Set();
+
+
+const pendingCallerCandidates =
+[];
+
+
+const pendingReceiverCandidates =
+[];
+
+
+/* =====================================================
+   LIVE CALL STATE
+===================================================== */
+
+let receiverAnswerApplied =
+false;
+
+
+let lastCallStatus =
+"";
+
+
+/* =====================================================
+   WEBRTC CONFIGURATION
+===================================================== */
+
+const rtcConfiguration = {
+
+  iceServers:[
+    {
+      urls:
+      "stun:stun.l.google.com:19302"
+    },
+
+    {
+      urls:
+      "stun:stun1.l.google.com:19302"
+    },
+
+    {
+      urls:
+      "stun:stun2.l.google.com:19302"
+    }
+  ],
+
+  iceCandidatePoolSize:
+  10
+
+};
+
+
+/* =====================================================
+   READ URL INFORMATION
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+
+/*
+   New outgoing video call:
+
+   video-call.html?user=MEMBER_UID
+*/
+
+const requestedMemberId =
+getFirstValue(
+  urlParameters.get("user"),
+  urlParameters.get("uid"),
+  urlParameters.get("member"),
+  urlParameters.get("userId")
+);
+
+
+/*
+   Incoming video call:
+
+   video-call.html?call=CALL_DOCUMENT_ID
+*/
+
+const requestedCallId =
+getFirstValue(
+  urlParameters.get("call"),
+  urlParameters.get("callId")
+);
+
+
+/* =====================================================
+   DETERMINE CALL ROLE
+===================================================== */
+
+if(requestedCallId){
+
+  callId =
+  requestedCallId;
+
+
+  callRole =
+  "receiver";
+
+}else if(requestedMemberId){
+
+  otherMemberId =
+  requestedMemberId;
+
+
+  callRole =
+  "caller";
+
+}else{
+
+  showCallError(
+    "The video-call information is missing."
+  );
+
+
+  throw new Error(
+    "Missing member ID or video-call ID."
+  );
+
+}
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   DISPLAY CALL MESSAGE
+===================================================== */
+
+function showCallMessage(
+  message,
+  isError = false
+){
+
+  if(!callMessage){
+
+    return;
+
+  }
+
+
+  callMessage.textContent =
+  message;
+
+
+  callMessage.classList.remove(
+    "hidden",
+    "error"
+  );
+
+
+  if(isError){
+
+    callMessage.classList.add(
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   HIDE CALL MESSAGE
+===================================================== */
+
+function hideCallMessage(){
+
+  if(!callMessage){
+
+    return;
+
+  }
+
+
+  callMessage.textContent =
+  "";
+
+
+  callMessage.classList.add(
+    "hidden"
+  );
+
+
+  callMessage.classList.remove(
+    "error"
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE CALL STATUS
+===================================================== */
+
+function updateCallStatus(
+  status,
+  text
+){
+
+  if(!callStatus){
+
+    return;
+
+  }
+
+
+  callStatus.className =
+  "callStatus";
+
+
+  if(status){
+
+    callStatus.classList.add(
+      status
+    );
+
+  }
+
+
+  callStatus.textContent =
+  text;
+
+}
+
+
+/* =====================================================
+   UPDATE CONNECTION DISPLAY
+===================================================== */
+
+function updateConnectionDisplay(
+  state
+){
+
+  if(
+    !connectionDot ||
+    !connectionText
+  ){
+
+    return;
+
+  }
+
+
+  connectionDot.className =
+  "connectionDot";
+
+
+  if(state === "connecting"){
+
+    connectionDot.classList.add(
+      "connecting"
+    );
+
+
+    connectionText.textContent =
+    "Connecting video call";
+
+  }else if(state === "connected"){
+
+    connectionDot.classList.add(
+      "connected"
+    );
+
+
+    connectionText.textContent =
+    "Video call connected";
+
+  }else if(state === "failed"){
+
+    connectionDot.classList.add(
+      "failed"
+    );
+
+
+    connectionText.textContent =
+    "Connection failed";
+
+  }else if(state === "ended"){
+
+    connectionDot.classList.add(
+      "failed"
+    );
+
+
+    connectionText.textContent =
+    "Call ended";
+
+  }else{
+
+    connectionText.textContent =
+    "Waiting for connection";
+
+  }
+
+}
+
+
+/* =====================================================
+   SHOW CALL ERROR
+===================================================== */
+
+function showCallError(
+  message
+){
+
+  showCallMessage(
+    message,
+    true
+  );
+
+
+  updateCallStatus(
+    "ended",
+    "Call unavailable"
+  );
+
+
+  updateConnectionDisplay(
+    "failed"
+  );
+
+
+  if(permissionNotice){
+
+    permissionNotice.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  async function(){
+
+    if(
+      callId &&
+      !pageIsClosing
+    ){
+
+      await endVideoCall(
+        "ended"
+      );
+
+
+      return;
+
+    }
+
+
+    if(
+      window.history.length >
+      1
+    ){
+
+      window.history.back();
+
+    }else{
+
+      window.location.href =
+      "messages.html";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL PAGE DISPLAY
+===================================================== */
+
+updateConnectionDisplay(
+  "waiting"
+);
+
+
+updateCallStatus(
+  "",
+  "Preparing video call..."
+);
+
+
+console.log(
+  "Video-call Part 4A loaded."
+);
+/* =====================================================
+   PART 4B1 OF 6
+   USER PROFILE, VIDEO DISPLAY,
+   CAMERA AND MICROPHONE ACCESS
+===================================================== */
+
+
+/* =====================================================
+   LOAD USER PROFILE
+===================================================== */
+
+async function loadUserProfile(
+  userId
+){
+
+  if(!userId){
+
+    return {};
+
+  }
+
+
+  try{
+
+    const profileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        userId
+      )
+    );
+
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      return {
+
+        id:
+        profileSnapshot.id,
+
+        ...profileSnapshot.data()
+
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "User profile loading error:",
+      error
+    );
+
+  }
+
+
+  return {
+    id:
+    userId
+  };
+
+}
+
+
+/* =====================================================
+   GET PROFILE NAME
+===================================================== */
+
+function getProfileName(
+  profile,
+  fallback =
+  "Faith Connect Member"
+){
+
+  return getFirstValue(
+
+    profile?.fullName,
+
+    profile?.name,
+
+    profile?.displayName,
+
+    profile?.username,
+
+    fallback
+
+  );
+
+}
+
+
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
+function getProfilePicture(
+  profile
+){
+
+  return getFirstValue(
+
+    profile?.profilePicture,
+
+    profile?.picture,
+
+    profile?.photoURL,
+
+    profile?.photoUrl,
+
+    profile?.imageUrl,
+
+    "images/profile.png"
+
+  );
+
+}
+
+
+/* =====================================================
+   DISPLAY OTHER MEMBER
+===================================================== */
+
+function displayOtherMember(){
+
+  const displayedName =
+  getProfileName(
+    otherMemberProfile
+  );
+
+
+  const displayedPicture =
+  getProfilePicture(
+    otherMemberProfile
+  );
+
+
+  const displayedCountry =
+  getFirstValue(
+
+    otherMemberProfile.country,
+
+    otherMemberProfile.location
+
+  );
+
+
+  if(memberName){
+
+    memberName.textContent =
+    displayedName;
+
+  }
+
+
+  if(headerTitle){
+
+    headerTitle.textContent =
+    displayedName;
+
+  }
+
+
+  if(remoteMemberAvatar){
+
+    remoteMemberAvatar.src =
+    displayedPicture;
+
+  }
+
+
+  if(memberCountry){
+
+    if(displayedCountry){
+
+      memberCountry.textContent =
+      `🌍 ${displayedCountry}`;
+
+
+      memberCountry.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      memberCountry.textContent =
+      "";
+
+
+      memberCountry.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   REMOTE MEMBER PICTURE FALLBACK
+===================================================== */
+
+if(remoteMemberAvatar){
+
+  remoteMemberAvatar.addEventListener(
+    "error",
+    function(){
+
+      remoteMemberAvatar.src =
+      "images/profile.png";
+
+    },
+    {
+      once:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   SHOW REMOTE VIDEO PLACEHOLDER
+===================================================== */
+
+function showRemoteVideoPlaceholder(){
+
+  if(remoteVideoPlaceholder){
+
+    remoteVideoPlaceholder.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(remoteVideo){
+
+    remoteVideo.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  remoteVideoReceived =
+  false;
+
+}
+
+
+/* =====================================================
+   SHOW REMOTE VIDEO
+===================================================== */
+
+function showRemoteVideo(){
+
+  if(remoteVideoPlaceholder){
+
+    remoteVideoPlaceholder.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(remoteVideo){
+
+    remoteVideo.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  remoteVideoReceived =
+  true;
+
+}
+
+
+/* =====================================================
+   SHOW LOCAL VIDEO
+===================================================== */
+
+function showLocalVideo(){
+
+  if(localVideoContainer){
+
+    localVideoContainer.classList.remove(
+      "cameraOff"
+    );
+
+  }
+
+
+  if(localVideo){
+
+    localVideo.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(localVideoLabel){
+
+    localVideoLabel.textContent =
+    "You";
+
+  }
+
+}
+
+
+/* =====================================================
+   SHOW LOCAL CAMERA OFF
+===================================================== */
+
+function showLocalCameraOff(){
+
+  if(localVideoContainer){
+
+    localVideoContainer.classList.add(
+      "cameraOff"
+    );
+
+  }
+
+
+  if(localVideoLabel){
+
+    localVideoLabel.textContent =
+    "Camera Off";
+
+  }
+
+}
+
+
+/* =====================================================
+   GET MEDIA CONSTRAINTS
+===================================================== */
+
+function getVideoMediaConstraints(){
+
+  return {
+
+    audio:{
+
+      echoCancellation:
+      true,
+
+      noiseSuppression:
+      true,
+
+      autoGainControl:
+      true
+
+    },
+
+    video:{
+
+      facingMode:
+      {
+        ideal:
+        currentFacingMode
+      },
+
+      width:
+      {
+        ideal:
+        1280
+      },
+
+      height:
+      {
+        ideal:
+        720
+      },
+
+      frameRate:
+      {
+        ideal:
+        24,
+        max:
+        30
+      }
+
+    }
+
+  };
+
+}
+
+
+/* =====================================================
+   REQUEST CAMERA AND MICROPHONE
+===================================================== */
+
+async function requestLocalMedia(){
+
+  if(localStream){
+
+    return localStream;
+
+  }
+
+
+  if(
+    !navigator.mediaDevices ||
+    typeof navigator.mediaDevices
+    .getUserMedia !==
+    "function"
+  ){
+
+    throw new Error(
+      "Camera and microphone access are not supported by this browser."
+    );
+
+  }
+
+
+  try{
+
+    localStream =
+    await navigator.mediaDevices
+    .getUserMedia(
+      getVideoMediaConstraints()
+    );
+
+
+    if(localVideo){
+
+      localVideo.srcObject =
+      localStream;
+
+
+      localVideo.muted =
+      true;
+
+
+      localVideo.playsInline =
+      true;
+
+
+      await localVideo.play()
+      .catch(
+        function(error){
+
+          console.log(
+            "Local video playback is waiting for user interaction:",
+            error
+          );
+
+        }
+      );
+
+    }
+
+
+    if(permissionNotice){
+
+      permissionNotice.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    microphoneMuted =
+    false;
+
+
+    cameraDisabled =
+    false;
+
+
+    showLocalVideo();
+
+
+    updateMicrophoneButton();
+
+
+    updateCameraButton();
+
+
+    return localStream;
+
+  }catch(error){
+
+    console.error(
+      "Camera or microphone permission error:",
+      error
+    );
+
+
+    if(
+      error?.name ===
+      "NotAllowedError" ||
+      error?.name ===
+      "PermissionDeniedError"
+    ){
+
+      throw new Error(
+        "Camera or microphone permission was denied. Allow access and try again."
+      );
+
+    }
+
+
+    if(
+      error?.name ===
+      "NotFoundError" ||
+      error?.name ===
+      "DevicesNotFoundError"
+    ){
+
+      throw new Error(
+        "No camera or microphone was found on this device."
+      );
+
+    }
+
+
+    if(
+      error?.name ===
+      "NotReadableError" ||
+      error?.name ===
+      "TrackStartError"
+    ){
+
+      throw new Error(
+        "The camera or microphone is being used by another application."
+      );
+
+    }
+
+
+    if(
+      error?.name ===
+      "OverconstrainedError"
+    ){
+
+      throw new Error(
+        "This device camera does not support the requested video settings."
+      );
+
+    }
+
+
+    throw new Error(
+      "The camera and microphone could not be opened."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   UPDATE MICROPHONE BUTTON
+===================================================== */
+
+function updateMicrophoneButton(){
+
+  if(
+    !microphoneButton ||
+    !microphoneIcon ||
+    !microphoneLabel
+  ){
+
+    return;
+
+  }
+
+
+  microphoneButton.classList.toggle(
+    "warning",
+    microphoneMuted
+  );
+
+
+  microphoneButton.classList.toggle(
+    "active",
+    !microphoneMuted
+  );
+
+
+  microphoneIcon.textContent =
+  microphoneMuted
+  ? "🔇"
+  : "🎙️";
+
+
+  microphoneLabel.textContent =
+  microphoneMuted
+  ? "Unmute"
+  : "Mute";
+
+}
+
+
+/* =====================================================
+   UPDATE CAMERA BUTTON
+===================================================== */
+
+function updateCameraButton(){
+
+  if(
+    !cameraButton ||
+    !cameraIcon ||
+    !cameraLabel
+  ){
+
+    return;
+
+  }
+
+
+  cameraButton.classList.toggle(
+    "warning",
+    cameraDisabled
+  );
+
+
+  cameraButton.classList.toggle(
+    "active",
+    !cameraDisabled
+  );
+
+
+  cameraIcon.textContent =
+  cameraDisabled
+  ? "🚫"
+  : "📹";
+
+
+  cameraLabel.textContent =
+  cameraDisabled
+  ? "Start Camera"
+  : "Stop Camera";
+
+}
+
+
+/* =====================================================
+   UPDATE SPEAKER BUTTON
+===================================================== */
+
+function updateSpeakerButton(){
+
+  if(
+    !speakerButton ||
+    !speakerIcon ||
+    !speakerLabel
+  ){
+
+    return;
+
+  }
+
+
+  speakerButton.classList.toggle(
+    "warning",
+    speakerMuted
+  );
+
+
+  speakerButton.classList.toggle(
+    "active",
+    !speakerMuted
+  );
+
+
+  speakerIcon.textContent =
+  speakerMuted
+  ? "🔈"
+  : "🔊";
+
+
+  speakerLabel.textContent =
+  speakerMuted
+  ? "Unmute Sound"
+  : "Speaker";
+
+}
+
+
+/* =====================================================
+   GET LOCAL AUDIO TRACK
+===================================================== */
+
+function getLocalAudioTrack(){
+
+  if(!localStream){
+
+    return null;
+
+  }
+
+
+  return (
+    localStream
+    .getAudioTracks()[0] ||
+    null
+  );
+
+}
+
+
+/* =====================================================
+   GET LOCAL VIDEO TRACK
+===================================================== */
+
+function getLocalVideoTrack(){
+
+  if(!localStream){
+
+    return null;
+
+  }
+
+
+  return (
+    localStream
+    .getVideoTracks()[0] ||
+    null
+  );
+
+}
+
+
+/* =====================================================
+   STOP LOCAL MEDIA
+===================================================== */
+
+function cleanupLocalMedia(){
+
+  if(localStream){
+
+    localStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        try{
+
+          track.stop();
+
+        }catch(error){
+
+          console.error(
+            "Local media track cleanup error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  localStream =
+  null;
+
+
+  if(localVideo){
+
+    localVideo.pause();
+
+
+    localVideo.srcObject =
+    null;
+
+  }
+
+
+  showLocalCameraOff();
+
+}
+
+
+/* =====================================================
+   STOP REMOTE MEDIA
+===================================================== */
+
+function cleanupRemoteMedia(){
+
+  if(remoteVideo){
+
+    remoteVideo.pause();
+
+
+    remoteVideo.srcObject =
+    null;
+
+  }
+
+
+  if(remoteStream){
+
+    remoteStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        try{
+
+          track.stop();
+
+        }catch(error){
+
+          console.error(
+            "Remote media track cleanup error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  remoteStream =
+  null;
+
+
+  showRemoteVideoPlaceholder();
+
+}
+
+
+/* =====================================================
+   INITIAL VIDEO DISPLAY
+===================================================== */
+
+showRemoteVideoPlaceholder();
+
+
+showLocalCameraOff();
+
+
+updateMicrophoneButton();
+
+
+updateCameraButton();
+
+
+updateSpeakerButton();
+
+
+console.log(
+  "Video-call Part 4B1 loaded."
+);
+/* =====================================================
+   PART 4B2 OF 6
+   WEBRTC PEER CONNECTION, LOCAL TRACKS,
+   REMOTE VIDEO AND CONNECTION STATUS
+===================================================== */
+
+
+/* =====================================================
+   CREATE WEBRTC PEER CONNECTION
+===================================================== */
+
+async function createPeerConnection(){
+
+  if(peerConnection){
+
+    return peerConnection;
+
+  }
+
+
+  peerConnection =
+  new RTCPeerConnection(
+    rtcConfiguration
+  );
+
+
+  remoteStream =
+  new MediaStream();
+
+
+  if(remoteVideo){
+
+    remoteVideo.srcObject =
+    remoteStream;
+
+
+    remoteVideo.playsInline =
+    true;
+
+
+    remoteVideo.autoplay =
+    true;
+
+  }
+
+
+  /*
+     Open the camera and microphone before
+     adding tracks to the connection.
+  */
+
+  const mediaStream =
+  await requestLocalMedia();
+
+
+  mediaStream
+  .getTracks()
+  .forEach(
+    function(track){
+
+      peerConnection.addTrack(
+        track,
+        mediaStream
+      );
+
+    }
+  );
+
+
+  /*
+     Receive the other member's camera
+     and microphone tracks.
+  */
+
+  peerConnection.addEventListener(
+    "track",
+    handleRemoteTrack
+  );
+
+
+  /*
+     Watch the main WebRTC connection state.
+  */
+
+  peerConnection.addEventListener(
+    "connectionstatechange",
+    handlePeerConnectionState
+  );
+
+
+  /*
+     Watch ICE connection state.
+  */
+
+  peerConnection.addEventListener(
+    "iceconnectionstatechange",
+    handleIceConnectionState
+  );
+
+
+  /*
+     Watch ICE gathering state.
+  */
+
+  peerConnection.addEventListener(
+    "icegatheringstatechange",
+    handleIceGatheringState
+  );
+
+
+  /*
+     Watch signalling state.
+  */
+
+  peerConnection.addEventListener(
+    "signalingstatechange",
+    handleSignalingState
+  );
+
+
+  return peerConnection;
+
+}
+
+
+/* =====================================================
+   HANDLE REMOTE TRACK
+===================================================== */
+
+function handleRemoteTrack(
+  event
+){
+
+  if(!remoteStream){
+
+    remoteStream =
+    new MediaStream();
+
+
+    if(remoteVideo){
+
+      remoteVideo.srcObject =
+      remoteStream;
+
+    }
+
+  }
+
+
+  /*
+     Some browsers provide complete streams.
+  */
+
+  if(
+    event.streams &&
+    event.streams.length > 0
+  ){
+
+    event.streams
+    .forEach(
+      function(stream){
+
+        stream
+        .getTracks()
+        .forEach(
+          function(track){
+
+            addTrackToRemoteStream(
+              track
+            );
+
+          }
+        );
+
+      }
+    );
+
+  }else if(event.track){
+
+    /*
+       Other browsers provide one track only.
+    */
+
+    addTrackToRemoteStream(
+      event.track
+    );
+
+  }
+
+
+  if(event.track){
+
+    event.track.addEventListener(
+      "unmute",
+      function(){
+
+        if(
+          event.track.kind ===
+          "video"
+        ){
+
+          showRemoteVideo();
+
+        }
+
+
+        playRemoteVideo();
+
+      }
+    );
+
+
+    event.track.addEventListener(
+      "mute",
+      function(){
+
+        if(
+          event.track.kind ===
+          "video"
+        ){
+
+          checkRemoteVideoAvailability();
+
+        }
+
+      }
+    );
+
+
+    event.track.addEventListener(
+      "ended",
+      function(){
+
+        if(
+          event.track.kind ===
+          "video"
+        ){
+
+          checkRemoteVideoAvailability();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  playRemoteVideo();
+
+
+  checkRemoteVideoAvailability();
+
+}
+
+
+/* =====================================================
+   ADD TRACK TO REMOTE STREAM
+===================================================== */
+
+function addTrackToRemoteStream(
+  track
+){
+
+  if(
+    !track ||
+    !remoteStream
+  ){
+
+    return;
+
+  }
+
+
+  const trackAlreadyExists =
+  remoteStream
+  .getTracks()
+  .some(
+    function(existingTrack){
+
+      return (
+        existingTrack.id ===
+        track.id
+      );
+
+    }
+  );
+
+
+  if(!trackAlreadyExists){
+
+    remoteStream.addTrack(
+      track
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PLAY REMOTE VIDEO
+===================================================== */
+
+function playRemoteVideo(){
+
+  if(!remoteVideo){
+
+    return;
+
+  }
+
+
+  remoteVideo.play()
+  .then(
+    function(){
+
+      checkRemoteVideoAvailability();
+
+    }
+  )
+  .catch(
+    function(error){
+
+      console.log(
+        "Remote video playback is waiting for user interaction:",
+        error
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   CHECK REMOTE VIDEO AVAILABILITY
+===================================================== */
+
+function checkRemoteVideoAvailability(){
+
+  if(!remoteStream){
+
+    showRemoteVideoPlaceholder();
+
+    return;
+
+  }
+
+
+  const activeVideoTrack =
+  remoteStream
+  .getVideoTracks()
+  .find(
+    function(track){
+
+      return (
+        track.readyState ===
+        "live" &&
+        track.muted !==
+        true
+      );
+
+    }
+  );
+
+
+  if(activeVideoTrack){
+
+    showRemoteVideo();
+
+  }else{
+
+    showRemoteVideoPlaceholder();
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE PEER CONNECTION STATE
+===================================================== */
+
+function handlePeerConnectionState(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  const connectionState =
+  peerConnection.connectionState;
+
+
+  console.log(
+    "Video-call connection state:",
+    connectionState
+  );
+
+
+  switch(connectionState){
+
+    case "new":
+
+      updateConnectionDisplay(
+        "waiting"
+      );
+
+      break;
+
+
+    case "connecting":
+
+      updateConnectionDisplay(
+        "connecting"
+      );
+
+
+      updateCallStatus(
+        "ringing",
+        "Connecting..."
+      );
+
+      break;
+
+
+    case "connected":
+
+      updateConnectionDisplay(
+        "connected"
+      );
+
+
+      updateCallStatus(
+        "connected",
+        "Connected"
+      );
+
+
+      if(memberAvatarFrame){
+
+        memberAvatarFrame.classList.remove(
+          "ringing"
+        );
+
+      }
+
+
+      hideCallMessage();
+
+
+      enableConnectedCallControls();
+
+
+      startCallTimer();
+
+
+      playRemoteVideo();
+
+
+      checkRemoteVideoAvailability();
+
+      break;
+
+
+    case "disconnected":
+
+      connectionText.textContent =
+      "Video connection interrupted";
+
+
+      showCallMessage(
+        "The video connection was interrupted. Trying to reconnect..."
+      );
+
+      break;
+
+
+    case "failed":
+
+      updateConnectionDisplay(
+        "failed"
+      );
+
+
+      updateCallStatus(
+        "ended",
+        "Connection failed"
+      );
+
+
+      showCallMessage(
+        "The video connection failed. End the call and try again.",
+        true
+      );
+
+      break;
+
+
+    case "closed":
+
+      updateConnectionDisplay(
+        "ended"
+      );
+
+
+      updateCallStatus(
+        "ended",
+        "Call ended"
+      );
+
+      break;
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE ICE CONNECTION STATE
+===================================================== */
+
+function handleIceConnectionState(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  const iceState =
+  peerConnection.iceConnectionState;
+
+
+  console.log(
+    "Video-call ICE connection state:",
+    iceState
+  );
+
+
+  switch(iceState){
+
+    case "checking":
+
+      updateConnectionDisplay(
+        "connecting"
+      );
+
+      break;
+
+
+    case "connected":
+
+    case "completed":
+
+      updateConnectionDisplay(
+        "connected"
+      );
+
+      break;
+
+
+    case "disconnected":
+
+      connectionText.textContent =
+      "Connection temporarily interrupted";
+
+      break;
+
+
+    case "failed":
+
+      updateConnectionDisplay(
+        "failed"
+      );
+
+
+      showCallMessage(
+        "The phones could not establish a direct video connection.",
+        true
+      );
+
+      break;
+
+
+    case "closed":
+
+      updateConnectionDisplay(
+        "ended"
+      );
+
+      break;
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE ICE GATHERING STATE
+===================================================== */
+
+function handleIceGatheringState(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  console.log(
+    "Video-call ICE gathering state:",
+    peerConnection.iceGatheringState
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE SIGNALLING STATE
+===================================================== */
+
+function handleSignalingState(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  console.log(
+    "Video-call signalling state:",
+    peerConnection.signalingState
+  );
+
+}
+
+
+/* =====================================================
+   ENABLE CONNECTED CALL CONTROLS
+===================================================== */
+
+function enableConnectedCallControls(){
+
+  if(microphoneButton){
+
+    microphoneButton.disabled =
+    false;
+
+  }
+
+
+  if(cameraButton){
+
+    cameraButton.disabled =
+    false;
+
+  }
+
+
+  if(switchCameraButton){
+
+    switchCameraButton.disabled =
+    false;
+
+  }
+
+
+  if(speakerButton){
+
+    speakerButton.disabled =
+    false;
+
+  }
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    false;
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   DISABLE VIDEO CALL CONTROLS
+===================================================== */
+
+function disableVideoCallControls(){
+
+  if(microphoneButton){
+
+    microphoneButton.disabled =
+    true;
+
+  }
+
+
+  if(cameraButton){
+
+    cameraButton.disabled =
+    true;
+
+  }
+
+
+  if(switchCameraButton){
+
+    switchCameraButton.disabled =
+    true;
+
+  }
+
+
+  if(speakerButton){
+
+    speakerButton.disabled =
+    true;
+
+  }
+
+}
+
+
+/* =====================================================
+   CLOSE PEER CONNECTION
+===================================================== */
+
+function cleanupPeerConnection(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  try{
+
+    peerConnection.removeEventListener(
+      "track",
+      handleRemoteTrack
+    );
+
+
+    peerConnection.removeEventListener(
+      "connectionstatechange",
+      handlePeerConnectionState
+    );
+
+
+    peerConnection.removeEventListener(
+      "iceconnectionstatechange",
+      handleIceConnectionState
+    );
+
+
+    peerConnection.removeEventListener(
+      "icegatheringstatechange",
+      handleIceGatheringState
+    );
+
+
+    peerConnection.removeEventListener(
+      "signalingstatechange",
+      handleSignalingState
+    );
+
+
+    peerConnection.close();
+
+  }catch(error){
+
+    console.error(
+      "Peer connection cleanup error:",
+      error
+    );
+
+  }
+
+
+  peerConnection =
+  null;
+
+}
+
+
+/* =====================================================
+   INITIAL PEER CONNECTION STATUS
+===================================================== */
+
+disableVideoCallControls();
+
+
+console.log(
+  "Video-call Part 4B2 loaded."
+);
+/* =====================================================
+   PART 4C1A OF 6
+   CALL TIMER, MEMBER PROFILE,
+   OUTGOING AND INCOMING CALL PREPARATION
+===================================================== */
+
+
+/* =====================================================
+   START CALL TIMER
+===================================================== */
+
+function startCallTimer(){
+
+  if(callTimerInterval){
+
+    return;
+
+  }
+
+
+  callStartedAt =
+  Date.now();
+
+
+  if(callTimer){
+
+    callTimer.textContent =
+    "00:00";
+
+  }
+
+
+  callTimerInterval =
+  window.setInterval(
+    function(){
+
+      const elapsedMilliseconds =
+      Date.now() -
+      callStartedAt;
+
+
+      const totalSeconds =
+      Math.floor(
+        elapsedMilliseconds /
+        1000
+      );
+
+
+      const hours =
+      Math.floor(
+        totalSeconds /
+        3600
+      );
+
+
+      const minutes =
+      Math.floor(
+        (
+          totalSeconds %
+          3600
+        ) /
+        60
+      );
+
+
+      const seconds =
+      totalSeconds %
+      60;
+
+
+      if(!callTimer){
+
+        return;
+
+      }
+
+
+      if(hours > 0){
+
+        callTimer.textContent =
+        `${String(hours).padStart(
+          2,
+          "0"
+        )}:${String(minutes).padStart(
+          2,
+          "0"
+        )}:${String(seconds).padStart(
+          2,
+          "0"
+        )}`;
+
+      }else{
+
+        callTimer.textContent =
+        `${String(minutes).padStart(
+          2,
+          "0"
+        )}:${String(seconds).padStart(
+          2,
+          "0"
+        )}`;
+
+      }
+
+    },
+    1000
+  );
+
+}
+
+
+/* =====================================================
+   STOP CALL TIMER
+===================================================== */
+
+function stopCallTimer(){
+
+  if(callTimerInterval){
+
+    window.clearInterval(
+      callTimerInterval
+    );
+
+  }
+
+
+  callTimerInterval =
+  null;
+
+
+  callStartedAt =
+  null;
+
+}
+
+
+/* =====================================================
+   RESET CALL TIMER
+===================================================== */
+
+function resetCallTimer(){
+
+  stopCallTimer();
+
+
+  if(callTimer){
+
+    callTimer.textContent =
+    "00:00";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD USER PROFILE
+===================================================== */
+
+async function loadUserProfile(
+  userId
+){
+
+  if(!userId){
+
+    return {};
+
+  }
+
+
+  try{
+
+    const profileSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "users",
+        userId
+      )
+    );
+
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      return {
+
+        id:
+        profileSnapshot.id,
+
+        ...profileSnapshot.data()
+
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Video-call profile loading error:",
+      error
+    );
+
+  }
+
+
+  return {
+    id:userId
+  };
+
+}
+
+
+/* =====================================================
+   GET PROFILE DISPLAY NAME
+===================================================== */
+
+function getVideoCallProfileName(
+  profile,
+  fallback =
+  "Faith Connect Member"
+){
+
+  return getFirstValue(
+    profile?.fullName,
+    profile?.name,
+    profile?.displayName,
+    profile?.username,
+    fallback
+  );
+
+}
+
+
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
+function getVideoCallProfilePicture(
+  profile
+){
+
+  return getFirstValue(
+    profile?.profilePicture,
+    profile?.picture,
+    profile?.photoURL,
+    profile?.photoUrl,
+    profile?.imageUrl,
+    "images/profile.png"
+  );
+
+}
+
+
+/* =====================================================
+   GET PROFILE COUNTRY
+===================================================== */
+
+function getVideoCallProfileCountry(
+  profile
+){
+
+  return getFirstValue(
+    profile?.country,
+    profile?.location
+  );
+
+}
+
+
+/* =====================================================
+   DISPLAY OTHER MEMBER
+===================================================== */
+
+function displayOtherMember(){
+
+  const displayedName =
+  getVideoCallProfileName(
+    otherMemberProfile
+  );
+
+
+  const displayedPicture =
+  getVideoCallProfilePicture(
+    otherMemberProfile
+  );
+
+
+  const displayedCountry =
+  getVideoCallProfileCountry(
+    otherMemberProfile
+  );
+
+
+  if(memberName){
+
+    memberName.textContent =
+    displayedName;
+
+  }
+
+
+  if(headerTitle){
+
+    headerTitle.textContent =
+    displayedName;
+
+  }
+
+
+  if(memberAvatar){
+
+    memberAvatar.src =
+    displayedPicture;
+
+  }
+
+
+  if(remoteVideoPlaceholderName){
+
+    remoteVideoPlaceholderName.textContent =
+    displayedName;
+
+  }
+
+
+  if(remoteVideoPlaceholderAvatar){
+
+    remoteVideoPlaceholderAvatar.src =
+    displayedPicture;
+
+  }
+
+
+  if(memberCountry){
+
+    if(displayedCountry){
+
+      memberCountry.textContent =
+      `🌍 ${displayedCountry}`;
+
+
+      memberCountry.classList.remove(
+        "hidden"
+      );
+
+    }else{
+
+      memberCountry.textContent =
+      "";
+
+
+      memberCountry.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   MEMBER PICTURE FALLBACK
+===================================================== */
+
+if(memberAvatar){
+
+  memberAvatar.addEventListener(
+    "error",
+    function(){
+
+      memberAvatar.src =
+      "images/profile.png";
+
+    },
+    {
+      once:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   REMOTE PLACEHOLDER PICTURE FALLBACK
+===================================================== */
+
+if(remoteVideoPlaceholderAvatar){
+
+  remoteVideoPlaceholderAvatar.addEventListener(
+    "error",
+    function(){
+
+      remoteVideoPlaceholderAvatar.src =
+      "images/profile.png";
+
+    },
+    {
+      once:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   GET CURRENT CALLER INFORMATION
+===================================================== */
+
+function getCurrentCallerInformation(){
+
+  const callerName =
+  getVideoCallProfileName(
+    currentProfile,
+    getFirstValue(
+      currentUser?.displayName,
+      currentUser?.email,
+      "Faith Connect Member"
+    )
+  );
+
+
+  const callerPicture =
+  getFirstValue(
+    getVideoCallProfilePicture(
+      currentProfile
+    ),
+    currentUser?.photoURL,
+    "images/profile.png"
+  );
+
+
+  const callerCountry =
+  getVideoCallProfileCountry(
+    currentProfile
+  );
+
+
+  return {
+    callerName,
+    callerPicture,
+    callerCountry
+  };
+
+}
+
+
+/* =====================================================
+   PREPARE OUTGOING VIDEO CALL
+===================================================== */
+
+async function prepareOutgoingCall(){
+
+  if(
+    !currentUser ||
+    !otherMemberId
+  ){
+
+    showCallError(
+      "The video-call member information is missing."
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    otherMemberId ===
+    currentUser.uid
+  ){
+
+    showCallError(
+      "You cannot start a video call with your own account."
+    );
+
+
+    return;
+
+  }
+
+
+  try{
+
+    otherMemberProfile =
+    await loadUserProfile(
+      otherMemberId
+    );
+
+
+    displayOtherMember();
+
+
+    if(headerSubtitle){
+
+      headerSubtitle.textContent =
+      "Outgoing private video call";
+
+    }
+
+
+    updateCallStatus(
+      "ringing",
+      "Starting video call..."
+    );
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    if(memberAvatarFrame){
+
+      memberAvatarFrame.classList.add(
+        "ringing"
+      );
+
+    }
+
+
+    showRemoteVideoPlaceholder();
+
+
+    if(endCallButton){
+
+      endCallButton.disabled =
+      false;
+
+    }
+
+
+    await startOutgoingCall();
+
+  }catch(error){
+
+    console.error(
+      "Outgoing video-call preparation error:",
+      error
+    );
+
+
+    showCallError(
+      error?.message ||
+      "The video call could not be prepared."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PREPARE INCOMING VIDEO CALL
+===================================================== */
+
+async function prepareIncomingCall(){
+
+  if(
+    !currentUser ||
+    !callId
+  ){
+
+    showCallError(
+      "The incoming video-call information is missing."
+    );
+
+
+    return;
+
+  }
+
+
+  try{
+
+    const callReference =
+    doc(
+      db,
+      "videoCalls",
+      callId
+    );
+
+
+    const callSnapshot =
+    await getDoc(
+      callReference
+    );
+
+
+    if(
+      !callSnapshot.exists()
+    ){
+
+      showCallError(
+        "This video call no longer exists."
+      );
+
+
+      return;
+
+    }
+
+
+    callData = {
+
+      id:
+      callSnapshot.id,
+
+      ...callSnapshot.data()
+
+    };
+
+
+    if(
+      callData.receiverId !==
+      currentUser.uid
+    ){
+
+      showCallError(
+        "You are not the receiver of this video call."
+      );
+
+
+      return;
+
+    }
+
+
+    const currentStatus =
+    getFirstValue(
+      callData.status,
+      "ringing"
+    ).toLowerCase();
+
+
+    if(
+      currentStatus ===
+      "ended" ||
+      currentStatus ===
+      "rejected" ||
+      currentStatus ===
+      "cancelled" ||
+      currentStatus ===
+      "missed"
+    ){
+
+      showCallError(
+        "This video call has already ended."
+      );
+
+
+      return;
+
+    }
+
+
+    otherMemberId =
+    getFirstValue(
+      callData.callerId
+    );
+
+
+    otherMemberProfile =
+    await loadUserProfile(
+      otherMemberId
+    );
+
+
+    /*
+       Use information stored in the call document
+       when the user profile is incomplete.
+    */
+
+    otherMemberProfile = {
+
+      ...otherMemberProfile,
+
+      fullName:
+      getFirstValue(
+        otherMemberProfile.fullName,
+        otherMemberProfile.name,
+        callData.callerName
+      ),
+
+      profilePicture:
+      getFirstValue(
+        otherMemberProfile.profilePicture,
+        otherMemberProfile.photoURL,
+        callData.callerPicture
+      ),
+
+      country:
+      getFirstValue(
+        otherMemberProfile.country,
+        callData.callerCountry
+      )
+
+    };
+
+
+    displayOtherMember();
+
+
+    if(headerSubtitle){
+
+      headerSubtitle.textContent =
+      "Incoming private video call";
+
+    }
+
+
+    updateCallStatus(
+      "ringing",
+      "Incoming video call"
+    );
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    if(memberAvatarFrame){
+
+      memberAvatarFrame.classList.add(
+        "ringing"
+      );
+
+    }
+
+
+    showRemoteVideoPlaceholder();
+
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.add(
+        "show"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(permissionNotice){
+
+      permissionNotice.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    startCallDocumentListener();
+
+  }catch(error){
+
+    console.error(
+      "Incoming video-call preparation error:",
+      error
+    );
+
+
+    showCallError(
+      error?.message ||
+      "The incoming video call could not be opened."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIAL CALL SCREEN
+===================================================== */
+
+resetCallTimer();
+
+
+showRemoteVideoPlaceholder();
+
+
+console.log(
+  "Video-call Part 4C1A loaded."
+);
+/* =====================================================
+   PART 4C1B OF 6
+   AUTHENTICATION, OUTGOING VIDEO CALL,
+   WEBRTC OFFER AND FIRESTORE CALL DOCUMENT
+===================================================== */
+
+
+/* =====================================================
+   PREVENT DUPLICATE OUTGOING CALL
+===================================================== */
+
+let outgoingCallStarted =
+false;
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+
+      return;
+
+    }
+
+
+    try{
+
+      currentProfile =
+      await loadUserProfile(
+        currentUser.uid
+      );
+
+
+      if(
+        callRole ===
+        "caller"
+      ){
+
+        await prepareOutgoingCall();
+
+      }else{
+
+        await prepareIncomingCall();
+
+      }
+
+    }catch(error){
+
+      console.error(
+        "Video-call authentication preparation error:",
+        error
+      );
+
+
+      showCallError(
+        error?.message ||
+        "The video call could not be prepared."
+      );
+
+    }
+
+  },
+
+  function(error){
+
+    console.error(
+      "Video-call authentication error:",
+      error
+    );
+
+
+    showCallError(
+      "Your account could not be confirmed. Please sign in again."
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CREATE OUTGOING VIDEO CALL
+===================================================== */
+
+async function startOutgoingCall(){
+
+  if(
+    outgoingCallStarted ||
+    callActionRunning
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !currentUser ||
+    !otherMemberId
+  ){
+
+    showCallError(
+      "The video call could not be started."
+    );
+
+
+    return;
+
+  }
+
+
+  outgoingCallStarted =
+  true;
+
+
+  callActionRunning =
+  true;
+
+
+  hideCallMessage();
+
+
+  updateCallStatus(
+    "ringing",
+    "Calling..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  if(headerSubtitle){
+
+    headerSubtitle.textContent =
+    "Outgoing private video call";
+
+  }
+
+
+  try{
+
+    /*
+       Request camera and microphone,
+       then create the WebRTC connection.
+    */
+
+    const connection =
+    await createPeerConnection();
+
+
+    /*
+       Prepare a new Firestore video-call document.
+    */
+
+    const newCallReference =
+    doc(
+      collection(
+        db,
+        "videoCalls"
+      )
+    );
+
+
+    callId =
+    newCallReference.id;
+
+
+    const callerInformation =
+    getCurrentCallerInformation();
+
+
+    const receiverName =
+    getVideoCallProfileName(
+      otherMemberProfile
+    );
+
+
+    const receiverPicture =
+    getVideoCallProfilePicture(
+      otherMemberProfile
+    );
+
+
+    const receiverCountry =
+    getVideoCallProfileCountry(
+      otherMemberProfile
+    );
+
+
+    /* =================================================
+       SAVE CALLER ICE CANDIDATES
+    ================================================= */
+
+    connection.addEventListener(
+      "icecandidate",
+      async function(event){
+
+        if(
+          !event.candidate ||
+          !callId
+        ){
+
+          return;
+
+        }
+
+
+        try{
+
+          await addDoc(
+            collection(
+              db,
+              "videoCalls",
+              callId,
+              "callerCandidates"
+            ),
+            event.candidate.toJSON()
+          );
+
+        }catch(error){
+
+          console.error(
+            "Caller video ICE candidate saving error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================================
+       CREATE WEBRTC VIDEO OFFER
+    ================================================= */
+
+    const offerDescription =
+    await connection.createOffer(
+      {
+        offerToReceiveAudio:
+        true,
+
+        offerToReceiveVideo:
+        true
+      }
+    );
+
+
+    await connection.setLocalDescription(
+      offerDescription
+    );
+
+
+    const offer = {
+
+      type:
+      offerDescription.type,
+
+      sdp:
+      offerDescription.sdp
+
+    };
+
+
+    /* =================================================
+       SAVE VIDEO CALL DOCUMENT
+    ================================================= */
+
+    await setDoc(
+      newCallReference,
+      {
+
+        callerId:
+        currentUser.uid,
+
+        callerName:
+        callerInformation.callerName,
+
+        callerPicture:
+        callerInformation.callerPicture,
+
+        callerCountry:
+        callerInformation.callerCountry,
+
+        receiverId:
+        otherMemberId,
+
+        receiverName:
+        receiverName,
+
+        receiverPicture:
+        receiverPicture,
+
+        receiverCountry:
+        receiverCountry,
+
+        type:
+        "video",
+
+        status:
+        "ringing",
+
+        offer:
+        offer,
+
+        answer:
+        null,
+
+        acceptedAt:
+        null,
+
+        connectedAt:
+        null,
+
+        endedAt:
+        null,
+
+        endedBy:
+        null,
+
+        createdAt:
+        serverTimestamp(),
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    callData = {
+
+      id:
+      callId,
+
+      callerId:
+      currentUser.uid,
+
+      receiverId:
+      otherMemberId,
+
+      type:
+      "video",
+
+      status:
+      "ringing",
+
+      offer:
+      offer
+
+    };
+
+
+    /* =================================================
+       START CALL DOCUMENT LISTENER
+    ================================================= */
+
+    startCallDocumentListener();
+
+
+    /* =================================================
+       LISTEN FOR RECEIVER ICE CANDIDATES
+    ================================================= */
+
+    startReceiverCandidateListener();
+
+
+    /* =================================================
+       UPDATE OUTGOING CALL SCREEN
+    ================================================= */
+
+    updateCallStatus(
+      "ringing",
+      "Ringing..."
+    );
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    if(memberAvatarFrame){
+
+      memberAvatarFrame.classList.add(
+        "ringing"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(endCallButton){
+
+      endCallButton.disabled =
+      false;
+
+    }
+
+
+    showCallMessage(
+      `Calling ${receiverName}...`
+    );
+
+
+    console.log(
+      "Outgoing video call created:",
+      callId
+    );
+
+  }catch(error){
+
+    console.error(
+      "Outgoing video-call creation error:",
+      error
+    );
+
+
+    outgoingCallStarted =
+    false;
+
+
+    if(
+      error?.name ===
+      "NotAllowedError"
+    ){
+
+      showCallError(
+        "Camera or microphone permission was denied. Allow access and try again."
+      );
+
+    }else if(
+      error?.name ===
+      "NotFoundError"
+    ){
+
+      showCallError(
+        "A camera or microphone could not be found on this device."
+      );
+
+    }else if(
+      error?.name ===
+      "NotReadableError"
+    ){
+
+      showCallError(
+        "The camera or microphone is being used by another application."
+      );
+
+    }else if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallError(
+        "Firebase denied permission to create the video call."
+      );
+
+    }else{
+
+      showCallError(
+        error?.message ||
+        "The video call could not be started. Please try again."
+      );
+
+    }
+
+
+    cleanupPeerConnection();
+
+    cleanupLocalMedia();
+
+    cleanupRemoteMedia();
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   STOP CALL DOCUMENT LISTENER
+===================================================== */
+
+function stopCallDocumentListener(){
+
+  if(
+    typeof unsubscribeCall ===
+    "function"
+  ){
+
+    unsubscribeCall();
+
+  }
+
+
+  unsubscribeCall =
+  null;
+
+}
+
+
+/* =====================================================
+   STOP CALLER CANDIDATE LISTENER
+===================================================== */
+
+function stopCallerCandidateListener(){
+
+  if(
+    typeof unsubscribeCallerCandidates ===
+    "function"
+  ){
+
+    unsubscribeCallerCandidates();
+
+  }
+
+
+  unsubscribeCallerCandidates =
+  null;
+
+}
+
+
+/* =====================================================
+   STOP RECEIVER CANDIDATE LISTENER
+===================================================== */
+
+function stopReceiverCandidateListener(){
+
+  if(
+    typeof unsubscribeReceiverCandidates ===
+    "function"
+  ){
+
+    unsubscribeReceiverCandidates();
+
+  }
+
+
+  unsubscribeReceiverCandidates =
+  null;
+
+}
+
+
+/* =====================================================
+   CLEAN UP LOCAL CAMERA AND MICROPHONE
+===================================================== */
+
+function cleanupLocalMedia(){
+
+  if(localStream){
+
+    localStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        track.stop();
+
+      }
+    );
+
+  }
+
+
+  localStream =
+  null;
+
+
+  if(localVideo){
+
+    localVideo.pause();
+
+
+    localVideo.srcObject =
+    null;
+
+  }
+
+}
+
+
+/* =====================================================
+   CLEAN UP REMOTE VIDEO AND AUDIO
+===================================================== */
+
+function cleanupRemoteMedia(){
+
+  if(remoteVideo){
+
+    remoteVideo.pause();
+
+
+    remoteVideo.srcObject =
+    null;
+
+  }
+
+
+  if(remoteStream){
+
+    remoteStream
+    .getTracks()
+    .forEach(
+      function(track){
+
+        track.stop();
+
+      }
+    );
+
+  }
+
+
+  remoteStream =
+  null;
+
+
+  showRemoteVideoPlaceholder();
+
+}
+
+
+/* =====================================================
+   CLEAN UP PEER CONNECTION
+===================================================== */
+
+function cleanupPeerConnection(){
+
+  if(!peerConnection){
+
+    return;
+
+  }
+
+
+  try{
+
+    peerConnection.close();
+
+  }catch(error){
+
+    console.error(
+      "Video peer-connection cleanup error:",
+      error
+    );
+
+  }
+
+
+  peerConnection =
+  null;
+
+}
+
+
+/* =====================================================
+   CLEAN UP ALL VIDEO-CALL RESOURCES
+===================================================== */
+
+function cleanupVideoCallResources(){
+
+  stopCallTimer();
+
+
+  stopCallDocumentListener();
+
+
+  stopCallerCandidateListener();
+
+
+  stopReceiverCandidateListener();
+
+
+  cleanupPeerConnection();
+
+
+  cleanupLocalMedia();
+
+
+  cleanupRemoteMedia();
+
+}
+
+
+/* =====================================================
+   PART 4C1B READY
+===================================================== */
+
+console.log(
+  "Video-call Part 4C1B loaded."
+);
+/* =====================================================
+   PART 4C2 OF 6
+   ACCEPT OR REJECT INCOMING VIDEO CALL
+   AND CREATE WEBRTC ANSWER
+===================================================== */
+
+
+/* =====================================================
+   ACCEPT INCOMING VIDEO CALL
+===================================================== */
+
+async function acceptIncomingCall(){
+
+  if(
+    callActionRunning ||
+    !currentUser ||
+    !callId
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  if(acceptCallButton){
+
+    acceptCallButton.disabled =
+    true;
+
+
+    acceptCallButton.textContent =
+    "…";
+
+  }
+
+
+  if(rejectCallButton){
+
+    rejectCallButton.disabled =
+    true;
+
+  }
+
+
+  hideCallMessage();
+
+
+  updateCallStatus(
+    "ringing",
+    "Connecting..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  try{
+
+    const callReference =
+    doc(
+      db,
+      "videoCalls",
+      callId
+    );
+
+
+    const callSnapshot =
+    await getDoc(
+      callReference
+    );
+
+
+    if(
+      !callSnapshot.exists()
+    ){
+
+      throw new Error(
+        "This video call no longer exists."
+      );
+
+    }
+
+
+    const latestCallData =
+    callSnapshot.data();
+
+
+    if(
+      latestCallData.receiverId !==
+      currentUser.uid
+    ){
+
+      throw new Error(
+        "You are not allowed to accept this video call."
+      );
+
+    }
+
+
+    const latestStatus =
+    getFirstValue(
+      latestCallData.status,
+      ""
+    ).toLowerCase();
+
+
+    if(
+      latestStatus ===
+      "ended" ||
+      latestStatus ===
+      "rejected" ||
+      latestStatus ===
+      "cancelled" ||
+      latestStatus ===
+      "missed" ||
+      latestStatus ===
+      "failed"
+    ){
+
+      throw new Error(
+        "This video call has already ended."
+      );
+
+    }
+
+
+    if(
+      !latestCallData.offer
+    ){
+
+      throw new Error(
+        "The caller's video connection information is missing."
+      );
+
+    }
+
+
+    callData = {
+
+      id:
+      callId,
+
+      ...latestCallData
+
+    };
+
+
+    /*
+       Create the receiver's WebRTC connection.
+
+       This opens the camera and microphone
+       and attaches the local media tracks.
+    */
+
+    const connection =
+    await createPeerConnection();
+
+
+    /* =================================================
+       SAVE RECEIVER ICE CANDIDATES
+    ================================================= */
+
+    connection.addEventListener(
+      "icecandidate",
+      async function(event){
+
+        if(
+          !event.candidate ||
+          !callId
+        ){
+
+          return;
+
+        }
+
+
+        try{
+
+          await addDoc(
+            collection(
+              db,
+              "videoCalls",
+              callId,
+              "receiverCandidates"
+            ),
+            event.candidate.toJSON()
+          );
+
+        }catch(error){
+
+          console.error(
+            "Receiver video ICE candidate saving error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================================
+       APPLY CALLER WEBRTC OFFER
+    ================================================= */
+
+    const remoteOffer =
+    new RTCSessionDescription(
+      latestCallData.offer
+    );
+
+
+    await connection.setRemoteDescription(
+      remoteOffer
+    );
+
+
+    /*
+       Caller ICE candidates may have arrived
+       before the remote offer was applied.
+    */
+
+    if(
+      typeof applyPendingCallerCandidates ===
+      "function"
+    ){
+
+      await applyPendingCallerCandidates();
+
+    }
+
+
+    /* =================================================
+       CREATE RECEIVER WEBRTC ANSWER
+    ================================================= */
+
+    const answerDescription =
+    await connection.createAnswer();
+
+
+    await connection.setLocalDescription(
+      answerDescription
+    );
+
+
+    const answer = {
+
+      type:
+      answerDescription.type,
+
+      sdp:
+      answerDescription.sdp
+
+    };
+
+
+    /* =================================================
+       SAVE ANSWER AND ACCEPTED STATUS
+    ================================================= */
+
+    await updateDoc(
+      callReference,
+      {
+
+        answer:
+        answer,
+
+        status:
+        "accepted",
+
+        acceptedAt:
+        serverTimestamp(),
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    callData.answer =
+    answer;
+
+
+    callData.status =
+    "accepted";
+
+
+    /* =================================================
+       LISTEN FOR CALLER ICE CANDIDATES
+    ================================================= */
+
+    startCallerCandidateListener();
+
+
+    /* =================================================
+       KEEP WATCHING LIVE CALL DOCUMENT
+    ================================================= */
+
+    startCallDocumentListener();
+
+
+    /* =================================================
+       UPDATE RECEIVER CALL SCREEN
+    ================================================= */
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    if(memberAvatarFrame){
+
+      memberAvatarFrame.classList.remove(
+        "ringing"
+      );
+
+    }
+
+
+    if(endCallButton){
+
+      endCallButton.disabled =
+      false;
+
+    }
+
+
+    updateCallStatus(
+      "ringing",
+      "Connecting..."
+    );
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    showCallMessage(
+      "Video call accepted. Connecting camera and audio..."
+    );
+
+
+    if(remoteVideo){
+
+      remoteVideo.play()
+      .catch(
+        function(error){
+
+          console.log(
+            "Remote video playback is waiting for connection:",
+            error
+          );
+
+        }
+      );
+
+    }
+
+
+    console.log(
+      "Incoming video call accepted:",
+      callId
+    );
+
+  }catch(error){
+
+    console.error(
+      "Incoming video-call acceptance error:",
+      error
+    );
+
+
+    if(
+      error?.name ===
+      "NotAllowedError"
+    ){
+
+      showCallError(
+        "Camera or microphone permission was denied. Allow access and try again."
+      );
+
+    }else if(
+      error?.name ===
+      "NotFoundError"
+    ){
+
+      showCallError(
+        "A camera or microphone could not be found on this device."
+      );
+
+    }else if(
+      error?.name ===
+      "NotReadableError"
+    ){
+
+      showCallError(
+        "The camera or microphone is being used by another application."
+      );
+
+    }else if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallError(
+        "Firebase denied permission to accept this video call."
+      );
+
+    }else{
+
+      showCallError(
+        error?.message ||
+        "The video call could not be accepted."
+      );
+
+    }
+
+
+    cleanupPeerConnection();
+
+
+    cleanupLocalMedia();
+
+
+    cleanupRemoteMedia();
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+
+    if(acceptCallButton){
+
+      acceptCallButton.disabled =
+      false;
+
+
+      acceptCallButton.textContent =
+      "📹";
+
+    }
+
+
+    if(rejectCallButton){
+
+      rejectCallButton.disabled =
+      false;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   REJECT INCOMING VIDEO CALL
+===================================================== */
+
+async function rejectIncomingCall(){
+
+  if(
+    callActionRunning ||
+    !currentUser ||
+    !callId
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  if(acceptCallButton){
+
+    acceptCallButton.disabled =
+    true;
+
+  }
+
+
+  if(rejectCallButton){
+
+    rejectCallButton.disabled =
+    true;
+
+
+    rejectCallButton.textContent =
+    "…";
+
+  }
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "videoCalls",
+        callId
+      ),
+      {
+
+        status:
+        "rejected",
+
+        endedAt:
+        serverTimestamp(),
+
+        endedBy:
+        currentUser.uid,
+
+        updatedAt:
+        serverTimestamp()
+
+      }
+    );
+
+
+    callData.status =
+    "rejected";
+
+
+    updateCallStatus(
+      "ended",
+      "Call rejected"
+    );
+
+
+    updateConnectionDisplay(
+      "ended"
+    );
+
+
+    if(memberAvatarFrame){
+
+      memberAvatarFrame.classList.remove(
+        "ringing"
+      );
+
+    }
+
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    if(endCallButton){
+
+      endCallButton.disabled =
+      true;
+
+    }
+
+
+    showCallMessage(
+      "You rejected this video call."
+    );
+
+
+    cleanupVideoCallResources();
+
+
+    window.setTimeout(
+      function(){
+
+        window.location.href =
+        "messages.html";
+
+      },
+      1200
+    );
+
+  }catch(error){
+
+    console.error(
+      "Incoming video-call rejection error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showCallMessage(
+        "Firebase denied permission to reject this video call.",
+        true
+      );
+
+    }else{
+
+      showCallMessage(
+        "The video call could not be rejected.",
+        true
+      );
+
+    }
+
+
+    if(acceptCallButton){
+
+      acceptCallButton.disabled =
+      false;
+
+    }
+
+
+    if(rejectCallButton){
+
+      rejectCallButton.disabled =
+      false;
+
+
+      rejectCallButton.textContent =
+      "📵";
+
+    }
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   ACCEPT CALL BUTTON
+===================================================== */
+
+if(acceptCallButton){
+
+  acceptCallButton.addEventListener(
+    "click",
+    function(){
+
+      acceptIncomingCall();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   REJECT CALL BUTTON
+===================================================== */
+
+if(rejectCallButton){
+
+  rejectCallButton.addEventListener(
+    "click",
+    function(){
+
+      rejectIncomingCall();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PART 4C2 READY
+===================================================== */
+
+console.log(
+  "Video-call Part 4C2 loaded."
+);
+/* =====================================================
+   PART 5 OF 6
+   ICE CANDIDATES, LIVE CALL LISTENER,
+   RECEIVER ANSWER AND CALL STATUS HANDLING
+===================================================== */
+
+
+/* =====================================================
+   ICE CANDIDATE STATE
+===================================================== */
+
+const processedCallerCandidateIds =
+new Set();
+
+
+const processedReceiverCandidateIds =
+new Set();
+
+
+const pendingCallerCandidates =
+[];
+
+
+const pendingReceiverCandidates =
+[];
+
+
+/* =====================================================
+   LIVE CALL STATE
+===================================================== */
+
+let receiverAnswerApplied =
+false;
+
+
+let lastCallStatus =
+"";
+
+
+/* =====================================================
+   CHECK REMOTE DESCRIPTION
+===================================================== */
+
+function peerHasRemoteDescription(){
+
+  return Boolean(
+
+    peerConnection &&
+
+    peerConnection.remoteDescription &&
+
+    peerConnection.remoteDescription.type
+
+  );
+
+}
+
+
+/* =====================================================
+   ADD REMOTE ICE CANDIDATE
+===================================================== */
+
+async function addRemoteIceCandidate(
+  candidateData,
+  pendingCandidateList
+){
+
+  if(
+    !candidateData ||
+    !peerConnection
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const candidate =
+    new RTCIceCandidate(
+      candidateData
+    );
+
+
+    if(
+      peerHasRemoteDescription()
+    ){
+
+      await peerConnection
+      .addIceCandidate(
+        candidate
+      );
+
+    }else{
+
+      pendingCandidateList.push(
+        candidate
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Unable to add remote video ICE candidate:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   APPLY PENDING ICE CANDIDATES
+===================================================== */
+
+async function applyPendingCandidates(
+  pendingCandidateList
+){
+
+  if(
+    !peerConnection ||
+    !peerHasRemoteDescription()
+  ){
+
+    return;
+
+  }
+
+
+  while(
+    pendingCandidateList.length >
+    0
+  ){
+
+    const candidate =
+    pendingCandidateList.shift();
+
+
+    try{
+
+      await peerConnection
+      .addIceCandidate(
+        candidate
+      );
+
+    }catch(error){
+
+      console.error(
+        "Pending video ICE candidate error:",
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   APPLY PENDING CALLER CANDIDATES
+===================================================== */
+
+async function applyPendingCallerCandidates(){
+
+  await applyPendingCandidates(
+    pendingCallerCandidates
+  );
+
+}
+
+
+/* =====================================================
+   APPLY PENDING RECEIVER CANDIDATES
+===================================================== */
+
+async function applyPendingReceiverCandidates(){
+
+  await applyPendingCandidates(
+    pendingReceiverCandidates
+  );
+
+}
+
+
+/* =====================================================
+   LISTEN FOR CALLER ICE CANDIDATES
+   USED BY THE RECEIVER
+===================================================== */
+
+function startCallerCandidateListener(){
+
+  stopCallerCandidateListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const callerCandidatesReference =
+  collection(
+    db,
+    "videoCalls",
+    callId,
+    "callerCandidates"
+  );
+
+
+  unsubscribeCallerCandidates =
+  onSnapshot(
+
+    callerCandidatesReference,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          if(
+            change.type !==
+            "added"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            processedCallerCandidateIds
+            .has(
+              change.doc.id
+            )
+          ){
+
+            return;
+
+          }
+
+
+          processedCallerCandidateIds
+          .add(
+            change.doc.id
+          );
+
+
+          addRemoteIceCandidate(
+            change.doc.data(),
+            pendingCallerCandidates
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Caller video ICE listener error:",
+        error
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   LISTEN FOR RECEIVER ICE CANDIDATES
+   USED BY THE CALLER
+===================================================== */
+
+function startReceiverCandidateListener(){
+
+  stopReceiverCandidateListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const receiverCandidatesReference =
+  collection(
+    db,
+    "videoCalls",
+    callId,
+    "receiverCandidates"
+  );
+
+
+  unsubscribeReceiverCandidates =
+  onSnapshot(
+
+    receiverCandidatesReference,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          if(
+            change.type !==
+            "added"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            processedReceiverCandidateIds
+            .has(
+              change.doc.id
+            )
+          ){
+
+            return;
+
+          }
+
+
+          processedReceiverCandidateIds
+          .add(
+            change.doc.id
+          );
+
+
+          addRemoteIceCandidate(
+            change.doc.data(),
+            pendingReceiverCandidates
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Receiver video ICE listener error:",
+        error
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   RESET ICE CANDIDATE STATE
+===================================================== */
+
+function resetIceCandidateState(){
+
+  processedCallerCandidateIds
+  .clear();
+
+
+  processedReceiverCandidateIds
+  .clear();
+
+
+  pendingCallerCandidates.splice(
+    0,
+    pendingCallerCandidates.length
+  );
+
+
+  pendingReceiverCandidates.splice(
+    0,
+    pendingReceiverCandidates.length
+  );
+
+}
+
+
+/* =====================================================
+   APPLY RECEIVER ANSWER TO CALLER
+===================================================== */
+
+async function applyReceiverAnswer(
+  answerData
+){
+
+  if(
+    callRole !==
+    "caller" ||
+
+    !answerData ||
+
+    !peerConnection ||
+
+    receiverAnswerApplied
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const remoteAnswer =
+    new RTCSessionDescription(
+      answerData
+    );
+
+
+    await peerConnection
+    .setRemoteDescription(
+      remoteAnswer
+    );
+
+
+    receiverAnswerApplied =
+    true;
+
+
+    await applyPendingReceiverCandidates();
+
+
+    updateConnectionDisplay(
+      "connecting"
+    );
+
+
+    updateCallStatus(
+      "ringing",
+      "Connecting..."
+    );
+
+
+    hideCallMessage();
+
+
+    console.log(
+      "Receiver video answer applied."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Receiver video answer error:",
+      error
+    );
+
+
+    updateConnectionDisplay(
+      "failed"
+    );
+
+
+    showCallMessage(
+      "The member answered, but the video connection could not be completed.",
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   FINISH VIDEO CALL SCREEN
+===================================================== */
+
+function finishCallScreen(
+  statusText,
+  messageText
+){
+
+  stopCallTimer();
+
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  disableVideoCallControls();
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    true;
+
+  }
+
+
+  updateCallStatus(
+    "ended",
+    statusText
+  );
+
+
+  updateConnectionDisplay(
+    "ended"
+  );
+
+
+  if(messageText){
+
+    showCallMessage(
+      messageText
+    );
+
+  }
+
+
+  cleanupVideoCallResources();
+
+}
+
+
+/* =====================================================
+   HANDLE RINGING STATUS
+===================================================== */
+
+function handleRingingStatus(){
+
+  updateCallStatus(
+    "ringing",
+    callRole ===
+    "caller"
+    ? "Ringing..."
+    : "Incoming video call"
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.add(
+      "ringing"
+    );
+
+  }
+
+
+  showRemoteVideoPlaceholder();
+
+
+  if(
+    callRole ===
+    "receiver"
+  ){
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.add(
+        "show"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }else{
+
+    if(incomingCallControls){
+
+      incomingCallControls.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    if(outgoingCallControls){
+
+      outgoingCallControls.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    if(activeCallControls){
+
+      activeCallControls.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(endCallButton){
+
+      endCallButton.disabled =
+      false;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE ACCEPTED STATUS
+===================================================== */
+
+async function handleAcceptedStatus(
+  latestCallData
+){
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    false;
+
+  }
+
+
+  updateCallStatus(
+    "ringing",
+    "Connecting..."
+  );
+
+
+  updateConnectionDisplay(
+    "connecting"
+  );
+
+
+  hideCallMessage();
+
+
+  /*
+     The caller applies the answer
+     created by the receiver.
+  */
+
+  if(
+    callRole ===
+    "caller" &&
+
+    latestCallData.answer &&
+
+    !receiverAnswerApplied
+  ){
+
+    await applyReceiverAnswer(
+      latestCallData.answer
+    );
+
+  }
+
+
+  /*
+     Apply candidates which arrived before
+     the remote description was available.
+  */
+
+  if(
+    callRole ===
+    "caller"
+  ){
+
+    await applyPendingReceiverCandidates();
+
+  }else{
+
+    await applyPendingCallerCandidates();
+
+  }
+
+
+  if(
+    peerConnection &&
+
+    peerConnection.connectionState ===
+    "connected"
+  ){
+
+    updateCallStatus(
+      "connected",
+      "Connected"
+    );
+
+
+    updateConnectionDisplay(
+      "connected"
+    );
+
+
+    enableVideoCallControls();
+
+
+    startCallTimer();
+
+  }
+
+}
+
+
+/* =====================================================
+   HANDLE CONNECTED STATUS
+===================================================== */
+
+function handleConnectedStatus(){
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  updateCallStatus(
+    "connected",
+    "Connected"
+  );
+
+
+  updateConnectionDisplay(
+    "connected"
+  );
+
+
+  hideCallMessage();
+
+
+  enableVideoCallControls();
+
+
+  startCallTimer();
+
+}
+
+
+/* =====================================================
+   HANDLE REJECTED STATUS
+===================================================== */
+
+function handleRejectedStatus(){
+
+  const message =
+  callRole ===
+  "caller"
+  ? "The member rejected your video call."
+  : "You rejected this video call.";
+
+
+  finishCallScreen(
+    "Call rejected",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE CANCELLED STATUS
+===================================================== */
+
+function handleCancelledStatus(){
+
+  const message =
+  callRole ===
+  "receiver"
+  ? "The caller cancelled the video call."
+  : "The video call was cancelled.";
+
+
+  finishCallScreen(
+    "Call cancelled",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE ENDED STATUS
+===================================================== */
+
+function handleEndedStatus(
+  latestCallData
+){
+
+  const endedBy =
+  getFirstValue(
+    latestCallData.endedBy
+  );
+
+
+  let message =
+  "The video call has ended.";
+
+
+  if(
+    currentUser &&
+    endedBy ===
+    currentUser.uid
+  ){
+
+    message =
+    "You ended the video call.";
+
+  }else if(endedBy){
+
+    message =
+    "The other member ended the video call.";
+
+  }
+
+
+  finishCallScreen(
+    "Call ended",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE MISSED STATUS
+===================================================== */
+
+function handleMissedStatus(){
+
+  const message =
+  callRole ===
+  "caller"
+  ? "The member did not answer your video call."
+  : "You missed this video call.";
+
+
+  finishCallScreen(
+    "Missed call",
+    message
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE FAILED STATUS
+===================================================== */
+
+function handleFailedStatus(){
+
+  stopCallTimer();
+
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  disableVideoCallControls();
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    false;
+
+  }
+
+
+  updateCallStatus(
+    "ended",
+    "Connection failed"
+  );
+
+
+  updateConnectionDisplay(
+    "failed"
+  );
+
+
+  showCallMessage(
+    "The video connection failed. End the call and try again.",
+    true
+  );
+
+}
+
+
+/* =====================================================
+   HANDLE LIVE CALL STATUS
+===================================================== */
+
+async function handleLiveCallStatus(
+  status,
+  latestCallData
+){
+
+  switch(status){
+
+    case "ringing":
+
+      handleRingingStatus();
+
+      break;
+
+
+    case "accepted":
+
+    case "connecting":
+
+      await handleAcceptedStatus(
+        latestCallData
+      );
+
+      break;
+
+
+    case "connected":
+
+      handleConnectedStatus();
+
+      break;
+
+
+    case "rejected":
+
+      handleRejectedStatus();
+
+      break;
+
+
+    case "cancelled":
+
+      handleCancelledStatus();
+
+      break;
+
+
+    case "ended":
+
+      handleEndedStatus(
+        latestCallData
+      );
+
+      break;
+
+
+    case "missed":
+
+      handleMissedStatus();
+
+      break;
+
+
+    case "failed":
+
+      handleFailedStatus();
+
+      break;
+
+
+    default:
+
+      console.log(
+        "Unknown video-call status:",
+        status
+      );
+
+  }
+
+}
+
+
+/* =====================================================
+   PROCESS LIVE CALL DOCUMENT
+===================================================== */
+
+async function processCallDocument(
+  latestCallData
+){
+
+  if(!latestCallData){
+
+    return;
+
+  }
+
+
+  callData = {
+
+    id:
+    callId,
+
+    ...latestCallData
+
+  };
+
+
+  const latestStatus =
+  getFirstValue(
+    latestCallData.status,
+    "ringing"
+  ).toLowerCase();
+
+
+  if(
+    callRole ===
+    "caller" &&
+
+    latestCallData.answer &&
+
+    !receiverAnswerApplied
+  ){
+
+    await applyReceiverAnswer(
+      latestCallData.answer
+    );
+
+  }
+
+
+  await handleLiveCallStatus(
+    latestStatus,
+    latestCallData
+  );
+
+
+  lastCallStatus =
+  latestStatus;
+
+}
+
+
+/* =====================================================
+   START LIVE CALL DOCUMENT LISTENER
+===================================================== */
+
+function startCallDocumentListener(){
+
+  stopCallDocumentListener();
+
+
+  if(!callId){
+
+    return;
+
+  }
+
+
+  const callReference =
+  doc(
+    db,
+    "videoCalls",
+    callId
+  );
+
+
+  unsubscribeCall =
+  onSnapshot(
+
+    callReference,
+
+    async function(snapshot){
+
+      if(
+        !snapshot.exists()
+      ){
+
+        showCallError(
+          "This video call no longer exists."
+        );
+
+
+        cleanupVideoCallResources();
+
+
+        return;
+
+      }
+
+
+      try{
+
+        await processCallDocument(
+          snapshot.data()
+        );
+
+      }catch(error){
+
+        console.error(
+          "Video-call document processing error:",
+          error
+        );
+
+      }
+
+    },
+
+    function(error){
+
+      console.error(
+        "Video-call document listener error:",
+        error
+      );
+
+
+      if(
+        error?.code ===
+        "permission-denied"
+      ){
+
+        showCallError(
+          "Firebase denied access to this video call."
+        );
+
+      }else{
+
+        showCallMessage(
+          "The live video-call status could not be updated.",
+          true
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   RESET LIVE CALL STATE
+===================================================== */
+
+function resetLiveCallState(){
+
+  receiverAnswerApplied =
+  false;
+
+
+  lastCallStatus =
+  "";
+
+}
+
+
+/* =====================================================
+   PART 5 READY
+===================================================== */
+
+console.log(
+  "Video-call Part 5 loaded."
+);
+/* =====================================================
+   PART 6 OF 6
+   MICROPHONE, CAMERA, SPEAKER, CAMERA SWITCH,
+   END CALL, CLEANUP AND FINAL CLOSING
+===================================================== */
+
+
+/* =====================================================
+   TOGGLE MICROPHONE
+===================================================== */
+
+function toggleMicrophone(){
+
+  if(!localStream){
+
+    return;
+
+  }
+
+
+  const audioTracks =
+  localStream.getAudioTracks();
+
+
+  if(
+    audioTracks.length ===
+    0
+  ){
+
+    showCallMessage(
+      "No microphone track is available.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  microphoneMuted =
+  !microphoneMuted;
+
+
+  audioTracks.forEach(
+    function(track){
+
+      track.enabled =
+      !microphoneMuted;
+
+    }
+  );
+
+
+  if(muteButton){
+
+    muteButton.classList.toggle(
+      "warning",
+      microphoneMuted
+    );
+
+
+    muteButton.classList.toggle(
+      "active",
+      !microphoneMuted
+    );
+
+  }
+
+
+  if(muteIcon){
+
+    muteIcon.textContent =
+    microphoneMuted
+    ? "🔇"
+    : "🎙️";
+
+  }
+
+
+  if(muteLabel){
+
+    muteLabel.textContent =
+    microphoneMuted
+    ? "Unmute"
+    : "Mute";
+
+  }
+
+}
+
+
+/* =====================================================
+   MICROPHONE BUTTON
+===================================================== */
+
+if(muteButton){
+
+  muteButton.addEventListener(
+    "click",
+    toggleMicrophone
+  );
+
+}
+
+
+/* =====================================================
+   TOGGLE LOCAL CAMERA
+===================================================== */
+
+function toggleCamera(){
+
+  if(!localStream){
+
+    return;
+
+  }
+
+
+  const videoTracks =
+  localStream.getVideoTracks();
+
+
+  if(
+    videoTracks.length ===
+    0
+  ){
+
+    showCallMessage(
+      "No camera track is available.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  cameraDisabled =
+  !cameraDisabled;
+
+
+  videoTracks.forEach(
+    function(track){
+
+      track.enabled =
+      !cameraDisabled;
+
+    }
+  );
+
+
+  if(cameraButton){
+
+    cameraButton.classList.toggle(
+      "warning",
+      cameraDisabled
+    );
+
+
+    cameraButton.classList.toggle(
+      "active",
+      !cameraDisabled
+    );
+
+  }
+
+
+  if(cameraIcon){
+
+    cameraIcon.textContent =
+    cameraDisabled
+    ? "🚫"
+    : "📹";
+
+  }
+
+
+  if(cameraLabel){
+
+    cameraLabel.textContent =
+    cameraDisabled
+    ? "Start Camera"
+    : "Stop Camera";
+
+  }
+
+
+  if(localVideo){
+
+    localVideo.classList.toggle(
+      "cameraOff",
+      cameraDisabled
+    );
+
+  }
+
+
+  if(localVideoPlaceholder){
+
+    localVideoPlaceholder.classList.toggle(
+      "show",
+      cameraDisabled
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CAMERA BUTTON
+===================================================== */
+
+if(cameraButton){
+
+  cameraButton.addEventListener(
+    "click",
+    toggleCamera
+  );
+
+}
+
+
+/* =====================================================
+   TOGGLE REMOTE SOUND
+===================================================== */
+
+function toggleSpeaker(){
+
+  speakerMuted =
+  !speakerMuted;
+
+
+  if(remoteVideo){
+
+    remoteVideo.muted =
+    speakerMuted;
+
+  }
+
+
+  if(speakerButton){
+
+    speakerButton.classList.toggle(
+      "warning",
+      speakerMuted
+    );
+
+
+    speakerButton.classList.toggle(
+      "active",
+      !speakerMuted
+    );
+
+  }
+
+
+  if(speakerIcon){
+
+    speakerIcon.textContent =
+    speakerMuted
+    ? "🔈"
+    : "🔊";
+
+  }
+
+
+  if(speakerLabel){
+
+    speakerLabel.textContent =
+    speakerMuted
+    ? "Unmute Sound"
+    : "Speaker";
+
+  }
+
+
+  if(
+    !speakerMuted &&
+    remoteVideo
+  ){
+
+    remoteVideo.play()
+    .catch(
+      function(error){
+
+        console.log(
+          "Remote video sound could not restart:",
+          error
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SPEAKER BUTTON
+===================================================== */
+
+if(speakerButton){
+
+  speakerButton.addEventListener(
+    "click",
+    toggleSpeaker
+  );
+
+}
+
+
+/* =====================================================
+   GET CURRENT CAMERA FACING MODE
+===================================================== */
+
+function getCurrentFacingMode(){
+
+  if(
+    currentFacingMode ===
+    "environment"
+  ){
+
+    return "environment";
+
+  }
+
+
+  return "user";
+
+}
+
+
+/* =====================================================
+   REPLACE VIDEO TRACK
+===================================================== */
+
+async function replaceLocalVideoTrack(
+  newVideoTrack,
+  newStream
+){
+
+  if(
+    !peerConnection ||
+    !newVideoTrack
+  ){
+
+    return;
+
+  }
+
+
+  const videoSender =
+  peerConnection
+  .getSenders()
+  .find(
+    function(sender){
+
+      return (
+        sender.track &&
+        sender.track.kind ===
+        "video"
+      );
+
+    }
+  );
+
+
+  if(videoSender){
+
+    await videoSender.replaceTrack(
+      newVideoTrack
+    );
+
+  }else{
+
+    peerConnection.addTrack(
+      newVideoTrack,
+      newStream
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SWITCH FRONT AND BACK CAMERA
+===================================================== */
+
+async function switchCamera(){
+
+  if(
+    callActionRunning ||
+    !localStream
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+
+    showCallMessage(
+      "Camera switching is not supported by this browser.",
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  if(switchCameraButton){
+
+    switchCameraButton.disabled =
+    true;
+
+  }
+
+
+  const previousFacingMode =
+  getCurrentFacingMode();
+
+
+  const newFacingMode =
+  previousFacingMode ===
+  "user"
+  ? "environment"
+  : "user";
+
+
+  try{
+
+    const replacementStream =
+    await navigator.mediaDevices
+    .getUserMedia(
+      {
+
+        audio:
+        false,
+
+        video:{
+          facingMode:{
+            ideal:
+            newFacingMode
+          },
+
+          width:{
+            ideal:
+            1280
+          },
+
+          height:{
+            ideal:
+            720
+          }
+
+        }
+
+      }
+    );
+
+
+    const newVideoTrack =
+    replacementStream
+    .getVideoTracks()[0];
+
+
+    if(!newVideoTrack){
+
+      throw new Error(
+        "The new camera could not be opened."
+      );
+
+    }
+
+
+    await replaceLocalVideoTrack(
+      newVideoTrack,
+      replacementStream
+    );
+
+
+    const oldVideoTracks =
+    localStream.getVideoTracks();
+
+
+    oldVideoTracks.forEach(
+      function(track){
+
+        localStream.removeTrack(
+          track
+        );
+
+
+        track.stop();
+
+      }
+    );
+
+
+    localStream.addTrack(
+      newVideoTrack
+    );
+
+
+    if(localVideo){
+
+      localVideo.srcObject =
+      localStream;
+
+
+      await localVideo.play()
+      .catch(
+        function(error){
+
+          console.log(
+            "Local replacement camera playback error:",
+            error
+          );
+
+        }
+      );
+
+    }
+
+
+    currentFacingMode =
+    newFacingMode;
+
+
+    cameraDisabled =
+    false;
+
+
+    newVideoTrack.enabled =
+    true;
+
+
+    if(cameraButton){
+
+      cameraButton.classList.remove(
+        "warning"
+      );
+
+
+      cameraButton.classList.add(
+        "active"
+      );
+
+    }
+
+
+    if(cameraIcon){
+
+      cameraIcon.textContent =
+      "📹";
+
+    }
+
+
+    if(cameraLabel){
+
+      cameraLabel.textContent =
+      "Stop Camera";
+
+    }
+
+
+    if(switchCameraIcon){
+
+      switchCameraIcon.textContent =
+      newFacingMode ===
+      "environment"
+      ? "🔙"
+      : "🔄";
+
+    }
+
+
+    showCallMessage(
+      newFacingMode ===
+      "environment"
+      ? "Back camera selected."
+      : "Front camera selected."
+    );
+
+
+    window.setTimeout(
+      hideCallMessage,
+      1200
+    );
+
+  }catch(error){
+
+    console.error(
+      "Camera switching error:",
+      error
+    );
+
+
+    showCallMessage(
+      "Unable to switch the camera on this device.",
+      true
+    );
+
+  }finally{
+
+    callActionRunning =
+    false;
+
+
+    if(switchCameraButton){
+
+      switchCameraButton.disabled =
+      false;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   SWITCH CAMERA BUTTON
+===================================================== */
+
+if(switchCameraButton){
+
+  switchCameraButton.addEventListener(
+    "click",
+    switchCamera
+  );
+
+}
+
+
+/* =====================================================
+   DETERMINE FINAL CALL STATUS
+===================================================== */
+
+function getCallEndStatus(){
+
+  const currentStatus =
+  getFirstValue(
+    callData?.status,
+    lastCallStatus,
+    "ringing"
+  ).toLowerCase();
+
+
+  if(
+    currentStatus ===
+    "ringing" &&
+    callRole ===
+    "caller"
+  ){
+
+    return "cancelled";
+
+  }
+
+
+  if(
+    currentStatus ===
+    "ringing" &&
+    callRole ===
+    "receiver"
+  ){
+
+    return "rejected";
+
+  }
+
+
+  return "ended";
+
+}
+
+
+/* =====================================================
+   END, CANCEL OR REJECT VIDEO CALL
+===================================================== */
+
+async function endVideoCall(
+  forcedStatus = ""
+){
+
+  if(
+    callActionRunning ||
+    pageIsClosing
+  ){
+
+    return;
+
+  }
+
+
+  callActionRunning =
+  true;
+
+
+  if(endCallButton){
+
+    endCallButton.disabled =
+    true;
+
+  }
+
+
+  if(acceptCallButton){
+
+    acceptCallButton.disabled =
+    true;
+
+  }
+
+
+  if(rejectCallButton){
+
+    rejectCallButton.disabled =
+    true;
+
+  }
+
+
+  const finalStatus =
+  forcedStatus ||
+  getCallEndStatus();
+
+
+  try{
+
+    if(callId){
+
+      await updateDoc(
+        doc(
+          db,
+          "videoCalls",
+          callId
+        ),
+        {
+
+          status:
+          finalStatus,
+
+          endedAt:
+          serverTimestamp(),
+
+          endedBy:
+          currentUser?.uid ||
+          "",
+
+          updatedAt:
+          serverTimestamp()
+
+        }
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Video-call ending error:",
+      error
+    );
+
+  }
+
+
+  callData.status =
+  finalStatus;
+
+
+  if(memberAvatarFrame){
+
+    memberAvatarFrame.classList.remove(
+      "ringing"
+    );
+
+  }
+
+
+  if(incomingCallControls){
+
+    incomingCallControls.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(activeCallControls){
+
+    activeCallControls.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if(outgoingCallControls){
+
+    outgoingCallControls.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  disableVideoCallControls();
+
+
+  updateConnectionDisplay(
+    "ended"
+  );
+
+
+  if(
+    finalStatus ===
+    "cancelled"
+  ){
+
+    updateCallStatus(
+      "ended",
+      "Call cancelled"
+    );
+
+
+    showCallMessage(
+      "You cancelled the video call."
+    );
+
+  }else if(
+    finalStatus ===
+    "rejected"
+  ){
+
+    updateCallStatus(
+      "ended",
+      "Call rejected"
+    );
+
+
+    showCallMessage(
+      "You rejected the video call."
+    );
+
+  }else{
+
+    updateCallStatus(
+      "ended",
+      "Call ended"
+    );
+
+
+    showCallMessage(
+      "The video call has ended."
+    );
+
+  }
+
+
+  cleanupVideoCallResources();
+
+
+  resetIceCandidateState();
+
+
+  resetLiveCallState();
+
+
+  callActionRunning =
+  false;
+
+
+  window.setTimeout(
+    function(){
+
+      if(
+        window.history.length >
+        1
+      ){
+
+        window.history.back();
+
+      }else{
+
+        window.location.href =
+        "messages.html";
+
+      }
+
+    },
+    900
+  );
+
+}
+
+
+/* =====================================================
+   END CALL BUTTON
+===================================================== */
+
+if(endCallButton){
+
+  endCallButton.addEventListener(
+    "click",
+    function(){
+
+      endVideoCall();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+if(backButton){
+
+  backButton.addEventListener(
+    "click",
+    async function(){
+
+      if(
+        callId &&
+        !pageIsClosing
+      ){
+
+        await endVideoCall();
+
+        return;
+
+      }
+
+
+      if(
+        window.history.length >
+        1
+      ){
+
+        window.history.back();
+
+      }else{
+
+        window.location.href =
+        "messages.html";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   RESET VIDEO CONTROL DISPLAY
+===================================================== */
+
+function resetVideoControlDisplay(){
+
+  microphoneMuted =
+  false;
+
+
+  cameraDisabled =
+  false;
+
+
+  speakerMuted =
+  false;
+
+
+  currentFacingMode =
+  "user";
+
+
+  if(muteButton){
+
+    muteButton.classList.remove(
+      "active",
+      "warning"
+    );
+
+  }
+
+
+  if(cameraButton){
+
+    cameraButton.classList.remove(
+      "active",
+      "warning"
+    );
+
+  }
+
+
+  if(speakerButton){
+
+    speakerButton.classList.remove(
+      "active",
+      "warning"
+    );
+
+  }
+
+
+  if(switchCameraButton){
+
+    switchCameraButton.classList.remove(
+      "active",
+      "warning"
+    );
+
+  }
+
+
+  if(muteIcon){
+
+    muteIcon.textContent =
+    "🎙️";
+
+  }
+
+
+  if(muteLabel){
+
+    muteLabel.textContent =
+    "Mute";
+
+  }
+
+
+  if(cameraIcon){
+
+    cameraIcon.textContent =
+    "📹";
+
+  }
+
+
+  if(cameraLabel){
+
+    cameraLabel.textContent =
+    "Stop Camera";
+
+  }
+
+
+  if(speakerIcon){
+
+    speakerIcon.textContent =
+    "🔊";
+
+  }
+
+
+  if(speakerLabel){
+
+    speakerLabel.textContent =
+    "Speaker";
+
+  }
+
+
+  if(switchCameraIcon){
+
+    switchCameraIcon.textContent =
+    "🔄";
+
+  }
+
+
+  if(switchCameraLabel){
+
+    switchCameraLabel.textContent =
+    "Switch";
+
+  }
+
+
+  if(remoteVideo){
+
+    remoteVideo.muted =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   REMOTE VIDEO STARTED PLAYING
+===================================================== */
+
+if(remoteVideo){
+
+  remoteVideo.addEventListener(
+    "playing",
+    function(){
+
+      hideRemoteVideoPlaceholder();
+
+
+      if(speakerButton){
+
+        speakerButton.disabled =
+        false;
+
+      }
+
+    }
+  );
+
+
+  remoteVideo.addEventListener(
+    "loadedmetadata",
+    function(){
+
+      remoteVideo.play()
+      .catch(
+        function(error){
+
+          console.log(
+            "Remote video autoplay waiting:",
+            error
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  remoteVideo.addEventListener(
+    "error",
+    function(error){
+
+      console.error(
+        "Remote video element error:",
+        error
+      );
+
+
+      showRemoteVideoPlaceholder();
+
+
+      showCallMessage(
+        "The other member's video could not be displayed.",
+        true
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   LOCAL VIDEO STARTED PLAYING
+===================================================== */
+
+if(localVideo){
+
+  localVideo.addEventListener(
+    "playing",
+    function(){
+
+      if(localVideoPlaceholder){
+
+        localVideoPlaceholder.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+
+  localVideo.addEventListener(
+    "error",
+    function(error){
+
+      console.error(
+        "Local video element error:",
+        error
+      );
+
+
+      if(localVideoPlaceholder){
+
+        localVideoPlaceholder.classList.add(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   RESTORE PAGE FROM BROWSER CACHE
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  function(event){
+
+    if(!event.persisted){
+
+      return;
+
+    }
+
+
+    pageIsClosing =
+    false;
+
+
+    callActionRunning =
+    false;
+
+
+    resetVideoControlDisplay();
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP PAGE
+===================================================== */
+
+function cleanUpVideoCallPage(){
+
+  cleanupVideoCallResources();
+
+
+  resetIceCandidateState();
+
+
+  resetLiveCallState();
+
+}
+
+
+/* =====================================================
+   PAGE HIDE
+===================================================== */
+
+window.addEventListener(
+  "pagehide",
+  function(){
+
+    pageIsClosing =
+    true;
+
+
+    cleanUpVideoCallPage();
+
+  }
+);
+
+
+/* =====================================================
+   BEFORE PAGE UNLOAD
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    pageIsClosing =
+    true;
+
+
+    cleanUpVideoCallPage();
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL CONTROL DISPLAY
+===================================================== */
+
+resetVideoControlDisplay();
+
+
+disableVideoCallControls();
+
+
+showRemoteVideoPlaceholder();
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect private video-call page is ready."
+);
+
+</script>
+
+</body>
+
+</html>
