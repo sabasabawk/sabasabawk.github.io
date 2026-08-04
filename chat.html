@@ -3221,6 +3221,9 @@ textarea:focus-visible{
     </div>
 
   </div>
+
+</div>
+
 <!-- =====================================================
    INCOMING VOICE CALL OVERLAY
 ===================================================== -->
@@ -5336,22 +5339,19 @@ function startIncomingCallListener(){
           change.doc.data();
 
 
-          const callStatus =
+          const callStatusValue =
           String(
             incomingCall.status ||
             ""
           ).toLowerCase();
 
 
-          /*
-             Hide the overlay when this call
-             is no longer ringing.
-          */
+          /* Hide an overlay when the call ends */
 
           if(
             incomingCallId ===
             currentIncomingCallId &&
-            callStatus !==
+            callStatusValue !==
             "ringing"
           ){
 
@@ -5362,12 +5362,10 @@ function startIncomingCallListener(){
           }
 
 
-          /*
-             Ignore ended or unrelated calls.
-          */
+          /* Ignore calls that are not ringing */
 
           if(
-            callStatus !==
+            callStatusValue !==
             "ringing" ||
             incomingCall.receiverId !==
             currentUser.uid
@@ -5378,9 +5376,7 @@ function startIncomingCallListener(){
           }
 
 
-          /*
-             Avoid showing the same call twice.
-          */
+          /* Avoid displaying the same call twice */
 
           if(
             incomingCallId ===
@@ -5396,39 +5392,19 @@ function startIncomingCallListener(){
           incomingCallId;
 
 
-          /*
-             Safety check for missing overlay HTML.
-          */
+          /* Confirm that overlay elements exist */
 
           if(
             !incomingCallOverlay ||
             !incomingCallerName ||
-            !incomingCallerAvatar
+            !incomingCallerAvatar ||
+            !acceptIncomingCallButton ||
+            !declineIncomingCallButton
           ){
 
             console.error(
               "Incoming-call overlay elements are missing."
             );
-
-
-            const openCall =
-            window.confirm(
-              `${
-                incomingCall.callerName ||
-                "A Faith Connect member"
-              } is calling you.\n\nOpen the voice call?`
-            );
-
-
-            if(openCall){
-
-              window.location.href =
-              `voice-call.html?call=${encodeURIComponent(
-                incomingCallId
-              )}`;
-
-            }
-
 
             return;
 
@@ -5447,20 +5423,10 @@ function startIncomingCallListener(){
 
     function(error){
 
-  console.error(
-    "Incoming voice-call listener error:",
-    error
-  );
-
-  alert(
-    `Incoming call listener failed:\n\n${
-      error?.code || "Unknown error"
-    }\n\n${
-      error?.message || "No error message"
-    }`
-  );
-
-}
+      console.error(
+        "Incoming voice-call listener error:",
+        error
+      );
 
 
       if(
