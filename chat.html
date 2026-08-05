@@ -4208,7 +4208,56 @@ voiceCallButton.addEventListener(
 
   }
 );
+/* =====================================================
+   START PRIVATE VIDEO CALL
+===================================================== */
 
+videoCallButton.addEventListener(
+  "click",
+  function(){
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    if(!otherUid){
+
+      alert(
+        "The member information is missing."
+      );
+
+      return;
+
+    }
+
+
+    if(
+      otherUid ===
+      currentUser.uid
+    ){
+
+      alert(
+        "You cannot call your own account."
+      );
+
+      return;
+
+    }
+
+
+    window.location.href =
+    `video-call.html?user=${encodeURIComponent(
+      otherUid
+    )}`;
+
+  }
+);
 
 /* =====================================================
    OPEN MEMBER PROFILE
@@ -10433,7 +10482,8 @@ function setSendingState(
 
   voiceCallButton.disabled =
   isSending;
-
+videoCallButton.disabled =
+isSending;
 
   sendButton.textContent =
   isSending
