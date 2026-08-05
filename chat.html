@@ -362,7 +362,56 @@ textarea:focus-visible{
   opacity:.52;
 
 }
+/* =====================================================
+   VIDEO CALL BUTTON
+===================================================== */
 
+.videoCallButton{
+
+  width:44px;
+  height:44px;
+  flex-shrink:0;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.18);
+
+  color:#ffffff;
+
+  font-size:21px;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+
+}
+
+
+.videoCallButton:hover{
+
+  background:
+    rgba(255,255,255,.30);
+
+}
+
+
+.videoCallButton:active{
+  transform:scale(.95);
+}
+
+
+.videoCallButton:disabled{
+
+  cursor:not-allowed;
+  opacity:.52;
+
+}
 
 /* =====================================================
    HEADER OPTIONS BUTTON
@@ -609,7 +658,14 @@ textarea:focus-visible{
     font-size:19px;
 
   }
+.videoCallButton{
 
+  width:41px;
+  height:41px;
+
+  font-size:19px;
+
+}
 
   .headerOptionsButton{
 
@@ -678,7 +734,14 @@ textarea:focus-visible{
 
   }
 
+.videoCallButton{
 
+  width:38px;
+  height:38px;
+
+  font-size:18px;
+
+}
   .headerOptionsButton{
 
     width:36px;
@@ -2763,7 +2826,16 @@ textarea:focus-visible{
       📞
     </button>
 
-
+<button
+  id="videoCallButton"
+  class="videoCallButton"
+  type="button"
+  aria-label="Start video call"
+  title="Video call"
+  disabled
+>
+  📹
+</button>
     <button
       id="headerOptionsButton"
       class="headerOptionsButton"
@@ -3401,7 +3473,10 @@ const voiceCallButton =
 document.getElementById(
   "voiceCallButton"
 );
-
+const videoCallButton =
+document.getElementById(
+  "videoCallButton"
+);
 
 const headerOptionsButton =
 document.getElementById(
@@ -3972,7 +4047,8 @@ function showChatError(
 
   voiceCallButton.disabled =
   true;
-
+videoCallButton.disabled =
+true;
 
   chatIsReady =
   false;
@@ -4008,7 +4084,8 @@ function enableChatControls(){
 
   voiceCallButton.disabled =
   false;
-
+videoCallButton.disabled =
+false;
 
   chatIsReady =
   true;
@@ -4044,7 +4121,8 @@ function disableChatControls(){
 
   voiceCallButton.disabled =
   true;
-
+videoCallButton.disabled =
+true;
 
   chatIsReady =
   false;
