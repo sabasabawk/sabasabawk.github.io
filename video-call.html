@@ -1103,14 +1103,21 @@ body{
 }
 
 </style>
+<!-- =====================================================
+   PART 3 OF 14
+   COMPLETE VIDEO CALL HTML STRUCTURE
+===================================================== -->
+
 </head>
 
 <body>
 
+
 <main class="videoCallPage">
 
+
     <!-- ==========================================
-         REMOTE VIDEO
+         REMOTE VIDEO AREA
     =========================================== -->
 
     <section class="remoteVideoArea">
@@ -1123,7 +1130,7 @@ body{
         ></video>
 
 
-        <!-- Remote placeholder -->
+        <!-- Remote member placeholder -->
 
         <div
             id="remotePlaceholder"
@@ -1137,12 +1144,14 @@ body{
                 alt="Member profile"
             >
 
+
             <h1
                 id="remoteName"
                 class="remoteName"
             >
                 Faith Connect Member
             </h1>
+
 
             <div
                 id="remoteCountry"
@@ -1155,7 +1164,7 @@ body{
 
 
     <!-- ==========================================
-         HEADER
+         VIDEO CALL HEADER
     =========================================== -->
 
     <header class="videoCallHeader">
@@ -1164,6 +1173,7 @@ body{
             id="backButton"
             class="backButton"
             type="button"
+            aria-label="Go back"
         >
             ←
         </button>
@@ -1178,6 +1188,7 @@ body{
                 Video Call
             </div>
 
+
             <div
                 id="headerSubtitle"
                 class="headerSubtitle"
@@ -1188,7 +1199,11 @@ body{
         </div>
 
 
-        <div class="securityIcon">
+        <div
+            class="securityIcon"
+            title="Private video call"
+            aria-label="Private video call"
+        >
             🔒
         </div>
 
@@ -1204,9 +1219,11 @@ body{
         <div
             id="callStatus"
             class="callStatus"
+            aria-live="polite"
         >
             Preparing video call...
         </div>
+
 
         <div
             id="callTimer"
@@ -1215,12 +1232,14 @@ body{
             00:00
         </div>
 
+
         <div class="connectionIndicator">
 
             <span
                 id="connectionDot"
                 class="connectionDot"
             ></span>
+
 
             <span id="connectionText">
                 Waiting for connection
@@ -1232,7 +1251,7 @@ body{
 
 
     <!-- ==========================================
-         LOCAL CAMERA
+         LOCAL CAMERA PREVIEW
     =========================================== -->
 
     <div
@@ -1252,23 +1271,24 @@ body{
 
 
     <!-- ==========================================
-         MESSAGE
+         CALL MESSAGE
     =========================================== -->
 
     <div
         id="callMessage"
         class="callMessage hidden"
+        aria-live="polite"
     ></div>
 
 
     <!-- ==========================================
-         CONTROLS
+         VIDEO CALL CONTROLS
     =========================================== -->
 
     <section class="videoControlsArea">
 
 
-        <!-- Active controls -->
+        <!-- Active video-call controls -->
 
         <div
             id="activeVideoControls"
@@ -1278,6 +1298,7 @@ body{
             <button
                 id="microphoneButton"
                 class="videoControlButton"
+                type="button"
                 disabled
             >
 
@@ -1301,6 +1322,7 @@ body{
             <button
                 id="cameraButton"
                 class="videoControlButton"
+                type="button"
                 disabled
             >
 
@@ -1324,6 +1346,7 @@ body{
             <button
                 id="switchCameraButton"
                 class="videoControlButton"
+                type="button"
                 disabled
             >
 
@@ -1347,6 +1370,7 @@ body{
             <button
                 id="speakerButton"
                 class="videoControlButton"
+                type="button"
                 disabled
             >
 
@@ -1369,7 +1393,7 @@ body{
         </div>
 
 
-        <!-- Incoming controls -->
+        <!-- Incoming video-call controls -->
 
         <div
             id="incomingVideoControls"
@@ -1382,6 +1406,7 @@ body{
                     id="rejectVideoCallButton"
                     class="incomingVideoActionButton reject"
                     type="button"
+                    aria-label="Reject video call"
                 >
                     📵
                 </button>
@@ -1399,6 +1424,7 @@ body{
                     id="acceptVideoCallButton"
                     class="incomingVideoActionButton accept"
                     type="button"
+                    aria-label="Accept video call"
                 >
                     📹
                 </button>
@@ -1412,7 +1438,7 @@ body{
         </div>
 
 
-        <!-- End call -->
+        <!-- End video call -->
 
         <div
             id="outgoingVideoControls"
@@ -1423,6 +1449,7 @@ body{
                 id="endVideoCallButton"
                 class="endVideoCallButton"
                 type="button"
+                aria-label="End video call"
                 disabled
             >
                 📵
@@ -1435,10 +1462,15 @@ body{
 </main>
 
 
+<!-- ==========================================
+     REMOTE AUDIO FALLBACK
+=========================================== -->
+
 <audio
     id="remoteAudio"
     autoplay
     playsinline
+    hidden
 ></audio>
 
 
@@ -1534,7 +1566,6 @@ document.getElementById("backButton");
 
 const remoteAudio =
 document.getElementById("remoteAudio");
-
 
 /* =====================================================
    GLOBAL STATE
