@@ -3308,9 +3308,12 @@ textarea:focus-visible{
 
   <div class="incomingCallCard">
 
-    <div class="incomingCallTitle">
-      Incoming Voice Call
-    </div>
+    <div
+  id="incomingCallTitle"
+  class="incomingCallTitle"
+>
+  Incoming Voice Call
+</div>
 
 
     <div class="incomingCallerAvatarFrame">
@@ -3723,7 +3726,10 @@ const incomingCallOverlay =
 document.getElementById(
   "incomingCallOverlay"
 );
-
+const incomingCallTitle =
+document.getElementById(
+  "incomingCallTitle"
+);
 const incomingCallerAvatar =
 document.getElementById(
   "incomingCallerAvatar"
@@ -3776,11 +3782,28 @@ null;
 let unsubscribeIncomingCalls =
 null;
 
+
+/* Incoming video-call listener */
+
+let unsubscribeIncomingVideoCalls =
+null;
+
+
 let currentIncomingCallId =
 "";
 
 let currentIncomingCallData =
 null;
+
+
+/* Incoming video-call state */
+
+let currentIncomingVideoCallId =
+"";
+
+let currentIncomingVideoCallData =
+null;
+
 
 let openedIncomingCallId =
 "";
@@ -5573,6 +5596,100 @@ function startIncomingCallListener(){
 
 }
 /* =====================================================
+   START INCOMING VIDEO CALL LISTENER
+===================================================== */
+
+function startIncomingVideoCallListener(){
+
+  if(
+    typeof unsubscribeIncomingVideoCalls ===
+    "function"
+  ){
+
+    unsubscribeIncomingVideoCalls();
+
+  }
+
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+
+  const incomingVideoCallsQuery =
+  query(
+    collection(
+      db,
+      "videoCalls"
+    ),
+    where(
+      "receiverId",
+      "==",
+      currentUser.uid
+    )
+  );
+
+
+  unsubscribeIncomingVideoCalls =
+  onSnapshot(
+
+    incomingVideoCallsQuery,
+
+    function(snapshot){
+
+      snapshot.docChanges()
+      .forEach(
+        function(change){
+
+          const incomingCall =
+          change.doc.data();
+
+
+          if(
+            incomingCall.status !==
+            "ringing"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            incomingCall.receiverId !==
+            currentUser.uid
+          ){
+
+            return;
+
+          }
+
+
+          showIncomingVideoCallOverlay(
+            change.doc.id,
+            incomingCall
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Incoming video-call listener error:",
+        error
+      );
+
+    }
+
+  );
+
+}
+/* =====================================================
    SHOW INCOMING CALL OVERLAY
 ===================================================== */
 
@@ -5640,7 +5757,97 @@ function showIncomingCallOverlay(
 
 }
 
+/* =====================================================
+   SHOW INCOMING VIDEO CALL OVERLAY
+===================================================== */
 
+function showIncomingVideoCallOverlay(
+  callId,
+  callData
+){
+
+  currentIncomingCallId =
+  callId;
+
+
+  currentIncomingCallData = {
+
+    ...callData,
+
+    callType:
+    "video"
+
+  };
+
+
+  const callerName =
+  getFirstValue(
+    currentIncomingCallData.callerName,
+    "Faith Connect Member"
+  );
+
+
+  const callerPicture =
+  getFirstValue(
+    currentIncomingCallData.callerPicture,
+    "images/profile.png"
+  );
+
+
+  if(incomingCallTitle){
+
+    incomingCallTitle.textContent =
+    "Incoming Video Call";
+
+  }
+
+
+  incomingCallerName.textContent =
+  callerName;
+
+
+  incomingCallerAvatar.src =
+  callerPicture;
+
+
+  incomingCallerAvatar.onerror =
+  function(){
+
+    incomingCallerAvatar.src =
+    "images/profile.png";
+
+  };
+
+
+  acceptIncomingCallButton.textContent =
+  "📹";
+
+
+  acceptIncomingCallButton.setAttribute(
+    "aria-label",
+    "Accept incoming video call"
+  );
+
+
+  declineIncomingCallButton.disabled =
+  false;
+
+
+  acceptIncomingCallButton.disabled =
+  false;
+
+
+  incomingCallOverlay.classList.add(
+    "show"
+  );
+
+
+  incomingCallOverlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
 /* =====================================================
    HIDE INCOMING CALL OVERLAY
 ===================================================== */
@@ -5813,12 +6020,14 @@ onAuthStateChanged(
     }
 
 
-    currentUser =
+  currentUser =
 user;
 
 disableChatControls();
 
 startIncomingCallListener();
+
+startIncomingVideoCallListener();
 
 await prepareConversation();
 
