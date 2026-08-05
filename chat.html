@@ -5882,7 +5882,7 @@ function hideIncomingCallOverlay(){
 
 }
 /* =====================================================
-   ACCEPT INCOMING CALL
+   ACCEPT INCOMING VOICE OR VIDEO CALL
 ===================================================== */
 
 acceptIncomingCallButton.addEventListener(
@@ -5891,6 +5891,14 @@ acceptIncomingCallButton.addEventListener(
 
     const acceptedCallId =
     currentIncomingCallId;
+
+
+    const acceptedCallType =
+    getFirstValue(
+      currentIncomingCallData?.callType,
+      currentIncomingCallData?.type,
+      "voice"
+    ).toLowerCase();
 
 
     if(!acceptedCallId){
@@ -5908,97 +5916,25 @@ acceptIncomingCallButton.addEventListener(
     true;
 
 
+    /*
+       Save the ID and call type before hiding
+       the overlay because hiding resets the state.
+    */
+
+    const destinationPage =
+    acceptedCallType ===
+    "video"
+    ? "video-call.html"
+    : "voice-call.html";
+
+
     hideIncomingCallOverlay();
 
 
     window.location.href =
-    `voice-call.html?call=${encodeURIComponent(
+    `${destinationPage}?call=${encodeURIComponent(
       acceptedCallId
     )}`;
-
-  }
-);
-
-
-/* =====================================================
-   DECLINE INCOMING CALL
-===================================================== */
-
-declineIncomingCallButton.addEventListener(
-  "click",
-  async function(){
-
-    const declinedCallId =
-    currentIncomingCallId;
-
-
-    if(
-      !declinedCallId ||
-      !currentUser
-    ){
-
-      return;
-
-    }
-
-
-    acceptIncomingCallButton.disabled =
-    true;
-
-
-    declineIncomingCallButton.disabled =
-    true;
-
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "voiceCalls",
-          declinedCallId
-        ),
-        {
-
-          status:
-          "rejected",
-
-          endedBy:
-          currentUser.uid,
-
-          endedAt:
-          serverTimestamp(),
-
-          updatedAt:
-          serverTimestamp()
-
-        }
-      );
-
-
-      hideIncomingCallOverlay();
-
-    }catch(error){
-
-      console.error(
-        "Unable to reject incoming call:",
-        error
-      );
-
-
-      acceptIncomingCallButton.disabled =
-      false;
-
-
-      declineIncomingCallButton.disabled =
-      false;
-
-
-      alert(
-        "Unable to decline this call. Please try again."
-      );
-
-    }
 
   }
 );
