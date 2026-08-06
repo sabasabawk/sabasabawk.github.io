@@ -3174,7 +3174,21 @@ textarea:focus-visible{
         </span>
 
       </button>
+<button
+  id="selectFileButton"
+  class="attachmentOption"
+  type="button"
+>
 
+  <span class="attachmentOptionIcon">
+    📄
+  </span>
+
+  <span>
+    Select File
+  </span>
+
+</button>
     </div>
 
 
@@ -3227,7 +3241,12 @@ textarea:focus-visible{
   type="file"
   accept="video/*"
 >
-
+<input
+  id="fileInput"
+  class="hiddenFileInput"
+  type="file"
+  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.csv,.rtf"
+>
 
 <!-- =====================================================
    FULL-SCREEN MEDIA VIEWER
@@ -3587,7 +3606,10 @@ const selectVideoButton =
 document.getElementById(
   "selectVideoButton"
 );
-
+const selectFileButton =
+document.getElementById(
+  "selectFileButton"
+);
 
 const imageInput =
 document.getElementById(
@@ -3599,7 +3621,10 @@ const videoInput =
 document.getElementById(
   "videoInput"
 );
-
+const fileInput =
+document.getElementById(
+  "fileInput"
+);
 
 const mediaPreviewArea =
 document.getElementById(
@@ -3838,7 +3863,14 @@ let uploadedMediaUrl =
 
 let uploadedMediaPublicId =
 "";
+let selectedFileName =
+"";
 
+let selectedFileSize =
+0;
+
+let selectedFileExtension =
+"";
 
 /* =====================================================
    VOICE RECORDING STATE
@@ -6146,6 +6178,18 @@ function clearSelectedMedia(){
   "";
 
 
+  selectedFileName =
+  "";
+
+
+  selectedFileSize =
+  0;
+
+
+  selectedFileExtension =
+  "";
+
+
   recordedAudioBlob =
   null;
 
@@ -6162,6 +6206,10 @@ function clearSelectedMedia(){
   "";
 
 
+  fileInput.value =
+  "";
+
+
   previewContent.innerHTML =
   "";
 
@@ -6174,7 +6222,6 @@ function clearSelectedMedia(){
   resetUploadProgress();
 
 }
-
 
 /* =====================================================
    SHOW IMAGE PREVIEW
@@ -6342,7 +6389,163 @@ function showAudioPreview(
   );
 
 }
+/* =====================================================
+   FORMAT FILE SIZE
+===================================================== */
 
+function formatFileSize(
+  bytes
+){
+
+  const safeBytes =
+  Number(bytes) || 0;
+
+
+  if(safeBytes < 1024){
+
+    return `${safeBytes} B`;
+
+  }
+
+
+  if(safeBytes < 1024 * 1024){
+
+    return `${(
+      safeBytes / 1024
+    ).toFixed(1)} KB`;
+
+  }
+
+
+  return `${(
+    safeBytes /
+    (
+      1024 * 1024
+    )
+  ).toFixed(1)} MB`;
+
+}
+
+
+/* =====================================================
+   GET FILE EXTENSION
+===================================================== */
+
+function getFileExtension(
+  fileName
+){
+
+  const safeName =
+  String(
+    fileName || ""
+  );
+
+
+  const lastDotIndex =
+  safeName.lastIndexOf(
+    "."
+  );
+
+
+  if(
+    lastDotIndex === -1 ||
+    lastDotIndex ===
+    safeName.length - 1
+  ){
+
+    return "";
+
+  }
+
+
+  return safeName
+  .slice(
+    lastDotIndex + 1
+  )
+  .toLowerCase();
+
+}
+
+
+/* =====================================================
+   SHOW FILE PREVIEW
+===================================================== */
+
+function showFilePreview(
+  file
+){
+
+  clearSelectedMedia();
+
+
+  selectedMediaFile =
+  file;
+
+
+  selectedMediaType =
+  "file";
+
+
+  selectedFileName =
+  file.name || "Shared file";
+
+
+  selectedFileSize =
+  Number(file.size) || 0;
+
+
+  selectedFileExtension =
+  getFileExtension(
+    selectedFileName
+  );
+
+
+  previewContent.innerHTML = `
+
+    <div
+      style="
+        width:70px;
+        height:70px;
+        flex-shrink:0;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#dde7f1;
+        font-size:34px;
+      "
+    >
+      📄
+    </div>
+
+    <div class="previewDetails">
+
+      <div class="previewType">
+        File selected
+      </div>
+
+      <div class="previewName">
+        ${escapeHtml(selectedFileName)}
+      </div>
+
+      <div class="previewName">
+        ${escapeHtml(
+          formatFileSize(
+            selectedFileSize
+          )
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+
+  mediaPreviewArea.classList.add(
+    "show"
+  );
+
+}
 
 /* =====================================================
    VALIDATE IMAGE FILE
