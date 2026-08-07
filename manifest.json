@@ -1,0 +1,22 @@
+{
+  "id": "/",
+  "name": "SABASABA Gospel Ministry",
+  "short_name": "SABASABA",
+  "description": "SABASABA Gospel Ministry Christian Community",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
