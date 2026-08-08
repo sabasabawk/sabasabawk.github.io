@@ -10,13 +10,13 @@
   "lang": "en",
   "dir": "ltr",
   "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
+  "theme_color": "#0b3d91",
   "icons": [
     {
-      "src": "/images/logo.png",
+      "src": "/85b6a3d2eaa8aea570a1d97f0613d67ef757401cf1af7f98a5b06d4e12e4c4d3%20(1).png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
