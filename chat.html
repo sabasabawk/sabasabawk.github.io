@@ -7278,11 +7278,17 @@ function uploadMediaToCloudinary(
       new XMLHttpRequest();
 
 
-      uploadRequest.open(
-        "POST",
-        CLOUDINARY_UPLOAD_URL,
-        true
-      );
+     const finalUploadUrl =
+selectedMediaType === "file"
+? CLOUDINARY_RAW_UPLOAD_URL
+: CLOUDINARY_UPLOAD_URL;
+
+
+uploadRequest.open(
+  "POST",
+  finalUploadUrl,
+  true
+);
 
 
       uploadRequest.upload.addEventListener(
