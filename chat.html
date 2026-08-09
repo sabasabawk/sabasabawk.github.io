@@ -1171,7 +1171,136 @@ textarea:focus-visible{
 
 }
 
+/* =====================================================
+   FILE / DOCUMENT MESSAGE
+===================================================== */
 
+.fileMessage{
+
+  min-width:230px;
+  max-width:310px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.16);
+
+}
+
+
+.messageBubble.other
+.fileMessage{
+
+  background:
+    rgba(255,255,255,.65);
+
+}
+
+
+.fileMessageHeader{
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+}
+
+
+.fileMessageIcon{
+
+  width:46px;
+  height:46px;
+
+  flex-shrink:0;
+
+  border-radius:10px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#dde7f1;
+
+  font-size:25px;
+
+}
+
+
+.fileMessageDetails{
+
+  min-width:0;
+  flex:1;
+
+}
+
+
+.fileMessageName{
+
+  font-size:13px;
+  font-weight:900;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+}
+
+
+.fileMessageSize{
+
+  margin-top:4px;
+
+  font-size:11px;
+  opacity:.72;
+
+}
+
+
+.fileMessageActions{
+
+  margin-top:10px;
+
+  display:flex;
+  gap:8px;
+
+}
+
+
+.fileMessageButton{
+
+  flex:1;
+
+  min-height:36px;
+
+  padding:
+    8px
+    10px;
+
+  border:0;
+  border-radius:9px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#ffffff;
+  color:#087bd1;
+
+  text-decoration:none;
+
+  font-size:12px;
+  font-weight:900;
+
+}
+
+
+.fileMessageButton:hover{
+
+  background:#eef4f8;
+
+}
 /* =====================================================
    MEDIA CAPTION
 ===================================================== */
@@ -6751,7 +6880,138 @@ selectVideoButton.addEventListener(
 
   }
 );
+/* =====================================================
+   SELECT FILE / DOCUMENT
+===================================================== */
 
+selectFileButton.addEventListener(
+  "click",
+  function(){
+
+    attachmentMenu.classList.remove(
+      "show"
+    );
+
+
+    fileInput.click();
+
+  }
+);
+
+
+/* =====================================================
+   VALIDATE FILE / DOCUMENT
+===================================================== */
+
+function validateDocumentFile(
+  file
+){
+
+  if(!file){
+
+    return false;
+
+  }
+
+
+  const allowedExtensions = [
+
+    "pdf",
+    "doc",
+    "docx",
+    "xls",
+    "xlsx",
+    "ppt",
+    "pptx",
+    "txt",
+    "zip",
+    "rar",
+    "csv",
+    "rtf"
+
+  ];
+
+
+  const fileExtension =
+  getFileExtension(
+    file.name
+  );
+
+
+  if(
+    !allowedExtensions.includes(
+      fileExtension
+    )
+  ){
+
+    alert(
+      "This file type is not supported. Please select a PDF, Word, Excel, PowerPoint, TXT, CSV, ZIP, RAR or RTF file."
+    );
+
+
+    return false;
+
+  }
+
+
+  const maximumFileSize =
+  25 * 1024 * 1024;
+
+
+  if(
+    file.size >
+    maximumFileSize
+  ){
+
+    alert(
+      "The file is too large. Please select one smaller than 25 MB."
+    );
+
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =====================================================
+   HANDLE SELECTED FILE / DOCUMENT
+===================================================== */
+
+fileInput.addEventListener(
+  "change",
+  function(){
+
+    const file =
+    fileInput.files?.[0] ||
+    null;
+
+
+    if(
+      !validateDocumentFile(
+        file
+      )
+    ){
+
+      fileInput.value =
+      "";
+
+
+      return;
+
+    }
+
+
+    showFilePreview(
+      file
+    );
+
+  }
+);
 
 /* =====================================================
    HANDLE SELECTED PICTURE
@@ -6981,10 +7241,10 @@ function uploadMediaToCloudinary(
       if(!file){
 
         reject(
-          new Error(
-            "No media file was selected."
-          )
-        );
+  new Error(
+    "No file was selected."
+  )
+);
 
 
         return;
@@ -7046,15 +7306,18 @@ function uploadMediaToCloudinary(
 
 
           updateUploadProgress(
-            uploadPercent,
-            selectedMediaType ===
-            "audio"
-            ? "Uploading voice message..."
-            : selectedMediaType ===
-              "video"
-            ? "Uploading video..."
-            : "Uploading picture..."
-          );
+  uploadPercent,
+  selectedMediaType ===
+  "audio"
+  ? "Uploading voice message..."
+  : selectedMediaType ===
+    "video"
+  ? "Uploading video..."
+  : selectedMediaType ===
+    "file"
+  ? "Uploading document..."
+  : "Uploading picture..."
+);
 
         }
       );
@@ -7104,27 +7367,33 @@ function uploadMediaToCloudinary(
 
 
             resolve(
-              {
-                url:
-                responseData.secure_url,
+  {
+    url:
+    responseData.secure_url,
 
-                publicId:
-                responseData.public_id ||
-                "",
+    publicId:
+    responseData.public_id ||
+    "",
 
-                resourceType:
-                responseData.resource_type ||
-                "",
+    resourceType:
+    responseData.resource_type ||
+    "",
 
-                format:
-                responseData.format ||
-                "",
+    format:
+    responseData.format ||
+    selectedFileExtension ||
+    "",
 
-                duration:
-                responseData.duration ||
-                0
-              }
-            );
+    duration:
+    responseData.duration ||
+    0,
+
+    originalFilename:
+    responseData.original_filename ||
+    selectedFileName ||
+    ""
+  }
+);
 
 
             return;
@@ -8758,7 +9027,228 @@ function createVoiceMessageElement(
   return voiceContainer;
 
 }
+/* =====================================================
+   CREATE FILE / DOCUMENT MESSAGE
+===================================================== */
 
+function createFileMessageElement(
+  messageData
+){
+
+  const fileUrl =
+  getFirstValue(
+    messageData.fileUrl,
+    messageData.mediaUrl
+  );
+
+
+  if(!fileUrl){
+
+    return null;
+
+  }
+
+
+  const fileName =
+  getFirstValue(
+    messageData.fileName,
+    "Shared document"
+  );
+
+
+  const fileSize =
+  Number(
+    messageData.fileSize
+  ) || 0;
+
+
+  const fileContainer =
+  document.createElement(
+    "div"
+  );
+
+
+  fileContainer.className =
+  "fileMessage";
+
+
+  const fileHeader =
+  document.createElement(
+    "div"
+  );
+
+
+  fileHeader.className =
+  "fileMessageHeader";
+
+
+  const fileIcon =
+  document.createElement(
+    "div"
+  );
+
+
+  fileIcon.className =
+  "fileMessageIcon";
+
+
+  fileIcon.textContent =
+  "📄";
+
+
+  const fileDetails =
+  document.createElement(
+    "div"
+  );
+
+
+  fileDetails.className =
+  "fileMessageDetails";
+
+
+  const fileNameElement =
+  document.createElement(
+    "div"
+  );
+
+
+  fileNameElement.className =
+  "fileMessageName";
+
+
+  fileNameElement.textContent =
+  fileName;
+
+
+  fileNameElement.title =
+  fileName;
+
+
+  const fileSizeElement =
+  document.createElement(
+    "div"
+  );
+
+
+  fileSizeElement.className =
+  "fileMessageSize";
+
+
+  fileSizeElement.textContent =
+  formatFileSize(
+    fileSize
+  );
+
+
+  fileDetails.appendChild(
+    fileNameElement
+  );
+
+
+  fileDetails.appendChild(
+    fileSizeElement
+  );
+
+
+  fileHeader.appendChild(
+    fileIcon
+  );
+
+
+  fileHeader.appendChild(
+    fileDetails
+  );
+
+
+  const fileActions =
+  document.createElement(
+    "div"
+  );
+
+
+  fileActions.className =
+  "fileMessageActions";
+
+
+  const openButton =
+  document.createElement(
+    "a"
+  );
+
+
+  openButton.className =
+  "fileMessageButton";
+
+
+  openButton.href =
+  fileUrl;
+
+
+  openButton.target =
+  "_blank";
+
+
+  openButton.rel =
+  "noopener noreferrer";
+
+
+  openButton.textContent =
+  "Open";
+
+
+  const downloadButton =
+  document.createElement(
+    "a"
+  );
+
+
+  downloadButton.className =
+  "fileMessageButton";
+
+
+  downloadButton.href =
+  fileUrl;
+
+
+  downloadButton.download =
+  fileName;
+
+
+  downloadButton.target =
+  "_blank";
+
+
+  downloadButton.rel =
+  "noopener noreferrer";
+
+
+  downloadButton.textContent =
+  "Download";
+
+
+  fileActions.appendChild(
+    openButton
+  );
+
+
+  fileActions.appendChild(
+    downloadButton
+  );
+
+
+  fileContainer.appendChild(
+    fileHeader
+  );
+
+
+  fileContainer.appendChild(
+    fileActions
+  );
+
+
+  return fileContainer;
+
+}
 
 /* =====================================================
    CREATE MEDIA CAPTION
@@ -8852,7 +9342,17 @@ function appendMessageContent(
     );
 
   }
+  else if(
+  mediaType ===
+  "file"
+){
 
+  mediaElement =
+  createFileMessageElement(
+    messageData
+  );
+
+}
 
   if(mediaElement){
 
@@ -10786,7 +11286,13 @@ function getMessagePreview(
 
   }
 
+  if(mediaType === "file"){
 
+  return selectedFileName
+  ? `📄 ${selectedFileName}`
+  : "📄 Document";
+
+}
   return "New message";
 
 }
@@ -10859,9 +11365,13 @@ async function createMessageDocument(
     mediaUrl,
     mediaPublicId,
     mediaFormat,
-    mediaDuration
+    mediaDuration,
+    fileName,
+    fileSize,
+    fileExtension
   }
-){
+)
+{
 
   const senderName =
   getProfileName(
@@ -10919,7 +11429,21 @@ async function createMessageDocument(
       Number(
         mediaDuration
       ) || 0,
+       fileName:
+fileName || "",
 
+fileSize:
+Number(
+  fileSize
+) || 0,
+
+fileExtension:
+fileExtension || "",
+
+fileUrl:
+mediaType === "file"
+? mediaUrl || ""
+: "",
       timestamp:
       serverTimestamp(),
 
@@ -11316,15 +11840,18 @@ async function sendMessage(){
     if(hasMedia){
 
       updateUploadProgress(
-        0,
-        selectedMediaType ===
-        "audio"
-        ? "Uploading voice message..."
-        : selectedMediaType ===
-          "video"
-        ? "Uploading video..."
-        : "Uploading picture..."
-      );
+  0,
+  selectedMediaType ===
+  "audio"
+  ? "Uploading voice message..."
+  : selectedMediaType ===
+    "video"
+  ? "Uploading video..."
+  : selectedMediaType ===
+    "file"
+  ? "Uploading document..."
+  : "Uploading picture..."
+);
 
 
       const uploadResult =
@@ -11385,7 +11912,22 @@ async function sendMessage(){
         finalMediaFormat,
 
         mediaDuration:
-        finalMediaDuration
+finalMediaDuration,
+
+fileName:
+finalMediaType === "file"
+? selectedFileName
+: "",
+
+fileSize:
+finalMediaType === "file"
+? selectedFileSize
+: 0,
+
+fileExtension:
+finalMediaType === "file"
+? selectedFileExtension
+: ""
 
       }
     );
