@@ -2049,143 +2049,18 @@ notificationBadge.style.display =
 
   }
 );
-============================================
-   GET REQUESTED POST ID FROM URL
+
+/* =====================================================
+   PART 8 OF 10
+   LOAD COMMUNITY POSTS FROM FIRESTORE
 ===================================================== */
-
-function getRequestedPostId(){
-
-  const urlParameters =
-  new URLSearchParams(
-    window.location.search
-  );
-
-
-  return (
-    urlParameters.get("post") ||
-    ""
-  ).trim();
-
-}
 
 
 /* =====================================================
-   LOAD REQUESTED POST FIRST
+   LOAD POSTS
 ===================================================== */
 
-async function loadRequestedPostFirst(){
-
-  const requestedPostId =
-  getRequestedPostId();
-
-
-  if(!requestedPostId){
-
-    return false;
-
-  }
-
-
-  try{
-
-    const requestedPostReference =
-    doc(
-      db,
-      "communityPosts",
-      requestedPostId
-    );
-
-
-    const requestedPostSnapshot =
-    await getDoc(
-      requestedPostReference
-    );
-
-
-    if(
-      !requestedPostSnapshot.exists()
-    ){
-
-      console.warn(
-        "Requested post was not found:",
-        requestedPostId
-      );
-
-      return false;
-
-    }
-
-
-    const requestedPostData = {
-
-      id:
-      requestedPostSnapshot.id,
-
-      ...requestedPostSnapshot.data()
-
-    };
-
-
-    postsContainer.innerHTML =
-    "";
-
-
-    const requestedPostCard =
-    createPostCard(
-      requestedPostData
-    );
-
-
-    postsContainer.appendChild(
-      requestedPostCard
-    );
-
-
-    startVideoAutoPlay();
-
-
-    window.setTimeout(
-      function(){
-
-        requestedPostCard.classList.add(
-          "notificationTarget"
-        );
-
-
-        requestedPostCard.scrollIntoView(
-          {
-            behavior:"smooth",
-            block:"center"
-          }
-        );
-
-      },
-      50
-    );
-
-
-    return true;
-
-  }catch(error){
-
-    console.error(
-      "Error loading requested post:",
-      error
-    );
-
-
-    return false;
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD LATEST COMMUNITY POSTS
-===================================================== */
-
-function loadLatestCommunityPosts(){
+function loadCommunityPosts(){
 
   try{
 
@@ -2202,8 +2077,7 @@ function loadLatestCommunityPosts(){
       orderBy(
         "timestamp",
         "desc"
-      ),
-      limit(15)
+      )
     );
 
 
@@ -2281,7 +2155,6 @@ function loadLatestCommunityPosts(){
 
         startVideoAutoPlay();
 
-
         scrollToSharedPost();
 
       },
@@ -2358,40 +2231,6 @@ function loadLatestCommunityPosts(){
     );
 
   }
-
-}
-
-
-/* =====================================================
-   LOAD POSTS
-===================================================== */
-
-async function loadCommunityPosts(){
-
-  const requestedPostId =
-  getRequestedPostId();
-
-
-  if(requestedPostId){
-
-    const requestedPostLoaded =
-    await loadRequestedPostFirst();
-
-
-    if(!requestedPostLoaded){
-
-      showLoadingMessage();
-
-    }
-
-  }else{
-
-    showLoadingMessage();
-
-  }
-
-
-  loadLatestCommunityPosts();
 
 }
 /* =====================================================
