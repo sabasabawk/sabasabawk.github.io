@@ -1354,9 +1354,10 @@ import{
   collection,
   addDoc,
   query,
-where,
-orderBy,
-onSnapshot,
+  where,
+  orderBy,
+  limit,
+  onSnapshot,
   doc,
   getDoc,
   updateDoc,
@@ -2051,8 +2052,7 @@ notificationBadge.style.display =
 );
 /* =====================================================
    PART 8 OF 10
-   FAST POST OPENING AND COMMUNITY POSTS
-   FROM FIRESTORE
+   FAST COMMUNITY POST LOADING
 ===================================================== */
 
 
@@ -2114,7 +2114,7 @@ async function loadRequestedPostFirst(){
     ){
 
       console.warn(
-        "Requested community post was not found:",
+        "Requested post was not found:",
         requestedPostId
       );
 
@@ -2148,9 +2148,8 @@ async function loadRequestedPostFirst(){
     );
 
 
-    /*
-      Make the requested post visible immediately.
-    */
+    startVideoAutoPlay();
+
 
     window.setTimeout(
       function(){
@@ -2162,25 +2161,14 @@ async function loadRequestedPostFirst(){
 
         requestedPostCard.scrollIntoView(
           {
-            behavior:
-            "smooth",
-
-            block:
-            "center"
+            behavior:"smooth",
+            block:"center"
           }
         );
 
       },
       50
     );
-
-
-    /*
-      Start video handling if the
-      requested post contains video.
-    */
-
-    startVideoAutoPlay();
 
 
     return true;
@@ -2201,10 +2189,10 @@ async function loadRequestedPostFirst(){
 
 
 /* =====================================================
-   LOAD FULL COMMUNITY WALL
+   LOAD LATEST COMMUNITY POSTS
 ===================================================== */
 
-function loadFullCommunityFeed(){
+function loadLatestCommunityPosts(){
 
   try{
 
@@ -2221,7 +2209,8 @@ function loadFullCommunityFeed(){
       orderBy(
         "timestamp",
         "desc"
-      )
+      ),
+      limit(15)
     );
 
 
@@ -2297,20 +2286,8 @@ function loadFullCommunityFeed(){
         }
 
 
-        /*
-          Start automatic playback handling
-          after all posts are displayed.
-        */
-
         startVideoAutoPlay();
 
-
-        /*
-          If this page was opened from
-          a notification or shared link,
-          move to that post again after
-          the complete wall loads.
-        */
 
         scrollToSharedPost();
 
@@ -2323,32 +2300,6 @@ function loadFullCommunityFeed(){
           "Error loading community posts:",
           error
         );
-
-
-        /*
-          If one requested post was already
-          successfully displayed, do not
-          remove it just because the full
-          feed listener failed.
-        */
-
-        const requestedPostId =
-        getRequestedPostId();
-
-
-        const requestedPostElement =
-        requestedPostId
-        ? document.getElementById(
-            `post-${requestedPostId}`
-          )
-        : null;
-
-
-        if(requestedPostElement){
-
-          return;
-
-        }
 
 
         if(
@@ -2409,25 +2360,9 @@ function loadFullCommunityFeed(){
     );
 
 
-    const requestedPostId =
-    getRequestedPostId();
-
-
-    const requestedPostElement =
-    requestedPostId
-    ? document.getElementById(
-        `post-${requestedPostId}`
-      )
-    : null;
-
-
-    if(!requestedPostElement){
-
-      showErrorMessage(
-        "The Community Wall could not be started."
-      );
-
-    }
+    showErrorMessage(
+      "The Community Wall could not be started."
+    );
 
   }
 
@@ -2440,13 +2375,6 @@ function loadFullCommunityFeed(){
 
 async function loadCommunityPosts(){
 
-  /*
-    If the user came from a notification
-    or shared link, load that exact post
-    immediately instead of waiting for
-    the entire Community Wall.
-  */
-
   const requestedPostId =
   getRequestedPostId();
 
@@ -2456,12 +2384,6 @@ async function loadCommunityPosts(){
     const requestedPostLoaded =
     await loadRequestedPostFirst();
 
-
-    /*
-      Only show the general loading card
-      if the requested post could not
-      be loaded immediately.
-    */
 
     if(!requestedPostLoaded){
 
@@ -2476,12 +2398,7 @@ async function loadCommunityPosts(){
   }
 
 
-  /*
-    Continue loading the complete
-    Community Wall normally.
-  */
-
-  loadFullCommunityFeed();
+  loadLatestCommunityPosts();
 
 }
 /* =====================================================
