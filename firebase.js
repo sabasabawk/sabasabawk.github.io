@@ -125,9 +125,10 @@ export {
   arrayUnion,
   arrayRemove,
   query,
-  where,
-  orderBy,
-  onSnapshot,
+where,
+orderBy,
+limit,
+onSnapshot,
   serverTimestamp,
   writeBatch,
 
