@@ -2051,15 +2051,160 @@ notificationBadge.style.display =
 );
 /* =====================================================
    PART 8 OF 10
-   LOAD COMMUNITY POSTS FROM FIRESTORE
+   FAST POST OPENING AND COMMUNITY POSTS
+   FROM FIRESTORE
 ===================================================== */
 
 
 /* =====================================================
-   LOAD POSTS
+   GET REQUESTED POST ID FROM URL
 ===================================================== */
 
-function loadCommunityPosts(){
+function getRequestedPostId(){
+
+  const urlParameters =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+  return (
+    urlParameters.get("post") ||
+    ""
+  ).trim();
+
+}
+
+
+/* =====================================================
+   LOAD REQUESTED POST FIRST
+===================================================== */
+
+async function loadRequestedPostFirst(){
+
+  const requestedPostId =
+  getRequestedPostId();
+
+
+  if(!requestedPostId){
+
+    return false;
+
+  }
+
+
+  try{
+
+    const requestedPostReference =
+    doc(
+      db,
+      "communityPosts",
+      requestedPostId
+    );
+
+
+    const requestedPostSnapshot =
+    await getDoc(
+      requestedPostReference
+    );
+
+
+    if(
+      !requestedPostSnapshot.exists()
+    ){
+
+      console.warn(
+        "Requested community post was not found:",
+        requestedPostId
+      );
+
+      return false;
+
+    }
+
+
+    const requestedPostData = {
+
+      id:
+      requestedPostSnapshot.id,
+
+      ...requestedPostSnapshot.data()
+
+    };
+
+
+    postsContainer.innerHTML =
+    "";
+
+
+    const requestedPostCard =
+    createPostCard(
+      requestedPostData
+    );
+
+
+    postsContainer.appendChild(
+      requestedPostCard
+    );
+
+
+    /*
+      Make the requested post visible immediately.
+    */
+
+    window.setTimeout(
+      function(){
+
+        requestedPostCard.classList.add(
+          "notificationTarget"
+        );
+
+
+        requestedPostCard.scrollIntoView(
+          {
+            behavior:
+            "smooth",
+
+            block:
+            "center"
+          }
+        );
+
+      },
+      50
+    );
+
+
+    /*
+      Start video handling if the
+      requested post contains video.
+    */
+
+    startVideoAutoPlay();
+
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "Error loading requested post:",
+      error
+    );
+
+
+    return false;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD FULL COMMUNITY WALL
+===================================================== */
+
+function loadFullCommunityFeed(){
 
   try{
 
@@ -2068,6 +2213,7 @@ function loadCommunityPosts(){
       db,
       "communityPosts"
     );
+
 
     const postsQuery =
     query(
@@ -2088,6 +2234,7 @@ function loadCommunityPosts(){
 
         postsContainer.innerHTML =
         "";
+
 
         if(snapshot.empty){
 
@@ -2149,10 +2296,23 @@ function loadCommunityPosts(){
 
         }
 
-startVideoAutoPlay();
-        
 
-scrollToSharedPost();
+        /*
+          Start automatic playback handling
+          after all posts are displayed.
+        */
+
+        startVideoAutoPlay();
+
+
+        /*
+          If this page was opened from
+          a notification or shared link,
+          move to that post again after
+          the complete wall loads.
+        */
+
+        scrollToSharedPost();
 
       },
 
@@ -2163,6 +2323,32 @@ scrollToSharedPost();
           "Error loading community posts:",
           error
         );
+
+
+        /*
+          If one requested post was already
+          successfully displayed, do not
+          remove it just because the full
+          feed listener failed.
+        */
+
+        const requestedPostId =
+        getRequestedPostId();
+
+
+        const requestedPostElement =
+        requestedPostId
+        ? document.getElementById(
+            `post-${requestedPostId}`
+          )
+        : null;
+
+
+        if(requestedPostElement){
+
+          return;
+
+        }
 
 
         if(
@@ -2222,11 +2408,80 @@ scrollToSharedPost();
       error
     );
 
-    showErrorMessage(
-      "The Community Wall could not be started."
-    );
+
+    const requestedPostId =
+    getRequestedPostId();
+
+
+    const requestedPostElement =
+    requestedPostId
+    ? document.getElementById(
+        `post-${requestedPostId}`
+      )
+    : null;
+
+
+    if(!requestedPostElement){
+
+      showErrorMessage(
+        "The Community Wall could not be started."
+      );
+
+    }
 
   }
+
+}
+
+
+/* =====================================================
+   LOAD POSTS
+===================================================== */
+
+async function loadCommunityPosts(){
+
+  /*
+    If the user came from a notification
+    or shared link, load that exact post
+    immediately instead of waiting for
+    the entire Community Wall.
+  */
+
+  const requestedPostId =
+  getRequestedPostId();
+
+
+  if(requestedPostId){
+
+    const requestedPostLoaded =
+    await loadRequestedPostFirst();
+
+
+    /*
+      Only show the general loading card
+      if the requested post could not
+      be loaded immediately.
+    */
+
+    if(!requestedPostLoaded){
+
+      showLoadingMessage();
+
+    }
+
+  }else{
+
+    showLoadingMessage();
+
+  }
+
+
+  /*
+    Continue loading the complete
+    Community Wall normally.
+  */
+
+  loadFullCommunityFeed();
 
 }
 /* =====================================================
