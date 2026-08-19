@@ -526,7 +526,16 @@ a:focus-visible{
   transform:translateY(-2px);
   box-shadow:0 10px 24px rgba(0,0,0,.12);
 }
+/* =====================================================
+   NOTIFICATION TARGET POST
+===================================================== */
 
+.postCard.notificationTarget{
+  border:3px solid #087bd1;
+  box-shadow:
+    0 0 0 5px rgba(8,123,209,.15),
+    0 10px 28px rgba(0,0,0,.16);
+}
 
 /* =====================================================
    POST HEADER
@@ -3697,6 +3706,11 @@ function scrollToSharedPost(){
 
   if(!sharedPost){
 
+    console.warn(
+      "Notification post could not be found:",
+      sharedPostId
+    );
+
     return;
 
   }
@@ -3704,6 +3718,11 @@ function scrollToSharedPost(){
 
   window.setTimeout(
     function(){
+
+      sharedPost.classList.add(
+        "notificationTarget"
+      );
+
 
       sharedPost.scrollIntoView(
         {
@@ -3715,8 +3734,20 @@ function scrollToSharedPost(){
         }
       );
 
+
+      window.setTimeout(
+        function(){
+
+          sharedPost.classList.remove(
+            "notificationTarget"
+          );
+
+        },
+        5000
+      );
+
     },
-    150
+    250
   );
 
 }
