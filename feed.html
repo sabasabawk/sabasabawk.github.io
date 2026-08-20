@@ -468,6 +468,19 @@ a:focus-visible{
 
 
 /* =====================================================
+   LOAD MORE / END OF FEED
+===================================================== */
+
+#loadMoreSentinel{
+  width:100%;
+  padding:20px;
+  text-align:center;
+  color:#8a95a1;
+  font-size:14px;
+}
+
+
+/* =====================================================
    SMALL SCREEN
 ===================================================== */
 
@@ -1175,6 +1188,16 @@ a:focus-visible{
 
   </main>
 
+
+  <!-- =================================================
+       LOAD MORE SENTINEL
+       (invisible marker — triggers loading the
+       next batch of older posts when scrolled
+       into view; also shows "no more posts")
+  ================================================== -->
+
+  <div id="loadMoreSentinel"></div>
+
 </div>
 
 
@@ -1345,6 +1368,7 @@ a:focus-visible{
 
 /* =====================================================
    FIREBASE IMPORTS
+   (limit + startAfter added for pagination)
 ===================================================== */
 
 import{
@@ -1358,10 +1382,13 @@ import{
   onSnapshot,
   doc,
   getDoc,
+  getDocs,
   updateDoc,
   deleteDoc,
   serverTimestamp,
-  onAuthStateChanged
+  onAuthStateChanged,
+  limit,
+  startAfter
 }from "./firebase.js";
 
 
@@ -1372,6 +1399,12 @@ import{
 const postsContainer =
 document.getElementById(
   "postsContainer"
+);
+
+
+const loadMoreSentinel =
+document.getElementById(
+  "loadMoreSentinel"
 );
 
 
@@ -1445,6 +1478,33 @@ const defaultProfilePicture =
 
 const userProfileCache =
 new Map();
+
+
+/* =====================================================
+   PAGINATION STATE
+   (this is what stops the app loading every
+   post at once — only POSTS_PER_PAGE load
+   to start, more load as the user scrolls)
+===================================================== */
+
+const POSTS_PER_PAGE =
+20;
+
+
+let lastVisibleDocument =
+null;
+
+
+let isLoadingMorePosts =
+false;
+
+
+let noMorePostsAvailable =
+false;
+
+
+let postsLoadObserver =
+null;
 
 
 /* =====================================================
@@ -1584,179 +1644,6 @@ function protectProfilePicture(
       once:true
     }
   );
-
-}
-
-
-/* =====================================================
-   LOAD LATEST AUTHOR PROFILE INFORMATION
-===================================================== */
-
-async function loadLatestAuthorPicture(
-  authorId,
-  imageElement,
-  verifiedBadgeElement = null
-){
-
-  if(
-    !authorId ||
-    !imageElement
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    let profileData =
-    {};
-
-
-    /* Use an already loaded profile */
-
-    if(
-      userProfileCache.has(
-        authorId
-      )
-    ){
-
-      profileData =
-      userProfileCache.get(
-        authorId
-      );
-
-    }else{
-
-      const profileReference =
-      doc(
-        db,
-        "users",
-        authorId
-      );
-
-
-      const profileSnapshot =
-      await getDoc(
-        profileReference
-      );
-
-
-      if(
-        profileSnapshot.exists()
-      ){
-
-        profileData =
-        profileSnapshot.data();
-
-      }
-
-
-      userProfileCache.set(
-        authorId,
-        profileData
-      );
-
-    }
-
-
-    /* Latest profile picture */
-
-    const latestProfilePicture =
-    getFirstValue(
-      profileData.profilePicture,
-      profileData.picture,
-      profileData.photoURL,
-      profileData.photoUrl,
-      profileData.profileImage,
-      profileData.profilePhoto,
-      profileData.imageUrl
-    );
-
-
-    if(latestProfilePicture){
-
-      imageElement.src =
-      latestProfilePicture;
-
-    }
-
-
-    /* Verification information */
-
-    const accountIsVerified =
-    profileData.verified === true;
-
-
-    const accountType =
-    getFirstValue(
-      profileData.accountType,
-      profileData.userType,
-      profileData.profileType,
-      "member"
-    ).toLowerCase();
-
-
-    if(
-      verifiedBadgeElement
-    ){
-
-      verifiedBadgeElement
-      .classList
-      .remove(
-        "show",
-        "ministry"
-      );
-
-
-      if(
-        accountIsVerified
-      ){
-
-        verifiedBadgeElement
-        .classList
-        .add(
-          "show"
-        );
-
-
-        if(
-          accountType ===
-          "ministry"
-        ){
-
-          verifiedBadgeElement
-          .classList
-          .add(
-            "ministry"
-          );
-
-
-          verifiedBadgeElement
-          .textContent =
-          "✔ Ministry";
-
-        }else{
-
-          verifiedBadgeElement
-          .textContent =
-          "✔ Verified";
-
-        }
-
-      }
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Error loading author profile information:",
-      error
-    );
-
-  }
 
 }
 
@@ -1999,13 +1886,34 @@ function startCommunityFeed(){
   stopPostsListener();
 
 
+  if(
+    postsLoadObserver
+  ){
+
+    postsLoadObserver.disconnect();
+
+  }
+
+
   /*
-     Clear cached profile information so
-     profile pictures and verification
-     information can reload correctly.
+     Reset pagination so a refresh
+     starts back at the newest posts.
   */
 
-  userProfileCache.clear();
+  lastVisibleDocument =
+  null;
+
+
+  noMorePostsAvailable =
+  false;
+
+
+  isLoadingMorePosts =
+  false;
+
+
+  loadMoreSentinel.textContent =
+  "";
 
 
   showLoadingMessage();
@@ -2205,11 +2113,18 @@ onAuthStateChanged(
 /* =====================================================
    PART 8 OF 10
    LOAD COMMUNITY POSTS FROM FIRESTORE
+   (FIRST PAGE = LIVE / REALTIME,
+   OLDER PAGES = LOADED ON SCROLL)
 ===================================================== */
 
 
 /* =====================================================
-   LOAD POSTS
+   LOAD FIRST PAGE OF POSTS (REALTIME)
+
+   Only the newest POSTS_PER_PAGE posts are
+   subscribed to live. This is what fixes the
+   slow opening — the app no longer downloads
+   every post that has ever been made.
 ===================================================== */
 
 function loadCommunityPosts(){
@@ -2223,12 +2138,15 @@ function loadCommunityPosts(){
     );
 
 
-    const postsQuery =
+    const firstPageQuery =
     query(
       postsReference,
       orderBy(
         "timestamp",
         "desc"
+      ),
+      limit(
+        POSTS_PER_PAGE
       )
     );
 
@@ -2236,7 +2154,7 @@ function loadCommunityPosts(){
     unsubscribePosts =
     onSnapshot(
 
-      postsQuery,
+      firstPageQuery,
 
 
       function(snapshot){
@@ -2248,6 +2166,9 @@ function loadCommunityPosts(){
         if(snapshot.empty){
 
           showEmptyMessage();
+
+          noMorePostsAvailable =
+          true;
 
           return;
 
@@ -2304,6 +2225,32 @@ function loadCommunityPosts(){
           return;
 
         }
+
+
+        /*
+           Remember the last document in this
+           batch so "load more" knows where
+           to continue from.
+        */
+
+        lastVisibleDocument =
+        snapshot.docs[
+          snapshot.docs.length - 1
+        ];
+
+
+        /*
+           If fewer posts came back than a
+           full page, there is nothing older
+           left to load.
+        */
+
+        noMorePostsAvailable =
+        snapshot.docs.length <
+        POSTS_PER_PAGE;
+
+
+        updateLoadMoreSentinel();
 
 
         startVideoAutoPlay();
@@ -2387,6 +2334,227 @@ function loadCommunityPosts(){
   }
 
 }
+
+
+/* =====================================================
+   LOAD OLDER POSTS (CALLED WHEN THE USER
+   SCROLLS NEAR THE BOTTOM OF THE FEED)
+
+   This uses a one-time read (getDocs), not a
+   live listener — older posts do not need to
+   update in realtime, which keeps this fast
+   and cheap on Firestore reads.
+===================================================== */
+
+async function loadMoreCommunityPosts(){
+
+  if(
+    isLoadingMorePosts ||
+    noMorePostsAvailable ||
+    !lastVisibleDocument
+  ){
+
+    return;
+
+  }
+
+
+  isLoadingMorePosts =
+  true;
+
+
+  loadMoreSentinel.textContent =
+  "Loading more posts...";
+
+
+  try{
+
+    const postsReference =
+    collection(
+      db,
+      "communityPosts"
+    );
+
+
+    const nextPageQuery =
+    query(
+      postsReference,
+      orderBy(
+        "timestamp",
+        "desc"
+      ),
+      startAfter(
+        lastVisibleDocument
+      ),
+      limit(
+        POSTS_PER_PAGE
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(
+      nextPageQuery
+    );
+
+
+    if(snapshot.empty){
+
+      noMorePostsAvailable =
+      true;
+
+
+      updateLoadMoreSentinel();
+
+
+      return;
+
+    }
+
+
+    snapshot.forEach(
+      function(postDocument){
+
+        try{
+
+          const postData = {
+
+            id:
+            postDocument.id,
+
+            ...postDocument.data()
+
+          };
+
+
+          const postCard =
+          createPostCard(
+            postData
+          );
+
+
+          postsContainer.appendChild(
+            postCard
+          );
+
+        }catch(error){
+
+          console.error(
+            "Error creating post card:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    lastVisibleDocument =
+    snapshot.docs[
+      snapshot.docs.length - 1
+    ];
+
+
+    noMorePostsAvailable =
+    snapshot.docs.length <
+    POSTS_PER_PAGE;
+
+
+    startVideoAutoPlay();
+
+
+  }catch(error){
+
+    console.error(
+      "Error loading more community posts:",
+      error
+    );
+
+
+    loadMoreSentinel.textContent =
+    "Could not load more posts. Scroll to try again.";
+
+
+    isLoadingMorePosts =
+    false;
+
+
+    return;
+
+  }
+
+
+  isLoadingMorePosts =
+  false;
+
+
+  updateLoadMoreSentinel();
+
+}
+
+
+/* =====================================================
+   UPDATE THE LOAD-MORE SENTINEL TEXT
+===================================================== */
+
+function updateLoadMoreSentinel(){
+
+  if(noMorePostsAvailable){
+
+    loadMoreSentinel.textContent =
+    postsContainer.children.length >
+    0
+    ? "You're all caught up 🙏"
+    : "";
+
+  }else{
+
+    loadMoreSentinel.textContent =
+    "";
+
+  }
+
+}
+
+
+/* =====================================================
+   WATCH FOR THE SENTINEL SCROLLING INTO VIEW
+   AND LOAD THE NEXT PAGE AUTOMATICALLY
+===================================================== */
+
+postsLoadObserver =
+new IntersectionObserver(
+
+  function(entries){
+
+    entries.forEach(
+      function(entry){
+
+        if(
+          entry.isIntersecting
+        ){
+
+          loadMoreCommunityPosts();
+
+        }
+
+      }
+    );
+
+  },
+
+  {
+    rootMargin:
+    "300px"
+  }
+
+);
+
+
+postsLoadObserver.observe(
+  loadMoreSentinel
+);
 /* =====================================================
    PART 9 OF 10
    CREATE EACH COMMUNITY POST CARD
@@ -2566,6 +2734,13 @@ function createPostCard(postData){
 
   /* =================================================
      POST HEADER
+
+     NOTE: the profile picture and verified
+     badge now use ONLY the data already
+     stored on the post itself — no extra
+     Firestore read per post. This is the
+     second fix: it removes one network
+     round-trip per author on every load.
   ================================================= */
 
   const postHeader =
@@ -2583,6 +2758,9 @@ function createPostCard(postData){
 
   profileImage.src =
   authorPicture;
+
+  profileImage.loading =
+  "lazy";
 
   profileImage.alt =
   `${authorName}'s profile picture`;
@@ -2623,8 +2801,48 @@ function createPostCard(postData){
   verifiedBadge.className =
   "verifiedBadge";
 
-  verifiedBadge.textContent =
-  "✔ Verified";
+
+  const accountIsVerified =
+  postData.verified === true;
+
+
+  const accountType =
+  getFirstValue(
+    postData.accountType,
+    postData.userType,
+    postData.profileType,
+    "member"
+  ).toLowerCase();
+
+
+  if(accountIsVerified){
+
+    verifiedBadge.classList.add(
+      "show"
+    );
+
+
+    if(
+      accountType ===
+      "ministry"
+    ){
+
+      verifiedBadge.classList.add(
+        "ministry"
+      );
+
+
+      verifiedBadge.textContent =
+      "✔ Ministry";
+
+    }else{
+
+      verifiedBadge.textContent =
+      "✔ Verified";
+
+    }
+
+  }
 
 
   authorNameRow.appendChild(
@@ -2668,13 +2886,6 @@ function createPostCard(postData){
 
   postCard.appendChild(
     postHeader
-  );
-
-
-  loadLatestAuthorPicture(
-    authorId,
-    profileImage,
-    verifiedBadge
   );
 
 
@@ -3904,7 +4115,7 @@ refreshButton.addEventListener(
    SCROLL TO A SHARED POST
 ===================================================== */
 
-function scrollToSharedPost(){
+async function scrollToSharedPost(){
 
   const urlParameters =
   new URLSearchParams(
@@ -3925,10 +4136,80 @@ function scrollToSharedPost(){
   }
 
 
-  const sharedPost =
+  let sharedPost =
   document.getElementById(
     `post-${sharedPostId}`
   );
+
+
+  /*
+     The post is not in the currently loaded
+     batch (pagination only loads the newest
+     posts first) — fetch this one post
+     directly and place it at the top of the
+     feed so a notification link always
+     reaches the exact post it points to.
+  */
+
+  if(!sharedPost){
+
+    try{
+
+      const postReference =
+      doc(
+        db,
+        "communityPosts",
+        sharedPostId
+      );
+
+
+      const postSnapshot =
+      await getDoc(
+        postReference
+      );
+
+
+      if(
+        postSnapshot.exists()
+      ){
+
+        const postData = {
+
+          id:
+          postSnapshot.id,
+
+          ...postSnapshot.data()
+
+        };
+
+
+        const postCard =
+        createPostCard(
+          postData
+        );
+
+
+        postsContainer.insertBefore(
+          postCard,
+          postsContainer.firstChild
+        );
+
+
+        sharedPost =
+        postCard;
+
+      }
+
+    }catch(error){
+
+      console.error(
+        "Error loading shared post:",
+        error
+      );
+
+    }
+
+  }
 
 
   if(!sharedPost){
@@ -3971,6 +4252,15 @@ window.addEventListener(
     stopPostsListener();
 
     stopNotificationListener();
+
+
+    if(
+      postsLoadObserver
+    ){
+
+      postsLoadObserver.disconnect();
+
+    }
 
   }
 );
