@@ -1722,6 +1722,9 @@ if(refreshButton){
 }
 /* =====================================================
    BACK BUTTON
+   (fixed: was pointing to community.html,
+   which does not exist in this app — the
+   actual Community Wall page is feed.html)
 ===================================================== */
 
 if(backButton){
@@ -1731,7 +1734,7 @@ if(backButton){
     ()=>{
 
       window.location.href =
-      "community.html";
+      "feed.html";
 
     }
   );
