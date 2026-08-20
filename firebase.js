@@ -40,7 +40,9 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  writeBatch
+  writeBatch,
+  limit,
+  startAfter
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
@@ -130,6 +132,8 @@ export {
   onSnapshot,
   serverTimestamp,
   writeBatch,
+  limit,
+  startAfter,
 
 
   /* AUTHENTICATION */
