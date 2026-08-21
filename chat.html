@@ -3566,7 +3566,10 @@ import{
   onSnapshot,
   serverTimestamp,
   arrayUnion,
-  onAuthStateChanged
+  onAuthStateChanged,
+  limit,
+  startAfter,
+  writeBatch
 }from "./firebase.js";
 
 
@@ -10152,18 +10155,25 @@ async function markMessageAsRead(
 
 
 /* =====================================================
-   UPDATE INCOMING MESSAGE RECEIPTS
+   BATCH-UPDATE DELIVERED/READ RECEIPTS
+
+   Replaces doing one network write per unread
+   message (which is what made opening a chat
+   with several unread messages feel slow) with
+   a single combined write. Also no longer needs
+   an extra read (getDoc) per message first,
+   because it reuses the message data that was
+   already loaded by the message listener.
 ===================================================== */
 
-async function updateIncomingMessageReceipts(
-  messageId,
-  messageData
+async function batchUpdateIncomingReceipts(
+  itemsToUpdate
 ){
 
   if(
     !currentUser ||
-    messageData.senderId ===
-    currentUser.uid
+    !conversationId ||
+    itemsToUpdate.length === 0
   ){
 
     return;
@@ -10171,20 +10181,69 @@ async function updateIncomingMessageReceipts(
   }
 
 
-  await markMessageAsDelivered(
-    messageId,
-    messageData
-  );
+  try{
+
+    const batch =
+    writeBatch(db);
 
 
-  if(
+    const isPageVisible =
     document.visibilityState ===
-    "visible"
-  ){
+    "visible";
 
-    await markMessageAsRead(
-      messageId,
-      messageData
+
+    itemsToUpdate.forEach(
+      function(item){
+
+        const messageReference =
+        doc(
+          db,
+          "conversations",
+          conversationId,
+          "messages",
+          item.id
+        );
+
+
+        const updateData = {
+
+          delivered:
+          true,
+
+          deliveredAt:
+          item.data.deliveredAt ||
+          serverTimestamp()
+
+        };
+
+
+        if(isPageVisible){
+
+          updateData.read =
+          true;
+
+          updateData.readAt =
+          serverTimestamp();
+
+        }
+
+
+        batch.update(
+          messageReference,
+          updateData
+        );
+
+      }
+    );
+
+
+    await batch.commit();
+
+  }catch(error){
+
+    console.error(
+      "Batch receipt update error:",
+      error
     );
 
   }
@@ -10216,51 +10275,35 @@ async function markVisibleConversationAsRead(){
   );
 
 
-  for(
-    const messageRow
-    of visibleMessageRows
-  ){
-
-    const messageId =
-    messageRow.dataset.messageId;
+  const itemsToUpdate =
+  [];
 
 
-    if(!messageId){
+  visibleMessageRows.forEach(
+    function(messageRow){
 
-      continue;
-
-    }
-
-
-    try{
-
-      const messageReference =
-      doc(
-        db,
-        "conversations",
-        conversationId,
-        "messages",
-        messageId
-      );
+      const messageId =
+      messageRow.dataset.messageId;
 
 
-      const messageSnapshot =
-      await getDoc(
-        messageReference
-      );
+      if(!messageId){
 
-
-      if(
-        !messageSnapshot.exists()
-      ){
-
-        continue;
+        return;
 
       }
 
 
       const messageData =
-      messageSnapshot.data();
+      loadedMessagesById.get(
+        messageId
+      );
+
+
+      if(!messageData){
+
+        return;
+
+      }
 
 
       if(
@@ -10270,38 +10313,25 @@ async function markVisibleConversationAsRead(){
         true
       ){
 
-        await updateDoc(
-          messageReference,
+        itemsToUpdate.push(
           {
+            id:
+            messageId,
 
-            delivered:
-            true,
-
-            deliveredAt:
-            messageData.deliveredAt ||
-            serverTimestamp(),
-
-            read:
-            true,
-
-            readAt:
-            serverTimestamp()
-
+            data:
+            messageData
           }
         );
 
       }
 
-    }catch(error){
-
-      console.error(
-        "Unable to update visible message:",
-        error
-      );
-
     }
+  );
 
-  }
+
+  await batchUpdateIncomingReceipts(
+    itemsToUpdate
+  );
 
 }
 
@@ -10415,11 +10445,51 @@ function renderMessageLoadError(){
 
 
 /* =====================================================
+   MESSAGE PAGINATION STATE
+
+   Instead of downloading the entire message
+   history between two people every time the
+   chat opens (which is what was causing the
+   delay in older conversations), only the most
+   recent MESSAGES_PAGE_SIZE messages load and
+   stay live. Older messages load on request via
+   "Load older messages".
+===================================================== */
+
+const MESSAGES_PAGE_SIZE =
+50;
+
+
+let latestMessagesDocsCache =
+[];
+
+
+let olderMessagesDocs =
+[];
+
+
+let oldestLoadedMessageDoc =
+null;
+
+
+let noOlderMessages =
+false;
+
+
+let isLoadingOlderMessages =
+false;
+
+
+const loadedMessagesById =
+new Map();
+
+
+/* =====================================================
    RENDER ALL MESSAGES
 ===================================================== */
 
 async function renderMessages(
-  messagesSnapshot
+  isLoadingOlder = false
 ){
 
   const userWasNearBottom =
@@ -10430,18 +10500,63 @@ async function renderMessages(
   ) < 150;
 
 
+  const combinedDocs =
+  olderMessagesDocs.concat(
+    latestMessagesDocsCache
+  );
+
+
   chatArea.innerHTML =
   "";
 
 
   if(
-    messagesSnapshot.empty
+    combinedDocs.length === 0
   ){
 
     renderEmptyConversation();
 
 
     return;
+
+  }
+
+
+  if(!noOlderMessages){
+
+    const loadOlderButton =
+    document.createElement(
+      "button"
+    );
+
+
+    loadOlderButton.type =
+    "button";
+
+
+    loadOlderButton.textContent =
+    isLoadingOlderMessages
+    ? "Loading..."
+    : "⬆ Load older messages";
+
+
+    loadOlderButton.disabled =
+    isLoadingOlderMessages;
+
+
+    loadOlderButton.style.cssText =
+    "display:block;margin:0 auto 14px;padding:9px 18px;border:none;border-radius:20px;background:#e5f1ff;color:#0056a6;font-size:12px;font-weight:900;";
+
+
+    loadOlderButton.addEventListener(
+      "click",
+      loadOlderMessages
+    );
+
+
+    chatArea.appendChild(
+      loadOlderButton
+    );
 
   }
 
@@ -10454,11 +10569,11 @@ async function renderMessages(
   false;
 
 
-  const receiptUpdates =
+  const itemsNeedingReceiptUpdate =
   [];
 
 
-  messagesSnapshot.forEach(
+  combinedDocs.forEach(
     function(messageSnapshot){
 
       const messageId =
@@ -10467,6 +10582,12 @@ async function renderMessages(
 
       const messageData =
       messageSnapshot.data();
+
+
+      loadedMessagesById.set(
+        messageId,
+        messageData
+      );
 
 
       const dateLabel =
@@ -10531,14 +10652,27 @@ async function renderMessages(
       if(
         currentUser &&
         messageData.senderId !==
-        currentUser.uid
+        currentUser.uid &&
+        (
+          messageData.delivered !==
+          true ||
+          (
+            document.visibilityState ===
+            "visible" &&
+            messageData.read !==
+            true
+          )
+        )
       ){
 
-        receiptUpdates.push(
-          updateIncomingMessageReceipts(
+        itemsNeedingReceiptUpdate.push(
+          {
+            id:
             messageId,
+
+            data:
             messageData
-          )
+          }
         );
 
       }
@@ -10548,19 +10682,22 @@ async function renderMessages(
 
 
   if(
-    receiptUpdates.length > 0
+    itemsNeedingReceiptUpdate.length > 0
   ){
 
-    await Promise.allSettled(
-      receiptUpdates
+    await batchUpdateIncomingReceipts(
+      itemsNeedingReceiptUpdate
     );
 
   }
 
 
   if(
-    userWasNearBottom ||
-    newMessageIndicatorAdded
+    !isLoadingOlder &&
+    (
+      userWasNearBottom ||
+      newMessageIndicatorAdded
+    )
   ){
 
     scrollToLatestMessage();
@@ -10571,7 +10708,132 @@ async function renderMessages(
 
 
 /* =====================================================
+   LOAD OLDER MESSAGES ON REQUEST
+===================================================== */
+
+async function loadOlderMessages(){
+
+  if(
+    isLoadingOlderMessages ||
+    noOlderMessages ||
+    !oldestLoadedMessageDoc
+  ){
+
+    return;
+
+  }
+
+
+  isLoadingOlderMessages =
+  true;
+
+
+  await renderMessages(
+    true
+  );
+
+
+  try{
+
+    const olderQuery =
+    query(
+      getMessagesCollectionReference(),
+      orderBy(
+        "timestamp",
+        "desc"
+      ),
+      startAfter(
+        oldestLoadedMessageDoc
+      ),
+      limit(
+        MESSAGES_PAGE_SIZE
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(
+      olderQuery
+    );
+
+
+    if(
+      snapshot.docs.length > 0
+    ){
+
+      oldestLoadedMessageDoc =
+      snapshot.docs[
+        snapshot.docs.length - 1
+      ];
+
+    }
+
+
+    noOlderMessages =
+    snapshot.docs.length <
+    MESSAGES_PAGE_SIZE;
+
+
+    const orderedOlderDocs =
+    snapshot.docs
+    .slice()
+    .reverse();
+
+
+    olderMessagesDocs =
+    orderedOlderDocs.concat(
+      olderMessagesDocs
+    );
+
+
+    const previousScrollHeight =
+    chatArea.scrollHeight;
+
+
+    const previousScrollTop =
+    chatArea.scrollTop;
+
+
+    isLoadingOlderMessages =
+    false;
+
+
+    await renderMessages(
+      true
+    );
+
+
+    chatArea.scrollTop =
+    (
+      chatArea.scrollHeight -
+      previousScrollHeight
+    ) +
+    previousScrollTop;
+
+  }catch(error){
+
+    console.error(
+      "Unable to load older messages:",
+      error
+    );
+
+
+    isLoadingOlderMessages =
+    false;
+
+
+    await renderMessages(
+      true
+    );
+
+  }
+
+}
+
+
+/* =====================================================
    LOAD REAL-TIME MESSAGES
+   (most recent MESSAGES_PAGE_SIZE only)
 ===================================================== */
 
 function loadMessages(){
@@ -10587,6 +10849,25 @@ function loadMessages(){
 
 
   stopMessagesListener();
+
+
+  loadedMessagesById.clear();
+
+
+  olderMessagesDocs =
+  [];
+
+
+  latestMessagesDocsCache =
+  [];
+
+
+  oldestLoadedMessageDoc =
+  null;
+
+
+  noOlderMessages =
+  false;
 
 
   chatArea.innerHTML = `
@@ -10605,7 +10886,10 @@ function loadMessages(){
     getMessagesCollectionReference(),
     orderBy(
       "timestamp",
-      "asc"
+      "desc"
+    ),
+    limit(
+      MESSAGES_PAGE_SIZE
     )
   );
 
@@ -10619,9 +10903,30 @@ function loadMessages(){
 
       try{
 
-        await renderMessages(
-          messagesSnapshot
-        );
+        if(
+          messagesSnapshot.docs.length > 0
+        ){
+
+          oldestLoadedMessageDoc =
+          messagesSnapshot.docs[
+            messagesSnapshot.docs.length - 1
+          ];
+
+        }
+
+
+        noOlderMessages =
+        messagesSnapshot.docs.length <
+        MESSAGES_PAGE_SIZE;
+
+
+        latestMessagesDocsCache =
+        messagesSnapshot.docs
+        .slice()
+        .reverse();
+
+
+        await renderMessages();
 
       }catch(error){
 
@@ -11173,6 +11478,14 @@ function startTypingListener(){
 function cleanUpChatPage(){
 stopIncomingCallListener();
   stopMessagesListener();
+
+  loadedMessagesById.clear();
+
+  olderMessagesDocs =
+  [];
+
+  latestMessagesDocsCache =
+  [];
 
   stopOtherMemberListener();
 
