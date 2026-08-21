@@ -319,42 +319,136 @@ a:focus-visible{
 .quickPostButton:active{
   transform:scale(.995);
 }
-
-
 /* =====================================================
-   QUICK MEDIA BUTTONS
+   HORIZONTAL MOMENTS CAROUSEL
 ===================================================== */
 
-.quickMediaLinks{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:15px;
-  padding-top:14px;
-  border-top:1px solid #e2e7eb;
+.momentsContainer {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e7eb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
-.quickMediaLink{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  min-height:42px;
-  padding:10px 6px;
-  border-radius:12px;
-  color:#35414c;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  transition:
-    background .2s ease,
-    color .2s ease;
+.momentsContainer::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
-.quickMediaLink:hover{
-  background:#edf3f8;
-  color:#0873c9;
+.momentItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 68px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: #35414c;
+  cursor: pointer;
 }
+
+.momentAvatarWrapper {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid #087bd1; /* Active Story Ring */
+  background: #ffffff;
+}
+
+.momentAvatarWrapper.add {
+  border: 2px dashed #087bd1;
+}
+
+.momentAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.addMomentBadge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #087bd1;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid #ffffff;
+}
+
+.momentLabel {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+
+  <!-- =================================================
+       QUICK CREATE POST BOX WITH MOMENTS
+  ================================================== -->
+
+  <section class="quickPostBox">
+
+    <div class="quickPostRow">
+
+      <img
+        id="quickPostAvatar"
+        class="quickPostAvatar"
+        src="images/profile.png"
+        alt="Your profile picture"
+      >
+
+      <button
+        type="button"
+        id="quickPostButton"
+        class="quickPostButton"
+      >
+        Share encouragement, testimony or prayer...
+      </button>
+
+    </div>
+
+    <!-- HORIZONTAL MOMENTS CAROUSEL -->
+    <div class="momentsContainer" id="momentsContainer">
+
+      <!-- Add New Moment Button -->
+      <a href="faith-moments.html?action=create" class="momentItem">
+        <div class="momentAvatarWrapper add">
+          <img
+            id="momentAddAvatar"
+            src="images/profile.png"
+            class="momentAvatar"
+            alt="Add Moment"
+          >
+          <span class="addMomentBadge">+</span>
+        </div>
+        <span class="momentLabel">Add Moment</span>
+      </a>
+
+      <!-- Dynamic Moments rendered via JavaScript -->
+      <div id="dynamicMoments" style="display: flex; gap: 12px;"></div>
+
+    </div>
+
+  </section>
+
 
 
 /* =====================================================
@@ -1390,6 +1484,105 @@ import{
   limit,
   startAfter
 }from "./firebase.js";
+/* =====================================================
+   MOMENTS CAROUSEL MODULE
+===================================================== */
+
+const dynamicMomentsContainer = 
+  document.getElementById("dynamicMoments");
+
+const momentAddAvatar = 
+  document.getElementById("momentAddAvatar");
+
+
+/* =====================================================
+   LOAD DYNAMIC MOMENTS FROM FIRESTORE
+===================================================== */
+
+async function loadMomentsCarousel() {
+  if (!dynamicMomentsContainer) return;
+
+  try {
+    const momentsReference = collection(db, "moments");
+    
+    const momentsQuery = query(
+      momentsReference,
+      orderBy("timestamp", "desc"),
+      limit(10)
+    );
+
+    onSnapshot(momentsQuery, (snapshot) => {
+      dynamicMomentsContainer.innerHTML = "";
+
+      if (snapshot.empty) return;
+
+      snapshot.forEach((momentDocument) => {
+        const momentData = momentDocument.data();
+        
+        const authorName = getFirstValue(
+          momentData.authorName,
+          momentData.name,
+          momentData.displayName,
+          "Member"
+        );
+
+        const authorPicture = getFirstValue(
+          momentData.authorPicture,
+          momentData.picture,
+          momentData.photoURL,
+          defaultProfilePicture
+        );
+
+        const momentItem = document.createElement("a");
+        momentItem.href = `faith-moments.html?id=${encodeURIComponent(momentDocument.id)}`;
+        momentItem.className = "momentItem";
+        
+        momentItem.innerHTML = `
+          <div class="momentAvatarWrapper">
+            <img 
+              src="${authorPicture}" 
+              class="momentAvatar" 
+              alt="${authorName}'s story"
+              loading="lazy"
+            >
+          </div>
+          <span class="momentLabel">${authorName}</span>
+        `;
+
+        const imgElement = momentItem.querySelector("img");
+        protectProfilePicture(imgElement);
+
+        dynamicMomentsContainer.appendChild(momentItem);
+      });
+    });
+
+  } catch (error) {
+    console.error("Error fetching moments:", error);
+  }
+}
+
+
+/* =====================================================
+   SYNC ADD-MOMENT AVATAR WITH USER PROFILE
+===================================================== */
+
+if (quickPostAvatar && momentAddAvatar) {
+  const avatarObserver = new MutationObserver(() => {
+    momentAddAvatar.src = quickPostAvatar.src;
+  });
+
+  avatarObserver.observe(quickPostAvatar, { 
+    attributes: true, 
+    attributeFilter: ["src"] 
+  });
+}
+
+
+/* =====================================================
+   TRIGGER MOMENTS LOAD
+===================================================== */
+
+loadMomentsCarousel();
 
 
 /* =====================================================
