@@ -322,38 +322,134 @@ a:focus-visible{
 
 
 /* =====================================================
-   QUICK MEDIA BUTTONS
+   MOMENTS STRIP (STORIES-STYLE)
 ===================================================== */
 
-.quickMediaLinks{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:15px;
-  padding-top:14px;
-  border-top:1px solid #e2e7eb;
+.momentsSection{
+  margin-top:16px;
 }
 
-.quickMediaLink{
+.momentsRow{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  padding:2px 2px 6px;
+  scrollbar-width:thin;
+  scrollbar-color:#c4d5e1 transparent;
+}
+
+.momentsRow::-webkit-scrollbar{
+  height:5px;
+}
+
+.momentsRow::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.momentsRow::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  background:#c4d5e1;
+}
+
+.momentCircleButton{
+  width:72px;
+  flex:0 0 72px;
+  border:0;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  color:#222222;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.momentAvatarOuter{
+  position:relative;
+  width:64px;
+  height:64px;
+  padding:3px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#087bd1,#55c1f1);
+  box-shadow:0 5px 14px rgba(30,75,104,.15);
+  transition:transform .2s ease;
+}
+
+.momentCircleButton:hover .momentAvatarOuter{
+  transform:translateY(-2px);
+}
+
+.momentCircleButton:active .momentAvatarOuter{
+  transform:scale(.95);
+}
+
+.momentAvatarInner{
+  width:100%;
+  height:100%;
+  border:3px solid #ffffff;
+  border-radius:50%;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
-  min-height:42px;
-  padding:10px 6px;
-  border-radius:12px;
-  color:#35414c;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  transition:
-    background .2s ease,
-    color .2s ease;
+  background:#e7eef3;
+  color:#60727f;
+  font-size:20px;
+  font-weight:900;
 }
 
-.quickMediaLink:hover{
-  background:#edf3f8;
-  color:#0873c9;
+.momentAvatarInner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.momentTypeBadge{
+  position:absolute;
+  right:-2px;
+  bottom:-2px;
+  min-width:23px;
+  height:23px;
+  padding:0 5px;
+  border:2px solid #ffffff;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  font-size:12px;
+  box-shadow:0 3px 9px rgba(0,0,0,.16);
+}
+
+.momentName{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1.25;
+}
+
+.createMomentCircle .momentAvatarOuter{
+  background:linear-gradient(145deg,#dce8f0,#eef4f8);
+}
+
+.createMomentCircle .momentAvatarInner{
+  background:#ffffff;
+  color:#087bd1;
+  font-size:26px;
+}
+
+.createMomentCircle .momentTypeBadge{
+  background:#087bd1;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:900;
 }
 
 
@@ -1114,29 +1210,45 @@ a:focus-visible{
     </div>
 
 
-    <div class="quickMediaLinks">
+  </section>
+
+
+  <!-- =================================================
+       MOMENTS STRIP (like Facebook/Instagram Stories)
+  ================================================== -->
+
+  <section class="momentsSection">
+
+    <div
+      id="momentsRow"
+      class="momentsRow"
+      aria-label="Faith Moments"
+    >
 
       <a
-        href="createpost.html?media=image"
-        class="quickMediaLink"
+        href="create-faith-moment.html"
+        class="momentCircleButton createMomentCircle"
       >
-        📷 Photo
-      </a>
 
+        <div class="momentAvatarOuter">
 
-      <a
-        href="createpost.html?media=video"
-        class="quickMediaLink"
-      >
-        🎥 Video
-      </a>
+          <div
+            id="quickMomentAvatar"
+            class="momentAvatarInner"
+          >
+            ＋
+          </div>
 
+          <span class="momentTypeBadge">
+            ＋
+          </span>
 
-      <a
-        href="createpost.html"
-        class="quickMediaLink"
-      >
-        ✍️ Post
+        </div>
+
+        <span class="momentName">
+          Your Moment
+        </span>
+
       </a>
 
     </div>
@@ -1450,6 +1562,18 @@ document.getElementById(
 );
 
 
+const momentsRow =
+document.getElementById(
+  "momentsRow"
+);
+
+
+const quickMomentAvatar =
+document.getElementById(
+  "quickMomentAvatar"
+);
+
+
 /* =====================================================
    GLOBAL VARIABLES
 ===================================================== */
@@ -1467,6 +1591,10 @@ null;
 
 
 let unsubscribeNotifications =
+null;
+
+
+let unsubscribeMomentsStrip =
 null;
 
 
@@ -1805,6 +1933,14 @@ async function loadCurrentUserProfile(){
     quickPostAvatar.src =
     profilePicture;
 
+
+    if(quickMomentAvatar){
+
+      quickMomentAvatar.innerHTML =
+      `<img src="${profilePicture}" alt="Your profile picture">`;
+
+    }
+
   }catch(error){
 
     console.error(
@@ -2070,6 +2206,9 @@ onAuthStateChanged(
 
 
     startCommunityFeed();
+
+
+    startMomentsStripListener();
 
   },
 
@@ -4253,6 +4392,8 @@ window.addEventListener(
 
     stopNotificationListener();
 
+    stopMomentsStripListener();
+
 
     if(
       postsLoadObserver
@@ -4407,6 +4548,371 @@ function startVideoAutoPlay(){
       );
 
     }
+  );
+
+}
+
+
+/* =====================================================
+   FAITH MOMENTS STRIP
+   (Instagram/Facebook-style horizontal strip.
+   Pulls active moments — those less than 24 hours
+   old — from the same "faithMoments" collection
+   used by faith-moments.html. Tapping a circle
+   opens that moment in the full viewer there.)
+===================================================== */
+
+function isMomentStillActiveForStrip(
+  momentData
+){
+
+  const rawTimestamp =
+  momentData.timestamp ||
+  momentData.createdAt;
+
+  if(!rawTimestamp){
+
+    return true;
+
+  }
+
+  let createdDate;
+
+  if(
+    typeof rawTimestamp.toDate ===
+    "function"
+  ){
+
+    createdDate =
+    rawTimestamp.toDate();
+
+  }else if(
+    rawTimestamp.seconds
+  ){
+
+    createdDate =
+    new Date(
+      rawTimestamp.seconds * 1000
+    );
+
+  }else{
+
+    createdDate =
+    new Date(
+      rawTimestamp
+    );
+
+  }
+
+  if(
+    Number.isNaN(
+      createdDate.getTime()
+    )
+  ){
+
+    return true;
+
+  }
+
+  const twentyFourHours =
+  24 * 60 * 60 * 1000;
+
+  return (
+    createdDate.getTime() +
+    twentyFourHours
+  ) > Date.now();
+
+}
+
+
+function getStripMomentTypeIcon(
+  type
+){
+
+  const normalizedType =
+  String(
+    type || ""
+  ).toLowerCase();
+
+  const icons = {
+
+    verse:"📖",
+    prayer:"🙏",
+    testimony:"💬",
+    photo:"🖼️",
+    video:"🎥"
+
+  };
+
+  return icons[normalizedType] || "✨";
+
+}
+
+
+function getStripInitials(
+  name
+){
+
+  const cleanName =
+  String(
+    name || "Faith Member"
+  ).trim();
+
+  const words =
+  cleanName
+  .split(/\s+/)
+  .filter(Boolean);
+
+  if(words.length === 0){
+
+    return "F";
+
+  }
+
+  return words
+  .slice(0,2)
+  .map(
+    function(word){
+
+      return word.charAt(0).toUpperCase();
+
+    }
+  )
+  .join("");
+
+}
+
+
+function renderMomentsStrip(
+  momentsSnapshot
+){
+
+  momentsRow
+  .querySelectorAll(
+    ".memberMomentCircle"
+  )
+  .forEach(
+    function(element){
+
+      element.remove();
+
+    }
+  );
+
+
+  const momentsByUser =
+  new Map();
+
+
+  momentsSnapshot.forEach(
+    function(momentDoc){
+
+      const momentData =
+      momentDoc.data();
+
+
+      if(
+        !isMomentStillActiveForStrip(
+          momentData
+        )
+      ){
+
+        return;
+
+      }
+
+
+      const privacy =
+      String(
+        momentData.privacy ||
+        "everyone"
+      ).toLowerCase();
+
+
+      const momentUserId =
+      momentData.userId ||
+      momentData.authorId ||
+      momentData.uid ||
+      "";
+
+
+      const isOwnMoment =
+      Boolean(
+        currentUser &&
+        momentUserId === currentUser.uid
+      );
+
+
+      if(
+        privacy !== "everyone" &&
+        !isOwnMoment
+      ){
+
+        return;
+
+      }
+
+
+      if(
+        !momentUserId ||
+        momentsByUser.has(momentUserId)
+      ){
+
+        return;
+
+      }
+
+
+      momentsByUser.set(
+        momentUserId,
+        {
+          id:momentDoc.id,
+          ...momentData
+        }
+      );
+
+    }
+  );
+
+
+  momentsByUser.forEach(
+    function(momentData){
+
+      const name =
+      getFirstValue(
+        momentData.name,
+        momentData.fullName,
+        momentData.displayName,
+        "Faith Connect Member"
+      );
+
+
+      const picture =
+      getFirstValue(
+        momentData.profilePicture,
+        momentData.picture,
+        momentData.photoURL
+      );
+
+
+      const typeIcon =
+      getStripMomentTypeIcon(
+        momentData.type ||
+        momentData.momentType
+      );
+
+
+      const circleLink =
+      document.createElement(
+        "a"
+      );
+
+
+      circleLink.href =
+      `faith-moments.html?moment=${encodeURIComponent(
+        momentData.id
+      )}`;
+
+
+      circleLink.className =
+      "momentCircleButton memberMomentCircle";
+
+
+      circleLink.innerHTML = `
+
+        <div class="momentAvatarOuter">
+
+          <div class="momentAvatarInner">
+
+            ${
+              picture
+              ? `<img src="${picture}" alt="${name}">`
+              : getStripInitials(name)
+            }
+
+          </div>
+
+          <span class="momentTypeBadge">
+            ${typeIcon}
+          </span>
+
+        </div>
+
+        <span class="momentName">
+          ${name}
+        </span>
+
+      `;
+
+
+      momentsRow.appendChild(
+        circleLink
+      );
+
+    }
+  );
+
+}
+
+
+function stopMomentsStripListener(){
+
+  if(
+    typeof unsubscribeMomentsStrip ===
+    "function"
+  ){
+
+    unsubscribeMomentsStrip();
+
+  }
+
+  unsubscribeMomentsStrip =
+  null;
+
+}
+
+
+function startMomentsStripListener(){
+
+  stopMomentsStripListener();
+
+
+  const momentsQuery =
+  query(
+    collection(
+      db,
+      "faithMoments"
+    ),
+    orderBy(
+      "timestamp",
+      "desc"
+    ),
+    limit(30)
+  );
+
+
+  unsubscribeMomentsStrip =
+  onSnapshot(
+
+    momentsQuery,
+
+    function(snapshot){
+
+      renderMomentsStrip(
+        snapshot
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Faith Moments strip error:",
+        error
+      );
+
+    }
+
   );
 
 }
