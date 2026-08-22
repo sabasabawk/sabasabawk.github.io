@@ -972,7 +972,7 @@
           <img
             id="postAuthorPicture"
             class="post-author-picture"
-            src="https://via.placeholder.com/100"
+            src="images/profile.png"
             alt="Post author profile picture"
           >
 
@@ -1157,7 +1157,7 @@ let currentPost = null;
 let unsubscribeComments = null;
 
 const defaultProfilePicture =
-  "https://via.placeholder.com/100";
+  "images/profile.png";
 
 
 /* =====================================================
@@ -1499,6 +1499,8 @@ function displayPost(
     postData.userPicture,
     postData.profilePicture,
     postData.photoURL,
+    postData.photoUrl,
+    postData.picture,
     defaultProfilePicture
 
   );
@@ -1511,6 +1513,7 @@ function displayPost(
     postData.message,
     postData.content,
     postData.postText,
+    postData.post,
     ""
 
   );
@@ -1521,8 +1524,11 @@ function displayPost(
 
     postData.imageURL,
     postData.imageUrl,
+    postData.photoUrl,
+    postData.photoURL,
     postData.postImage,
-    postData.photo,
+    postData.image,
+    postData.mediaUrl,
     ""
 
   );
@@ -2902,7 +2908,7 @@ backButton.addEventListener(
   ()=>{
 
     window.location.href =
-    "community.html";
+    "feed.html";
 
   }
 
