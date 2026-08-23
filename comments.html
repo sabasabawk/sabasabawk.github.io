@@ -1132,6 +1132,7 @@ import {
   updateDoc,
   deleteDoc,
   setDoc,
+  increment,
 
   query,
   orderBy,
@@ -2431,6 +2432,46 @@ commentForm.addEventListener(
 
 
       /*
+        Update the comment count stored on the
+        post itself, so the Community Wall can
+        show "💬 Comment (3)" without having to
+        read every comment for every post.
+      */
+
+      try{
+
+        await updateDoc(
+
+          doc(
+            db,
+            "communityPosts",
+            postId
+          ),
+
+          {
+            commentsCount:
+            increment(1)
+          }
+
+        );
+
+      }catch(error){
+
+        console.error(
+          "Comment count update error:",
+          error
+        );
+
+        /*
+          The comment itself is already saved —
+          a failed count update should not be
+          shown to the user as an error.
+        */
+
+      }
+
+
+      /*
         Create the notification only after
         the comment has been saved successfully.
       */
@@ -2847,6 +2888,33 @@ function setupCommentActions(
           await deleteDoc(
             commentReference
           );
+
+
+          try{
+
+            await updateDoc(
+
+              doc(
+                db,
+                "communityPosts",
+                postId
+              ),
+
+              {
+                commentsCount:
+                increment(-1)
+              }
+
+            );
+
+          }catch(error){
+
+            console.error(
+              "Comment count update error:",
+              error
+            );
+
+          }
 
         }catch(error){
 
