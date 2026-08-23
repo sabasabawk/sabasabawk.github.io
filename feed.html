@@ -1116,10 +1116,10 @@ a:focus-visible{
       <span class="appLogo">
 
         <img
-  src="images/brand-logo.png"
-  alt="SABASABA Gospel Ministry logo"
-  class="appLogoImage"
->
+          src="images/logo.png"
+          alt="SABASABA Gospel Ministry logo"
+          class="appLogoImage"
+        >
 
       </span>
 
@@ -3228,8 +3228,16 @@ function createPostCard(postData){
   commentButton.dataset.postId =
   postData.id;
 
+  const commentsCount =
+  Number(
+    postData.commentsCount
+  ) || 0;
+
+
   commentButton.innerHTML =
-  "💬 Comment";
+  commentsCount > 0
+  ? `💬 <span>${commentsCount}</span>`
+  : "💬 Comment";
 
 
   const shareButton =
