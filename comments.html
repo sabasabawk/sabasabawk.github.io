@@ -307,23 +307,6 @@
     }
 
 
-    .post-image {
-
-      width: 100%;
-      max-height: 480px;
-
-      object-fit: cover;
-
-      border-radius: 12px;
-
-      display: none;
-
-      background:
-        #eeeeee;
-
-    }
-
-
     /* =====================================================
        COMMENTS SECTION
     ===================================================== */
@@ -1003,13 +986,6 @@
           class="post-text"
         ></div>
 
-
-        <img
-          id="postImage"
-          class="post-image"
-          alt="Post image"
-        >
-
       </div>
 
     </section>
@@ -1198,11 +1174,6 @@ document.getElementById(
 const postText =
 document.getElementById(
   "postText"
-);
-
-const postImage =
-document.getElementById(
-  "postImage"
 );
 
 const commentsList =
@@ -1520,21 +1491,6 @@ function displayPost(
   );
 
 
-  const imageURL =
-  getFirstValue(
-
-    postData.imageURL,
-    postData.imageUrl,
-    postData.photoUrl,
-    postData.photoURL,
-    postData.postImage,
-    postData.image,
-    postData.mediaUrl,
-    ""
-
-  );
-
-
   const createdAt =
   getFirstValue(
 
@@ -1571,26 +1527,6 @@ function displayPost(
 
   postText.textContent =
   message;
-
-
-  if(imageURL){
-
-    postImage.src =
-    imageURL;
-
-    postImage.style.display =
-    "block";
-
-  }else{
-
-    postImage.removeAttribute(
-      "src"
-    );
-
-    postImage.style.display =
-    "none";
-
-  }
 
 
   postLoadingMessage.classList.add(
