@@ -1069,6 +1069,73 @@ a:focus-visible{
   background:#000000;
 }
 
+
+/* =====================================================
+   REELS-STYLE VIDEO VIEWER
+===================================================== */
+
+.videoReelViewer{
+  position:fixed;
+  inset:0;
+  z-index:1300;
+  display:none;
+  background:#000000;
+}
+
+.videoReelViewer.open{
+  display:block;
+}
+
+.videoReelTrack{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+.videoReelSlide{
+  position:relative;
+  width:100%;
+  height:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000000;
+}
+
+.videoReelSlide video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000000;
+}
+
+.closeReelButton{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1310;
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
+  font-size:28px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.closeReelButton:hover{
+  background:rgba(255,255,255,.35);
+}
+
 #closePhotoViewer{
   position:absolute;
   top:15px;
@@ -1512,6 +1579,40 @@ a:focus-visible{
 
 
 <!-- =====================================================
+   REELS-STYLE VIDEO VIEWER
+   (tap a video once, then scroll down for the
+   next one — each plays automatically with sound,
+   no need to tap again, like Instagram Reels)
+===================================================== -->
+
+<div
+  id="videoReelViewer"
+  class="videoReelViewer"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Video viewer"
+>
+
+  <button
+    type="button"
+    id="closeVideoReelViewer"
+    class="closeReelButton"
+    aria-label="Close video viewer"
+  >
+    ×
+  </button>
+
+
+  <div
+    id="videoReelTrack"
+    class="videoReelTrack"
+  ></div>
+
+</div>
+
+
+<!-- =====================================================
    OPEN JAVASCRIPT MODULE
 ===================================================== -->
 
@@ -1604,6 +1705,24 @@ document.getElementById(
 const closePhotoViewerButton =
 document.getElementById(
   "closePhotoViewer"
+);
+
+
+const videoReelViewer =
+document.getElementById(
+  "videoReelViewer"
+);
+
+
+const videoReelTrack =
+document.getElementById(
+  "videoReelTrack"
+);
+
+
+const closeVideoReelViewerButton =
+document.getElementById(
+  "closeVideoReelViewer"
 );
 
 
@@ -3244,7 +3363,7 @@ function createPostCard(postData){
       "click",
       function(){
 
-        openVideoViewer(
+        openVideoReelViewer(
           videoUrl
         );
 
@@ -4242,6 +4361,333 @@ function hidePhotoViewer(){
 
 
 /* =====================================================
+   REELS-STYLE VIDEO VIEWER
+
+   Tap a video once and it opens full-screen.
+   Scrolling down moves to the next video in the
+   feed, which starts playing automatically with
+   sound — no need to tap again, like Instagram
+   Reels or TikTok.
+===================================================== */
+
+let reelScrollObserver =
+null;
+
+
+function collectFeedVideoUrls(){
+
+  const videoElements =
+  document.querySelectorAll(
+    ".communityPostVideoWrapper video"
+  );
+
+
+  const videoUrls =
+  [];
+
+
+  videoElements.forEach(
+    function(videoElement){
+
+      if(
+        videoElement.src &&
+        !videoUrls.includes(
+          videoElement.src
+        )
+      ){
+
+        videoUrls.push(
+          videoElement.src
+        );
+
+      }
+
+    }
+  );
+
+
+  return videoUrls;
+
+}
+
+
+function openVideoReelViewer(
+  startingVideoUrl
+){
+
+  const videoUrls =
+  collectFeedVideoUrls();
+
+
+  if(
+    videoUrls.length === 0
+  ){
+
+    return;
+
+  }
+
+
+  videoReelTrack.innerHTML =
+  "";
+
+
+  videoUrls.forEach(
+    function(videoUrl){
+
+      const slide =
+      document.createElement(
+        "div"
+      );
+
+      slide.className =
+      "videoReelSlide";
+
+
+      const videoElement =
+      document.createElement(
+        "video"
+      );
+
+      videoElement.src =
+      videoUrl;
+
+      videoElement.controls =
+      true;
+
+      videoElement.loop =
+      true;
+
+      videoElement.playsInline =
+      true;
+
+      videoElement.preload =
+      "metadata";
+
+      videoElement.muted =
+      false;
+
+
+      slide.appendChild(
+        videoElement
+      );
+
+
+      videoReelTrack.appendChild(
+        slide
+      );
+
+    }
+  );
+
+
+  videoReelViewer.classList.add(
+    "open"
+  );
+
+
+  videoReelViewer.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+  "hidden";
+
+
+  const startingIndex =
+  Math.max(
+    0,
+    videoUrls.indexOf(
+      startingVideoUrl
+    )
+  );
+
+
+  const allSlides =
+  videoReelTrack.querySelectorAll(
+    ".videoReelSlide"
+  );
+
+
+  if(
+    allSlides[startingIndex]
+  ){
+
+    allSlides[startingIndex].scrollIntoView(
+      {
+        behavior:
+        "auto"
+      }
+    );
+
+  }
+
+
+  startReelAutoplayObserver();
+
+}
+
+
+function startReelAutoplayObserver(){
+
+  if(
+    reelScrollObserver
+  ){
+
+    reelScrollObserver.disconnect();
+
+  }
+
+
+  const allReelVideos =
+  videoReelTrack.querySelectorAll(
+    "video"
+  );
+
+
+  reelScrollObserver =
+  new IntersectionObserver(
+
+    function(entries){
+
+      entries.forEach(
+        function(entry){
+
+          const video =
+          entry.target;
+
+
+          if(
+            entry.isIntersecting &&
+            entry.intersectionRatio >=
+            0.6
+          ){
+
+            allReelVideos.forEach(
+              function(otherVideo){
+
+                if(
+                  otherVideo !==
+                  video
+                ){
+
+                  otherVideo.pause();
+
+                }
+
+              }
+            );
+
+
+            const playPromise =
+            video.play();
+
+
+            if(
+              playPromise !==
+              undefined
+            ){
+
+              playPromise.catch(
+                function(){
+
+                }
+              );
+
+            }
+
+          }else{
+
+            video.pause();
+
+          }
+
+        }
+      );
+
+    },
+
+    {
+      threshold:[
+        0,
+        0.6,
+        1
+      ]
+    }
+
+  );
+
+
+  allReelVideos.forEach(
+    function(videoElement){
+
+      reelScrollObserver.observe(
+        videoElement
+      );
+
+    }
+  );
+
+}
+
+
+function closeVideoReelViewer(){
+
+  if(
+    reelScrollObserver
+  ){
+
+    reelScrollObserver.disconnect();
+
+    reelScrollObserver =
+    null;
+
+  }
+
+
+  videoReelTrack
+  .querySelectorAll(
+    "video"
+  )
+  .forEach(
+    function(videoElement){
+
+      videoElement.pause();
+
+    }
+  );
+
+
+  videoReelViewer.classList.remove(
+    "open"
+  );
+
+
+  videoReelViewer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  videoReelTrack.innerHTML =
+  "";
+
+
+  document.body.style.overflow =
+  "";
+
+}
+
+
+closeVideoReelViewerButton.addEventListener(
+  "click",
+  closeVideoReelViewer
+);
+
+
+/* =====================================================
    POST ACTION EVENT DELEGATION
 ===================================================== */
 
@@ -4385,15 +4831,33 @@ document.addEventListener(
   function(event){
 
     if(
-      event.key ===
-      "Escape" &&
+      event.key !==
+      "Escape"
+    ){
 
+      return;
+
+    }
+
+
+    if(
       photoViewer.classList.contains(
         "open"
       )
     ){
 
       hidePhotoViewer();
+
+    }
+
+
+    if(
+      videoReelViewer.classList.contains(
+        "open"
+      )
+    ){
+
+      closeVideoReelViewer();
 
     }
 
