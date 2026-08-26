@@ -2604,9 +2604,17 @@ function loadCommunityPosts(){
           }
 
 
+          /*
+             Only mark the feed as truly
+             finished when there are zero
+             posts at all — otherwise, even
+             a small number of posts should
+             still loop endlessly on scroll.
+          */
+
           noMorePostsAvailable =
-          snapshot.docs.length <
-          POSTS_PER_PAGE;
+          snapshot.docs.length ===
+          0;
 
         }
 
@@ -2711,8 +2719,7 @@ async function loadMoreCommunityPosts(){
 
   if(
     isLoadingMorePosts ||
-    noMorePostsAvailable ||
-    !lastVisibleDocument
+    noMorePostsAvailable
   ){
 
     return;
@@ -2737,20 +2744,43 @@ async function loadMoreCommunityPosts(){
     );
 
 
+    /*
+       If there is a known cursor, keep
+       going deeper into the list. Once
+       that cursor runs out (lastVisibleDocument
+       is null), start again from the very
+       newest post — this loop is what makes
+       the feed scroll endlessly instead of
+       stopping once everything has been shown.
+    */
+
     const nextPageQuery =
-    query(
-      postsReference,
-      orderBy(
-        "timestamp",
-        "desc"
-      ),
-      startAfter(
-        lastVisibleDocument
-      ),
-      limit(
-        POSTS_PER_PAGE
+    lastVisibleDocument
+
+    ? query(
+        postsReference,
+        orderBy(
+          "timestamp",
+          "desc"
+        ),
+        startAfter(
+          lastVisibleDocument
+        ),
+        limit(
+          POSTS_PER_PAGE
+        )
       )
-    );
+
+    : query(
+        postsReference,
+        orderBy(
+          "timestamp",
+          "desc"
+        ),
+        limit(
+          POSTS_PER_PAGE
+        )
+      );
 
 
     const snapshot =
@@ -2761,8 +2791,28 @@ async function loadMoreCommunityPosts(){
 
     if(snapshot.empty){
 
-      noMorePostsAvailable =
-      true;
+      /*
+         Only genuinely stop scrolling when
+         there are zero posts in the whole
+         community — otherwise this means we
+         reached the end of the list, so loop
+         back to the start on the next scroll.
+      */
+
+      if(
+        latestPostsDocsCache.length === 0 &&
+        olderPostsDocs.length === 0
+      ){
+
+        noMorePostsAvailable =
+        true;
+
+      }else{
+
+        lastVisibleDocument =
+        null;
+
+      }
 
 
       updateLoadMoreSentinel();
@@ -2782,15 +2832,21 @@ async function loadMoreCommunityPosts(){
     renderCommunityPosts();
 
 
+    /*
+       Fewer posts than a full page means we
+       just reached the end — loop back to
+       the start next time instead of stopping.
+    */
+
     lastVisibleDocument =
-    snapshot.docs[
-      snapshot.docs.length - 1
-    ];
-
-
-    noMorePostsAvailable =
     snapshot.docs.length <
-    POSTS_PER_PAGE;
+    POSTS_PER_PAGE
+
+    ? null
+
+    : snapshot.docs[
+        snapshot.docs.length - 1
+      ];
 
 
   }catch(error){
@@ -2834,8 +2890,8 @@ function updateLoadMoreSentinel(){
     loadMoreSentinel.textContent =
     postsContainer.children.length >
     0
-    ? "You're all caught up 🙏"
-    : "";
+    ? ""
+    : "Be the first to share something with the community 🙏";
 
   }else{
 
