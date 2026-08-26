@@ -1805,6 +1805,23 @@ let postsLoadObserver =
 null;
 
 
+/*
+   Older posts loaded via scrolling are kept
+   here permanently, separate from the live
+   top-page cache. This is what fixes the bug
+   where liking/commenting on any post used to
+   silently wipe out everything the user had
+   already scrolled down to load.
+*/
+
+let latestPostsDocsCache =
+[];
+
+
+let olderPostsDocs =
+[];
+
+
 /* =====================================================
    RETURN FIRST AVAILABLE VALUE
 ===================================================== */
@@ -2218,6 +2235,14 @@ function startCommunityFeed(){
   false;
 
 
+  latestPostsDocsCache =
+  [];
+
+
+  olderPostsDocs =
+  [];
+
+
   loadMoreSentinel.textContent =
   "";
 
@@ -2436,6 +2461,86 @@ onAuthStateChanged(
    every post that has ever been made.
 ===================================================== */
 
+function renderCommunityPosts(){
+
+  postsContainer.innerHTML =
+  "";
+
+
+  const combinedDocs =
+  latestPostsDocsCache.concat(
+    olderPostsDocs
+  );
+
+
+  if(
+    combinedDocs.length === 0
+  ){
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
+
+  combinedDocs.forEach(
+    function(postDocument){
+
+      try{
+
+        const postData = {
+
+          id:
+          postDocument.id,
+
+          ...postDocument.data()
+
+        };
+
+
+        const postCard =
+        createPostCard(
+          postData
+        );
+
+
+        postsContainer.appendChild(
+          postCard
+        );
+
+      }catch(error){
+
+        console.error(
+          "Error creating post card:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+
+  if(
+    postsContainer.children.length ===
+    0
+  ){
+
+    showErrorMessage(
+      "Community posts were found, but they could not be displayed."
+    );
+
+    return;
+
+  }
+
+
+  startVideoAutoPlay();
+
+}
+
+
 function loadCommunityPosts(){
 
   try{
@@ -2468,101 +2573,48 @@ function loadCommunityPosts(){
 
       function(snapshot){
 
-        postsContainer.innerHTML =
-        "";
+        latestPostsDocsCache =
+        snapshot.docs;
 
 
-        if(snapshot.empty){
-
-          showEmptyMessage();
-
-          noMorePostsAvailable =
-          true;
-
-          return;
-
-        }
-
-
-        snapshot.forEach(
-          function(postDocument){
-
-            try{
-
-              const postData = {
-
-                id:
-                postDocument.id,
-
-                ...postDocument.data()
-
-              };
-
-
-              const postCard =
-              createPostCard(
-                postData
-              );
-
-
-              postsContainer.appendChild(
-                postCard
-              );
-
-            }catch(error){
-
-              console.error(
-                "Error creating post card:",
-                error
-              );
-
-            }
-
-          }
-        );
-
+        /*
+           Only the first page determines
+           whether more posts exist, UNLESS
+           the user has already scrolled and
+           loaded older pages — in that case,
+           leave that decision alone, since
+           this live update only re-checks the
+           newest 20 posts, not the full list.
+        */
 
         if(
-          postsContainer.children.length ===
+          olderPostsDocs.length ===
           0
         ){
 
-          showErrorMessage(
-            "Community posts were found, but they could not be displayed."
-          );
+          if(
+            snapshot.docs.length > 0
+          ){
 
-          return;
+            lastVisibleDocument =
+            snapshot.docs[
+              snapshot.docs.length - 1
+            ];
+
+          }
+
+
+          noMorePostsAvailable =
+          snapshot.docs.length <
+          POSTS_PER_PAGE;
 
         }
 
 
-        /*
-           Remember the last document in this
-           batch so "load more" knows where
-           to continue from.
-        */
-
-        lastVisibleDocument =
-        snapshot.docs[
-          snapshot.docs.length - 1
-        ];
-
-
-        /*
-           If fewer posts came back than a
-           full page, there is nothing older
-           left to load.
-        */
-
-        noMorePostsAvailable =
-        snapshot.docs.length <
-        POSTS_PER_PAGE;
+        renderCommunityPosts();
 
 
         updateLoadMoreSentinel();
-
-
-        startVideoAutoPlay();
 
 
         scrollToSharedPost();
@@ -2721,42 +2773,13 @@ async function loadMoreCommunityPosts(){
     }
 
 
-    snapshot.forEach(
-      function(postDocument){
-
-        try{
-
-          const postData = {
-
-            id:
-            postDocument.id,
-
-            ...postDocument.data()
-
-          };
-
-
-          const postCard =
-          createPostCard(
-            postData
-          );
-
-
-          postsContainer.appendChild(
-            postCard
-          );
-
-        }catch(error){
-
-          console.error(
-            "Error creating post card:",
-            error
-          );
-
-        }
-
-      }
+    olderPostsDocs =
+    olderPostsDocs.concat(
+      snapshot.docs
     );
+
+
+    renderCommunityPosts();
 
 
     lastVisibleDocument =
@@ -2768,9 +2791,6 @@ async function loadMoreCommunityPosts(){
     noMorePostsAvailable =
     snapshot.docs.length <
     POSTS_PER_PAGE;
-
-
-    startVideoAutoPlay();
 
 
   }catch(error){
