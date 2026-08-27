@@ -1822,6 +1822,18 @@ let olderPostsDocs =
 [];
 
 
+/*
+   Groups rapid bursts of live updates
+   (e.g. many people posting at once)
+   into a single smooth redraw instead
+   of rebuilding the feed dozens of
+   times in quick succession.
+*/
+
+let renderDebounceTimer =
+null;
+
+
 /* =====================================================
    RETURN FIRST AVAILABLE VALUE
 ===================================================== */
@@ -2461,6 +2473,42 @@ onAuthStateChanged(
    every post that has ever been made.
 ===================================================== */
 
+function scheduleCommunityPostsRender(){
+
+  if(
+    renderDebounceTimer
+  ){
+
+    clearTimeout(
+      renderDebounceTimer
+    );
+
+  }
+
+
+  renderDebounceTimer =
+  window.setTimeout(
+    function(){
+
+      renderDebounceTimer =
+      null;
+
+
+      renderCommunityPosts();
+
+
+      updateLoadMoreSentinel();
+
+
+      scrollToSharedPost();
+
+    },
+    250
+  );
+
+}
+
+
 function renderCommunityPosts(){
 
   postsContainer.innerHTML =
@@ -2619,13 +2667,7 @@ function loadCommunityPosts(){
         }
 
 
-        renderCommunityPosts();
-
-
-        updateLoadMoreSentinel();
-
-
-        scrollToSharedPost();
+        scheduleCommunityPostsRender();
 
       },
 
@@ -5128,6 +5170,17 @@ window.addEventListener(
     ){
 
       postsLoadObserver.disconnect();
+
+    }
+
+
+    if(
+      renderDebounceTimer
+    ){
+
+      clearTimeout(
+        renderDebounceTimer
+      );
 
     }
 
