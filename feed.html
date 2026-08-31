@@ -239,64 +239,9 @@ a:focus-visible{
 }
 /* =====================================================
    PART 2 OF 10
-   QUICK POST BOX, COMMUNITY WALL HEADER
+   MOMENTS STRIP, COMMUNITY WALL HEADER
    AND STATUS CARDS
 ===================================================== */
-
-
-/* =====================================================
-   QUICK POST BOX
-===================================================== */
-
-.quickPostBox{
-  width:100%;
-  padding:16px;
-  background:#ffffff;
-  border-radius:20px;
-  box-shadow:0 5px 18px rgba(0,0,0,.09);
-}
-
-.quickPostRow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.quickPostAvatar{
-  width:52px;
-  height:52px;
-  flex-shrink:0;
-  border-radius:50%;
-  object-fit:cover;
-  background:#e5e9ed;
-  border:3px solid #d8efff;
-}
-
-.quickPostButton{
-  flex:1;
-  min-width:0;
-  min-height:50px;
-  padding:12px 17px;
-  border:1px solid #d3dce4;
-  border-radius:28px;
-  background:#f4f6f8;
-  color:#65717c;
-  text-align:left;
-  font-size:16px;
-  line-height:1.4;
-  transition:
-    background .2s ease,
-    border-color .2s ease;
-}
-
-.quickPostButton:hover{
-  background:#e9eef3;
-  border-color:#bfcdd9;
-}
-
-.quickPostButton:active{
-  transform:scale(.995);
-}
 
 
 /* =====================================================
@@ -559,19 +504,6 @@ a:focus-visible{
 ===================================================== */
 
 @media(max-width:600px){
-
-  .quickPostBox{
-    padding:14px;
-  }
-
-  .quickPostAvatar{
-    width:48px;
-    height:48px;
-  }
-
-  .quickPostButton{
-    font-size:15px;
-  }
 
   .wallTitleBar{
     padding:14px 16px;
@@ -1257,36 +1189,6 @@ a:focus-visible{
 
 
   <!-- =================================================
-       QUICK CREATE POST BOX
-  ================================================== -->
-
-  <section class="quickPostBox">
-
-    <div class="quickPostRow">
-
-      <img
-        id="quickPostAvatar"
-        class="quickPostAvatar"
-        src="images/profile.png"
-        alt="Your profile picture"
-      >
-
-
-      <button
-        type="button"
-        id="quickPostButton"
-        class="quickPostButton"
-      >
-        Share encouragement, testimony or prayer...
-      </button>
-
-    </div>
-
-
-  </section>
-
-
-  <!-- =================================================
        MOMENTS STRIP (like Facebook/Instagram Stories)
   ================================================== -->
 
@@ -1388,6 +1290,10 @@ a:focus-visible{
 
 <!-- =====================================================
    FLOATING CREATE POST BUTTON
+   (single entry point for creating a new post —
+   the old "Share encouragement..." box above the
+   Moments strip has been removed since it opened
+   the exact same createpost.html page as this does)
 ===================================================== -->
 
 <a
@@ -1637,18 +1543,6 @@ document.getElementById(
 const refreshButton =
 document.getElementById(
   "refreshButton"
-);
-
-
-const quickPostButton =
-document.getElementById(
-  "quickPostButton"
-);
-
-
-const quickPostAvatar =
-document.getElementById(
-  "quickPostAvatar"
 );
 
 
@@ -2038,7 +1932,6 @@ function formatPostDate(
 /* =====================================================
    PART 7 OF 10
    AUTHENTICATION, CURRENT USER PROFILE
-   AND QUICK POST NAVIGATION
 ===================================================== */
 
 
@@ -2052,8 +1945,12 @@ async function loadCurrentUserProfile(){
 
   if(!currentUser){
 
-    quickPostAvatar.src =
-    defaultProfilePicture;
+    if(quickMomentAvatar){
+
+      quickMomentAvatar.innerHTML =
+      "＋";
+
+    }
 
     return;
 
@@ -2097,10 +1994,6 @@ async function loadCurrentUserProfile(){
     );
 
 
-    quickPostAvatar.src =
-    profilePicture;
-
-
     if(quickMomentAvatar){
 
       quickMomentAvatar.innerHTML =
@@ -2115,47 +2008,9 @@ async function loadCurrentUserProfile(){
       error
     );
 
-
-    quickPostAvatar.src =
-    defaultProfilePicture;
-
   }
 
 }
-
-
-/* =====================================================
-   QUICK POST BUTTON
-===================================================== */
-
-quickPostButton.addEventListener(
-  "click",
-  function(){
-
-    if(!currentUser){
-
-      window.location.href =
-      "login.html";
-
-      return;
-
-    }
-
-
-    window.location.href =
-    "createpost.html";
-
-  }
-);
-
-
-/* =====================================================
-   QUICK PROFILE PICTURE
-===================================================== */
-
-protectProfilePicture(
-  quickPostAvatar
-);
 
 
 /* =====================================================
@@ -2413,10 +2268,6 @@ onAuthStateChanged(
 
     notificationBadge.textContent =
     "0";
-
-
-    quickPostAvatar.src =
-    defaultProfilePicture;
 
 
     startCommunityFeed();
