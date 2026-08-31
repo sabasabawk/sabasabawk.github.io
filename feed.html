@@ -377,74 +377,43 @@ a:focus-visible{
 
 
 /* =====================================================
-   COMMUNITY WALL HEADER
+   PULL-TO-REFRESH INDICATOR
+   (replaces the old blue "Community Wall" title
+   box and its refresh button — the feed now
+   refreshes with a native-style pull-down
+   gesture at the top of the page instead)
 ===================================================== */
 
-.wallTitleBar{
-  margin:18px 0;
-  padding:16px 18px;
-  border-radius:20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  background:linear-gradient(
-    135deg,
-    #087bd1,
-    #0055a5
-  );
-  color:#ffffff;
-  box-shadow:0 6px 16px rgba(0,0,0,.14);
-}
-
-.wallTitleText{
-  min-width:0;
-}
-
-.wallTitleText h1{
-  font-size:22px;
-  line-height:1.25;
-}
-
-.wallTitleText p{
-  margin-top:4px;
-  color:#e7f4ff;
-  font-size:13px;
-  line-height:1.5;
-}
-
-
-/* =====================================================
-   REFRESH BUTTON
-===================================================== */
-
-.refreshButton{
-  width:46px;
-  height:46px;
-  flex-shrink:0;
-  border:none;
-  border-radius:50%;
+.pullRefreshIndicator{
+  height:0;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#ffffff;
+  gap:8px;
   color:#0873c9;
-  font-size:21px;
-  box-shadow:0 3px 9px rgba(0,0,0,.15);
-  transition:
-    transform .2s ease,
-    background .2s ease;
+  font-size:14px;
+  font-weight:bold;
+  transition:height .18s ease;
 }
 
-.refreshButton:hover{
-  background:#eef6ff;
-  transform:rotate(20deg);
+.pullRefreshIcon{
+  display:inline-block;
+  font-size:18px;
+  transition:transform .05s linear;
 }
 
-.refreshButton:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-  transform:none;
+.pullRefreshIcon.spinning{
+  animation:pullRefreshSpin .7s linear infinite;
+}
+
+@keyframes pullRefreshSpin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 
@@ -504,18 +473,6 @@ a:focus-visible{
 ===================================================== */
 
 @media(max-width:600px){
-
-  .wallTitleBar{
-    padding:14px 16px;
-  }
-
-  .wallTitleText h1{
-    font-size:20px;
-  }
-
-  .wallTitleText p{
-    font-size:12px;
-  }
 
   .statusCard{
     padding:30px 18px;
@@ -1232,35 +1189,29 @@ a:focus-visible{
 
 
   <!-- =================================================
-       COMMUNITY WALL HEADING
+       PULL-TO-REFRESH INDICATOR
+       (shown while the user drags down from the
+       top of the feed; hidden the rest of the time)
   ================================================== -->
 
-  <section class="wallTitleBar">
+  <div
+    id="pullRefreshIndicator"
+    class="pullRefreshIndicator"
+    aria-hidden="true"
+  >
 
-    <div class="wallTitleText">
-
-      <h1>
-        📰 Community Wall
-      </h1>
-
-      <p>
-        Share faith, prayer, testimonies and encouragement
-      </p>
-
-    </div>
-
-
-    <button
-      type="button"
-      id="refreshButton"
-      class="refreshButton"
-      aria-label="Refresh Community Wall"
-      title="Refresh posts"
+    <span
+      id="pullRefreshIcon"
+      class="pullRefreshIcon"
     >
       🔄
-    </button>
+    </span>
 
-  </section>
+    <span id="pullRefreshText">
+      Pull to refresh
+    </span>
+
+  </div>
 
 
   <!-- =================================================
@@ -1540,9 +1491,21 @@ document.getElementById(
 );
 
 
-const refreshButton =
+const pullRefreshIndicator =
 document.getElementById(
-  "refreshButton"
+  "pullRefreshIndicator"
+);
+
+
+const pullRefreshIcon =
+document.getElementById(
+  "pullRefreshIcon"
+);
+
+
+const pullRefreshText =
+document.getElementById(
+  "pullRefreshText"
 );
 
 
@@ -4803,38 +4766,222 @@ document.addEventListener(
 
 
 /* =====================================================
-   REFRESH COMMUNITY WALL
+   PULL-TO-REFRESH GESTURE
+
+   Replaces the old refresh button. When the user
+   is scrolled to the very top of the page and
+   drags a finger downward past a threshold, the
+   Community Wall reloads — the same behaviour as
+   pulling down in Gmail, Instagram, etc.
 ===================================================== */
 
-refreshButton.addEventListener(
-  "click",
+const PULL_REFRESH_THRESHOLD =
+70;
+
+const PULL_REFRESH_MAX =
+110;
+
+
+let pullRefreshStartY =
+0;
+
+let pullRefreshDistance =
+0;
+
+let pullRefreshActive =
+false;
+
+let pullRefreshInProgress =
+false;
+
+
+document.addEventListener(
+  "touchstart",
+  function(event){
+
+    if(
+      pullRefreshInProgress
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      window.scrollY === 0 &&
+      event.touches.length === 1
+    ){
+
+      pullRefreshStartY =
+      event.touches[0].clientY;
+
+
+      pullRefreshActive =
+      true;
+
+    }else{
+
+      pullRefreshActive =
+      false;
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+document.addEventListener(
+  "touchmove",
+  function(event){
+
+    if(
+      !pullRefreshActive ||
+      pullRefreshInProgress
+    ){
+
+      return;
+
+    }
+
+
+    const currentY =
+    event.touches[0].clientY;
+
+
+    pullRefreshDistance =
+    currentY - pullRefreshStartY;
+
+
+    if(
+      pullRefreshDistance > 0 &&
+      window.scrollY === 0
+    ){
+
+      const clampedDistance =
+      Math.min(
+        pullRefreshDistance,
+        PULL_REFRESH_MAX
+      );
+
+
+      pullRefreshIndicator.style.height =
+      clampedDistance + "px";
+
+
+      pullRefreshText.textContent =
+      clampedDistance >
+      PULL_REFRESH_THRESHOLD
+
+      ? "Release to refresh"
+
+      : "Pull to refresh";
+
+    }else{
+
+      pullRefreshActive =
+      false;
+
+
+      pullRefreshIndicator.style.height =
+      "0px";
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+document.addEventListener(
+  "touchend",
   function(){
 
-    refreshButton.disabled =
-    true;
+    if(
+      !pullRefreshActive ||
+      pullRefreshInProgress
+    ){
+
+      pullRefreshActive =
+      false;
 
 
-    refreshButton.textContent =
-    "⏳";
+      pullRefreshDistance =
+      0;
 
 
-    startCommunityFeed();
+      return;
+
+    }
 
 
-    window.setTimeout(
-      function(){
-
-        refreshButton.disabled =
-        false;
+    pullRefreshActive =
+    false;
 
 
-        refreshButton.textContent =
-        "🔄";
+    if(
+      pullRefreshDistance >
+      PULL_REFRESH_THRESHOLD
+    ){
 
-      },
-      1000
-    );
+      pullRefreshInProgress =
+      true;
 
+
+      pullRefreshText.textContent =
+      "Refreshing...";
+
+
+      pullRefreshIcon.classList.add(
+        "spinning"
+      );
+
+
+      pullRefreshIndicator.style.height =
+      "50px";
+
+
+      startCommunityFeed();
+
+
+      window.setTimeout(
+        function(){
+
+          pullRefreshIndicator.style.height =
+          "0px";
+
+
+          pullRefreshIcon.classList.remove(
+            "spinning"
+          );
+
+
+          pullRefreshInProgress =
+          false;
+
+        },
+        900
+      );
+
+    }else{
+
+      pullRefreshIndicator.style.height =
+      "0px";
+
+    }
+
+
+    pullRefreshDistance =
+    0;
+
+  },
+  {
+    passive:true
   }
 );
 
