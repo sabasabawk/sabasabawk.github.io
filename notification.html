@@ -279,6 +279,28 @@ button:disabled{
 }
 
 
+.retryButton{
+
+  background:#b00020;
+
+  color:white;
+
+  padding:8px 14px;
+
+  font-size:14px;
+
+  margin-top:12px;
+
+}
+
+
+.retryButton:hover{
+
+  background:#8f0019;
+
+}
+
+
 /* =====================================================
    NOTIFICATION CARDS
 ===================================================== */
@@ -303,6 +325,8 @@ button:disabled{
   transition:
   transform 0.2s ease,
   box-shadow 0.2s ease;
+
+  cursor:pointer;
 
 }
 
@@ -743,6 +767,19 @@ let unsubscribeNotifications = null;
 let currentNotifications = [];
 
 
+/*
+   If the very first snapshot never arrives
+   (e.g. a weak connection), this timer swaps
+   the stuck "Loading..." message for a
+   friendly retry option instead of hanging
+   forever.
+*/
+
+let firstLoadTimeoutId = null;
+
+const FIRST_LOAD_TIMEOUT_MS = 9000;
+
+
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
@@ -820,6 +857,108 @@ function showErrorMessage(message){
 
 
 /* =====================================================
+   SHOW STUCK-CONNECTION MESSAGE WITH RETRY
+===================================================== */
+
+function showStuckLoadingMessage(){
+
+  notificationList.innerHTML = "";
+
+
+  const card =
+  document.createElement("div");
+
+  card.className =
+  "statusCard error";
+
+
+  const text =
+  document.createElement("div");
+
+  text.textContent =
+  "This is taking longer than expected. Your connection may be weak.";
+
+
+  const retryButton =
+  document.createElement("button");
+
+  retryButton.type =
+  "button";
+
+  retryButton.className =
+  "retryButton";
+
+  retryButton.textContent =
+  "🔄 Retry";
+
+  retryButton.addEventListener(
+    "click",
+    () => {
+
+      showLoadingMessage();
+
+      loadNotifications();
+
+    }
+  );
+
+
+  card.appendChild(text);
+
+  card.appendChild(retryButton);
+
+  notificationList.appendChild(card);
+
+}
+
+
+/* =====================================================
+   FIRST-LOAD TIMEOUT HELPERS
+===================================================== */
+
+function clearFirstLoadTimeout(){
+
+  if(firstLoadTimeoutId){
+
+    window.clearTimeout(
+      firstLoadTimeoutId
+    );
+
+    firstLoadTimeoutId = null;
+
+  }
+
+}
+
+
+function startFirstLoadTimeout(){
+
+  clearFirstLoadTimeout();
+
+
+  firstLoadTimeoutId =
+  window.setTimeout(
+    () => {
+
+      firstLoadTimeoutId = null;
+
+
+      if(
+        currentNotifications.length === 0
+      ){
+
+        showStuckLoadingMessage();
+
+      }
+
+    },
+    FIRST_LOAD_TIMEOUT_MS
+  );
+
+}
+
+
+/* =====================================================
    UPDATE NOTIFICATION COUNT
 ===================================================== */
 
@@ -859,6 +998,9 @@ function stopNotificationListener(){
     unsubscribeNotifications = null;
 
   }
+
+
+  clearFirstLoadTimeout();
 
 }
 
@@ -939,6 +1081,74 @@ function getNotificationIcon(type){
 
 
 /* =====================================================
+   WORK OUT WHERE A NOTIFICATION SHOULD OPEN
+
+   Uses the notification's own targetUrl when
+   present (this is what feed.html already
+   saves on every notification), falling back
+   to a postId-based post link, then to the
+   sender's profile, then to the feed as a
+   last resort. This is what makes tapping a
+   notification take the user to whatever
+   actually triggered it, instead of always
+   landing on the general Community Wall.
+===================================================== */
+
+function getNotificationDestination(
+  notificationData
+){
+
+  const targetUrl =
+  notificationData.targetUrl;
+
+
+  if(
+    targetUrl &&
+    String(targetUrl).trim() !== ""
+  ){
+
+    return targetUrl;
+
+  }
+
+
+  const postId =
+  notificationData.postId;
+
+
+  if(postId){
+
+    return (
+      "feed.html?post=" +
+      encodeURIComponent(postId)
+    );
+
+  }
+
+
+  const senderId =
+  notificationData.senderId;
+
+
+  if(
+    notificationData.type === "follow" &&
+    senderId
+  ){
+
+    return (
+      "user-profile.html?uid=" +
+      encodeURIComponent(senderId)
+    );
+
+  }
+
+
+  return "feed.html";
+
+}
+
+
+/* =====================================================
    AUTHENTICATION STATE
 ===================================================== */
 
@@ -1008,6 +1218,9 @@ function loadNotifications(){
   stopNotificationListener();
 
 
+  startFirstLoadTimeout();
+
+
   const notificationsReference =
   collection(
     db,
@@ -1035,6 +1248,9 @@ query(
     notificationsQuery,
 
     snapshot => {
+
+      clearFirstLoadTimeout();
+
 
       currentNotifications = [];
 
@@ -1134,6 +1350,9 @@ updateNotificationCount();
     },
 
     error => {
+
+      clearFirstLoadTimeout();
+
 
       console.error(
         "Notification loading error:",
@@ -1378,99 +1597,127 @@ function setupNotificationActions(
   notificationData.id;
 
 
-  const postId =
-  notificationData.postId;
-
-
   /* ===================================================
-     OPEN RELATED POST
+     OPEN WHATEVER TRIGGERED THIS NOTIFICATION
+
+     Marks it read, then routes to its real
+     destination (the specific post, profile,
+     etc.) instead of always landing on the
+     general Community Wall. Tapping anywhere
+     on the card does the same thing as the
+     Open button — the Delete button below
+     stops that click from bubbling up.
   =================================================== */
+
+  async function openNotification(){
+
+    if(!notificationId){
+
+      alert(
+        "This notification cannot be opened."
+      );
+
+      return;
+
+    }
+
+
+    if(openButton){
+
+      openButton.disabled = true;
+
+      openButton.textContent =
+      "⏳ Opening...";
+
+    }
+
+
+    try{
+
+      if(
+        notificationData.read !== true
+      ){
+
+        const notificationReference =
+        doc(
+          db,
+          "notifications",
+          notificationId
+        );
+
+
+        await updateDoc(
+          notificationReference,
+          {
+            read:true
+          }
+        );
+
+      }
+
+
+      const destination =
+      getNotificationDestination(
+        notificationData
+      );
+
+
+      window.location.href =
+      destination;
+
+
+    }catch(error){
+
+      console.error(
+        "Opening notification error:",
+        error
+      );
+
+
+      alert(
+        error.message ||
+        "The notification could not be opened."
+      );
+
+
+      if(openButton){
+
+        openButton.disabled = false;
+
+        openButton.textContent =
+        "Open";
+
+      }
+
+    }
+
+  }
+
 
   if(openButton){
 
     openButton.addEventListener(
       "click",
-      async()=>{
+      event => {
 
-        if(!notificationId){
+        event.stopPropagation();
 
-          alert(
-            "This notification cannot be opened."
-          );
-
-          return;
-
-        }
-
-
-        openButton.disabled = true;
-
-        openButton.textContent =
-        "⏳ Opening...";
-
-
-        try{
-
-          if(
-            notificationData.read !== true
-          ){
-
-            const notificationReference =
-            doc(
-              db,
-              "notifications",
-              notificationId
-            );
-
-
-            await updateDoc(
-              notificationReference,
-              {
-                read:true
-              }
-            );
-
-          }
-
-
-          if(postId){
-
-  window.location.href =
-  "feed.html?post=" +
-  encodeURIComponent(postId);
-
-}else{
-
-  window.location.href =
-  "feed.html";
-
-}
-
-        }catch(error){
-
-          console.error(
-            "Opening notification error:",
-            error
-          );
-
-
-          alert(
-            error.message ||
-            "The notification could not be opened."
-          );
-
-
-          openButton.disabled = false;
-
-          openButton.textContent =
-          "Open";
-
-        }
+        openNotification();
 
       }
     );
 
   }
+
+
+  card.addEventListener(
+    "click",
+    () => {
+
+      openNotification();
+
+    }
+  );
 
 
   /* ===================================================
@@ -1481,7 +1728,10 @@ function setupNotificationActions(
 
     deleteButton.addEventListener(
       "click",
-      async()=>{
+      async(event)=>{
+
+        event.stopPropagation();
+
 
         if(!notificationId){
 
