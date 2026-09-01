@@ -51,6 +51,41 @@ margin-bottom:8px;
 padding:30px;
 }
 
+.statusBanner{
+display:none;
+margin-bottom:20px;
+padding:14px 16px;
+border-radius:10px;
+font-size:15px;
+line-height:1.5;
+text-align:center;
+}
+
+.statusBanner.show{
+display:block;
+}
+
+.statusBanner.loading{
+background:#e7f3ff;
+color:#0066cc;
+}
+
+.statusBanner.error{
+background:#fdeceb;
+color:#b00020;
+}
+
+.statusBanner button{
+margin-left:8px;
+border:none;
+background:#b00020;
+color:white;
+padding:6px 14px;
+border-radius:8px;
+font-size:14px;
+cursor:pointer;
+}
+
 .photoBox{
 text-align:center;
 margin-bottom:25px;
@@ -112,6 +147,11 @@ cursor:pointer;
 background:#004d99;
 }
 
+.saveBtn:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
 .backBtn{
 width:100%;
 padding:16px;
@@ -147,6 +187,11 @@ background:#555;
 </div>
 
 <div class="content">
+
+<div
+  id="statusBanner"
+  class="statusBanner">
+</div>
 
 <div class="photoBox">
 
@@ -208,7 +253,8 @@ placeholder="Tell other believers about yourself..."></textarea>
 <button
 id="saveBtn"
 class="saveBtn"
-type="button">
+type="button"
+disabled>
 
 💾 Save Changes
 
@@ -255,6 +301,9 @@ const uploadPreset =
    PAGE ELEMENTS
 ======================================== */
 
+const statusBanner =
+document.getElementById("statusBanner");
+
 const profileImage =
 document.getElementById("profileImage");
 
@@ -292,27 +341,138 @@ let isSaving = false;
 
 
 /* ========================================
-   LOAD CURRENT PROFILE
+   STATUS BANNER HELPERS
 ======================================== */
 
-onAuthStateChanged(
-  auth,
-  async user => {
+function showLoadingStatus(message){
 
-    if(!user){
+  statusBanner.className =
+  "statusBanner show loading";
 
-      window.location.href =
-      "login.html";
+  statusBanner.innerHTML =
+  message;
 
-      return;
+}
+
+
+function showErrorStatus(message){
+
+  statusBanner.className =
+  "statusBanner show error";
+
+  statusBanner.innerHTML = "";
+
+
+  const text =
+  document.createElement("span");
+
+  text.textContent =
+  message;
+
+
+  const retryButton =
+  document.createElement("button");
+
+  retryButton.type =
+  "button";
+
+  retryButton.textContent =
+  "Retry";
+
+  retryButton.addEventListener(
+    "click",
+    () => {
+
+      if(currentUser){
+
+        loadProfile(
+          currentUser
+        );
+
+      }
 
     }
+  );
 
 
-    currentUser = user;
+  statusBanner.appendChild(
+    text
+  );
 
-    email.value =
-    user.email || "";
+  statusBanner.appendChild(
+    retryButton
+  );
+
+}
+
+
+function hideStatus(){
+
+  statusBanner.className =
+  "statusBanner";
+
+  statusBanner.innerHTML =
+  "";
+
+}
+
+
+/* ========================================
+   SMALL DELAY HELPER
+======================================== */
+
+function wait(milliseconds){
+
+  return new Promise(
+    resolve =>
+    window.setTimeout(
+      resolve,
+      milliseconds
+    )
+  );
+
+}
+
+
+/* ========================================
+   LOAD PROFILE, WITH AUTOMATIC RETRIES
+
+   Firestore can briefly report the client
+   as "offline" right after a page load on a
+   slow or unstable connection. Instead of
+   failing immediately, this retries a few
+   times with a short pause before showing
+   any error to the user.
+======================================== */
+
+const MAX_LOAD_ATTEMPTS =
+4;
+
+
+async function loadProfile(user){
+
+  saveBtn.disabled = true;
+
+
+  for(
+    let attempt = 1;
+    attempt <= MAX_LOAD_ATTEMPTS;
+    attempt++
+  ){
+
+    if(attempt === 1){
+
+      showLoadingStatus(
+        "Loading your profile..."
+      );
+
+    }else{
+
+      showLoadingStatus(
+        `Connection is slow, retrying (${attempt}/${MAX_LOAD_ATTEMPTS})...`
+      );
+
+    }
 
 
     try{
@@ -382,21 +542,107 @@ onAuthStateChanged(
       }
 
 
+      hideStatus();
+
       saveBtn.disabled = false;
+
+
+      return;
+
 
     }catch(error){
 
       console.error(
-        "Profile loading error:",
+        `Profile loading error (attempt ${attempt}):`,
         error
       );
 
-      alert(
-        "Unable to load your profile: " +
-        (error.message || "Unknown error")
+
+      const isOfflineError =
+      String(
+        error?.message || ""
+      ).toLowerCase().includes(
+        "offline"
+      ) ||
+      String(
+        error?.code || ""
+      ).toLowerCase().includes(
+        "unavailable"
+      );
+
+
+      const isLastAttempt =
+      attempt === MAX_LOAD_ATTEMPTS;
+
+
+      if(
+        !isOfflineError ||
+        isLastAttempt
+      ){
+
+        email.value =
+        user.email || "";
+
+
+        showErrorStatus(
+          isOfflineError
+
+          ? "Your connection seems weak right now, so your profile could not be loaded. Check your signal or WiFi and tap Retry."
+
+          : getFriendlyErrorMessage(
+              error
+            )
+
+        );
+
+
+        saveBtn.disabled =
+        false;
+
+
+        return;
+
+      }
+
+
+      await wait(
+        1200 * attempt
       );
 
     }
+
+  }
+
+}
+
+
+/* ========================================
+   AUTH STATE
+======================================== */
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if(!user){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    currentUser = user;
+
+    email.value =
+    user.email || "";
+
+
+    loadProfile(
+      user
+    );
 
   }
 );
@@ -869,6 +1115,9 @@ function getFriendlyErrorMessage(error){
   if(
     lowerMessage.includes(
       "network"
+    ) ||
+    lowerMessage.includes(
+      "offline"
     )
   ){
 
