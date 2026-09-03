@@ -1257,36 +1257,6 @@ a:focus-visible{
 
 
   <!-- =================================================
-       QUICK CREATE POST BOX
-  ================================================== -->
-
-  <section class="quickPostBox">
-
-    <div class="quickPostRow">
-
-      <img
-        id="quickPostAvatar"
-        class="quickPostAvatar"
-        src="images/profile.png"
-        alt="Your profile picture"
-      >
-
-
-      <button
-        type="button"
-        id="quickPostButton"
-        class="quickPostButton"
-      >
-        Share encouragement, testimony or prayer...
-      </button>
-
-    </div>
-
-
-  </section>
-
-
-  <!-- =================================================
        MOMENTS STRIP (like Facebook/Instagram Stories)
   ================================================== -->
 
@@ -1325,38 +1295,6 @@ a:focus-visible{
       </a>
 
     </div>
-
-  </section>
-
-
-  <!-- =================================================
-       COMMUNITY WALL HEADING
-  ================================================== -->
-
-  <section class="wallTitleBar">
-
-    <div class="wallTitleText">
-
-      <h1>
-        📰 Community Wall
-      </h1>
-
-      <p>
-        Share faith, prayer, testimonies and encouragement
-      </p>
-
-    </div>
-
-
-    <button
-      type="button"
-      id="refreshButton"
-      class="refreshButton"
-      aria-label="Refresh Community Wall"
-      title="Refresh posts"
-    >
-      🔄
-    </button>
 
   </section>
 
@@ -2253,8 +2191,12 @@ async function loadCurrentUserProfile(){
 
   if(!currentUser){
 
-    quickPostAvatar.src =
-    defaultProfilePicture;
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
 
     return;
 
@@ -2298,8 +2240,12 @@ async function loadCurrentUserProfile(){
     );
 
 
-    quickPostAvatar.src =
-    profilePicture;
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      profilePicture;
+
+    }
 
 
     if(quickMomentAvatar){
@@ -2317,8 +2263,12 @@ async function loadCurrentUserProfile(){
     );
 
 
-    quickPostAvatar.src =
-    defaultProfilePicture;
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
 
   }
 
@@ -2327,36 +2277,47 @@ async function loadCurrentUserProfile(){
 
 /* =====================================================
    QUICK POST BUTTON
+   (removed from the page — creating a post now
+   happens only through the floating + button,
+   which did the same thing)
 ===================================================== */
 
-quickPostButton.addEventListener(
-  "click",
-  function(){
+if(quickPostButton){
 
-    if(!currentUser){
+  quickPostButton.addEventListener(
+    "click",
+    function(){
+
+      if(!currentUser){
+
+        window.location.href =
+        "login.html";
+
+        return;
+
+      }
+
 
       window.location.href =
-      "login.html";
-
-      return;
+      "createpost.html";
 
     }
+  );
 
-
-    window.location.href =
-    "createpost.html";
-
-  }
-);
+}
 
 
 /* =====================================================
    QUICK PROFILE PICTURE
 ===================================================== */
 
-protectProfilePicture(
-  quickPostAvatar
-);
+if(quickPostAvatar){
+
+  protectProfilePicture(
+    quickPostAvatar
+  );
+
+}
 
 
 /* =====================================================
@@ -2641,8 +2602,12 @@ onAuthStateChanged(
     "0";
 
 
-    quickPostAvatar.src =
-    defaultProfilePicture;
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
 
 
     startCommunityFeed();
@@ -5184,39 +5149,47 @@ document.addEventListener(
 
 /* =====================================================
    REFRESH COMMUNITY WALL
+   (button removed from the page — the feed
+   already refreshes itself live via the
+   Firestore listener, so a manual refresh
+   button was redundant)
 ===================================================== */
 
-refreshButton.addEventListener(
-  "click",
-  function(){
+if(refreshButton){
 
-    refreshButton.disabled =
-    true;
+  refreshButton.addEventListener(
+    "click",
+    function(){
 
-
-    refreshButton.textContent =
-    "⏳";
+      refreshButton.disabled =
+      true;
 
 
-    startCommunityFeed();
+      refreshButton.textContent =
+      "⏳";
 
 
-    window.setTimeout(
-      function(){
-
-        refreshButton.disabled =
-        false;
+      startCommunityFeed();
 
 
-        refreshButton.textContent =
-        "🔄";
+      window.setTimeout(
+        function(){
 
-      },
-      1000
-    );
+          refreshButton.disabled =
+          false;
 
-  }
-);
+
+          refreshButton.textContent =
+          "🔄";
+
+        },
+        1000
+      );
+
+    }
+  );
+
+}
 
 
 /* =====================================================
