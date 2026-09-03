@@ -239,9 +239,64 @@ a:focus-visible{
 }
 /* =====================================================
    PART 2 OF 10
-   MOMENTS STRIP, COMMUNITY WALL HEADER
+   QUICK POST BOX, COMMUNITY WALL HEADER
    AND STATUS CARDS
 ===================================================== */
+
+
+/* =====================================================
+   QUICK POST BOX
+===================================================== */
+
+.quickPostBox{
+  width:100%;
+  padding:16px;
+  background:#ffffff;
+  border-radius:20px;
+  box-shadow:0 5px 18px rgba(0,0,0,.09);
+}
+
+.quickPostRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.quickPostAvatar{
+  width:52px;
+  height:52px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  border:3px solid #d8efff;
+}
+
+.quickPostButton{
+  flex:1;
+  min-width:0;
+  min-height:50px;
+  padding:12px 17px;
+  border:1px solid #d3dce4;
+  border-radius:28px;
+  background:#f4f6f8;
+  color:#65717c;
+  text-align:left;
+  font-size:16px;
+  line-height:1.4;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.quickPostButton:hover{
+  background:#e9eef3;
+  border-color:#bfcdd9;
+}
+
+.quickPostButton:active{
+  transform:scale(.995);
+}
 
 
 /* =====================================================
@@ -377,43 +432,74 @@ a:focus-visible{
 
 
 /* =====================================================
-   PULL-TO-REFRESH INDICATOR
-   (replaces the old blue "Community Wall" title
-   box and its refresh button — the feed now
-   refreshes with a native-style pull-down
-   gesture at the top of the page instead)
+   COMMUNITY WALL HEADER
 ===================================================== */
 
-.pullRefreshIndicator{
-  height:0;
-  overflow:hidden;
+.wallTitleBar{
+  margin:18px 0;
+  padding:16px 18px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  box-shadow:0 6px 16px rgba(0,0,0,.14);
+}
+
+.wallTitleText{
+  min-width:0;
+}
+
+.wallTitleText h1{
+  font-size:22px;
+  line-height:1.25;
+}
+
+.wallTitleText p{
+  margin-top:4px;
+  color:#e7f4ff;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   REFRESH BUTTON
+===================================================== */
+
+.refreshButton{
+  width:46px;
+  height:46px;
+  flex-shrink:0;
+  border:none;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
+  background:#ffffff;
   color:#0873c9;
-  font-size:14px;
-  font-weight:bold;
-  transition:height .18s ease;
+  font-size:21px;
+  box-shadow:0 3px 9px rgba(0,0,0,.15);
+  transition:
+    transform .2s ease,
+    background .2s ease;
 }
 
-.pullRefreshIcon{
-  display:inline-block;
-  font-size:18px;
-  transition:transform .05s linear;
+.refreshButton:hover{
+  background:#eef6ff;
+  transform:rotate(20deg);
 }
 
-.pullRefreshIcon.spinning{
-  animation:pullRefreshSpin .7s linear infinite;
-}
-
-@keyframes pullRefreshSpin{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+.refreshButton:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
 }
 
 
@@ -473,6 +559,31 @@ a:focus-visible{
 ===================================================== */
 
 @media(max-width:600px){
+
+  .quickPostBox{
+    padding:14px;
+  }
+
+  .quickPostAvatar{
+    width:48px;
+    height:48px;
+  }
+
+  .quickPostButton{
+    font-size:15px;
+  }
+
+  .wallTitleBar{
+    padding:14px 16px;
+  }
+
+  .wallTitleText h1{
+    font-size:20px;
+  }
+
+  .wallTitleText p{
+    font-size:12px;
+  }
 
   .statusCard{
     padding:30px 18px;
@@ -1146,6 +1257,36 @@ a:focus-visible{
 
 
   <!-- =================================================
+       QUICK CREATE POST BOX
+  ================================================== -->
+
+  <section class="quickPostBox">
+
+    <div class="quickPostRow">
+
+      <img
+        id="quickPostAvatar"
+        class="quickPostAvatar"
+        src="images/profile.png"
+        alt="Your profile picture"
+      >
+
+
+      <button
+        type="button"
+        id="quickPostButton"
+        class="quickPostButton"
+      >
+        Share encouragement, testimony or prayer...
+      </button>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- =================================================
        MOMENTS STRIP (like Facebook/Instagram Stories)
   ================================================== -->
 
@@ -1189,29 +1330,35 @@ a:focus-visible{
 
 
   <!-- =================================================
-       PULL-TO-REFRESH INDICATOR
-       (shown while the user drags down from the
-       top of the feed; hidden the rest of the time)
+       COMMUNITY WALL HEADING
   ================================================== -->
 
-  <div
-    id="pullRefreshIndicator"
-    class="pullRefreshIndicator"
-    aria-hidden="true"
-  >
+  <section class="wallTitleBar">
 
-    <span
-      id="pullRefreshIcon"
-      class="pullRefreshIcon"
+    <div class="wallTitleText">
+
+      <h1>
+        📰 Community Wall
+      </h1>
+
+      <p>
+        Share faith, prayer, testimonies and encouragement
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      id="refreshButton"
+      class="refreshButton"
+      aria-label="Refresh Community Wall"
+      title="Refresh posts"
     >
       🔄
-    </span>
+    </button>
 
-    <span id="pullRefreshText">
-      Pull to refresh
-    </span>
-
-  </div>
+  </section>
 
 
   <!-- =================================================
@@ -1241,10 +1388,6 @@ a:focus-visible{
 
 <!-- =====================================================
    FLOATING CREATE POST BUTTON
-   (single entry point for creating a new post —
-   the old "Share encouragement..." box above the
-   Moments strip has been removed since it opened
-   the exact same createpost.html page as this does)
 ===================================================== -->
 
 <a
@@ -1491,21 +1634,21 @@ document.getElementById(
 );
 
 
-const pullRefreshIndicator =
+const refreshButton =
 document.getElementById(
-  "pullRefreshIndicator"
+  "refreshButton"
 );
 
 
-const pullRefreshIcon =
+const quickPostButton =
 document.getElementById(
-  "pullRefreshIcon"
+  "quickPostButton"
 );
 
 
-const pullRefreshText =
+const quickPostAvatar =
 document.getElementById(
-  "pullRefreshText"
+  "quickPostAvatar"
 );
 
 
@@ -1612,6 +1755,207 @@ new Map();
 
 const POSTS_PER_PAGE =
 50;
+
+
+/*
+   SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
+
+   The first time the feed loads, it has to
+   wait for Firestore over the network — this
+   is what makes the app feel slow to open.
+   From then on, a lightweight copy of the
+   most recent posts is saved in the browser's
+   local storage. On the next visit, that
+   cached copy renders immediately while the
+   live Firestore listener quietly fetches
+   fresh data in the background and replaces
+   it the moment it arrives. This never
+   changes what data exists — it only changes
+   how fast something appears on screen.
+*/
+
+const FEED_CACHE_KEY =
+"sabasaba_feed_cache_v1";
+
+const FEED_CACHE_MAX_POSTS =
+20;
+
+const FEED_CACHE_MAX_AGE_MS =
+30 * 60 * 1000;
+
+
+function saveFeedCache(postDocuments){
+
+  try{
+
+    const cachedPosts =
+    postDocuments
+
+    .slice(0, FEED_CACHE_MAX_POSTS)
+
+    .map(
+      postDocument => ({
+
+        id:
+        postDocument.id,
+
+        data:
+        postDocument.data()
+
+      })
+    );
+
+
+    window.localStorage.setItem(
+
+      FEED_CACHE_KEY,
+
+      JSON.stringify({
+
+        savedAt:
+        Date.now(),
+
+        posts:
+        cachedPosts
+
+      })
+
+    );
+
+  }catch(error){
+
+    /*
+       Local storage can fail (private
+       browsing, storage full, etc.) — this
+       is only a speed optimization, so a
+       failure here is silently ignored and
+       never shown to the user.
+    */
+
+    console.warn(
+      "Feed cache could not be saved:",
+      error
+    );
+
+  }
+
+}
+
+
+function loadFeedCache(){
+
+  try{
+
+    const rawCache =
+    window.localStorage.getItem(
+      FEED_CACHE_KEY
+    );
+
+
+    if(!rawCache){
+
+      return null;
+
+    }
+
+
+    const parsedCache =
+    JSON.parse(rawCache);
+
+
+    const cacheAge =
+    Date.now() -
+    (parsedCache.savedAt || 0);
+
+
+    if(cacheAge > FEED_CACHE_MAX_AGE_MS){
+
+      return null;
+
+    }
+
+
+    if(
+
+      !Array.isArray(
+        parsedCache.posts
+      ) ||
+
+      parsedCache.posts.length === 0
+
+    ){
+
+      return null;
+
+    }
+
+
+    return parsedCache.posts;
+
+  }catch(error){
+
+    console.warn(
+      "Feed cache could not be read:",
+      error
+    );
+
+
+    return null;
+
+  }
+
+}
+
+
+function renderPostsFromCache(cachedPosts){
+
+  postsContainer.innerHTML =
+  "";
+
+
+  cachedPosts.forEach(
+    cachedPost => {
+
+      try{
+
+        const postCard =
+        createPostCard(
+          {
+
+            id:
+            cachedPost.id,
+
+            ...cachedPost.data
+
+          }
+        );
+
+
+        postCard.classList.add(
+          "postCardCached"
+        );
+
+
+        postsContainer.appendChild(
+          postCard
+        );
+
+      }catch(error){
+
+        console.error(
+          "Error rendering cached post:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+
+  startVideoAutoPlay();
+
+}
 
 
 let lastVisibleDocument =
@@ -1895,6 +2239,7 @@ function formatPostDate(
 /* =====================================================
    PART 7 OF 10
    AUTHENTICATION, CURRENT USER PROFILE
+   AND QUICK POST NAVIGATION
 ===================================================== */
 
 
@@ -1908,12 +2253,8 @@ async function loadCurrentUserProfile(){
 
   if(!currentUser){
 
-    if(quickMomentAvatar){
-
-      quickMomentAvatar.innerHTML =
-      "＋";
-
-    }
+    quickPostAvatar.src =
+    defaultProfilePicture;
 
     return;
 
@@ -1957,6 +2298,10 @@ async function loadCurrentUserProfile(){
     );
 
 
+    quickPostAvatar.src =
+    profilePicture;
+
+
     if(quickMomentAvatar){
 
       quickMomentAvatar.innerHTML =
@@ -1971,9 +2316,47 @@ async function loadCurrentUserProfile(){
       error
     );
 
+
+    quickPostAvatar.src =
+    defaultProfilePicture;
+
   }
 
 }
+
+
+/* =====================================================
+   QUICK POST BUTTON
+===================================================== */
+
+quickPostButton.addEventListener(
+  "click",
+  function(){
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    window.location.href =
+    "createpost.html";
+
+  }
+);
+
+
+/* =====================================================
+   QUICK PROFILE PICTURE
+===================================================== */
+
+protectProfilePicture(
+  quickPostAvatar
+);
 
 
 /* =====================================================
@@ -2045,7 +2428,32 @@ function startCommunityFeed(){
   "";
 
 
-  showLoadingMessage();
+  /*
+     Show the cached version instantly if we
+     have one — this is what removes the
+     blank "Loading..." wait on a repeat
+     visit. The live Firestore listener below
+     still runs immediately and will replace
+     this the moment real data arrives, so the
+     cache is never shown for more than a
+     moment and never goes stale on screen.
+  */
+
+  const cachedPosts =
+  loadFeedCache();
+
+
+  if(cachedPosts){
+
+    renderPostsFromCache(
+      cachedPosts
+    );
+
+  }else{
+
+    showLoadingMessage();
+
+  }
 
 
   loadCommunityPosts();
@@ -2233,6 +2641,10 @@ onAuthStateChanged(
     "0";
 
 
+    quickPostAvatar.src =
+    defaultProfilePicture;
+
+
     startCommunityFeed();
 
   }
@@ -2405,6 +2817,11 @@ function loadCommunityPosts(){
 
         latestPostsDocsCache =
         snapshot.docs;
+
+
+        saveFeedCache(
+          snapshot.docs
+        );
 
 
         /*
@@ -4766,222 +5183,38 @@ document.addEventListener(
 
 
 /* =====================================================
-   PULL-TO-REFRESH GESTURE
-
-   Replaces the old refresh button. When the user
-   is scrolled to the very top of the page and
-   drags a finger downward past a threshold, the
-   Community Wall reloads — the same behaviour as
-   pulling down in Gmail, Instagram, etc.
+   REFRESH COMMUNITY WALL
 ===================================================== */
 
-const PULL_REFRESH_THRESHOLD =
-70;
-
-const PULL_REFRESH_MAX =
-110;
-
-
-let pullRefreshStartY =
-0;
-
-let pullRefreshDistance =
-0;
-
-let pullRefreshActive =
-false;
-
-let pullRefreshInProgress =
-false;
-
-
-document.addEventListener(
-  "touchstart",
-  function(event){
-
-    if(
-      pullRefreshInProgress
-    ){
-
-      return;
-
-    }
-
-
-    if(
-      window.scrollY === 0 &&
-      event.touches.length === 1
-    ){
-
-      pullRefreshStartY =
-      event.touches[0].clientY;
-
-
-      pullRefreshActive =
-      true;
-
-    }else{
-
-      pullRefreshActive =
-      false;
-
-    }
-
-  },
-  {
-    passive:true
-  }
-);
-
-
-document.addEventListener(
-  "touchmove",
-  function(event){
-
-    if(
-      !pullRefreshActive ||
-      pullRefreshInProgress
-    ){
-
-      return;
-
-    }
-
-
-    const currentY =
-    event.touches[0].clientY;
-
-
-    pullRefreshDistance =
-    currentY - pullRefreshStartY;
-
-
-    if(
-      pullRefreshDistance > 0 &&
-      window.scrollY === 0
-    ){
-
-      const clampedDistance =
-      Math.min(
-        pullRefreshDistance,
-        PULL_REFRESH_MAX
-      );
-
-
-      pullRefreshIndicator.style.height =
-      clampedDistance + "px";
-
-
-      pullRefreshText.textContent =
-      clampedDistance >
-      PULL_REFRESH_THRESHOLD
-
-      ? "Release to refresh"
-
-      : "Pull to refresh";
-
-    }else{
-
-      pullRefreshActive =
-      false;
-
-
-      pullRefreshIndicator.style.height =
-      "0px";
-
-    }
-
-  },
-  {
-    passive:true
-  }
-);
-
-
-document.addEventListener(
-  "touchend",
+refreshButton.addEventListener(
+  "click",
   function(){
 
-    if(
-      !pullRefreshActive ||
-      pullRefreshInProgress
-    ){
-
-      pullRefreshActive =
-      false;
+    refreshButton.disabled =
+    true;
 
 
-      pullRefreshDistance =
-      0;
+    refreshButton.textContent =
+    "⏳";
 
 
-      return;
-
-    }
+    startCommunityFeed();
 
 
-    pullRefreshActive =
-    false;
+    window.setTimeout(
+      function(){
+
+        refreshButton.disabled =
+        false;
 
 
-    if(
-      pullRefreshDistance >
-      PULL_REFRESH_THRESHOLD
-    ){
+        refreshButton.textContent =
+        "🔄";
 
-      pullRefreshInProgress =
-      true;
+      },
+      1000
+    );
 
-
-      pullRefreshText.textContent =
-      "Refreshing...";
-
-
-      pullRefreshIcon.classList.add(
-        "spinning"
-      );
-
-
-      pullRefreshIndicator.style.height =
-      "50px";
-
-
-      startCommunityFeed();
-
-
-      window.setTimeout(
-        function(){
-
-          pullRefreshIndicator.style.height =
-          "0px";
-
-
-          pullRefreshIcon.classList.remove(
-            "spinning"
-          );
-
-
-          pullRefreshInProgress =
-          false;
-
-        },
-        900
-      );
-
-    }else{
-
-      pullRefreshIndicator.style.height =
-      "0px";
-
-    }
-
-
-    pullRefreshDistance =
-    0;
-
-  },
-  {
-    passive:true
   }
 );
 
