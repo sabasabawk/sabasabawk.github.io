@@ -882,6 +882,130 @@ a:focus-visible{
   background:#ffd2d2 !important;
 }
 
+.reportButton{
+  background:#fff0e0 !important;
+  color:#a35a00 !important;
+}
+
+.reportButton:hover{
+  background:#ffe2c2 !important;
+}
+
+.adminActions{
+  grid-template-columns:1fr;
+}
+
+.adminDeleteButton{
+  background:#3a1010 !important;
+  color:#ffffff !important;
+}
+
+.adminDeleteButton:hover{
+  background:#511616 !important;
+}
+
+
+/* =====================================================
+   REPORT MODAL
+===================================================== */
+
+#reportModal{
+  position:fixed;
+  inset:0;
+  z-index:1400;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.55);
+}
+
+#reportModal.open{
+  display:flex;
+}
+
+.reportModalCard{
+  width:100%;
+  max-width:420px;
+  max-height:88vh;
+  overflow-y:auto;
+  padding:24px;
+  border-radius:20px;
+  background:#ffffff;
+  box-shadow:0 12px 32px rgba(0,0,0,.25);
+}
+
+.reportModalCard h2{
+  font-size:20px;
+  color:#20252a;
+  margin-bottom:6px;
+}
+
+.reportModalCard p{
+  color:#66717c;
+  font-size:14px;
+  margin-bottom:18px;
+  line-height:1.5;
+}
+
+.reportReasonOption{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:13px 14px;
+  margin-bottom:9px;
+  border:1px solid #e1e6eb;
+  border-radius:12px;
+  background:#f9fafb;
+  color:#20252a;
+  text-align:left;
+  font-size:15px;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.reportReasonOption:hover{
+  background:#eef3f8;
+}
+
+.reportReasonOption.selected{
+  border-color:#0873c9;
+  background:#e7f3ff;
+  font-weight:bold;
+}
+
+.reportModalActions{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+
+.reportModalActions button{
+  flex:1;
+  min-height:46px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+#reportCancelButton{
+  background:#edf3f8;
+  color:#35414c;
+}
+
+#reportSubmitButton{
+  background:#0873c9;
+  color:#ffffff;
+}
+
+#reportSubmitButton:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
 
 /* =====================================================
    SMALL SCREEN
@@ -1519,6 +1643,99 @@ a:focus-visible{
 
 
 <!-- =====================================================
+   REPORT POST MODAL
+===================================================== -->
+
+<div
+  id="reportModal"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Report this post"
+>
+
+  <div class="reportModalCard">
+
+    <h2>
+      🚩 Report this post
+    </h2>
+
+    <p>
+      Let us know why you're reporting this post. Our
+      team will review it.
+    </p>
+
+
+    <div id="reportReasonList">
+
+      <button
+        type="button"
+        class="reportReasonOption"
+        data-reason="Spam"
+      >
+        Spam or misleading
+      </button>
+
+      <button
+        type="button"
+        class="reportReasonOption"
+        data-reason="Abusive language"
+      >
+        Abusive or hateful language
+      </button>
+
+      <button
+        type="button"
+        class="reportReasonOption"
+        data-reason="False teaching"
+      >
+        False teaching or misinformation
+      </button>
+
+      <button
+        type="button"
+        class="reportReasonOption"
+        data-reason="Inappropriate content"
+      >
+        Inappropriate content
+      </button>
+
+      <button
+        type="button"
+        class="reportReasonOption"
+        data-reason="Other"
+      >
+        Other
+      </button>
+
+    </div>
+
+
+    <div class="reportModalActions">
+
+      <button
+        type="button"
+        id="reportCancelButton"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        id="reportSubmitButton"
+        disabled
+      >
+        Submit report
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
    OPEN JAVASCRIPT MODULE
 ===================================================== -->
 
@@ -1632,9 +1849,39 @@ document.getElementById(
 );
 
 
+const reportModal =
+document.getElementById(
+  "reportModal"
+);
+
+
+const reportReasonList =
+document.getElementById(
+  "reportReasonList"
+);
+
+
+const reportCancelButton =
+document.getElementById(
+  "reportCancelButton"
+);
+
+
+const reportSubmitButton =
+document.getElementById(
+  "reportSubmitButton"
+);
+
+
 const notificationBadge =
 document.getElementById(
   "notificationBadge"
+);
+
+
+const topBarActions =
+document.querySelector(
+  ".topBarActions"
 );
 
 
@@ -1660,6 +1907,19 @@ null;
 
 let currentProfile =
 {};
+
+
+/*
+   Set to true only for the app owner's
+   account, via an isAdmin:true field on
+   their profile document in Firestore. This
+   is what quietly unlocks report review and
+   removing any post — invisible to every
+   other account.
+*/
+
+let currentUserIsAdmin =
+false;
 
 
 let unsubscribePosts =
@@ -2174,6 +2434,83 @@ function formatPostDate(
   }
 
 }
+
+
+/* =====================================================
+   ADMIN REPORTS LINK
+
+   Creates the 🛡️ Reports icon in the top bar
+   only when currentUserIsAdmin is true — for
+   every other account this function does
+   nothing, so the icon is never added to the
+   page at all, not just hidden with CSS.
+===================================================== */
+
+function updateAdminReportsLink(){
+
+  if(!topBarActions){
+
+    return;
+
+  }
+
+
+  const existingLink =
+  document.getElementById(
+    "adminReportsLink"
+  );
+
+
+  if(!currentUserIsAdmin){
+
+    if(existingLink){
+
+      existingLink.remove();
+
+    }
+
+    return;
+
+  }
+
+
+  if(existingLink){
+
+    return;
+
+  }
+
+
+  const adminLink =
+  document.createElement("a");
+
+  adminLink.id =
+  "adminReportsLink";
+
+  adminLink.href =
+  "admin-reports.html";
+
+  adminLink.className =
+  "topIconLink";
+
+  adminLink.setAttribute(
+    "aria-label",
+    "Review reported posts"
+  );
+
+  adminLink.title =
+  "Reported posts";
+
+  adminLink.textContent =
+  "🛡️";
+
+
+  topBarActions.insertBefore(
+    adminLink,
+    topBarActions.firstChild
+  );
+
+}
 /* =====================================================
    PART 7 OF 10
    AUTHENTICATION, CURRENT USER PROFILE
@@ -2188,6 +2525,10 @@ function formatPostDate(
 async function loadCurrentUserProfile(){
 
   currentProfile = {};
+
+  currentUserIsAdmin =
+  false;
+
 
   if(!currentUser){
 
@@ -2225,6 +2566,11 @@ async function loadCurrentUserProfile(){
 
       currentProfile =
       profileSnapshot.data();
+
+
+      currentUserIsAdmin =
+      currentProfile.isAdmin ===
+      true;
 
     }
 
@@ -2564,6 +2910,9 @@ onAuthStateChanged(
     await loadCurrentUserProfile();
 
 
+    updateAdminReportsLink();
+
+
     startNotificationListener();
 
 
@@ -2589,6 +2938,13 @@ onAuthStateChanged(
 
     currentProfile =
     {};
+
+
+    currentUserIsAdmin =
+    false;
+
+
+    updateAdminReportsLink();
 
 
     stopNotificationListener();
@@ -3765,6 +4121,50 @@ function createPostCard(postData){
   );
 
 
+  /* =================================================
+     REPORT BUTTON
+
+     Only shown on other people's posts — a
+     user reporting their own post makes no
+     sense, and hiding it there also matches
+     what every major app does.
+  ================================================= */
+
+  if(
+    currentUser &&
+    authorId &&
+    authorId !== currentUser.uid
+  ){
+
+    const reportButton =
+    document.createElement("button");
+
+    reportButton.type =
+    "button";
+
+    reportButton.className =
+    "reportButton";
+
+    reportButton.dataset.postId =
+    postData.id;
+
+    reportButton.dataset.authorId =
+    authorId;
+
+    reportButton.dataset.message =
+    postMessage;
+
+    reportButton.innerHTML =
+    "🚩 Report";
+
+
+    actionsContainer.appendChild(
+      reportButton
+    );
+
+  }
+
+
   postCard.appendChild(
     actionsContainer
   );
@@ -3832,6 +4232,53 @@ function createPostCard(postData){
 
     postCard.appendChild(
       ownerActions
+    );
+
+  }else if(
+    currentUserIsAdmin &&
+    currentUser
+  ){
+
+    /* ===============================================
+       ADMIN DELETE (for posts by other members)
+
+       Only ever created when currentUserIsAdmin
+       is true, which only your own account can
+       be — this button is never even added to
+       the page's HTML for anyone else, not just
+       hidden with CSS.
+    =============================================== */
+
+    const adminActions =
+    document.createElement("div");
+
+    adminActions.className =
+    "postActions ownerActions adminActions";
+
+
+    const adminDeleteButton =
+    document.createElement("button");
+
+    adminDeleteButton.type =
+    "button";
+
+    adminDeleteButton.className =
+    "deleteButton adminDeleteButton";
+
+    adminDeleteButton.dataset.postId =
+    postData.id;
+
+    adminDeleteButton.innerHTML =
+    "🛡️ Remove Post (Admin)";
+
+
+    adminActions.appendChild(
+      adminDeleteButton
+    );
+
+
+    postCard.appendChild(
+      adminActions
     );
 
   }
@@ -4489,6 +4936,352 @@ async function handleDeleteButton(
 
 
 /* =====================================================
+   REPORT A POST
+
+   Opens a small reason picker instead of one
+   generic prompt — matches how major apps ask
+   "why are you reporting this" before saving
+   it. The report itself never touches or
+   changes the post; it only gets written into
+   a separate "reports" collection for the
+   admin to review on their own Reports page.
+===================================================== */
+
+let reportTargetPostId =
+null;
+
+let reportTargetAuthorId =
+null;
+
+let reportTargetMessage =
+"";
+
+let selectedReportReason =
+null;
+
+
+function openReportModal(
+  postId,
+  authorId,
+  message
+){
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+
+  reportTargetPostId =
+  postId;
+
+  reportTargetAuthorId =
+  authorId ||
+  "";
+
+  reportTargetMessage =
+  message ||
+  "";
+
+  selectedReportReason =
+  null;
+
+
+  if(reportReasonList){
+
+    reportReasonList
+    .querySelectorAll(
+      ".reportReasonOption"
+    )
+    .forEach(
+      optionButton => {
+
+        optionButton.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+  }
+
+
+  if(reportSubmitButton){
+
+    reportSubmitButton.disabled =
+    true;
+
+    reportSubmitButton.textContent =
+    "Submit report";
+
+  }
+
+
+  if(reportModal){
+
+    reportModal.classList.add(
+      "open"
+    );
+
+    reportModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  }
+
+
+  document.body.style.overflow =
+  "hidden";
+
+}
+
+
+function closeReportModal(){
+
+  if(reportModal){
+
+    reportModal.classList.remove(
+      "open"
+    );
+
+    reportModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+
+  document.body.style.overflow =
+  "";
+
+
+  reportTargetPostId =
+  null;
+
+  reportTargetAuthorId =
+  null;
+
+  reportTargetMessage =
+  "";
+
+  selectedReportReason =
+  null;
+
+}
+
+
+if(reportReasonList){
+
+  reportReasonList.addEventListener(
+    "click",
+    event => {
+
+      const optionButton =
+      event.target.closest(
+        ".reportReasonOption"
+      );
+
+
+      if(!optionButton){
+
+        return;
+
+      }
+
+
+      reportReasonList
+      .querySelectorAll(
+        ".reportReasonOption"
+      )
+      .forEach(
+        button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        }
+      );
+
+
+      optionButton.classList.add(
+        "selected"
+      );
+
+
+      selectedReportReason =
+      optionButton.dataset.reason ||
+      "Other";
+
+
+      if(reportSubmitButton){
+
+        reportSubmitButton.disabled =
+        false;
+
+      }
+
+    }
+  );
+
+}
+
+
+if(reportCancelButton){
+
+  reportCancelButton.addEventListener(
+    "click",
+    closeReportModal
+  );
+
+}
+
+
+if(reportModal){
+
+  reportModal.addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        reportModal
+      ){
+
+        closeReportModal();
+
+      }
+
+    }
+  );
+
+}
+
+
+if(reportSubmitButton){
+
+  reportSubmitButton.addEventListener(
+    "click",
+    async () => {
+
+      if(
+        !currentUser ||
+        !reportTargetPostId ||
+        !selectedReportReason
+      ){
+
+        return;
+
+      }
+
+
+      reportSubmitButton.disabled =
+      true;
+
+      reportSubmitButton.textContent =
+      "Submitting...";
+
+
+      const reporterName =
+      getFirstValue(
+
+        currentProfile.fullName,
+
+        currentProfile.name,
+
+        currentUser.displayName,
+
+        currentUser.email,
+
+        "A community member"
+
+      );
+
+
+      try{
+
+        await addDoc(
+
+          collection(
+            db,
+            "reports"
+          ),
+
+          {
+
+            postId:
+            reportTargetPostId,
+
+            postAuthorId:
+            reportTargetAuthorId,
+
+            postMessageSnapshot:
+            reportTargetMessage.slice(
+              0,
+              300
+            ),
+
+            reporterId:
+            currentUser.uid,
+
+            reporterName:
+            reporterName,
+
+            reason:
+            selectedReportReason,
+
+            status:
+            "pending",
+
+            timestamp:
+            serverTimestamp()
+
+          }
+
+        );
+
+
+        alert(
+          "Thank you — this post has been reported and will be reviewed."
+        );
+
+
+        closeReportModal();
+
+      }catch(error){
+
+        console.error(
+          "Error submitting report:",
+          error
+        );
+
+
+        alert(
+          "The report could not be submitted. Please try again."
+        );
+
+
+        reportSubmitButton.disabled =
+        false;
+
+        reportSubmitButton.textContent =
+        "Submit report";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
    OPEN PHOTO VIEWER
 ===================================================== */
 
@@ -5062,6 +5855,29 @@ postsContainer.addEventListener(
     }
 
 
+    const reportButton =
+    event.target.closest(
+      ".reportButton"
+    );
+
+
+    if(reportButton){
+
+      openReportModal(
+
+        reportButton.dataset.postId,
+
+        reportButton.dataset.authorId,
+
+        reportButton.dataset.message
+
+      );
+
+      return;
+
+    }
+
+
     const postImage =
     event.target.closest(
       ".communityPostImage"
@@ -5140,6 +5956,21 @@ document.addEventListener(
     ){
 
       closeVideoReelViewer();
+
+    }
+
+
+    if(
+
+      reportModal &&
+
+      reportModal.classList.contains(
+        "open"
+      )
+
+    ){
+
+      closeReportModal();
 
     }
 
