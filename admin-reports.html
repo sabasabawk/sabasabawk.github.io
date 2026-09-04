@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Reports | SABASABA Gospel Ministry
+</title>
+
+
+<style>
+
+/* =====================================================
+   GENERAL PAGE STYLE
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+
+body{
+
+  font-family:
+  Arial,
+  Helvetica,
+  sans-serif;
+
+  background:#eef3f8;
+
+  margin:0;
+
+  padding:20px;
+
+  color:#222;
+
+}
+
+
+.container{
+
+  width:100%;
+
+  max-width:800px;
+
+  margin:0 auto;
+
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.header{
+
+  background:
+  linear-gradient(
+    135deg,
+    #3a1010,
+    #7a1f1f
+  );
+
+  color:white;
+
+  padding:24px 20px;
+
+  border-radius:16px;
+
+  text-align:center;
+
+  margin-bottom:20px;
+
+  box-shadow:
+  0 4px 12px
+  rgba(0,0,0,0.15);
+
+}
+
+
+.header h1{
+
+  margin:0 0 8px;
+
+  font-size:28px;
+
+}
+
+
+.header p{
+
+  margin:0;
+
+  font-size:15px;
+
+  opacity:0.95;
+
+}
+
+
+/* =====================================================
+   TOP ACTIONS
+===================================================== */
+
+.topActions{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:18px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.reportCount{
+
+  background:white;
+
+  color:#7a1f1f;
+
+  padding:10px 14px;
+
+  border-radius:10px;
+
+  font-weight:bold;
+
+  box-shadow:
+  0 2px 6px
+  rgba(0,0,0,0.08);
+
+}
+
+
+.filterTabs{
+
+  display:flex;
+
+  gap:8px;
+
+}
+
+
+.filterTab{
+
+  padding:9px 14px;
+
+  border:none;
+
+  border-radius:9px;
+
+  background:#e3e8ee;
+
+  color:#45525e;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+}
+
+
+.filterTab.active{
+
+  background:#7a1f1f;
+
+  color:white;
+
+}
+
+
+/* =====================================================
+   REPORT CARDS
+===================================================== */
+
+.reportCard{
+
+  background:white;
+
+  padding:18px;
+
+  margin-bottom:14px;
+
+  border-radius:13px;
+
+  box-shadow:
+  0 3px 9px
+  rgba(0,0,0,0.1);
+
+  border-left:
+  6px solid #b00020;
+
+}
+
+
+.reportCard.reviewed{
+
+  border-left-color:#198754;
+
+  opacity:.75;
+
+}
+
+
+.reportMeta{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:10px;
+
+  margin-bottom:10px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.reportReason{
+
+  display:inline-block;
+
+  padding:5px 11px;
+
+  border-radius:20px;
+
+  background:#ffe1e1;
+
+  color:#b00020;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+}
+
+
+.reportTime{
+
+  color:#777;
+
+  font-size:13px;
+
+}
+
+
+.reportedBy{
+
+  color:#45525e;
+
+  font-size:14px;
+
+  margin-bottom:10px;
+
+}
+
+
+.reportedPostBox{
+
+  padding:14px;
+
+  margin-bottom:12px;
+
+  border-radius:10px;
+
+  background:#f7f8fa;
+
+  border:1px solid #e1e6eb;
+
+  color:#20252a;
+
+  font-size:15px;
+
+  line-height:1.5;
+
+  white-space:pre-wrap;
+
+  overflow-wrap:anywhere;
+
+}
+
+
+.reportedPostBox.missing{
+
+  color:#8a95a1;
+
+  font-style:italic;
+
+}
+
+
+.reportActions{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.reportActions button{
+
+  flex:1;
+
+  min-width:130px;
+
+  min-height:44px;
+
+  padding:10px 14px;
+
+  border:none;
+
+  border-radius:10px;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+}
+
+
+.removePostButton{
+
+  background:#3a1010;
+
+  color:white;
+
+}
+
+
+.removePostButton:hover{
+
+  background:#511616;
+
+}
+
+
+.dismissButton{
+
+  background:#e3e8ee;
+
+  color:#45525e;
+
+}
+
+
+.dismissButton:hover{
+
+  background:#d3dbe4;
+
+}
+
+
+.viewPostButton{
+
+  background:#e5f1ff;
+
+  color:#0056a6;
+
+}
+
+
+.viewPostButton:hover{
+
+  background:#cfe5ff;
+
+}
+
+
+.reportActions button:disabled{
+
+  opacity:.6;
+
+  cursor:not-allowed;
+
+}
+
+
+/* =====================================================
+   STATUS CARDS
+===================================================== */
+
+.statusCard{
+
+  background:white;
+
+  padding:22px;
+
+  border-radius:13px;
+
+  text-align:center;
+
+  font-size:16px;
+
+  box-shadow:
+  0 3px 8px
+  rgba(0,0,0,0.08);
+
+}
+
+
+.statusCard.loading{
+
+  color:#0056a6;
+
+}
+
+
+.statusCard.empty{
+
+  color:#555;
+
+}
+
+
+.statusCard.error{
+
+  background:#ffdddd;
+
+  color:#b00020;
+
+  border:
+  1px solid #ffaaaa;
+
+}
+
+
+/* =====================================================
+   BACK SECTION
+===================================================== */
+
+.back{
+
+  text-align:center;
+
+  margin-top:25px;
+
+}
+
+
+.backButton{
+
+  background:#0066cc;
+
+  color:white;
+
+  border:none;
+
+  padding:12px 20px;
+
+  border-radius:9px;
+
+  font-size:15px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+}
+
+
+.backButton:hover{
+
+  background:#004d99;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  body{
+
+    padding:12px;
+
+  }
+
+
+  .header{
+
+    padding:20px 14px;
+
+  }
+
+
+  .header h1{
+
+    font-size:22px;
+
+  }
+
+
+  .topActions{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+
+  .filterTabs{
+
+    justify-content:stretch;
+
+  }
+
+
+  .filterTab{
+
+    flex:1;
+
+  }
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ==================================================
+       PAGE HEADER
+  =================================================== -->
+
+  <div class="header">
+
+    <h1>
+      🛡️ Reported Posts
+    </h1>
+
+    <p>
+      Review posts flagged by the community and take action.
+    </p>
+
+  </div>
+
+
+  <!-- ==================================================
+       TOP ACTIONS
+  =================================================== -->
+
+  <div class="topActions">
+
+    <div
+      id="reportCount"
+      class="reportCount"
+    >
+      Reports: 0
+    </div>
+
+
+    <div class="filterTabs">
+
+      <button
+        type="button"
+        id="filterPendingButton"
+        class="filterTab active"
+      >
+        Pending
+      </button>
+
+      <button
+        type="button"
+        id="filterAllButton"
+        class="filterTab"
+      >
+        All
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       REPORTS LIST
+  =================================================== -->
+
+  <div
+    id="reportsList"
+  >
+
+    <div class="statusCard loading">
+
+      Checking your access...
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       BACK BUTTON
+  =================================================== -->
+
+  <div class="back">
+
+    <button
+      id="backButton"
+      class="backButton"
+      type="button"
+    >
+
+      ⬅ Back to Community
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import {
+  auth,
+  db,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  onAuthStateChanged
+} from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const reportsList =
+document.getElementById(
+  "reportsList"
+);
+
+
+const reportCount =
+document.getElementById(
+  "reportCount"
+);
+
+
+const filterPendingButton =
+document.getElementById(
+  "filterPendingButton"
+);
+
+
+const filterAllButton =
+document.getElementById(
+  "filterAllButton"
+);
+
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+
+/* =====================================================
+   GLOBAL STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentUserIsAdmin =
+false;
+
+let unsubscribeReports =
+null;
+
+let currentReports =
+[];
+
+let currentFilter =
+"pending";
+
+/*
+   Caches the post content for each reported
+   post so it doesn't need to be re-fetched
+   every time the list re-renders.
+*/
+
+const postContentCache =
+new Map();
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+  const temporaryElement =
+  document.createElement("div");
+
+
+  temporaryElement.textContent =
+  String(value ?? "");
+
+
+  return temporaryElement.innerHTML;
+
+}
+
+
+/* =====================================================
+   STATUS MESSAGES
+===================================================== */
+
+function showLoadingMessage(message){
+
+  reportsList.innerHTML = `
+
+    <div class="statusCard loading">
+
+      ${escapeHTML(
+        message ||
+        "Loading reports..."
+      )}
+
+    </div>
+
+  `;
+
+}
+
+
+function showEmptyMessage(){
+
+  reportsList.innerHTML = `
+
+    <div class="statusCard empty">
+
+      No reports to show right now.
+
+    </div>
+
+  `;
+
+}
+
+
+function showErrorMessage(message){
+
+  reportsList.innerHTML = `
+
+    <div class="statusCard error">
+
+      ${escapeHTML(message)}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatReportDate(timestamp){
+
+  if(!timestamp){
+
+    return "Just now";
+
+  }
+
+
+  try{
+
+    const date =
+    timestamp.toDate
+    ? timestamp.toDate()
+    : new Date(timestamp);
+
+
+    return date.toLocaleString();
+
+  }catch(error){
+
+    return "Recently";
+
+  }
+
+}
+
+
+/* =====================================================
+   ACCESS CHECK
+
+   This page never even loads report data for
+   anyone whose account is not flagged
+   isAdmin:true in Firestore — it redirects
+   away immediately, so the content of this
+   page is never exposed to a regular member
+   even if they guess the URL.
+===================================================== */
+
+onAuthStateChanged(
+
+  auth,
+
+  async user => {
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    try{
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+
+      const profileSnapshot =
+      await getDoc(
+        profileReference
+      );
+
+
+      currentUserIsAdmin =
+
+        profileSnapshot.exists() &&
+
+        profileSnapshot.data().isAdmin ===
+        true;
+
+
+    }catch(error){
+
+      console.error(
+        "Admin check error:",
+        error
+      );
+
+      currentUserIsAdmin =
+      false;
+
+    }
+
+
+    if(!currentUserIsAdmin){
+
+      window.location.href =
+      "feed.html";
+
+      return;
+
+    }
+
+
+    startReportsListener();
+
+  },
+
+  error => {
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+    window.location.href =
+    "login.html";
+
+  }
+
+);
+
+
+/* =====================================================
+   LOAD REPORTS (LIVE)
+===================================================== */
+
+function stopReportsListener(){
+
+  if(unsubscribeReports){
+
+    unsubscribeReports();
+
+    unsubscribeReports =
+    null;
+
+  }
+
+}
+
+
+function startReportsListener(){
+
+  stopReportsListener();
+
+  showLoadingMessage();
+
+
+  const reportsQuery =
+  query(
+    collection(
+      db,
+      "reports"
+    ),
+    orderBy(
+      "timestamp",
+      "desc"
+    )
+  );
+
+
+  unsubscribeReports =
+  onSnapshot(
+
+    reportsQuery,
+
+    snapshot => {
+
+      currentReports =
+      snapshot.docs.map(
+        reportDoc => ({
+
+          id:
+          reportDoc.id,
+
+          ...reportDoc.data()
+
+        })
+      );
+
+
+      renderReports();
+
+    },
+
+    error => {
+
+      console.error(
+        "Reports loading error:",
+        error
+      );
+
+
+      if(
+        error.code ===
+        "permission-denied"
+      ){
+
+        showErrorMessage(
+          "You do not have permission to view reports. Check your Firestore security rules."
+        );
+
+        return;
+
+      }
+
+
+      showErrorMessage(
+        error.message ||
+        "Reports could not be loaded."
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   FILTER TABS
+===================================================== */
+
+function setFilter(filter){
+
+  currentFilter =
+  filter;
+
+
+  filterPendingButton.classList.toggle(
+    "active",
+    filter === "pending"
+  );
+
+
+  filterAllButton.classList.toggle(
+    "active",
+    filter === "all"
+  );
+
+
+  renderReports();
+
+}
+
+
+filterPendingButton.addEventListener(
+  "click",
+  () => setFilter("pending")
+);
+
+
+filterAllButton.addEventListener(
+  "click",
+  () => setFilter("all")
+);
+
+
+/* =====================================================
+   RENDER REPORTS LIST
+===================================================== */
+
+function renderReports(){
+
+  const visibleReports =
+  currentFilter === "pending"
+
+  ? currentReports.filter(
+      report =>
+      report.status !== "reviewed"
+    )
+
+  : currentReports;
+
+
+  const pendingCount =
+  currentReports.filter(
+    report =>
+    report.status !== "reviewed"
+  ).length;
+
+
+  reportCount.textContent =
+  `Reports: ${currentReports.length} | Pending: ${pendingCount}`;
+
+
+  if(visibleReports.length === 0){
+
+    showEmptyMessage();
+
+    return;
+
+  }
+
+
+  reportsList.innerHTML =
+  "";
+
+
+  visibleReports.forEach(
+    report => {
+
+      const card =
+      createReportCard(
+        report
+      );
+
+
+      reportsList.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   CREATE ONE REPORT CARD
+===================================================== */
+
+function createReportCard(report){
+
+  const card =
+  document.createElement("div");
+
+
+  const isReviewed =
+  report.status === "reviewed";
+
+
+  card.className =
+  isReviewed
+  ? "reportCard reviewed"
+  : "reportCard";
+
+
+  const reportedAt =
+  formatReportDate(
+    report.timestamp
+  );
+
+
+  card.innerHTML = `
+
+    <div class="reportMeta">
+
+      <span class="reportReason">
+
+        ${escapeHTML(
+          report.reason ||
+          "Other"
+        )}
+
+      </span>
+
+
+      <span class="reportTime">
+
+        ${escapeHTML(reportedAt)}
+
+      </span>
+
+    </div>
+
+
+    <div class="reportedBy">
+
+      Reported by ${escapeHTML(
+        report.reporterName ||
+        "A community member"
+      )}
+
+    </div>
+
+
+    <div
+      class="reportedPostBox"
+      data-post-content-for="${escapeHTML(report.postId || "")}"
+    >
+
+      ${
+        report.postMessageSnapshot
+
+        ? escapeHTML(
+            report.postMessageSnapshot
+          )
+
+        : "Loading post content..."
+      }
+
+    </div>
+
+
+    <div class="reportActions">
+
+      <button
+        type="button"
+        class="removePostButton"
+        ${isReviewed ? "disabled" : ""}
+      >
+        🛡️ Remove post
+      </button>
+
+      <button
+        type="button"
+        class="dismissButton"
+        ${isReviewed ? "disabled" : ""}
+      >
+        ✓ Dismiss report
+      </button>
+
+    </div>
+
+  `;
+
+
+  setupReportCardActions(
+    report,
+    card
+  );
+
+
+  loadReportedPostPreview(
+    report,
+    card
+  );
+
+
+  return card;
+
+}
+
+
+/* =====================================================
+   LOAD A PREVIEW OF THE REPORTED POST
+
+   Falls back to the message captured at the
+   moment the report was filed if the live
+   post can no longer be found (e.g. it was
+   already deleted by the original author).
+===================================================== */
+
+async function loadReportedPostPreview(
+  report,
+  card
+){
+
+  if(!report.postId){
+
+    return;
+
+  }
+
+
+  const contentBox =
+  card.querySelector(
+    "[data-post-content-for]"
+  );
+
+
+  if(!contentBox){
+
+    return;
+
+  }
+
+
+  try{
+
+    let postMessage =
+    postContentCache.get(
+      report.postId
+    );
+
+
+    if(postMessage === undefined){
+
+      const postReference =
+      doc(
+        db,
+        "communityPosts",
+        report.postId
+      );
+
+
+      const postSnapshot =
+      await getDoc(
+        postReference
+      );
+
+
+      if(postSnapshot.exists()){
+
+        const postData =
+        postSnapshot.data();
+
+
+        postMessage =
+
+          postData.post ||
+          postData.message ||
+          postData.content ||
+          postData.text ||
+          "";
+
+      }else{
+
+        postMessage =
+        null;
+
+      }
+
+
+      postContentCache.set(
+        report.postId,
+        postMessage
+      );
+
+    }
+
+
+    if(postMessage === null){
+
+      contentBox.classList.add(
+        "missing"
+      );
+
+      contentBox.textContent =
+      "This post has already been removed.";
+
+    }else if(postMessage){
+
+      contentBox.textContent =
+      postMessage;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading reported post preview:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   REPORT CARD ACTIONS
+===================================================== */
+
+function setupReportCardActions(
+  report,
+  card
+){
+
+  const removeButton =
+  card.querySelector(
+    ".removePostButton"
+  );
+
+
+  const dismissButton =
+  card.querySelector(
+    ".dismissButton"
+  );
+
+
+  if(removeButton){
+
+    removeButton.addEventListener(
+      "click",
+      async () => {
+
+        if(!report.postId){
+
+          alert(
+            "This report has no linked post to remove."
+          );
+
+          return;
+
+        }
+
+
+        const confirmed =
+        confirm(
+          "Remove this post from the Community Wall? This cannot be undone."
+        );
+
+
+        if(!confirmed){
+
+          return;
+
+        }
+
+
+        removeButton.disabled =
+        true;
+
+        removeButton.textContent =
+        "Removing...";
+
+
+        try{
+
+          const postReference =
+          doc(
+            db,
+            "communityPosts",
+            report.postId
+          );
+
+
+          await deleteDoc(
+            postReference
+          );
+
+
+          await markReportReviewed(
+            report.id
+          );
+
+        }catch(error){
+
+          console.error(
+            "Error removing reported post:",
+            error
+          );
+
+
+          alert(
+            "The post could not be removed."
+          );
+
+
+          removeButton.disabled =
+          false;
+
+          removeButton.textContent =
+          "🛡️ Remove post";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  if(dismissButton){
+
+    dismissButton.addEventListener(
+      "click",
+      async () => {
+
+        dismissButton.disabled =
+        true;
+
+        dismissButton.textContent =
+        "Dismissing...";
+
+
+        try{
+
+          await markReportReviewed(
+            report.id
+          );
+
+        }catch(error){
+
+          console.error(
+            "Error dismissing report:",
+            error
+          );
+
+
+          alert(
+            "The report could not be updated."
+          );
+
+
+          dismissButton.disabled =
+          false;
+
+          dismissButton.textContent =
+          "✓ Dismiss report";
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   MARK A REPORT AS REVIEWED
+===================================================== */
+
+async function markReportReviewed(reportId){
+
+  const reportReference =
+  doc(
+    db,
+    "reports",
+    reportId
+  );
+
+
+  await updateDoc(
+    reportReference,
+    {
+      status:
+      "reviewed"
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  () => {
+
+    window.location.href =
+    "feed.html";
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN UP
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+
+    stopReportsListener();
+
+  }
+);
+
+
+console.log(
+  "Admin Reports page is ready."
+);
+
+</script>
+
+</body>
+
+</html>
