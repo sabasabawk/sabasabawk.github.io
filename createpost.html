@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0"
 >
-
 <meta
   name="description"
   content="Create and publish a post on the SABASABA Gospel Ministry Community Wall"
 >
-
 <title>
   Create Post | SABASABA Gospel Ministry
 </title>
-
 
 <style>
 
@@ -1429,7 +1423,24 @@ removeMediaBtn.addEventListener(
 
 /* =====================================================
    CLOUDINARY UPLOAD FUNCTION
+   (IMAGES: SINGLE REQUEST — VIDEOS: CHUNKED WITH RETRY)
 ===================================================== */
+
+const CHUNK_SIZE =
+6 * 1024 * 1024;
+
+
+function generateUploadId(){
+
+  return (
+    "upload-" +
+    Date.now() +
+    "-" +
+    Math.random().toString(16).slice(2)
+  );
+
+}
+
 
 async function uploadPostMedia(file){
 
@@ -1468,8 +1479,42 @@ async function uploadPostMedia(file){
   : "image";
 
 
+  uploadArea.style.display =
+  "block";
+
+
+  uploadProgress.style.width =
+  "0%";
+
+
+  uploadText.textContent =
+  "Uploading media: 0%";
+
+
+  if(resourceType === "video"){
+
+    return uploadVideoInChunks(
+      file
+    );
+
+  }
+
+
+  return uploadImageDirect(
+    file
+  );
+
+}
+
+
+/* =====================================================
+   IMAGE UPLOAD (SINGLE REQUEST, UNCHANGED BEHAVIOUR)
+===================================================== */
+
+function uploadImageDirect(file){
+
   const uploadUrl =
-  `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
+  `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
 
   const formData =
@@ -1486,18 +1531,6 @@ async function uploadPostMedia(file){
     "upload_preset",
     uploadPreset
   );
-
-
-  uploadArea.style.display =
-  "block";
-
-
-  uploadProgress.style.width =
-  "0%";
-
-
-  uploadText.textContent =
-  "Uploading media: 0%";
 
 
   return new Promise(
@@ -1521,10 +1554,6 @@ async function uploadPostMedia(file){
       request.timeout =
       300000;
 
-
-/* =====================================================
-   UPLOAD PROGRESS
-===================================================== */
 
       request.upload.addEventListener(
         "progress",
@@ -1556,10 +1585,6 @@ async function uploadPostMedia(file){
         }
       );
 
-
-/* =====================================================
-   UPLOAD SUCCESS
-===================================================== */
 
       request.addEventListener(
         "load",
@@ -1599,12 +1624,6 @@ async function uploadPostMedia(file){
             }
 
 
-            const uploadedMediaType =
-            response.resource_type === "video"
-            ? "video"
-            : "image";
-
-
             uploadProgress.style.width =
             "100%";
 
@@ -1616,7 +1635,7 @@ async function uploadPostMedia(file){
             resolve({
 
               mediaType:
-              uploadedMediaType,
+              "image",
 
               mediaUrl:
               response.secure_url,
@@ -1646,10 +1665,6 @@ async function uploadPostMedia(file){
       );
 
 
-/* =====================================================
-   NETWORK ERROR
-===================================================== */
-
       request.addEventListener(
         "error",
         function(){
@@ -1671,10 +1686,6 @@ async function uploadPostMedia(file){
         }
       );
 
-
-/* =====================================================
-   UPLOAD TIMEOUT
-===================================================== */
 
       request.addEventListener(
         "timeout",
@@ -1698,10 +1709,6 @@ async function uploadPostMedia(file){
       );
 
 
-/* =====================================================
-   UPLOAD CANCELLED
-===================================================== */
-
       request.addEventListener(
         "abort",
         function(){
@@ -1724,9 +1731,252 @@ async function uploadPostMedia(file){
       );
 
 
+      request.send(
+        formData
+      );
+
+    }
+  );
+
+}
+
+
 /* =====================================================
-   START CLOUDINARY UPLOAD
+   SEND ONE VIDEO CHUNK
 ===================================================== */
+
+function uploadChunk(
+  file,
+  start,
+  end,
+  totalSize,
+  uploadId,
+  uploadUrl
+){
+
+  return new Promise(
+    function(resolve,reject){
+
+      const chunk =
+      file.slice(
+        start,
+        end
+      );
+
+
+      const formData =
+      new FormData();
+
+
+      formData.append(
+        "file",
+        chunk
+      );
+
+
+      formData.append(
+        "upload_preset",
+        uploadPreset
+      );
+
+
+      const request =
+      new XMLHttpRequest();
+
+
+      activeUploadRequest =
+      request;
+
+
+      request.open(
+        "POST",
+        uploadUrl,
+        true
+      );
+
+
+      request.timeout =
+      120000;
+
+
+      request.setRequestHeader(
+        "X-Unique-Upload-Id",
+        uploadId
+      );
+
+
+      request.setRequestHeader(
+        "Content-Range",
+        `bytes ${start}-${end - 1}/${totalSize}`
+      );
+
+
+      request.upload.addEventListener(
+        "progress",
+        function(event){
+
+          if(!event.lengthComputable){
+
+            return;
+
+          }
+
+
+          const bytesSoFar =
+          start +
+          event.loaded;
+
+
+          const progress =
+          Math.min(
+            99,
+            Math.round(
+              (
+                bytesSoFar /
+                totalSize
+              ) * 100
+            )
+          );
+
+
+          uploadProgress.style.width =
+          `${progress}%`;
+
+
+          uploadText.textContent =
+          `Uploading video: ${progress}%`;
+
+        }
+      );
+
+
+      request.addEventListener(
+        "load",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          if(
+            request.status < 200 ||
+            request.status >= 300
+          ){
+
+            let errorMessage =
+            "Cloudinary rejected part of the video upload.";
+
+
+            try{
+
+              const response =
+              JSON.parse(
+                request.responseText
+              );
+
+
+              errorMessage =
+              response?.error?.message ||
+              errorMessage;
+
+            }catch(parseError){
+
+              /* keep default message */
+
+            }
+
+
+            reject(
+              new Error(
+                errorMessage
+              )
+            );
+
+
+            return;
+
+          }
+
+
+          try{
+
+            const response =
+            JSON.parse(
+              request.responseText
+            );
+
+
+            resolve(
+              response
+            );
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "Cloudinary sent an unreadable response."
+              )
+            );
+
+          }
+
+        }
+      );
+
+
+      request.addEventListener(
+        "error",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "network-error"
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "timeout",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "network-error"
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "abort",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "cancelled"
+            )
+          );
+
+        }
+      );
+
 
       request.send(
         formData
@@ -1734,6 +1984,188 @@ async function uploadPostMedia(file){
 
     }
   );
+
+}
+
+
+/* =====================================================
+   SEND ONE VIDEO CHUNK, RETRYING ON DROPPED CONNECTIONS
+===================================================== */
+
+async function uploadChunkWithRetry(
+  file,
+  start,
+  end,
+  totalSize,
+  uploadId,
+  uploadUrl,
+  maxAttempts
+){
+
+  let lastError =
+  null;
+
+
+  for(
+    let attempt = 1;
+    attempt <= maxAttempts;
+    attempt++
+  ){
+
+    try{
+
+      return await uploadChunk(
+        file,
+        start,
+        end,
+        totalSize,
+        uploadId,
+        uploadUrl
+      );
+
+    }catch(error){
+
+      lastError =
+      error;
+
+
+      if(error.message === "cancelled"){
+
+        throw error;
+
+      }
+
+
+      if(attempt < maxAttempts){
+
+        uploadText.textContent =
+        `Connection interrupted. Retrying part of the video (${attempt}/${maxAttempts - 1})...`;
+
+
+        await new Promise(
+          function(resolveDelay){
+
+            window.setTimeout(
+              resolveDelay,
+              1500 * attempt
+            );
+
+          }
+        );
+
+      }
+
+    }
+
+  }
+
+
+  if(
+    lastError &&
+    lastError.message === "network-error"
+  ){
+
+    throw new Error(
+      "The video upload kept failing because of a network error, even after retrying. Please try a smaller video or a stronger connection."
+    );
+
+  }
+
+
+  throw lastError;
+
+}
+
+
+/* =====================================================
+   VIDEO UPLOAD (SPLIT INTO CHUNKS)
+===================================================== */
+
+async function uploadVideoInChunks(file){
+
+  const uploadUrl =
+  `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`;
+
+
+  const uploadId =
+  generateUploadId();
+
+
+  const totalSize =
+  file.size;
+
+
+  let start =
+  0;
+
+
+  let lastResponse =
+  null;
+
+
+  uploadText.textContent =
+  "Uploading video: 0%";
+
+
+  while(start < totalSize){
+
+    const end =
+    Math.min(
+      start + CHUNK_SIZE,
+      totalSize
+    );
+
+
+    lastResponse =
+    await uploadChunkWithRetry(
+      file,
+      start,
+      end,
+      totalSize,
+      uploadId,
+      uploadUrl,
+      4
+    );
+
+
+    start =
+    end;
+
+  }
+
+
+  if(
+    !lastResponse ||
+    !lastResponse.secure_url
+  ){
+
+    throw new Error(
+      "Cloudinary did not return a media link for the video."
+    );
+
+  }
+
+
+  uploadProgress.style.width =
+  "100%";
+
+
+  uploadText.textContent =
+  "Media uploaded successfully.";
+
+
+  return {
+
+    mediaType:
+    "video",
+
+    mediaUrl:
+    lastResponse.secure_url,
+
+    mediaName:
+    file.name
+
+  };
 
 }
 /* =====================================================
