@@ -2520,6 +2520,14 @@ function updateAdminReportsLink(){
 
 /* =====================================================
    LOAD CURRENT USER PROFILE
+
+   This now runs INDEPENDENTLY of the feed —
+   nothing else waits for this to finish. It
+   only fills in personal touches (your avatar,
+   the admin icon), so there is no reason the
+   whole Community Wall should sit on a blank
+   "Loading..." screen just because this one
+   Firestore read is slow on a weak connection.
 ===================================================== */
 
 async function loadCurrentUserProfile(){
@@ -2538,6 +2546,8 @@ async function loadCurrentUserProfile(){
       defaultProfilePicture;
 
     }
+
+    updateAdminReportsLink();
 
     return;
 
@@ -2617,6 +2627,16 @@ async function loadCurrentUserProfile(){
     }
 
   }
+
+
+  /*
+     The admin icon and other profile-dependent
+     UI update here, once the profile actually
+     arrives — completely separate from the
+     feed, which never waits on this.
+  */
+
+  updateAdminReportsLink();
 
 }
 
@@ -2894,6 +2914,18 @@ function startNotificationListener(){
 
 /* =====================================================
    AUTHENTICATION LISTENER
+
+   FIX: this used to "await" the profile load
+   before starting anything else — the feed,
+   notifications and moments strip all sat on
+   a blank screen behind that one Firestore
+   read. Now currentUser is set and the feed /
+   notifications / moments strip all start
+   immediately in parallel. The profile fetch
+   still runs, just alongside everything else
+   instead of blocking it, and quietly fills
+   in the avatar and admin icon whenever it
+   finishes.
 ===================================================== */
 
 onAuthStateChanged(
@@ -2901,25 +2933,22 @@ onAuthStateChanged(
   auth,
 
 
-  async function(user){
+  function(user){
 
     currentUser =
     user || null;
 
 
-    await loadCurrentUserProfile();
-
-
-    updateAdminReportsLink();
+    startCommunityFeed();
 
 
     startNotificationListener();
 
 
-    startCommunityFeed();
-
-
     startMomentsStripListener();
+
+
+    loadCurrentUserProfile();
 
   },
 
