@@ -239,6 +239,115 @@ let lastVisibleDoc = null;
 let noMoreMembers = false;
 let isLoadingMembers = false;
 
+/*
+SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
+
+Same idea as the Community Wall fix: this page
+used to wait for a fresh Firestore read every
+single time it opened, with nothing shown until
+that finished. Now, if a cached copy of the
+first page of members exists and isn't too old,
+it renders immediately while the live Firestore
+read still happens right away in the background
+and replaces it the moment it arrives. This never
+changes which members exist — it only changes
+how fast something appears on screen.
+*/
+
+const MEMBERS_CACHE_KEY =
+"sabasaba_members_cache_v1";
+
+const MEMBERS_CACHE_MAX_AGE_MS =
+30 * 60 * 1000;
+
+function saveMembersCache(memberList){
+
+try{
+
+window.localStorage.setItem(
+
+MEMBERS_CACHE_KEY,
+
+JSON.stringify({
+
+savedAt: Date.now(),
+
+members: memberList
+
+})
+
+);
+
+}catch(error){
+
+/*
+Local storage can fail (private browsing,
+storage full, etc.) — this is only a speed
+optimization, so a failure here is silently
+ignored and never shown to the user.
+*/
+
+console.warn(
+"Members cache could not be saved:",
+error
+);
+
+}
+
+}
+
+function loadMembersCache(){
+
+try{
+
+const rawCache =
+window.localStorage.getItem(MEMBERS_CACHE_KEY);
+
+if(!rawCache){
+
+return null;
+
+}
+
+const parsedCache =
+JSON.parse(rawCache);
+
+const cacheAge =
+Date.now() - (parsedCache.savedAt || 0);
+
+if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS){
+
+return null;
+
+}
+
+if(
+
+!Array.isArray(parsedCache.members) ||
+
+parsedCache.members.length === 0
+
+){
+
+return null;
+
+}
+
+return parsedCache.members;
+
+}catch(error){
+
+console.warn(
+"Members cache could not be read:",
+error
+);
+
+return null;
+
+}
+
+}
+
 async function loadMembers(isLoadMore = false){
 
 if(isLoadingMembers || noMoreMembers){
@@ -316,6 +425,19 @@ loadMoreRow.style.display =
 noMoreMembers ? "none" : "block";
 
 displayMembers(members);
+
+/*
+Only the first page gets cached — older
+pages loaded via "Load more" don't need to,
+since this cache exists purely to make the
+very first thing on screen appear instantly.
+*/
+
+if(!isLoadMore){
+
+saveMembersCache(newMembers);
+
+}
 
 }catch(error){
 
@@ -431,6 +553,27 @@ loadMembers(true);
 
 }
 );
+
+/*
+Show the cached first page instantly if we
+have one — this removes the blank "Loading
+members..." wait on a repeat visit. The live
+Firestore read below still runs immediately
+and replaces this the moment real data
+arrives, so the cache is never shown for more
+than a moment and never goes stale on screen.
+*/
+
+const cachedMembers =
+loadMembersCache();
+
+if(cachedMembers){
+
+members = cachedMembers;
+
+displayMembers(members);
+
+}
 
 loadMembers(false);
 
