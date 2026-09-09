@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Send feedback, report a bug, or suggest an idea for Faith Connect"
+>
+
+<title>
+  Send Feedback | Faith Connect
+</title>
+
+<style>
+
+/* =====================================================
+   GENERAL PAGE
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#eef3f8;
+  color:#111111;
+}
+
+button,
+select,
+textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+
+/* =====================================================
+   TOP BAR
+===================================================== */
+
+.pageHeader{
+
+  padding:
+    18px
+    16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #087bd1,
+      #005cae
+    );
+
+  color:#ffffff;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  box-shadow:
+    0 3px 12px
+    rgba(0,0,0,.18);
+
+}
+
+
+.backButton{
+
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.18);
+
+  color:#ffffff;
+
+  font-size:22px;
+  font-weight:900;
+
+}
+
+
+.backButton:hover{
+
+  background:
+    rgba(255,255,255,.30);
+
+}
+
+
+.pageHeaderText h1{
+
+  margin:0;
+
+  font-size:20px;
+  font-weight:900;
+
+}
+
+
+.pageHeaderText p{
+
+  margin:
+    3px
+    0
+    0;
+
+  color:#e7f4ff;
+
+  font-size:13px;
+
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.pageContainer{
+
+  width:100%;
+  max-width:600px;
+
+  margin:auto;
+
+  padding:
+    20px
+    16px
+    80px;
+
+}
+
+
+/* =====================================================
+   INTRO CARD
+===================================================== */
+
+.introCard{
+
+  padding:
+    18px;
+
+  margin-bottom:
+    18px;
+
+  border-radius:16px;
+
+  background:#ffffff;
+
+  box-shadow:
+    0 4px 14px
+    rgba(0,0,0,.09);
+
+  color:#4f5963;
+
+  font-size:14px;
+  line-height:1.6;
+
+}
+
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.formCard{
+
+  padding:
+    22px
+    18px;
+
+  border-radius:20px;
+
+  background:#ffffff;
+
+  box-shadow:
+    0 5px 18px
+    rgba(0,0,0,.09);
+
+}
+
+
+label{
+
+  display:block;
+
+  margin-top:
+    18px;
+
+  margin-bottom:
+    8px;
+
+  color:#26333d;
+
+  font-size:14px;
+  font-weight:bold;
+
+}
+
+
+label:first-of-type{
+  margin-top:0;
+}
+
+
+/* =====================================================
+   CATEGORY OPTIONS
+===================================================== */
+
+.categoryGrid{
+
+  display:grid;
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:10px;
+
+}
+
+
+.categoryOption{
+
+  padding:
+    13px
+    10px;
+
+  border:
+    2px solid
+    #d9e0e8;
+
+  border-radius:12px;
+
+  background:#f7f9fc;
+
+  color:#4f5963;
+
+  text-align:center;
+
+  font-size:13px;
+  font-weight:bold;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease;
+
+}
+
+
+.categoryOption .categoryIcon{
+  font-size:22px;
+}
+
+
+.categoryOption:hover{
+
+  border-color:
+    #9fc4e6;
+
+}
+
+
+.categoryOption.selected{
+
+  border-color:
+    #087bd1;
+
+  background:
+    #e7f3ff;
+
+  color:#0873c9;
+
+}
+
+
+/* =====================================================
+   MESSAGE TEXTAREA
+===================================================== */
+
+textarea{
+
+  width:100%;
+
+  min-height:150px;
+
+  padding:13px;
+
+  border:
+    1px solid
+    #d9e0e8;
+
+  border-radius:12px;
+
+  background:#ffffff;
+  color:#111111;
+
+  outline:none;
+
+  resize:vertical;
+
+  font-size:15px;
+  line-height:1.5;
+
+}
+
+
+textarea:focus{
+
+  border-color:
+    #087bd1;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(8,123,209,.12);
+
+}
+
+
+.charCount{
+
+  margin-top:
+    6px;
+
+  text-align:right;
+
+  color:#8a95a1;
+
+  font-size:12px;
+
+}
+
+
+/* =====================================================
+   SUBMIT BUTTON
+===================================================== */
+
+.submitButton{
+
+  width:100%;
+
+  margin-top:
+    22px;
+
+  padding:
+    14px
+    20px;
+
+  border:none;
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #087bd1,
+      #005cae
+    );
+
+  color:#ffffff;
+
+  font-size:16px;
+  font-weight:bold;
+
+}
+
+
+.submitButton:hover{
+
+  background:
+    #0667b1;
+
+}
+
+
+.submitButton:disabled{
+
+  background:
+    #8ba8c5;
+
+  cursor:not-allowed;
+
+}
+
+
+/* =====================================================
+   STATUS MESSAGE
+===================================================== */
+
+#statusMessage{
+
+  min-height:22px;
+
+  margin-top:
+    16px;
+
+  text-align:center;
+
+  font-size:14px;
+  font-weight:bold;
+
+}
+
+
+.successText{
+  color:#138a36;
+}
+
+
+.errorText{
+  color:#d93025;
+}
+
+
+/* =====================================================
+   PAST FEEDBACK LIST
+===================================================== */
+
+.pastFeedbackSection{
+
+  margin-top:
+    26px;
+
+}
+
+
+.pastFeedbackSection h2{
+
+  font-size:16px;
+  color:#26333d;
+
+  margin-bottom:
+    12px;
+
+}
+
+
+.feedbackItem{
+
+  padding:
+    14px;
+
+  margin-bottom:
+    10px;
+
+  border-radius:14px;
+
+  background:#ffffff;
+
+  box-shadow:
+    0 3px 10px
+    rgba(0,0,0,.07);
+
+}
+
+
+.feedbackItemTop{
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:8px;
+
+}
+
+
+.feedbackCategoryTag{
+
+  padding:
+    4px
+    10px;
+
+  border-radius:999px;
+
+  background:#e7f3ff;
+  color:#0873c9;
+
+  font-size:11px;
+  font-weight:bold;
+
+}
+
+
+.feedbackStatusTag{
+
+  padding:
+    4px
+    10px;
+
+  border-radius:999px;
+
+  font-size:11px;
+  font-weight:bold;
+
+}
+
+
+.feedbackStatusTag.open{
+  background:#fff3cd;
+  color:#755600;
+}
+
+
+.feedbackStatusTag.reviewed{
+  background:#e6f4ea;
+  color:#1e7a34;
+}
+
+
+.feedbackMessage{
+
+  margin-top:
+    9px;
+
+  color:#26333d;
+
+  font-size:14px;
+  line-height:1.5;
+
+  white-space:pre-wrap;
+
+}
+
+
+.feedbackDate{
+
+  margin-top:
+    8px;
+
+  color:#8a95a1;
+
+  font-size:11px;
+
+}
+
+
+.emptyFeedbackText{
+
+  text-align:center;
+
+  color:#8a95a1;
+
+  font-size:13px;
+
+  padding:
+    14px
+    0;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<header class="pageHeader">
+
+  <a href="profile.html">
+
+    <button
+      type="button"
+      class="backButton"
+      aria-label="Go back"
+    >
+      ←
+    </button>
+
+  </a>
+
+  <div class="pageHeaderText">
+
+    <h1>
+      💬 Send Feedback
+    </h1>
+
+    <p>
+      Help us improve Faith Connect
+    </p>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="pageContainer">
+
+
+  <div class="introCard">
+
+    Found something that isn't working right, or have an
+    idea that would make Faith Connect better? Let us
+    know below. Your message goes directly to the
+    ministry team.
+
+  </div>
+
+
+  <div class="formCard">
+
+    <label>
+      What is this about?
+    </label>
+
+    <div
+      id="categoryGrid"
+      class="categoryGrid"
+    >
+
+      <button
+        type="button"
+        class="categoryOption"
+        data-category="Bug Report"
+      >
+        <span class="categoryIcon">🐞</span>
+        Bug Report
+      </button>
+
+      <button
+        type="button"
+        class="categoryOption"
+        data-category="Suggestion"
+      >
+        <span class="categoryIcon">💡</span>
+        Suggestion
+      </button>
+
+      <button
+        type="button"
+        class="categoryOption"
+        data-category="Something is Confusing"
+      >
+        <span class="categoryIcon">❓</span>
+        Confusing
+      </button>
+
+      <button
+        type="button"
+        class="categoryOption"
+        data-category="Praise / Encouragement"
+      >
+        <span class="categoryIcon">🙏</span>
+        Praise
+      </button>
+
+    </div>
+
+
+    <label for="feedbackMessage">
+      Tell us more
+    </label>
+
+    <textarea
+      id="feedbackMessage"
+      maxlength="1000"
+      placeholder="Describe the bug, share your idea, or tell us what's on your mind..."
+    ></textarea>
+
+    <div
+      id="charCount"
+      class="charCount"
+    >
+      0 / 1000
+    </div>
+
+
+    <button
+      type="button"
+      id="submitButton"
+      class="submitButton"
+    >
+      Send Feedback
+    </button>
+
+
+    <p
+      id="statusMessage"
+    ></p>
+
+  </div>
+
+
+  <!-- =================================================
+       PAST FEEDBACK FROM THIS USER
+  ================================================== -->
+
+  <div class="pastFeedbackSection">
+
+    <h2>
+      Your Previous Feedback
+    </h2>
+
+    <div id="pastFeedbackList">
+
+      <div class="emptyFeedbackText">
+        Loading...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import {
+  auth,
+  db,
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  onAuthStateChanged
+} from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const categoryGrid =
+document.getElementById(
+  "categoryGrid"
+);
+
+const feedbackMessageInput =
+document.getElementById(
+  "feedbackMessage"
+);
+
+const charCount =
+document.getElementById(
+  "charCount"
+);
+
+const submitButton =
+document.getElementById(
+  "submitButton"
+);
+
+const statusMessage =
+document.getElementById(
+  "statusMessage"
+);
+
+const pastFeedbackList =
+document.getElementById(
+  "pastFeedbackList"
+);
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let currentUserName =
+"A Faith Connect member";
+
+let selectedCategory =
+"";
+
+let unsubscribePastFeedback =
+null;
+
+
+/* =====================================================
+   CATEGORY SELECTION
+===================================================== */
+
+categoryGrid.addEventListener(
+  "click",
+  function(event){
+
+    const optionButton =
+    event.target.closest(
+      ".categoryOption"
+    );
+
+    if(!optionButton){
+
+      return;
+
+    }
+
+    categoryGrid
+    .querySelectorAll(
+      ".categoryOption"
+    )
+    .forEach(
+      function(button){
+
+        button.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+    optionButton.classList.add(
+      "selected"
+    );
+
+    selectedCategory =
+    optionButton.dataset.category ||
+    "";
+
+  }
+);
+
+
+/* =====================================================
+   CHARACTER COUNT
+===================================================== */
+
+feedbackMessageInput.addEventListener(
+  "input",
+  function(){
+
+    charCount.textContent =
+    `${feedbackMessageInput.value.length} / 1000`;
+
+  }
+);
+
+
+/* =====================================================
+   STATUS MESSAGE HELPERS
+===================================================== */
+
+function showStatus(
+  message,
+  type
+){
+
+  statusMessage.textContent =
+  message;
+
+  statusMessage.className =
+  type === "success"
+  ? "successText"
+  : "errorText";
+
+}
+
+function clearStatus(){
+
+  statusMessage.textContent =
+  "";
+
+  statusMessage.className =
+  "";
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatFeedbackDate(
+  timestamp
+){
+
+  if(!timestamp){
+
+    return "Just now";
+
+  }
+
+  try{
+
+    let feedbackDate;
+
+    if(
+      typeof timestamp.toDate ===
+      "function"
+    ){
+
+      feedbackDate =
+      timestamp.toDate();
+
+    }else if(
+      timestamp.seconds
+    ){
+
+      feedbackDate =
+      new Date(
+        timestamp.seconds * 1000
+      );
+
+    }else{
+
+      feedbackDate =
+      new Date(
+        timestamp
+      );
+
+    }
+
+    return feedbackDate.toLocaleString(
+      undefined,
+      {
+        year:"numeric",
+        month:"short",
+        day:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
+      }
+    );
+
+  }catch(error){
+
+    return "Recently";
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTH LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  function(user){
+
+    if(!user){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+    currentUser =
+    user;
+
+    currentUserName =
+    user.displayName ||
+    user.email ||
+    "A Faith Connect member";
+
+    startPastFeedbackListener();
+
+  }
+);
+
+
+/* =====================================================
+   SUBMIT FEEDBACK
+===================================================== */
+
+submitButton.addEventListener(
+  "click",
+  async function(){
+
+    clearStatus();
+
+    if(!currentUser){
+
+      showStatus(
+        "Please wait while your account loads.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    if(!selectedCategory){
+
+      showStatus(
+        "Please choose a category above.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    const message =
+    feedbackMessageInput.value.trim();
+
+    if(!message){
+
+      showStatus(
+        "Please write your feedback before sending.",
+        "error"
+      );
+
+      feedbackMessageInput.focus();
+
+      return;
+
+    }
+
+    submitButton.disabled =
+    true;
+
+    submitButton.textContent =
+    "Sending...";
+
+    try{
+
+      await addDoc(
+        collection(
+          db,
+          "feedback"
+        ),
+        {
+
+          userId:
+          currentUser.uid,
+
+          userName:
+          currentUserName,
+
+          userEmail:
+          currentUser.email ||
+          "",
+
+          category:
+          selectedCategory,
+
+          message:
+          message,
+
+          status:
+          "open",
+
+          timestamp:
+          serverTimestamp()
+
+        }
+      );
+
+      showStatus(
+        "✅ Thank you — your feedback has been sent!",
+        "success"
+      );
+
+      feedbackMessageInput.value =
+      "";
+
+      charCount.textContent =
+      "0 / 1000";
+
+      categoryGrid
+      .querySelectorAll(
+        ".categoryOption"
+      )
+      .forEach(
+        function(button){
+
+          button.classList.remove(
+            "selected"
+          );
+
+        }
+      );
+
+      selectedCategory =
+      "";
+
+    }catch(error){
+
+      console.error(
+        "Feedback submission error:",
+        error
+      );
+
+      showStatus(
+        "Your feedback could not be sent. Please try again.",
+        "error"
+      );
+
+    }finally{
+
+      submitButton.disabled =
+      false;
+
+      submitButton.textContent =
+      "Send Feedback";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   SHOW THIS USER'S PAST FEEDBACK
+   (so they can see their earlier reports and
+   whether the ministry team has reviewed them)
+===================================================== */
+
+function stopPastFeedbackListener(){
+
+  if(
+    typeof unsubscribePastFeedback ===
+    "function"
+  ){
+
+    unsubscribePastFeedback();
+
+  }
+
+  unsubscribePastFeedback =
+  null;
+
+}
+
+function startPastFeedbackListener(){
+
+  stopPastFeedbackListener();
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+  const feedbackQuery =
+  query(
+    collection(
+      db,
+      "feedback"
+    ),
+    where(
+      "userId",
+      "==",
+      currentUser.uid
+    ),
+    orderBy(
+      "timestamp",
+      "desc"
+    )
+  );
+
+  unsubscribePastFeedback =
+  onSnapshot(
+
+    feedbackQuery,
+
+    function(snapshot){
+
+      if(
+        snapshot.empty
+      ){
+
+        pastFeedbackList.innerHTML = `
+
+          <div class="emptyFeedbackText">
+            You haven't sent any feedback yet.
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+      pastFeedbackList.innerHTML =
+      "";
+
+      snapshot.forEach(
+        function(docSnapshot){
+
+          const data =
+          docSnapshot.data();
+
+          const item =
+          document.createElement(
+            "div"
+          );
+
+          item.className =
+          "feedbackItem";
+
+          const statusValue =
+          data.status ===
+          "reviewed"
+          ? "reviewed"
+          : "open";
+
+          const statusLabel =
+          statusValue ===
+          "reviewed"
+          ? "✔ Reviewed"
+          : "Pending review";
+
+          item.innerHTML = `
+
+            <div class="feedbackItemTop">
+
+              <span class="feedbackCategoryTag">
+                ${data.category ||
+                "Feedback"}
+              </span>
+
+              <span class="feedbackStatusTag ${statusValue}">
+                ${statusLabel}
+              </span>
+
+            </div>
+
+            <div class="feedbackMessage"></div>
+
+            <div class="feedbackDate">
+              ${formatFeedbackDate(
+                data.timestamp
+              )}
+            </div>
+
+          `;
+
+          item
+          .querySelector(
+            ".feedbackMessage"
+          )
+          .textContent =
+          data.message ||
+          "";
+
+          pastFeedbackList.appendChild(
+            item
+          );
+
+        }
+      );
+
+    },
+
+    function(error){
+
+      console.error(
+        "Past feedback listener error:",
+        error
+      );
+
+      pastFeedbackList.innerHTML = `
+
+        <div class="emptyFeedbackText">
+          Your previous feedback could not be loaded.
+        </div>
+
+      `;
+
+    }
+
+  );
+
+}
+
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    stopPastFeedbackListener();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
