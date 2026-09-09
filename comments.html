@@ -401,6 +401,26 @@
       background:
         #fbfdfc;
 
+      transition:
+        background 0.6s ease;
+
+    }
+
+
+    /*
+      Brief highlight flash used to point out a
+      comment when someone taps a "Replying to"
+      quote and jumps to the original comment.
+    */
+
+    .comment-card.highlighted {
+
+      background:
+        #eef8f1;
+
+      border-color:
+        var(--primary-color);
+
     }
 
 
@@ -480,6 +500,75 @@
     }
 
 
+    /* =====================================================
+       QUOTED REPLY REFERENCE
+       (shown at the top of a comment that is
+       itself a reply to another comment)
+    ===================================================== */
+
+    .reply-quote {
+
+      display: block;
+
+      width: 100%;
+
+      text-align: left;
+
+      border: none;
+
+      border-left:
+        3px solid var(--primary-color);
+
+      background:
+        var(--primary-light);
+
+      color:
+        var(--primary-dark);
+
+      border-radius: 8px;
+
+      padding:
+        6px 10px;
+
+      margin-bottom: 8px;
+
+      font-size: 12px;
+      line-height: 1.4;
+
+    }
+
+
+    .reply-quote:hover {
+
+      background:
+        #d9efe2;
+
+    }
+
+
+    .reply-quote-name {
+
+      font-weight: 700;
+
+      margin-bottom: 2px;
+
+    }
+
+
+    .reply-quote-text {
+
+      color:
+        var(--muted-text);
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+
+    }
+
+
     .comment-actions {
 
       display: flex;
@@ -529,6 +618,117 @@
 
       background:
         var(--danger-light);
+
+    }
+
+
+    /* =====================================================
+       REPLY-TO PREVIEW BANNER
+       (appears above the comment box once the
+       user taps "Reply" on someone's comment —
+       same idea as WhatsApp's reply preview)
+    ===================================================== */
+
+    .reply-preview-banner {
+
+      display: none;
+
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      background:
+        var(--primary-light);
+
+      border-left:
+        3px solid var(--primary-color);
+
+      border-radius: 10px;
+
+      padding:
+        10px 12px;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .reply-preview-banner.show {
+
+      display: flex;
+
+    }
+
+
+    .reply-preview-text {
+
+      min-width: 0;
+
+      font-size: 13px;
+
+      color:
+        var(--text-color);
+
+    }
+
+
+    .reply-preview-name {
+
+      font-weight: 700;
+
+      color:
+        var(--primary-dark);
+
+      margin-bottom: 2px;
+
+    }
+
+
+    .reply-preview-snippet {
+
+      color:
+        var(--muted-text);
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+    }
+
+
+    .cancel-reply-button {
+
+      flex-shrink: 0;
+
+      border: none;
+
+      background:
+        rgba(11, 93, 59, 0.12);
+
+      color:
+        var(--primary-dark);
+
+      width: 26px;
+      height: 26px;
+
+      border-radius: 50%;
+
+      font-size: 15px;
+      font-weight: 700;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+
+    .cancel-reply-button:hover {
+
+      background:
+        rgba(11, 93, 59, 0.22);
 
     }
 
@@ -1042,6 +1242,46 @@
       class="comment-form-card"
     >
 
+      <!-- =================================================
+           REPLY-TO PREVIEW
+           Shown only after tapping "Reply" on a
+           specific comment — same idea as WhatsApp's
+           quoted reply preview above the keyboard.
+      ================================================== -->
+
+      <div
+        id="replyPreviewBanner"
+        class="reply-preview-banner"
+      >
+
+        <div class="reply-preview-text">
+
+          <div class="reply-preview-name">
+            Replying to
+            <span id="replyPreviewName"></span>
+          </div>
+
+          <div
+            id="replyPreviewSnippet"
+            class="reply-preview-snippet"
+          ></div>
+
+        </div>
+
+
+        <button
+          id="cancelReplyButton"
+          class="cancel-reply-button"
+          type="button"
+          aria-label="Cancel reply"
+          title="Cancel reply"
+        >
+          ×
+        </button>
+
+      </div>
+
+
       <form
         id="commentForm"
         class="comment-form"
@@ -1137,6 +1377,26 @@ const defaultProfilePicture =
   "images/profile.png";
 
 
+/*
+  Holds { id, name, snippet } for the comment
+  currently being replied to, or null when the
+  comment box is a normal top-level comment.
+*/
+
+let replyingTo = null;
+
+
+/*
+  Keeps the latest loaded comments available by
+  ID, so tapping a "Replying to" quote can look
+  up the name/snippet of the original comment
+  without another network read.
+*/
+
+const loadedCommentsById =
+new Map();
+
+
 /* =====================================================
    HTML ELEMENTS
 ===================================================== */
@@ -1214,6 +1474,26 @@ document.getElementById(
 const backButton =
 document.getElementById(
   "backButton"
+);
+
+const replyPreviewBanner =
+document.getElementById(
+  "replyPreviewBanner"
+);
+
+const replyPreviewName =
+document.getElementById(
+  "replyPreviewName"
+);
+
+const replyPreviewSnippet =
+document.getElementById(
+  "replyPreviewSnippet"
+);
+
+const cancelReplyButton =
+document.getElementById(
+  "cancelReplyButton"
 );
 
 
@@ -1304,6 +1584,37 @@ function formatDate(
     return "";
 
   }
+
+}
+
+
+/*
+  Shortens a comment's text down to a small
+  preview, the same way WhatsApp trims a long
+  message inside a reply quote.
+*/
+
+function truncateForPreview(
+  text,
+  maxLength = 80
+){
+
+  const cleanedText =
+  String(
+    text || ""
+  ).trim();
+
+
+  if(
+    cleanedText.length <= maxLength
+  ){
+
+    return cleanedText;
+
+  }
+
+
+  return `${cleanedText.slice(0,maxLength)}…`;
 
 }
 
@@ -1628,18 +1939,32 @@ function loadComments(){
       const comments = [];
 
 
+      loadedCommentsById.clear();
+
+
       snapshot.forEach(
 
         (commentDocument)=>{
 
-          comments.push({
+          const commentData = {
 
             id:
             commentDocument.id,
 
             ...commentDocument.data()
 
-          });
+          };
+
+
+          comments.push(
+            commentData
+          );
+
+
+          loadedCommentsById.set(
+            commentData.id,
+            commentData
+          );
 
         }
 
@@ -1859,6 +2184,71 @@ function createCommentCard(
   currentUser.uid;
 
 
+  /*
+    If this comment is a reply to another one,
+    show a small quoted reference at the top —
+    tapping it jumps to and briefly highlights
+    the original comment, the same way tapping
+    a quoted reply works in WhatsApp.
+  */
+
+  const replyToId =
+  getFirstValue(
+
+    commentData.replyToId
+
+  );
+
+
+  const replyToName =
+  getFirstValue(
+
+    commentData.replyToName
+
+  );
+
+
+  const replyToSnippet =
+  getFirstValue(
+
+    commentData.replyToSnippet
+
+  );
+
+
+  const replyQuoteHTML =
+
+  replyToId
+
+  ? `
+
+      <button
+        type="button"
+        class="reply-quote"
+        data-reply-target-id="${escapeHTML(replyToId)}"
+      >
+
+        <div class="reply-quote-name">
+          ↩ ${escapeHTML(
+            replyToName ||
+            "a comment"
+          )}
+        </div>
+
+        <div class="reply-quote-text">
+          ${escapeHTML(
+            replyToSnippet ||
+            ""
+          )}
+        </div>
+
+      </button>
+
+    `
+
+  : "";
+
+
   commentCard.innerHTML = `
 
     <img
@@ -1887,16 +2277,30 @@ function createCommentCard(
       </div>
 
 
+      ${replyQuoteHTML}
+
+
       <div class="comment-message">
         ${escapeHTML(commentMessage)}
       </div>
 
 
-      ${
-        isOwner
-        ? `
+      <div class="comment-actions">
 
-          <div class="comment-actions">
+        <button
+          class="
+            comment-action-button
+            reply-comment-button
+          "
+          type="button"
+        >
+          ↩ Reply
+        </button>
+
+
+        ${
+          isOwner
+          ? `
 
             <button
               class="
@@ -1919,11 +2323,11 @@ function createCommentCard(
               🗑️ Delete
             </button>
 
-          </div>
+          `
+          : ""
+        }
 
-        `
-        : ""
-      }
+      </div>
 
     </div>
 
@@ -2100,6 +2504,205 @@ function getPostOwnerId(){
 
 
 /* =====================================================
+   REPLY-TO PREVIEW BANNER
+   (the small quoted box above the comment input,
+   shown after tapping "↩ Reply" on a comment)
+===================================================== */
+
+function setReplyTarget(
+  commentData
+){
+
+  const commenterName =
+  getFirstValue(
+
+    commentData.name,
+    commentData.userName,
+    commentData.authorName,
+    commentData.displayName,
+    "Community Member"
+
+  );
+
+
+  const commentMessage =
+  getFirstValue(
+
+    commentData.text,
+    commentData.comment,
+    commentData.message,
+    commentData.content,
+    ""
+
+  );
+
+
+  replyingTo = {
+
+    id:
+    commentData.id,
+
+    name:
+    commenterName,
+
+    snippet:
+    truncateForPreview(
+      commentMessage
+    )
+
+  };
+
+
+  replyPreviewName.textContent =
+  replyingTo.name;
+
+
+  replyPreviewSnippet.textContent =
+  replyingTo.snippet;
+
+
+  replyPreviewBanner.classList.add(
+    "show"
+  );
+
+
+  commentInput.focus();
+
+}
+
+
+function clearReplyTarget(){
+
+  replyingTo = null;
+
+
+  replyPreviewBanner.classList.remove(
+    "show"
+  );
+
+
+  replyPreviewName.textContent =
+  "";
+
+
+  replyPreviewSnippet.textContent =
+  "";
+
+}
+
+
+cancelReplyButton.addEventListener(
+
+  "click",
+
+  ()=>{
+
+    clearReplyTarget();
+
+  }
+
+);
+
+
+/* =====================================================
+   JUMP TO AND HIGHLIGHT A COMMENT
+   (used when someone taps a "Replying to" quote,
+   the same way tapping a quoted reply in WhatsApp
+   scrolls you to the original message)
+===================================================== */
+
+function highlightComment(
+  commentId
+){
+
+  const targetCard =
+  commentsList.querySelector(
+    `[data-comment-id="${commentId}"]`
+  );
+
+
+  if(!targetCard){
+
+    return;
+
+  }
+
+
+  targetCard.scrollIntoView(
+    {
+
+      behavior:
+      "smooth",
+
+      block:
+      "center"
+
+    }
+  );
+
+
+  targetCard.classList.add(
+    "highlighted"
+  );
+
+
+  window.setTimeout(
+    ()=>{
+
+      targetCard.classList.remove(
+        "highlighted"
+      );
+
+    },
+    1600
+  );
+
+}
+
+
+/*
+  Event delegation for every "Replying to" quote
+  inside the comments list, including ones added
+  later by the live listener.
+*/
+
+commentsList.addEventListener(
+
+  "click",
+
+  (event)=>{
+
+    const replyQuoteButton =
+    event.target.closest(
+      ".reply-quote"
+    );
+
+
+    if(!replyQuoteButton){
+
+      return;
+
+    }
+
+
+    const targetCommentId =
+    replyQuoteButton.dataset.replyTargetId;
+
+
+    if(targetCommentId){
+
+      highlightComment(
+        targetCommentId
+      );
+
+    }
+
+  }
+
+);
+
+
+/* =====================================================
    CREATE COMMENT NOTIFICATION
 ===================================================== */
 
@@ -2224,6 +2827,144 @@ async function createCommentNotification(
 
 
 /* =====================================================
+   CREATE REPLY NOTIFICATION
+
+   Separate from the ordinary "commented on your
+   post" notification above — this tells the
+   specific person being replied to, not just the
+   post owner, and is skipped if they are the same
+   person (they would already get the other one).
+===================================================== */
+
+async function createReplyNotification(
+  commentId,
+  commentText
+){
+
+  if(
+    !currentUser ||
+    !replyingTo ||
+    !postId
+  ){
+
+    return;
+
+  }
+
+
+  const originalComment =
+  loadedCommentsById.get(
+    replyingTo.id
+  );
+
+
+  if(!originalComment){
+
+    return;
+
+  }
+
+
+  const originalCommenterId =
+  getFirstValue(
+
+    originalComment.userId,
+    originalComment.authorId,
+    originalComment.uid,
+    originalComment.senderId
+
+  );
+
+
+  if(
+    !originalCommenterId ||
+    originalCommenterId ===
+    currentUser.uid ||
+    originalCommenterId ===
+    getPostOwnerId()
+  ){
+
+    /*
+      Skip when replying to yourself, or when the
+      person is already the post owner — they get
+      the regular comment notification above and
+      do not need two.
+    */
+
+    return;
+
+  }
+
+
+  const senderName =
+  getCurrentUserName();
+
+
+  const senderPicture =
+  getCurrentUserPicture();
+
+
+  try{
+
+    await addDoc(
+
+      collection(
+        db,
+        "notifications"
+      ),
+
+      {
+
+        recipientId:
+        originalCommenterId,
+
+        senderId:
+        currentUser.uid,
+
+        senderName:
+        senderName,
+
+        senderPicture:
+        senderPicture,
+
+        type:
+        "comment_reply",
+
+        postId:
+        postId,
+
+        commentId:
+        commentId,
+
+        commentText:
+        commentText,
+
+        message:
+        `${senderName} replied to your comment.`,
+
+        read:
+        false,
+
+        timestamp:
+        serverTimestamp()
+
+      }
+
+    );
+
+  }catch(error){
+
+    console.error(
+      "Reply notification creation error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
    SUBMIT COMMENT
 ===================================================== */
 
@@ -2307,6 +3048,19 @@ commentForm.addEventListener(
     "Posting...";
 
 
+    /*
+      Captured before the "await" calls below,
+      since clearReplyTarget() resets the shared
+      replyingTo variable once the comment is
+      saved — this keeps the notification and the
+      saved fields consistent with what the
+      banner showed when Post Comment was tapped.
+    */
+
+    const activeReplyTarget =
+    replyingTo;
+
+
     try{
 
       const commenterName =
@@ -2360,7 +3114,19 @@ commentForm.addEventListener(
           serverTimestamp(),
 
           edited:
-          false
+          false,
+
+          replyToId:
+          activeReplyTarget?.id ||
+          "",
+
+          replyToName:
+          activeReplyTarget?.name ||
+          "",
+
+          replyToSnippet:
+          activeReplyTarget?.snippet ||
+          ""
 
         }
 
@@ -2420,8 +3186,27 @@ commentForm.addEventListener(
       );
 
 
+      if(activeReplyTarget){
+
+        replyingTo =
+        activeReplyTarget;
+
+
+        await createReplyNotification(
+
+          commentReference.id,
+          commentText
+
+        );
+
+      }
+
+
       commentInput.value =
       "";
+
+
+      clearReplyTarget();
 
 
       showFormMessage(
@@ -2483,9 +3268,61 @@ function setupCommentActions(
 ){
 
   if(
-    !currentUser ||
     !commentData ||
     !commentCard
+  ){
+
+    return;
+
+  }
+
+
+  /* =====================================================
+     REPLY TO THIS COMMENT
+     (available to everyone, not just the comment
+     owner — this is the button that solves the
+     "respond to a specific person" request)
+  ===================================================== */
+
+  const replyButton =
+  commentCard.querySelector(
+    ".reply-comment-button"
+  );
+
+
+  if(replyButton){
+
+    replyButton.addEventListener(
+
+      "click",
+
+      ()=>{
+
+        if(!currentUser){
+
+          showFormMessage(
+            "Please sign in before replying."
+          );
+
+          return;
+
+        }
+
+
+        setReplyTarget(
+          commentData
+        );
+
+      }
+
+    );
+
+  }
+
+
+  if(
+    !currentUser ||
+    !commentData
   ){
 
     return;
@@ -2824,6 +3661,25 @@ function setupCommentActions(
           await deleteDoc(
             commentReference
           );
+
+
+          /*
+            If the user had this exact comment
+            open as their reply target, clear the
+            banner so they cannot submit a reply
+            pointing at a comment that no longer
+            exists.
+          */
+
+          if(
+            replyingTo &&
+            replyingTo.id ===
+            commentData.id
+          ){
+
+            clearReplyTarget();
+
+          }
 
 
           try{
