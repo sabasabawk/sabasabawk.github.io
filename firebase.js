@@ -117,6 +117,7 @@ export {
   /* FIRESTORE */
 
   collection,
+  collectionGroup,
   addDoc,
   getDocs,
   getDoc,
