@@ -1043,6 +1043,17 @@ conversationsQuery,
 (snapshot)=>{
 
 latestConversationsSnapshot=snapshot;
+
+/*
+   Firestore can briefly report an error on the very
+   first request right after login (before the auth
+   token is fully attached), then quietly recover on
+   its own. Without this, a banner from that first
+   failed attempt could stay on screen forever even
+   after real data successfully loads.
+*/
+hideStatus();
+
 refreshConversations();
 
 },
