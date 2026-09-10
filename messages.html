@@ -426,10 +426,41 @@ class="back-button">
 </div>
 <script type="module">
 
+/*
+   FIX: this page used to query a flat top-level
+   "messages" collection with senderId/receiverId
+   fields — but chat.html actually saves every
+   message under conversations/{conversationId}/messages,
+   and keeps a running summary (last message, names,
+   pictures, timestamps) on the conversation document
+   itself. Because of that mismatch, this inbox could
+   only ever show empty or stale results, even while
+   people were actively chatting in chat.html.
+
+   This version reads from the same structure
+   chat.html actually writes to:
+   - The conversation list comes from the
+     "conversations" collection (one doc per
+     conversation, already kept up to date by
+     chat.html's updateConversationSummary()).
+   - Unread counts come from a collection-group query
+     across every conversation's "messages"
+     subcollection, grouped back to its parent
+     conversation ID.
+
+   NOTE: collectionGroup queries require an import
+   from firebase.js. If firebase.js does not already
+   re-export "collectionGroup" from the Firebase SDK,
+   add it there — otherwise the unread-count listener
+   below will fail (the conversation list itself does
+   not depend on it and will still work).
+*/
+
 import {
 auth,
 db,
 collection,
+collectionGroup,
 query,
 where,
 orderBy,
@@ -456,7 +487,7 @@ document.getElementById("newChatButton");
 
 let currentUser = null;
 let allConversations = [];
-let unsubscribeMessages = null;
+let unsubscribeConversations = null;
 let unsubscribeUnreadMessages = null;
 
 newChatButton.addEventListener("click",()=>{
@@ -534,26 +565,6 @@ month:"short"
 
 }
 
-function getUserName(profile){
-
-return profile.fullName ||
-profile.name ||
-profile.displayName ||
-profile.username ||
-"Community Member";
-
-}
-
-function getProfilePicture(profile){
-
-return profile.profilePicture ||
-profile.photoURL ||
-profile.picture ||
-profile.imageUrl ||
-"";
-
-}
-
 function isUserOnline(profile){
 
 return profile.online===true ||
@@ -561,6 +572,47 @@ profile.isOnline===true ||
 String(profile.status || "").toLowerCase()==="online";
 
 }
+
+/*
+   Turns a conversation's stored last-message fields
+   (written by chat.html's updateConversationSummary)
+   into the same kind of preview text the old version
+   showed, including a friendly label when the last
+   message was media rather than text.
+*/
+function getLastMessagePreview(conversationData){
+
+const textPreview=
+conversationData.lastMessage ||
+conversationData.lastMessageText;
+
+if(textPreview){
+return textPreview;
+}
+
+const mediaType=
+String(conversationData.lastMessageType || "").toLowerCase();
+
+if(mediaType==="image"){
+return "📷 Picture";
+}
+
+if(mediaType==="video"){
+return "🎥 Video";
+}
+
+if(mediaType==="audio" || mediaType==="voice"){
+return "🎤 Voice message";
+}
+
+if(mediaType==="file"){
+return "📄 Document";
+}
+
+return "Tap to open conversation";
+
+}
+
 function showEmptyState(searching=false){
 
 chatList.innerHTML=`
@@ -736,123 +788,136 @@ searchInput.addEventListener(
 applySearch
 );
 
+/*
+   Builds the inbox list from:
+   - conversationsSnapshot: one doc per conversation
+     the current user is part of, already containing
+     the other member's name/picture and the last
+     message (kept current by chat.html).
+   - unreadSnapshot: every unread message addressed to
+     the current user, across every conversation's
+     "messages" subcollection (a collection-group
+     query), used only to compute the per-conversation
+     unread badge count.
+*/
 async function buildConversations(
-messageSnapshot,
+conversationsSnapshot,
 unreadSnapshot
 ){
 
-const latestMessages=new Map();
 const unreadCounts=new Map();
 
 unreadSnapshot.forEach(messageDoc=>{
 
-const message=messageDoc.data();
+/*
+   Each message lives at
+   conversations/{conversationId}/messages/{messageId},
+   so its conversation ID is the grandparent
+   document's ID.
+*/
 
-if(
-message.receiverId===currentUser.uid &&
-message.senderId
-){
+const conversationId=
+messageDoc.ref.parent.parent?.id;
+
+if(!conversationId){
+return;
+}
 
 const previous=
-unreadCounts.get(message.senderId) || 0;
+unreadCounts.get(conversationId) || 0;
 
 unreadCounts.set(
-message.senderId,
+conversationId,
 previous+1
 );
 
-}
-
 });
 
-for(const messageDoc of messageSnapshot.docs){
+const conversations=[];
 
-const message=messageDoc.data();
+for(const conversationDoc of conversationsSnapshot.docs){
 
-let otherUid=null;
+const data=conversationDoc.data();
+const conversationId=conversationDoc.id;
 
-if(message.senderId===currentUser.uid){
+const participants=
+Array.isArray(data.participants)
+? data.participants
+: [];
 
-otherUid=message.receiverId;
-
-}else if(message.receiverId===currentUser.uid){
-
-otherUid=message.senderId;
-
-}
+const otherUid=
+participants.find(
+uid=>uid!==currentUser.uid
+);
 
 if(!otherUid){
 continue;
 }
 
-if(!latestMessages.has(otherUid)){
-
-latestMessages.set(otherUid,{
-...message,
-messageId:messageDoc.id
-});
-
-}
-
-}
-
-const conversations=[];
-
-for(const [otherUid,message]
-of latestMessages.entries()){
+let onlineStatus=false;
 
 try{
 
 const userSnapshot=
 await getDoc(doc(db,"users",otherUid));
 
-if(!userSnapshot.exists()){
-continue;
+if(userSnapshot.exists()){
+
+onlineStatus=
+isUserOnline(userSnapshot.data());
+
 }
-
-const profile=userSnapshot.data();
-
-conversations.push({
-
-uid:otherUid,
-
-name:getUserName(profile),
-
-photo:getProfilePicture(profile),
-
-online:isUserOnline(profile),
-
-lastMessage:
-message.message ||
-message.text ||
-message.content ||
-(message.imageUrl ? "📷 Photo" : "") ||
-(message.videoUrl ? "🎥 Video" : "") ||
-"New message",
-
-time:formatTime(message.timestamp),
-
-timestamp:
-message.timestamp?.toMillis?.() ||
-new Date(message.timestamp || 0).getTime(),
-
-unreadCount:
-unreadCounts.get(otherUid) || 0
-
-});
 
 }catch(error){
 
 console.error(
-"Could not load user:",
+"Could not load online status for:",
 otherUid,
 error
 );
 
 }
 
+const name=
+data.participantNames?.[otherUid] ||
+"Community Member";
+
+const photo=
+data.participantPictures?.[otherUid] ||
+"";
+
+conversations.push({
+
+uid:otherUid,
+
+name,
+
+photo,
+
+online:onlineStatus,
+
+lastMessage:
+getLastMessagePreview(data),
+
+time:formatTime(data.updatedAt),
+
+timestamp:
+data.updatedAt?.toMillis?.() ||
+new Date(data.updatedAt || 0).getTime(),
+
+unreadCount:
+unreadCounts.get(conversationId) || 0
+
+});
+
 }
 
+/*
+   The Firestore query below already orders by
+   updatedAt, but this keeps the list correctly
+   sorted even while unread counts are still
+   arriving from the second listener.
+*/
 conversations.sort(
 (a,b)=>b.timestamp-a.timestamp
 );
@@ -882,10 +947,11 @@ badge.textContent="0";
 applySearch();
 
 }
+
 onAuthStateChanged(auth,(user)=>{
 
-if(unsubscribeMessages){
-unsubscribeMessages();
+if(unsubscribeConversations){
+unsubscribeConversations();
 }
 
 if(unsubscribeUnreadMessages){
@@ -930,18 +996,18 @@ hideStatus();
 
 currentUser=user;
 
-let latestMessageSnapshot=null;
+let latestConversationsSnapshot=null;
 let latestUnreadSnapshot=null;
 
 const refreshConversations=()=>{
 
 if(
-latestMessageSnapshot &&
+latestConversationsSnapshot &&
 latestUnreadSnapshot
 ){
 
 buildConversations(
-latestMessageSnapshot,
+latestConversationsSnapshot,
 latestUnreadSnapshot
 ).catch(error=>{
 
@@ -961,29 +1027,29 @@ showStatus(
 };
 
 /*
-Loads messages from newest to oldest.
-
-The newest message from each person becomes
-the conversation preview.
+   One document per conversation the current user
+   is part of — this is what chat.html keeps up to
+   date every time a message is sent.
 */
-const messagesQuery=query(
-collection(db,"messages"),
-orderBy("timestamp","desc")
+const conversationsQuery=query(
+collection(db,"conversations"),
+where("participants","array-contains",user.uid),
+orderBy("updatedAt","desc")
 );
 
-unsubscribeMessages=
+unsubscribeConversations=
 onSnapshot(
-messagesQuery,
+conversationsQuery,
 (snapshot)=>{
 
-latestMessageSnapshot=snapshot;
+latestConversationsSnapshot=snapshot;
 refreshConversations();
 
 },
 (error)=>{
 
 console.error(
-"Messages listener error:",
+"Conversations listener error:",
 error
 );
 
@@ -1015,10 +1081,15 @@ showStatus(
 );
 
 /*
-Loads unread messages sent to the signed-in user.
+   Collection-group query across every
+   conversation's "messages" subcollection, for
+   messages addressed to the current user that are
+   still unread. If this requires a Firestore index,
+   Firebase will log a direct link to create it in
+   the browser console.
 */
 const unreadMessagesQuery=query(
-collection(db,"messages"),
+collectionGroup(db,"messages"),
 where("receiverId","==",user.uid),
 where("read","==",false)
 );
@@ -1040,8 +1111,10 @@ error
 );
 
 /*
-Continue showing conversations even when
-the unread query needs a Firebase index.
+   Continue showing conversations even when the
+   unread query needs a Firebase index or when
+   collectionGroup is not yet exported from
+   firebase.js.
 */
 latestUnreadSnapshot={
 forEach(){
