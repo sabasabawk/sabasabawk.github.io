@@ -4727,6 +4727,22 @@
 
     /* =====================================================
        PRIVATE REPLY
+
+       FIX: this used to build a "message=" URL
+       parameter that chat.html never actually read —
+       so replying to a Faith Moment silently dropped
+       the person into an ordinary chat with no sign of
+       which moment prompted it.
+
+       Now the moment's details (type, thumbnail, a
+       short snippet) are handed off through
+       sessionStorage under "pendingMomentReply".
+       chat.html reads this once it knows who the
+       conversation is with, shows a small quoted
+       preview above the message box — the same idea as
+       replying to an Instagram/Snapchat Story — and
+       attaches that reference to the message once sent,
+       so the recipient sees it too.
     ===================================================== */
 
     function handleReplyMoment(){
@@ -4758,21 +4774,75 @@
       }
 
 
-      const replyText =
-        encodeURIComponent(
-          `Replying to your Faith Moment: ${
-            moment.message ||
-            getMomentTypeDetails(
-              moment.type
-            ).label
-          }`
+      const messageSnippet =
+        moment.message
+
+        ? (
+            moment.message.length > 80
+              ? `${moment.message.slice(0,80)}…`
+              : moment.message
+          )
+
+        : moment.verseReference ||
+          getMomentTypeDetails(
+            moment.type
+          ).label;
+
+
+      const momentReplyHandoff = {
+
+        momentId:
+        moment.id,
+
+        momentType:
+        moment.type,
+
+        momentUserId:
+        moment.userId,
+
+        momentUserName:
+        moment.name ||
+        "Faith Connect Member",
+
+        momentSnippet:
+        messageSnippet,
+
+        momentImageUrl:
+        moment.type === "video"
+          ? ""
+          : moment.imageUrl || "",
+
+        momentVideoUrl:
+        moment.type === "video"
+          ? moment.videoUrl || ""
+          : ""
+
+      };
+
+
+      try{
+
+        window.sessionStorage.setItem(
+          "pendingMomentReply",
+          JSON.stringify(
+            momentReplyHandoff
+          )
         );
+
+      }catch(error){
+
+        console.warn(
+          "Could not hand off Faith Moment reply context:",
+          error
+        );
+
+      }
 
 
       window.location.href =
-        `chat.html?user=${encodeURIComponent(
+        `chat.html?uid=${encodeURIComponent(
           moment.userId
-        )}&message=${replyText}`;
+        )}`;
 
     }
 
