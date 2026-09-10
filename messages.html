@@ -490,6 +490,20 @@ let allConversations = [];
 let unsubscribeConversations = null;
 let unsubscribeUnreadMessages = null;
 
+/*
+   Firebase can fire onAuthStateChanged more than once
+   in quick succession while login settles (an early
+   partial event, then a confirmed one). Each firing
+   tears down and rebuilds the listeners below. Without
+   this counter, a slow error from the FIRST attempt's
+   listener could still arrive over the network after
+   the SECOND attempt already succeeded, silently
+   overwriting good data with a stale error banner.
+   Every callback checks it still belongs to the
+   current generation before touching the page.
+*/
+let authGeneration = 0;
+
 newChatButton.addEventListener("click",()=>{
 window.location.href="findmembers.html";
 });
@@ -950,6 +964,9 @@ applySearch();
 
 onAuthStateChanged(auth,(user)=>{
 
+authGeneration += 1;
+const thisGeneration = authGeneration;
+
 if(unsubscribeConversations){
 unsubscribeConversations();
 }
@@ -1042,6 +1059,10 @@ onSnapshot(
 conversationsQuery,
 (snapshot)=>{
 
+if(thisGeneration !== authGeneration){
+return;
+}
+
 latestConversationsSnapshot=snapshot;
 
 /*
@@ -1058,6 +1079,10 @@ refreshConversations();
 
 },
 (error)=>{
+
+if(thisGeneration !== authGeneration){
+return;
+}
 
 console.error(
 "Conversations listener error:",
@@ -1110,11 +1135,19 @@ onSnapshot(
 unreadMessagesQuery,
 (snapshot)=>{
 
+if(thisGeneration !== authGeneration){
+return;
+}
+
 latestUnreadSnapshot=snapshot;
 refreshConversations();
 
 },
 (error)=>{
+
+if(thisGeneration !== authGeneration){
+return;
+}
 
 console.warn(
 "Unread-message listener error:",
