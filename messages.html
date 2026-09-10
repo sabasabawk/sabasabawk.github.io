@@ -1105,6 +1105,11 @@ Messages could not be loaded
 Please check your internet connection and Firebase permissions.
 </p>
 
+<p style="margin-top:14px;font-size:12px;color:#a33;word-break:break-word;">
+Diagnostic detail — please screenshot this line:<br>
+<strong>${escapeHTML(error.code || "no code")}</strong>: ${escapeHTML(error.message || "no message")}
+</p>
+
 </div>
 
 `;
