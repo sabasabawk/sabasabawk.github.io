@@ -1793,6 +1793,250 @@ textarea:focus-visible{
    MEDIA PREVIEW AREA
 ===================================================== */
 
+/* =====================================================
+   REPLYING TO A FAITH MOMENT BANNER
+===================================================== */
+
+.momentReplyPreviewArea{
+
+  display:none;
+
+  align-items:center;
+
+  gap:10px;
+
+  flex-shrink:0;
+
+  padding:
+    10px
+    13px;
+
+  border-top:
+    1px solid
+    #d9e0e8;
+
+  background:
+    #f7f9fc;
+
+}
+
+
+.momentReplyPreviewArea.show{
+  display:flex;
+}
+
+
+.momentReplyThumbnail{
+
+  width:44px;
+  height:44px;
+
+  flex-shrink:0;
+
+  border-radius:10px;
+
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #087bd1,
+      #55c1f1
+    );
+
+  color:#ffffff;
+
+  font-size:19px;
+
+}
+
+
+.momentReplyThumbnail img,
+.momentReplyThumbnail video{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+}
+
+
+.momentReplyText{
+
+  min-width:0;
+  flex:1;
+
+}
+
+
+.momentReplyLabel{
+
+  color:#26333d;
+
+  font-size:12px;
+  font-weight:800;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+}
+
+
+.momentReplySnippet{
+
+  margin-top:2px;
+
+  color:#66737e;
+
+  font-size:12px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+}
+
+
+.cancelMomentReplyButton{
+
+  flex-shrink:0;
+
+  width:28px;
+  height:28px;
+
+  border:0;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(8,123,209,.12);
+
+  color:#087bd1;
+
+  font-size:16px;
+  font-weight:900;
+
+}
+
+
+.cancelMomentReplyButton:hover{
+
+  background:
+    rgba(8,123,209,.22);
+
+}
+
+
+/* =====================================================
+   QUOTED MOMENT REFERENCE INSIDE A MESSAGE BUBBLE
+   (shown at the top of a message that was sent as a
+   reply to a Faith Moment — the receiving person's
+   equivalent of the banner above)
+===================================================== */
+
+.momentQuote{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:8px;
+
+  padding:
+    7px
+    9px;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.20);
+
+}
+
+
+.messageBubble.other
+.momentQuote{
+
+  background:
+    rgba(8,123,209,.08);
+
+}
+
+
+.momentQuoteThumbnail{
+
+  width:34px;
+  height:34px;
+
+  flex-shrink:0;
+
+  border-radius:8px;
+
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    rgba(255,255,255,.25);
+
+  font-size:15px;
+
+}
+
+
+.momentQuoteThumbnail img,
+.momentQuoteThumbnail video{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+}
+
+
+.momentQuoteText{
+
+  min-width:0;
+
+  font-size:12px;
+  line-height:1.35;
+
+}
+
+
+.momentQuoteLabel{
+
+  font-weight:800;
+
+  opacity:.92;
+}
+
+
+.momentQuoteSnippet{
+
+  opacity:.82;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+}
+
+
 .mediaPreviewArea{
 
   position:relative;
@@ -3058,6 +3302,52 @@ textarea:focus-visible{
 
 
   <!-- =================================================
+       REPLYING TO A FAITH MOMENT
+       Shown only when this conversation was opened
+       via the "Reply" button on someone's Faith
+       Moment — the same idea as replying to an
+       Instagram/Snapchat Story, so the recipient can
+       see exactly which moment prompted the message.
+  ================================================== -->
+
+  <section
+    id="momentReplyPreviewArea"
+    class="momentReplyPreviewArea"
+  >
+
+    <div
+      id="momentReplyThumbnail"
+      class="momentReplyThumbnail"
+    ></div>
+
+    <div class="momentReplyText">
+
+      <div class="momentReplyLabel">
+        Replying to
+        <span id="momentReplyAuthorName"></span>'s
+        Faith Moment
+      </div>
+
+      <div
+        id="momentReplySnippet"
+        class="momentReplySnippet"
+      ></div>
+
+    </div>
+
+    <button
+      id="cancelMomentReplyButton"
+      class="cancelMomentReplyButton"
+      type="button"
+      aria-label="Cancel replying to this Faith Moment"
+    >
+      ×
+    </button>
+
+  </section>
+
+
+  <!-- =================================================
        MEDIA PREVIEW
   ================================================== -->
 
@@ -3537,6 +3827,7 @@ textarea:focus-visible{
 ===================================================== -->
 
 <script type="module">
+
 /* =====================================================
    PART 5 OF 10
    FIREBASE IMPORTS, CLOUDINARY SETTINGS,
@@ -3781,6 +4072,36 @@ document.getElementById(
 
 
 /* =====================================================
+   FAITH MOMENT REPLY ELEMENTS
+===================================================== */
+
+const momentReplyPreviewArea =
+document.getElementById(
+  "momentReplyPreviewArea"
+);
+
+const momentReplyThumbnail =
+document.getElementById(
+  "momentReplyThumbnail"
+);
+
+const momentReplyAuthorName =
+document.getElementById(
+  "momentReplyAuthorName"
+);
+
+const momentReplySnippet =
+document.getElementById(
+  "momentReplySnippet"
+);
+
+const cancelMomentReplyButton =
+document.getElementById(
+  "cancelMomentReplyButton"
+);
+
+
+/* =====================================================
    UPLOAD PROGRESS ELEMENTS
 ===================================================== */
 
@@ -3975,6 +4296,18 @@ false;
 
 let chatIsReady =
 false;
+
+
+/* =====================================================
+   FAITH MOMENT REPLY STATE
+
+   Holds the moment being replied to when this chat
+   was opened via the "Reply" button on a Faith
+   Moment, or null for an ordinary conversation.
+===================================================== */
+
+let pendingMomentReply =
+null;
 
 
 /* =====================================================
@@ -4949,6 +5282,7 @@ messageInput.addEventListener(
 disableChatControls();
 
 hideBusyOverlay();
+
 /* =====================================================
    PART 6 OF 10
    AUTHENTICATION, USER PROFILES,
@@ -5487,7 +5821,278 @@ window.addEventListener(
 
 
 /* =====================================================
+   FAITH MOMENT REPLY BANNER
+
+   When a chat is opened via the "Reply" button on a
+   Faith Moment, faith-moments.html stores the moment's
+   details in sessionStorage under "pendingMomentReply"
+   before navigating here. This shows that context as a
+   small quoted banner above the input box — the same
+   idea as replying to an Instagram/Snapchat Story —
+   instead of silently dropping the person into an
+   ordinary chat with no sign of what prompted it.
+===================================================== */
+
+function renderMomentReplyThumbnail(
+  container,
+  momentReply
+){
+
+  container.innerHTML =
+  "";
+
+
+  if(momentReply.momentImageUrl){
+
+    const image =
+    document.createElement(
+      "img"
+    );
+
+
+    image.src =
+    momentReply.momentImageUrl;
+
+
+    image.alt =
+    "Faith Moment photo";
+
+
+    container.appendChild(
+      image
+    );
+
+
+    return;
+
+  }
+
+
+  if(momentReply.momentVideoUrl){
+
+    const video =
+    document.createElement(
+      "video"
+    );
+
+
+    video.src =
+    momentReply.momentVideoUrl;
+
+
+    video.muted =
+    true;
+
+
+    container.appendChild(
+      video
+    );
+
+
+    return;
+
+  }
+
+
+  const typeIcons = {
+
+    verse:
+    "📖",
+
+    prayer:
+    "🙏",
+
+    testimony:
+    "💬"
+
+  };
+
+
+  container.textContent =
+  typeIcons[
+    momentReply.momentType
+  ] ||
+  "✨";
+
+}
+
+
+function showMomentReplyBanner(
+  momentReply
+){
+
+  pendingMomentReply =
+  momentReply;
+
+
+  momentReplyAuthorName.textContent =
+  momentReply.momentUserName ||
+  "this member";
+
+
+  momentReplySnippet.textContent =
+  momentReply.momentSnippet ||
+  "";
+
+
+  renderMomentReplyThumbnail(
+    momentReplyThumbnail,
+    momentReply
+  );
+
+
+  momentReplyPreviewArea.classList.add(
+    "show"
+  );
+
+}
+
+
+function clearMomentReplyBanner(){
+
+  pendingMomentReply =
+  null;
+
+
+  momentReplyPreviewArea.classList.remove(
+    "show"
+  );
+
+
+  momentReplyThumbnail.innerHTML =
+  "";
+
+
+  momentReplyAuthorName.textContent =
+  "";
+
+
+  momentReplySnippet.textContent =
+  "";
+
+}
+
+
+cancelMomentReplyButton.addEventListener(
+  "click",
+  function(){
+
+    clearMomentReplyBanner();
+
+  }
+);
+
+
+/*
+   Reads the handoff left by faith-moments.html, if
+   any, and only applies it when it actually points to
+   the member this conversation is with — otherwise it
+   is silently ignored (e.g. stale data from replying
+   to a different member's moment earlier).
+*/
+
+function checkForPendingMomentReply(){
+
+  let storedReply =
+  "";
+
+
+  try{
+
+    storedReply =
+    window.sessionStorage.getItem(
+      "pendingMomentReply"
+    ) ||
+    "";
+
+  }catch(error){
+
+    console.warn(
+      "Unable to read pending moment reply:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(!storedReply){
+
+    return;
+
+  }
+
+
+  /*
+     Consume it immediately so refreshing this page,
+     or later opening a different chat, never re-shows
+     a moment reply that no longer applies.
+  */
+
+  try{
+
+    window.sessionStorage.removeItem(
+      "pendingMomentReply"
+    );
+
+  }catch(error){
+
+    /* Ignore — the read above already succeeded. */
+
+  }
+
+
+  try{
+
+    const momentReply =
+    JSON.parse(
+      storedReply
+    );
+
+
+    if(
+      momentReply?.momentUserId ===
+      otherUid
+    ){
+
+      showMomentReplyBanner(
+        momentReply
+      );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Pending moment reply could not be read:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
    PREPARE PRIVATE CONVERSATION
+
+   FIX: this used to "await" both profile reads (yours
+   and the other member's) and the "set online" write —
+   in that order, one after another — before starting
+   the message listener, presence, typing, or even
+   enabling the input box. On a slow connection that is
+   up to three sequential network round trips of dead
+   time before anything appears on screen, on top of
+   loadMessages() itself having no local cache to fall
+   back on.
+
+   Now the message listener (which shows the instant
+   local cache immediately — see PART 9D), the typing
+   listener, and the input box all start right away.
+   The profile reads and the "set online" write still
+   happen, just independently and in parallel instead
+   of gating everything else.
 ===================================================== */
 
 async function prepareConversation(){
@@ -5548,32 +6153,46 @@ async function prepareConversation(){
   );
 
 
+  checkForPendingMomentReply();
+
+
+  /*
+     Start everything that does not depend on
+     profile data first, so the conversation
+     feels instant even before either profile
+     has loaded.
+  */
+
+  watchOtherMemberStatus();
+
+
+  startTypingListener();
+
+
+  loadMessages();
+
+
+  enableChatControls();
+
+
+  messageInput.focus();
+
+
+  /*
+     These now run independently — neither one
+     blocks messages, typing, or the input box
+     from being ready.
+  */
+
+  setCurrentUserOnline();
+
+
+  loadCurrentUserProfile();
+
+
   try{
 
-    await Promise.all(
-      [
-        loadCurrentUserProfile(),
-        loadOtherMemberProfile()
-      ]
-    );
-
-
-    await setCurrentUserOnline();
-
-
-    watchOtherMemberStatus();
-
-
-    startTypingListener();
-
-
-    loadMessages();
-
-
-    enableChatControls();
-
-
-    messageInput.focus();
+    await loadOtherMemberProfile();
 
   }catch(error){
 
@@ -6173,6 +6792,7 @@ function stopOtherMemberListener(){
   null;
 
 }
+
 /* =====================================================
    PART 7 OF 10
    MEDIA SELECTION, PREVIEWS, EMOJI PICKER,
@@ -8459,6 +9079,7 @@ messageInput.addEventListener(
 ===================================================== */
 
 updateRecordingTimer();
+
 /* =====================================================
    PART 9A OF 10
    MESSAGE RECEIPTS AND MESSAGE CONTENT
@@ -9307,10 +9928,196 @@ function createMediaCaptionElement(
    CREATE MESSAGE CONTENT
 ===================================================== */
 
+/* =====================================================
+   CREATE QUOTED MOMENT REFERENCE
+   (shown at the top of a message that was sent as a
+   reply to a Faith Moment, from either side of the
+   conversation)
+===================================================== */
+
+function createMomentQuoteElement(
+  messageData
+){
+
+  const replyMomentId =
+  getFirstValue(
+    messageData.replyMomentId
+  );
+
+
+  if(!replyMomentId){
+
+    return null;
+
+  }
+
+
+  const quoteContainer =
+  document.createElement(
+    "div"
+  );
+
+  quoteContainer.className =
+  "momentQuote";
+
+
+  const thumbnail =
+  document.createElement(
+    "div"
+  );
+
+  thumbnail.className =
+  "momentQuoteThumbnail";
+
+
+  const momentImageUrl =
+  getFirstValue(
+    messageData.replyMomentImageUrl
+  );
+
+  const momentVideoUrl =
+  getFirstValue(
+    messageData.replyMomentVideoUrl
+  );
+
+
+  if(momentImageUrl){
+
+    const image =
+    document.createElement(
+      "img"
+    );
+
+    image.src =
+    momentImageUrl;
+
+    image.alt =
+    "Faith Moment photo";
+
+    thumbnail.appendChild(
+      image
+    );
+
+  }else if(momentVideoUrl){
+
+    const video =
+    document.createElement(
+      "video"
+    );
+
+    video.src =
+    momentVideoUrl;
+
+    video.muted =
+    true;
+
+    thumbnail.appendChild(
+      video
+    );
+
+  }else{
+
+    const typeIcons = {
+
+      verse:
+      "📖",
+
+      prayer:
+      "🙏",
+
+      testimony:
+      "💬"
+
+    };
+
+    thumbnail.textContent =
+    typeIcons[
+      getFirstValue(
+        messageData.replyMomentType
+      )
+    ] ||
+    "✨";
+
+  }
+
+
+  const textArea =
+  document.createElement(
+    "div"
+  );
+
+  textArea.className =
+  "momentQuoteText";
+
+
+  const label =
+  document.createElement(
+    "div"
+  );
+
+  label.className =
+  "momentQuoteLabel";
+
+  label.textContent =
+  `↩ Replying to a Faith Moment`;
+
+
+  const snippet =
+  document.createElement(
+    "div"
+  );
+
+  snippet.className =
+  "momentQuoteSnippet";
+
+  snippet.textContent =
+  getFirstValue(
+    messageData.replyMomentSnippet
+  );
+
+
+  textArea.appendChild(
+    label
+  );
+
+  textArea.appendChild(
+    snippet
+  );
+
+
+  quoteContainer.appendChild(
+    thumbnail
+  );
+
+  quoteContainer.appendChild(
+    textArea
+  );
+
+
+  return quoteContainer;
+
+}
+
+
 function appendMessageContent(
   messageBubble,
   messageData
 ){
+
+  const momentQuoteElement =
+  createMomentQuoteElement(
+    messageData
+  );
+
+
+  if(momentQuoteElement){
+
+    messageBubble.appendChild(
+      momentQuoteElement
+    );
+
+  }
+
 
   const mediaType =
   getMessageMediaType(
@@ -10369,6 +11176,7 @@ chatArea.addEventListener(
 
   }
 );
+
 /* =====================================================
    PART 9D OF 10
    REAL-TIME MESSAGE LISTENER,
@@ -10485,6 +11293,184 @@ new Map();
 
 
 /* =====================================================
+   SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
+
+   Same idea as the Community Wall and Search
+   Members fixes: this chat used to show a blank
+   "Loading conversation..." message every time it
+   opened, even for a conversation you had already
+   been in minutes earlier. The key is prefixed
+   with this conversation's ID, so different
+   conversations never mix caches. The last known
+   messages for THIS conversation render instantly,
+   while the live Firestore listener below still
+   runs immediately and replaces this the moment
+   real data arrives.
+===================================================== */
+
+const CHAT_CACHE_PREFIX =
+"sabasaba_chat_cache_v1_";
+
+const CHAT_CACHE_MAX_MESSAGES =
+30;
+
+const CHAT_CACHE_MAX_AGE_MS =
+30 * 60 * 1000;
+
+
+function getChatCacheKey(){
+
+  return CHAT_CACHE_PREFIX +
+  conversationId;
+
+}
+
+
+function saveMessagesCache(orderedDocs){
+
+  try{
+
+    const cachedMessages =
+    orderedDocs
+
+    .slice(
+      -CHAT_CACHE_MAX_MESSAGES
+    )
+
+    .map(
+      messageDoc => ({
+
+        id:
+        messageDoc.id,
+
+        data:
+        messageDoc.data()
+
+      })
+    );
+
+
+    window.localStorage.setItem(
+
+      getChatCacheKey(),
+
+      JSON.stringify({
+
+        savedAt:
+        Date.now(),
+
+        messages:
+        cachedMessages
+
+      })
+
+    );
+
+  }catch(error){
+
+    /*
+       Local storage can fail (private
+       browsing, storage full, etc.) — this
+       is only a speed optimization, so a
+       failure here is silently ignored and
+       never shown to the user.
+    */
+
+    console.warn(
+      "Chat cache could not be saved:",
+      error
+    );
+
+  }
+
+}
+
+
+function loadMessagesCache(){
+
+  try{
+
+    const rawCache =
+    window.localStorage.getItem(
+      getChatCacheKey()
+    );
+
+
+    if(!rawCache){
+
+      return null;
+
+    }
+
+
+    const parsedCache =
+    JSON.parse(rawCache);
+
+
+    const cacheAge =
+    Date.now() -
+    (parsedCache.savedAt || 0);
+
+
+    if(cacheAge > CHAT_CACHE_MAX_AGE_MS){
+
+      return null;
+
+    }
+
+
+    if(
+
+      !Array.isArray(
+        parsedCache.messages
+      ) ||
+
+      parsedCache.messages.length === 0
+
+    ){
+
+      return null;
+
+    }
+
+
+    /*
+       Wrap each cached item as a fake
+       Firestore doc (id + a data() method)
+       so renderMessages() below can treat
+       cached messages exactly like live
+       Firestore snapshot docs, with no
+       separate rendering code needed.
+    */
+
+    return parsedCache.messages.map(
+      item => ({
+
+        id:
+        item.id,
+
+        data:
+        () => item.data
+
+      })
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Chat cache could not be read:",
+      error
+    );
+
+
+    return null;
+
+  }
+
+}
+
+
+/* =====================================================
    RENDER ALL MESSAGES
 ===================================================== */
 
@@ -10515,7 +11501,6 @@ async function renderMessages(
   ){
 
     renderEmptyConversation();
-
 
     return;
 
@@ -10834,6 +11819,12 @@ async function loadOlderMessages(){
 /* =====================================================
    LOAD REAL-TIME MESSAGES
    (most recent MESSAGES_PAGE_SIZE only)
+
+   The cache render below is what removes the
+   blank "Loading conversation..." wait on a
+   repeat visit — the live listener still starts
+   immediately either way and replaces the cached
+   copy the instant real data arrives.
 ===================================================== */
 
 function loadMessages(){
@@ -10870,15 +11861,31 @@ function loadMessages(){
   false;
 
 
-  chatArea.innerHTML = `
+  const cachedDocs =
+  loadMessagesCache();
 
-    <div class="loadingMessage">
 
-      Loading conversation...
+  if(cachedDocs){
 
-    </div>
+    latestMessagesDocsCache =
+    cachedDocs;
 
-  `;
+
+    renderMessages();
+
+  }else{
+
+    chatArea.innerHTML = `
+
+      <div class="loadingMessage">
+
+        Loading conversation...
+
+      </div>
+
+    `;
+
+  }
 
 
   const messagesQuery =
@@ -10926,6 +11933,11 @@ function loadMessages(){
         .reverse();
 
 
+        saveMessagesCache(
+          latestMessagesDocsCache
+        );
+
+
         await renderMessages();
 
       }catch(error){
@@ -10941,6 +11953,7 @@ function loadMessages(){
       }
 
     },
+
 
     function(error){
 
@@ -11691,7 +12704,8 @@ async function createMessageDocument(
     mediaDuration,
     fileName,
     fileSize,
-    fileExtension
+    fileExtension,
+    momentReply
   }
 )
 {
@@ -11767,6 +12781,31 @@ fileUrl:
 mediaType === "file"
 ? mediaUrl || ""
 : "",
+
+      replyMomentId:
+      momentReply?.momentId ||
+      "",
+
+      replyMomentType:
+      momentReply?.momentType ||
+      "",
+
+      replyMomentUserName:
+      momentReply?.momentUserName ||
+      "",
+
+      replyMomentImageUrl:
+      momentReply?.momentImageUrl ||
+      "",
+
+      replyMomentVideoUrl:
+      momentReply?.momentVideoUrl ||
+      "",
+
+      replyMomentSnippet:
+      momentReply?.momentSnippet ||
+      "",
+
       timestamp:
       serverTimestamp(),
 
@@ -12062,6 +13101,9 @@ function resetMessageComposer(){
   clearSelectedMedia();
 
 
+  clearMomentReplyBanner();
+
+
   currentUserTyping =
   false;
 
@@ -12140,6 +13182,18 @@ async function sendMessage(){
   setSendingState(
     true
   );
+
+
+  /*
+     Captured before the "await" calls below, the
+     same way replies to comments are captured, so
+     the saved message always reflects whichever
+     moment the banner was showing at the moment
+     Send was tapped.
+  */
+
+  const activeMomentReply =
+  pendingMomentReply;
 
 
   let finalMediaUrl =
@@ -12250,7 +13304,10 @@ finalMediaType === "file"
 fileExtension:
 finalMediaType === "file"
 ? selectedFileExtension
-: ""
+: "",
+
+        momentReply:
+        activeMomentReply
 
       }
     );
