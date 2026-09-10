@@ -410,7 +410,9 @@
     /*
       Brief highlight flash used to point out a
       comment when someone taps a "Replying to"
-      quote and jumps to the original comment.
+      quote and jumps to the original comment, or
+      when someone arrives here from a notification
+      pointing at a specific comment.
     */
 
     .comment-card.highlighted {
@@ -1397,6 +1399,20 @@ const loadedCommentsById =
 new Map();
 
 
+/*
+  When this page is opened from a notification
+  link (comments.html?postId=X&comment=Y), this
+  holds that comment ID so it can be scrolled to
+  and briefly highlighted once it appears in the
+  DOM. It is only ever acted on once per page
+  load — after that it is set to null so later
+  live-update redraws do not keep re-scrolling
+  the page back down to it.
+*/
+
+let pendingLinkedCommentId = null;
+
+
 /* =====================================================
    HTML ELEMENTS
 ===================================================== */
@@ -1498,7 +1514,13 @@ document.getElementById(
 
 
 /* =====================================================
-   GET POST ID
+   GET POST ID AND, IF PRESENT, A LINKED COMMENT ID
+
+   The "comment" parameter is set by notification
+   links (see createCommentNotification and
+   createReplyNotification below) so that tapping
+   "Benson commented on your post" lands directly
+   on that comment instead of the top of the page.
 ===================================================== */
 
 const urlParameters =
@@ -1509,6 +1531,11 @@ new URLSearchParams(
 const postId =
 urlParameters.get(
   "postId"
+);
+
+pendingLinkedCommentId =
+urlParameters.get(
+  "comment"
 );
 
 
@@ -1979,6 +2006,20 @@ function loadComments(){
       updateCommentsCount(
         comments.length
       );
+
+
+      /*
+        If this page was opened from a
+        notification link, jump straight to
+        that comment and flash it once, right
+        after the very first successful render
+        that actually contains it — then never
+        again, so a later live update (e.g. a
+        new comment arriving) does not yank the
+        page back down to it a second time.
+      */
+
+      jumpToLinkedCommentIfPending();
 
     },
 
@@ -2608,7 +2649,8 @@ cancelReplyButton.addEventListener(
    JUMP TO AND HIGHLIGHT A COMMENT
    (used when someone taps a "Replying to" quote,
    the same way tapping a quoted reply in WhatsApp
-   scrolls you to the original message)
+   scrolls you to the original message — and also
+   used for the notification-link case below)
 ===================================================== */
 
 function highlightComment(
@@ -2623,7 +2665,7 @@ function highlightComment(
 
   if(!targetCard){
 
-    return;
+    return false;
 
   }
 
@@ -2656,6 +2698,51 @@ function highlightComment(
     },
     1600
   );
+
+
+  return true;
+
+}
+
+
+/* =====================================================
+   JUMP TO A COMMENT LINKED FROM A NOTIFICATION
+
+   Reads pendingLinkedCommentId (set once, from the
+   "comment" URL parameter, when the page first
+   loads) and — the first time that comment is
+   actually present on the page — scrolls to it and
+   flashes it, the same way tapping a reply quote
+   does. This runs after every comments render
+   because the very first render can happen before
+   Firestore has delivered that particular comment
+   (e.g. on a slow connection), but it only ever
+   fires once: as soon as it succeeds, the pending
+   ID is cleared so later live-update redraws leave
+   the user's scroll position alone.
+===================================================== */
+
+function jumpToLinkedCommentIfPending(){
+
+  if(!pendingLinkedCommentId){
+
+    return;
+
+  }
+
+
+  const didHighlight =
+  highlightComment(
+    pendingLinkedCommentId
+  );
+
+
+  if(didHighlight){
+
+    pendingLinkedCommentId =
+    null;
+
+  }
 
 }
 
@@ -2704,6 +2791,13 @@ commentsList.addEventListener(
 
 /* =====================================================
    CREATE COMMENT NOTIFICATION
+
+   Now saves a targetUrl pointing straight at this
+   specific comment (postId + commentId), so tapping
+   the notification on notifications.html no longer
+   falls back to the generic feed link — it opens
+   this page already scrolled to, and flashing,
+   the exact comment that was left.
 ===================================================== */
 
 async function createCommentNotification(
@@ -2795,6 +2889,9 @@ async function createCommentNotification(
         commentText:
         commentText,
 
+        targetUrl:
+        `comments.html?postId=${encodeURIComponent(postId)}&comment=${encodeURIComponent(commentId)}`,
+
         message:
         `${senderName} commented on your post.`,
 
@@ -2834,6 +2931,9 @@ async function createCommentNotification(
    specific person being replied to, not just the
    post owner, and is skipped if they are the same
    person (they would already get the other one).
+   Also saves a targetUrl, pointed at the new reply
+   itself so the recipient lands on what was said
+   to them.
 ===================================================== */
 
 async function createReplyNotification(
@@ -2938,6 +3038,9 @@ async function createReplyNotification(
 
         commentText:
         commentText,
+
+        targetUrl:
+        `comments.html?postId=${encodeURIComponent(postId)}&comment=${encodeURIComponent(commentId)}`,
 
         message:
         `${senderName} replied to your comment.`,
