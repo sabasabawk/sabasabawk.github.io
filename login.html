@@ -166,7 +166,14 @@ document.getElementById("message").innerHTML =
 
 setTimeout(function(){
 
-window.location.href="community.html";
+/*
+   FIX: this used to send successful logins to
+   "community.html", which does not exist
+   anywhere in this app -- the actual Community
+   Wall page is feed.html.
+*/
+
+window.location.href="feed.html";
 
 },1200);
 
