@@ -91,23 +91,6 @@ transform:rotate(360deg);
 
 }
 
-.open-button{
-display:inline-block;
-margin-top:16px;
-padding:14px 28px;
-border-radius:30px;
-background:#ffffff;
-color:#0b3d91;
-font-size:16px;
-font-weight:bold;
-text-decoration:none;
-box-shadow:0 5px 16px rgba(0,0,0,.18);
-}
-
-.open-button:hover{
-background:#f1f6ff;
-}
-
 .small-text{
 margin-top:25px;
 font-size:13px;
@@ -130,18 +113,11 @@ opacity:.82;
 SABASABA GOSPEL MINISTRY
 </h1>
 
-<p>
-Opening the Christian Community Wall...
+<p id="statusText">
+Checking your account...
 </p>
 
 <div class="loading-spinner"></div>
-
-<a
-class="open-button"
-href="feed.html"
->
-Open Community Wall
-</a>
 
 <div class="small-text">
 Preaching Jesus Christ to the World
@@ -149,13 +125,138 @@ Preaching Jesus Christ to the World
 
 </main>
 
-<script>
+<!-- =====================================================
+     ENTRY-POINT AUTH GATE
 
-window.setTimeout(() => {
+     This page used to send EVERY visitor straight to
+     feed.html after a fixed delay, regardless of
+     whether they had ever signed up. Now it waits for
+     Firebase to report whether a real signed-in user
+     exists before deciding where to go:
 
-window.location.replace("feed.html");
+       - Signed in  -> feed.html (the Community Wall)
+       - Not signed in -> welcome.html (Login / Create
+         Account choice), so a new visitor is asked to
+         register or log in before ever reaching the
+         Community Wall, instead of only being asked
+         once they try to like, comment, or post.
 
-}, 700);
+     A short safety timeout still exists in case
+     Firebase is unusually slow to respond, so this
+     page never hangs forever on a blank spinner.
+===================================================== */
+
+<script type="module">
+
+import {
+  auth,
+  onAuthStateChanged
+} from "./firebase.js";
+
+
+let hasRedirected =
+false;
+
+
+function goToFeed(){
+
+  if(hasRedirected){
+
+    return;
+
+  }
+
+  hasRedirected =
+  true;
+
+  window.location.replace(
+    "feed.html"
+  );
+
+}
+
+
+function goToWelcome(){
+
+  if(hasRedirected){
+
+    return;
+
+  }
+
+  hasRedirected =
+  true;
+
+  window.location.replace(
+    "welcome.html"
+  );
+
+}
+
+
+onAuthStateChanged(
+
+  auth,
+
+  function(user){
+
+    if(user){
+
+      goToFeed();
+
+    }else{
+
+      goToWelcome();
+
+    }
+
+  },
+
+  function(error){
+
+    console.error(
+      "Auth check error on entry:",
+      error
+    );
+
+    /*
+       If Firebase itself cannot even be reached,
+       fail safe toward asking the person to sign
+       in rather than silently letting them into
+       the Community Wall.
+    */
+
+    goToWelcome();
+
+  }
+
+);
+
+
+/*
+   Safety net: if something prevents the auth
+   listener above from ever firing (e.g. a
+   network or script-loading problem), do not
+   leave the visitor stuck on a spinner forever.
+*/
+
+window.setTimeout(
+  function(){
+
+    if(!hasRedirected){
+
+      document.getElementById(
+        "statusText"
+      ).textContent =
+      "This is taking longer than expected...";
+
+      goToWelcome();
+
+    }
+
+  },
+  6000
+);
 
 </script>
 
