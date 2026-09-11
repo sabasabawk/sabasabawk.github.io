@@ -927,6 +927,10 @@ select:focus-visible{
 
   <!-- =================================================
        DAILY BIBLE PROMISE
+       (text and reference are now filled in by
+       JavaScript on page load, cycling through a
+       list of promise verses based on the day of
+       the year — see PART 4 below)
   ================================================== -->
 
   <section class="biblePromiseCard">
@@ -937,7 +941,10 @@ select:focus-visible{
 
     </div>
 
-    <div class="biblePromiseText">
+    <div
+      id="biblePromiseText"
+      class="biblePromiseText"
+    >
 
       "Do not be anxious about anything,
       but in everything, by prayer and
@@ -946,7 +953,10 @@ select:focus-visible{
 
     </div>
 
-    <div class="biblePromiseReference">
+    <div
+      id="biblePromiseReference"
+      class="biblePromiseReference"
+    >
 
       Philippians 4:6
 
@@ -1190,6 +1200,16 @@ document.querySelectorAll(
   ".prayerFilterButton"
 );
 
+const biblePromiseTextElement =
+document.getElementById(
+  "biblePromiseText"
+);
+
+const biblePromiseReferenceElement =
+document.getElementById(
+  "biblePromiseReference"
+);
+
 
 /* =====================================================
    GLOBAL VARIABLES
@@ -1212,6 +1232,252 @@ const defaultProfilePicture =
 
 const userProfileCache =
 new Map();
+
+
+/* =====================================================
+   DAILY BIBLE PROMISE VERSES
+   (King James Version — public domain, so the full
+   verse text can be shown safely. 163 promise and
+   encouragement verses; the page picks one based on
+   the day of the year, cycling back to the start
+   once the list runs out, so the verse changes every
+   day across a full year with no database needed.)
+===================================================== */
+
+const dailyBiblePromises = [
+
+  { text:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.", reference:"Philippians 4:6" },
+  { text:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.", reference:"Philippians 4:7" },
+  { text:"I can do all things through Christ which strengtheneth me.", reference:"Philippians 4:13" },
+  { text:"But my God shall supply all your need according to his riches in glory by Christ Jesus.", reference:"Philippians 4:19" },
+  { text:"For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.", reference:"Jeremiah 29:11" },
+  { text:"Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.", reference:"Isaiah 41:10" },
+  { text:"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.", reference:"Isaiah 40:31" },
+  { text:"The LORD is my shepherd; I shall not want.", reference:"Psalm 23:1" },
+  { text:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.", reference:"Psalm 23:4" },
+  { text:"God is our refuge and strength, a very present help in trouble.", reference:"Psalm 46:1" },
+  { text:"The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.", reference:"Psalm 34:18" },
+  { text:"The LORD is my light and my salvation; whom shall I fear? the LORD is the strength of my life; of whom shall I be afraid?", reference:"Psalm 27:1" },
+  { text:"I will lift up mine eyes unto the hills, from whence cometh my help. My help cometh from the LORD, which made heaven and earth.", reference:"Psalm 121:1-2" },
+  { text:"He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty.", reference:"Psalm 91:1" },
+  { text:"Cast thy burden upon the LORD, and he shall sustain thee: he shall never suffer the righteous to be moved.", reference:"Psalm 55:22" },
+  { text:"Delight thyself also in the LORD; and he shall give thee the desires of thine heart.", reference:"Psalm 37:4" },
+  { text:"Commit thy way unto the LORD; trust also in him; and he shall bring it to pass.", reference:"Psalm 37:5" },
+  { text:"The LORD is on my side; I will not fear: what can man do unto me?", reference:"Psalm 118:6" },
+  { text:"Weeping may endure for a night, but joy cometh in the morning.", reference:"Psalm 30:5" },
+  { text:"Many are the afflictions of the righteous: but the LORD delivereth him out of them all.", reference:"Psalm 34:19" },
+  { text:"Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.", reference:"Proverbs 3:5-6" },
+  { text:"Honour the LORD with thy substance, and with the firstfruits of all thine increase: So shall thy barns be filled with plenty, and thy presses shall burst out with new wine.", reference:"Proverbs 3:9-10" },
+  { text:"And we know that all things work together for good to them that love God, to them who are the called according to his purpose.", reference:"Romans 8:28" },
+  { text:"What shall we then say to these things? If God be for us, who can be against us?", reference:"Romans 8:31" },
+  { text:"For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come, nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord.", reference:"Romans 8:38-39" },
+  { text:"Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope, through the power of the Holy Ghost.", reference:"Romans 15:13" },
+  { text:"And he said unto me, My grace is sufficient for thee: for my strength is made perfect in weakness.", reference:"2 Corinthians 12:9" },
+  { text:"For we walk by faith, not by sight.", reference:"2 Corinthians 5:7" },
+  { text:"For our light affliction, which is but for a moment, worketh for us a far more exceeding and eternal weight of glory.", reference:"2 Corinthians 4:17" },
+  { text:"But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.", reference:"Matthew 6:33" },
+  { text:"Take therefore no thought for the morrow: for the morrow shall take thought for the things of itself.", reference:"Matthew 6:34" },
+  { text:"Come unto me, all ye that labour and are heavy laden, and I will give you rest.", reference:"Matthew 11:28" },
+  { text:"Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.", reference:"Matthew 7:7" },
+  { text:"But Jesus beheld them, and said unto them, With men this is impossible; but with God all things are possible.", reference:"Matthew 19:26" },
+  { text:"Lo, I am with you alway, even unto the end of the world.", reference:"Matthew 28:20" },
+  { text:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", reference:"John 3:16" },
+  { text:"Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.", reference:"John 14:27" },
+  { text:"These things I have spoken unto you, that in me ye might have peace. In the world ye shall have tribulation: but be of good cheer; I have overcome the world.", reference:"John 16:33" },
+  { text:"Let not your heart be troubled: ye believe in God, believe also in me.", reference:"John 14:1" },
+  { text:"I am the vine, ye are the branches: He that abideth in me, and I in him, the same bringeth forth much fruit: for without me ye can do nothing.", reference:"John 15:5" },
+  { text:"Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.", reference:"Joshua 1:9" },
+  { text:"Be strong and of a good courage, fear not, nor be afraid of them: for the LORD thy God, he it is that doth go with thee; he will not fail thee, nor forsake thee.", reference:"Deuteronomy 31:6" },
+  { text:"And the LORD, he it is that doth go before thee; he will be with thee, he will not fail thee, neither forsake thee: fear not, neither be dismayed.", reference:"Deuteronomy 31:8" },
+  { text:"When thou passest through the waters, I will be with thee; and through the rivers, they shall not overflow thee: when thou walkest through the fire, thou shalt not be burned; neither shall the flame kindle upon thee.", reference:"Isaiah 43:2" },
+  { text:"Thou wilt keep him in perfect peace, whose mind is stayed on thee: because he trusteth in thee.", reference:"Isaiah 26:3" },
+  { text:"For I the LORD thy God will hold thy right hand, saying unto thee, Fear not; I will help thee.", reference:"Isaiah 41:13" },
+  { text:"No weapon that is formed against thee shall prosper; and every tongue that shall rise against thee in judgment thou shalt condemn.", reference:"Isaiah 54:17" },
+  { text:"It is of the LORD's mercies that we are not consumed, because his compassions fail not. They are new every morning: great is thy faithfulness.", reference:"Lamentations 3:22-23" },
+  { text:"The LORD is good, a strong hold in the day of trouble; and he knoweth them that trust in him.", reference:"Nahum 1:7" },
+  { text:"The LORD thy God in the midst of thee is mighty; he will save, he will rejoice over thee with joy; he will rest in his love, he will joy over thee with singing.", reference:"Zephaniah 3:17" },
+  { text:"The LORD God is my strength, and he will make my feet like hinds' feet, and he will make me to walk upon mine high places.", reference:"Habakkuk 3:19" },
+  { text:"Rejoice not against me, O mine enemy: when I fall, I shall arise; when I sit in darkness, the LORD shall be a light unto me.", reference:"Micah 7:8" },
+  { text:"Bring ye all the tithes into the storehouse, that there may be meat in mine house, and prove me now herewith, saith the LORD of hosts, if I will not open you the windows of heaven, and pour you out a blessing, that there shall not be room enough to receive it.", reference:"Malachi 3:10" },
+  { text:"Casting all your care upon him; for he careth for you.", reference:"1 Peter 5:7" },
+  { text:"But the God of all grace, who hath called us unto his eternal glory by Christ Jesus, after that ye have suffered a while, make you perfect, stablish, strengthen, settle you.", reference:"1 Peter 5:10" },
+  { text:"If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.", reference:"James 1:5" },
+  { text:"Blessed is the man that endureth temptation: for when he is tried, he shall receive the crown of life, which the Lord hath promised to them that love him.", reference:"James 1:12" },
+  { text:"Draw nigh to God, and he will draw nigh to you.", reference:"James 4:8" },
+  { text:"The effectual fervent prayer of a righteous man availeth much.", reference:"James 5:16" },
+  { text:"I will never leave thee, nor forsake thee.", reference:"Hebrews 13:5" },
+  { text:"Jesus Christ the same yesterday, and to day, and for ever.", reference:"Hebrews 13:8" },
+  { text:"Now faith is the substance of things hoped for, the evidence of things not seen.", reference:"Hebrews 11:1" },
+  { text:"Let us therefore come boldly unto the throne of grace, that we may obtain mercy, and find grace to help in time of need.", reference:"Hebrews 4:16" },
+  { text:"And let us not be weary in well doing: for in due season we shall reap, if we faint not.", reference:"Galatians 6:9" },
+  { text:"Now unto him that is able to do exceeding abundantly above all that we ask or think, according to the power that worketh in us.", reference:"Ephesians 3:20" },
+  { text:"Finally, my brethren, be strong in the Lord, and in the power of his might.", reference:"Ephesians 6:10" },
+  { text:"Being confident of this very thing, that he which hath begun a good work in you will perform it until the day of Jesus Christ.", reference:"Philippians 1:6" },
+  { text:"And let the peace of God rule in your hearts, to the which also ye are called in one body; and be ye thankful.", reference:"Colossians 3:15" },
+  { text:"Rejoice evermore. Pray without ceasing. In every thing give thanks: for this is the will of God in Christ Jesus concerning you.", reference:"1 Thessalonians 5:16-18" },
+  { text:"For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.", reference:"2 Timothy 1:7" },
+  { text:"But the Lord is faithful, who shall stablish you, and keep you from evil.", reference:"2 Thessalonians 3:3" },
+  { text:"I have set the LORD always before me: because he is at my right hand, I shall not be moved.", reference:"Psalm 16:8" },
+  { text:"The LORD is my rock, and my fortress, and my deliverer; my God, my strength, in whom I will trust.", reference:"Psalm 18:2" },
+  { text:"The LORD is my strength and my shield; my heart trusted in him, and I am helped.", reference:"Psalm 28:7" },
+  { text:"I will instruct thee and teach thee in the way which thou shalt go: I will guide thee with mine eye.", reference:"Psalm 32:8" },
+  { text:"I sought the LORD, and he heard me, and delivered me from all my fears.", reference:"Psalm 34:4" },
+  { text:"O taste and see that the LORD is good: blessed is the man that trusteth in him.", reference:"Psalm 34:8" },
+  { text:"The young lions do lack, and suffer hunger: but they that seek the LORD shall not want any good thing.", reference:"Psalm 34:10" },
+  { text:"The steps of a good man are ordered by the LORD: and he delighteth in his way.", reference:"Psalm 37:23" },
+  { text:"I waited patiently for the LORD; and he inclined unto me, and heard my cry. He brought me up also out of an horrible pit, out of the miry clay, and set my feet upon a rock, and established my goings.", reference:"Psalm 40:1-2" },
+  { text:"Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him, who is the health of my countenance, and my God.", reference:"Psalm 42:11" },
+  { text:"Create in me a clean heart, O God; and renew a right spirit within me.", reference:"Psalm 51:10" },
+  { text:"What time I am afraid, I will trust in thee.", reference:"Psalm 56:3" },
+  { text:"Truly my soul waiteth upon God: from him cometh my salvation.", reference:"Psalm 62:1" },
+  { text:"Trust in him at all times; ye people, pour out your heart before him: God is a refuge for us.", reference:"Psalm 62:8" },
+  { text:"Blessed be the Lord, who daily loadeth us with benefits, even the God of our salvation.", reference:"Psalm 68:19" },
+  { text:"My flesh and my heart faileth: but God is the strength of my heart, and my portion for ever.", reference:"Psalm 73:26" },
+  { text:"For the LORD God is a sun and shield: the LORD will give grace and glory: no good thing will he withhold from them that walk uprightly.", reference:"Psalm 84:11" },
+  { text:"For thou, Lord, art good, and ready to forgive; and plenteous in mercy unto all them that call upon thee.", reference:"Psalm 86:5" },
+  { text:"In the multitude of my thoughts within me thy comforts delight my soul.", reference:"Psalm 94:19" },
+  { text:"Bless the LORD, O my soul, and forget not all his benefits: Who forgiveth all thine iniquities; who healeth all thy diseases.", reference:"Psalm 103:2-3" },
+  { text:"Seek the LORD, and his strength: seek his face evermore.", reference:"Psalm 105:4" },
+  { text:"For he satisfieth the longing soul, and filleth the hungry soul with goodness.", reference:"Psalm 107:9" },
+  { text:"He shall not be afraid of evil tidings: his heart is fixed, trusting in the LORD.", reference:"Psalm 112:7" },
+  { text:"Thy word is a lamp unto my feet, and a light unto my path.", reference:"Psalm 119:105" },
+  { text:"The LORD shall preserve thee from all evil: he shall preserve thy soul. The LORD shall preserve thy going out and thy coming in from this time forth, and even for evermore.", reference:"Psalm 121:7-8" },
+  { text:"They that sow in tears shall reap in joy.", reference:"Psalm 126:5" },
+  { text:"The LORD will perfect that which concerneth me: thy mercy, O LORD, endureth for ever.", reference:"Psalm 138:8" },
+  { text:"I will praise thee; for I am fearfully and wonderfully made: marvellous are thy works; and that my soul knoweth right well.", reference:"Psalm 139:14" },
+  { text:"The LORD is nigh unto all them that call upon him, to all that call upon him in truth.", reference:"Psalm 145:18" },
+  { text:"He healeth the broken in heart, and bindeth up their wounds.", reference:"Psalm 147:3" },
+  { text:"Commit thy works unto the LORD, and thy thoughts shall be established.", reference:"Proverbs 16:3" },
+  { text:"The name of the LORD is a strong tower: the righteous runneth into it, and is safe.", reference:"Proverbs 18:10" },
+  { text:"And thine ears shall hear a word behind thee, saying, This is the way, walk ye in it.", reference:"Isaiah 30:21" },
+  { text:"For my thoughts are not your thoughts, neither are your ways my ways, saith the LORD. For as the heavens are higher than the earth, so are my ways higher than your ways, and my thoughts than your thoughts.", reference:"Isaiah 55:8-9" },
+  { text:"As one whom his mother comforteth, so will I comfort you.", reference:"Isaiah 66:13" },
+  { text:"Blessed is the man that trusteth in the LORD, and whose hope the LORD is.", reference:"Jeremiah 17:7" },
+  { text:"Ah Lord GOD! behold, thou hast made the heaven and the earth by thy great power and stretched out arm, and there is nothing too hard for thee.", reference:"Jeremiah 32:17" },
+  { text:"A new heart also will I give you, and a new spirit will I put within you.", reference:"Ezekiel 36:26" },
+  { text:"Our God whom we serve is able to deliver us.", reference:"Daniel 3:17" },
+  { text:"And I will restore to you the years that the locust hath eaten.", reference:"Joel 2:25" },
+  { text:"The joy of the LORD is your strength.", reference:"Nehemiah 8:10" },
+  { text:"Seek the LORD and his strength, seek his face continually.", reference:"1 Chronicles 16:11" },
+  { text:"For this child I prayed; and the LORD hath given me my petition which I asked of him.", reference:"1 Samuel 1:27" },
+  { text:"The battle is the LORD'S.", reference:"1 Samuel 17:47" },
+  { text:"If my people, which are called by my name, shall humble themselves, and pray, and seek my face, and turn from their wicked ways; then will I hear from heaven, and will forgive their sin, and will heal their land.", reference:"2 Chronicles 7:14" },
+  { text:"Be not afraid nor dismayed by reason of this great multitude; for the battle is not yours, but God's.", reference:"2 Chronicles 20:15" },
+  { text:"The LORD shall fight for you, and ye shall hold your peace.", reference:"Exodus 14:14" },
+  { text:"The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.", reference:"Numbers 6:24-26" },
+  { text:"And, behold, I am with thee, and will keep thee in all places whither thou goest.", reference:"Genesis 28:15" },
+  { text:"What things soever ye desire, when ye pray, believe that ye receive them, and ye shall have them.", reference:"Mark 11:24" },
+  { text:"If thou canst believe, all things are possible to him that believeth.", reference:"Mark 9:23" },
+  { text:"For with God nothing shall be impossible.", reference:"Luke 1:37" },
+  { text:"Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over, shall men give into your bosom.", reference:"Luke 6:38" },
+  { text:"Fear not, little flock; for it is your Father's good pleasure to give you the kingdom.", reference:"Luke 12:32" },
+  { text:"But ye shall receive power, after that the Holy Ghost is come upon you.", reference:"Acts 1:8" },
+  { text:"Believe on the Lord Jesus Christ, and thou shalt be saved.", reference:"Acts 16:31" },
+  { text:"But God commendeth his love toward us, in that, while we were yet sinners, Christ died for us.", reference:"Romans 5:8" },
+  { text:"That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.", reference:"Romans 10:9" },
+  { text:"And be not conformed to this world: but be ye transformed by the renewing of your mind.", reference:"Romans 12:2" },
+  { text:"Rejoicing in hope; patient in tribulation; continuing instant in prayer.", reference:"Romans 12:12" },
+  { text:"There hath no temptation taken you but such as is common to man: but God is faithful, who will not suffer you to be tempted above that ye are able.", reference:"1 Corinthians 10:13" },
+  { text:"Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up.", reference:"1 Corinthians 13:4" },
+  { text:"But thanks be to God, which giveth us the victory through our Lord Jesus Christ.", reference:"1 Corinthians 15:57" },
+  { text:"Let all your things be done with charity.", reference:"1 Corinthians 16:14" },
+  { text:"Blessed be God, even the Father of our Lord Jesus Christ, the Father of mercies, and the God of all comfort; Who comforteth us in all our tribulation.", reference:"2 Corinthians 1:3-4" },
+  { text:"Now the Lord is that Spirit: and where the Spirit of the Lord is, there is liberty.", reference:"2 Corinthians 3:17" },
+  { text:"And God is able to make all grace abound toward you; that ye, always having all sufficiency in all things, may abound to every good work.", reference:"2 Corinthians 9:8" },
+  { text:"But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, temperance: against such there is no law.", reference:"Galatians 5:22-23" },
+  { text:"For by grace are ye saved through faith; and that not of yourselves: it is the gift of God.", reference:"Ephesians 2:8" },
+  { text:"And be ye kind one to another, tenderhearted, forgiving one another, even as God for Christ's sake hath forgiven you.", reference:"Ephesians 4:32" },
+  { text:"For it is God which worketh in you both to will and to do of his good pleasure.", reference:"Philippians 2:13" },
+  { text:"And whatsoever ye do, do it heartily, as to the Lord, and not unto men.", reference:"Colossians 3:23" },
+  { text:"Let no man despise thy youth; but be thou an example of the believers, in word, in conversation, in charity, in spirit, in faith, in purity.", reference:"1 Timothy 4:12" },
+  { text:"I have fought a good fight, I have finished my course, I have kept the faith.", reference:"2 Timothy 4:7" },
+  { text:"Not by works of righteousness which we have done, but according to his mercy he saved us.", reference:"Titus 3:5" },
+  { text:"Let us hold fast the profession of our faith without wavering; for he is faithful that promised.", reference:"Hebrews 10:23" },
+  { text:"Let us run with patience the race that is set before us.", reference:"Hebrews 12:1" },
+  { text:"The Lord is my helper, and I will not fear what man shall do unto me.", reference:"Hebrews 13:6" },
+  { text:"My brethren, count it all joy when ye fall into divers temptations; Knowing this, that the trying of your faith worketh patience.", reference:"James 1:2-3" },
+  { text:"Every good gift and every perfect gift is from above.", reference:"James 1:17" },
+  { text:"Blessed be the God and Father of our Lord Jesus Christ, which according to his abundant mercy hath begotten us again unto a lively hope.", reference:"1 Peter 1:3" },
+  { text:"But ye are a chosen generation, a royal priesthood, an holy nation, a peculiar people.", reference:"1 Peter 2:9" },
+  { text:"For the eyes of the Lord are over the righteous, and his ears are open unto their prayers.", reference:"1 Peter 3:12" },
+  { text:"According as his divine power hath given unto us all things that pertain unto life and godliness.", reference:"2 Peter 1:3" },
+  { text:"If we confess our sins, he is faithful and just to forgive us our sins, and to cleanse us from all unrighteousness.", reference:"1 John 1:9" },
+  { text:"Behold, what manner of love the Father hath bestowed upon us, that we should be called the sons of God.", reference:"1 John 3:1" },
+  { text:"Greater is he that is in you, than he that is in the world.", reference:"1 John 4:4" },
+  { text:"There is no fear in love; but perfect love casteth out fear.", reference:"1 John 4:18" },
+  { text:"And this is the confidence that we have in him, that, if we ask any thing according to his will, he heareth us.", reference:"1 John 5:14" },
+  { text:"Now unto him that is able to keep you from falling, and to present you faultless before the presence of his glory with exceeding joy.", reference:"Jude 1:24" },
+  { text:"Behold, I stand at the door, and knock: if any man hear my voice, and open the door, I will come in to him.", reference:"Revelation 3:20" },
+  { text:"And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain.", reference:"Revelation 21:4" }
+
+];
+
+
+/* =====================================================
+   SHOW TODAY'S BIBLE PROMISE
+   Picks an entry from dailyBiblePromises based on the
+   day of the year (1-366), so the verse changes daily
+   and cycles back to the start once the list runs out.
+===================================================== */
+
+function showTodaysBiblePromise(){
+
+  if(
+    !biblePromiseTextElement ||
+    !biblePromiseReferenceElement ||
+    dailyBiblePromises.length === 0
+  ){
+
+    return;
+
+  }
+
+
+  const now =
+  new Date();
+
+
+  const startOfYear =
+  new Date(
+    now.getFullYear(),
+    0,
+    0
+  );
+
+
+  const millisecondsSinceStartOfYear =
+  now - startOfYear;
+
+
+  const dayOfYear =
+  Math.floor(
+    millisecondsSinceStartOfYear /
+    (1000 * 60 * 60 * 24)
+  );
+
+
+  const promiseIndex =
+  dayOfYear %
+  dailyBiblePromises.length;
+
+
+  const todaysPromise =
+  dailyBiblePromises[
+    promiseIndex
+  ];
+
+
+  biblePromiseTextElement.textContent =
+  `"${todaysPromise.text}"`;
+
+
+  biblePromiseReferenceElement.textContent =
+  todaysPromise.reference;
+
+}
+
+
+showTodaysBiblePromise();
 
 
 /* =====================================================
