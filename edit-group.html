@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Edit Bible Study Group details on Faith Connect."
+  >
+
+  <title>
+    Edit Group | SABASABA Gospel Ministry
+  </title>
+
+  <style>
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#eef3f8;
+      --surface:#ffffff;
+
+      --text:#1f2b34;
+      --muted:#687680;
+
+      --border:#dce4ea;
+
+      --success:#27874f;
+      --danger:#c84444;
+      --warning:#9b6900;
+
+      --shadow:
+        0 6px 20px rgba(25,55,75,.10);
+
+      --radius-large:22px;
+      --radius-medium:16px;
+      --radius-small:12px;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      background:var(--background);
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    }
+
+
+    button,
+    input,
+    textarea,
+    select{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    img{
+      display:block;
+      max-width:100%;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible{
+
+      outline:
+        3px solid
+        rgba(8,123,209,.30);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:sticky;
+      top:0;
+      z-index:1000;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(12px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      max-width:760px;
+      min-height:62px;
+
+      margin:auto;
+      padding:8px 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#edf3f7;
+      color:var(--text);
+
+      font-size:23px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+      background:#dfeaf1;
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:2px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:700;
+
+    }
+
+
+    .headerIcon{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--primary),
+          #4ca9e5
+        );
+
+      color:#ffffff;
+      font-size:20px;
+
+      box-shadow:
+        0 5px 14px
+        rgba(8,123,209,.22);
+
+    }
+
+
+    /* =====================================================
+       MAIN PAGE CONTAINER
+    ===================================================== */
+
+    .pageContainer{
+
+      width:100%;
+      max-width:760px;
+
+      margin:auto;
+
+      padding:
+        18px
+        14px
+        40px;
+
+    }
+
+
+    /* =====================================================
+       PAGE MESSAGE
+    ===================================================== */
+
+    .pageMessage{
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-medium);
+
+      background:var(--surface);
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:13px;
+      font-weight:800;
+      line-height:1.5;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .pageMessage.error{
+
+      background:#fdecec;
+      color:#a52f2f;
+      border-color:#f3caca;
+
+    }
+
+
+    .pageMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       EDIT PAGE VISIBILITY
+    ===================================================== */
+
+    .editPageContent{
+      display:none;
+    }
+
+
+    .editPageContent.show{
+      display:block;
+    }
+
+
+    /* =====================================================
+       COVER IMAGE CARD
+    ===================================================== */
+
+    .settingsCard{
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-large);
+
+      background:var(--surface);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .settingsCard + .settingsCard{
+      margin-top:16px;
+    }
+
+
+    .settingsHeading{
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .settingsText{
+
+      margin-top:8px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      line-height:1.6;
+
+    }
+
+
+    .coverPreviewWrap{
+
+      position:relative;
+
+      margin-top:14px;
+
+      min-height:150px;
+
+      border-radius:16px;
+
+      overflow:hidden;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #087bd1,
+          #45a9eb
+        );
+
+    }
+
+
+    .coverPreviewImage{
+
+      position:absolute;
+      inset:0;
+
+      width:100%;
+      height:100%;
+
+      object-fit:cover;
+
+      display:none;
+
+    }
+
+
+    .coverPreviewFallback{
+
+      color:#ffffff;
+
+      font-size:52px;
+
+    }
+
+
+    .coverButtonsRow{
+
+      margin-top:12px;
+
+      display:flex;
+      gap:10px;
+
+    }
+
+
+    .coverActionButton{
+
+      flex:1;
+
+      min-height:44px;
+
+      border:1px solid var(--border);
+      border-radius:12px;
+
+      background:#f4f8fb;
+      color:var(--primary);
+
+      font-size:12px;
+      font-weight:900;
+
+    }
+
+
+    .coverActionButton:hover{
+      background:var(--primary-light);
+    }
+
+
+    .coverActionButton.remove{
+
+      color:var(--danger);
+
+    }
+
+
+    .coverActionButton.remove:hover{
+      background:#fdecec;
+    }
+
+
+    .hiddenFileInput{
+      display:none;
+    }
+
+
+    /* =====================================================
+       FORM FIELDS
+    ===================================================== */
+
+    .fieldLabel{
+
+      display:block;
+      margin-top:16px;
+      margin-bottom:7px;
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:800;
+
+    }
+
+
+    .fieldLabel:first-of-type{
+      margin-top:0;
+    }
+
+
+    .fieldInput,
+    .fieldTextarea,
+    .fieldSelect{
+
+      width:100%;
+
+      padding:12px 13px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      outline:none;
+
+      font-size:14px;
+
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+    }
+
+
+    .fieldInput:focus,
+    .fieldTextarea:focus,
+    .fieldSelect:focus{
+
+      border-color:var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8,123,209,.12);
+
+    }
+
+
+    .fieldTextarea{
+
+      min-height:110px;
+
+      resize:vertical;
+
+      line-height:1.6;
+
+    }
+
+
+    .fieldRow{
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:12px;
+
+    }
+
+
+    .fieldRow .fieldLabel{
+      margin-top:0;
+    }
+
+
+    .characterCount{
+
+      margin-top:5px;
+
+      color:var(--muted);
+
+      font-size:10px;
+
+      text-align:right;
+
+    }
+
+
+    /* =====================================================
+       SAVE BAR
+    ===================================================== */
+
+    .saveBar{
+
+      margin-top:18px;
+
+      display:flex;
+      gap:10px;
+
+    }
+
+
+    .saveButton{
+
+      flex:1;
+
+      min-height:48px;
+
+      border:0;
+      border-radius:13px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:14px;
+      font-weight:900;
+
+      box-shadow:
+        0 4px 12px
+        rgba(8,123,209,.22);
+
+    }
+
+
+    .saveButton:hover{
+      background:var(--primary-dark);
+    }
+
+
+    .saveButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .editFormMessage{
+
+      margin-top:12px;
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+
+      display:none;
+
+    }
+
+
+    .editFormMessage.success{
+
+      display:block;
+
+      color:var(--success);
+
+    }
+
+
+    .editFormMessage.error{
+
+      display:block;
+
+      color:var(--danger);
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .pageContainer{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .headerTitle{
+        font-size:16px;
+      }
+
+
+      .fieldRow{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =====================================================
+       TOP HEADER
+  ====================================================== -->
+
+  <header class="topHeader">
+
+    <div class="topHeaderInner">
+
+      <button
+        id="backButton"
+        class="backButton"
+        type="button"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+
+      <div class="headerTitleArea">
+
+        <div
+          id="headerTitle"
+          class="headerTitle"
+        >
+          Edit Group
+        </div>
+
+        <div class="headerSubtitle">
+          SABASABA Gospel Ministry
+        </div>
+
+      </div>
+
+
+      <div class="headerIcon">
+        ✏️
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN PAGE
+  ====================================================== -->
+
+  <main class="pageContainer">
+
+
+    <!-- =================================================
+         PAGE MESSAGE
+    ================================================== -->
+
+    <div
+      id="pageMessage"
+      class="pageMessage"
+      aria-live="polite"
+    >
+      Loading group details...
+    </div>
+
+
+    <!-- =================================================
+         EDIT PAGE CONTENT
+    ================================================== -->
+
+    <div
+      id="editPageContent"
+      class="editPageContent"
+    >
+
+
+      <!-- =================================================
+           COVER IMAGE
+      ================================================== -->
+
+      <section class="settingsCard">
+
+        <h2 class="settingsHeading">
+          🖼️ Cover Image
+        </h2>
+
+        <p class="settingsText">
+          Shown at the top of the group and on the group list.
+        </p>
+
+
+        <div class="coverPreviewWrap">
+
+          <img
+            id="coverPreviewImage"
+            class="coverPreviewImage"
+            src=""
+            alt="Group cover image preview"
+          >
+
+          <span
+            id="coverPreviewFallback"
+            class="coverPreviewFallback"
+          >
+            📖
+          </span>
+
+        </div>
+
+
+        <div class="coverButtonsRow">
+
+          <button
+            id="chooseCoverButton"
+            type="button"
+            class="coverActionButton"
+          >
+            🖼️ Change Image
+          </button>
+
+
+          <button
+            id="removeCoverButton"
+            type="button"
+            class="coverActionButton remove"
+          >
+            🗑️ Remove Image
+          </button>
+
+        </div>
+
+
+        <input
+          id="coverImageInput"
+          class="hiddenFileInput"
+          type="file"
+          accept="image/*"
+        >
+
+      </section>
+
+
+      <!-- =================================================
+           GROUP DETAILS
+      ================================================== -->
+
+      <section class="settingsCard">
+
+        <h2 class="settingsHeading">
+          📖 Group Details
+        </h2>
+
+        <p class="settingsText">
+          The name, topic and description shown to members.
+        </p>
+
+
+        <label
+          class="fieldLabel"
+          for="groupNameInput"
+        >
+          Group Name
+        </label>
+
+        <input
+          id="groupNameInput"
+          class="fieldInput"
+          type="text"
+          maxlength="80"
+          placeholder="e.g. Youth Bible Study"
+        >
+
+
+        <label
+          class="fieldLabel"
+          for="groupTopicInput"
+        >
+          Topic (optional)
+        </label>
+
+        <input
+          id="groupTopicInput"
+          class="fieldInput"
+          type="text"
+          maxlength="100"
+          placeholder="e.g. Book of Romans"
+        >
+
+
+        <label
+          class="fieldLabel"
+          for="groupDescriptionInput"
+        >
+          Description
+        </label>
+
+        <textarea
+          id="groupDescriptionInput"
+          class="fieldTextarea"
+          maxlength="600"
+          placeholder="What is this group about?"
+        ></textarea>
+
+        <div
+          id="descriptionCharacterCount"
+          class="characterCount"
+        >
+          0 / 600
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           MEETING SCHEDULE
+      ================================================== -->
+
+      <section class="settingsCard">
+
+        <h2 class="settingsHeading">
+          📅 Meeting Schedule
+        </h2>
+
+        <p class="settingsText">
+          When this Bible Study Group regularly meets.
+        </p>
+
+
+        <div class="fieldRow">
+
+          <div>
+
+            <label
+              class="fieldLabel"
+              for="meetingDaySelect"
+            >
+              Meeting Day
+            </label>
+
+            <select
+              id="meetingDaySelect"
+              class="fieldSelect"
+            >
+              <option value="">Not specified</option>
+              <option value="Sunday">Sunday</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label
+              class="fieldLabel"
+              for="meetingTimeInput"
+            >
+              Meeting Time
+            </label>
+
+            <input
+              id="meetingTimeInput"
+              class="fieldInput"
+              type="time"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           SAVE
+      ================================================== -->
+
+      <div class="saveBar">
+
+        <button
+          id="saveGroupButton"
+          class="saveButton"
+          type="button"
+        >
+          Save Changes
+        </button>
+
+      </div>
+
+
+      <p
+        id="editFormMessage"
+        class="editFormMessage"
+      ></p>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       OPEN JAVASCRIPT MODULE
+  ====================================================== -->
+
+  <script type="module">
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  storage,
+  doc,
+  getDoc,
+  updateDoc,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const pageMessage =
+document.getElementById(
+  "pageMessage"
+);
+
+const editPageContent =
+document.getElementById(
+  "editPageContent"
+);
+
+const coverPreviewImage =
+document.getElementById(
+  "coverPreviewImage"
+);
+
+const coverPreviewFallback =
+document.getElementById(
+  "coverPreviewFallback"
+);
+
+const chooseCoverButton =
+document.getElementById(
+  "chooseCoverButton"
+);
+
+const removeCoverButton =
+document.getElementById(
+  "removeCoverButton"
+);
+
+const coverImageInput =
+document.getElementById(
+  "coverImageInput"
+);
+
+const groupNameInput =
+document.getElementById(
+  "groupNameInput"
+);
+
+const groupTopicInput =
+document.getElementById(
+  "groupTopicInput"
+);
+
+const groupDescriptionInput =
+document.getElementById(
+  "groupDescriptionInput"
+);
+
+const descriptionCharacterCount =
+document.getElementById(
+  "descriptionCharacterCount"
+);
+
+const meetingDaySelect =
+document.getElementById(
+  "meetingDaySelect"
+);
+
+const meetingTimeInput =
+document.getElementById(
+  "meetingTimeInput"
+);
+
+const saveGroupButton =
+document.getElementById(
+  "saveGroupButton"
+);
+
+const editFormMessage =
+document.getElementById(
+  "editFormMessage"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let groupData =
+{};
+
+let groupAdmins =
+[];
+
+let existingCoverImageUrl =
+"";
+
+let selectedNewCoverFile =
+null;
+
+let removeCoverRequested =
+false;
+
+let savingGroup =
+false;
+
+
+/* =====================================================
+   GET GROUP ID FROM URL
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const groupId =
+urlParameters.get(
+  "id"
+);
+
+
+/* =====================================================
+   HANDLE MISSING GROUP ID
+===================================================== */
+
+if(!groupId){
+
+  pageMessage.textContent =
+  "Bible Study Group not found.";
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  throw new Error(
+    "Group ID is missing."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-details.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   SHOW PAGE ERROR
+===================================================== */
+
+function showPageError(
+  message
+){
+
+  pageMessage.textContent =
+  message;
+
+  pageMessage.classList.remove(
+    "hidden"
+  );
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  editPageContent.classList.remove(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   SHOW EDIT PAGE
+===================================================== */
+
+function showEditPage(){
+
+  pageMessage.classList.add(
+    "hidden"
+  );
+
+  pageMessage.classList.remove(
+    "error"
+  );
+
+  editPageContent.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE COVER PREVIEW
+===================================================== */
+
+function updateCoverPreview(
+  imageUrl
+){
+
+  if(imageUrl){
+
+    coverPreviewImage.src =
+    imageUrl;
+
+    coverPreviewImage.style.display =
+    "block";
+
+    coverPreviewFallback.style.display =
+    "none";
+
+  }else{
+
+    coverPreviewImage.src =
+    "";
+
+    coverPreviewImage.style.display =
+    "none";
+
+    coverPreviewFallback.style.display =
+    "flex";
+
+  }
+
+}
+
+
+/* =====================================================
+   UPDATE DESCRIPTION CHARACTER COUNT
+===================================================== */
+
+function updateDescriptionCount(){
+
+  descriptionCharacterCount.textContent =
+  `${groupDescriptionInput.value.length} / 600`;
+
+}
+
+
+groupDescriptionInput.addEventListener(
+  "input",
+  updateDescriptionCount
+);
+
+
+/* =====================================================
+   LOAD GROUP AND CHECK ADMIN ACCESS
+===================================================== */
+
+async function loadGroupForEditing(){
+
+  try{
+
+    const groupSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      )
+    );
+
+
+    if(
+      !groupSnapshot.exists()
+    ){
+
+      showPageError(
+        "This Bible Study Group does not exist."
+      );
+
+      return;
+
+    }
+
+
+    groupData = {
+      id:
+      groupSnapshot.id,
+
+      ...groupSnapshot.data()
+    };
+
+
+    groupAdmins =
+    Array.isArray(
+      groupData.admins
+    )
+    ? groupData.admins
+    : [];
+
+
+    const userIsAdmin =
+    Boolean(
+      currentUser &&
+      groupAdmins.includes(
+        currentUser.uid
+      )
+    );
+
+
+    if(!userIsAdmin){
+
+      showPageError(
+        "Only group administrators can edit this group."
+      );
+
+      return;
+
+    }
+
+
+    const loadedGroupName =
+    getFirstValue(
+      groupData.name,
+      groupData.groupName,
+      groupData.title
+    );
+
+
+    headerTitle.textContent =
+    `Edit ${loadedGroupName || "Group"}`;
+
+
+    groupNameInput.value =
+    loadedGroupName;
+
+
+    groupTopicInput.value =
+    getFirstValue(
+      groupData.topic,
+      groupData.studyTopic
+    );
+
+
+    groupDescriptionInput.value =
+    getFirstValue(
+      groupData.description,
+      groupData.about
+    );
+
+
+    updateDescriptionCount();
+
+
+    meetingDaySelect.value =
+    getFirstValue(
+      groupData.meetingDay
+    );
+
+
+    meetingTimeInput.value =
+    getFirstValue(
+      groupData.meetingTime
+    );
+
+
+    existingCoverImageUrl =
+    getFirstValue(
+      groupData.imageUrl,
+      groupData.imageURL,
+      groupData.coverImage
+    );
+
+
+    updateCoverPreview(
+      existingCoverImageUrl
+    );
+
+
+    showEditPage();
+
+  }catch(error){
+
+    console.error(
+      "Group loading error for editing:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showPageError(
+        "Firestore denied access to this group."
+      );
+
+    }else{
+
+      showPageError(
+        "This Bible Study Group could not be loaded."
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    await loadGroupForEditing();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    showPageError(
+      "Your account could not be confirmed. Please sign in again."
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CHOOSE NEW COVER IMAGE
+===================================================== */
+
+chooseCoverButton.addEventListener(
+  "click",
+  function(){
+
+    coverImageInput.click();
+
+  }
+);
+
+
+coverImageInput.addEventListener(
+  "change",
+  function(){
+
+    const selectedFile =
+    coverImageInput.files?.[0] ||
+    null;
+
+
+    if(!selectedFile){
+
+      return;
+
+    }
+
+
+    if(
+      !selectedFile.type.startsWith(
+        "image/"
+      )
+    ){
+
+      alert(
+        "Please select a valid image."
+      );
+
+      coverImageInput.value =
+      "";
+
+      return;
+
+    }
+
+
+    const maximumImageSize =
+    5 * 1024 * 1024;
+
+
+    if(
+      selectedFile.size >
+      maximumImageSize
+    ){
+
+      alert(
+        "The cover image must be smaller than 5 MB."
+      );
+
+      coverImageInput.value =
+      "";
+
+      return;
+
+    }
+
+
+    selectedNewCoverFile =
+    selectedFile;
+
+
+    removeCoverRequested =
+    false;
+
+
+    const previewUrl =
+    URL.createObjectURL(
+      selectedFile
+    );
+
+
+    updateCoverPreview(
+      previewUrl
+    );
+
+  }
+);
+
+
+/* =====================================================
+   REMOVE COVER IMAGE
+===================================================== */
+
+removeCoverButton.addEventListener(
+  "click",
+  function(){
+
+    selectedNewCoverFile =
+    null;
+
+
+    coverImageInput.value =
+    "";
+
+
+    removeCoverRequested =
+    true;
+
+
+    updateCoverPreview(
+      ""
+    );
+
+  }
+);
+
+
+/* =====================================================
+   UPLOAD NEW COVER IMAGE
+===================================================== */
+
+async function uploadNewCoverImage(){
+
+  if(!selectedNewCoverFile){
+
+    return existingCoverImageUrl;
+
+  }
+
+
+  const safeFileName =
+  selectedNewCoverFile.name
+  .replace(
+    /[^a-zA-Z0-9._-]/g,
+    "_"
+  );
+
+
+  const imagePath =
+  `bibleStudyGroups/${groupId}/cover_${Date.now()}_${safeFileName}`;
+
+
+  const imageReference =
+  ref(
+    storage,
+    imagePath
+  );
+
+
+  await uploadBytes(
+    imageReference,
+    selectedNewCoverFile
+  );
+
+
+  return await getDownloadURL(
+    imageReference
+  );
+
+}
+
+
+/* =====================================================
+   SHOW FORM MESSAGE
+===================================================== */
+
+function showFormMessage(
+  message,
+  type
+){
+
+  editFormMessage.textContent =
+  message;
+
+
+  editFormMessage.className =
+  `editFormMessage ${type}`;
+
+}
+
+
+/* =====================================================
+   SAVE GROUP CHANGES
+===================================================== */
+
+async function saveGroupChanges(){
+
+  if(
+    savingGroup ||
+    !currentUser
+  ){
+
+    return;
+
+  }
+
+
+  const cleanedName =
+  groupNameInput.value.trim();
+
+
+  if(!cleanedName){
+
+    showFormMessage(
+      "Please enter a group name.",
+      "error"
+    );
+
+    groupNameInput.focus();
+
+    return;
+
+  }
+
+
+  savingGroup =
+  true;
+
+
+  saveGroupButton.disabled =
+  true;
+
+
+  saveGroupButton.textContent =
+  "Saving...";
+
+
+  editFormMessage.className =
+  "editFormMessage";
+
+
+  try{
+
+    let coverImageUrl =
+    existingCoverImageUrl;
+
+
+    if(removeCoverRequested){
+
+      coverImageUrl =
+      "";
+
+    }else if(
+      selectedNewCoverFile
+    ){
+
+      coverImageUrl =
+      await uploadNewCoverImage();
+
+    }
+
+
+    await updateDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      ),
+      {
+
+        name:
+        cleanedName,
+
+        topic:
+        groupTopicInput.value.trim(),
+
+        description:
+        groupDescriptionInput.value.trim(),
+
+        meetingDay:
+        meetingDaySelect.value,
+
+        meetingTime:
+        meetingTimeInput.value,
+
+        imageUrl:
+        coverImageUrl
+
+      }
+    );
+
+
+    existingCoverImageUrl =
+    coverImageUrl;
+
+    selectedNewCoverFile =
+    null;
+
+    removeCoverRequested =
+    false;
+
+
+    showFormMessage(
+      "Group details were saved.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Group saving error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showFormMessage(
+        "Firestore denied permission to save these changes.",
+        "error"
+      );
+
+    }else if(
+      error?.code ===
+      "storage/unauthorized"
+    ){
+
+      showFormMessage(
+        "Firebase Storage denied permission to upload the cover image.",
+        "error"
+      );
+
+    }else{
+
+      showFormMessage(
+        "Group details could not be saved. Please try again.",
+        "error"
+      );
+
+    }
+
+  }finally{
+
+    savingGroup =
+    false;
+
+
+    saveGroupButton.disabled =
+    false;
+
+
+    saveGroupButton.textContent =
+    "Save Changes";
+
+  }
+
+}
+
+
+/* =====================================================
+   SAVE BUTTON EVENT
+===================================================== */
+
+saveGroupButton.addEventListener(
+  "click",
+  saveGroupChanges
+);
+
+
+/* =====================================================
+   COVER IMAGE FALLBACK
+===================================================== */
+
+coverPreviewImage.addEventListener(
+  "error",
+  function(){
+
+    updateCoverPreview(
+      ""
+    );
+
+  }
+);
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect Edit Group page is ready."
+);
+
+  </script>
+
+</body>
+
+</html>
