@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Manage Bible Study Group settings on Faith Connect."
+  >
+
+  <title>
+    Group Settings | SABASABA Gospel Ministry
+  </title>
+
+  <style>
+
+    /* =====================================================
+       GENERAL RESET
+    ===================================================== */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+
+    :root{
+
+      --primary:#087bd1;
+      --primary-dark:#0667b1;
+      --primary-light:#e9f5fd;
+
+      --background:#eef3f8;
+      --surface:#ffffff;
+
+      --text:#1f2b34;
+      --muted:#687680;
+
+      --border:#dce4ea;
+
+      --success:#27874f;
+      --danger:#c84444;
+      --warning:#9b6900;
+
+      --shadow:
+        0 6px 20px rgba(25,55,75,.10);
+
+      --radius-large:22px;
+      --radius-medium:16px;
+      --radius-small:12px;
+
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+
+    body{
+
+      min-height:100vh;
+
+      background:var(--background);
+      color:var(--text);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    }
+
+
+    button,
+    input,
+    textarea,
+    select{
+      font:inherit;
+    }
+
+
+    button{
+      cursor:pointer;
+    }
+
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    /* =====================================================
+       ACCESSIBILITY
+    ===================================================== */
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible{
+
+      outline:
+        3px solid
+        rgba(8,123,209,.30);
+
+      outline-offset:3px;
+
+    }
+
+
+    /* =====================================================
+       TOP HEADER
+    ===================================================== */
+
+    .topHeader{
+
+      position:sticky;
+      top:0;
+      z-index:1000;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(12px);
+
+    }
+
+
+    .topHeaderInner{
+
+      width:100%;
+      max-width:760px;
+      min-height:62px;
+
+      margin:auto;
+      padding:8px 14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+
+    }
+
+
+    .backButton{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:#edf3f7;
+      color:var(--text);
+
+      font-size:23px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .backButton:hover{
+      background:#dfeaf1;
+    }
+
+
+    .backButton:active{
+      transform:scale(.95);
+    }
+
+
+    .headerTitleArea{
+
+      min-width:0;
+      flex:1;
+
+    }
+
+
+    .headerTitle{
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .headerSubtitle{
+
+      margin-top:2px;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      color:var(--muted);
+
+      font-size:11px;
+      font-weight:700;
+
+    }
+
+
+    .headerIcon{
+
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+
+      border-radius:14px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--primary),
+          #4ca9e5
+        );
+
+      color:#ffffff;
+      font-size:20px;
+
+      box-shadow:
+        0 5px 14px
+        rgba(8,123,209,.22);
+
+    }
+
+
+    /* =====================================================
+       MAIN PAGE CONTAINER
+    ===================================================== */
+
+    .pageContainer{
+
+      width:100%;
+      max-width:760px;
+
+      margin:auto;
+
+      padding:
+        18px
+        14px
+        40px;
+
+    }
+
+
+    /* =====================================================
+       PAGE MESSAGE
+    ===================================================== */
+
+    .pageMessage{
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-medium);
+
+      background:var(--surface);
+      color:var(--muted);
+
+      text-align:center;
+
+      font-size:13px;
+      font-weight:800;
+      line-height:1.5;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .pageMessage.error{
+
+      background:#fdecec;
+      color:#a52f2f;
+      border-color:#f3caca;
+
+    }
+
+
+    .pageMessage.hidden{
+      display:none;
+    }
+
+
+    /* =====================================================
+       SETTINGS PAGE VISIBILITY
+    ===================================================== */
+
+    .settingsPageContent{
+      display:none;
+    }
+
+
+    .settingsPageContent.show{
+      display:block;
+    }
+
+
+    /* =====================================================
+       SETTINGS CARD
+    ===================================================== */
+
+    .settingsCard{
+
+      padding:18px;
+
+      border:1px solid var(--border);
+      border-radius:var(--radius-large);
+
+      background:var(--surface);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .settingsCard + .settingsCard{
+      margin-top:16px;
+    }
+
+
+    .settingsHeading{
+
+      font-size:17px;
+      font-weight:900;
+
+    }
+
+
+    .settingsText{
+
+      margin-top:8px;
+
+      color:var(--muted);
+
+      font-size:12px;
+      line-height:1.6;
+
+    }
+
+
+    /* =====================================================
+       PRIVACY TOGGLE
+    ===================================================== */
+
+    .privacyOptions{
+
+      margin-top:16px;
+
+      display:grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap:10px;
+
+    }
+
+
+    .privacyOption{
+
+      padding:14px 12px;
+
+      border:1px solid var(--border);
+      border-radius:14px;
+
+      background:#f8fbfd;
+
+      text-align:center;
+
+      transition:
+        border-color .2s ease,
+        background .2s ease;
+
+    }
+
+
+    .privacyOption:hover{
+      background:#eef4f8;
+    }
+
+
+    .privacyOption.selected{
+
+      border-color:var(--primary);
+
+      background:var(--primary-light);
+
+    }
+
+
+    .privacyOptionIcon{
+
+      display:block;
+
+      font-size:24px;
+
+    }
+
+
+    .privacyOptionLabel{
+
+      display:block;
+      margin-top:6px;
+
+      color:var(--text);
+
+      font-size:12px;
+      font-weight:900;
+
+    }
+
+
+    .privacyOptionText{
+
+      display:block;
+      margin-top:4px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      line-height:1.5;
+
+    }
+
+
+    /* =====================================================
+       MAXIMUM MEMBERS
+    ===================================================== */
+
+    .maxMembersRow{
+
+      margin-top:16px;
+
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+    }
+
+
+    .maxMembersInput{
+
+      flex:1;
+
+      min-height:48px;
+
+      padding:11px 13px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      outline:none;
+
+      font-size:15px;
+      font-weight:800;
+
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+    }
+
+
+    .maxMembersInput:focus{
+
+      border-color:var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8,123,209,.12);
+
+    }
+
+
+    .maxMembersInput:disabled{
+
+      background:#f1f4f7;
+      color:var(--muted);
+
+    }
+
+
+    .noLimitToggle{
+
+      flex-shrink:0;
+
+      min-height:48px;
+      padding:0 14px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      font-size:11px;
+      font-weight:900;
+
+      white-space:nowrap;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease;
+
+    }
+
+
+    .noLimitToggle:hover{
+      background:#edf4f8;
+    }
+
+
+    .noLimitToggle.active{
+
+      border-color:var(--primary);
+
+      background:var(--primary-light);
+      color:var(--primary);
+
+    }
+
+
+    .maxMembersNote{
+
+      margin-top:8px;
+
+      color:var(--muted);
+
+      font-size:10px;
+      line-height:1.6;
+
+    }
+
+
+    /* =====================================================
+       SAVE BAR
+    ===================================================== */
+
+    .saveBar{
+
+      margin-top:18px;
+
+      display:flex;
+      gap:10px;
+
+    }
+
+
+    .saveButton{
+
+      flex:1;
+
+      min-height:48px;
+
+      border:0;
+      border-radius:13px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:14px;
+      font-weight:900;
+
+      box-shadow:
+        0 4px 12px
+        rgba(8,123,209,.22);
+
+    }
+
+
+    .saveButton:hover{
+      background:var(--primary-dark);
+    }
+
+
+    .saveButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .settingsFormMessage{
+
+      margin-top:12px;
+
+      text-align:center;
+
+      font-size:12px;
+      font-weight:800;
+
+      display:none;
+
+    }
+
+
+    .settingsFormMessage.success{
+
+      display:block;
+
+      color:var(--success);
+
+    }
+
+
+    .settingsFormMessage.error{
+
+      display:block;
+
+      color:var(--danger);
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:520px){
+
+      .topHeaderInner{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .pageContainer{
+        padding-left:10px;
+        padding-right:10px;
+      }
+
+
+      .headerTitle{
+        font-size:16px;
+      }
+
+
+      .maxMembersRow{
+
+        flex-direction:column;
+        align-items:stretch;
+
+      }
+
+
+      .noLimitToggle{
+
+        width:100%;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =====================================================
+       TOP HEADER
+  ====================================================== -->
+
+  <header class="topHeader">
+
+    <div class="topHeaderInner">
+
+      <button
+        id="backButton"
+        class="backButton"
+        type="button"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+
+      <div class="headerTitleArea">
+
+        <div
+          id="headerTitle"
+          class="headerTitle"
+        >
+          Group Settings
+        </div>
+
+        <div class="headerSubtitle">
+          SABASABA Gospel Ministry
+        </div>
+
+      </div>
+
+
+      <div class="headerIcon">
+        ⚙️
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN PAGE
+  ====================================================== -->
+
+  <main class="pageContainer">
+
+
+    <!-- =================================================
+         PAGE MESSAGE
+    ================================================== -->
+
+    <div
+      id="pageMessage"
+      class="pageMessage"
+      aria-live="polite"
+    >
+      Loading group settings...
+    </div>
+
+
+    <!-- =================================================
+         SETTINGS PAGE CONTENT
+    ================================================== -->
+
+    <div
+      id="settingsPageContent"
+      class="settingsPageContent"
+    >
+
+
+      <!-- =================================================
+           PRIVACY
+      ================================================== -->
+
+      <section class="settingsCard">
+
+        <h2 class="settingsHeading">
+          🌍 Group Privacy
+        </h2>
+
+        <p class="settingsText">
+          Choose whether this Bible Study Group appears
+          publicly to every member, or stays private.
+        </p>
+
+
+        <div
+          id="privacyOptions"
+          class="privacyOptions"
+        >
+
+          <button
+            id="publicOptionButton"
+            type="button"
+            class="privacyOption"
+            data-privacy="public"
+          >
+
+            <span class="privacyOptionIcon">
+              🌍
+            </span>
+
+            <span class="privacyOptionLabel">
+              Public
+            </span>
+
+            <span class="privacyOptionText">
+              Anyone can find and view this group
+            </span>
+
+          </button>
+
+
+          <button
+            id="privateOptionButton"
+            type="button"
+            class="privacyOption"
+            data-privacy="private"
+          >
+
+            <span class="privacyOptionIcon">
+              🔒
+            </span>
+
+            <span class="privacyOptionLabel">
+              Private
+            </span>
+
+            <span class="privacyOptionText">
+              Only current members can view this group
+            </span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           MAXIMUM MEMBERS
+      ================================================== -->
+
+      <section class="settingsCard">
+
+        <h2 class="settingsHeading">
+          👥 Maximum Members
+        </h2>
+
+        <p class="settingsText">
+          Set a limit on how many members this Bible Study
+          Group can have, or leave it unlimited.
+        </p>
+
+
+        <div class="maxMembersRow">
+
+          <input
+            id="maxMembersInput"
+            class="maxMembersInput"
+            type="number"
+            min="1"
+            step="1"
+            placeholder="e.g. 30"
+            inputmode="numeric"
+          >
+
+
+          <button
+            id="noLimitToggleButton"
+            type="button"
+            class="noLimitToggle"
+          >
+            ∞ No Limit
+          </button>
+
+        </div>
+
+
+        <p class="maxMembersNote">
+          If the group already has more members than a new
+          limit, existing members are not removed — the
+          limit only affects new people trying to join.
+        </p>
+
+      </section>
+
+
+      <!-- =================================================
+           SAVE
+      ================================================== -->
+
+      <div class="saveBar">
+
+        <button
+          id="saveSettingsButton"
+          class="saveButton"
+          type="button"
+        >
+          Save Settings
+        </button>
+
+      </div>
+
+
+      <p
+        id="settingsFormMessage"
+        class="settingsFormMessage"
+      ></p>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       OPEN JAVASCRIPT MODULE
+  ====================================================== -->
+
+  <script type="module">
+/* =====================================================
+   FIREBASE IMPORTS
+===================================================== */
+
+import{
+  auth,
+  db,
+  doc,
+  getDoc,
+  updateDoc,
+  onAuthStateChanged
+}from "./firebase.js";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const backButton =
+document.getElementById(
+  "backButton"
+);
+
+const headerTitle =
+document.getElementById(
+  "headerTitle"
+);
+
+const pageMessage =
+document.getElementById(
+  "pageMessage"
+);
+
+const settingsPageContent =
+document.getElementById(
+  "settingsPageContent"
+);
+
+const publicOptionButton =
+document.getElementById(
+  "publicOptionButton"
+);
+
+const privateOptionButton =
+document.getElementById(
+  "privateOptionButton"
+);
+
+const maxMembersInput =
+document.getElementById(
+  "maxMembersInput"
+);
+
+const noLimitToggleButton =
+document.getElementById(
+  "noLimitToggleButton"
+);
+
+const saveSettingsButton =
+document.getElementById(
+  "saveSettingsButton"
+);
+
+const settingsFormMessage =
+document.getElementById(
+  "settingsFormMessage"
+);
+
+
+/* =====================================================
+   PAGE STATE
+===================================================== */
+
+let currentUser =
+null;
+
+let groupData =
+{};
+
+let groupAdmins =
+[];
+
+let selectedPrivacy =
+"public";
+
+let noLimitSelected =
+true;
+
+let savingSettings =
+false;
+
+
+/* =====================================================
+   GET GROUP ID FROM URL
+===================================================== */
+
+const urlParameters =
+new URLSearchParams(
+  window.location.search
+);
+
+const groupId =
+urlParameters.get(
+  "id"
+);
+
+
+/* =====================================================
+   HANDLE MISSING GROUP ID
+===================================================== */
+
+if(!groupId){
+
+  pageMessage.textContent =
+  "Bible Study Group not found.";
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  throw new Error(
+    "Group ID is missing."
+  );
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+backButton.addEventListener(
+  "click",
+  function(){
+
+    window.location.href =
+    `group-details.html?id=${encodeURIComponent(
+      groupId
+    )}`;
+
+  }
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(value).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   SHOW PAGE ERROR
+===================================================== */
+
+function showPageError(
+  message
+){
+
+  pageMessage.textContent =
+  message;
+
+  pageMessage.classList.remove(
+    "hidden"
+  );
+
+  pageMessage.classList.add(
+    "error"
+  );
+
+  settingsPageContent.classList.remove(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   SHOW SETTINGS PAGE
+===================================================== */
+
+function showSettingsPage(){
+
+  pageMessage.classList.add(
+    "hidden"
+  );
+
+  pageMessage.classList.remove(
+    "error"
+  );
+
+  settingsPageContent.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE PRIVACY DISPLAY
+===================================================== */
+
+function updatePrivacyDisplay(){
+
+  publicOptionButton.classList.toggle(
+    "selected",
+    selectedPrivacy === "public"
+  );
+
+
+  privateOptionButton.classList.toggle(
+    "selected",
+    selectedPrivacy === "private"
+  );
+
+}
+
+
+/* =====================================================
+   UPDATE MAXIMUM MEMBERS DISPLAY
+===================================================== */
+
+function updateMaxMembersDisplay(){
+
+  noLimitToggleButton.classList.toggle(
+    "active",
+    noLimitSelected
+  );
+
+
+  maxMembersInput.disabled =
+  noLimitSelected;
+
+
+  if(noLimitSelected){
+
+    maxMembersInput.value =
+    "";
+
+  }
+
+}
+
+
+/* =====================================================
+   PRIVACY OPTION EVENTS
+===================================================== */
+
+publicOptionButton.addEventListener(
+  "click",
+  function(){
+
+    selectedPrivacy =
+    "public";
+
+    updatePrivacyDisplay();
+
+  }
+);
+
+
+privateOptionButton.addEventListener(
+  "click",
+  function(){
+
+    selectedPrivacy =
+    "private";
+
+    updatePrivacyDisplay();
+
+  }
+);
+
+
+/* =====================================================
+   NO LIMIT TOGGLE EVENT
+===================================================== */
+
+noLimitToggleButton.addEventListener(
+  "click",
+  function(){
+
+    noLimitSelected =
+    !noLimitSelected;
+
+    updateMaxMembersDisplay();
+
+    if(!noLimitSelected){
+
+      maxMembersInput.focus();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   LOAD GROUP AND CHECK ADMIN ACCESS
+===================================================== */
+
+async function loadGroupSettings(){
+
+  try{
+
+    const groupSnapshot =
+    await getDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      )
+    );
+
+
+    if(
+      !groupSnapshot.exists()
+    ){
+
+      showPageError(
+        "This Bible Study Group does not exist."
+      );
+
+      return;
+
+    }
+
+
+    groupData = {
+      id:
+      groupSnapshot.id,
+
+      ...groupSnapshot.data()
+    };
+
+
+    groupAdmins =
+    Array.isArray(
+      groupData.admins
+    )
+    ? groupData.admins
+    : [];
+
+
+    const userIsAdmin =
+    Boolean(
+      currentUser &&
+      groupAdmins.includes(
+        currentUser.uid
+      )
+    );
+
+
+    if(!userIsAdmin){
+
+      showPageError(
+        "Only group administrators can open Group Settings."
+      );
+
+      return;
+
+    }
+
+
+    const loadedGroupName =
+    getFirstValue(
+      groupData.name,
+      groupData.groupName,
+      groupData.title,
+      "Bible Study Group"
+    );
+
+
+    headerTitle.textContent =
+    `${loadedGroupName} Settings`;
+
+
+    const loadedPrivacy =
+    getFirstValue(
+      groupData.privacy,
+      groupData.groupPrivacy,
+      "public"
+    ).toLowerCase();
+
+
+    selectedPrivacy =
+    loadedPrivacy === "private"
+    ? "private"
+    : "public";
+
+
+    updatePrivacyDisplay();
+
+
+    const loadedMaximum =
+    Number(
+      groupData.maximumMembers
+    );
+
+
+    if(
+      Number.isFinite(
+        loadedMaximum
+      ) &&
+      loadedMaximum > 0
+    ){
+
+      noLimitSelected =
+      false;
+
+      maxMembersInput.value =
+      String(
+        loadedMaximum
+      );
+
+    }else{
+
+      noLimitSelected =
+      true;
+
+    }
+
+
+    updateMaxMembersDisplay();
+
+
+    showSettingsPage();
+
+  }catch(error){
+
+    console.error(
+      "Group settings loading error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showPageError(
+        "Firestore denied access to this group's settings."
+      );
+
+    }else{
+
+      showPageError(
+        "Group Settings could not be loaded."
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    currentUser =
+    user || null;
+
+
+    if(!currentUser){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    await loadGroupSettings();
+
+  },
+  function(error){
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    showPageError(
+      "Your account could not be confirmed. Please sign in again."
+    );
+
+  }
+);
+
+
+/* =====================================================
+   SHOW FORM MESSAGE
+===================================================== */
+
+function showFormMessage(
+  message,
+  type
+){
+
+  settingsFormMessage.textContent =
+  message;
+
+
+  settingsFormMessage.className =
+  `settingsFormMessage ${type}`;
+
+}
+
+
+/* =====================================================
+   SAVE SETTINGS
+===================================================== */
+
+async function saveGroupSettings(){
+
+  if(
+    savingSettings ||
+    !currentUser
+  ){
+
+    return;
+
+  }
+
+
+  let maximumMembersValue =
+  0;
+
+
+  if(!noLimitSelected){
+
+    const enteredValue =
+    Number(
+      maxMembersInput.value
+    );
+
+
+    if(
+      !Number.isFinite(
+        enteredValue
+      ) ||
+      enteredValue < 1
+    ){
+
+      showFormMessage(
+        "Please enter a maximum members number of at least 1, or choose No Limit.",
+        "error"
+      );
+
+      maxMembersInput.focus();
+
+      return;
+
+    }
+
+
+    const currentMemberCount =
+    Array.isArray(
+      groupData.members
+    )
+    ? groupData.members.length
+    : 0;
+
+
+    if(
+      enteredValue <
+      currentMemberCount
+    ){
+
+      const proceedAnyway =
+      window.confirm(
+        `This group already has ${currentMemberCount} members, which is more than ${enteredValue}. Current members will stay in the group, but no new members will be able to join until the group drops below the limit. Save this limit anyway?`
+      );
+
+
+      if(!proceedAnyway){
+
+        return;
+
+      }
+
+    }
+
+
+    maximumMembersValue =
+    Math.floor(
+      enteredValue
+    );
+
+  }
+
+
+  savingSettings =
+  true;
+
+
+  saveSettingsButton.disabled =
+  true;
+
+
+  saveSettingsButton.textContent =
+  "Saving...";
+
+
+  settingsFormMessage.className =
+  "settingsFormMessage";
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      ),
+      {
+
+        privacy:
+        selectedPrivacy,
+
+        maximumMembers:
+        maximumMembersValue
+
+      }
+    );
+
+
+    groupData.privacy =
+    selectedPrivacy;
+
+    groupData.maximumMembers =
+    maximumMembersValue;
+
+
+    showFormMessage(
+      "Group settings were saved.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Group settings saving error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      showFormMessage(
+        "Firestore denied permission to save these settings.",
+        "error"
+      );
+
+    }else{
+
+      showFormMessage(
+        "Group settings could not be saved. Please try again.",
+        "error"
+      );
+
+    }
+
+  }finally{
+
+    savingSettings =
+    false;
+
+
+    saveSettingsButton.disabled =
+    false;
+
+
+    saveSettingsButton.textContent =
+    "Save Settings";
+
+  }
+
+}
+
+
+/* =====================================================
+   SAVE BUTTON EVENT
+===================================================== */
+
+saveSettingsButton.addEventListener(
+  "click",
+  saveGroupSettings
+);
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+  "Faith Connect Group Settings page is ready."
+);
+
+  </script>
+
+</body>
+
+</html>
