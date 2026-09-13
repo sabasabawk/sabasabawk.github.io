@@ -24,6 +24,115 @@
 (function(){
 
   /* =====================================================
+     FADE TRANSITION OVERLAY
+
+     A full-screen overlay that fades the page IN when it
+     first loads, and fades OUT right before a swipe
+     navigates to the next/previous tab. This does not
+     create a true sliding animation between pages (each
+     tab is still a separate page load), but it softens
+     the abrupt jump into a smooth fade instead.
+  ===================================================== */
+
+  const FADE_DURATION_MS =
+  220;
+
+
+  const fadeOverlay =
+  document.createElement(
+    "div"
+  );
+
+
+  fadeOverlay.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    background:#eef3f8;
+    opacity:1;
+    pointer-events:none;
+    transition:opacity ${FADE_DURATION_MS}ms ease;
+  `;
+
+
+  document.documentElement.appendChild(
+    fadeOverlay
+  );
+
+
+  /* Fade the newly-loaded page IN */
+
+  window.requestAnimationFrame(
+    function(){
+
+      window.requestAnimationFrame(
+        function(){
+
+          fadeOverlay.style.opacity =
+          "0";
+
+        }
+      );
+
+    }
+  );
+
+
+  window.addEventListener(
+    "pageshow",
+    function(event){
+
+      if(event.persisted){
+
+        fadeOverlay.style.transition =
+        "none";
+
+
+        fadeOverlay.style.opacity =
+        "0";
+
+
+        window.requestAnimationFrame(
+          function(){
+
+            fadeOverlay.style.transition =
+            `opacity ${FADE_DURATION_MS}ms ease`;
+
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     FADE OUT, THEN NAVIGATE
+  ===================================================== */
+
+  function fadeOutThenNavigate(
+    destinationUrl
+  ){
+
+    fadeOverlay.style.opacity =
+    "1";
+
+
+    window.setTimeout(
+      function(){
+
+        window.location.href =
+        destinationUrl;
+
+      },
+      FADE_DURATION_MS
+    );
+
+  }
+
+
+  /* =====================================================
      TAB ORDER
      Must match the bottom navigation bar's left-to-right
      order. Edit this list if the bar's order ever changes.
@@ -309,8 +418,9 @@
       }
 
 
-      window.location.href =
-      TAB_PAGE_ORDER[targetIndex];
+      fadeOutThenNavigate(
+        TAB_PAGE_ORDER[targetIndex]
+      );
 
     },
 
