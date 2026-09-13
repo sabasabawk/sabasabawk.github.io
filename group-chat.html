@@ -88,8 +88,7 @@
 
     button,
     input,
-    textarea,
-    select{
+    textarea{
       font:inherit;
     }
 
@@ -129,7 +128,7 @@
 
       outline:
         3px solid
-        rgba(8,123,209,.30);
+        rgba(255,255,255,.40);
 
       outline-offset:3px;
 
@@ -149,7 +148,7 @@
 
 
     /* =====================================================
-       TOP HEADER
+       CHAT HEADER
     ===================================================== */
 
     .topHeader{
@@ -1549,12 +1548,16 @@
 
 /* =====================================================
    FIREBASE IMPORTS
+   (storage/ref/uploadBytes/getDownloadURL removed —
+   Firebase Storage requires the paid Blaze plan just
+   to be enabled, so message images now upload through
+   Cloudinary instead, the same free service already
+   used everywhere else in this app.)
 ===================================================== */
 
 import{
   auth,
   db,
-  storage,
   collection,
   addDoc,
   query,
@@ -1565,11 +1568,22 @@ import{
   getDoc,
   deleteDoc,
   serverTimestamp,
-  ref,
-  uploadBytes,
-  getDownloadURL,
   onAuthStateChanged
 }from "./firebase.js";
+
+
+/* =====================================================
+   CLOUDINARY SETTINGS
+===================================================== */
+
+const CLOUDINARY_CLOUD_NAME =
+"glq2nymz";
+
+const CLOUDINARY_UPLOAD_PRESET =
+"sabasaba_community";
+
+const CLOUDINARY_UPLOAD_URL =
+`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =====================================================
@@ -3324,45 +3338,134 @@ document.addEventListener(
 
 
 /* =====================================================
-   UPLOAD MESSAGE IMAGE
+   UPLOAD MESSAGE IMAGE TO CLOUDINARY
+   (Firebase Storage requires the paid Blaze plan just
+   to be enabled, so message images upload through
+   Cloudinary instead — the same free service already
+   used for community posts, profile pictures, and
+   Bible Study Group cover images.)
 ===================================================== */
 
-async function uploadMessageImage(){
+function uploadMessageImage(){
 
   if(!selectedMessageImage){
 
-    return "";
+    return Promise.resolve(
+      ""
+    );
 
   }
 
 
-  const safeFileName =
-  selectedMessageImage.name
-  .replace(
-    /[^a-zA-Z0-9._-]/g,
-    "_"
-  );
+  return new Promise(
+    function(resolve,reject){
+
+      const formData =
+      new FormData();
 
 
-  const imagePath =
-  `groupMessages/${groupId}/${currentUser.uid}/${Date.now()}_${safeFileName}`;
+      formData.append(
+        "file",
+        selectedMessageImage
+      );
 
 
-  const imageReference =
-  ref(
-    storage,
-    imagePath
-  );
+      formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+      );
 
 
-  await uploadBytes(
-    imageReference,
-    selectedMessageImage
-  );
+      formData.append(
+        "folder",
+        "sabasaba/group-messages"
+      );
 
 
-  return await getDownloadURL(
-    imageReference
+      const uploadRequest =
+      new XMLHttpRequest();
+
+
+      uploadRequest.open(
+        "POST",
+        CLOUDINARY_UPLOAD_URL,
+        true
+      );
+
+
+      uploadRequest.addEventListener(
+        "load",
+        function(){
+
+          let responseData =
+          null;
+
+
+          try{
+
+            responseData =
+            JSON.parse(
+              uploadRequest.responseText || "{}"
+            );
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "Cloudinary returned an invalid response."
+              )
+            );
+
+            return;
+
+          }
+
+
+          if(
+            uploadRequest.status >= 200 &&
+            uploadRequest.status < 300 &&
+            responseData?.secure_url
+          ){
+
+            resolve(
+              responseData.secure_url
+            );
+
+            return;
+
+          }
+
+
+          reject(
+            new Error(
+              responseData?.error?.message ||
+              "Cloudinary upload failed."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.addEventListener(
+        "error",
+        function(){
+
+          reject(
+            new Error(
+              "Unable to upload the image. Check your internet connection."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.send(
+        formData
+      );
+
+    }
   );
 
 }
@@ -3570,17 +3673,19 @@ async function sendGroupMessage(){
       );
 
     }else if(
-      error?.code ===
-      "storage/unauthorized"
+      String(error?.message || "")
+      .toLowerCase()
+      .includes("cloudinary")
     ){
 
       alert(
-        "Firebase Storage denied permission to upload the image."
+        error.message
       );
 
     }else{
 
       alert(
+        error?.message ||
         "The group message could not be sent."
       );
 
