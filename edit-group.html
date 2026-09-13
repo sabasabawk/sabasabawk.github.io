@@ -733,7 +733,7 @@
         </div>
 
         <div class="headerSubtitle">
-          SABASABA Gospel Ministry
+          Faith Connect · SABASABA Gospel Ministry
         </div>
 
       </div>
@@ -1020,15 +1020,29 @@
 import{
   auth,
   db,
-  storage,
   doc,
   getDoc,
   updateDoc,
-  ref,
-  uploadBytes,
-  getDownloadURL,
   onAuthStateChanged
 }from "./firebase.js";
+
+
+/* =====================================================
+   CLOUDINARY SETTINGS
+   (Firebase Storage requires the paid Blaze plan just
+   to be enabled at all, so cover images upload through
+   Cloudinary instead — the same free service already
+   used for community posts and profile pictures.)
+===================================================== */
+
+const CLOUDINARY_CLOUD_NAME =
+"glq2nymz";
+
+const CLOUDINARY_UPLOAD_PRESET =
+"sabasaba_community";
+
+const CLOUDINARY_UPLOAD_URL =
+`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 
 /* =====================================================
@@ -1647,42 +1661,126 @@ removeCoverButton.addEventListener(
    UPLOAD NEW COVER IMAGE
 ===================================================== */
 
-async function uploadNewCoverImage(){
+function uploadNewCoverImage(){
 
   if(!selectedNewCoverFile){
 
-    return existingCoverImageUrl;
+    return Promise.resolve(
+      existingCoverImageUrl
+    );
 
   }
 
 
-  const safeFileName =
-  selectedNewCoverFile.name
-  .replace(
-    /[^a-zA-Z0-9._-]/g,
-    "_"
-  );
+  return new Promise(
+    function(resolve,reject){
+
+      const formData =
+      new FormData();
 
 
-  const imagePath =
-  `bibleStudyGroups/${groupId}/cover_${Date.now()}_${safeFileName}`;
+      formData.append(
+        "file",
+        selectedNewCoverFile
+      );
 
 
-  const imageReference =
-  ref(
-    storage,
-    imagePath
-  );
+      formData.append(
+        "upload_preset",
+        CLOUDINARY_UPLOAD_PRESET
+      );
 
 
-  await uploadBytes(
-    imageReference,
-    selectedNewCoverFile
-  );
+      formData.append(
+        "folder",
+        "sabasaba/bible-study-groups"
+      );
 
 
-  return await getDownloadURL(
-    imageReference
+      const uploadRequest =
+      new XMLHttpRequest();
+
+
+      uploadRequest.open(
+        "POST",
+        CLOUDINARY_UPLOAD_URL,
+        true
+      );
+
+
+      uploadRequest.addEventListener(
+        "load",
+        function(){
+
+          let responseData =
+          null;
+
+
+          try{
+
+            responseData =
+            JSON.parse(
+              uploadRequest.responseText || "{}"
+            );
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "Cloudinary returned an invalid response."
+              )
+            );
+
+            return;
+
+          }
+
+
+          if(
+            uploadRequest.status >= 200 &&
+            uploadRequest.status < 300 &&
+            responseData?.secure_url
+          ){
+
+            resolve(
+              responseData.secure_url
+            );
+
+            return;
+
+          }
+
+
+          reject(
+            new Error(
+              responseData?.error?.message ||
+              "Cloudinary upload failed."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.addEventListener(
+        "error",
+        function(){
+
+          reject(
+            new Error(
+              "Unable to upload the cover image. Check your internet connection."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.send(
+        formData
+      );
+
+    }
   );
 
 }
@@ -1842,12 +1940,13 @@ async function saveGroupChanges(){
       );
 
     }else if(
-      error?.code ===
-      "storage/unauthorized"
+      String(error?.message || "")
+      .toLowerCase()
+      .includes("cloudinary")
     ){
 
       showFormMessage(
-        "Firebase Storage denied permission to upload the cover image.",
+        error.message,
         "error"
       );
 
