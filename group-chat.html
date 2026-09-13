@@ -2534,8 +2534,9 @@ function clearSelectedMessageImage(){
   "";
 
 
-  composerPreviewImage.src =
-  "";
+  composerPreviewImage.removeAttribute(
+    "src"
+  );
 
 
   composerPreview.classList.remove(
@@ -3836,13 +3837,16 @@ composerPreviewImage.addEventListener(
   "error",
   function(){
 
-    alert(
-      "The selected image could not be previewed."
-    );
-
-
     clearSelectedMessageImage();
 
+
+    alert(
+      "The selected image could not be previewed. Please try a different picture (some camera photo formats, like HEIC, cannot be shown as a preview here)."
+    );
+
+  },
+  {
+    once:true
   }
 );
 
