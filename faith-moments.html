@@ -59,7 +59,6 @@
 
     body{
       min-height:100vh;
-      padding-bottom:88px;
 
       background:var(--background);
       color:var(--text);
@@ -1187,7 +1186,7 @@
     .floatingCreateButton{
       position:fixed;
       right:22px;
-      bottom:88px;
+      bottom:22px;
       z-index:950;
 
       width:58px;
@@ -1743,7 +1742,7 @@
     .toastMessage{
       position:fixed;
       left:50%;
-      bottom:92px;
+      bottom:26px;
       z-index:5000;
 
       max-width:
@@ -1792,7 +1791,7 @@
 
       .floatingCreateButton{
         right:16px;
-        bottom:84px;
+        bottom:16px;
 
         width:54px;
         height:54px;
@@ -1871,6 +1870,16 @@
   <header class="topAppBar">
 
     <div class="topAppBarInner">
+
+      <button
+        type="button"
+        class="topIconButton"
+        title="Back"
+        aria-label="Go back"
+        onclick="if(document.referrer){window.history.back();}else{window.location.href='feed.html';}"
+      >
+        ←
+      </button>
 
       <a
         href="index.html"
@@ -2358,71 +2367,6 @@
     </div>
 
   </section>
-
-
-  <!-- =====================================================
-       BOTTOM NAVIGATION
-  ====================================================== -->
-
-  <nav
-    class="bottomNavigation"
-    aria-label="Main navigation"
-  >
-
-    <div class="bottomNavigationInner">
-
-      <a
-        href="feed.html"
-        class="bottomNavItem"
-      >
-        <span class="bottomNavIcon">📰</span>
-        <span>Community</span>
-      </a>
-
-      <a
-        href="messages.html"
-        class="bottomNavItem"
-      >
-        <span class="bottomNavIcon">💬</span>
-        <span>Messages</span>
-      </a>
-
-      <a
-        href="faith-moments.html"
-        class="bottomNavItem active"
-        aria-current="page"
-      >
-        <span class="bottomNavIcon">🌅</span>
-        <span>Moments</span>
-      </a>
-
-      <a
-        href="prayer-wall.html"
-        class="bottomNavItem"
-      >
-        <span class="bottomNavIcon">🙏</span>
-        <span>Prayer</span>
-      </a>
-
-      <a
-        href="learn.html"
-        class="bottomNavItem"
-      >
-        <span class="bottomNavIcon">📚</span>
-        <span>Courses</span>
-      </a>
-
-      <a
-        href="profile.html"
-        class="bottomNavItem"
-      >
-        <span class="bottomNavIcon">👤</span>
-        <span>Profile</span>
-      </a>
-
-    </div>
-
-  </nav>
 
 
   <!-- =====================================================
@@ -4727,22 +4671,6 @@
 
     /* =====================================================
        PRIVATE REPLY
-
-       FIX: this used to build a "message=" URL
-       parameter that chat.html never actually read —
-       so replying to a Faith Moment silently dropped
-       the person into an ordinary chat with no sign of
-       which moment prompted it.
-
-       Now the moment's details (type, thumbnail, a
-       short snippet) are handed off through
-       sessionStorage under "pendingMomentReply".
-       chat.html reads this once it knows who the
-       conversation is with, shows a small quoted
-       preview above the message box — the same idea as
-       replying to an Instagram/Snapchat Story — and
-       attaches that reference to the message once sent,
-       so the recipient sees it too.
     ===================================================== */
 
     function handleReplyMoment(){
