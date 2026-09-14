@@ -636,26 +636,6 @@ Discover God's plan for true education through the Bible and the Seventh-day Adv
       lessonsGrid.classList.toggle('active');
     }
   </script>
-  <script type="module">
-    import {
-      auth,
-      onAuthStateChanged
-    } from "./firebase.js";
-
-    onAuthStateChanged(auth, function(user){
-
-      if(!user){
-
-        window.location.href = "login.html";
-
-      }else{
-
-        window.location.href = "feed.html";
-
-      }
-
-    });
-  </script>
 <script src="swipe-nav.js"></script>
 </body>
 </html>
