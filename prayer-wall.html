@@ -170,7 +170,7 @@ a{
   width:100%;
   max-width:760px;
   margin:auto;
-  padding:16px 14px 115px;
+  padding:16px 14px 30px;
 }
 
 
@@ -614,7 +614,7 @@ select:focus-visible{
 .floatingCreateButton{
   position:fixed;
   right:22px;
-  bottom:88px;
+  bottom:22px;
   z-index:950;
 
   width:58px;
@@ -748,7 +748,7 @@ select:focus-visible{
 
   .floatingCreateButton{
     right:16px;
-    bottom:82px;
+    bottom:16px;
     width:54px;
     height:54px;
     font-size:31px;
@@ -822,6 +822,16 @@ select:focus-visible{
 <nav class="appTopBar">
 
   <div class="appTopBarInner">
+
+    <button
+      type="button"
+      class="topIconLink"
+      title="Back"
+      aria-label="Go back"
+      onclick="if(document.referrer){window.history.back();}else{window.location.href='feed.html';}"
+    >
+      ←
+    </button>
 
     <a
       href="index.html"
@@ -1057,68 +1067,6 @@ select:focus-visible{
   +
 
 </a>
-
-
-<!-- =====================================================
-   BOTTOM NAVIGATION
-===================================================== -->
-
-<nav class="bottomNavigation">
-
-  <div class="bottomNavigationInner">
-
-    <a
-      href="index.html"
-      class="bottomNavItem"
-    >
-      <span class="bottomNavIcon">🏠</span>
-      <span>Home</span>
-    </a>
-
-    <a
-      href="feed.html"
-      class="bottomNavItem"
-    >
-      <span class="bottomNavIcon">👥</span>
-      <span>Community</span>
-    </a>
-
-    <a
-      href="learn.html"
-      class="bottomNavItem"
-    >
-      <span class="bottomNavIcon">📚</span>
-      <span>Learn</span>
-    </a>
-
-    <a
-      href="sermons.html"
-      class="bottomNavItem"
-    >
-      <span class="bottomNavIcon">🎤</span>
-      <span>Sermons</span>
-    </a>
-
-    <a
-      href="prayer-wall.html"
-      class="bottomNavItem active"
-      aria-current="page"
-    >
-      <span class="bottomNavIcon">🙏</span>
-      <span>Prayer</span>
-    </a>
-
-    <a
-      href="profile.html"
-      class="bottomNavItem"
-    >
-      <span class="bottomNavIcon">👤</span>
-      <span>Profile</span>
-    </a>
-
-  </div>
-
-</nav>
 
 
 <!-- =====================================================
