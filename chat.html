@@ -1938,9 +1938,6 @@ textarea:focus-visible{
 
 /* =====================================================
    QUOTED MOMENT REFERENCE INSIDE A MESSAGE BUBBLE
-   (shown at the top of a message that was sent as a
-   reply to a Faith Moment — the receiving person's
-   equivalent of the banner above)
 ===================================================== */
 
 .momentQuote{
@@ -3303,11 +3300,6 @@ textarea:focus-visible{
 
   <!-- =================================================
        REPLYING TO A FAITH MOMENT
-       Shown only when this conversation was opened
-       via the "Reply" button on someone's Faith
-       Moment — the same idea as replying to an
-       Instagram/Snapchat Story, so the recipient can
-       see exactly which moment prompted the message.
   ================================================== -->
 
   <section
@@ -3830,7 +3822,7 @@ textarea:focus-visible{
 
 /* =====================================================
    PART 5 OF 10
-   FIREBASE IMPORTS, CLOUDINARY SETTINGS,
+   FIREBASE IMPORTS, IMAGEKIT SETTINGS,
    PAGE ELEMENTS, STATE, URL DATA,
    VOICE CALL BUTTON AND GENERAL HELPERS
 ===================================================== */
@@ -3865,23 +3857,20 @@ import{
 
 
 /* =====================================================
-   CLOUDINARY SETTINGS
+   IMAGEKIT SETTINGS
 ===================================================== */
 
-const CLOUDINARY_CLOUD_NAME =
-"glq2nymz";
+const IMAGEKIT_PUBLIC_KEY =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
 
+const IMAGEKIT_URL_ENDPOINT =
+"https://ik.imagekit.io/f5si9ehav";
 
-const CLOUDINARY_UPLOAD_PRESET =
-"sabasaba_community";
+const IMAGEKIT_AUTH_ENDPOINT =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
 
-
-const CLOUDINARY_UPLOAD_URL =
-`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
-
-
-const CLOUDINARY_RAW_UPLOAD_URL =
-`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`;
+const IMAGEKIT_UPLOAD_URL =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* =====================================================
@@ -4300,10 +4289,6 @@ false;
 
 /* =====================================================
    FAITH MOMENT REPLY STATE
-
-   Holds the moment being replied to when this chat
-   was opened via the "Reply" button on a Faith
-   Moment, or null for an ordinary conversation.
 ===================================================== */
 
 let pendingMomentReply =
@@ -5822,15 +5807,6 @@ window.addEventListener(
 
 /* =====================================================
    FAITH MOMENT REPLY BANNER
-
-   When a chat is opened via the "Reply" button on a
-   Faith Moment, faith-moments.html stores the moment's
-   details in sessionStorage under "pendingMomentReply"
-   before navigating here. This shows that context as a
-   small quoted banner above the input box — the same
-   idea as replying to an Instagram/Snapchat Story —
-   instead of silently dropping the person into an
-   ordinary chat with no sign of what prompted it.
 ===================================================== */
 
 function renderMomentReplyThumbnail(
@@ -5983,14 +5959,6 @@ cancelMomentReplyButton.addEventListener(
 );
 
 
-/*
-   Reads the handoff left by faith-moments.html, if
-   any, and only applies it when it actually points to
-   the member this conversation is with — otherwise it
-   is silently ignored (e.g. stale data from replying
-   to a different member's moment earlier).
-*/
-
 function checkForPendingMomentReply(){
 
   let storedReply =
@@ -6023,12 +5991,6 @@ function checkForPendingMomentReply(){
 
   }
 
-
-  /*
-     Consume it immediately so refreshing this page,
-     or later opening a different chat, never re-shows
-     a moment reply that no longer applies.
-  */
 
   try{
 
@@ -6076,23 +6038,6 @@ function checkForPendingMomentReply(){
 
 /* =====================================================
    PREPARE PRIVATE CONVERSATION
-
-   FIX: this used to "await" both profile reads (yours
-   and the other member's) and the "set online" write —
-   in that order, one after another — before starting
-   the message listener, presence, typing, or even
-   enabling the input box. On a slow connection that is
-   up to three sequential network round trips of dead
-   time before anything appears on screen, on top of
-   loadMessages() itself having no local cache to fall
-   back on.
-
-   Now the message listener (which shows the instant
-   local cache immediately — see PART 9D), the typing
-   listener, and the input box all start right away.
-   The profile reads and the "set online" write still
-   happen, just independently and in parallel instead
-   of gating everything else.
 ===================================================== */
 
 async function prepareConversation(){
@@ -6156,13 +6101,6 @@ async function prepareConversation(){
   checkForPendingMomentReply();
 
 
-  /*
-     Start everything that does not depend on
-     profile data first, so the conversation
-     feels instant even before either profile
-     has loaded.
-  */
-
   watchOtherMemberStatus();
 
 
@@ -6177,12 +6115,6 @@ async function prepareConversation(){
 
   messageInput.focus();
 
-
-  /*
-     These now run independently — neither one
-     blocks messages, typing, or the input box
-     from being ready.
-  */
 
   setCurrentUserOnline();
 
@@ -6283,8 +6215,6 @@ function startIncomingCallListener(){
           ).toLowerCase();
 
 
-          /* Hide an overlay when the call ends */
-
           if(
             incomingCallId ===
             currentIncomingCallId &&
@@ -6299,8 +6229,6 @@ function startIncomingCallListener(){
           }
 
 
-          /* Ignore calls that are not ringing */
-
           if(
             callStatusValue !==
             "ringing" ||
@@ -6312,8 +6240,6 @@ function startIncomingCallListener(){
 
           }
 
-
-          /* Avoid displaying the same call twice */
 
           if(
             incomingCallId ===
@@ -6328,8 +6254,6 @@ function startIncomingCallListener(){
           openedIncomingCallId =
           incomingCallId;
 
-
-          /* Confirm that overlay elements exist */
 
           if(
             !incomingCallOverlay ||
@@ -6703,11 +6627,6 @@ acceptIncomingCallButton.addEventListener(
     true;
 
 
-    /*
-       Save the ID and call type before hiding
-       the overlay because hiding resets the state.
-    */
-
     const destinationPage =
     acceptedCallType ===
     "video"
@@ -6796,7 +6715,7 @@ function stopOtherMemberListener(){
 /* =====================================================
    PART 7 OF 10
    MEDIA SELECTION, PREVIEWS, EMOJI PICKER,
-   CLOUDINARY UPLOAD AND MEDIA VIEWER
+   IMAGEKIT UPLOAD AND MEDIA VIEWER
 ===================================================== */
 
 
@@ -7855,29 +7774,59 @@ document.addEventListener(
 
 
 /* =====================================================
-   UPLOAD MEDIA TO CLOUDINARY
+   GET IMAGEKIT UPLOAD AUTHENTICATION
+
+   Fetches a fresh token/signature/expire from our
+   Vercel serverless function before every upload —
+   the ImageKit private key never touches this page
+   or the browser.
 ===================================================== */
 
-function uploadMediaToCloudinary(
+async function getImagekitAuthParameters(){
+
+  const response =
+  await fetch(
+    IMAGEKIT_AUTH_ENDPOINT
+  );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the media upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
+
+}
+
+
+/* =====================================================
+   UPLOAD MEDIA TO IMAGEKIT
+===================================================== */
+
+async function uploadMediaToImagekit(
   file
 ){
 
+  if(!file){
+
+    throw new Error(
+      "No file was selected."
+    );
+
+  }
+
+
+  const authParameters =
+  await getImagekitAuthParameters();
+
+
   return new Promise(
     function(resolve,reject){
-
-      if(!file){
-
-        reject(
-  new Error(
-    "No file was selected."
-  )
-);
-
-
-        return;
-
-      }
-
 
       const formData =
       new FormData();
@@ -7890,14 +7839,38 @@ function uploadMediaToCloudinary(
 
 
       formData.append(
-        "upload_preset",
-        CLOUDINARY_UPLOAD_PRESET
+        "fileName",
+        file.name || "chat-media"
+      );
+
+
+      formData.append(
+        "publicKey",
+        IMAGEKIT_PUBLIC_KEY
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
       );
 
 
       formData.append(
         "folder",
-        "sabasaba_private_chat"
+        "/sabasaba-private-chat"
       );
 
 
@@ -7905,17 +7878,11 @@ function uploadMediaToCloudinary(
       new XMLHttpRequest();
 
 
-     const finalUploadUrl =
-selectedMediaType === "file"
-? CLOUDINARY_RAW_UPLOAD_URL
-: CLOUDINARY_UPLOAD_URL;
-
-
-uploadRequest.open(
-  "POST",
-  finalUploadUrl,
-  true
-);
+      uploadRequest.open(
+        "POST",
+        IMAGEKIT_UPLOAD_URL,
+        true
+      );
 
 
       uploadRequest.upload.addEventListener(
@@ -7975,7 +7942,7 @@ uploadRequest.open(
 
             reject(
               new Error(
-                "Cloudinary returned an invalid response."
+                "ImageKit returned an invalid response."
               )
             );
 
@@ -7990,7 +7957,7 @@ uploadRequest.open(
             200 &&
             uploadRequest.status <
             300 &&
-            responseData?.secure_url
+            responseData?.url
           ){
 
             updateUploadProgress(
@@ -8002,28 +7969,29 @@ uploadRequest.open(
             resolve(
   {
     url:
-    responseData.secure_url,
+    responseData.url,
 
     publicId:
-    responseData.public_id ||
+    responseData.fileId ||
     "",
 
     resourceType:
-    responseData.resource_type ||
+    responseData.fileType ||
     "",
 
     format:
-    responseData.format ||
-    selectedFileExtension ||
-    "",
+    getFileExtension(
+      responseData.name ||
+      file.name ||
+      ""
+    ),
 
     duration:
-    responseData.duration ||
     0,
 
     originalFilename:
-    responseData.original_filename ||
-    selectedFileName ||
+    responseData.name ||
+    file.name ||
     ""
   }
 );
@@ -8036,8 +8004,8 @@ uploadRequest.open(
 
           reject(
             new Error(
-              responseData?.error?.message ||
-              "Cloudinary upload failed."
+              responseData?.message ||
+              "ImageKit upload failed."
             )
           );
 
@@ -8311,6 +8279,7 @@ viewerVideo.addEventListener(
 
   }
 );
+
 /* =====================================================
    PART 8 OF 10
    VOICE MESSAGE RECORDING,
@@ -9930,9 +9899,6 @@ function createMediaCaptionElement(
 
 /* =====================================================
    CREATE QUOTED MOMENT REFERENCE
-   (shown at the top of a message that was sent as a
-   reply to a Faith Moment, from either side of the
-   conversation)
 ===================================================== */
 
 function createMomentQuoteElement(
@@ -10300,6 +10266,7 @@ chatArea.addEventListener(
   },
   true
 );
+
 /* =====================================================
    PART 9B OF 10
    COMPLETE MESSAGE ELEMENT,
@@ -10792,6 +10759,7 @@ function messageIsUnread(
   );
 
 }
+
 /* =====================================================
    PART 9C OF 10
    DELIVERED AND READ RECEIPTS
@@ -10963,14 +10931,6 @@ async function markMessageAsRead(
 
 /* =====================================================
    BATCH-UPDATE DELIVERED/READ RECEIPTS
-
-   Replaces doing one network write per unread
-   message (which is what made opening a chat
-   with several unread messages feel slow) with
-   a single combined write. Also no longer needs
-   an extra read (getDoc) per message first,
-   because it reuses the message data that was
-   already loaded by the message listener.
 ===================================================== */
 
 async function batchUpdateIncomingReceipts(
@@ -11254,14 +11214,6 @@ function renderMessageLoadError(){
 
 /* =====================================================
    MESSAGE PAGINATION STATE
-
-   Instead of downloading the entire message
-   history between two people every time the
-   chat opens (which is what was causing the
-   delay in older conversations), only the most
-   recent MESSAGES_PAGE_SIZE messages load and
-   stay live. Older messages load on request via
-   "Load older messages".
 ===================================================== */
 
 const MESSAGES_PAGE_SIZE =
@@ -11294,18 +11246,6 @@ new Map();
 
 /* =====================================================
    SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
-
-   Same idea as the Community Wall and Search
-   Members fixes: this chat used to show a blank
-   "Loading conversation..." message every time it
-   opened, even for a conversation you had already
-   been in minutes earlier. The key is prefixed
-   with this conversation's ID, so different
-   conversations never mix caches. The last known
-   messages for THIS conversation render instantly,
-   while the live Firestore listener below still
-   runs immediately and replaces this the moment
-   real data arrives.
 ===================================================== */
 
 const CHAT_CACHE_PREFIX =
@@ -11368,14 +11308,6 @@ function saveMessagesCache(orderedDocs){
 
   }catch(error){
 
-    /*
-       Local storage can fail (private
-       browsing, storage full, etc.) — this
-       is only a speed optimization, so a
-       failure here is silently ignored and
-       never shown to the user.
-    */
-
     console.warn(
       "Chat cache could not be saved:",
       error
@@ -11433,15 +11365,6 @@ function loadMessagesCache(){
 
     }
 
-
-    /*
-       Wrap each cached item as a fake
-       Firestore doc (id + a data() method)
-       so renderMessages() below can treat
-       cached messages exactly like live
-       Firestore snapshot docs, with no
-       separate rendering code needed.
-    */
 
     return parsedCache.messages.map(
       item => ({
@@ -11818,13 +11741,6 @@ async function loadOlderMessages(){
 
 /* =====================================================
    LOAD REAL-TIME MESSAGES
-   (most recent MESSAGES_PAGE_SIZE only)
-
-   The cache render below is what removes the
-   blank "Loading conversation..." wait on a
-   repeat visit — the live listener still starts
-   immediately either way and replaces the cached
-   copy the instant real data arrives.
 ===================================================== */
 
 function loadMessages(){
@@ -12040,6 +11956,7 @@ window.addEventListener(
 
   }
 );
+
 /* =====================================================
    PART 9E OF 10
    DELETE, CLEAR CHAT, TYPING INDICATOR
@@ -12565,6 +12482,7 @@ window.addEventListener(
 
   }
 );
+
 /* =====================================================
    PART 10 OF 10
    SEND MESSAGES, UPDATE CONVERSATION,
@@ -13184,14 +13102,6 @@ async function sendMessage(){
   );
 
 
-  /*
-     Captured before the "await" calls below, the
-     same way replies to comments are captured, so
-     the saved message always reflects whichever
-     moment the banner was showing at the moment
-     Send was tapped.
-  */
-
   const activeMomentReply =
   pendingMomentReply;
 
@@ -13232,7 +13142,7 @@ async function sendMessage(){
 
 
       const uploadResult =
-      await uploadMediaToCloudinary(
+      await uploadMediaToImagekit(
         selectedMediaFile
       );
 
