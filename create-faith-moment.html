@@ -1085,14 +1085,21 @@
 }from "./firebase.js";
 
 /* =====================================================
-   CLOUDINARY SETTINGS
+   IMAGEKIT SETTINGS
 ===================================================== */
 
-const cloudName =
-  "glq2nymz";
+const imagekitPublicKey =
+  "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
 
-const uploadPreset =
-  "sabasaba_community";
+const imagekitUrlEndpoint =
+  "https://ik.imagekit.io/f5si9ehav";
+
+const imagekitAuthEndpoint =
+  "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const imagekitUploadUrl =
+  "https://upload.imagekit.io/api/v1/files/upload";
+
     /* =====================================================
        PAGE ELEMENTS
     ===================================================== */
@@ -1253,18 +1260,6 @@ let isPublishing = false;
     function cleanText(value){
 
       return String(value || "").trim();
-
-    }
-
-
-    function createSafeFileName(fileName){
-
-      return String(
-        fileName || "faith-moment-file"
-      )
-        .toLowerCase()
-        .replace(/[^a-z0-9._-]/g,"-")
-        .replace(/-+/g,"-");
 
     }
 
@@ -1927,38 +1922,54 @@ let isPublishing = false;
 
 
     /* =====================================================
-   UPLOAD MEDIA TO CLOUDINARY
+   GET IMAGEKIT UPLOAD AUTHENTICATION
 ===================================================== */
 
-function uploadSelectedMedia(){
+async function getImagekitAuthParameters(){
+
+  const response =
+    await fetch(
+      imagekitAuthEndpoint
+    );
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the media upload. Please try again."
+    );
+
+  }
+
+  return response.json();
+
+}
+
+
+    /* =====================================================
+   UPLOAD MEDIA TO IMAGEKIT
+===================================================== */
+
+async function uploadSelectedMedia(){
+
+  if(
+    !selectedMediaFile ||
+    selectedMediaType === "none"
+  ){
+
+    return {
+      imageUrl:"",
+      videoUrl:""
+    };
+
+  }
+
+
+  const authParameters =
+    await getImagekitAuthParameters();
+
 
   return new Promise(
     (resolve,reject) => {
-
-      if(
-        !selectedMediaFile ||
-        selectedMediaType === "none"
-      ){
-
-        resolve({
-          imageUrl:"",
-          videoUrl:""
-        });
-
-        return;
-
-      }
-
-
-      const resourceType =
-        selectedMediaType === "video"
-          ? "video"
-          : "image";
-
-
-      const uploadUrl =
-        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
-
 
       const formData =
         new FormData();
@@ -1969,13 +1980,33 @@ function uploadSelectedMedia(){
       );
 
       formData.append(
-        "upload_preset",
-        uploadPreset
+        "fileName",
+        selectedMediaFile.name
+      );
+
+      formData.append(
+        "publicKey",
+        imagekitPublicKey
+      );
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+      formData.append(
+        "token",
+        authParameters.token
       );
 
       formData.append(
         "folder",
-        "sabasaba/faith-moments"
+        "/sabasaba-faith-moments"
       );
 
 
@@ -1985,7 +2016,7 @@ function uploadSelectedMedia(){
 
       request.open(
         "POST",
-        uploadUrl,
+        imagekitUploadUrl,
         true
       );
 
@@ -2035,16 +2066,16 @@ function uploadSelectedMedia(){
             if(
               request.status < 200 ||
               request.status >= 300 ||
-              !response.secure_url
+              !response.url
             ){
 
-              const cloudinaryMessage =
-                response?.error?.message ||
-                "Cloudinary could not upload the selected media.";
+              const imagekitMessage =
+                response?.message ||
+                "ImageKit could not upload the selected media.";
 
               reject(
                 new Error(
-                  cloudinaryMessage
+                  imagekitMessage
                 )
               );
 
@@ -2054,7 +2085,7 @@ function uploadSelectedMedia(){
 
 
             const uploadedUrl =
-              response.secure_url;
+              response.url;
 
 
             resolve({
@@ -2075,7 +2106,7 @@ function uploadSelectedMedia(){
 
             reject(
               new Error(
-                "Cloudinary returned an invalid upload response."
+                "ImageKit returned an invalid upload response."
               )
             );
 
@@ -2091,7 +2122,7 @@ function uploadSelectedMedia(){
 
           reject(
             new Error(
-              "The Cloudinary upload failed because of a network problem."
+              "The media upload failed because of a network problem."
             )
           );
 
@@ -2358,29 +2389,11 @@ function uploadSelectedMedia(){
 }else if(
   error?.message
     ?.toLowerCase()
-    .includes("upload preset")
-){
-
-  errorMessage =
-    "The Cloudinary upload preset is incorrect or is not set to unsigned.";
-
-}else if(
-  error?.message
-    ?.toLowerCase()
-    .includes("file size")
-){
-
-  errorMessage =
-    "Cloudinary rejected the media because the file is too large.";
-
-}else if(
-  error?.message
-    ?.toLowerCase()
     .includes("network")
 ){
 
   errorMessage =
-    "A network error occurred during the Cloudinary upload. Check your internet connection.";
+    "A network error occurred during the media upload. Check your internet connection.";
 
 }else if(
   error?.message
