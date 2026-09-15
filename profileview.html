@@ -5,10 +5,9 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Member Profile | SABASABA Gospel Ministry</title>
+<title>My Profile | SABASABA Gospel Ministry</title>
 
 <style>
 
@@ -24,161 +23,175 @@ background:#eef3f8;
 }
 
 .container{
-max-width:800px;
-margin:30px auto;
+max-width:850px;
+margin:25px auto;
 padding:20px;
 }
 
-.profileCard{
-
+.card{
 background:white;
 border-radius:20px;
-padding:30px;
-box-shadow:0 4px 12px rgba(0,0,0,.10);
-
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.12);
 }
 
-.cover{
-
-height:180px;
-background:linear-gradient(135deg,#0066cc,#004d99);
-border-radius:18px;
-position:relative;
-
-}
-
-.profilePhoto{
-
-width:150px;
-height:150px;
-border-radius:50%;
-border:6px solid white;
-object-fit:cover;
-background:#ddd;
-position:absolute;
-left:50%;
-bottom:-75px;
-transform:translateX(-50%);
-
-}
-
-.profileBody{
-
-margin-top:90px;
+.header{
+background:linear-gradient(135deg,#087bd1,#0667b1);
+padding:35px;
 text-align:center;
-
+color:white;
 }
 
-.profileBody h1{
+.brandLabel{
+text-align:center;
+color:#ffe27a;
+font-size:14px;
+font-weight:bold;
+letter-spacing:.5px;
+margin-bottom:8px;
+}
 
+.header h1{
 font-size:32px;
-color:#0066cc;
-margin-bottom:10px;
+margin-bottom:8px;
+}
+
+.content{
+padding:30px;
+}
+
+.statusBanner{
+display:none;
+margin-bottom:20px;
+padding:14px 16px;
+border-radius:10px;
+font-size:15px;
+line-height:1.5;
+text-align:center;
+}
+
+.statusBanner.show{
+display:block;
+}
+
+.statusBanner.loading{
+background:#e7f3ff;
+color:#087bd1;
+}
+
+.statusBanner.error{
+background:#fdeceb;
+color:#b00020;
+}
+
+.statusBanner button{
+margin-left:8px;
+border:none;
+background:#b00020;
+color:white;
+padding:6px 14px;
+border-radius:8px;
+font-size:14px;
+cursor:pointer;
+}
+
+.photoBox{
+text-align:center;
+margin-bottom:25px;
+}
+
+.photoBox img{
+width:140px;
+height:140px;
+border-radius:50%;
+object-fit:cover;
+border:5px solid #087bd1;
+background:#ddd;
+}
+
+.photoBox input{
+margin-top:15px;
+}
+
+.group{
+margin-bottom:20px;
+}
+
+.group label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#087bd1;
+}
+
+.group input,
+.group textarea{
+
+width:100%;
+padding:14px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+outline:none;
 
 }
 
-.info{
-
-font-size:17px;
-color:#666;
-margin:10px 0;
-
+.group textarea{
+height:140px;
+resize:none;
 }
 
-.about{
-
-margin-top:25px;
-padding:20px;
-background:#f8f8f8;
-border-radius:12px;
-line-height:1.8;
-font-size:17px;
-color:#444;
-
-}
-
-.buttonRow{
-
-margin-top:30px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-justify-content:center;
-
-}
-
-.btn{
-
-padding:14px 28px;
+.saveBtn{
+width:100%;
+padding:16px;
 border:none;
 border-radius:10px;
-font-size:17px;
-cursor:pointer;
+background:#087bd1;
 color:white;
-
+font-size:18px;
+cursor:pointer;
 }
 
-.messageBtn{
-
-background:#0066cc;
-
+.saveBtn:hover{
+background:#0667b1;
 }
 
-.prayBtn{
+.saveBtn:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
 
-background:#28a745;
+.feedbackBtn{
+width:100%;
+padding:16px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#e7f3ff;
+color:#087bd1;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
 
+.feedbackBtn:hover{
+background:#d5e9fb;
 }
 
 .backBtn{
-
-background:#777;
-
-}
-
-.empty{
-
-text-align:center;
-font-size:18px;
-color:#777;
-padding:40px;
-
-}
-
-@media(max-width:700px){
-
-.profilePhoto{
-
-width:120px;
-height:120px;
-bottom:-60px;
-
-}
-
-.profileBody{
-
-margin-top:70px;
-
-}
-
-.profileBody h1{
-
-font-size:27px;
-
-}
-
-.buttonRow{
-
-flex-direction:column;
-
-}
-
-.btn{
-
 width:100%;
-
+padding:16px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#666;
+color:white;
+font-size:17px;
+cursor:pointer;
 }
 
+.backBtn:hover{
+background:#555;
 }
 
 </style>
@@ -189,74 +202,106 @@ width:100%;
 
 <div class="container">
 
-<div class="profileCard">
+<div class="card">
 
-<div class="cover">
+<div class="header">
+
+<div class="brandLabel">Faith Connect</div>
+
+<h1>👤 My Profile</h1>
+
+<p>Edit your personal information</p>
+
+</div>
+
+<div class="content">
+
+<div
+  id="statusBanner"
+  class="statusBanner">
+</div>
+
+<div class="photoBox">
 
 <img
-id="profilePhoto"
-class="profilePhoto"
+id="profileImage"
 src="images/profile.png">
 
-</div>
+<br>
 
-<div class="profileBody">
-
-<h1 id="fullName">
-
-Loading...
-
-</h1>
-
-<div
-class="info"
-id="country">
+<input
+id="profileFile"
+type="file"
+accept="image/*">
 
 </div>
 
-<div
-class="info"
-id="email">
+<div class="group">
+
+<label>Full Name</label>
+
+<input
+id="fullName"
+type="text">
 
 </div>
 
-<div
-class="info"
-id="joined">
+<div class="group">
+
+<label>Country</label>
+
+<input
+id="country"
+type="text"
+placeholder="Example: Tanzania">
 
 </div>
 
-<div
-class="about"
-id="about">
+<div class="group">
 
-Loading profile...
+<label>Email</label>
+
+<input
+id="email"
+type="email"
+readonly>
 
 </div>
 
-<div class="buttonRow">
+<div class="group">
+
+<label>About Me</label>
+
+<textarea
+id="about"
+placeholder="Tell other believers about yourself..."></textarea>
+
+</div>
 
 <button
-class="btn messageBtn"
-id="messageBtn">
+id="saveBtn"
+class="saveBtn"
+type="button"
+disabled>
 
-💬 Message
+💾 Save Changes
 
 </button>
 
 <button
-class="btn prayBtn"
-id="prayBtn">
+class="feedbackBtn"
+type="button"
+onclick="location.href='feedback.html'">
 
-🙏 Pray Together
+💬 Send Feedback
 
 </button>
 
 <button
-class="btn backBtn"
-onclick="history.back()">
+class="backBtn"
+onclick="location.href='feed.html'">
 
-⬅ Back
+⬅ Back to Community
 
 </button>
 
@@ -266,7 +311,6 @@ onclick="history.back()">
 
 </div>
 
-</div>
 <script type="module">
 
 import{
@@ -274,16 +318,40 @@ import{
   db,
   doc,
   getDoc,
+  setDoc,
   onAuthStateChanged
 }from "./firebase.js";
+
+
+/* ========================================
+   IMAGEKIT SETTINGS
+======================================== */
+
+const imagekitPublicKey =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+
+const imagekitUrlEndpoint =
+"https://ik.imagekit.io/f5si9ehav";
+
+const imagekitAuthEndpoint =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const imagekitUploadUrl =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* ========================================
    PAGE ELEMENTS
 ======================================== */
 
-const photo =
-document.getElementById("profilePhoto");
+const statusBanner =
+document.getElementById("statusBanner");
+
+const profileImage =
+document.getElementById("profileImage");
+
+const profileFile =
+document.getElementById("profileFile");
 
 const fullName =
 document.getElementById("fullName");
@@ -294,286 +362,857 @@ document.getElementById("country");
 const email =
 document.getElementById("email");
 
-const joined =
-document.getElementById("joined");
-
 const about =
 document.getElementById("about");
 
-const messageBtn =
-document.getElementById("messageBtn");
-
-const prayBtn =
-document.getElementById("prayBtn");
+const saveBtn =
+document.getElementById("saveBtn");
 
 
 /* ========================================
-   GET MEMBER ID FROM URL
+   PAGE STATE
 ======================================== */
 
-const params =
-new URLSearchParams(
-  window.location.search
-);
+let currentUser = null;
 
-const uid =
-params.get("uid");
+let currentPhotoURL =
+"images/profile.png";
+
+let previewURL = null;
+
+let isSaving = false;
 
 
 /* ========================================
-   CHECK LOGIN
+   STATUS BANNER HELPERS
 ======================================== */
 
-onAuthStateChanged(auth,async(user)=>{
+function showLoadingStatus(message){
 
-  if(!user){
+  statusBanner.className =
+  "statusBanner show loading";
 
-    location.href = "login.html";
-    return;
-
-  }
-
-
-  if(!uid || uid === "undefined" || uid === "null"){
-
-    showProfileError(
-      "Member not found",
-      "No valid member was selected."
-    );
-
-    return;
-
-  }
-
-
-  await loadProfile();
-
-});
-
-
-/* ========================================
-   LOAD MEMBER PROFILE
-======================================== */
-
-async function loadProfile(){
-
-  try{
-
-    fullName.innerText =
-    "Loading...";
-
-    about.innerText =
-    "Loading profile...";
-
-
-    const profileReference =
-    doc(db,"users",uid);
-
-    const profileSnapshot =
-    await getDoc(profileReference);
-
-
-    if(!profileSnapshot.exists()){
-
-      showProfileError(
-        "Member not found",
-        "This member's profile does not exist."
-      );
-
-      return;
-
-    }
-
-
-    const data =
-    profileSnapshot.data();
-
-
-    photo.src =
-    data.profilePicture ||
-    "images/profile.png";
-
-
-    fullName.innerText =
-    data.fullName ||
-    data.name ||
-    "Unknown Member";
-
-
-    country.innerText =
-
-    "🌍 " +
-    (
-      data.country ||
-      "Country not provided"
-    );
-
-
-    email.innerText =
-
-    "📧 " +
-    (
-      data.email ||
-      "Email not provided"
-    );
-
-
-    joined.innerText =
-    "📅 Member of SABASABA Gospel Ministry";
-
-
-    about.innerText =
-
-    data.about ||
-    "This member has not added an introduction yet.";
-
-
-  }catch(error){
-
-    console.error(
-      "Profile loading error:",
-      error
-    );
-
-
-    showProfileError(
-      "Unable to load profile",
-      getFriendlyErrorMessage(error)
-    );
-
-  }
-
-}
-
-
-/* ========================================
-   BROKEN PROFILE PICTURE
-======================================== */
-
-if(photo){
-
-  photo.addEventListener("error",()=>{
-
-    const fallback =
-    new URL(
-      "images/profile.png",
-      location.href
-    ).href;
-
-    if(photo.src !== fallback){
-
-      photo.src =
-      "images/profile.png";
-
-    }
-
-  });
-
-}
-
-
-/* ========================================
-   MESSAGE BUTTON
-======================================== */
-
-if(messageBtn){
-
-  messageBtn.addEventListener("click",()=>{
-
-    if(!uid){
-
-      alert(
-        "This member is not available."
-      );
-
-      return;
-
-    }
-
-
-    location.href =
-
-    "chat.html?uid=" +
-    encodeURIComponent(uid);
-
-  });
-
-}
-
-
-/* ========================================
-   PRAY BUTTON
-======================================== */
-
-if(prayBtn){
-
-  prayBtn.addEventListener("click",()=>{
-
-    alert(
-      "🙏 Pray Together is coming soon.\n\n" +
-      "This feature will allow believers " +
-      "to pray together and send prayer requests."
-    );
-
-  });
-
-}
-
-
-/* ========================================
-   SHOW PROFILE ERROR
-======================================== */
-
-function showProfileError(title,message){
-
-  photo.src =
-  "images/profile.png";
-
-  fullName.innerText =
-  title;
-
-  country.innerText =
-  "🌍 Profile unavailable";
-
-  email.innerText =
-  "📧 Information unavailable";
-
-  joined.innerText =
-  "";
-
-  about.innerText =
+  statusBanner.innerHTML =
   message;
 
 }
 
 
+function showErrorStatus(message){
+
+  statusBanner.className =
+  "statusBanner show error";
+
+  statusBanner.innerHTML = "";
+
+
+  const text =
+  document.createElement("span");
+
+  text.textContent =
+  message;
+
+
+  const retryButton =
+  document.createElement("button");
+
+  retryButton.type =
+  "button";
+
+  retryButton.textContent =
+  "Retry";
+
+  retryButton.addEventListener(
+    "click",
+    () => {
+
+      if(currentUser){
+
+        loadProfile(
+          currentUser
+        );
+
+      }
+
+    }
+  );
+
+
+  statusBanner.appendChild(
+    text
+  );
+
+  statusBanner.appendChild(
+    retryButton
+  );
+
+}
+
+
+function hideStatus(){
+
+  statusBanner.className =
+  "statusBanner";
+
+  statusBanner.innerHTML =
+  "";
+
+}
+
+
 /* ========================================
-   FRIENDLY ERROR MESSAGE
+   SMALL DELAY HELPER
+======================================== */
+
+function wait(milliseconds){
+
+  return new Promise(
+    resolve =>
+    window.setTimeout(
+      resolve,
+      milliseconds
+    )
+  );
+
+}
+
+
+/* ========================================
+   LOAD PROFILE, WITH AUTOMATIC RETRIES
+======================================== */
+
+const MAX_LOAD_ATTEMPTS =
+4;
+
+
+async function loadProfile(user){
+
+  saveBtn.disabled = true;
+
+
+  for(
+    let attempt = 1;
+    attempt <= MAX_LOAD_ATTEMPTS;
+    attempt++
+  ){
+
+    if(attempt === 1){
+
+      showLoadingStatus(
+        "Loading your profile..."
+      );
+
+    }else{
+
+      showLoadingStatus(
+        `Connection is slow, retrying (${attempt}/${MAX_LOAD_ATTEMPTS})...`
+      );
+
+    }
+
+
+    try{
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+      const profileSnapshot =
+      await getDoc(
+        profileReference
+      );
+
+
+      if(profileSnapshot.exists()){
+
+        const data =
+        profileSnapshot.data();
+
+
+        fullName.value =
+        data.fullName ||
+        data.name ||
+        data.displayName ||
+        user.displayName ||
+        "";
+
+
+        country.value =
+        data.country ||
+        data.location ||
+        "";
+
+
+        about.value =
+        data.about ||
+        data.bio ||
+        "";
+
+
+        currentPhotoURL =
+        data.profilePicture ||
+        data.picture ||
+        data.photoURL ||
+        user.photoURL ||
+        "images/profile.png";
+
+
+        profileImage.src =
+        currentPhotoURL;
+
+      }else{
+
+        fullName.value =
+        user.displayName || "";
+
+        currentPhotoURL =
+        user.photoURL ||
+        "images/profile.png";
+
+        profileImage.src =
+        currentPhotoURL;
+
+      }
+
+
+      hideStatus();
+
+      saveBtn.disabled = false;
+
+
+      return;
+
+
+    }catch(error){
+
+      console.error(
+        `Profile loading error (attempt ${attempt}):`,
+        error
+      );
+
+
+      const isOfflineError =
+      String(
+        error?.message || ""
+      ).toLowerCase().includes(
+        "offline"
+      ) ||
+      String(
+        error?.code || ""
+      ).toLowerCase().includes(
+        "unavailable"
+      );
+
+
+      const isLastAttempt =
+      attempt === MAX_LOAD_ATTEMPTS;
+
+
+      if(
+        !isOfflineError ||
+        isLastAttempt
+      ){
+
+        email.value =
+        user.email || "";
+
+
+        showErrorStatus(
+          isOfflineError
+
+          ? "Your connection seems weak right now, so your profile could not be loaded. Check your signal or WiFi and tap Retry."
+
+          : getFriendlyErrorMessage(
+              error
+            )
+
+        );
+
+
+        saveBtn.disabled =
+        false;
+
+
+        return;
+
+      }
+
+
+      await wait(
+        1200 * attempt
+      );
+
+    }
+
+  }
+
+}
+
+
+/* ========================================
+   AUTH STATE
+======================================== */
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if(!user){
+
+      window.location.href =
+      "login.html";
+
+      return;
+
+    }
+
+
+    currentUser = user;
+
+    email.value =
+    user.email || "";
+
+
+    loadProfile(
+      user
+    );
+
+  }
+);
+
+
+/* ========================================
+   PREVIEW SELECTED PICTURE
+======================================== */
+
+profileFile.addEventListener(
+  "change",
+  () => {
+
+    const file =
+    profileFile.files?.[0];
+
+
+    if(!file){
+      return;
+    }
+
+
+    if(
+      !file.type.startsWith("image/")
+    ){
+
+      alert(
+        "Please choose a valid image file."
+      );
+
+      profileFile.value = "";
+      return;
+
+    }
+
+
+    const maximumSize =
+    5 * 1024 * 1024;
+
+
+    if(file.size > maximumSize){
+
+      alert(
+        "The picture is too large. Please choose an image smaller than 5 MB."
+      );
+
+      profileFile.value = "";
+      return;
+
+    }
+
+
+    if(previewURL){
+
+      URL.revokeObjectURL(
+        previewURL
+      );
+
+    }
+
+
+    previewURL =
+    URL.createObjectURL(file);
+
+    profileImage.src =
+    previewURL;
+
+  }
+);
+
+
+/* ========================================
+   GET IMAGEKIT UPLOAD AUTHENTICATION
+======================================== */
+
+async function getImagekitAuthParameters(){
+
+  const response =
+  await fetch(
+    imagekitAuthEndpoint
+  );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the picture upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
+
+}
+
+
+/* ========================================
+   UPLOAD PROFILE PICTURE TO IMAGEKIT
+======================================== */
+
+async function uploadProfilePicture(file){
+
+  const authParameters =
+  await getImagekitAuthParameters();
+
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const formData =
+      new FormData();
+
+
+      formData.append(
+        "file",
+        file
+      );
+
+
+      formData.append(
+        "fileName",
+        file.name
+      );
+
+
+      formData.append(
+        "publicKey",
+        imagekitPublicKey
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
+      );
+
+
+      formData.append(
+        "folder",
+        "/sabasaba-profile-pictures"
+      );
+
+
+      const request =
+      new XMLHttpRequest();
+
+
+      request.open(
+        "POST",
+        imagekitUploadUrl,
+        true
+      );
+
+
+      request.upload.addEventListener(
+        "progress",
+        event => {
+
+          if(!event.lengthComputable){
+            return;
+          }
+
+
+          const progress =
+          Math.round(
+            (
+              event.loaded /
+              event.total
+            ) * 100
+          );
+
+
+          saveBtn.textContent =
+          `Uploading picture... ${progress}%`;
+
+        }
+      );
+
+
+      request.addEventListener(
+        "load",
+        () => {
+
+          try{
+
+            const response =
+            JSON.parse(
+              request.responseText || "{}"
+            );
+
+
+            if(
+              request.status < 200 ||
+              request.status >= 300 ||
+              !response.url
+            ){
+
+              const imagekitError =
+              response?.message ||
+              "ImageKit could not upload the profile picture.";
+
+
+              reject(
+                new Error(
+                  imagekitError
+                )
+              );
+
+              return;
+
+            }
+
+
+            resolve(
+              response.url
+            );
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "ImageKit returned an invalid response."
+              )
+            );
+
+          }
+
+        }
+      );
+
+
+      request.addEventListener(
+        "error",
+        () => {
+
+          reject(
+            new Error(
+              "The picture upload failed because of a network problem."
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "abort",
+        () => {
+
+          reject(
+            new Error(
+              "The picture upload was cancelled."
+            )
+          );
+
+        }
+      );
+
+
+      request.send(
+        formData
+      );
+
+    }
+  );
+
+}
+
+
+/* ========================================
+   SAVE PROFILE
+======================================== */
+
+saveBtn.addEventListener(
+  "click",
+  async () => {
+
+    if(isSaving){
+      return;
+    }
+
+
+    if(!currentUser){
+
+      alert(
+        "Please wait while your account loads."
+      );
+
+      return;
+
+    }
+
+
+    const enteredName =
+    fullName.value.trim();
+
+
+    if(!enteredName){
+
+      alert(
+        "Please enter your full name."
+      );
+
+      fullName.focus();
+      return;
+
+    }
+
+
+    isSaving = true;
+
+    saveBtn.disabled = true;
+
+    saveBtn.textContent =
+    "Saving...";
+
+
+    try{
+
+      let photoURL =
+      currentPhotoURL;
+
+
+      const selectedFile =
+      profileFile.files?.[0];
+
+
+      if(selectedFile){
+
+        photoURL =
+        await uploadProfilePicture(
+          selectedFile
+        );
+
+      }
+
+
+      saveBtn.textContent =
+      "Updating profile...";
+
+
+      await setDoc(
+
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        ),
+
+        {
+
+          uid:
+          currentUser.uid,
+
+          fullName:
+          enteredName,
+
+          name:
+          enteredName,
+
+          displayName:
+          enteredName,
+
+          country:
+          country.value.trim(),
+
+          about:
+          about.value.trim(),
+
+          bio:
+          about.value.trim(),
+
+          email:
+          currentUser.email ||
+          email.value.trim(),
+
+          profilePicture:
+          photoURL,
+
+          picture:
+          photoURL,
+
+          photoURL:
+          photoURL
+
+        },
+
+        {
+          merge:true
+        }
+
+      );
+
+
+      currentPhotoURL =
+      photoURL;
+
+      profileImage.src =
+      photoURL;
+
+      profileFile.value = "";
+
+
+      if(previewURL){
+
+        URL.revokeObjectURL(
+          previewURL
+        );
+
+        previewURL = null;
+
+      }
+
+
+      alert(
+        "✅ Profile updated successfully!"
+      );
+
+    }catch(error){
+
+      console.error(
+        "Profile saving error:",
+        error
+      );
+
+
+      alert(
+        getFriendlyErrorMessage(
+          error
+        )
+      );
+
+    }finally{
+
+      isSaving = false;
+
+      saveBtn.disabled =
+      !currentUser;
+
+      saveBtn.textContent =
+      "💾 Save Changes";
+
+    }
+
+  }
+);
+
+
+/* ========================================
+   FRIENDLY ERROR MESSAGES
 ======================================== */
 
 function getFriendlyErrorMessage(error){
 
-  if(error.code === "permission-denied"){
+  const errorCode =
+  String(
+    error?.code || ""
+  ).toLowerCase();
 
-    return "Firebase did not allow this profile to be viewed. Check your Firestore security rules.";
+
+  const errorMessage =
+  String(
+    error?.message || ""
+  );
+
+
+  const lowerMessage =
+  errorMessage.toLowerCase();
+
+
+  if(
+    errorCode.includes(
+      "permission-denied"
+    )
+  ){
+
+    return "Firestore denied permission to update your profile.";
 
   }
 
 
-  if(error.code === "unavailable"){
+  if(
+    lowerMessage.includes(
+      "network"
+    ) ||
+    lowerMessage.includes(
+      "offline"
+    )
+  ){
 
-    return "The profile could not be loaded because the internet connection is unavailable.";
+    return "A network error occurred. Check your internet connection and try again.";
 
   }
 
 
-  return error.message ||
-  "The member profile could not be loaded.";
+  return errorMessage ||
+  "The profile could not be saved.";
 
 }
 
-</script>
 
+/* ========================================
+   CLEAN UP PREVIEW
+======================================== */
+
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    if(previewURL){
+
+      URL.revokeObjectURL(
+        previewURL
+      );
+
+    }
+
+  }
+);
+
+</script>
 </body>
 
 </html>
