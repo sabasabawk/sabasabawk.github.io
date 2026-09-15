@@ -17,16 +17,6 @@
 
 <style>
 
-/* =====================================================
-   PART 1 OF 6
-   DOCUMENT SETUP AND MAIN CSS
-===================================================== */
-
-
-/* =====================================================
-   GENERAL PAGE
-===================================================== */
-
 *{
   box-sizing:border-box;
 }
@@ -54,11 +44,6 @@ button{
   -webkit-tap-highlight-color:transparent;
 }
 
-
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
-
 .container{
   width:100%;
   max-width:700px;
@@ -68,11 +53,6 @@ button{
   border-radius:16px;
   box-shadow:0 4px 14px rgba(0,0,0,.10);
 }
-
-
-/* =====================================================
-   PAGE TITLE
-===================================================== */
 
 h1{
   margin:0 0 8px;
@@ -88,11 +68,6 @@ h1{
   line-height:1.6;
   text-align:center;
 }
-
-
-/* =====================================================
-   FORM ELEMENTS
-===================================================== */
 
 label{
   display:block;
@@ -127,11 +102,6 @@ textarea{
   resize:vertical;
   line-height:1.5;
 }
-
-
-/* =====================================================
-   MEDIA SELECTION AREA
-===================================================== */
 
 .media-options{
   margin-top:18px;
@@ -182,11 +152,6 @@ textarea{
   line-height:1.5;
 }
 
-
-/* =====================================================
-   MEDIA PREVIEW
-===================================================== */
-
 #mediaPreview{
   display:none;
   margin-top:16px;
@@ -213,11 +178,6 @@ textarea{
   font-size:13px;
   word-break:break-word;
 }
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
 
 .publish-button{
   width:100%;
@@ -274,15 +234,6 @@ textarea{
 .back-button:hover{
   background:#d8e2ec;
 }
-/* =====================================================
-   PART 2 OF 6
-   REMAINING CSS AND COMPLETE HTML
-===================================================== */
-
-
-/* =====================================================
-   UPLOAD PROGRESS
-===================================================== */
 
 #uploadArea{
   display:none;
@@ -315,11 +266,6 @@ textarea{
   text-align:center;
 }
 
-
-/* =====================================================
-   SUCCESS AND ERROR MESSAGES
-===================================================== */
-
 #message{
   min-height:24px;
   margin-top:18px;
@@ -337,11 +283,6 @@ textarea{
   color:#d93025;
 }
 
-
-/* =====================================================
-   BACK SECTION
-===================================================== */
-
 .back{
   margin-top:20px;
   text-align:center;
@@ -351,11 +292,6 @@ textarea{
   display:block;
   text-decoration:none;
 }
-
-
-/* =====================================================
-   MOBILE DESIGN
-===================================================== */
 
 @media(max-width:600px){
 
@@ -378,7 +314,6 @@ textarea{
 
 }
 
-
 @media(max-width:480px){
 
   .media-picker-buttons{
@@ -396,11 +331,6 @@ textarea{
 
 <div class="container">
 
-
-<!-- =====================================================
-     PAGE HEADING
-===================================================== -->
-
 <h1>
 ✍️ Create a Post
 </h1>
@@ -415,11 +345,6 @@ SABASABA Gospel Ministry community.
 
 </p>
 
-
-<!-- =====================================================
-     YOUR NAME
-===================================================== -->
-
 <label for="name">
 Your Name
 </label>
@@ -430,11 +355,6 @@ Your Name
   placeholder="Enter your name"
   autocomplete="name"
 >
-
-
-<!-- =====================================================
-     POST CATEGORY
-===================================================== -->
 
 <label for="category">
 Category
@@ -468,11 +388,6 @@ Question
 
 </select>
 
-
-<!-- =====================================================
-     POST MESSAGE
-===================================================== -->
-
 <label for="post">
 Your Post
 </label>
@@ -482,11 +397,6 @@ Your Post
   maxlength="5000"
   placeholder="Write your message here..."
 ></textarea>
-
-
-<!-- =====================================================
-     PHOTO OR VIDEO
-===================================================== -->
 
 <div class="media-options">
 
@@ -514,14 +424,12 @@ Add Photo or Video
 
 </div>
 
-
 <input
   type="file"
   id="mediaFile"
   accept="image/*,video/*"
   hidden
 >
-
 
 <p class="media-help">
 
@@ -537,11 +445,6 @@ Maximum 100 MB.
 </p>
 
 </div>
-
-
-<!-- =====================================================
-     MEDIA PREVIEW
-===================================================== -->
 
 <div id="mediaPreview">
 
@@ -562,11 +465,6 @@ Maximum 100 MB.
 
 </div>
 
-
-<!-- =====================================================
-     UPLOAD PROGRESS
-===================================================== -->
-
 <div id="uploadArea">
 
 <div class="progress-container">
@@ -581,11 +479,6 @@ Preparing upload...
 
 </div>
 
-
-<!-- =====================================================
-     PUBLISH BUTTON
-===================================================== -->
-
 <button
   type="button"
   id="publishBtn"
@@ -594,20 +487,10 @@ Preparing upload...
 📢 Publish Post
 </button>
 
-
-<!-- =====================================================
-     STATUS MESSAGE
-===================================================== -->
-
 <p
   id="message"
   aria-live="polite"
 ></p>
-
-
-<!-- =====================================================
-     BACK BUTTON
-===================================================== -->
 
 <div class="back">
 
@@ -628,12 +511,6 @@ Preparing upload...
 
 
 <script type="module">
-/* =====================================================
-   PART 3 OF 6
-   FIREBASE IMPORTS, CLOUDINARY SETTINGS
-   AND PAGE SETUP
-===================================================== */
-
 
 /* =====================================================
    FIREBASE IMPORTS
@@ -656,15 +533,20 @@ import {
 
 
 /* =====================================================
-   CLOUDINARY SETTINGS
+   IMAGEKIT SETTINGS
 ===================================================== */
 
-const cloudName =
-"glq2nymz";
+const imagekitPublicKey =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
 
+const imagekitUrlEndpoint =
+"https://ik.imagekit.io/f5si9ehav";
 
-const uploadPreset =
-"sabasaba_community";
+const imagekitAuthEndpoint =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const imagekitUploadUrl =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* =====================================================
@@ -901,11 +783,6 @@ function disablePublishButton(){
   "Publishing...";
 
 }
-/* =====================================================
-   PART 4 OF 6
-   AUTHENTICATION, PROFILE LOADING
-   AND OPENING THE PHONE GALLERY
-===================================================== */
 
 
 /* =====================================================
@@ -1042,10 +919,6 @@ function openMediaPicker(mediaType){
 }
 
 
-/* =====================================================
-   CHOOSE PHOTO BUTTON
-===================================================== */
-
 choosePhotoBtn.addEventListener(
   "click",
   function(){
@@ -1058,10 +931,6 @@ choosePhotoBtn.addEventListener(
 );
 
 
-/* =====================================================
-   CHOOSE VIDEO BUTTON
-===================================================== */
-
 chooseVideoBtn.addEventListener(
   "click",
   function(){
@@ -1073,10 +942,6 @@ chooseVideoBtn.addEventListener(
   }
 );
 
-
-/* =====================================================
-   OPEN REQUESTED PICKER FROM COMMUNITY WALL
-===================================================== */
 
 function openRequestedMediaPicker(){
 
@@ -1116,10 +981,6 @@ function openRequestedMediaPicker(){
 }
 
 
-/* =====================================================
-   RUN REQUESTED PICKER AFTER PAGE LOAD
-===================================================== */
-
 window.addEventListener(
   "load",
   function(){
@@ -1128,11 +989,6 @@ window.addEventListener(
 
   }
 );
-/* =====================================================
-   PART 5 OF 6
-   MEDIA SELECTION, PREVIEW
-   AND CLOUDINARY UPLOAD
-===================================================== */
 
 
 /* =====================================================
@@ -1390,10 +1246,6 @@ function clearSelectedMedia(){
 }
 
 
-/* =====================================================
-   REMOVE MEDIA BUTTON
-===================================================== */
-
 removeMediaBtn.addEventListener(
   "click",
   function(){
@@ -1422,25 +1274,38 @@ removeMediaBtn.addEventListener(
 
 
 /* =====================================================
-   CLOUDINARY UPLOAD FUNCTION
-   (IMAGES: SINGLE REQUEST — VIDEOS: CHUNKED WITH RETRY)
+   GET IMAGEKIT UPLOAD AUTHENTICATION
+   (fetches a fresh token/signature/expire from
+   our Vercel serverless function before every
+   upload — the private key never touches this
+   page or the browser)
 ===================================================== */
 
-const CHUNK_SIZE =
-6 * 1024 * 1024;
+async function getImagekitAuthParameters(){
 
-
-function generateUploadId(){
-
-  return (
-    "upload-" +
-    Date.now() +
-    "-" +
-    Math.random().toString(16).slice(2)
+  const response =
+  await fetch(
+    imagekitAuthEndpoint
   );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the media upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
 
 }
 
+
+/* =====================================================
+   IMAGEKIT UPLOAD FUNCTION
+===================================================== */
 
 async function uploadPostMedia(file){
 
@@ -1488,53 +1353,61 @@ async function uploadPostMedia(file){
 
 
   uploadText.textContent =
-  "Uploading media: 0%";
+  "Preparing upload...";
 
 
-  if(resourceType === "video"){
-
-    return uploadVideoInChunks(
-      file
-    );
-
-  }
-
-
-  return uploadImageDirect(
-    file
-  );
-
-}
-
-
-/* =====================================================
-   IMAGE UPLOAD (SINGLE REQUEST, UNCHANGED BEHAVIOUR)
-===================================================== */
-
-function uploadImageDirect(file){
-
-  const uploadUrl =
-  `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
-
-  const formData =
-  new FormData();
-
-
-  formData.append(
-    "file",
-    file
-  );
-
-
-  formData.append(
-    "upload_preset",
-    uploadPreset
-  );
+  const authParameters =
+  await getImagekitAuthParameters();
 
 
   return new Promise(
     function(resolve,reject){
+
+      const formData =
+      new FormData();
+
+
+      formData.append(
+        "file",
+        file
+      );
+
+
+      formData.append(
+        "fileName",
+        file.name
+      );
+
+
+      formData.append(
+        "publicKey",
+        imagekitPublicKey
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
+      );
+
+
+      formData.append(
+        "folder",
+        "/sabasaba-community"
+      );
+
 
       const request =
       new XMLHttpRequest();
@@ -1546,7 +1419,7 @@ function uploadImageDirect(file){
 
       request.open(
         "POST",
-        uploadUrl,
+        imagekitUploadUrl,
         true
       );
 
@@ -1608,17 +1481,17 @@ function uploadImageDirect(file){
             ){
 
               throw new Error(
-                response?.error?.message ||
-                "Cloudinary rejected the media upload."
+                response?.message ||
+                "ImageKit rejected the media upload."
               );
 
             }
 
 
-            if(!response.secure_url){
+            if(!response.url){
 
               throw new Error(
-                "Cloudinary did not return a media link."
+                "ImageKit did not return a media link."
               );
 
             }
@@ -1635,10 +1508,10 @@ function uploadImageDirect(file){
             resolve({
 
               mediaType:
-              "image",
+              resourceType,
 
               mediaUrl:
-              response.secure_url,
+              response.url,
 
               mediaName:
               file.name
@@ -1648,7 +1521,7 @@ function uploadImageDirect(file){
           }catch(error){
 
             console.error(
-              "Cloudinary response error:",
+              "ImageKit response error:",
               error
             );
 
@@ -1742,440 +1615,6 @@ function uploadImageDirect(file){
 
 
 /* =====================================================
-   SEND ONE VIDEO CHUNK
-===================================================== */
-
-function uploadChunk(
-  file,
-  start,
-  end,
-  totalSize,
-  uploadId,
-  uploadUrl
-){
-
-  return new Promise(
-    function(resolve,reject){
-
-      const chunk =
-      file.slice(
-        start,
-        end
-      );
-
-
-      const formData =
-      new FormData();
-
-
-      formData.append(
-        "file",
-        chunk
-      );
-
-
-      formData.append(
-        "upload_preset",
-        uploadPreset
-      );
-
-
-      const request =
-      new XMLHttpRequest();
-
-
-      activeUploadRequest =
-      request;
-
-
-      request.open(
-        "POST",
-        uploadUrl,
-        true
-      );
-
-
-      request.timeout =
-      120000;
-
-
-      request.setRequestHeader(
-        "X-Unique-Upload-Id",
-        uploadId
-      );
-
-
-      request.setRequestHeader(
-        "Content-Range",
-        `bytes ${start}-${end - 1}/${totalSize}`
-      );
-
-
-      request.upload.addEventListener(
-        "progress",
-        function(event){
-
-          if(!event.lengthComputable){
-
-            return;
-
-          }
-
-
-          const bytesSoFar =
-          start +
-          event.loaded;
-
-
-          const progress =
-          Math.min(
-            99,
-            Math.round(
-              (
-                bytesSoFar /
-                totalSize
-              ) * 100
-            )
-          );
-
-
-          uploadProgress.style.width =
-          `${progress}%`;
-
-
-          uploadText.textContent =
-          `Uploading video: ${progress}%`;
-
-        }
-      );
-
-
-      request.addEventListener(
-        "load",
-        function(){
-
-          activeUploadRequest =
-          null;
-
-
-          if(
-            request.status < 200 ||
-            request.status >= 300
-          ){
-
-            let errorMessage =
-            "Cloudinary rejected part of the video upload.";
-
-
-            try{
-
-              const response =
-              JSON.parse(
-                request.responseText
-              );
-
-
-              errorMessage =
-              response?.error?.message ||
-              errorMessage;
-
-            }catch(parseError){
-
-              /* keep default message */
-
-            }
-
-
-            reject(
-              new Error(
-                errorMessage
-              )
-            );
-
-
-            return;
-
-          }
-
-
-          try{
-
-            const response =
-            JSON.parse(
-              request.responseText
-            );
-
-
-            resolve(
-              response
-            );
-
-          }catch(error){
-
-            reject(
-              new Error(
-                "Cloudinary sent an unreadable response."
-              )
-            );
-
-          }
-
-        }
-      );
-
-
-      request.addEventListener(
-        "error",
-        function(){
-
-          activeUploadRequest =
-          null;
-
-
-          reject(
-            new Error(
-              "network-error"
-            )
-          );
-
-        }
-      );
-
-
-      request.addEventListener(
-        "timeout",
-        function(){
-
-          activeUploadRequest =
-          null;
-
-
-          reject(
-            new Error(
-              "network-error"
-            )
-          );
-
-        }
-      );
-
-
-      request.addEventListener(
-        "abort",
-        function(){
-
-          activeUploadRequest =
-          null;
-
-
-          reject(
-            new Error(
-              "cancelled"
-            )
-          );
-
-        }
-      );
-
-
-      request.send(
-        formData
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   SEND ONE VIDEO CHUNK, RETRYING ON DROPPED CONNECTIONS
-===================================================== */
-
-async function uploadChunkWithRetry(
-  file,
-  start,
-  end,
-  totalSize,
-  uploadId,
-  uploadUrl,
-  maxAttempts
-){
-
-  let lastError =
-  null;
-
-
-  for(
-    let attempt = 1;
-    attempt <= maxAttempts;
-    attempt++
-  ){
-
-    try{
-
-      return await uploadChunk(
-        file,
-        start,
-        end,
-        totalSize,
-        uploadId,
-        uploadUrl
-      );
-
-    }catch(error){
-
-      lastError =
-      error;
-
-
-      if(error.message === "cancelled"){
-
-        throw error;
-
-      }
-
-
-      if(attempt < maxAttempts){
-
-        uploadText.textContent =
-        `Connection interrupted. Retrying part of the video (${attempt}/${maxAttempts - 1})...`;
-
-
-        await new Promise(
-          function(resolveDelay){
-
-            window.setTimeout(
-              resolveDelay,
-              1500 * attempt
-            );
-
-          }
-        );
-
-      }
-
-    }
-
-  }
-
-
-  if(
-    lastError &&
-    lastError.message === "network-error"
-  ){
-
-    throw new Error(
-      "The video upload kept failing because of a network error, even after retrying. Please try a smaller video or a stronger connection."
-    );
-
-  }
-
-
-  throw lastError;
-
-}
-
-
-/* =====================================================
-   VIDEO UPLOAD (SPLIT INTO CHUNKS)
-===================================================== */
-
-async function uploadVideoInChunks(file){
-
-  const uploadUrl =
-  `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`;
-
-
-  const uploadId =
-  generateUploadId();
-
-
-  const totalSize =
-  file.size;
-
-
-  let start =
-  0;
-
-
-  let lastResponse =
-  null;
-
-
-  uploadText.textContent =
-  "Uploading video: 0%";
-
-
-  while(start < totalSize){
-
-    const end =
-    Math.min(
-      start + CHUNK_SIZE,
-      totalSize
-    );
-
-
-    lastResponse =
-    await uploadChunkWithRetry(
-      file,
-      start,
-      end,
-      totalSize,
-      uploadId,
-      uploadUrl,
-      4
-    );
-
-
-    start =
-    end;
-
-  }
-
-
-  if(
-    !lastResponse ||
-    !lastResponse.secure_url
-  ){
-
-    throw new Error(
-      "Cloudinary did not return a media link for the video."
-    );
-
-  }
-
-
-  uploadProgress.style.width =
-  "100%";
-
-
-  uploadText.textContent =
-  "Media uploaded successfully.";
-
-
-  return {
-
-    mediaType:
-    "video",
-
-    mediaUrl:
-    lastResponse.secure_url,
-
-    mediaName:
-    file.name
-
-  };
-
-}
-/* =====================================================
-   PART 6 OF 6
-   PUBLISH POST TO FIRESTORE,
-   REDIRECT AND FINAL CLOSING
-===================================================== */
-
-
-/* =====================================================
    PUBLISH POST FUNCTION
 ===================================================== */
 
@@ -2246,10 +1685,6 @@ async function publishPost(){
   }
 
 
-/* =====================================================
-   GET PROFILE PICTURE
-===================================================== */
-
   const savedPicture =
   getFirstValue(
     currentProfile?.profilePicture,
@@ -2283,10 +1718,6 @@ async function publishPost(){
   try{
 
 
-/* =====================================================
-   UPLOAD MEDIA TO CLOUDINARY
-===================================================== */
-
     const mediaResult =
     await uploadPostMedia(
       selectedMediaFile
@@ -2304,10 +1735,6 @@ async function publishPost(){
     ? mediaResult.mediaUrl
     : "";
 
-
-/* =====================================================
-   SAVE POST TO FIRESTORE
-===================================================== */
 
     await addDoc(
       collection(
@@ -2374,10 +1801,6 @@ async function publishPost(){
     );
 
 
-/* =====================================================
-   UPDATE LOCAL POST TOTAL
-===================================================== */
-
     let totalPosts =
     parseInt(
       localStorage.getItem(
@@ -2392,19 +1815,11 @@ async function publishPost(){
     );
 
 
-/* =====================================================
-   SHOW SUCCESS MESSAGE
-===================================================== */
-
     showMessage(
       "✅ Your post has been published successfully!",
       "success"
     );
 
-
-/* =====================================================
-   RESET FORM
-===================================================== */
 
     postInput.value =
     "";
@@ -2419,10 +1834,6 @@ async function publishPost(){
     publishBtn.textContent =
     "✅ Published";
 
-
-/* =====================================================
-   RETURN TO COMMUNITY WALL
-===================================================== */
 
     window.setTimeout(
       function(){
@@ -2459,19 +1870,11 @@ async function publishPost(){
 }
 
 
-/* =====================================================
-   PUBLISH BUTTON
-===================================================== */
-
 publishBtn.addEventListener(
   "click",
   publishPost
 );
 
-
-/* =====================================================
-   CTRL + ENTER TO PUBLISH
-===================================================== */
 
 postInput.addEventListener(
   "keydown",
@@ -2493,10 +1896,6 @@ postInput.addEventListener(
 );
 
 
-/* =====================================================
-   PREVENT DOUBLE SUBMISSION
-===================================================== */
-
 window.addEventListener(
   "pageshow",
   function(){
@@ -2510,10 +1909,6 @@ window.addEventListener(
   }
 );
 
-
-/* =====================================================
-   CLEAN PREVIEW WHEN LEAVING PAGE
-===================================================== */
 
 window.addEventListener(
   "beforeunload",
@@ -2536,11 +1931,6 @@ window.addEventListener(
 
   }
 );
-
-
-/* =====================================================
-   END OF MODULE
-===================================================== */
 
 </script>
 
