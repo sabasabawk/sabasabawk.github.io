@@ -888,7 +888,7 @@
         </h2>
 
         <p class="settingsText">
-          The name, topic and description shown to members.
+          The name and description shown to members.
         </p>
 
 
@@ -905,22 +905,6 @@
           type="text"
           maxlength="80"
           placeholder="e.g. Youth Bible Study"
-        >
-
-
-        <label
-          class="fieldLabel"
-          for="groupTopicInput"
-        >
-          Topic (optional)
-        </label>
-
-        <input
-          id="groupTopicInput"
-          class="fieldInput"
-          type="text"
-          maxlength="100"
-          placeholder="e.g. Book of Romans"
         >
 
 
@@ -943,71 +927,6 @@
           class="characterCount"
         >
           0 / 600
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           MEETING SCHEDULE
-      ================================================== -->
-
-      <section class="settingsCard">
-
-        <h2 class="settingsHeading">
-          📅 Meeting Schedule
-        </h2>
-
-        <p class="settingsText">
-          When this Bible Study Group regularly meets.
-        </p>
-
-
-        <div class="fieldRow">
-
-          <div>
-
-            <label
-              class="fieldLabel"
-              for="meetingDaySelect"
-            >
-              Meeting Day
-            </label>
-
-            <select
-              id="meetingDaySelect"
-              class="fieldSelect"
-            >
-              <option value="">Not specified</option>
-              <option value="Sunday">Sunday</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-            </select>
-
-          </div>
-
-
-          <div>
-
-            <label
-              class="fieldLabel"
-              for="meetingTimeInput"
-            >
-              Meeting Time
-            </label>
-
-            <input
-              id="meetingTimeInput"
-              class="fieldInput"
-              type="time"
-            >
-
-          </div>
-
         </div>
 
       </section>
@@ -1143,11 +1062,6 @@ document.getElementById(
   "groupNameInput"
 );
 
-const groupTopicInput =
-document.getElementById(
-  "groupTopicInput"
-);
-
 const groupDescriptionInput =
 document.getElementById(
   "groupDescriptionInput"
@@ -1156,16 +1070,6 @@ document.getElementById(
 const descriptionCharacterCount =
 document.getElementById(
   "descriptionCharacterCount"
-);
-
-const meetingDaySelect =
-document.getElementById(
-  "meetingDaySelect"
-);
-
-const meetingTimeInput =
-document.getElementById(
-  "meetingTimeInput"
 );
 
 const saveGroupButton =
@@ -1467,13 +1371,6 @@ async function loadGroupForEditing(){
     loadedGroupName;
 
 
-    groupTopicInput.value =
-    getFirstValue(
-      groupData.topic,
-      groupData.studyTopic
-    );
-
-
     groupDescriptionInput.value =
     getFirstValue(
       groupData.description,
@@ -1482,18 +1379,6 @@ async function loadGroupForEditing(){
 
 
     updateDescriptionCount();
-
-
-    meetingDaySelect.value =
-    getFirstValue(
-      groupData.meetingDay
-    );
-
-
-    meetingTimeInput.value =
-    getFirstValue(
-      groupData.meetingTime
-    );
 
 
     existingCoverImageUrl =
@@ -2021,17 +1906,8 @@ async function saveGroupChanges(){
         name:
         cleanedName,
 
-        topic:
-        groupTopicInput.value.trim(),
-
         description:
         groupDescriptionInput.value.trim(),
-
-        meetingDay:
-        meetingDaySelect.value,
-
-        meetingTime:
-        meetingTimeInput.value,
 
         imageUrl:
         coverImageUrl
