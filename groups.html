@@ -1211,12 +1211,13 @@
         </a>
 
 
-        <a
-          href="my-groups.html"
+        <button
+          id="myGroupsButton"
           class="pageActionButton"
+          type="button"
         >
           👥 My Groups
-        </a>
+        </button>
 
       </div>
 
@@ -1416,6 +1417,11 @@ document.getElementById(
 const joinedGroupsFilter =
 document.getElementById(
   "joinedGroupsFilter"
+);
+
+const myGroupsButton =
+document.getElementById(
+  "myGroupsButton"
 );
 
 
@@ -2424,6 +2430,46 @@ filterButtons.forEach(
 
   }
 );
+
+
+/* =====================================================
+   MY GROUPS BUTTON
+   (jumps straight to the "Joined" filter instead
+   of linking to a separate my-groups.html page —
+   this page already has everything needed to show
+   only the groups the user has joined.)
+===================================================== */
+
+if(myGroupsButton){
+
+  myGroupsButton.addEventListener(
+    "click",
+    function(){
+
+      if(!currentUser){
+
+        window.location.href =
+        "login.html";
+
+        return;
+
+      }
+
+
+      joinedGroupsFilter.click();
+
+
+      groupsList.scrollIntoView(
+        {
+          behavior:"smooth",
+          block:"start"
+        }
+      );
+
+    }
+  );
+
+}
 /* =====================================================
    PART 6 OF 6
    JOIN OR LEAVE GROUP,
