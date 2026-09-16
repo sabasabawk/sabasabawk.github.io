@@ -1513,7 +1513,7 @@ a:focus-visible{
       </span>
 
       <span>
-        Bible Study
+        Groups
       </span>
 
     </a>
@@ -2021,14 +2021,6 @@ function saveFeedCache(postDocuments){
     );
 
   }catch(error){
-
-    /*
-       Local storage can fail (private
-       browsing, storage full, etc.) — this
-       is only a speed optimization, so a
-       failure here is silently ignored and
-       never shown to the user.
-    */
 
     console.warn(
       "Feed cache could not be saved:",
@@ -2629,13 +2621,6 @@ async function loadCurrentUserProfile(){
   }
 
 
-  /*
-     The admin icon and other profile-dependent
-     UI update here, once the profile actually
-     arrives — completely separate from the
-     feed, which never waits on this.
-  */
-
   updateAdminReportsLink();
 
 }
@@ -2726,11 +2711,6 @@ function startCommunityFeed(){
   }
 
 
-  /*
-     Reset pagination so a refresh
-     starts back at the newest posts.
-  */
-
   lastVisibleDocument =
   null;
 
@@ -2754,17 +2734,6 @@ function startCommunityFeed(){
   loadMoreSentinel.textContent =
   "";
 
-
-  /*
-     Show the cached version instantly if we
-     have one — this is what removes the
-     blank "Loading..." wait on a repeat
-     visit. The live Firestore listener below
-     still runs immediately and will replace
-     this the moment real data arrives, so the
-     cache is never shown for more than a
-     moment and never goes stale on screen.
-  */
 
   const cachedPosts =
   loadFeedCache();
@@ -2914,18 +2883,6 @@ function startNotificationListener(){
 
 /* =====================================================
    AUTHENTICATION LISTENER
-
-   FIX: this used to "await" the profile load
-   before starting anything else — the feed,
-   notifications and moments strip all sat on
-   a blank screen behind that one Firestore
-   read. Now currentUser is set and the feed /
-   notifications / moments strip all start
-   immediately in parallel. The profile fetch
-   still runs, just alongside everything else
-   instead of blocking it, and quietly fills
-   in the avatar and admin icon whenever it
-   finishes.
 ===================================================== */
 
 onAuthStateChanged(
@@ -3003,19 +2960,8 @@ onAuthStateChanged(
 /* =====================================================
    PART 8 OF 10
    LOAD COMMUNITY POSTS FROM FIRESTORE
-   (FIRST PAGE = LIVE / REALTIME,
-   OLDER PAGES = LOADED ON SCROLL)
 ===================================================== */
 
-
-/* =====================================================
-   LOAD FIRST PAGE OF POSTS (REALTIME)
-
-   Only the newest POSTS_PER_PAGE posts are
-   subscribed to live. This is what fixes the
-   slow opening — the app no longer downloads
-   every post that has ever been made.
-===================================================== */
 
 function scheduleCommunityPostsRender(){
 
@@ -3174,16 +3120,6 @@ function loadCommunityPosts(){
         );
 
 
-        /*
-           Only the first page determines
-           whether more posts exist, UNLESS
-           the user has already scrolled and
-           loaded older pages — in that case,
-           leave that decision alone, since
-           this live update only re-checks the
-           newest 20 posts, not the full list.
-        */
-
         if(
           olderPostsDocs.length ===
           0
@@ -3200,14 +3136,6 @@ function loadCommunityPosts(){
 
           }
 
-
-          /*
-             Only mark the feed as truly
-             finished when there are zero
-             posts at all — otherwise, even
-             a small number of posts should
-             still loop endlessly on scroll.
-          */
 
           noMorePostsAvailable =
           snapshot.docs.length ===
@@ -3296,16 +3224,6 @@ function loadCommunityPosts(){
 }
 
 
-/* =====================================================
-   LOAD OLDER POSTS (CALLED WHEN THE USER
-   SCROLLS NEAR THE BOTTOM OF THE FEED)
-
-   This uses a one-time read (getDocs), not a
-   live listener — older posts do not need to
-   update in realtime, which keeps this fast
-   and cheap on Firestore reads.
-===================================================== */
-
 async function loadMoreCommunityPosts(){
 
   if(
@@ -3334,16 +3252,6 @@ async function loadMoreCommunityPosts(){
       "communityPosts"
     );
 
-
-    /*
-       If there is a known cursor, keep
-       going deeper into the list. Once
-       that cursor runs out (lastVisibleDocument
-       is null), start again from the very
-       newest post — this loop is what makes
-       the feed scroll endlessly instead of
-       stopping once everything has been shown.
-    */
 
     const nextPageQuery =
     lastVisibleDocument
@@ -3382,14 +3290,6 @@ async function loadMoreCommunityPosts(){
 
     if(snapshot.empty){
 
-      /*
-         Only genuinely stop scrolling when
-         there are zero posts in the whole
-         community — otherwise this means we
-         reached the end of the list, so loop
-         back to the start on the next scroll.
-      */
-
       if(
         latestPostsDocsCache.length === 0 &&
         olderPostsDocs.length === 0
@@ -3422,12 +3322,6 @@ async function loadMoreCommunityPosts(){
 
     renderCommunityPosts();
 
-
-    /*
-       Fewer posts than a full page means we
-       just reached the end — loop back to
-       the start next time instead of stopping.
-    */
 
     lastVisibleDocument =
     snapshot.docs.length <
@@ -3470,10 +3364,6 @@ async function loadMoreCommunityPosts(){
 }
 
 
-/* =====================================================
-   UPDATE THE LOAD-MORE SENTINEL TEXT
-===================================================== */
-
 function updateLoadMoreSentinel(){
 
   if(noMorePostsAvailable){
@@ -3493,11 +3383,6 @@ function updateLoadMoreSentinel(){
 
 }
 
-
-/* =====================================================
-   WATCH FOR THE SENTINEL SCROLLING INTO VIEW
-   AND LOAD THE NEXT PAGE AUTOMATICALLY
-===================================================== */
 
 postsLoadObserver =
 new IntersectionObserver(
@@ -3537,10 +3422,6 @@ postsLoadObserver.observe(
 ===================================================== */
 
 
-/* =====================================================
-   CREATE POST CARD
-===================================================== */
-
 function createPostCard(postData){
 
   const postCard =
@@ -3555,10 +3436,6 @@ function createPostCard(postData){
   postCard.dataset.postId =
   postData.id;
 
-
-  /* =================================================
-     AUTHOR DETAILS
-  ================================================= */
 
   const authorId =
   getFirstValue(
@@ -3599,10 +3476,6 @@ function createPostCard(postData){
   );
 
 
-  /* =================================================
-     POST CONTENT
-  ================================================= */
-
   const postMessage =
   getFirstValue(
     postData.post,
@@ -3621,10 +3494,6 @@ function createPostCard(postData){
     "General"
   );
 
-
-  /* =================================================
-     MEDIA DETAILS
-  ================================================= */
 
   const mediaType =
   getFirstValue(
@@ -3687,10 +3556,6 @@ function createPostCard(postData){
   }
 
 
-  /* =================================================
-     LIKES
-  ================================================= */
-
   const likes =
   Array.isArray(
     postData.likes
@@ -3707,17 +3572,6 @@ function createPostCard(postData){
     )
   );
 
-
-  /* =================================================
-     POST HEADER
-
-     NOTE: the profile picture and verified
-     badge now use ONLY the data already
-     stored on the post itself — no extra
-     Firestore read per post. This is the
-     second fix: it removes one network
-     round-trip per author on every load.
-  ================================================= */
 
   const postHeader =
   document.createElement("div");
@@ -3865,10 +3719,6 @@ function createPostCard(postData){
   );
 
 
-  /* =================================================
-     POST CATEGORY
-  ================================================= */
-
   if(postCategory){
 
     const categoryElement =
@@ -3888,10 +3738,6 @@ function createPostCard(postData){
   }
 
 
-  /* =================================================
-     POST MESSAGE
-  ================================================= */
-
   if(postMessage){
 
     const messageElement =
@@ -3910,10 +3756,6 @@ function createPostCard(postData){
 
   }
 
-
-  /* =================================================
-     PHOTO OR VIDEO
-  ================================================= */
 
   const mediaContainer =
   document.createElement("div");
@@ -4057,10 +3899,6 @@ function createPostCard(postData){
   }
 
 
-  /* =================================================
-     LIKE, COMMENT AND SHARE BUTTONS
-  ================================================= */
-
   const actionsContainer =
   document.createElement("div");
 
@@ -4150,15 +3988,6 @@ function createPostCard(postData){
   );
 
 
-  /* =================================================
-     REPORT BUTTON
-
-     Only shown on other people's posts — a
-     user reporting their own post makes no
-     sense, and hiding it there also matches
-     what every major app does.
-  ================================================= */
-
   if(
     currentUser &&
     authorId &&
@@ -4198,10 +4027,6 @@ function createPostCard(postData){
     actionsContainer
   );
 
-
-  /* =================================================
-     OWNER EDIT AND DELETE BUTTONS
-  ================================================= */
 
   if(
     currentUser &&
@@ -4268,16 +4093,6 @@ function createPostCard(postData){
     currentUser
   ){
 
-    /* ===============================================
-       ADMIN DELETE (for posts by other members)
-
-       Only ever created when currentUserIsAdmin
-       is true, which only your own account can
-       be — this button is never even added to
-       the page's HTML for anyone else, not just
-       hidden with CSS.
-    =============================================== */
-
     const adminActions =
     document.createElement("div");
 
@@ -4312,10 +4127,6 @@ function createPostCard(postData){
 
   }
 
-
-  /* =================================================
-     OPEN MEMBER PROFILE
-  ================================================= */
 
   if(authorId){
 
@@ -4359,10 +4170,6 @@ function createPostCard(postData){
 ===================================================== */
 
 
-/* =====================================================
-   CREATE LIKE NOTIFICATION
-===================================================== */
-
 async function createLikeNotification(
   recipientId,
   postId
@@ -4378,8 +4185,6 @@ async function createLikeNotification(
 
   }
 
-
-  /* Do not notify users about their own likes */
 
   if(
     recipientId ===
@@ -4451,10 +4256,6 @@ async function createLikeNotification(
 
 }
 
-
-/* =====================================================
-   LIKE OR UNLIKE A POST
-===================================================== */
 
 async function handleLikeButton(
   button
@@ -4599,9 +4400,6 @@ async function handleLikeButton(
     }
 
 
-    /* Create notification only
-       when adding a like */
-
     if(!userAlreadyLiked){
 
       await createLikeNotification(
@@ -4633,10 +4431,6 @@ async function handleLikeButton(
 }
 
 
-/* =====================================================
-   OPEN COMMENTS PAGE
-===================================================== */
-
 function handleCommentButton(
   button
 ){
@@ -4657,10 +4451,6 @@ function handleCommentButton(
 
 }
 
-
-/* =====================================================
-   SHARE A POST
-===================================================== */
 
 async function handleShareButton(
   button
@@ -4769,10 +4559,6 @@ async function handleShareButton(
 
 }
 
-
-/* =====================================================
-   EDIT A POST
-===================================================== */
 
 async function handleEditButton(
   button
@@ -4883,10 +4669,6 @@ async function handleEditButton(
 }
 
 
-/* =====================================================
-   DELETE A POST
-===================================================== */
-
 async function handleDeleteButton(
   button
 ){
@@ -4963,18 +4745,6 @@ async function handleDeleteButton(
 
 }
 
-
-/* =====================================================
-   REPORT A POST
-
-   Opens a small reason picker instead of one
-   generic prompt — matches how major apps ask
-   "why are you reporting this" before saving
-   it. The report itself never touches or
-   changes the post; it only gets written into
-   a separate "reports" collection for the
-   admin to review on their own Reports page.
-===================================================== */
 
 let reportTargetPostId =
 null;
@@ -5310,10 +5080,6 @@ if(reportSubmitButton){
 }
 
 
-/* =====================================================
-   OPEN PHOTO VIEWER
-===================================================== */
-
 function openPhotoViewer(
   imageUrl
 ){
@@ -5363,13 +5129,6 @@ function openPhotoViewer(
 
 }
 
-
-/* =====================================================
-   OPEN VIDEO VIEWER
-   (tapping a video in the feed now opens it
-   full-screen with sound, like Instagram/TikTok,
-   instead of only playing small and muted inline)
-===================================================== */
 
 function openVideoViewer(
   videoUrl
@@ -5428,10 +5187,6 @@ function openVideoViewer(
 }
 
 
-/* =====================================================
-   CLOSE PHOTO VIEWER
-===================================================== */
-
 function hidePhotoViewer(){
 
   photoViewer.classList.remove(
@@ -5463,16 +5218,6 @@ function hidePhotoViewer(){
 
 }
 
-
-/* =====================================================
-   REELS-STYLE VIDEO VIEWER
-
-   Tap a video once and it opens full-screen.
-   Scrolling down moves to the next video in the
-   feed, which starts playing automatically with
-   sound — no need to tap again, like Instagram
-   Reels or TikTok.
-===================================================== */
 
 let reelScrollObserver =
 null;
@@ -5791,10 +5536,6 @@ closeVideoReelViewerButton.addEventListener(
 );
 
 
-/* =====================================================
-   POST ACTION EVENT DELEGATION
-===================================================== */
-
 postsContainer.addEventListener(
   "click",
   function(event){
@@ -5926,10 +5667,6 @@ postsContainer.addEventListener(
 );
 
 
-/* =====================================================
-   PHOTO VIEWER EVENTS
-===================================================== */
-
 closePhotoViewerButton.addEventListener(
   "click",
   hidePhotoViewer
@@ -6007,14 +5744,6 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   REFRESH COMMUNITY WALL
-   (button removed from the page — the feed
-   already refreshes itself live via the
-   Firestore listener, so a manual refresh
-   button was redundant)
-===================================================== */
-
 if(refreshButton){
 
   refreshButton.addEventListener(
@@ -6052,10 +5781,6 @@ if(refreshButton){
 }
 
 
-/* =====================================================
-   SCROLL TO A SHARED POST
-===================================================== */
-
 async function scrollToSharedPost(){
 
   const urlParameters =
@@ -6082,15 +5807,6 @@ async function scrollToSharedPost(){
     `post-${sharedPostId}`
   );
 
-
-  /*
-     The post is not in the currently loaded
-     batch (pagination only loads the newest
-     posts first) — fetch this one post
-     directly and place it at the top of the
-     feed so a notification link always
-     reaches the exact post it points to.
-  */
 
   if(!sharedPost){
 
@@ -6182,10 +5898,6 @@ async function scrollToSharedPost(){
 }
 
 
-/* =====================================================
-   CLEAN UP FIRESTORE LISTENER
-===================================================== */
-
 window.addEventListener(
   "beforeunload",
   function(){
@@ -6220,18 +5932,10 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   PAGE READY MESSAGE
-===================================================== */
-
 console.log(
   "Faith Connect Community Wall is ready."
 );
 
-
-/* =====================================================
-   AUTO-PLAY VISIBLE COMMUNITY VIDEOS
-===================================================== */
 
 let videoObserver =
 null;
@@ -6365,15 +6069,6 @@ function startVideoAutoPlay(){
 
 }
 
-
-/* =====================================================
-   FAITH MOMENTS STRIP
-   (Instagram/Facebook-style horizontal strip.
-   Pulls active moments — those less than 24 hours
-   old — from the same "faithMoments" collection
-   used by faith-moments.html. Tapping a circle
-   opens that moment in the full viewer there.)
-===================================================== */
 
 function isMomentStillActiveForStrip(
   momentData
