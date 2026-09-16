@@ -589,25 +589,6 @@ a{
 
 
 /* =====================================================
-   TWO-COLUMN FORM ROW
-===================================================== */
-
-.formGrid{
-
-  display:grid;
-
-  grid-template-columns:
-  repeat(
-    2,
-    minmax(0,1fr)
-  );
-
-  gap:12px;
-
-}
-
-
-/* =====================================================
    PRIVACY OPTIONS
 ===================================================== */
 
@@ -845,6 +826,29 @@ a{
 
 
 /* =====================================================
+   UPLOAD PROGRESS
+===================================================== */
+
+.imageUploadStatus{
+
+  margin-top:10px;
+
+  display:none;
+
+  color:var(--primary);
+
+  font-size:11px;
+  font-weight:bold;
+
+}
+
+
+.imageUploadStatus.show{
+  display:block;
+}
+
+
+/* =====================================================
    FORM ACTIONS
 ===================================================== */
 
@@ -935,13 +939,6 @@ a{
   .formCard{
 
     padding:16px;
-
-  }
-
-
-  .formGrid{
-
-    grid-template-columns:1fr;
 
   }
 
@@ -1130,30 +1127,6 @@ a{
 
       </div>
 
-
-      <div class="formGroup">
-
-        <label
-          class="formLabel"
-          for="studyTopicInput"
-        >
-          Main Study Topic
-          <span class="formLabelOptional">
-            (optional)
-          </span>
-        </label>
-
-        <input
-          id="studyTopicInput"
-          class="formInput"
-          type="text"
-          maxlength="100"
-          placeholder="Example: Prophecy, Family Life, Prayer..."
-          autocomplete="off"
-        >
-
-      </div>
-
     </section>
 
 
@@ -1241,131 +1214,6 @@ a{
 
 
     <!-- =================================================
-         MEETING INFORMATION
-    ================================================== -->
-
-    <section class="formSection">
-
-      <h2 class="sectionTitle">
-        Bible Study Schedule
-        <span class="formLabelOptional">
-          (optional — you can add this later)
-        </span>
-      </h2>
-
-
-      <div class="formGrid">
-
-
-        <div class="formGroup">
-
-          <label
-            class="formLabel"
-            for="meetingDaySelect"
-          >
-            Meeting Day
-            <span class="formLabelOptional">
-              (optional)
-            </span>
-          </label>
-
-          <select
-            id="meetingDaySelect"
-            class="formSelect"
-          >
-
-            <option value="">
-              Select a day
-            </option>
-
-            <option value="Sunday">
-              Sunday
-            </option>
-
-            <option value="Monday">
-              Monday
-            </option>
-
-            <option value="Tuesday">
-              Tuesday
-            </option>
-
-            <option value="Wednesday">
-              Wednesday
-            </option>
-
-            <option value="Thursday">
-              Thursday
-            </option>
-
-            <option value="Friday">
-              Friday
-            </option>
-
-            <option value="Sabbath">
-              Sabbath
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="formGroup">
-
-          <label
-            class="formLabel"
-            for="meetingTimeInput"
-          >
-            Meeting Time
-            <span class="formLabelOptional">
-              (optional)
-            </span>
-          </label>
-
-          <input
-            id="meetingTimeInput"
-            class="formInput"
-            type="time"
-          >
-
-        </div>
-
-      </div>
-
-
-      <div class="formGroup">
-
-        <label
-          class="formLabel"
-          for="maximumMembersInput"
-        >
-          Maximum Members
-          <span class="formLabelOptional">
-            (optional)
-          </span>
-        </label>
-
-        <input
-          id="maximumMembersInput"
-          class="formInput"
-          type="number"
-          min="2"
-          max="500"
-          placeholder="Example: 50"
-          inputmode="numeric"
-        >
-
-        <div class="helpText">
-          Leave this empty if the group should not have a member limit.
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
          GROUP IMAGE
     ================================================== -->
 
@@ -1426,6 +1274,14 @@ a{
 
         </div>
 
+
+        <div
+          id="imageUploadStatus"
+          class="imageUploadStatus"
+        >
+          Uploading image... 0%
+        </div>
+
       </div>
 
     </section>
@@ -1475,23 +1331,41 @@ a{
 
 /* =====================================================
    FIREBASE IMPORTS
+   (storage/ref/uploadBytes/getDownloadURL removed —
+   Firebase Storage requires the paid Blaze plan just
+   to be enabled, so the group image now uploads
+   through ImageKit instead, the same free service
+   already used elsewhere in this app.)
 ===================================================== */
 
 import{
   auth,
   db,
-  storage,
   collection,
   addDoc,
   doc,
   getDoc,
   updateDoc,
   serverTimestamp,
-  ref,
-  uploadBytes,
-  getDownloadURL,
   onAuthStateChanged
 }from "./firebase.js";
+
+
+/* =====================================================
+   IMAGEKIT SETTINGS
+===================================================== */
+
+const IMAGEKIT_PUBLIC_KEY =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+
+const IMAGEKIT_URL_ENDPOINT =
+"https://ik.imagekit.io/f5si9ehav";
+
+const IMAGEKIT_AUTH_ENDPOINT =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const IMAGEKIT_UPLOAD_URL =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* =====================================================
@@ -1523,26 +1397,6 @@ document.getElementById(
   "groupDescriptionInput"
 );
 
-const studyTopicInput =
-document.getElementById(
-  "studyTopicInput"
-);
-
-const meetingDaySelect =
-document.getElementById(
-  "meetingDaySelect"
-);
-
-const meetingTimeInput =
-document.getElementById(
-  "meetingTimeInput"
-);
-
-const maximumMembersInput =
-document.getElementById(
-  "maximumMembersInput"
-);
-
 const groupImageInput =
 document.getElementById(
   "groupImageInput"
@@ -1566,6 +1420,11 @@ document.getElementById(
 const groupImagePreview =
 document.getElementById(
   "groupImagePreview"
+);
+
+const imageUploadStatus =
+document.getElementById(
+  "imageUploadStatus"
 );
 
 const groupNameCounter =
@@ -2035,12 +1894,6 @@ function validateGroupForm(){
   const groupDescription =
   groupDescriptionInput.value.trim();
 
-  const studyTopic =
-  studyTopicInput.value.trim();
-
-  const maximumMembersValue =
-  maximumMembersInput.value.trim();
-
 
   if(groupName.length < 3){
 
@@ -2068,39 +1921,6 @@ function validateGroupForm(){
   }
 
 
-  let maximumMembers =
-  null;
-
-
-  if(maximumMembersValue){
-
-    maximumMembers =
-    Number(
-      maximumMembersValue
-    );
-
-
-    if(
-      !Number.isInteger(
-        maximumMembers
-      ) ||
-      maximumMembers < 2 ||
-      maximumMembers > 500
-    ){
-
-      showPageMessage(
-        "Maximum members must be a whole number between 2 and 500."
-      );
-
-      maximumMembersInput.focus();
-
-      return null;
-
-    }
-
-  }
-
-
   hidePageMessage();
 
 
@@ -2112,20 +1932,8 @@ function validateGroupForm(){
     groupDescription:
     groupDescription,
 
-    studyTopic:
-    studyTopic,
-
     privacy:
-    getSelectedPrivacy(),
-
-    meetingDay:
-    meetingDaySelect.value,
-
-    meetingTime:
-    meetingTimeInput.value,
-
-    maximumMembers:
-    maximumMembers
+    getSelectedPrivacy()
 
   };
 
@@ -2133,12 +1941,36 @@ function validateGroupForm(){
 
 
 /* =====================================================
-   UPLOAD GROUP IMAGE
+   GET IMAGEKIT UPLOAD AUTHENTICATION
 ===================================================== */
 
-async function uploadGroupImage(
-  groupId
-){
+async function getImagekitAuthParameters(){
+
+  const response =
+  await fetch(
+    IMAGEKIT_AUTH_ENDPOINT
+  );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the image upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
+
+}
+
+
+/* =====================================================
+   UPLOAD GROUP IMAGE TO IMAGEKIT
+===================================================== */
+
+async function uploadGroupImage(){
 
   if(!selectedGroupImage){
 
@@ -2147,33 +1979,181 @@ async function uploadGroupImage(
   }
 
 
-  const safeFileName =
-  selectedGroupImage.name
-  .replace(
-    /[^a-zA-Z0-9._-]/g,
-    "_"
+  const authParameters =
+  await getImagekitAuthParameters();
+
+
+  imageUploadStatus.classList.add(
+    "show"
   );
 
 
-  const imagePath =
-  `bibleStudyGroups/${groupId}/${Date.now()}_${safeFileName}`;
+  imageUploadStatus.textContent =
+  "Uploading image... 0%";
 
 
-  const imageReference =
-  ref(
-    storage,
-    imagePath
-  );
+  return new Promise(
+    function(resolve,reject){
+
+      const formData =
+      new FormData();
 
 
-  await uploadBytes(
-    imageReference,
-    selectedGroupImage
-  );
+      formData.append(
+        "file",
+        selectedGroupImage
+      );
 
 
-  return await getDownloadURL(
-    imageReference
+      formData.append(
+        "fileName",
+        selectedGroupImage.name || "group-image"
+      );
+
+
+      formData.append(
+        "publicKey",
+        IMAGEKIT_PUBLIC_KEY
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
+      );
+
+
+      formData.append(
+        "folder",
+        "/sabasaba-bible-study-groups"
+      );
+
+
+      const uploadRequest =
+      new XMLHttpRequest();
+
+
+      uploadRequest.open(
+        "POST",
+        IMAGEKIT_UPLOAD_URL,
+        true
+      );
+
+
+      uploadRequest.upload.addEventListener(
+        "progress",
+        function(event){
+
+          if(!event.lengthComputable){
+            return;
+          }
+
+
+          const progress =
+          Math.round(
+            (
+              event.loaded /
+              event.total
+            ) * 100
+          );
+
+
+          imageUploadStatus.textContent =
+          `Uploading image... ${progress}%`;
+
+        }
+      );
+
+
+      uploadRequest.addEventListener(
+        "load",
+        function(){
+
+          let responseData =
+          null;
+
+
+          try{
+
+            responseData =
+            JSON.parse(
+              uploadRequest.responseText || "{}"
+            );
+
+          }catch(error){
+
+            reject(
+              new Error(
+                "ImageKit returned an invalid response."
+              )
+            );
+
+            return;
+
+          }
+
+
+          if(
+            uploadRequest.status >= 200 &&
+            uploadRequest.status < 300 &&
+            responseData?.url
+          ){
+
+            imageUploadStatus.textContent =
+            "Upload complete";
+
+
+            resolve(
+              responseData.url
+            );
+
+            return;
+
+          }
+
+
+          reject(
+            new Error(
+              responseData?.message ||
+              "ImageKit upload failed."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.addEventListener(
+        "error",
+        function(){
+
+          reject(
+            new Error(
+              "Unable to upload the group image. Check your internet connection."
+            )
+          );
+
+        }
+      );
+
+
+      uploadRequest.send(
+        formData
+      );
+
+    }
   );
 
 }
@@ -2248,20 +2228,8 @@ async function createBibleStudyGroup(
       description:
       validatedData.groupDescription,
 
-      topic:
-      validatedData.studyTopic,
-
       privacy:
       validatedData.privacy,
-
-      meetingDay:
-      validatedData.meetingDay,
-
-      meetingTime:
-      validatedData.meetingTime,
-
-      maximumMembers:
-      validatedData.maximumMembers,
 
       createdBy:
       currentUser.uid,
@@ -2301,7 +2269,7 @@ async function createBibleStudyGroup(
 
 
 /* =====================================================
-   UPDATE GROUP IMAGE
+   SAVE GROUP IMAGE
 ===================================================== */
 
 async function saveGroupImage(
@@ -2391,9 +2359,7 @@ createGroupForm.addEventListener(
 
 
       const groupImageUrl =
-      await uploadGroupImage(
-        groupReference.id
-      );
+      await uploadGroupImage();
 
 
       await saveGroupImage(
@@ -2413,6 +2379,10 @@ createGroupForm.addEventListener(
       clearSelectedGroupImage();
 
       updateCharacterCounters();
+
+      imageUploadStatus.classList.remove(
+        "show"
+      );
 
 
       window.setTimeout(
@@ -2435,6 +2405,11 @@ createGroupForm.addEventListener(
       );
 
 
+      imageUploadStatus.classList.remove(
+        "show"
+      );
+
+
       if(
         error?.code ===
         "permission-denied"
@@ -2445,21 +2420,11 @@ createGroupForm.addEventListener(
         );
 
       }else if(
-        error?.code ===
-        "storage/unauthorized"
+        error?.message
       ){
 
         showPageMessage(
-          "Firebase Storage denied permission to upload the group image."
-        );
-
-      }else if(
-        error?.code ===
-        "storage/canceled"
-      ){
-
-        showPageMessage(
-          "The group image upload was cancelled."
+          error.message
         );
 
       }else{
