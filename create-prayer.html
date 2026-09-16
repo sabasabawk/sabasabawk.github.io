@@ -190,11 +190,13 @@ img{
 
 /* =====================================================
    INTRODUCTION CARD
+   (now also carries the privacy note, so the two
+   separate colored boxes are one compact card)
 ===================================================== */
 
 .prayerIntroCard{
   margin-bottom:18px;
-  padding:22px;
+  padding:20px 22px;
   border-radius:22px;
   background:linear-gradient(
     135deg,
@@ -206,51 +208,27 @@ img{
 }
 
 .prayerIntroIcon{
-  width:54px;
-  height:54px;
-  margin-bottom:12px;
+  width:50px;
+  height:50px;
+  margin-bottom:10px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
   background:rgba(255,255,255,.18);
-  font-size:28px;
+  font-size:26px;
 }
 
 .prayerIntroCard h2{
-  font-size:24px;
+  font-size:22px;
   line-height:1.3;
 }
 
 .prayerIntroCard p{
   margin-top:8px;
   color:#e9f5ff;
-  font-size:14px;
-  line-height:1.7;
-}
-
-
-/* =====================================================
-   PRIVACY MESSAGE
-===================================================== */
-
-.privacyMessage{
-  margin-bottom:18px;
-  padding:14px 16px;
-  border-radius:16px;
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  background:#fff8dc;
-  border:1px solid #f1dc8b;
-  color:#615012;
   font-size:13px;
   line-height:1.6;
-}
-
-.privacyMessageIcon{
-  flex-shrink:0;
-  font-size:20px;
 }
 
 
@@ -263,28 +241,6 @@ img{
   border-radius:22px;
   background:#ffffff;
   box-shadow:0 6px 18px rgba(0,0,0,.09);
-}
-
-
-/* =====================================================
-   FORM SECTION TITLE
-===================================================== */
-
-.formSectionTitle{
-  margin-bottom:18px;
-}
-
-.formSectionTitle h2{
-  color:#1f2b35;
-  font-size:20px;
-  line-height:1.3;
-}
-
-.formSectionTitle p{
-  margin-top:5px;
-  color:#75818b;
-  font-size:13px;
-  line-height:1.6;
 }
 
 
@@ -319,11 +275,11 @@ select:focus-visible{
   }
 
   .prayerIntroCard{
-    padding:19px;
+    padding:17px;
   }
 
   .prayerIntroCard h2{
-    font-size:21px;
+    font-size:20px;
   }
 
   .prayerFormCard{
@@ -442,12 +398,14 @@ select:focus-visible{
 
 /* =====================================================
    CATEGORY OPTIONS
+   (compact wrapping chips instead of a stacked
+   grid of full-width buttons)
 ===================================================== */
 
 .categoryOptions{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
 }
 
 .categoryOption{
@@ -461,19 +419,19 @@ select:focus-visible{
 }
 
 .categoryOptionLabel{
-  min-height:54px;
-  padding:12px;
+  padding:9px 16px;
   border:1px solid #cfd9e2;
-  border-radius:14px;
+  border-radius:20px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:7px;
+  gap:6px;
   background:#f9fbfd;
   color:#46525d;
   font-size:13px;
   font-weight:bold;
   text-align:center;
+  white-space:nowrap;
   cursor:pointer;
   transition:
     background .2s ease,
@@ -694,10 +652,6 @@ select:focus-visible{
 
 @media(max-width:600px){
 
-  .categoryOptions{
-    grid-template-columns:1fr;
-  }
-
   .formActions{
     grid-template-columns:1fr;
   }
@@ -763,7 +717,7 @@ select:focus-visible{
 <div class="pageContainer">
 
 
-  <!-- INTRODUCTION -->
+  <!-- INTRODUCTION + PRIVACY (merged into one card) -->
 
   <section class="prayerIntroCard">
 
@@ -781,35 +735,14 @@ select:focus-visible{
 
     <p>
 
-      Share your prayer request with the
-      Faith Connect family. God hears every
-      sincere prayer.
+      Share your request with the Faith Connect
+      family. It's only visible inside the
+      community, and you can post it
+      anonymously if you prefer.
 
     </p>
 
   </section>
-
-
-  <!-- PRIVACY -->
-
-  <div class="privacyMessage">
-
-    <div class="privacyMessageIcon">
-
-      🔒
-
-    </div>
-
-    <div>
-
-      Your prayer request is shared only
-      inside the Faith Connect community.
-      You may also choose to post it
-      anonymously.
-
-    </div>
-
-  </div>
 
 
   <!-- FORM -->
@@ -818,23 +751,6 @@ select:focus-visible{
     id="prayerForm"
     class="prayerFormCard"
   >
-
-    <div class="formSectionTitle">
-
-      <h2>
-
-        Prayer Request
-
-      </h2>
-
-      <p>
-
-        Fill in the information below.
-
-      </p>
-
-    </div>
-
 
     <!-- TITLE -->
 
