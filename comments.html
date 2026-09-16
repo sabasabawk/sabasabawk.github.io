@@ -407,14 +407,6 @@
     }
 
 
-    /*
-      Brief highlight flash used to point out a
-      comment when someone taps a "Replying to"
-      quote and jumps to the original comment, or
-      when someone arrives here from a notification
-      pointing at a specific comment.
-    */
-
     .comment-card.highlighted {
 
       background:
@@ -504,8 +496,6 @@
 
     /* =====================================================
        QUOTED REPLY REFERENCE
-       (shown at the top of a comment that is
-       itself a reply to another comment)
     ===================================================== */
 
     .reply-quote {
@@ -626,9 +616,6 @@
 
     /* =====================================================
        REPLY-TO PREVIEW BANNER
-       (appears above the comment box once the
-       user taps "Reply" on someone's comment —
-       same idea as WhatsApp's reply preview)
     ===================================================== */
 
     .reply-preview-banner {
@@ -759,6 +746,108 @@
       position: sticky;
       bottom: 10px;
 
+    }
+
+
+    /* =====================================================
+       EMOJI PICKER
+    ===================================================== */
+
+    .emoji-toolbar-row {
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 8px;
+      position: relative;
+
+    }
+
+
+    .emoji-toggle-button {
+
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+
+      background: #f4f8fb;
+      color: var(--primary-color);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+
+    }
+
+
+    .emoji-toggle-button:hover {
+
+      background: var(--primary-light);
+
+    }
+
+
+    .emoji-picker {
+
+      position: absolute;
+
+      left: 0;
+      bottom: 46px;
+
+      z-index: 40;
+
+      width: 270px;
+      max-width: calc(100vw - 30px);
+
+      max-height: 220px;
+
+      overflow-y: auto;
+
+      display: none;
+
+      padding: 10px;
+
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+
+      grid-template-columns: repeat(6,1fr);
+
+      gap: 7px;
+
+      background: #ffffff;
+
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+
+    }
+
+
+    .emoji-picker.show {
+      display: grid;
+    }
+
+
+    .emoji-picker button {
+
+      min-height: 36px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: #f4f6f8;
+
+      font-size: 21px;
+
+    }
+
+
+    .emoji-picker button:hover {
+      background: #e4ebf2;
     }
 
 
@@ -1246,9 +1335,6 @@
 
       <!-- =================================================
            REPLY-TO PREVIEW
-           Shown only after tapping "Reply" on a
-           specific comment — same idea as WhatsApp's
-           quoted reply preview above the keyboard.
       ================================================== -->
 
       <div
@@ -1280,6 +1366,68 @@
         >
           ×
         </button>
+
+      </div>
+
+
+      <!-- =================================================
+           EMOJI TOOLBAR
+      ================================================== -->
+
+      <div class="emoji-toolbar-row">
+
+        <button
+          id="emojiToggleButton"
+          class="emoji-toggle-button"
+          type="button"
+          aria-label="Open emoji picker"
+          title="Emoji"
+        >
+          😊
+        </button>
+
+
+        <div
+          id="emojiPicker"
+          class="emoji-picker"
+        >
+
+          <button type="button">😀</button>
+          <button type="button">😁</button>
+          <button type="button">😂</button>
+          <button type="button">🤣</button>
+          <button type="button">😊</button>
+          <button type="button">😍</button>
+
+          <button type="button">🥰</button>
+          <button type="button">😘</button>
+          <button type="button">😇</button>
+          <button type="button">🙏</button>
+          <button type="button">❤️</button>
+          <button type="button">👍</button>
+
+          <button type="button">👏</button>
+          <button type="button">🔥</button>
+          <button type="button">🎉</button>
+          <button type="button">💪</button>
+          <button type="button">🙌</button>
+          <button type="button">🤝</button>
+
+          <button type="button">📖</button>
+          <button type="button">✝️</button>
+          <button type="button">⛪</button>
+          <button type="button">🕊️</button>
+          <button type="button">🌍</button>
+          <button type="button">🌞</button>
+
+          <button type="button">😢</button>
+          <button type="button">😭</button>
+          <button type="button">😔</button>
+          <button type="button">🤗</button>
+          <button type="button">💖</button>
+          <button type="button">✨</button>
+
+        </div>
 
       </div>
 
@@ -1379,36 +1527,12 @@ const defaultProfilePicture =
   "images/profile.png";
 
 
-/*
-  Holds { id, name, snippet } for the comment
-  currently being replied to, or null when the
-  comment box is a normal top-level comment.
-*/
-
 let replyingTo = null;
 
-
-/*
-  Keeps the latest loaded comments available by
-  ID, so tapping a "Replying to" quote can look
-  up the name/snippet of the original comment
-  without another network read.
-*/
 
 const loadedCommentsById =
 new Map();
 
-
-/*
-  When this page is opened from a notification
-  link (comments.html?postId=X&comment=Y), this
-  holds that comment ID so it can be scrolled to
-  and briefly highlighted once it appears in the
-  DOM. It is only ever acted on once per page
-  load — after that it is set to null so later
-  live-update redraws do not keep re-scrolling
-  the page back down to it.
-*/
 
 let pendingLinkedCommentId = null;
 
@@ -1512,15 +1636,19 @@ document.getElementById(
   "cancelReplyButton"
 );
 
+const emojiToggleButton =
+document.getElementById(
+  "emojiToggleButton"
+);
+
+const emojiPicker =
+document.getElementById(
+  "emojiPicker"
+);
+
 
 /* =====================================================
    GET POST ID AND, IF PRESENT, A LINKED COMMENT ID
-
-   The "comment" parameter is set by notification
-   links (see createCommentNotification and
-   createReplyNotification below) so that tapping
-   "Benson commented on your post" lands directly
-   on that comment instead of the top of the page.
 ===================================================== */
 
 const urlParameters =
@@ -1615,12 +1743,6 @@ function formatDate(
 }
 
 
-/*
-  Shortens a comment's text down to a small
-  preview, the same way WhatsApp trims a long
-  message inside a reply quote.
-*/
-
 function truncateForPreview(
   text,
   maxLength = 80
@@ -1644,6 +1766,129 @@ function truncateForPreview(
   return `${cleanedText.slice(0,maxLength)}…`;
 
 }
+
+
+/* =====================================================
+   EMOJI PICKER
+===================================================== */
+
+emojiToggleButton.addEventListener(
+
+  "click",
+
+  function(event){
+
+    event.stopPropagation();
+
+
+    emojiPicker.classList.toggle(
+      "show"
+    );
+
+  }
+
+);
+
+
+emojiPicker
+.querySelectorAll(
+  "button"
+)
+.forEach(
+
+  function(emojiOption){
+
+    emojiOption.addEventListener(
+
+      "click",
+
+      function(){
+
+        const emoji =
+        emojiOption.textContent;
+
+
+        const selectionStart =
+        commentInput.selectionStart ??
+        commentInput.value.length;
+
+
+        const selectionEnd =
+        commentInput.selectionEnd ??
+        commentInput.value.length;
+
+
+        const beginningText =
+        commentInput.value.slice(
+          0,
+          selectionStart
+        );
+
+
+        const endingText =
+        commentInput.value.slice(
+          selectionEnd
+        );
+
+
+        commentInput.value =
+        beginningText +
+        emoji +
+        endingText;
+
+
+        const newCursorPosition =
+        selectionStart +
+        emoji.length;
+
+
+        commentInput.focus();
+
+
+        commentInput.setSelectionRange(
+          newCursorPosition,
+          newCursorPosition
+        );
+
+
+        emojiPicker.classList.remove(
+          "show"
+        );
+
+      }
+
+    );
+
+  }
+
+);
+
+
+document.addEventListener(
+
+  "click",
+
+  function(event){
+
+    if(
+
+      !emojiPicker.contains(
+        event.target
+      ) &&
+      event.target !==
+      emojiToggleButton
+
+    ){
+
+      emojiPicker.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+
+);
 
 
 /* =====================================================
@@ -2008,17 +2253,6 @@ function loadComments(){
       );
 
 
-      /*
-        If this page was opened from a
-        notification link, jump straight to
-        that comment and flash it once, right
-        after the very first successful render
-        that actually contains it — then never
-        again, so a later live update (e.g. a
-        new comment arriving) does not yank the
-        page back down to it a second time.
-      */
-
       jumpToLinkedCommentIfPending();
 
     },
@@ -2224,14 +2458,6 @@ function createCommentCard(
   commentOwnerId ===
   currentUser.uid;
 
-
-  /*
-    If this comment is a reply to another one,
-    show a small quoted reference at the top —
-    tapping it jumps to and briefly highlights
-    the original comment, the same way tapping
-    a quoted reply works in WhatsApp.
-  */
 
   const replyToId =
   getFirstValue(
@@ -2546,8 +2772,6 @@ function getPostOwnerId(){
 
 /* =====================================================
    REPLY-TO PREVIEW BANNER
-   (the small quoted box above the comment input,
-   shown after tapping "↩ Reply" on a comment)
 ===================================================== */
 
 function setReplyTarget(
@@ -2647,10 +2871,6 @@ cancelReplyButton.addEventListener(
 
 /* =====================================================
    JUMP TO AND HIGHLIGHT A COMMENT
-   (used when someone taps a "Replying to" quote,
-   the same way tapping a quoted reply in WhatsApp
-   scrolls you to the original message — and also
-   used for the notification-link case below)
 ===================================================== */
 
 function highlightComment(
@@ -2707,19 +2927,6 @@ function highlightComment(
 
 /* =====================================================
    JUMP TO A COMMENT LINKED FROM A NOTIFICATION
-
-   Reads pendingLinkedCommentId (set once, from the
-   "comment" URL parameter, when the page first
-   loads) and — the first time that comment is
-   actually present on the page — scrolls to it and
-   flashes it, the same way tapping a reply quote
-   does. This runs after every comments render
-   because the very first render can happen before
-   Firestore has delivered that particular comment
-   (e.g. on a slow connection), but it only ever
-   fires once: as soon as it succeeds, the pending
-   ID is cleared so later live-update redraws leave
-   the user's scroll position alone.
 ===================================================== */
 
 function jumpToLinkedCommentIfPending(){
@@ -2746,12 +2953,6 @@ function jumpToLinkedCommentIfPending(){
 
 }
 
-
-/*
-  Event delegation for every "Replying to" quote
-  inside the comments list, including ones added
-  later by the live listener.
-*/
 
 commentsList.addEventListener(
 
@@ -2791,13 +2992,6 @@ commentsList.addEventListener(
 
 /* =====================================================
    CREATE COMMENT NOTIFICATION
-
-   Now saves a targetUrl pointing straight at this
-   specific comment (postId + commentId), so tapping
-   the notification on notifications.html no longer
-   falls back to the generic feed link — it opens
-   this page already scrolled to, and flashing,
-   the exact comment that was left.
 ===================================================== */
 
 async function createCommentNotification(
@@ -2830,11 +3024,6 @@ async function createCommentNotification(
 
   }
 
-
-  /*
-    Do not create a notification when someone
-    comments on their own post.
-  */
 
   if(
     postOwnerId ===
@@ -2912,12 +3101,6 @@ async function createCommentNotification(
       error
     );
 
-
-    /*
-      The comment must remain posted even when
-      notification creation fails.
-    */
-
   }
 
 }
@@ -2925,15 +3108,6 @@ async function createCommentNotification(
 
 /* =====================================================
    CREATE REPLY NOTIFICATION
-
-   Separate from the ordinary "commented on your
-   post" notification above — this tells the
-   specific person being replied to, not just the
-   post owner, and is skipped if they are the same
-   person (they would already get the other one).
-   Also saves a targetUrl, pointed at the new reply
-   itself so the recipient lands on what was said
-   to them.
 ===================================================== */
 
 async function createReplyNotification(
@@ -2983,13 +3157,6 @@ async function createReplyNotification(
     originalCommenterId ===
     getPostOwnerId()
   ){
-
-    /*
-      Skip when replying to yourself, or when the
-      person is already the post owner — they get
-      the regular comment notification above and
-      do not need two.
-    */
 
     return;
 
@@ -3151,15 +3318,6 @@ commentForm.addEventListener(
     "Posting...";
 
 
-    /*
-      Captured before the "await" calls below,
-      since clearReplyTarget() resets the shared
-      replyingTo variable once the comment is
-      saved — this keeps the notification and the
-      saved fields consistent with what the
-      banner showed when Post Comment was tapped.
-    */
-
     const activeReplyTarget =
     replyingTo;
 
@@ -3236,13 +3394,6 @@ commentForm.addEventListener(
       );
 
 
-      /*
-        Update the comment count stored on the
-        post itself, so the Community Wall can
-        show "💬 Comment (3)" without having to
-        read every comment for every post.
-      */
-
       try{
 
         await updateDoc(
@@ -3267,19 +3418,8 @@ commentForm.addEventListener(
           error
         );
 
-        /*
-          The comment itself is already saved —
-          a failed count update should not be
-          shown to the user as an error.
-        */
-
       }
 
-
-      /*
-        Create the notification only after
-        the comment has been saved successfully.
-      */
 
       await createCommentNotification(
 
@@ -3379,13 +3519,6 @@ function setupCommentActions(
 
   }
 
-
-  /* =====================================================
-     REPLY TO THIS COMMENT
-     (available to everyone, not just the comment
-     owner — this is the button that solves the
-     "respond to a specific person" request)
-  ===================================================== */
 
   const replyButton =
   commentCard.querySelector(
@@ -3499,10 +3632,6 @@ function setupCommentActions(
 
         );
 
-
-        /*
-          Cancel was pressed.
-        */
 
         if(
           newCommentText === null
@@ -3765,14 +3894,6 @@ function setupCommentActions(
             commentReference
           );
 
-
-          /*
-            If the user had this exact comment
-            open as their reply target, clear the
-            banner so they cannot submit a reply
-            pointing at a comment that no longer
-            exists.
-          */
 
           if(
             replyingTo &&
