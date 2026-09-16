@@ -486,6 +486,31 @@
 
 
     /* =====================================================
+       UPLOAD PROGRESS
+    ===================================================== */
+
+    .coverUploadStatus{
+
+      margin-top:10px;
+
+      display:none;
+
+      color:var(--primary);
+
+      font-size:11px;
+      font-weight:800;
+
+      text-align:center;
+
+    }
+
+
+    .coverUploadStatus.show{
+      display:block;
+    }
+
+
+    /* =====================================================
        FORM FIELDS
     ===================================================== */
 
@@ -834,6 +859,14 @@
         </div>
 
 
+        <div
+          id="coverUploadStatus"
+          class="coverUploadStatus"
+        >
+          Uploading image... 0%
+        </div>
+
+
         <input
           id="coverImageInput"
           class="hiddenFileInput"
@@ -1028,21 +1061,27 @@ import{
 
 
 /* =====================================================
-   CLOUDINARY SETTINGS
+   IMAGEKIT SETTINGS
    (Firebase Storage requires the paid Blaze plan just
    to be enabled at all, so cover images upload through
-   Cloudinary instead — the same free service already
-   used for community posts and profile pictures.)
+   ImageKit instead — the same free service already used
+   for community posts, profile pictures, and Faith
+   Moments elsewhere in this app. The signature is
+   fetched from a small Vercel serverless function so
+   the private key never touches this page.)
 ===================================================== */
 
-const CLOUDINARY_CLOUD_NAME =
-"glq2nymz";
+const IMAGEKIT_PUBLIC_KEY =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
 
-const CLOUDINARY_UPLOAD_PRESET =
-"sabasaba_community";
+const IMAGEKIT_URL_ENDPOINT =
+"https://ik.imagekit.io/f5si9ehav";
 
-const CLOUDINARY_UPLOAD_URL =
-`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+const IMAGEKIT_AUTH_ENDPOINT =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const IMAGEKIT_UPLOAD_URL =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* =====================================================
@@ -1092,6 +1131,11 @@ document.getElementById(
 const coverImageInput =
 document.getElementById(
   "coverImageInput"
+);
+
+const coverUploadStatus =
+document.getElementById(
+  "coverUploadStatus"
 );
 
 const groupNameInput =
@@ -1658,18 +1702,55 @@ removeCoverButton.addEventListener(
 
 
 /* =====================================================
-   UPLOAD NEW COVER IMAGE
+   GET IMAGEKIT UPLOAD AUTHENTICATION
 ===================================================== */
 
-function uploadNewCoverImage(){
+async function getImagekitAuthParameters(){
 
-  if(!selectedNewCoverFile){
+  const response =
+  await fetch(
+    IMAGEKIT_AUTH_ENDPOINT
+  );
 
-    return Promise.resolve(
-      existingCoverImageUrl
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the image upload. Please try again."
     );
 
   }
+
+
+  return response.json();
+
+}
+
+
+/* =====================================================
+   UPLOAD NEW COVER IMAGE TO IMAGEKIT
+===================================================== */
+
+async function uploadNewCoverImage(){
+
+  if(!selectedNewCoverFile){
+
+    return existingCoverImageUrl;
+
+  }
+
+
+  const authParameters =
+  await getImagekitAuthParameters();
+
+
+  coverUploadStatus.classList.add(
+    "show"
+  );
+
+
+  coverUploadStatus.textContent =
+  "Uploading image... 0%";
 
 
   return new Promise(
@@ -1686,14 +1767,38 @@ function uploadNewCoverImage(){
 
 
       formData.append(
-        "upload_preset",
-        CLOUDINARY_UPLOAD_PRESET
+        "fileName",
+        selectedNewCoverFile.name || "group-cover-image"
+      );
+
+
+      formData.append(
+        "publicKey",
+        IMAGEKIT_PUBLIC_KEY
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
       );
 
 
       formData.append(
         "folder",
-        "sabasaba/bible-study-groups"
+        "/sabasaba-bible-study-groups"
       );
 
 
@@ -1703,8 +1808,33 @@ function uploadNewCoverImage(){
 
       uploadRequest.open(
         "POST",
-        CLOUDINARY_UPLOAD_URL,
+        IMAGEKIT_UPLOAD_URL,
         true
+      );
+
+
+      uploadRequest.upload.addEventListener(
+        "progress",
+        function(event){
+
+          if(!event.lengthComputable){
+            return;
+          }
+
+
+          const progress =
+          Math.round(
+            (
+              event.loaded /
+              event.total
+            ) * 100
+          );
+
+
+          coverUploadStatus.textContent =
+          `Uploading image... ${progress}%`;
+
+        }
       );
 
 
@@ -1727,7 +1857,7 @@ function uploadNewCoverImage(){
 
             reject(
               new Error(
-                "Cloudinary returned an invalid response."
+                "ImageKit returned an invalid response."
               )
             );
 
@@ -1739,11 +1869,15 @@ function uploadNewCoverImage(){
           if(
             uploadRequest.status >= 200 &&
             uploadRequest.status < 300 &&
-            responseData?.secure_url
+            responseData?.url
           ){
 
+            coverUploadStatus.textContent =
+            "Upload complete";
+
+
             resolve(
-              responseData.secure_url
+              responseData.url
             );
 
             return;
@@ -1753,8 +1887,8 @@ function uploadNewCoverImage(){
 
           reject(
             new Error(
-              responseData?.error?.message ||
-              "Cloudinary upload failed."
+              responseData?.message ||
+              "ImageKit upload failed."
             )
           );
 
@@ -1916,6 +2050,11 @@ async function saveGroupChanges(){
     false;
 
 
+    coverUploadStatus.classList.remove(
+      "show"
+    );
+
+
     showFormMessage(
       "Group details were saved.",
       "success"
@@ -1926,6 +2065,11 @@ async function saveGroupChanges(){
     console.error(
       "Group saving error:",
       error
+    );
+
+
+    coverUploadStatus.classList.remove(
+      "show"
     );
 
 
@@ -1940,9 +2084,7 @@ async function saveGroupChanges(){
       );
 
     }else if(
-      String(error?.message || "")
-      .toLowerCase()
-      .includes("cloudinary")
+      error?.message
     ){
 
       showFormMessage(
