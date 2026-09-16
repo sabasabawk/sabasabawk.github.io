@@ -291,65 +291,6 @@ select:focus-visible{
 
 
 /* =====================================================
-   PRAYER ACTION BAR
-===================================================== */
-
-.prayerActionBar{
-  margin-bottom:18px;
-  padding:14px;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  background:#ffffff;
-  box-shadow:0 5px 16px rgba(0,0,0,.08);
-}
-
-.prayerActionText{
-  min-width:0;
-}
-
-.prayerActionText h2{
-  color:#1f2b35;
-  font-size:18px;
-  line-height:1.3;
-}
-
-.prayerActionText p{
-  margin-top:4px;
-  color:#6c7781;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.requestPrayerButton{
-  flex-shrink:0;
-  min-height:44px;
-  padding:11px 16px;
-  border:none;
-  border-radius:14px;
-  background:#087bd1;
-  color:#ffffff;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  transition:
-    background .2s ease,
-    transform .2s ease;
-}
-
-.requestPrayerButton:hover{
-  background:#005fae;
-  transform:translateY(-1px);
-}
-
-.requestPrayerButton:active{
-  transform:scale(.98);
-}
-
-
-/* =====================================================
    CATEGORY FILTERS
 ===================================================== */
 
@@ -773,16 +714,6 @@ select:focus-visible{
     font-size:16px;
   }
 
-  .prayerActionBar{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .requestPrayerButton{
-    width:100%;
-    text-align:center;
-  }
-
   .prayerCard{
     padding:16px;
     border-radius:18px;
@@ -939,42 +870,6 @@ select:focus-visible{
       Philippians 4:6
 
     </div>
-
-  </section>
-
-
-  <!-- =================================================
-       REQUEST PRAYER
-  ================================================== -->
-
-  <section class="prayerActionBar">
-
-    <div class="prayerActionText">
-
-      <h2>
-
-        Need Prayer?
-
-      </h2>
-
-      <p>
-
-        Share your request and let the
-        Faith Connect family pray with you.
-
-      </p>
-
-    </div>
-
-
-    <a
-      href="create-prayer.html"
-      class="requestPrayerButton"
-    >
-
-      ➕ Request Prayer
-
-    </a>
 
   </section>
 
