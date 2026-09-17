@@ -3298,12 +3298,47 @@ async function loadMoreCommunityPosts(){
         noMorePostsAvailable =
         true;
 
-      }else{
 
-        lastVisibleDocument =
-        null;
+        updateLoadMoreSentinel();
+
+
+        return;
 
       }
+
+
+      /*
+         Reached the true end of the feed —
+         instead of appending duplicate posts
+         forever, loop back to the very top of
+         the feed (the newest posts, already
+         showing) so scrolling never actually
+         "ends". lastVisibleDocument resets to
+         null so the next scroll-down starts
+         the same first page again.
+      */
+
+      lastVisibleDocument =
+      null;
+
+
+      olderPostsDocs =
+      [];
+
+
+      renderCommunityPosts();
+
+
+      window.scrollTo(
+        {
+          top:0,
+          behavior:"smooth"
+        }
+      );
+
+
+      isLoadingMorePosts =
+      false;
 
 
       updateLoadMoreSentinel();
