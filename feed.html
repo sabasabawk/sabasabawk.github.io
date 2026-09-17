@@ -2165,22 +2165,33 @@ null;
 
 
 /*
-   Older posts loaded via scrolling are kept
-   here permanently, separate from the live
-   top-page cache. This is what fixes the bug
-   where liking/commenting on any post used to
-   silently wipe out everything the user had
-   already scrolled down to load.
+   FACEBOOK-STYLE FEED MODEL
+
+   A single ordered list of every post currently
+   loaded into the page, newest first. Unlike the
+   old design, this list is never wholesale replaced
+   by the live listener — new posts are only ever
+   PREPENDED to the front as they arrive, and older
+   posts loaded by scrolling are only ever APPENDED
+   to the end. Nothing already on screen ever falls
+   out just because someone else posted something
+   new — the same behaviour Facebook, Instagram, etc.
+   all use for their feeds.
 */
 
-let latestPostsDocsCache =
+let loadedPostsDocs =
 [];
 
 
-let olderPostsDocs =
-[];
+const loadedPostIds =
+new Set();
 
 
+let firstFeedSnapshotHandled =
+false;
+
+
+/*
 /*
    Groups rapid bursts of live updates
    (e.g. many people posting at once)
@@ -2723,12 +2734,15 @@ function startCommunityFeed(){
   false;
 
 
-  latestPostsDocsCache =
+  loadedPostsDocs =
   [];
 
 
-  olderPostsDocs =
-  [];
+  loadedPostIds.clear();
+
+
+  firstFeedSnapshotHandled =
+  false;
 
 
   loadMoreSentinel.textContent =
@@ -3006,9 +3020,7 @@ function renderCommunityPosts(){
 
 
   const combinedDocs =
-  latestPostsDocsCache.concat(
-    olderPostsDocs
-  );
+  loadedPostsDocs;
 
 
   if(
@@ -3111,19 +3123,44 @@ function loadCommunityPosts(){
 
       function(snapshot){
 
-        latestPostsDocsCache =
-        snapshot.docs;
+        /*
+           FACEBOOK-STYLE LIVE UPDATE
+
+           The very first snapshot fill loadedPostsDocs
+           from scratch (this is the initial page load).
+           Every snapshot AFTER that only ever PREPENDS
+           brand-new posts that were not already loaded —
+           it never removes or reshuffles anything already
+           on screen, even if a new post pushes an older
+           one out of this top-50 query window. That
+           reshuffling was exactly what caused the "oldest
+           post disappears" bug: the old code replaced the
+           whole top section on every single change.
+        */
+
+        if(!firstFeedSnapshotHandled){
+
+          firstFeedSnapshotHandled =
+          true;
 
 
-        saveFeedCache(
-          snapshot.docs
-        );
+          loadedPostsDocs =
+          snapshot.docs.slice();
 
 
-        if(
-          olderPostsDocs.length ===
-          0
-        ){
+          loadedPostIds.clear();
+
+
+          loadedPostsDocs.forEach(
+            function(postDoc){
+
+              loadedPostIds.add(
+                postDoc.id
+              );
+
+            }
+          );
+
 
           if(
             snapshot.docs.length > 0
@@ -3141,10 +3178,154 @@ function loadCommunityPosts(){
           snapshot.docs.length ===
           0;
 
+
+          saveFeedCache(
+            loadedPostsDocs
+          );
+
+
+          scheduleCommunityPostsRender();
+
+
+          return;
+
         }
 
 
-        scheduleCommunityPostsRender();
+        const newlyAddedDocs =
+        [];
+
+
+        snapshot.docChanges().forEach(
+          function(change){
+
+            if(
+              change.type !==
+              "added"
+            ){
+
+              /*
+                 "modified" (likes/comments/edits) and
+                 "removed" (often just a post falling out
+                 of the top-50 window, not an actual
+                 delete) are intentionally ignored here —
+                 likes and edits already update their own
+                 post card directly, and real deletions are
+                 removed from the DOM immediately by the
+                 delete button itself, not by this listener.
+              */
+
+              return;
+
+            }
+
+
+            if(
+              loadedPostIds.has(
+                change.doc.id
+              )
+            ){
+
+              return;
+
+            }
+
+
+            loadedPostIds.add(
+              change.doc.id
+            );
+
+
+            newlyAddedDocs.push(
+              change.doc
+            );
+
+          }
+        );
+
+
+        if(
+          newlyAddedDocs.length === 0
+        ){
+
+          return;
+
+        }
+
+
+        newlyAddedDocs.sort(
+          function(firstDoc,secondDoc){
+
+            const firstTime =
+            firstDoc.data()?.timestamp?.seconds ||
+            0;
+
+
+            const secondTime =
+            secondDoc.data()?.timestamp?.seconds ||
+            0;
+
+
+            return secondTime - firstTime;
+
+          }
+        );
+
+
+        loadedPostsDocs =
+        newlyAddedDocs.concat(
+          loadedPostsDocs
+        );
+
+
+        saveFeedCache(
+          loadedPostsDocs
+        );
+
+
+        newlyAddedDocs
+        .slice()
+        .reverse()
+        .forEach(
+          function(postDoc){
+
+            try{
+
+              const postData = {
+
+                id:
+                postDoc.id,
+
+                ...postDoc.data()
+
+              };
+
+
+              const newCard =
+              createPostCard(
+                postData
+              );
+
+
+              postsContainer.insertBefore(
+                newCard,
+                postsContainer.firstChild
+              );
+
+            }catch(error){
+
+              console.error(
+                "Error inserting new post card:",
+                error
+              );
+
+            }
+
+          }
+        );
+
+
+        startVideoAutoPlay();
 
       },
 
@@ -3291,8 +3472,7 @@ async function loadMoreCommunityPosts(){
     if(snapshot.empty){
 
       if(
-        latestPostsDocsCache.length === 0 &&
-        olderPostsDocs.length === 0
+        loadedPostsDocs.length === 0
       ){
 
         noMorePostsAvailable =
@@ -3309,24 +3489,24 @@ async function loadMoreCommunityPosts(){
 
       /*
          Reached the true end of the feed —
-         instead of appending duplicate posts
-         forever, loop back to the very top of
-         the feed (the newest posts, already
-         showing) so scrolling never actually
-         "ends". lastVisibleDocument resets to
-         null so the next scroll-down starts
-         the same first page again.
+         loop back to the very top instead of
+         showing "no more posts". Everything
+         already loaded stays exactly where it
+         is (nothing is cleared or re-fetched),
+         so this is just a smooth scroll home;
+         the next scroll-down continues pulling
+         in the same posts again from the top,
+         exactly like Facebook's endless feed.
       */
 
       lastVisibleDocument =
-      null;
+      loadedPostsDocs.length > 0
 
+      ? loadedPostsDocs[
+          loadedPostsDocs.length - 1
+        ]
 
-      olderPostsDocs =
-      [];
-
-
-      renderCommunityPosts();
+      : null;
 
 
       window.scrollTo(
@@ -3349,13 +3529,74 @@ async function loadMoreCommunityPosts(){
     }
 
 
-    olderPostsDocs =
-    olderPostsDocs.concat(
-      snapshot.docs
+    const newOlderDocs =
+    snapshot.docs.filter(
+      function(postDoc){
+
+        return !loadedPostIds.has(
+          postDoc.id
+        );
+
+      }
     );
 
 
-    renderCommunityPosts();
+    newOlderDocs.forEach(
+      function(postDoc){
+
+        loadedPostIds.add(
+          postDoc.id
+        );
+
+      }
+    );
+
+
+    loadedPostsDocs =
+    loadedPostsDocs.concat(
+      newOlderDocs
+    );
+
+
+    newOlderDocs.forEach(
+      function(postDoc){
+
+        try{
+
+          const postData = {
+
+            id:
+            postDoc.id,
+
+            ...postDoc.data()
+
+          };
+
+
+          const olderCard =
+          createPostCard(
+            postData
+          );
+
+
+          postsContainer.appendChild(
+            olderCard
+          );
+
+        }catch(error){
+
+          console.error(
+            "Error appending older post card:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+    startVideoAutoPlay();
 
 
     lastVisibleDocument =
@@ -4759,6 +5000,56 @@ async function handleDeleteButton(
     await deleteDoc(
       postReference
     );
+
+
+    /*
+       Remove it from the page and from the
+       loaded-post tracking right away — the
+       live listener now deliberately ignores
+       "removed" snapshot changes (since those
+       also fire when a post simply falls out
+       of the top-50 window, not just on real
+       deletes), so this button is what actually
+       takes a deleted post off the screen.
+    */
+
+    loadedPostIds.delete(
+      postId
+    );
+
+
+    loadedPostsDocs =
+    loadedPostsDocs.filter(
+      function(postDoc){
+
+        return postDoc.id !==
+        postId;
+
+      }
+    );
+
+
+    const postCardElement =
+    document.getElementById(
+      `post-${postId}`
+    );
+
+
+    if(postCardElement){
+
+      postCardElement.remove();
+
+    }
+
+
+    if(
+      postsContainer.children.length ===
+      0
+    ){
+
+      showEmptyMessage();
+
+    }
 
   }catch(error){
 
