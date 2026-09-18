@@ -2,20 +2,34 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0"
 >
+
 <meta
   name="description"
   content="Create and publish a post on the SABASABA Gospel Ministry Community Wall"
 >
+
 <title>
   Create Post | SABASABA Gospel Ministry
 </title>
 
 <style>
+
+/* =====================================================
+   PART 1 OF 6
+   DOCUMENT SETUP AND MAIN CSS
+===================================================== */
+
+
+/* =====================================================
+   GENERAL PAGE
+===================================================== */
 
 *{
   box-sizing:border-box;
@@ -44,6 +58,11 @@ button{
   -webkit-tap-highlight-color:transparent;
 }
 
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
 .container{
   width:100%;
   max-width:700px;
@@ -53,6 +72,11 @@ button{
   border-radius:16px;
   box-shadow:0 4px 14px rgba(0,0,0,.10);
 }
+
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
 
 h1{
   margin:0 0 8px;
@@ -68,6 +92,11 @@ h1{
   line-height:1.6;
   text-align:center;
 }
+
+
+/* =====================================================
+   FORM ELEMENTS
+===================================================== */
 
 label{
   display:block;
@@ -102,6 +131,75 @@ textarea{
   resize:vertical;
   line-height:1.5;
 }
+
+
+/* =====================================================
+   EMOJI TOOLBAR
+===================================================== */
+
+.emojiToolbarRow{
+  margin-top:10px;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.emojiToggleButton{
+  width:40px;
+  height:40px;
+  border:1px solid #c8d1dc;
+  border-radius:10px;
+  background:#f4f6f8;
+  color:#0066cc;
+  font-size:19px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.emojiToggleButton:hover{
+  background:#edf5ff;
+}
+
+.emojiPicker{
+  position:absolute;
+  left:0;
+  top:48px;
+  z-index:40;
+  width:280px;
+  max-width:calc(100vw - 60px);
+  max-height:230px;
+  overflow-y:auto;
+  display:none;
+  padding:10px;
+  border:1px solid #c8d1dc;
+  border-radius:14px;
+  grid-template-columns:repeat(6,1fr);
+  gap:7px;
+  background:#ffffff;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+.emojiPicker.show{
+  display:grid;
+}
+
+.emojiPicker button{
+  min-height:38px;
+  border:0;
+  border-radius:8px;
+  background:#f4f6f8;
+  font-size:21px;
+}
+
+.emojiPicker button:hover{
+  background:#e4ebf2;
+}
+
+
+/* =====================================================
+   MEDIA SELECTION AREA
+===================================================== */
 
 .media-options{
   margin-top:18px;
@@ -152,6 +250,11 @@ textarea{
   line-height:1.5;
 }
 
+
+/* =====================================================
+   MEDIA PREVIEW
+===================================================== */
+
 #mediaPreview{
   display:none;
   margin-top:16px;
@@ -178,6 +281,11 @@ textarea{
   font-size:13px;
   word-break:break-word;
 }
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .publish-button{
   width:100%;
@@ -234,6 +342,15 @@ textarea{
 .back-button:hover{
   background:#d8e2ec;
 }
+/* =====================================================
+   PART 2 OF 6
+   REMAINING CSS AND COMPLETE HTML
+===================================================== */
+
+
+/* =====================================================
+   UPLOAD PROGRESS
+===================================================== */
 
 #uploadArea{
   display:none;
@@ -266,6 +383,11 @@ textarea{
   text-align:center;
 }
 
+
+/* =====================================================
+   SUCCESS AND ERROR MESSAGES
+===================================================== */
+
 #message{
   min-height:24px;
   margin-top:18px;
@@ -283,6 +405,11 @@ textarea{
   color:#d93025;
 }
 
+
+/* =====================================================
+   BACK SECTION
+===================================================== */
+
 .back{
   margin-top:20px;
   text-align:center;
@@ -292,6 +419,11 @@ textarea{
   display:block;
   text-decoration:none;
 }
+
+
+/* =====================================================
+   MOBILE DESIGN
+===================================================== */
 
 @media(max-width:600px){
 
@@ -314,6 +446,7 @@ textarea{
 
 }
 
+
 @media(max-width:480px){
 
   .media-picker-buttons{
@@ -331,6 +464,11 @@ textarea{
 
 <div class="container">
 
+
+<!-- =====================================================
+     PAGE HEADING
+===================================================== -->
+
 <h1>
 ✍️ Create a Post
 </h1>
@@ -345,6 +483,11 @@ SABASABA Gospel Ministry community.
 
 </p>
 
+
+<!-- =====================================================
+     YOUR NAME
+===================================================== -->
+
 <label for="name">
 Your Name
 </label>
@@ -355,6 +498,11 @@ Your Name
   placeholder="Enter your name"
   autocomplete="name"
 >
+
+
+<!-- =====================================================
+     POST CATEGORY
+===================================================== -->
 
 <label for="category">
 Category
@@ -388,6 +536,11 @@ Question
 
 </select>
 
+
+<!-- =====================================================
+     POST MESSAGE
+===================================================== -->
+
 <label for="post">
 Your Post
 </label>
@@ -397,6 +550,73 @@ Your Post
   maxlength="5000"
   placeholder="Write your message here..."
 ></textarea>
+
+
+<!-- =====================================================
+     EMOJI TOOLBAR
+===================================================== -->
+
+<div class="emojiToolbarRow">
+
+  <button
+    id="emojiToggleButton"
+    type="button"
+    class="emojiToggleButton"
+    aria-label="Open emoji picker"
+    title="Emoji"
+  >
+    😊
+  </button>
+
+
+  <div
+    id="emojiPicker"
+    class="emojiPicker"
+  >
+
+    <button type="button">😀</button>
+    <button type="button">😁</button>
+    <button type="button">😂</button>
+    <button type="button">🤣</button>
+    <button type="button">😊</button>
+    <button type="button">😍</button>
+
+    <button type="button">🥰</button>
+    <button type="button">😘</button>
+    <button type="button">😇</button>
+    <button type="button">🙏</button>
+    <button type="button">❤️</button>
+    <button type="button">👍</button>
+
+    <button type="button">👏</button>
+    <button type="button">🔥</button>
+    <button type="button">🎉</button>
+    <button type="button">💪</button>
+    <button type="button">🙌</button>
+    <button type="button">🤝</button>
+
+    <button type="button">📖</button>
+    <button type="button">✝️</button>
+    <button type="button">⛪</button>
+    <button type="button">🕊️</button>
+    <button type="button">🌍</button>
+    <button type="button">🌞</button>
+
+    <button type="button">😢</button>
+    <button type="button">😭</button>
+    <button type="button">😔</button>
+    <button type="button">🤗</button>
+    <button type="button">💖</button>
+    <button type="button">✨</button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     PHOTO OR VIDEO
+===================================================== -->
 
 <div class="media-options">
 
@@ -424,12 +644,14 @@ Add Photo or Video
 
 </div>
 
+
 <input
   type="file"
   id="mediaFile"
   accept="image/*,video/*"
   hidden
 >
+
 
 <p class="media-help">
 
@@ -445,6 +667,11 @@ Maximum 100 MB.
 </p>
 
 </div>
+
+
+<!-- =====================================================
+     MEDIA PREVIEW
+===================================================== -->
 
 <div id="mediaPreview">
 
@@ -465,6 +692,11 @@ Maximum 100 MB.
 
 </div>
 
+
+<!-- =====================================================
+     UPLOAD PROGRESS
+===================================================== -->
+
 <div id="uploadArea">
 
 <div class="progress-container">
@@ -479,6 +711,11 @@ Preparing upload...
 
 </div>
 
+
+<!-- =====================================================
+     PUBLISH BUTTON
+===================================================== -->
+
 <button
   type="button"
   id="publishBtn"
@@ -487,10 +724,20 @@ Preparing upload...
 📢 Publish Post
 </button>
 
+
+<!-- =====================================================
+     STATUS MESSAGE
+===================================================== -->
+
 <p
   id="message"
   aria-live="polite"
 ></p>
+
+
+<!-- =====================================================
+     BACK BUTTON
+===================================================== -->
 
 <div class="back">
 
@@ -511,6 +758,12 @@ Preparing upload...
 
 
 <script type="module">
+/* =====================================================
+   PART 3 OF 6
+   FIREBASE IMPORTS, IMAGEKIT SETTINGS
+   AND PAGE SETUP
+===================================================== */
+
 
 /* =====================================================
    FIREBASE IMPORTS
@@ -596,6 +849,18 @@ document.getElementById(
 const postInput =
 document.getElementById(
   "post"
+);
+
+
+const emojiToggleButton =
+document.getElementById(
+  "emojiToggleButton"
+);
+
+
+const emojiPicker =
+document.getElementById(
+  "emojiPicker"
 );
 
 
@@ -786,6 +1051,121 @@ function disablePublishButton(){
 
 
 /* =====================================================
+   EMOJI PICKER
+===================================================== */
+
+emojiToggleButton.addEventListener(
+  "click",
+  function(event){
+
+    event.stopPropagation();
+
+
+    emojiPicker.classList.toggle(
+      "show"
+    );
+
+  }
+);
+
+
+emojiPicker
+.querySelectorAll(
+  "button"
+)
+.forEach(
+  function(emojiOption){
+
+    emojiOption.addEventListener(
+      "click",
+      function(){
+
+        const emoji =
+        emojiOption.textContent;
+
+
+        const selectionStart =
+        postInput.selectionStart ??
+        postInput.value.length;
+
+
+        const selectionEnd =
+        postInput.selectionEnd ??
+        postInput.value.length;
+
+
+        const beginningText =
+        postInput.value.slice(
+          0,
+          selectionStart
+        );
+
+
+        const endingText =
+        postInput.value.slice(
+          selectionEnd
+        );
+
+
+        postInput.value =
+        beginningText +
+        emoji +
+        endingText;
+
+
+        const newCursorPosition =
+        selectionStart +
+        emoji.length;
+
+
+        postInput.focus();
+
+
+        postInput.setSelectionRange(
+          newCursorPosition,
+          newCursorPosition
+        );
+
+
+        emojiPicker.classList.remove(
+          "show"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      !emojiPicker.contains(
+        event.target
+      ) &&
+      event.target !==
+      emojiToggleButton
+    ){
+
+      emojiPicker.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+/* =====================================================
+   PART 4 OF 6
+   AUTHENTICATION, PROFILE LOADING
+   AND OPENING THE PHONE GALLERY
+===================================================== */
+
+
+/* =====================================================
    LOAD CURRENT USER PROFILE
 ===================================================== */
 
@@ -919,6 +1299,10 @@ function openMediaPicker(mediaType){
 }
 
 
+/* =====================================================
+   CHOOSE PHOTO BUTTON
+===================================================== */
+
 choosePhotoBtn.addEventListener(
   "click",
   function(){
@@ -931,6 +1315,10 @@ choosePhotoBtn.addEventListener(
 );
 
 
+/* =====================================================
+   CHOOSE VIDEO BUTTON
+===================================================== */
+
 chooseVideoBtn.addEventListener(
   "click",
   function(){
@@ -942,6 +1330,10 @@ chooseVideoBtn.addEventListener(
   }
 );
 
+
+/* =====================================================
+   OPEN REQUESTED PICKER FROM COMMUNITY WALL
+===================================================== */
 
 function openRequestedMediaPicker(){
 
@@ -981,6 +1373,10 @@ function openRequestedMediaPicker(){
 }
 
 
+/* =====================================================
+   RUN REQUESTED PICKER AFTER PAGE LOAD
+===================================================== */
+
 window.addEventListener(
   "load",
   function(){
@@ -989,6 +1385,11 @@ window.addEventListener(
 
   }
 );
+/* =====================================================
+   PART 5 OF 6
+   MEDIA SELECTION, PREVIEW
+   AND IMAGEKIT UPLOAD
+===================================================== */
 
 
 /* =====================================================
@@ -1246,6 +1647,10 @@ function clearSelectedMedia(){
 }
 
 
+/* =====================================================
+   REMOVE MEDIA BUTTON
+===================================================== */
+
 removeMediaBtn.addEventListener(
   "click",
   function(){
@@ -1275,10 +1680,6 @@ removeMediaBtn.addEventListener(
 
 /* =====================================================
    GET IMAGEKIT UPLOAD AUTHENTICATION
-   (fetches a fresh token/signature/expire from
-   our Vercel serverless function before every
-   upload — the private key never touches this
-   page or the browser)
 ===================================================== */
 
 async function getImagekitAuthParameters(){
@@ -1612,6 +2013,11 @@ async function uploadPostMedia(file){
   );
 
 }
+/* =====================================================
+   PART 6 OF 6
+   PUBLISH POST TO FIRESTORE,
+   REDIRECT AND FINAL CLOSING
+===================================================== */
 
 
 /* =====================================================
@@ -1685,6 +2091,10 @@ async function publishPost(){
   }
 
 
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
   const savedPicture =
   getFirstValue(
     currentProfile?.profilePicture,
@@ -1718,6 +2128,10 @@ async function publishPost(){
   try{
 
 
+/* =====================================================
+   UPLOAD MEDIA TO IMAGEKIT
+===================================================== */
+
     const mediaResult =
     await uploadPostMedia(
       selectedMediaFile
@@ -1735,6 +2149,10 @@ async function publishPost(){
     ? mediaResult.mediaUrl
     : "";
 
+
+/* =====================================================
+   SAVE POST TO FIRESTORE
+===================================================== */
 
     await addDoc(
       collection(
@@ -1801,6 +2219,10 @@ async function publishPost(){
     );
 
 
+/* =====================================================
+   UPDATE LOCAL POST TOTAL
+===================================================== */
+
     let totalPosts =
     parseInt(
       localStorage.getItem(
@@ -1815,11 +2237,19 @@ async function publishPost(){
     );
 
 
+/* =====================================================
+   SHOW SUCCESS MESSAGE
+===================================================== */
+
     showMessage(
       "✅ Your post has been published successfully!",
       "success"
     );
 
+
+/* =====================================================
+   RESET FORM
+===================================================== */
 
     postInput.value =
     "";
@@ -1834,6 +2264,10 @@ async function publishPost(){
     publishBtn.textContent =
     "✅ Published";
 
+
+/* =====================================================
+   RETURN TO COMMUNITY WALL
+===================================================== */
 
     window.setTimeout(
       function(){
@@ -1870,11 +2304,19 @@ async function publishPost(){
 }
 
 
+/* =====================================================
+   PUBLISH BUTTON
+===================================================== */
+
 publishBtn.addEventListener(
   "click",
   publishPost
 );
 
+
+/* =====================================================
+   CTRL + ENTER TO PUBLISH
+===================================================== */
 
 postInput.addEventListener(
   "keydown",
@@ -1896,6 +2338,10 @@ postInput.addEventListener(
 );
 
 
+/* =====================================================
+   PREVENT DOUBLE SUBMISSION
+===================================================== */
+
 window.addEventListener(
   "pageshow",
   function(){
@@ -1909,6 +2355,10 @@ window.addEventListener(
   }
 );
 
+
+/* =====================================================
+   CLEAN PREVIEW WHEN LEAVING PAGE
+===================================================== */
 
 window.addEventListener(
   "beforeunload",
@@ -1931,6 +2381,11 @@ window.addEventListener(
 
   }
 );
+
+
+/* =====================================================
+   END OF MODULE
+===================================================== */
 
 </script>
 
