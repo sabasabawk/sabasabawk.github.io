@@ -480,6 +480,204 @@
 
 
     /* =====================================================
+       ADD MEMBER SECTION
+       (visible only to group administrators — lets
+       the creator/admin add members directly instead
+       of waiting for them to join themselves)
+    ===================================================== */
+
+    .addMemberSection{
+
+      margin-top:16px;
+      padding:16px;
+
+      border:1px solid #b8d8ec;
+      border-radius:var(--radius-large);
+
+      background:var(--primary-light);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .addMemberSection.hidden{
+      display:none;
+    }
+
+
+    .addMemberTitle{
+
+      color:var(--primary-dark);
+
+      font-size:16px;
+      font-weight:900;
+
+    }
+
+
+    .addMemberText{
+
+      margin-top:6px;
+
+      color:#3f6d8c;
+
+      font-size:11px;
+      line-height:1.6;
+
+    }
+
+
+    .addMemberSearchInput{
+
+      width:100%;
+      min-height:46px;
+
+      margin-top:12px;
+      padding:11px 13px;
+
+      border:1px solid var(--border);
+      border-radius:13px;
+
+      background:#ffffff;
+      color:var(--text);
+
+      outline:none;
+
+      font-size:14px;
+
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+    }
+
+
+    .addMemberSearchInput:focus{
+
+      border-color:var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8,123,209,.12);
+
+    }
+
+
+    .addMemberResultsList{
+
+      margin-top:12px;
+
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+
+    }
+
+
+    .addMemberResultCard{
+
+      padding:10px 12px;
+
+      border:1px solid var(--border);
+      border-radius:12px;
+
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      background:#ffffff;
+
+    }
+
+
+    .addMemberResultAvatar{
+
+      width:40px;
+      height:40px;
+      flex-shrink:0;
+
+      border-radius:50%;
+
+      object-fit:cover;
+
+      background:#dce4ea;
+
+    }
+
+
+    .addMemberResultName{
+
+      min-width:0;
+      flex:1;
+
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+
+      font-size:13px;
+      font-weight:800;
+
+    }
+
+
+    .addMemberResultButton{
+
+      flex-shrink:0;
+
+      min-height:34px;
+      padding:7px 12px;
+
+      border:0;
+      border-radius:10px;
+
+      background:var(--primary);
+      color:#ffffff;
+
+      font-size:10px;
+      font-weight:900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+
+    }
+
+
+    .addMemberResultButton:hover{
+      background:var(--primary-dark);
+    }
+
+
+    .addMemberResultButton:active{
+      transform:scale(.96);
+    }
+
+
+    .addMemberResultButton:disabled{
+
+      cursor:not-allowed;
+      opacity:.65;
+
+    }
+
+
+    .addMemberHintText{
+
+      margin-top:12px;
+
+      color:#3f6d8c;
+
+      text-align:center;
+
+      font-size:11px;
+      font-weight:700;
+      line-height:1.5;
+
+    }
+
+
+    /* =====================================================
        SEARCH CARD
     ===================================================== */
 
@@ -1201,6 +1399,46 @@
 
 
       <!-- =================================================
+           ADD MEMBERS
+           (admins/creator only — lets them add a
+           member directly instead of waiting for
+           that person to join themselves)
+      ================================================== -->
+
+      <section
+        id="addMemberSection"
+        class="addMemberSection hidden"
+      >
+
+        <h2 class="addMemberTitle">
+          ➕ Add Members
+        </h2>
+
+        <p class="addMemberText">
+          As a group administrator, you can add Faith
+          Connect members directly, without waiting for
+          them to join on their own.
+        </p>
+
+
+        <input
+          id="addMemberSearchInput"
+          class="addMemberSearchInput"
+          type="search"
+          placeholder="Search Faith Connect members by name..."
+          autocomplete="off"
+        >
+
+
+        <div
+          id="addMemberResultsList"
+          class="addMemberResultsList"
+        ></div>
+
+      </section>
+
+
+      <!-- =================================================
            SEARCH MEMBERS
       ================================================== -->
 
@@ -1324,6 +1562,9 @@
 
 /* =====================================================
    FIREBASE IMPORTS
+   (collection + getDocs added so admins can search
+   every Faith Connect member when adding someone
+   to the group directly)
 ===================================================== */
 
 import{
@@ -1334,7 +1575,9 @@ import{
   updateDoc,
   arrayUnion,
   arrayRemove,
-  onAuthStateChanged
+  onAuthStateChanged,
+  collection,
+  getDocs
 }from "./firebase.js";
 
 
@@ -1375,6 +1618,21 @@ document.getElementById(
 const membersPageContent =
 document.getElementById(
   "membersPageContent"
+);
+
+const addMemberSection =
+document.getElementById(
+  "addMemberSection"
+);
+
+const addMemberSearchInput =
+document.getElementById(
+  "addMemberSearchInput"
+);
+
+const addMemberResultsList =
+document.getElementById(
+  "addMemberResultsList"
 );
 
 const memberSearchInput =
@@ -1438,6 +1696,24 @@ let currentUserIsMember =
 false;
 
 let memberActionRunning =
+false;
+
+
+/*
+   ALL FAITH CONNECT USERS
+   (loaded once, only for group administrators,
+   so the "Add Members" search has something to
+   filter against without re-querying Firestore
+   on every keystroke)
+*/
+
+let allFaithConnectUsers =
+[];
+
+let allUsersLoaded =
+false;
+
+let addMemberActionRunning =
 false;
 
 
@@ -1819,6 +2095,24 @@ function updateCurrentUserRole(){
 
   }
 
+
+  if(currentUserIsAdmin){
+
+    addMemberSection.classList.remove(
+      "hidden"
+    );
+
+
+    loadAllFaithConnectUsers();
+
+  }else{
+
+    addMemberSection.classList.add(
+      "hidden"
+    );
+
+  }
+
 }
 
 
@@ -1937,6 +2231,8 @@ async function loadGroup(){
 
     applyMemberSearch();
 
+    applyAddMemberSearch();
+
     showMembersPage();
 
   }catch(error){
@@ -2008,7 +2304,8 @@ onAuthStateChanged(
 /* =====================================================
    PART 5 OF 6
    MEMBER CARDS, SEARCH, ADMIN PROMOTION,
-   DEMOTION, REMOVAL AND PROFILE NAVIGATION
+   DEMOTION, REMOVAL, ADDING MEMBERS
+   AND PROFILE NAVIGATION
 ===================================================== */
 
 
@@ -2412,6 +2709,8 @@ async function removeMember(
 
     applyMemberSearch();
 
+    applyAddMemberSearch();
+
   }catch(error){
 
     console.error(
@@ -2448,6 +2747,512 @@ async function removeMember(
   }finally{
 
     memberActionRunning =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD ALL FAITH CONNECT USERS
+   (only ever called for group administrators —
+   fetched once per page visit, then filtered
+   locally as the admin types a search)
+===================================================== */
+
+async function loadAllFaithConnectUsers(){
+
+  if(
+    allUsersLoaded ||
+    !currentUserIsAdmin
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const usersSnapshot =
+    await getDocs(
+      collection(
+        db,
+        "users"
+      )
+    );
+
+
+    allFaithConnectUsers =
+    usersSnapshot.docs.map(
+      function(userDocument){
+
+        return {
+          id:
+          userDocument.id,
+
+          ...userDocument.data()
+        };
+
+      }
+    );
+
+
+    allUsersLoaded =
+    true;
+
+
+    applyAddMemberSearch();
+
+  }catch(error){
+
+    console.error(
+      "Loading Faith Connect members for adding error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CREATE ADD MEMBER RESULT CARD
+===================================================== */
+
+function createAddMemberResultCard(
+  user
+){
+
+  const userId =
+  user.id;
+
+
+  const userName =
+  getFirstValue(
+    user.fullName,
+    user.name,
+    user.displayName,
+    "Faith Connect Member"
+  );
+
+
+  const userPicture =
+  getFirstValue(
+    user.profilePicture,
+    user.picture,
+    user.photoURL,
+    user.photoUrl,
+    "images/profile.png"
+  );
+
+
+  const resultCard =
+  document.createElement(
+    "div"
+  );
+
+
+  resultCard.className =
+  "addMemberResultCard";
+
+
+  const avatar =
+  document.createElement(
+    "img"
+  );
+
+
+  avatar.className =
+  "addMemberResultAvatar";
+
+
+  avatar.src =
+  userPicture;
+
+
+  avatar.alt =
+  `${userName}'s profile picture`;
+
+
+  avatar.loading =
+  "lazy";
+
+
+  avatar.addEventListener(
+    "error",
+    function(){
+
+      avatar.src =
+      "images/profile.png";
+
+    },
+    {
+      once:true
+    }
+  );
+
+
+  const nameElement =
+  document.createElement(
+    "div"
+  );
+
+
+  nameElement.className =
+  "addMemberResultName";
+
+
+  nameElement.textContent =
+  userName;
+
+
+  const addButton =
+  document.createElement(
+    "button"
+  );
+
+
+  addButton.type =
+  "button";
+
+
+  addButton.className =
+  "addMemberResultButton";
+
+
+  addButton.textContent =
+  "➕ Add";
+
+
+  addButton.addEventListener(
+    "click",
+    function(){
+
+      addMemberToGroup(
+        userId,
+        addButton
+      );
+
+    }
+  );
+
+
+  resultCard.appendChild(
+    avatar
+  );
+
+
+  resultCard.appendChild(
+    nameElement
+  );
+
+
+  resultCard.appendChild(
+    addButton
+  );
+
+
+  return resultCard;
+
+}
+
+
+/* =====================================================
+   APPLY ADD MEMBER SEARCH
+   (only shows results once the admin has typed
+   something — the full member list can be large,
+   and this avoids dumping every Faith Connect
+   user onto the screen at once)
+===================================================== */
+
+function applyAddMemberSearch(){
+
+  if(!currentUserIsAdmin){
+
+    return;
+
+  }
+
+
+  const searchText =
+  addMemberSearchInput.value
+  .trim()
+  .toLowerCase();
+
+
+  addMemberResultsList.innerHTML =
+  "";
+
+
+  if(!searchText){
+
+    addMemberResultsList.innerHTML = `
+
+      <p class="addMemberHintText">
+        Type a name above to find a Faith Connect
+        member to add to this group.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  if(!allUsersLoaded){
+
+    addMemberResultsList.innerHTML = `
+
+      <p class="addMemberHintText">
+        Loading Faith Connect members...
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  const matchingUsers =
+  allFaithConnectUsers.filter(
+    function(user){
+
+      if(
+        groupMembers.includes(
+          user.id
+        )
+      ){
+
+        return false;
+
+      }
+
+
+      const userName =
+      getFirstValue(
+        user.fullName,
+        user.name,
+        user.displayName
+      ).toLowerCase();
+
+
+      return userName.includes(
+        searchText
+      );
+
+    }
+  ).slice(0,15);
+
+
+  if(
+    matchingUsers.length === 0
+  ){
+
+    addMemberResultsList.innerHTML = `
+
+      <p class="addMemberHintText">
+        No matching Faith Connect members were found.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  matchingUsers.forEach(
+    function(user){
+
+      const resultCard =
+      createAddMemberResultCard(
+        user
+      );
+
+
+      addMemberResultsList.appendChild(
+        resultCard
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ADD MEMBER SEARCH INPUT EVENT
+===================================================== */
+
+addMemberSearchInput.addEventListener(
+  "input",
+  applyAddMemberSearch
+);
+
+
+/* =====================================================
+   ADD MEMBER TO GROUP
+===================================================== */
+
+async function addMemberToGroup(
+  userId,
+  actionButton
+){
+
+  if(
+    addMemberActionRunning ||
+    !currentUserIsAdmin ||
+    !userId ||
+    groupMembers.includes(
+      userId
+    )
+  ){
+
+    return;
+
+  }
+
+
+  addMemberActionRunning =
+  true;
+
+
+  actionButton.disabled =
+  true;
+
+
+  actionButton.textContent =
+  "Adding...";
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "bibleStudyGroups",
+        groupId
+      ),
+      {
+        members:
+        arrayUnion(
+          userId
+        )
+      }
+    );
+
+
+    groupMembers.push(
+      userId
+    );
+
+
+    const addedProfile =
+    allFaithConnectUsers.find(
+      function(user){
+
+        return user.id ===
+        userId;
+
+      }
+    ) ||
+    await loadMemberProfile(
+      userId
+    );
+
+
+    loadedMembers.push(
+      addedProfile
+    );
+
+
+    loadedMembers.sort(
+      function(firstMember,secondMember){
+
+        const firstName =
+        getFirstValue(
+          firstMember.fullName,
+          firstMember.name,
+          firstMember.displayName,
+          "Faith Connect Member"
+        );
+
+
+        const secondName =
+        getFirstValue(
+          secondMember.fullName,
+          secondMember.name,
+          secondMember.displayName,
+          "Faith Connect Member"
+        );
+
+
+        return firstName.localeCompare(
+          secondName
+        );
+
+      }
+    );
+
+
+    headerMemberCount.textContent =
+    String(
+      groupMembers.length
+    );
+
+
+    headerSubtitle.textContent =
+    `${groupMembers.length} member${
+      groupMembers.length === 1
+      ? ""
+      : "s"
+    }`;
+
+
+    applyMemberSearch();
+
+    applyAddMemberSearch();
+
+  }catch(error){
+
+    console.error(
+      "Add member error:",
+      error
+    );
+
+
+    if(
+      error?.code ===
+      "permission-denied"
+    ){
+
+      alert(
+        "Firestore denied permission to add this member."
+      );
+
+    }else{
+
+      alert(
+        "This member could not be added. Please try again."
+      );
+
+    }
+
+
+    actionButton.disabled =
+    false;
+
+
+    actionButton.textContent =
+    "➕ Add";
+
+  }finally{
+
+    addMemberActionRunning =
     false;
 
   }
