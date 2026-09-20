@@ -6859,3 +6859,2889 @@ function startMomentsStripListener(){
 </body>
 
 </html>
+/* =====================================================
+   PART 1 OF 10
+   DOCUMENT SETUP, GENERAL PAGE AND TOP BAR
+===================================================== */
+
+
+/* =====================================================
+   GENERAL RESET
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:#eef3f8;
+  color:#222222;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  cursor:pointer;
+}
+
+img,
+video{
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+}
+
+
+/* =====================================================
+   MAIN APPLICATION TOP BAR
+===================================================== */
+
+.appTopBar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  width:100%;
+  background:#ffffff;
+  border-bottom:1px solid #d7e0e8;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.appTopBarInner{
+  width:100%;
+  max-width:760px;
+  min-height:64px;
+  margin:auto;
+  padding:8px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+
+/* =====================================================
+   MINISTRY BRAND
+===================================================== */
+
+.appBrand{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+
+.appBrandText{
+  min-width:0;
+  color:#075daa;
+  font-size:19px;
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   TOP BAR ACTION BUTTONS
+===================================================== */
+
+.topBarActions{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.topIconLink{
+  position:relative;
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#edf3f8;
+  color:#1f2933;
+  text-decoration:none;
+  font-size:20px;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.topIconLink:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.topIconLink:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   NOTIFICATION NUMBER BADGE
+===================================================== */
+
+.notificationBadge{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:20px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:#e60023;
+  color:#ffffff;
+  border:2px solid #ffffff;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1;
+}
+
+
+/* =====================================================
+   MAIN PAGE CONTAINER
+===================================================== */
+
+.pageContainer{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:16px 14px 115px;
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+a:focus-visible{
+  outline:3px solid rgba(8,123,209,.35);
+  outline-offset:3px;
+}
+
+
+/* =====================================================
+   SMALL-SCREEN TOP BAR
+===================================================== */
+
+@media(max-width:600px){
+
+  .appTopBarInner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .appBrandText{
+    font-size:16px;
+  }
+
+  .topIconLink{
+    width:39px;
+    height:39px;
+    font-size:18px;
+  }
+
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+}
+/* =====================================================
+   PART 2 OF 10
+   QUICK POST BOX, COMMUNITY WALL HEADER
+   AND STATUS CARDS
+===================================================== */
+
+
+/* =====================================================
+   QUICK POST BOX
+===================================================== */
+
+.quickPostBox{
+  width:100%;
+  padding:16px;
+  background:#ffffff;
+  border-radius:20px;
+  box-shadow:0 5px 18px rgba(0,0,0,.09);
+}
+
+.quickPostRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.quickPostAvatar{
+  width:52px;
+  height:52px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  border:3px solid #d8efff;
+}
+
+.quickPostButton{
+  flex:1;
+  min-width:0;
+  min-height:50px;
+  padding:12px 17px;
+  border:1px solid #d3dce4;
+  border-radius:28px;
+  background:#f4f6f8;
+  color:#65717c;
+  text-align:left;
+  font-size:16px;
+  line-height:1.4;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.quickPostButton:hover{
+  background:#e9eef3;
+  border-color:#bfcdd9;
+}
+
+.quickPostButton:active{
+  transform:scale(.995);
+}
+
+
+/* =====================================================
+   MOMENTS STRIP (STORIES-STYLE)
+===================================================== */
+
+.momentsSection{
+  margin-top:16px;
+}
+
+.momentsRow{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  padding:2px 2px 6px;
+  scrollbar-width:thin;
+  scrollbar-color:#c4d5e1 transparent;
+}
+
+.momentsRow::-webkit-scrollbar{
+  height:5px;
+}
+
+.momentsRow::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.momentsRow::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  background:#c4d5e1;
+}
+
+.momentCircleButton{
+  width:72px;
+  flex:0 0 72px;
+  border:0;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  color:#222222;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.momentAvatarOuter{
+  position:relative;
+  width:64px;
+  height:64px;
+  padding:3px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#087bd1,#55c1f1);
+  box-shadow:0 5px 14px rgba(30,75,104,.15);
+  transition:transform .2s ease;
+}
+
+.momentCircleButton:hover .momentAvatarOuter{
+  transform:translateY(-2px);
+}
+
+.momentCircleButton:active .momentAvatarOuter{
+  transform:scale(.95);
+}
+
+.momentAvatarInner{
+  width:100%;
+  height:100%;
+  border:3px solid #ffffff;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e7eef3;
+  color:#60727f;
+  font-size:20px;
+  font-weight:900;
+}
+
+.momentAvatarInner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.momentTypeBadge{
+  position:absolute;
+  right:-2px;
+  bottom:-2px;
+  min-width:23px;
+  height:23px;
+  padding:0 5px;
+  border:2px solid #ffffff;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  font-size:12px;
+  box-shadow:0 3px 9px rgba(0,0,0,.16);
+}
+
+.momentName{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1.25;
+}
+
+.createMomentCircle .momentAvatarOuter{
+  background:linear-gradient(145deg,#dce8f0,#eef4f8);
+}
+
+.createMomentCircle .momentAvatarInner{
+  background:#ffffff;
+  color:#087bd1;
+  font-size:26px;
+}
+
+.createMomentCircle .momentTypeBadge{
+  background:#087bd1;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:900;
+}
+
+
+/* =====================================================
+   COMMUNITY WALL HEADER
+===================================================== */
+
+.wallTitleBar{
+  margin:18px 0;
+  padding:16px 18px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  box-shadow:0 6px 16px rgba(0,0,0,.14);
+}
+
+.wallTitleText{
+  min-width:0;
+}
+
+.wallTitleText h1{
+  font-size:22px;
+  line-height:1.25;
+}
+
+.wallTitleText p{
+  margin-top:4px;
+  color:#e7f4ff;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   REFRESH BUTTON
+===================================================== */
+
+.refreshButton{
+  width:46px;
+  height:46px;
+  flex-shrink:0;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  color:#0873c9;
+  font-size:21px;
+  box-shadow:0 3px 9px rgba(0,0,0,.15);
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.refreshButton:hover{
+  background:#eef6ff;
+  transform:rotate(20deg);
+}
+
+.refreshButton:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+
+/* =====================================================
+   POSTS CONTAINER
+===================================================== */
+
+#postsContainer{
+  width:100%;
+}
+
+
+/* =====================================================
+   STATUS CARDS
+===================================================== */
+
+.statusCard{
+  margin-top:18px;
+  padding:36px 24px;
+  border-radius:22px;
+  background:#ffffff;
+  color:#66717c;
+  text-align:center;
+  font-size:17px;
+  line-height:1.7;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+}
+
+.statusCard.error{
+  color:#b00020;
+}
+
+.statusCard.empty{
+  color:#4f5963;
+}
+
+.statusCard.loading{
+  color:#0873c9;
+}
+
+
+/* =====================================================
+   LOAD MORE / END OF FEED
+===================================================== */
+
+#loadMoreSentinel{
+  width:100%;
+  padding:20px;
+  text-align:center;
+  color:#8a95a1;
+  font-size:14px;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .quickPostBox{
+    padding:14px;
+  }
+
+  .quickPostAvatar{
+    width:48px;
+    height:48px;
+  }
+
+  .quickPostButton{
+    font-size:15px;
+  }
+
+  .wallTitleBar{
+    padding:14px 16px;
+  }
+
+  .wallTitleText h1{
+    font-size:20px;
+  }
+
+  .wallTitleText p{
+    font-size:12px;
+  }
+
+  .statusCard{
+    padding:30px 18px;
+    font-size:16px;
+  }
+
+}
+/* =====================================================
+   PART 3 OF 10
+   POST CARD, MEDIA AND ACTION BUTTONS
+===================================================== */
+
+
+/* =====================================================
+   COMMUNITY POST CARD
+===================================================== */
+
+.postCard{
+  width:100%;
+  margin-bottom:20px;
+  padding:18px;
+  background:#ffffff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.postCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   POST HEADER
+===================================================== */
+
+.postHeader{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.authorPicture{
+  width:56px;
+  height:56px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  border:3px solid #d8efff;
+  cursor:pointer;
+}
+
+.authorInformation{
+  min-width:0;
+  flex:1;
+}
+
+.authorName{
+  color:#0873c9;
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.3;
+  word-break:break-word;
+  cursor:pointer;
+}
+
+
+/* =====================================================
+   VERIFIED ACCOUNT BADGE
+===================================================== */
+
+.authorNameRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.verifiedBadge{
+  display:none;
+  min-height:20px;
+  padding:4px 7px;
+  border-radius:999px;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:9px;
+  font-weight:bold;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.verifiedBadge.show{
+  display:inline-flex;
+}
+
+.verifiedBadge.ministry{
+  background:#fff4d9;
+  color:#8a6900;
+}
+
+.authorName:hover{
+  text-decoration:underline;
+}
+
+.postDetails{
+  margin-top:4px;
+  color:#747f89;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   POST CATEGORY
+===================================================== */
+
+.postCategory{
+  display:inline-block;
+  margin-top:15px;
+  padding:7px 12px;
+  border-radius:18px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   POST MESSAGE
+===================================================== */
+
+.postMessage{
+  margin-top:15px;
+  color:#20252a;
+  font-size:17px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.postMessage:empty{
+  display:none;
+}
+
+
+/* =====================================================
+   READ MORE / READ LESS
+   (long post text is clipped at a fixed height by
+   default, Facebook/Instagram style, with a toggle
+   link to expand or collapse it again)
+===================================================== */
+
+.postMessage.truncated{
+  max-height:158px;
+  overflow:hidden;
+  position:relative;
+}
+
+.readMoreToggle{
+  display:inline-block;
+  margin-top:6px;
+  border:0;
+  background:none;
+  padding:0;
+  color:#0873c9;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.readMoreToggle:hover{
+  text-decoration:underline;
+}
+
+
+/* =====================================================
+   POST MEDIA
+===================================================== */
+
+.postMediaContainer{
+  width:100%;
+  margin-top:16px;
+}
+
+.postMediaContainer:empty{
+  display:none;
+}
+
+.communityPostImage,
+.communityPostVideo{
+  display:block;
+  width:100%;
+  max-height:560px;
+  border-radius:16px;
+  background:#000000;
+  object-fit:contain;
+}
+
+.communityPostImage{
+  cursor:pointer;
+}
+
+.communityPostVideo{
+  outline:none;
+}
+
+
+/* =====================================================
+   MULTI-PHOTO GRID
+   (Facebook-style layout — 1 photo shows full
+   width, 2 or 3 photos share the row/column, and
+   4 or more show as a 2x2 grid with a "+N" overlay
+   on the last tile covering any extra photos)
+===================================================== */
+
+.postPhotoGrid{
+  display:grid;
+  gap:4px;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.postPhotoGrid.count-1{
+  grid-template-columns:1fr;
+}
+
+.postPhotoGrid.count-2{
+  grid-template-columns:1fr 1fr;
+}
+
+.postPhotoGrid.count-3{
+  grid-template-columns:1fr 1fr;
+}
+
+.postPhotoGrid.count-3 .postPhotoTile:first-child{
+  grid-row:span 2;
+}
+
+.postPhotoGrid.count-4{
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+}
+
+.postPhotoTile{
+  position:relative;
+  overflow:hidden;
+  background:#000000;
+}
+
+.postPhotoGrid.count-1 .postPhotoTile{
+  aspect-ratio:auto;
+}
+
+.postPhotoGrid.count-2 .postPhotoTile,
+.postPhotoGrid.count-3 .postPhotoTile,
+.postPhotoGrid.count-4 .postPhotoTile{
+  aspect-ratio:1/1;
+}
+
+.postPhotoTile .communityPostImage{
+  width:100%;
+  height:100%;
+  max-height:none;
+  border-radius:0;
+  object-fit:cover;
+}
+
+.postPhotoGrid.count-1 .communityPostImage{
+  max-height:560px;
+  object-fit:contain;
+}
+
+.postPhotoMoreOverlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.5);
+  color:#ffffff;
+  font-size:32px;
+  font-weight:bold;
+  pointer-events:none;
+}
+
+.communityPostVideoWrapper{
+  position:relative;
+  width:100%;
+  max-height:560px;
+  border-radius:16px;
+  overflow:hidden;
+  background:#000000;
+  cursor:pointer;
+}
+
+.communityPostVideoWrapper .communityPostVideo{
+  width:100%;
+  max-height:560px;
+  border-radius:0;
+}
+
+.videoExpandOverlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.08);
+  color:#ffffff;
+  font-size:52px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);
+  pointer-events:none;
+  opacity:.85;
+  transition:opacity .2s ease;
+}
+
+
+/* =====================================================
+   MAIN ACTION BUTTONS
+===================================================== */
+
+.postActions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid #e1e6eb;
+}
+
+.postActions button{
+  min-height:44px;
+  padding:10px 8px;
+  border:none;
+  border-radius:12px;
+  background:#edf3f8;
+  color:#35414c;
+  font-size:13px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.postActions button:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.postActions button:active{
+  transform:scale(.98);
+}
+
+.postActions button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+
+/* =====================================================
+   LIKE BUTTON
+===================================================== */
+
+.likeButton.liked{
+  background:#ffe5ea;
+  color:#c2183b;
+}
+
+
+/* =====================================================
+   OWNER ACTIONS
+===================================================== */
+
+.ownerActions{
+  grid-template-columns:repeat(2,1fr);
+  margin-top:10px;
+  padding-top:0;
+  border-top:none;
+}
+
+.editButton{
+  background:#fff3cd !important;
+  color:#755600 !important;
+}
+
+.editButton:hover{
+  background:#ffe8a3 !important;
+}
+
+.deleteButton{
+  background:#ffe1e1 !important;
+  color:#b00020 !important;
+}
+
+.deleteButton:hover{
+  background:#ffd2d2 !important;
+}
+
+.reportButton{
+  background:#fff0e0 !important;
+  color:#a35a00 !important;
+}
+
+.reportButton:hover{
+  background:#ffe2c2 !important;
+}
+
+.adminActions{
+  grid-template-columns:1fr;
+}
+
+.adminDeleteButton{
+  background:#3a1010 !important;
+  color:#ffffff !important;
+}
+
+.adminDeleteButton:hover{
+  background:#511616 !important;
+}
+
+
+/* =====================================================
+   REPORT MODAL
+===================================================== */
+
+#reportModal{
+  position:fixed;
+  inset:0;
+  z-index:1400;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.55);
+}
+
+#reportModal.open{
+  display:flex;
+}
+
+.reportModalCard{
+  width:100%;
+  max-width:420px;
+  max-height:88vh;
+  overflow-y:auto;
+  padding:24px;
+  border-radius:20px;
+  background:#ffffff;
+  box-shadow:0 12px 32px rgba(0,0,0,.25);
+}
+
+.reportModalCard h2{
+  font-size:20px;
+  color:#20252a;
+  margin-bottom:6px;
+}
+
+.reportModalCard p{
+  color:#66717c;
+  font-size:14px;
+  margin-bottom:18px;
+  line-height:1.5;
+}
+
+.reportReasonOption{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:13px 14px;
+  margin-bottom:9px;
+  border:1px solid #e1e6eb;
+  border-radius:12px;
+  background:#f9fafb;
+  color:#20252a;
+  text-align:left;
+  font-size:15px;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.reportReasonOption:hover{
+  background:#eef3f8;
+}
+
+.reportReasonOption.selected{
+  border-color:#0873c9;
+  background:#e7f3ff;
+  font-weight:bold;
+}
+
+.reportModalActions{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+
+.reportModalActions button{
+  flex:1;
+  min-height:46px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+#reportCancelButton{
+  background:#edf3f8;
+  color:#35414c;
+}
+
+#reportSubmitButton{
+  background:#0873c9;
+  color:#ffffff;
+}
+
+#reportSubmitButton:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .postCard{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .authorPicture{
+    width:52px;
+    height:52px;
+  }
+
+  .authorName{
+    font-size:17px;
+  }
+
+  .postMessage{
+    font-size:16px;
+  }
+
+  .postActions button{
+    font-size:12px;
+    min-height:42px;
+  }
+
+}
+/* =====================================================
+   PART 4 OF 10
+   FLOATING BUTTON, BOTTOM NAVIGATION,
+   PHOTO VIEWER AND RESPONSIVE DESIGN
+===================================================== */
+
+
+/* =====================================================
+   FLOATING CREATE POST BUTTON
+===================================================== */
+
+.floatingCreateButton{
+  position:fixed;
+  right:18px;
+  bottom:96px;
+  z-index:850;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  text-decoration:none;
+  font-size:32px;
+  font-weight:bold;
+  box-shadow:0 8px 22px rgba(0,0,0,.28);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.floatingCreateButton:hover{
+  transform:translateY(-2px) scale(1.04);
+}
+
+.floatingCreateButton:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottomNavigation{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:900;
+  background:#ffffff;
+  border-top:1px solid #d7dee6;
+  box-shadow:0 -3px 14px rgba(0,0,0,.10);
+}
+
+.bottomNavigationInner{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+}
+
+.bottomNavItem{
+  min-width:0;
+  padding:8px 3px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#66717c;
+  text-align:center;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.bottomNavItem:hover{
+  background:#f2f7fb;
+}
+
+.bottomNavItem.active{
+  color:#0873c9;
+}
+
+.bottomNavIcon{
+  font-size:21px;
+  line-height:1;
+}
+
+
+/* =====================================================
+   FULL SCREEN PHOTO VIEWER
+===================================================== */
+
+#photoViewer{
+  position:fixed;
+  inset:0;
+  z-index:1200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:rgba(0,0,0,.95);
+}
+
+#photoViewer.open{
+  display:flex;
+}
+
+#photoViewerImage{
+  display:block;
+  max-width:100%;
+  max-height:92vh;
+  object-fit:contain;
+}
+
+#photoViewerVideo{
+  display:none;
+  max-width:100%;
+  max-height:92vh;
+  background:#000000;
+}
+
+
+/* =====================================================
+   PHOTO VIEWER GALLERY NAVIGATION
+   (prev/next buttons and a "2 of 5" counter, shown
+   only when a post has more than one photo)
+===================================================== */
+
+.photoViewerNavButton{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:1210;
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.18);
+  color:#ffffff;
+  font-size:32px;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.photoViewerNavButton:hover{
+  background:rgba(255,255,255,.32);
+}
+
+.photoViewerNavButton.hidden{
+  display:none;
+}
+
+.photoViewerPrevButton{
+  left:15px;
+}
+
+.photoViewerNextButton{
+  right:15px;
+}
+
+.photoViewerCounter{
+  position:absolute;
+  top:15px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1210;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.18);
+  color:#ffffff;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.photoViewerCounter.hidden{
+  display:none;
+}
+
+
+/* =====================================================
+   REELS-STYLE VIDEO VIEWER
+===================================================== */
+
+.videoReelViewer{
+  position:fixed;
+  inset:0;
+  z-index:1300;
+  display:none;
+  background:#000000;
+}
+
+.videoReelViewer.open{
+  display:block;
+}
+
+.videoReelTrack{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+.videoReelSlide{
+  position:relative;
+  width:100%;
+  height:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000000;
+}
+
+.videoReelSlide video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000000;
+}
+
+.closeReelButton{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1310;
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
+  font-size:28px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.closeReelButton:hover{
+  background:rgba(255,255,255,.35);
+}
+
+#closePhotoViewer{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
+  font-size:28px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+#closePhotoViewer:hover{
+  background:rgba(255,255,255,.35);
+}
+
+
+/* =====================================================
+   MOBILE RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  .floatingCreateButton{
+    width:56px;
+    height:56px;
+    right:15px;
+    bottom:88px;
+    font-size:30px;
+  }
+
+  .bottomNavItem{
+    font-size:9px;
+  }
+
+  .bottomNavIcon{
+    font-size:20px;
+  }
+
+  #closePhotoViewer{
+    width:44px;
+    height:44px;
+    font-size:26px;
+  }
+
+}
+
+
+/* =====================================================
+   END OF STYLES
+===================================================== */
+/* =====================================================
+   PART 1 OF 10
+   DOCUMENT SETUP, GENERAL PAGE AND TOP BAR
+===================================================== */
+
+
+/* =====================================================
+   GENERAL RESET
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:#eef3f8;
+  color:#222222;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  cursor:pointer;
+}
+
+img,
+video{
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+}
+
+
+/* =====================================================
+   MAIN APPLICATION TOP BAR
+===================================================== */
+
+.appTopBar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  width:100%;
+  background:#ffffff;
+  border-bottom:1px solid #d7e0e8;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.appTopBarInner{
+  width:100%;
+  max-width:760px;
+  min-height:64px;
+  margin:auto;
+  padding:8px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+
+/* =====================================================
+   MINISTRY BRAND
+===================================================== */
+
+.appBrand{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+
+.appBrandText{
+  min-width:0;
+  color:#075daa;
+  font-size:19px;
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   TOP BAR ACTION BUTTONS
+===================================================== */
+
+.topBarActions{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.topIconLink{
+  position:relative;
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#edf3f8;
+  color:#1f2933;
+  text-decoration:none;
+  font-size:20px;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.topIconLink:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.topIconLink:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   NOTIFICATION NUMBER BADGE
+===================================================== */
+
+.notificationBadge{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:20px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:#e60023;
+  color:#ffffff;
+  border:2px solid #ffffff;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1;
+}
+
+
+/* =====================================================
+   MAIN PAGE CONTAINER
+===================================================== */
+
+.pageContainer{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:16px 14px 115px;
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+button:focus-visible,
+a:focus-visible{
+  outline:3px solid rgba(8,123,209,.35);
+  outline-offset:3px;
+}
+
+
+/* =====================================================
+   SMALL-SCREEN TOP BAR
+===================================================== */
+
+@media(max-width:600px){
+
+  .appTopBarInner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .appBrandText{
+    font-size:16px;
+  }
+
+  .topIconLink{
+    width:39px;
+    height:39px;
+    font-size:18px;
+  }
+
+  .pageContainer{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+}
+/* =====================================================
+   PART 2 OF 10
+   QUICK POST BOX, COMMUNITY WALL HEADER
+   AND STATUS CARDS
+===================================================== */
+
+
+/* =====================================================
+   QUICK POST BOX
+===================================================== */
+
+.quickPostBox{
+  width:100%;
+  padding:16px;
+  background:#ffffff;
+  border-radius:20px;
+  box-shadow:0 5px 18px rgba(0,0,0,.09);
+}
+
+.quickPostRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.quickPostAvatar{
+  width:52px;
+  height:52px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  border:3px solid #d8efff;
+}
+
+.quickPostButton{
+  flex:1;
+  min-width:0;
+  min-height:50px;
+  padding:12px 17px;
+  border:1px solid #d3dce4;
+  border-radius:28px;
+  background:#f4f6f8;
+  color:#65717c;
+  text-align:left;
+  font-size:16px;
+  line-height:1.4;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.quickPostButton:hover{
+  background:#e9eef3;
+  border-color:#bfcdd9;
+}
+
+.quickPostButton:active{
+  transform:scale(.995);
+}
+
+
+/* =====================================================
+   MOMENTS STRIP (STORIES-STYLE)
+===================================================== */
+
+.momentsSection{
+  margin-top:16px;
+}
+
+.momentsRow{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  padding:2px 2px 6px;
+  scrollbar-width:thin;
+  scrollbar-color:#c4d5e1 transparent;
+}
+
+.momentsRow::-webkit-scrollbar{
+  height:5px;
+}
+
+.momentsRow::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.momentsRow::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  background:#c4d5e1;
+}
+
+.momentCircleButton{
+  width:72px;
+  flex:0 0 72px;
+  border:0;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  color:#222222;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.momentAvatarOuter{
+  position:relative;
+  width:64px;
+  height:64px;
+  padding:3px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#087bd1,#55c1f1);
+  box-shadow:0 5px 14px rgba(30,75,104,.15);
+  transition:transform .2s ease;
+}
+
+.momentCircleButton:hover .momentAvatarOuter{
+  transform:translateY(-2px);
+}
+
+.momentCircleButton:active .momentAvatarOuter{
+  transform:scale(.95);
+}
+
+.momentAvatarInner{
+  width:100%;
+  height:100%;
+  border:3px solid #ffffff;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e7eef3;
+  color:#60727f;
+  font-size:20px;
+  font-weight:900;
+}
+
+.momentAvatarInner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.momentTypeBadge{
+  position:absolute;
+  right:-2px;
+  bottom:-2px;
+  min-width:23px;
+  height:23px;
+  padding:0 5px;
+  border:2px solid #ffffff;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  font-size:12px;
+  box-shadow:0 3px 9px rgba(0,0,0,.16);
+}
+
+.momentName{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:bold;
+  line-height:1.25;
+}
+
+.createMomentCircle .momentAvatarOuter{
+  background:linear-gradient(145deg,#dce8f0,#eef4f8);
+}
+
+.createMomentCircle .momentAvatarInner{
+  background:#ffffff;
+  color:#087bd1;
+  font-size:26px;
+}
+
+.createMomentCircle .momentTypeBadge{
+  background:#087bd1;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:900;
+}
+
+
+/* =====================================================
+   COMMUNITY WALL HEADER
+===================================================== */
+
+.wallTitleBar{
+  margin:18px 0;
+  padding:16px 18px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  box-shadow:0 6px 16px rgba(0,0,0,.14);
+}
+
+.wallTitleText{
+  min-width:0;
+}
+
+.wallTitleText h1{
+  font-size:22px;
+  line-height:1.25;
+}
+
+.wallTitleText p{
+  margin-top:4px;
+  color:#e7f4ff;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   REFRESH BUTTON
+===================================================== */
+
+.refreshButton{
+  width:46px;
+  height:46px;
+  flex-shrink:0;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  color:#0873c9;
+  font-size:21px;
+  box-shadow:0 3px 9px rgba(0,0,0,.15);
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.refreshButton:hover{
+  background:#eef6ff;
+  transform:rotate(20deg);
+}
+
+.refreshButton:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+
+/* =====================================================
+   POSTS CONTAINER
+===================================================== */
+
+#postsContainer{
+  width:100%;
+}
+
+
+/* =====================================================
+   STATUS CARDS
+===================================================== */
+
+.statusCard{
+  margin-top:18px;
+  padding:36px 24px;
+  border-radius:22px;
+  background:#ffffff;
+  color:#66717c;
+  text-align:center;
+  font-size:17px;
+  line-height:1.7;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+}
+
+.statusCard.error{
+  color:#b00020;
+}
+
+.statusCard.empty{
+  color:#4f5963;
+}
+
+.statusCard.loading{
+  color:#0873c9;
+}
+
+
+/* =====================================================
+   LOAD MORE / END OF FEED
+===================================================== */
+
+#loadMoreSentinel{
+  width:100%;
+  padding:20px;
+  text-align:center;
+  color:#8a95a1;
+  font-size:14px;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .quickPostBox{
+    padding:14px;
+  }
+
+  .quickPostAvatar{
+    width:48px;
+    height:48px;
+  }
+
+  .quickPostButton{
+    font-size:15px;
+  }
+
+  .wallTitleBar{
+    padding:14px 16px;
+  }
+
+  .wallTitleText h1{
+    font-size:20px;
+  }
+
+  .wallTitleText p{
+    font-size:12px;
+  }
+
+  .statusCard{
+    padding:30px 18px;
+    font-size:16px;
+  }
+
+}
+/* =====================================================
+   PART 3 OF 10
+   POST CARD, MEDIA AND ACTION BUTTONS
+===================================================== */
+
+
+/* =====================================================
+   COMMUNITY POST CARD
+===================================================== */
+
+.postCard{
+  width:100%;
+  margin-bottom:20px;
+  padding:18px;
+  background:#ffffff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.09);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.postCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   POST HEADER
+===================================================== */
+
+.postHeader{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.authorPicture{
+  width:56px;
+  height:56px;
+  flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  border:3px solid #d8efff;
+  cursor:pointer;
+}
+
+.authorInformation{
+  min-width:0;
+  flex:1;
+}
+
+.authorName{
+  color:#0873c9;
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.3;
+  word-break:break-word;
+  cursor:pointer;
+}
+
+
+/* =====================================================
+   VERIFIED ACCOUNT BADGE
+===================================================== */
+
+.authorNameRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.verifiedBadge{
+  display:none;
+  min-height:20px;
+  padding:4px 7px;
+  border-radius:999px;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:9px;
+  font-weight:bold;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.verifiedBadge.show{
+  display:inline-flex;
+}
+
+.verifiedBadge.ministry{
+  background:#fff4d9;
+  color:#8a6900;
+}
+
+.authorName:hover{
+  text-decoration:underline;
+}
+
+.postDetails{
+  margin-top:4px;
+  color:#747f89;
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =====================================================
+   POST CATEGORY
+===================================================== */
+
+.postCategory{
+  display:inline-block;
+  margin-top:15px;
+  padding:7px 12px;
+  border-radius:18px;
+  background:#e7f3ff;
+  color:#0873c9;
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+/* =====================================================
+   POST MESSAGE
+===================================================== */
+
+.postMessage{
+  margin-top:15px;
+  color:#20252a;
+  font-size:17px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.postMessage:empty{
+  display:none;
+}
+
+
+/* =====================================================
+   READ MORE / READ LESS
+   (long post text is clipped at a fixed height by
+   default, Facebook/Instagram style, with a toggle
+   link to expand or collapse it again)
+===================================================== */
+
+.postMessage.truncated{
+  max-height:158px;
+  overflow:hidden;
+  position:relative;
+}
+
+.readMoreToggle{
+  display:inline-block;
+  margin-top:6px;
+  border:0;
+  background:none;
+  padding:0;
+  color:#0873c9;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.readMoreToggle:hover{
+  text-decoration:underline;
+}
+
+
+/* =====================================================
+   POST MEDIA
+===================================================== */
+
+.postMediaContainer{
+  width:100%;
+  margin-top:16px;
+}
+
+.postMediaContainer:empty{
+  display:none;
+}
+
+.communityPostImage,
+.communityPostVideo{
+  display:block;
+  width:100%;
+  max-height:560px;
+  border-radius:16px;
+  background:#000000;
+  object-fit:contain;
+}
+
+.communityPostImage{
+  cursor:pointer;
+}
+
+.communityPostVideo{
+  outline:none;
+}
+
+
+/* =====================================================
+   MULTI-PHOTO GRID
+   (Facebook-style layout — 1 photo shows full
+   width, 2 or 3 photos share the row/column, and
+   4 or more show as a 2x2 grid with a "+N" overlay
+   on the last tile covering any extra photos)
+===================================================== */
+
+.postPhotoGrid{
+  display:grid;
+  gap:4px;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.postPhotoGrid.count-1{
+  grid-template-columns:1fr;
+}
+
+.postPhotoGrid.count-2{
+  grid-template-columns:1fr 1fr;
+}
+
+.postPhotoGrid.count-3{
+  grid-template-columns:1fr 1fr;
+}
+
+.postPhotoGrid.count-3 .postPhotoTile:first-child{
+  grid-row:span 2;
+}
+
+.postPhotoGrid.count-4{
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+}
+
+.postPhotoTile{
+  position:relative;
+  overflow:hidden;
+  background:#000000;
+}
+
+.postPhotoGrid.count-1 .postPhotoTile{
+  aspect-ratio:auto;
+}
+
+.postPhotoGrid.count-2 .postPhotoTile,
+.postPhotoGrid.count-3 .postPhotoTile,
+.postPhotoGrid.count-4 .postPhotoTile{
+  aspect-ratio:1/1;
+}
+
+.postPhotoTile .communityPostImage{
+  width:100%;
+  height:100%;
+  max-height:none;
+  border-radius:0;
+  object-fit:cover;
+}
+
+.postPhotoGrid.count-1 .communityPostImage{
+  max-height:560px;
+  object-fit:contain;
+}
+
+.postPhotoMoreOverlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.5);
+  color:#ffffff;
+  font-size:32px;
+  font-weight:bold;
+  pointer-events:none;
+}
+
+.communityPostVideoWrapper{
+  position:relative;
+  width:100%;
+  max-height:560px;
+  border-radius:16px;
+  overflow:hidden;
+  background:#000000;
+  cursor:pointer;
+}
+
+.communityPostVideoWrapper .communityPostVideo{
+  width:100%;
+  max-height:560px;
+  border-radius:0;
+}
+
+.videoExpandOverlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.08);
+  color:#ffffff;
+  font-size:52px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);
+  pointer-events:none;
+  opacity:.85;
+  transition:opacity .2s ease;
+}
+
+
+/* =====================================================
+   MAIN ACTION BUTTONS
+===================================================== */
+
+.postActions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid #e1e6eb;
+}
+
+.postActions button{
+  min-height:44px;
+  padding:10px 8px;
+  border:none;
+  border-radius:12px;
+  background:#edf3f8;
+  color:#35414c;
+  font-size:13px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.postActions button:hover{
+  background:#dce9f4;
+  transform:translateY(-1px);
+}
+
+.postActions button:active{
+  transform:scale(.98);
+}
+
+.postActions button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+
+/* =====================================================
+   LIKE BUTTON
+===================================================== */
+
+.likeButton.liked{
+  background:#ffe5ea;
+  color:#c2183b;
+}
+
+
+/* =====================================================
+   OWNER ACTIONS
+===================================================== */
+
+.ownerActions{
+  grid-template-columns:repeat(2,1fr);
+  margin-top:10px;
+  padding-top:0;
+  border-top:none;
+}
+
+.editButton{
+  background:#fff3cd !important;
+  color:#755600 !important;
+}
+
+.editButton:hover{
+  background:#ffe8a3 !important;
+}
+
+.deleteButton{
+  background:#ffe1e1 !important;
+  color:#b00020 !important;
+}
+
+.deleteButton:hover{
+  background:#ffd2d2 !important;
+}
+
+.reportButton{
+  background:#fff0e0 !important;
+  color:#a35a00 !important;
+}
+
+.reportButton:hover{
+  background:#ffe2c2 !important;
+}
+
+.adminActions{
+  grid-template-columns:1fr;
+}
+
+.adminDeleteButton{
+  background:#3a1010 !important;
+  color:#ffffff !important;
+}
+
+.adminDeleteButton:hover{
+  background:#511616 !important;
+}
+
+
+/* =====================================================
+   REPORT MODAL
+===================================================== */
+
+#reportModal{
+  position:fixed;
+  inset:0;
+  z-index:1400;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.55);
+}
+
+#reportModal.open{
+  display:flex;
+}
+
+.reportModalCard{
+  width:100%;
+  max-width:420px;
+  max-height:88vh;
+  overflow-y:auto;
+  padding:24px;
+  border-radius:20px;
+  background:#ffffff;
+  box-shadow:0 12px 32px rgba(0,0,0,.25);
+}
+
+.reportModalCard h2{
+  font-size:20px;
+  color:#20252a;
+  margin-bottom:6px;
+}
+
+.reportModalCard p{
+  color:#66717c;
+  font-size:14px;
+  margin-bottom:18px;
+  line-height:1.5;
+}
+
+.reportReasonOption{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  padding:13px 14px;
+  margin-bottom:9px;
+  border:1px solid #e1e6eb;
+  border-radius:12px;
+  background:#f9fafb;
+  color:#20252a;
+  text-align:left;
+  font-size:15px;
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.reportReasonOption:hover{
+  background:#eef3f8;
+}
+
+.reportReasonOption.selected{
+  border-color:#0873c9;
+  background:#e7f3ff;
+  font-weight:bold;
+}
+
+.reportModalActions{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+
+.reportModalActions button{
+  flex:1;
+  min-height:46px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+#reportCancelButton{
+  background:#edf3f8;
+  color:#35414c;
+}
+
+#reportSubmitButton{
+  background:#0873c9;
+  color:#ffffff;
+}
+
+#reportSubmitButton:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+
+/* =====================================================
+   SMALL SCREEN
+===================================================== */
+
+@media(max-width:600px){
+
+  .postCard{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .authorPicture{
+    width:52px;
+    height:52px;
+  }
+
+  .authorName{
+    font-size:17px;
+  }
+
+  .postMessage{
+    font-size:16px;
+  }
+
+  .postActions button{
+    font-size:12px;
+    min-height:42px;
+  }
+
+}
+/* =====================================================
+   PART 4 OF 10
+   FLOATING BUTTON, BOTTOM NAVIGATION,
+   PHOTO VIEWER AND RESPONSIVE DESIGN
+===================================================== */
+
+
+/* =====================================================
+   FLOATING CREATE POST BUTTON
+===================================================== */
+
+.floatingCreateButton{
+  position:fixed;
+  right:18px;
+  bottom:96px;
+  z-index:850;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(
+    135deg,
+    #087bd1,
+    #0055a5
+  );
+  color:#ffffff;
+  text-decoration:none;
+  font-size:32px;
+  font-weight:bold;
+  box-shadow:0 8px 22px rgba(0,0,0,.28);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.floatingCreateButton:hover{
+  transform:translateY(-2px) scale(1.04);
+}
+
+.floatingCreateButton:active{
+  transform:scale(.96);
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottomNavigation{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:900;
+  background:#ffffff;
+  border-top:1px solid #d7dee6;
+  box-shadow:0 -3px 14px rgba(0,0,0,.10);
+}
+
+.bottomNavigationInner{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+}
+
+.bottomNavItem{
+  min-width:0;
+  padding:8px 3px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#66717c;
+  text-align:center;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:bold;
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.bottomNavItem:hover{
+  background:#f2f7fb;
+}
+
+.bottomNavItem.active{
+  color:#0873c9;
+}
+
+.bottomNavIcon{
+  font-size:21px;
+  line-height:1;
+}
+
+
+/* =====================================================
+   FULL SCREEN PHOTO VIEWER
+===================================================== */
+
+#photoViewer{
+  position:fixed;
+  inset:0;
+  z-index:1200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:rgba(0,0,0,.95);
+}
+
+#photoViewer.open{
+  display:flex;
+}
+
+#photoViewerImage{
+  display:block;
+  max-width:100%;
+  max-height:92vh;
+  object-fit:contain;
+}
+
+#photoViewerVideo{
+  display:none;
+  max-width:100%;
+  max-height:92vh;
+  background:#000000;
+}
+
+
+/* =====================================================
+   PHOTO VIEWER GALLERY NAVIGATION
+   (prev/next buttons and a "2 of 5" counter, shown
+   only when a post has more than one photo)
+===================================================== */
+
+.photoViewerNavButton{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:1210;
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.18);
+  color:#ffffff;
+  font-size:32px;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.photoViewerNavButton:hover{
+  background:rgba(255,255,255,.32);
+}
+
+.photoViewerNavButton.hidden{
+  display:none;
+}
+
+.photoViewerPrevButton{
+  left:15px;
+}
+
+.photoViewerNextButton{
+  right:15px;
+}
+
+.photoViewerCounter{
+  position:absolute;
+  top:15px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1210;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.18);
+  color:#ffffff;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.photoViewerCounter.hidden{
+  display:none;
+}
+
+
+/* =====================================================
+   REELS-STYLE VIDEO VIEWER
+===================================================== */
+
+.videoReelViewer{
+  position:fixed;
+  inset:0;
+  z-index:1300;
+  display:none;
+  background:#000000;
+}
+
+.videoReelViewer.open{
+  display:block;
+}
+
+.videoReelTrack{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+.videoReelSlide{
+  position:relative;
+  width:100%;
+  height:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000000;
+}
+
+.videoReelSlide video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000000;
+}
+
+.closeReelButton{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1310;
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
+  font-size:28px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+.closeReelButton:hover{
+  background:rgba(255,255,255,.35);
+}
+
+#closePhotoViewer{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  color:#ffffff;
+  font-size:28px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+
+#closePhotoViewer:hover{
+  background:rgba(255,255,255,.35);
+}
+
+
+/* =====================================================
+   MOBILE RESPONSIVE DESIGN
+===================================================== */
+
+@media(max-width:600px){
+
+  .floatingCreateButton{
+    width:56px;
+    height:56px;
+    right:15px;
+    bottom:88px;
+    font-size:30px;
+  }
+
+  .bottomNavItem{
+    font-size:9px;
+  }
+
+  .bottomNavIcon{
+    font-size:20px;
+  }
+
+  #closePhotoViewer{
+    width:44px;
+    height:44px;
+    font-size:26px;
+  }
+
+}
+
+
+/* =====================================================
+   END OF STYLES
+===================================================== */
