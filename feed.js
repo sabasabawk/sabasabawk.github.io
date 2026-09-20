@@ -893,8 +893,8 @@ async function loadCurrentUserProfile(){
 
     if(quickMomentAvatar){
 
-      quickMomentAvatar.innerHTML =
-      `<img src="${profilePicture}" alt="Your profile picture">`;
+      quickMomentAvatar.style.backgroundImage =
+      `url("${profilePicture}")`;
 
     }
 
@@ -5232,7 +5232,7 @@ function renderMomentsStrip(
 
   momentsRow
   .querySelectorAll(
-    ".memberMomentCircle"
+    ".memberMomentCard"
   )
   .forEach(
     function(element){
@@ -5330,11 +5330,32 @@ function renderMomentsStrip(
       );
 
 
-      const picture =
+      const profilePicture =
       getFirstValue(
         momentData.profilePicture,
         momentData.picture,
         momentData.photoURL
+      );
+
+
+      /*
+         The card's BACKGROUND photo is the moment's
+         own content (what the person actually shared),
+         not their profile picture — that small circular
+         profile picture becomes the corner avatar
+         instead, the same way Facebook Stories work.
+      */
+
+      const momentContentImage =
+      getFirstValue(
+        momentData.imageUrl,
+        momentData.imageURL,
+        momentData.photoUrl,
+        momentData.photoURL,
+        momentData.mediaUrl,
+        momentData.thumbnailUrl,
+        momentData.videoThumbnail,
+        momentData.contentUrl
       );
 
 
@@ -5345,51 +5366,65 @@ function renderMomentsStrip(
       );
 
 
-      const circleLink =
+      const momentCard =
       document.createElement(
         "a"
       );
 
 
-      circleLink.href =
+      momentCard.href =
       `faith-moments.html?moment=${encodeURIComponent(
         momentData.id
       )}`;
 
 
-      circleLink.className =
-      "momentCircleButton memberMomentCircle";
+      momentCard.className =
+      "momentCard memberMomentCard";
 
 
-      circleLink.innerHTML = `
+      if(momentContentImage){
 
-        <div class="momentAvatarOuter">
+        momentCard.style.backgroundImage =
+        `url("${momentContentImage}")`;
 
-          <div class="momentAvatarInner">
+      }else{
 
-            ${
-              picture
-              ? `<img src="${picture}" alt="${name}">`
-              : getStripInitials(name)
-            }
+        momentCard.classList.add(
+          "momentCardFallback"
+        );
 
-          </div>
+      }
 
-          <span class="momentTypeBadge">
-            ${typeIcon}
-          </span>
+
+      momentCard.innerHTML = `
+
+        <div class="momentCardGradient"></div>
+
+        ${
+          !momentContentImage
+          ? `<div class="momentCardFallbackIcon">${typeIcon}</div>`
+          : ""
+        }
+
+        <div class="momentCardAvatar">
+
+          ${
+            profilePicture
+            ? `<img src="${profilePicture}" alt="${name}">`
+            : `<span class="momentCardAvatarInitials">${getStripInitials(name)}</span>`
+          }
 
         </div>
 
-        <span class="momentName">
+        <div class="momentCardName">
           ${name}
-        </span>
+        </div>
 
       `;
 
 
       momentsRow.appendChild(
-        circleLink
+        momentCard
       );
 
     }
