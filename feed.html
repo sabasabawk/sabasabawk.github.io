@@ -739,6 +739,35 @@ a:focus-visible{
 
 
 /* =====================================================
+   READ MORE / READ LESS
+   (long post text is clipped at a fixed height by
+   default, Facebook/Instagram style, with a toggle
+   link to expand or collapse it again)
+===================================================== */
+
+.postMessage.truncated{
+  max-height:158px;
+  overflow:hidden;
+  position:relative;
+}
+
+.readMoreToggle{
+  display:inline-block;
+  margin-top:6px;
+  border:0;
+  background:none;
+  padding:0;
+  color:#0873c9;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.readMoreToggle:hover{
+  text-decoration:underline;
+}
+
+
+/* =====================================================
    POST MEDIA
 ===================================================== */
 
@@ -4029,6 +4058,75 @@ function createPostCard(postData){
     postCard.appendChild(
       messageElement
     );
+
+
+    /*
+       READ MORE / READ LESS
+
+       Long passages (testimonies, Bible study
+       notes, prayer requests) are clipped at a
+       fixed height and given a toggle link,
+       the same way Facebook and Instagram
+       shorten long captions instead of letting
+       them push the whole feed down.
+    */
+
+    const READ_MORE_CHARACTER_LIMIT =
+    280;
+
+
+    if(
+      postMessage.length >
+      READ_MORE_CHARACTER_LIMIT
+    ){
+
+      messageElement.classList.add(
+        "truncated"
+      );
+
+
+      const readMoreButton =
+      document.createElement(
+        "button"
+      );
+
+
+      readMoreButton.type =
+      "button";
+
+
+      readMoreButton.className =
+      "readMoreToggle";
+
+
+      readMoreButton.textContent =
+      "Read more";
+
+
+      readMoreButton.addEventListener(
+        "click",
+        function(){
+
+          const isStillTruncated =
+          messageElement.classList.toggle(
+            "truncated"
+          );
+
+
+          readMoreButton.textContent =
+          isStillTruncated
+          ? "Read more"
+          : "Read less";
+
+        }
+      );
+
+
+      postCard.appendChild(
+        readMoreButton
+      );
+
+    }
 
   }
 
