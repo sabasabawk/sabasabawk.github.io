@@ -308,103 +308,148 @@ a:focus-visible{
   background:#c4d5e1;
 }
 
-.momentCircleButton{
-  width:72px;
-  flex:0 0 72px;
-  border:0;
-  background:transparent;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  color:#222222;
-  text-align:center;
-  text-decoration:none;
-  cursor:pointer;
-}
-
-.momentAvatarOuter{
+.momentCard{
   position:relative;
-  width:64px;
-  height:64px;
-  padding:3px;
-  border-radius:50%;
-  background:linear-gradient(145deg,#087bd1,#55c1f1);
-  box-shadow:0 5px 14px rgba(30,75,104,.15);
+  display:block;
+  width:112px;
+  flex:0 0 112px;
+  height:188px;
+  border-radius:14px;
+  overflow:hidden;
+  background:#0b3d63 no-repeat center/cover;
+  color:#ffffff;
+  text-decoration:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.18);
   transition:transform .2s ease;
 }
 
-.momentCircleButton:hover .momentAvatarOuter{
+.momentCard:hover{
   transform:translateY(-2px);
 }
 
-.momentCircleButton:active .momentAvatarOuter{
-  transform:scale(.95);
+.momentCard:active{
+  transform:scale(.97);
 }
 
-.momentAvatarInner{
-  width:100%;
-  height:100%;
-  border:3px solid #ffffff;
-  border-radius:50%;
-  overflow:hidden;
+.momentCardFallback{
+  background:linear-gradient(160deg,#087bd1,#0c5aa0);
+}
+
+.momentCardFallbackIcon{
+  position:absolute;
+  inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#e7eef3;
-  color:#60727f;
-  font-size:20px;
-  font-weight:900;
+  font-size:40px;
+  opacity:.9;
 }
 
-.momentAvatarInner img{
+.momentCardGradient{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 45%,
+    rgba(0,0,0,.72) 100%
+  );
+}
+
+.momentCardAvatar{
+  position:absolute;
+  top:10px;
+  left:10px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid #087bd1;
+  background:#e7eef3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+
+.momentCardAvatar img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-.momentTypeBadge{
-  position:absolute;
-  right:-2px;
-  bottom:-2px;
-  min-width:23px;
-  height:23px;
-  padding:0 5px;
-  border:2px solid #ffffff;
-  border-radius:999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#ffffff;
-  font-size:12px;
-  box-shadow:0 3px 9px rgba(0,0,0,.16);
+.momentCardAvatarInitials{
+  color:#60727f;
+  font-size:13px;
+  font-weight:900;
 }
 
-.momentName{
-  width:100%;
+.momentCardName{
+  position:absolute;
+  left:9px;
+  right:9px;
+  bottom:9px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  font-size:11px;
+  color:#ffffff;
+  font-size:12px;
   font-weight:bold;
-  line-height:1.25;
+  text-shadow:0 1px 4px rgba(0,0,0,.6);
 }
 
-.createMomentCircle .momentAvatarOuter{
-  background:linear-gradient(145deg,#dce8f0,#eef4f8);
+
+/* =====================================================
+   CREATE MOMENT CARD
+   (Facebook-style — your own photo fills the top,
+   a blue "+" straddles the boundary, and a white
+   bar underneath reads "Create Moment")
+===================================================== */
+
+.createMomentCard{
+  display:flex;
+  flex-direction:column;
+  background:#eef3f8;
 }
 
-.createMomentCircle .momentAvatarInner{
-  background:#ffffff;
-  color:#087bd1;
-  font-size:26px;
+.createMomentCardTop{
+  flex:1;
+  min-height:0;
+  background:#dce8f0 no-repeat center/cover;
+  position:relative;
 }
 
-.createMomentCircle .momentTypeBadge{
+.createMomentCardPlusButton{
+  position:absolute;
+  left:50%;
+  bottom:-17px;
+  transform:translateX(-50%);
+  width:34px;
+  height:34px;
+  border-radius:50%;
   background:#087bd1;
   color:#ffffff;
-  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
   font-weight:900;
+  line-height:1;
+  border:3px solid #ffffff;
+  box-shadow:0 3px 8px rgba(0,0,0,.25);
+}
+
+.createMomentCardBottom{
+  height:46px;
+  flex-shrink:0;
+  background:#ffffff;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding-bottom:8px;
+  color:#1f2933;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
 }
 
 
