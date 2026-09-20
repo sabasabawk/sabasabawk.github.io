@@ -265,7 +265,6 @@ textarea{
   text-align:center;
 }
 
-#mediaPreview img,
 #mediaPreview video{
   display:block;
   width:100%;
@@ -280,6 +279,78 @@ textarea{
   color:#555555;
   font-size:13px;
   word-break:break-word;
+}
+
+
+/* =====================================================
+   MULTI-PHOTO PREVIEW GRID
+   (Facebook-style — every selected photo shows as
+   its own removable thumbnail, instead of only one
+   photo being possible per post)
+===================================================== */
+
+#imagePreviewGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  text-align:left;
+}
+
+.imagePreviewTile{
+  position:relative;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  border-radius:9px;
+  background:#000000;
+}
+
+.imagePreviewTile img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.imagePreviewRemoveButton{
+  position:absolute;
+  top:5px;
+  right:5px;
+  width:26px;
+  height:26px;
+  border:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.6);
+  color:#ffffff;
+  font-size:14px;
+  font-weight:bold;
+  line-height:1;
+  cursor:pointer;
+}
+
+.imagePreviewRemoveButton:hover{
+  background:rgba(217,48,37,.85);
+}
+
+.addMorePhotosTile{
+  aspect-ratio:1/1;
+  border:2px dashed #c8d1dc;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  color:#0066cc;
+  font-size:26px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.addMorePhotosTile:hover{
+  background:#edf5ff;
+  border-color:#0066cc;
 }
 
 
@@ -453,6 +524,10 @@ textarea{
     grid-template-columns:1fr;
   }
 
+  #imagePreviewGrid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
 }
 
 </style>
@@ -621,7 +696,7 @@ Your Post
 <div class="media-options">
 
 <p class="media-options-title">
-Add Photo or Video
+Add Photos or a Video
 </p>
 
 <div class="media-picker-buttons">
@@ -631,7 +706,7 @@ Add Photo or Video
   id="choosePhotoBtn"
   class="media-picker-button"
 >
-📷 Choose Photo
+📷 Choose Photos
 </button>
 
 <button
@@ -655,11 +730,12 @@ Add Photo or Video
 
 <p class="media-help">
 
-You may attach one photo
-or one video.
+You may attach up to 10 photos,
+or one video (not both in the
+same post).
 
 Photos:
-Maximum 10 MB.
+Maximum 10 MB each.
 
 Videos:
 Maximum 100 MB.
@@ -674,6 +750,8 @@ Maximum 100 MB.
 ===================================================== -->
 
 <div id="mediaPreview">
+
+<div id="imagePreviewGrid"></div>
 
 <div id="previewContent"></div>
 
@@ -803,6 +881,14 @@ const imagekitUploadUrl =
 
 
 /* =====================================================
+   MAXIMUM PHOTOS PER POST
+===================================================== */
+
+const MAXIMUM_PHOTOS_PER_POST =
+10;
+
+
+/* =====================================================
    GLOBAL VARIABLES
 ===================================================== */
 
@@ -814,16 +900,31 @@ let currentProfile =
 {};
 
 
-let selectedMediaFile =
+/*
+   Selected photos are now an ARRAY — this is
+   what allows more than one photo per post,
+   the same way Facebook lets you attach a
+   whole batch of photos at once.
+*/
+
+let selectedImageFiles =
+[];
+
+
+let selectedImagePreviewUrls =
+[];
+
+
+let selectedVideoFile =
 null;
+
+
+let selectedVideoPreviewUrl =
+"";
 
 
 let selectedMediaType =
 "none";
-
-
-let mediaPreviewUrl =
-"";
 
 
 let activeUploadRequest =
@@ -885,6 +986,12 @@ document.getElementById(
 const mediaPreview =
 document.getElementById(
   "mediaPreview"
+);
+
+
+const imagePreviewGrid =
+document.getElementById(
+  "imagePreviewGrid"
 );
 
 
@@ -1281,15 +1388,27 @@ function openMediaPicker(mediaType){
     mediaFileInput.accept =
     "image/*";
 
+
+    mediaFileInput.multiple =
+    true;
+
   }else if(mediaType === "video"){
 
     mediaFileInput.accept =
     "video/*";
 
+
+    mediaFileInput.multiple =
+    false;
+
   }else{
 
     mediaFileInput.accept =
     "image/*,video/*";
+
+
+    mediaFileInput.multiple =
+    false;
 
   }
 
@@ -1403,50 +1522,203 @@ mediaFileInput.addEventListener(
     clearMessage();
 
 
-    const file =
-    event.target.files[0];
+    const files =
+    Array.from(
+      event.target.files || []
+    );
 
 
-    if(!file){
-
-      clearSelectedMedia();
+    if(files.length === 0){
 
       return;
 
     }
 
 
-    const isImage =
-    file.type.startsWith(
+    const firstFile =
+    files[0];
+
+
+    const isImageBatch =
+    firstFile.type.startsWith(
       "image/"
     );
 
 
     const isVideo =
-    file.type.startsWith(
+    files.length === 1 &&
+    firstFile.type.startsWith(
       "video/"
     );
 
 
     if(
-      !isImage &&
+      !isImageBatch &&
       !isVideo
     ){
 
       showMessage(
-        "Please select a valid photo or video."
+        "Please select valid photos or a video."
       );
-
-
-      clearSelectedMedia();
 
       return;
 
     }
 
 
-    const maximumImageSize =
-    10 * 1024 * 1024;
+/* =====================================================
+   HANDLE PHOTO SELECTION (ONE OR MANY)
+===================================================== */
+
+    if(isImageBatch){
+
+      /*
+         Switching to photos clears any previously
+         chosen video, since a post is either photos
+         or one video, never both.
+      */
+
+      clearSelectedMedia();
+
+
+      const maximumImageSize =
+      10 * 1024 * 1024;
+
+
+      const validImageFiles =
+      [];
+
+
+      let rejectedForSize =
+      false;
+
+
+      files.forEach(
+        function(file){
+
+          if(
+            !file.type.startsWith(
+              "image/"
+            )
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            file.size > maximumImageSize
+          ){
+
+            rejectedForSize =
+            true;
+
+            return;
+
+          }
+
+
+          validImageFiles.push(
+            file
+          );
+
+        }
+      );
+
+
+      let filesToUse =
+      validImageFiles;
+
+
+      let tooManySelected =
+      false;
+
+
+      if(
+        filesToUse.length >
+        MAXIMUM_PHOTOS_PER_POST
+      ){
+
+        filesToUse =
+        filesToUse.slice(
+          0,
+          MAXIMUM_PHOTOS_PER_POST
+        );
+
+
+        tooManySelected =
+        true;
+
+      }
+
+
+      selectedImageFiles =
+      filesToUse;
+
+
+      selectedImagePreviewUrls =
+      filesToUse.map(
+        function(file){
+
+          return URL.createObjectURL(
+            file
+          );
+
+        }
+      );
+
+
+      selectedMediaType =
+      selectedImageFiles.length > 0
+      ? "image"
+      : "none";
+
+
+      if(
+        selectedImageFiles.length === 0
+      ){
+
+        showMessage(
+          "The selected photos could not be used. Please try again."
+        );
+
+        return;
+
+      }
+
+
+      if(rejectedForSize){
+
+        showMessage(
+          "Some photos were skipped because they were larger than 10 MB."
+        );
+
+      }
+
+
+      if(tooManySelected){
+
+        showMessage(
+          `Only the first ${MAXIMUM_PHOTOS_PER_POST} photos were kept. You may attach up to ${MAXIMUM_PHOTOS_PER_POST} photos per post.`
+        );
+
+      }
+
+
+      showMediaPreview();
+
+
+      return;
+
+    }
+
+
+/* =====================================================
+   HANDLE VIDEO SELECTION
+===================================================== */
+
+    clearSelectedMedia();
 
 
     const maximumVideoSize =
@@ -1454,62 +1726,30 @@ mediaFileInput.addEventListener(
 
 
     if(
-      isImage &&
-      file.size > maximumImageSize
-    ){
-
-      showMessage(
-        "The selected photo is too large. Photos must be 10 MB or smaller."
-      );
-
-
-      clearSelectedMedia();
-
-      return;
-
-    }
-
-
-    if(
-      isVideo &&
-      file.size > maximumVideoSize
+      firstFile.size > maximumVideoSize
     ){
 
       showMessage(
         "The selected video is too large. Videos must be 100 MB or smaller."
       );
 
-
-      clearSelectedMedia();
-
       return;
 
     }
 
 
-    selectedMediaFile =
-    file;
+    selectedVideoFile =
+    firstFile;
+
+
+    selectedVideoPreviewUrl =
+    URL.createObjectURL(
+      firstFile
+    );
 
 
     selectedMediaType =
-    isImage
-    ? "image"
-    : "video";
-
-
-    if(mediaPreviewUrl){
-
-      URL.revokeObjectURL(
-        mediaPreviewUrl
-      );
-
-    }
-
-
-    mediaPreviewUrl =
-    URL.createObjectURL(
-      file
-    );
+    "video";
 
 
     showMediaPreview();
@@ -1524,44 +1764,179 @@ mediaFileInput.addEventListener(
 
 function showMediaPreview(){
 
+  imagePreviewGrid.innerHTML =
+  "";
+
+
   previewContent.innerHTML =
   "";
 
 
   previewFileName.textContent =
-  selectedMediaFile
-  ? selectedMediaFile.name
-  : "";
+  "";
 
+
+/* =====================================================
+   PHOTO GRID PREVIEW
+===================================================== */
 
   if(
     selectedMediaType === "image"
   ){
 
-    const image =
-    document.createElement(
-      "img"
+    selectedImagePreviewUrls.forEach(
+      function(previewUrl,index){
+
+        const tile =
+        document.createElement(
+          "div"
+        );
+
+
+        tile.className =
+        "imagePreviewTile";
+
+
+        const image =
+        document.createElement(
+          "img"
+        );
+
+
+        image.src =
+        previewUrl;
+
+
+        image.alt =
+        `Selected photo ${index + 1}`;
+
+
+        image.loading =
+        "lazy";
+
+
+        const removeButton =
+        document.createElement(
+          "button"
+        );
+
+
+        removeButton.type =
+        "button";
+
+
+        removeButton.className =
+        "imagePreviewRemoveButton";
+
+
+        removeButton.setAttribute(
+          "aria-label",
+          `Remove photo ${index + 1}`
+        );
+
+
+        removeButton.textContent =
+        "✕";
+
+
+        removeButton.addEventListener(
+          "click",
+          function(){
+
+            removeSelectedImageAt(
+              index
+            );
+
+          }
+        );
+
+
+        tile.appendChild(
+          image
+        );
+
+
+        tile.appendChild(
+          removeButton
+        );
+
+
+        imagePreviewGrid.appendChild(
+          tile
+        );
+
+      }
     );
 
 
-    image.src =
-    mediaPreviewUrl;
+    if(
+      selectedImageFiles.length <
+      MAXIMUM_PHOTOS_PER_POST
+    ){
+
+      const addMoreTile =
+      document.createElement(
+        "button"
+      );
 
 
-    image.alt =
-    "Selected photo preview";
+      addMoreTile.type =
+      "button";
 
 
-    image.loading =
-    "lazy";
+      addMoreTile.className =
+      "addMorePhotosTile";
 
 
-    previewContent.appendChild(
-      image
-    );
+      addMoreTile.setAttribute(
+        "aria-label",
+        "Add more photos"
+      );
+
+
+      addMoreTile.textContent =
+      "＋";
+
+
+      addMoreTile.addEventListener(
+        "click",
+        function(){
+
+          openMediaPicker(
+            "image"
+          );
+
+        }
+      );
+
+
+      imagePreviewGrid.appendChild(
+        addMoreTile
+      );
+
+    }
+
+
+    previewFileName.textContent =
+    `${selectedImageFiles.length} photo${
+      selectedImageFiles.length === 1
+      ? ""
+      : "s"
+    } selected`;
+
+
+    mediaPreview.style.display =
+    "block";
+
+
+    return;
 
   }
 
+
+/* =====================================================
+   VIDEO PREVIEW
+===================================================== */
 
   if(
     selectedMediaType === "video"
@@ -1574,7 +1949,7 @@ function showMediaPreview(){
 
 
     video.src =
-    mediaPreviewUrl;
+    selectedVideoPreviewUrl;
 
 
     video.controls =
@@ -1593,11 +1968,78 @@ function showMediaPreview(){
       video
     );
 
+
+    previewFileName.textContent =
+    selectedVideoFile
+    ? selectedVideoFile.name
+    : "";
+
+
+    mediaPreview.style.display =
+    "block";
+
+  }
+
+}
+
+
+/* =====================================================
+   REMOVE ONE SELECTED PHOTO
+===================================================== */
+
+function removeSelectedImageAt(
+  indexToRemove
+){
+
+  const urlToRelease =
+  selectedImagePreviewUrls[
+    indexToRemove
+  ];
+
+
+  if(urlToRelease){
+
+    URL.revokeObjectURL(
+      urlToRelease
+    );
+
   }
 
 
-  mediaPreview.style.display =
-  "block";
+  selectedImageFiles =
+  selectedImageFiles.filter(
+    function(file,index){
+
+      return index !==
+      indexToRemove;
+
+    }
+  );
+
+
+  selectedImagePreviewUrls =
+  selectedImagePreviewUrls.filter(
+    function(url,index){
+
+      return index !==
+      indexToRemove;
+
+    }
+  );
+
+
+  if(
+    selectedImageFiles.length === 0
+  ){
+
+    clearSelectedMedia();
+
+    return;
+
+  }
+
+
+  showMediaPreview();
 
 }
 
@@ -1608,8 +2050,40 @@ function showMediaPreview(){
 
 function clearSelectedMedia(){
 
-  selectedMediaFile =
+  selectedImageFiles =
+  [];
+
+
+  selectedImagePreviewUrls.forEach(
+    function(url){
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    }
+  );
+
+
+  selectedImagePreviewUrls =
+  [];
+
+
+  if(selectedVideoPreviewUrl){
+
+    URL.revokeObjectURL(
+      selectedVideoPreviewUrl
+    );
+
+  }
+
+
+  selectedVideoFile =
   null;
+
+
+  selectedVideoPreviewUrl =
+  "";
 
 
   selectedMediaType =
@@ -1617,6 +2091,10 @@ function clearSelectedMedia(){
 
 
   mediaFileInput.value =
+  "";
+
+
+  imagePreviewGrid.innerHTML =
   "";
 
 
@@ -1630,19 +2108,6 @@ function clearSelectedMedia(){
 
   mediaPreview.style.display =
   "none";
-
-
-  if(mediaPreviewUrl){
-
-    URL.revokeObjectURL(
-      mediaPreviewUrl
-    );
-
-
-    mediaPreviewUrl =
-    "";
-
-  }
 
 }
 
@@ -1705,57 +2170,15 @@ async function getImagekitAuthParameters(){
 
 
 /* =====================================================
-   IMAGEKIT UPLOAD FUNCTION
+   UPLOAD ONE FILE TO IMAGEKIT
+   (used for a single video, and called once per
+   photo when uploading a multi-photo post)
 ===================================================== */
 
-async function uploadPostMedia(file){
-
-  if(!currentUser){
-
-    throw new Error(
-      "You must sign in before uploading media."
-    );
-
-  }
-
-
-  if(!file){
-
-    return {
-
-      mediaType:
-      "none",
-
-      mediaUrl:
-      "",
-
-      mediaName:
-      ""
-
-    };
-
-  }
-
-
-  const resourceType =
-  file.type.startsWith(
-    "video/"
-  )
-  ? "video"
-  : "image";
-
-
-  uploadArea.style.display =
-  "block";
-
-
-  uploadProgress.style.width =
-  "0%";
-
-
-  uploadText.textContent =
-  "Preparing upload...";
-
+async function uploadSingleFileToImagekit(
+  file,
+  onProgress
+){
 
   const authParameters =
   await getImagekitAuthParameters();
@@ -1849,12 +2272,16 @@ async function uploadPostMedia(file){
           );
 
 
-          uploadProgress.style.width =
-          `${progress}%`;
+          if(
+            typeof onProgress ===
+            "function"
+          ){
 
+            onProgress(
+              progress
+            );
 
-          uploadText.textContent =
-          `Uploading media: ${progress}%`;
+          }
 
         }
       );
@@ -1898,23 +2325,12 @@ async function uploadPostMedia(file){
             }
 
 
-            uploadProgress.style.width =
-            "100%";
-
-
-            uploadText.textContent =
-            "Media uploaded successfully.";
-
-
             resolve({
 
-              mediaType:
-              resourceType,
-
-              mediaUrl:
+              url:
               response.url,
 
-              mediaName:
+              name:
               file.name
 
             });
@@ -1925,10 +2341,6 @@ async function uploadPostMedia(file){
               "ImageKit response error:",
               error
             );
-
-
-            uploadText.textContent =
-            "Media upload failed.";
 
 
             reject(error);
@@ -1945,10 +2357,6 @@ async function uploadPostMedia(file){
 
           activeUploadRequest =
           null;
-
-
-          uploadText.textContent =
-          "Media upload failed.";
 
 
           reject(
@@ -1969,10 +2377,6 @@ async function uploadPostMedia(file){
           null;
 
 
-          uploadText.textContent =
-          "Media upload timed out.";
-
-
           reject(
             new Error(
               "The media upload took too long. Please try again."
@@ -1991,10 +2395,6 @@ async function uploadPostMedia(file){
           null;
 
 
-          uploadText.textContent =
-          "Media upload cancelled.";
-
-
           reject(
             new Error(
               "The media upload was cancelled."
@@ -2011,6 +2411,201 @@ async function uploadPostMedia(file){
 
     }
   );
+
+}
+
+
+/* =====================================================
+   UPLOAD POST MEDIA
+   (handles either a batch of photos or one video —
+   uploads photos one at a time so the progress bar
+   can show "Uploading photo 2 of 4")
+===================================================== */
+
+async function uploadPostMedia(){
+
+  if(!currentUser){
+
+    throw new Error(
+      "You must sign in before uploading media."
+    );
+
+  }
+
+
+  if(
+    selectedMediaType === "none"
+  ){
+
+    return {
+
+      mediaType:
+      "none",
+
+      mediaUrl:
+      "",
+
+      mediaName:
+      "",
+
+      imageUrls:
+      []
+
+    };
+
+  }
+
+
+  uploadArea.style.display =
+  "block";
+
+
+  uploadProgress.style.width =
+  "0%";
+
+
+  uploadText.textContent =
+  "Preparing upload...";
+
+
+/* =====================================================
+   UPLOAD A BATCH OF PHOTOS
+===================================================== */
+
+  if(
+    selectedMediaType === "image"
+  ){
+
+    const totalPhotos =
+    selectedImageFiles.length;
+
+
+    const uploadedImageUrls =
+    [];
+
+
+    for(
+      let photoIndex = 0;
+      photoIndex < totalPhotos;
+      photoIndex++
+    ){
+
+      const file =
+      selectedImageFiles[
+        photoIndex
+      ];
+
+
+      const uploadResult =
+      await uploadSingleFileToImagekit(
+
+        file,
+
+        function(progress){
+
+          uploadProgress.style.width =
+          `${progress}%`;
+
+
+          uploadText.textContent =
+          `Uploading photo ${
+            photoIndex + 1
+          } of ${totalPhotos}: ${progress}%`;
+
+        }
+
+      );
+
+
+      uploadedImageUrls.push(
+        uploadResult.url
+      );
+
+    }
+
+
+    uploadProgress.style.width =
+    "100%";
+
+
+    uploadText.textContent =
+    `${totalPhotos} photo${
+      totalPhotos === 1
+      ? ""
+      : "s"
+    } uploaded successfully.`;
+
+
+    return {
+
+      mediaType:
+      "image",
+
+      mediaUrl:
+      uploadedImageUrls[0] ||
+      "",
+
+      mediaName:
+      `${totalPhotos} photo${
+        totalPhotos === 1
+        ? ""
+        : "s"
+      }`,
+
+      imageUrls:
+      uploadedImageUrls
+
+    };
+
+  }
+
+
+/* =====================================================
+   UPLOAD ONE VIDEO
+===================================================== */
+
+  const videoUploadResult =
+  await uploadSingleFileToImagekit(
+
+    selectedVideoFile,
+
+    function(progress){
+
+      uploadProgress.style.width =
+      `${progress}%`;
+
+
+      uploadText.textContent =
+      `Uploading video: ${progress}%`;
+
+    }
+
+  );
+
+
+  uploadProgress.style.width =
+  "100%";
+
+
+  uploadText.textContent =
+  "Media uploaded successfully.";
+
+
+  return {
+
+    mediaType:
+    "video",
+
+    mediaUrl:
+    videoUploadResult.url,
+
+    mediaName:
+    videoUploadResult.name,
+
+    imageUrls:
+    []
+
+  };
 
 }
 /* =====================================================
@@ -2063,13 +2658,20 @@ async function publishPost(){
   }
 
 
+  const hasMedia =
+  selectedMediaType === "image" &&
+  selectedImageFiles.length > 0 ||
+  selectedMediaType === "video" &&
+  selectedVideoFile;
+
+
   if(
     post === "" &&
-    !selectedMediaFile
+    !hasMedia
   ){
 
     showMessage(
-      "Please write a message or attach a photo or video."
+      "Please write a message or attach photos or a video."
     );
 
 
@@ -2133,15 +2735,18 @@ async function publishPost(){
 ===================================================== */
 
     const mediaResult =
-    await uploadPostMedia(
-      selectedMediaFile
-    );
+    await uploadPostMedia();
+
+
+    const imageUrls =
+    mediaResult.mediaType === "image"
+    ? mediaResult.imageUrls
+    : [];
 
 
     const imageUrl =
-    mediaResult.mediaType === "image"
-    ? mediaResult.mediaUrl
-    : "";
+    imageUrls[0] ||
+    "";
 
 
     const videoUrl =
@@ -2152,6 +2757,12 @@ async function publishPost(){
 
 /* =====================================================
    SAVE POST TO FIRESTORE
+
+   imageUrls is the new array field that holds
+   every attached photo. imageUrl is still saved
+   too (as the first photo) purely so any older
+   page that only reads a single imageUrl keeps
+   showing something sensible.
 ===================================================== */
 
     await addDoc(
@@ -2211,6 +2822,9 @@ async function publishPost(){
 
         imageUrl:
         imageUrl,
+
+        imageUrls:
+        imageUrls,
 
         videoUrl:
         videoUrl
@@ -2364,10 +2978,21 @@ window.addEventListener(
   "beforeunload",
   function(){
 
-    if(mediaPreviewUrl){
+    selectedImagePreviewUrls.forEach(
+      function(url){
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      }
+    );
+
+
+    if(selectedVideoPreviewUrl){
 
       URL.revokeObjectURL(
-        mediaPreviewUrl
+        selectedVideoPreviewUrl
       );
 
     }
