@@ -324,14 +324,22 @@ import{
 
 
 /* ========================================
-   CLOUDINARY SETTINGS
+   IMAGEKIT SETTINGS
+   (replaces the old Cloudinary settings —
+   Cloudinary's free credit limit was
+   exceeded and the account was scheduled
+   for deactivation, which is why profile
+   picture uploads stopped working)
 ======================================== */
 
-const cloudName =
-"glq2nymz";
+const imagekitPublicKey =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
 
-const uploadPreset =
-"sabasaba_community";
+const imagekitAuthEndpoint =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const imagekitUploadUrl =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* ========================================
@@ -752,17 +760,43 @@ profileFile.addEventListener(
 
 
 /* ========================================
-   UPLOAD PROFILE PICTURE TO CLOUDINARY
+   GET IMAGEKIT UPLOAD AUTHENTICATION
 ======================================== */
 
-function uploadProfilePicture(file){
+async function getImagekitAuthParameters(){
+
+  const response =
+  await fetch(
+    imagekitAuthEndpoint
+  );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the picture upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
+
+}
+
+
+/* ========================================
+   UPLOAD PROFILE PICTURE TO IMAGEKIT
+======================================== */
+
+async function uploadProfilePicture(file){
+
+  const authParameters =
+  await getImagekitAuthParameters();
+
 
   return new Promise(
     (resolve,reject) => {
-
-      const uploadURL =
-      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
 
       const formData =
       new FormData();
@@ -775,14 +809,38 @@ function uploadProfilePicture(file){
 
 
       formData.append(
-        "upload_preset",
-        uploadPreset
+        "fileName",
+        file.name
+      );
+
+
+      formData.append(
+        "publicKey",
+        imagekitPublicKey
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
       );
 
 
       formData.append(
         "folder",
-        "sabasaba/profile-pictures"
+        "/sabasaba-community/profile-pictures"
       );
 
 
@@ -792,7 +850,7 @@ function uploadProfilePicture(file){
 
       request.open(
         "POST",
-        uploadURL,
+        imagekitUploadUrl,
         true
       );
 
@@ -837,17 +895,17 @@ function uploadProfilePicture(file){
             if(
               request.status < 200 ||
               request.status >= 300 ||
-              !response.secure_url
+              !response.url
             ){
 
-              const cloudinaryError =
-              response?.error?.message ||
-              "Cloudinary could not upload the profile picture.";
+              const imagekitError =
+              response?.message ||
+              "ImageKit could not upload the profile picture.";
 
 
               reject(
                 new Error(
-                  cloudinaryError
+                  imagekitError
                 )
               );
 
@@ -857,14 +915,14 @@ function uploadProfilePicture(file){
 
 
             resolve(
-              response.secure_url
+              response.url
             );
 
           }catch(error){
 
             reject(
               new Error(
-                "Cloudinary returned an invalid response."
+                "ImageKit returned an invalid response."
               )
             );
 
@@ -1126,11 +1184,11 @@ function getFriendlyErrorMessage(error){
 
   if(
     lowerMessage.includes(
-      "upload preset"
+      "authenticate"
     )
   ){
 
-    return "The Cloudinary upload preset is incorrect or is not set to unsigned.";
+    return "The picture upload could not be authenticated. Please try again in a moment.";
 
   }
 
@@ -1144,7 +1202,7 @@ function getFriendlyErrorMessage(error){
     )
   ){
 
-    return "Cloudinary rejected the picture because it is too large.";
+    return "ImageKit rejected the picture because it is too large.";
 
   }
 
