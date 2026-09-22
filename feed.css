@@ -421,7 +421,8 @@ a:focus-visible{
 .createMomentCardPlusButton{
   position:absolute;
   left:50%;
-  bottom:-17px;
+  bottom:29px;
+  z-index:5;
   transform:translateX(-50%);
   width:34px;
   height:34px;
