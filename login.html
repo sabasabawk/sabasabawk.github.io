@@ -75,6 +75,11 @@ button:hover{
 background:#0667b1;
 }
 
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
 #create{
 text-align:center;
 margin-top:20px;
@@ -90,6 +95,56 @@ font-weight:bold;
 margin-top:20px;
 text-align:center;
 font-weight:bold;
+}
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+#forgotPasswordRow{
+text-align:center;
+margin-top:14px;
+}
+
+#forgotPasswordLink{
+background:none;
+border:none;
+padding:0;
+color:#087bd1;
+font-size:14px;
+font-weight:bold;
+text-decoration:underline;
+cursor:pointer;
+width:auto;
+margin:0;
+}
+
+#forgotPasswordBox{
+display:none;
+margin-top:18px;
+padding:16px;
+background:#f4f8fc;
+border:1px solid #d3e3f0;
+border-radius:10px;
+}
+
+#forgotPasswordBox.show{
+display:block;
+}
+
+#forgotPasswordBox p{
+margin:0 0 4px;
+text-align:left;
+color:#444;
+font-size:14px;
+}
+
+#resetMessage{
+margin-top:12px;
+text-align:center;
+font-weight:bold;
+font-size:14px;
 }
 
 </style>
@@ -128,6 +183,39 @@ Login
 
 <p id="message"></p>
 
+<div id="forgotPasswordRow">
+
+<button
+type="button"
+id="forgotPasswordLink"
+onclick="toggleForgotPassword()"
+>
+Forgot your password?
+</button>
+
+</div>
+
+<div id="forgotPasswordBox">
+
+<p>Enter your email and we'll send you a link to reset your password.</p>
+
+<input
+type="email"
+id="resetEmail"
+placeholder="Enter your email">
+
+<button
+type="button"
+id="sendResetButton"
+onclick="sendResetLink()"
+>
+Send Reset Link
+</button>
+
+<p id="resetMessage"></p>
+
+</div>
+
 <div id="create">
 
 Don't have an account?
@@ -150,6 +238,22 @@ import {
 auth,
 signInWithEmailAndPassword
 } from "./firebase.js";
+
+/*
+   Imported directly from the Firebase Auth SDK
+   rather than through firebase.js, the same way
+   other pages pull serverTimestamp straight from
+   the Firestore SDK when firebase.js doesn't
+   re-export something. If firebase.js already
+   re-exports sendPasswordResetEmail, this import
+   can be switched to come from "./firebase.js"
+   instead, but importing it this way works either
+   way without needing to touch firebase.js.
+*/
+
+import {
+sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 window.loginUser = async function(){
 
@@ -193,6 +297,143 @@ window.location.href="feed.html";
 document.getElementById("message").style.color="red";
 document.getElementById("message").innerHTML =
 error.message;
+
+}
+
+};
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+window.toggleForgotPassword = function(){
+
+const box =
+document.getElementById("forgotPasswordBox");
+
+const resetEmailInput =
+document.getElementById("resetEmail");
+
+const emailInput =
+document.getElementById("email");
+
+
+const isOpening =
+!box.classList.contains("show");
+
+
+box.classList.toggle("show");
+
+
+if(
+isOpening &&
+emailInput.value.trim() &&
+!resetEmailInput.value.trim()
+){
+
+/*
+   Pre-fills the reset box with whatever the
+   person already typed in the main email
+   field, so they don't have to type it twice.
+*/
+
+resetEmailInput.value =
+emailInput.value.trim();
+
+}
+
+};
+
+
+window.sendResetLink = async function(){
+
+const resetEmailInput =
+document.getElementById("resetEmail");
+
+const resetMessage =
+document.getElementById("resetMessage");
+
+const sendResetButton =
+document.getElementById("sendResetButton");
+
+const enteredEmail =
+resetEmailInput.value.trim();
+
+
+if(!enteredEmail){
+
+resetMessage.style.color =
+"red";
+
+resetMessage.innerHTML =
+"Please enter your email address.";
+
+return;
+
+}
+
+
+sendResetButton.disabled =
+true;
+
+sendResetButton.textContent =
+"Sending...";
+
+resetMessage.innerHTML =
+"";
+
+
+try{
+
+await sendPasswordResetEmail(
+auth,
+enteredEmail
+);
+
+resetMessage.style.color =
+"green";
+
+resetMessage.innerHTML =
+"✅ A password reset link has been sent. Please check your email inbox (and spam folder).";
+
+}catch(error){
+
+resetMessage.style.color =
+"red";
+
+
+/*
+   Firebase intentionally does not confirm or
+   deny whether an email address has an account,
+   for privacy reasons -- so most errors here are
+   shown in a friendly, generic way rather than
+   exposing Firebase's raw error codes.
+*/
+
+if(
+String(error?.code || "").includes(
+"invalid-email"
+)
+){
+
+resetMessage.innerHTML =
+"Please enter a valid email address.";
+
+}else{
+
+resetMessage.innerHTML =
+"If an account exists for that email, a reset link has been sent.";
+
+}
+
+}finally{
+
+sendResetButton.disabled =
+false;
+
+sendResetButton.textContent =
+"Send Reset Link";
 
 }
 
