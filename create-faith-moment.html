@@ -491,6 +491,31 @@
       font-weight:900;
     }
 
+    .editMediaButton{
+      position:absolute;
+      top:10px;
+      left:10px;
+
+      width:38px;
+      height:38px;
+
+      border:0;
+      border-radius:50%;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background:rgba(0,0,0,.68);
+      color:#ffffff;
+
+      font-size:16px;
+    }
+
+    .editMediaButton:hover{
+      background:rgba(8,123,209,.9);
+    }
+
     .selectedMediaLabel{
       position:absolute;
       left:10px;
@@ -620,6 +645,93 @@
 
 
     /* =====================================================
+       PHOTO EDITOR (crop / rotate before posting,
+       the same tool used on the Create Post page)
+    ===================================================== */
+
+    .photoEditorModal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:2000;
+      background:#000000;
+      flex-direction:column;
+    }
+
+    .photoEditorModal.show{
+      display:flex;
+    }
+
+    .photoEditorHeader{
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      background:#111111;
+    }
+
+    .photoEditorHeaderButton{
+      border:0;
+      background:none;
+      color:#ffffff;
+      font-size:16px;
+      font-weight:bold;
+      padding:6px 10px;
+      cursor:pointer;
+    }
+
+    .photoEditorDoneButton{
+      color:#4fb0ff;
+    }
+
+    .photoEditorCounterText{
+      color:#cccccc;
+      font-size:13px;
+    }
+
+    .photoEditorImageArea{
+      flex:1 1 auto;
+      position:relative;
+      overflow:hidden;
+      min-height:0;
+      background:#000000;
+    }
+
+    .photoEditorImageArea img{
+      display:block;
+      max-width:100%;
+    }
+
+    .photoEditorToolbar{
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      overflow-x:auto;
+      background:#111111;
+    }
+
+    .photoEditorToolButton{
+      flex:0 0 auto;
+      padding:9px 14px;
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:20px;
+      background:transparent;
+      color:#ffffff;
+      font-size:14px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .photoEditorAspectButton.active{
+      background:var(--primary);
+      border-color:var(--primary);
+    }
+
+
+    /* =====================================================
        RESPONSIVE
     ===================================================== */
 
@@ -667,6 +779,13 @@
     }
 
   </style>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+  >
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 </head>
 <body>
@@ -985,6 +1104,16 @@
           <div id="mediaPreviewContent"></div>
 
           <button
+            id="editMediaButton"
+            class="editMediaButton"
+            type="button"
+            aria-label="Edit selected photo"
+            title="Edit photo"
+          >
+            ✏️
+          </button>
+
+          <button
             id="removeMediaButton"
             class="removeMediaButton"
             type="button"
@@ -1067,6 +1196,118 @@
     </form>
 
   </main>
+
+
+  <!-- =====================================================
+       PHOTO EDITOR
+       (crop / rotate a photo before it is shared —
+       opens automatically right after a photo is chosen,
+       and can be reopened from the ✏️ button)
+  ====================================================== -->
+
+  <div
+    id="photoEditorModal"
+    class="photoEditorModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Edit photo"
+  >
+
+    <div class="photoEditorHeader">
+
+      <button
+        type="button"
+        id="photoEditorCancelButton"
+        class="photoEditorHeaderButton"
+      >
+        ✕
+      </button>
+
+      <span
+        id="photoEditorCounter"
+        class="photoEditorCounterText"
+      ></span>
+
+      <button
+        type="button"
+        id="photoEditorDoneButton"
+        class="photoEditorHeaderButton photoEditorDoneButton"
+      >
+        ✓ Done
+      </button>
+
+    </div>
+
+
+    <div class="photoEditorImageArea">
+
+      <img
+        id="photoEditorImage"
+        src=""
+        alt="Photo being edited"
+      >
+
+    </div>
+
+
+    <div class="photoEditorToolbar">
+
+      <button
+        type="button"
+        id="photoEditorRotateLeftButton"
+        class="photoEditorToolButton"
+        title="Rotate left"
+      >
+        ⟲
+      </button>
+
+      <button
+        type="button"
+        id="photoEditorRotateRightButton"
+        class="photoEditorToolButton"
+        title="Rotate right"
+      >
+        ⟳
+      </button>
+
+      <button
+        type="button"
+        class="photoEditorToolButton photoEditorAspectButton active"
+        data-ratio="free"
+      >
+        Free
+      </button>
+
+      <button
+        type="button"
+        class="photoEditorToolButton photoEditorAspectButton"
+        data-ratio="1"
+      >
+        1:1
+      </button>
+
+      <button
+        type="button"
+        class="photoEditorToolButton photoEditorAspectButton"
+        data-ratio="0.8"
+      >
+        4:5
+      </button>
+
+      <button
+        type="button"
+        class="photoEditorToolButton photoEditorAspectButton"
+        data-ratio="1.7778"
+      >
+        16:9
+      </button>
+
+    </div>
+
+  </div>
+
+
   <!-- =====================================================
        JAVASCRIPT
   ====================================================== -->
@@ -1179,6 +1420,11 @@ const imagekitUploadUrl =
         "removeMediaButton"
       );
 
+    const editMediaButton =
+      document.getElementById(
+        "editMediaButton"
+      );
+
     const selectedMediaLabel =
       document.getElementById(
         "selectedMediaLabel"
@@ -1206,6 +1452,51 @@ const imagekitUploadUrl =
 
 
     /* =====================================================
+       PHOTO EDITOR ELEMENTS
+    ===================================================== */
+
+    const photoEditorModal =
+      document.getElementById(
+        "photoEditorModal"
+      );
+
+    const photoEditorImage =
+      document.getElementById(
+        "photoEditorImage"
+      );
+
+    const photoEditorCounter =
+      document.getElementById(
+        "photoEditorCounter"
+      );
+
+    const photoEditorCancelButton =
+      document.getElementById(
+        "photoEditorCancelButton"
+      );
+
+    const photoEditorDoneButton =
+      document.getElementById(
+        "photoEditorDoneButton"
+      );
+
+    const photoEditorRotateLeftButton =
+      document.getElementById(
+        "photoEditorRotateLeftButton"
+      );
+
+    const photoEditorRotateRightButton =
+      document.getElementById(
+        "photoEditorRotateRightButton"
+      );
+
+    const photoEditorAspectButtons =
+      document.querySelectorAll(
+        ".photoEditorAspectButton"
+      );
+
+
+    /* =====================================================
    PAGE STATE
 ===================================================== */
 
@@ -1219,6 +1510,21 @@ let selectedMediaType = "none";
 let mediaPreviewUrl = "";
 
 let isPublishing = false;
+
+
+/* =====================================================
+   PHOTO EDITOR STATE
+
+   "fresh" -> a photo was just chosen with the file
+   picker and has not been added to the moment yet.
+   "reedit" -> re-editing the photo that is already
+   selected, opened from the ✏️ button.
+===================================================== */
+
+let photoEditorCropper = null;
+let photoEditorMode = "fresh";
+let photoEditorPendingFile = null;
+let photoEditorActiveObjectUrl = "";
 
 
     /* =====================================================
@@ -1619,6 +1925,9 @@ let isPublishing = false;
         "show"
       );
 
+      editMediaButton.style.display =
+        "none";
+
       selectedMediaLabel.textContent =
         "Selected media";
 
@@ -1632,8 +1941,405 @@ let isPublishing = false;
 
 
     /* =====================================================
+       PHOTO EDITOR
+       (crop / rotate, using Cropper.js -- same tool
+       used on the Create Post page)
+    ===================================================== */
+
+    function destroyPhotoEditorCropper(){
+
+      if(photoEditorCropper){
+
+        photoEditorCropper.destroy();
+
+        photoEditorCropper = null;
+
+      }
+
+      if(photoEditorActiveObjectUrl){
+
+        URL.revokeObjectURL(
+          photoEditorActiveObjectUrl
+        );
+
+        photoEditorActiveObjectUrl = "";
+
+      }
+
+    }
+
+
+    function setPhotoEditorAspectButtonsToFree(){
+
+      photoEditorAspectButtons.forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.ratio === "free"
+          );
+
+        }
+      );
+
+    }
+
+
+    function openPhotoEditorModal(
+      imageUrl,
+      counterText
+    ){
+
+      photoEditorCounter.textContent =
+        counterText;
+
+      setPhotoEditorAspectButtonsToFree();
+
+      photoEditorModal.classList.add(
+        "show"
+      );
+
+      photoEditorModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      destroyPhotoEditorCropper();
+
+      photoEditorActiveObjectUrl =
+        imageUrl;
+
+      photoEditorImage.src =
+        imageUrl;
+
+      photoEditorImage.onload =
+        () => {
+
+          photoEditorCropper =
+            new Cropper(
+              photoEditorImage,
+              {
+                viewMode:1,
+                dragMode:"move",
+                autoCropArea:1,
+                background:false,
+                responsive:true,
+                aspectRatio:NaN
+              }
+            );
+
+        };
+
+    }
+
+
+    function closePhotoEditorModal(){
+
+      photoEditorModal.classList.remove(
+        "show"
+      );
+
+      photoEditorModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      destroyPhotoEditorCropper();
+
+    }
+
+
+    function getCroppedImageFile(
+      originalFile
+    ){
+
+      return new Promise(resolve => {
+
+        if(!photoEditorCropper){
+
+          resolve(originalFile);
+          return;
+
+        }
+
+        const canvas =
+          photoEditorCropper.getCroppedCanvas({
+            maxWidth:2048,
+            maxHeight:2048,
+            imageSmoothingQuality:"high"
+          });
+
+        if(!canvas){
+
+          resolve(originalFile);
+          return;
+
+        }
+
+        canvas.toBlob(
+          blob => {
+
+            if(!blob){
+
+              resolve(originalFile);
+              return;
+
+            }
+
+            resolve(
+              new File(
+                [blob],
+                originalFile.name,
+                {type:"image/jpeg"}
+              )
+            );
+
+          },
+          "image/jpeg",
+          0.9
+        );
+
+      });
+
+    }
+
+
+    function openPhotoEditorForFreshFile(
+      file
+    ){
+
+      photoEditorMode = "fresh";
+      photoEditorPendingFile = file;
+
+      const temporaryUrl =
+        URL.createObjectURL(file);
+
+      openPhotoEditorModal(
+        temporaryUrl,
+        "Edit photo"
+      );
+
+    }
+
+
+    function openPhotoEditorForReedit(){
+
+      if(
+        selectedMediaType !== "photo" ||
+        !selectedMediaFile
+      ){
+        return;
+      }
+
+      photoEditorMode = "reedit";
+
+      const temporaryUrl =
+        URL.createObjectURL(
+          selectedMediaFile
+        );
+
+      openPhotoEditorModal(
+        temporaryUrl,
+        "Edit photo"
+      );
+
+    }
+
+
+    editMediaButton.addEventListener(
+      "click",
+      openPhotoEditorForReedit
+    );
+
+
+    photoEditorRotateLeftButton.addEventListener(
+      "click",
+      () => {
+
+        if(photoEditorCropper){
+
+          photoEditorCropper.rotate(-90);
+
+        }
+
+      }
+    );
+
+
+    photoEditorRotateRightButton.addEventListener(
+      "click",
+      () => {
+
+        if(photoEditorCropper){
+
+          photoEditorCropper.rotate(90);
+
+        }
+
+      }
+    );
+
+
+    photoEditorAspectButtons.forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            photoEditorAspectButtons.forEach(
+              otherButton => {
+
+                otherButton.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+            button.classList.add(
+              "active"
+            );
+
+            if(!photoEditorCropper){
+              return;
+            }
+
+            const ratioValue =
+              button.dataset.ratio;
+
+            photoEditorCropper.setAspectRatio(
+              ratioValue === "free"
+                ? NaN
+                : parseFloat(ratioValue)
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    photoEditorCancelButton.addEventListener(
+      "click",
+      () => {
+
+        if(photoEditorMode === "fresh"){
+
+          photoInput.value = "";
+          photoEditorPendingFile = null;
+
+        }
+
+        closePhotoEditorModal();
+
+      }
+    );
+
+
+    photoEditorDoneButton.addEventListener(
+      "click",
+      async () => {
+
+        if(photoEditorMode === "fresh"){
+
+          const originalFile =
+            photoEditorPendingFile;
+
+          photoEditorPendingFile = null;
+
+          if(!originalFile){
+
+            closePhotoEditorModal();
+            return;
+
+          }
+
+          const editedFile =
+            await getCroppedImageFile(
+              originalFile
+            );
+
+          closePhotoEditorModal();
+
+          finishPhotoSelection(
+            editedFile
+          );
+
+          return;
+
+        }
+
+
+        /* =====================================================
+           RE-EDIT MODE
+        ===================================================== */
+
+        if(!selectedMediaFile){
+
+          closePhotoEditorModal();
+          return;
+
+        }
+
+        const editedFile =
+          await getCroppedImageFile(
+            selectedMediaFile
+          );
+
+        closePhotoEditorModal();
+
+        finishPhotoSelection(
+          editedFile
+        );
+
+      }
+    );
+
+
+    /* =====================================================
        PHOTO PREVIEW
     ===================================================== */
+
+    function finishPhotoSelection(file){
+
+      clearSelectedMedia();
+
+      selectedMediaFile = file;
+      selectedMediaType = "photo";
+
+      mediaPreviewUrl =
+        URL.createObjectURL(file);
+
+      mediaPreviewContent.innerHTML = `
+
+        <img
+          src="${mediaPreviewUrl}"
+          alt="Selected Faith Moment photograph"
+        >
+
+      `;
+
+      selectedMediaLabel.textContent =
+        "📷 Selected Photo";
+
+      editMediaButton.style.display =
+        "flex";
+
+      mediaPreview.classList.add(
+        "show"
+      );
+
+
+      if(selectedMomentType === "video"){
+
+        selectMomentType("photo");
+
+      }
+
+    }
+
 
     function handleSelectedPhoto(file){
 
@@ -1675,36 +2381,13 @@ let isPublishing = false;
       }
 
 
-      clearSelectedMedia();
+      /*
+         Opens the crop / rotate editor right after a
+         photo is chosen, the same way Create Post does,
+         instead of adding the raw photo straight away.
+      */
 
-      selectedMediaFile = file;
-      selectedMediaType = "photo";
-
-      mediaPreviewUrl =
-        URL.createObjectURL(file);
-
-      mediaPreviewContent.innerHTML = `
-
-        <img
-          src="${mediaPreviewUrl}"
-          alt="Selected Faith Moment photograph"
-        >
-
-      `;
-
-      selectedMediaLabel.textContent =
-        "📷 Selected Photo";
-
-      mediaPreview.classList.add(
-        "show"
-      );
-
-
-      if(selectedMomentType === "video"){
-
-        selectMomentType("photo");
-
-      }
+      openPhotoEditorForFreshFile(file);
 
     }
 
@@ -1786,6 +2469,9 @@ let isPublishing = false;
 
       selectedMediaLabel.textContent =
         "🎥 Selected Video";
+
+      editMediaButton.style.display =
+        "none";
 
       mediaPreview.classList.add(
         "show"
