@@ -64,6 +64,20 @@ button{font:inherit;cursor:pointer}
 .incomingVideoActionLabel{color:#d2e0e9;font-size:11px;font-weight:900}
 @media(max-width:520px){.videoCallHeader{padding-left:9px;padding-right:9px}.backButton,.securityIcon{width:40px;height:40px}.callStatusArea{top:72px;width:calc(100% - 125px)}.activeVideoControls{gap:6px}.videoControlButton{min-height:69px;border-radius:15px;font-size:9px}.videoControlIcon{width:40px;height:40px;font-size:18px}.callMessage{bottom:125px}}
 @media(max-width:380px){.remoteAvatar{width:120px;height:120px}.remoteName{font-size:23px}.localPreview{width:86px;height:125px;top:70px;right:9px}.videoControlButton{min-height:64px;font-size:8px}.videoControlIcon{width:37px;height:37px;font-size:17px}}
+
+/* ===== MINIMIZE (keep the call alive while using the app) ===== */
+#miniBar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:52px;display:flex;align-items:center;gap:8px;padding:6px 8px;background:#0b6b3a;color:#fff;font-family:Arial,Helvetica,sans-serif}
+#miniBar.hidden{display:none !important}
+.miniReturn{flex:1;min-width:0;height:40px;border:0;border-radius:20px;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:13px;font-weight:800;text-align:left}
+.miniDot{width:9px;height:9px;border-radius:50%;background:#7cffb0;flex-shrink:0;animation:miniBlink 1.2s ease-in-out infinite}
+@keyframes miniBlink{0%,100%{opacity:.35}50%{opacity:1}}
+#miniName{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.miniHint{font-size:10px;opacity:.8;white-space:nowrap}
+.miniEnd{width:40px;height:40px;border:0;border-radius:50%;background:#e74c3c;font-size:18px;flex-shrink:0}
+#appFrame{position:fixed;top:52px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 52px);border:0;background:#fff;z-index:2147482000}
+#appFrame.hidden{display:none !important}
+#miniToast{position:fixed;left:50%;bottom:24px;z-index:2147483001;transform:translateX(-50%);max-width:88%;padding:11px 16px;border-radius:14px;background:rgba(0,0,0,.85);color:#fff;font:700 13px Arial,Helvetica,sans-serif;text-align:center}
+body.callMinimized>*:not(#miniBar):not(#appFrame):not(#miniToast):not(audio):not(script){visibility:hidden;pointer-events:none}
 </style>
 </head>
 <body>
@@ -85,7 +99,9 @@ button{font:inherit;cursor:pointer}
       <div id="headerTitle" class="headerTitle">Video Call</div>
       <div id="headerSubtitle" class="headerSubtitle">Faith Connect private video call</div>
     </div>
-    <div class="securityIcon" title="Private video call">🔒</div>
+    <button id="minimizeButton" class="backButton" type="button" aria-label="Minimize call" title="Minimize">⌄</button>
+  <button id="pipButton" class="backButton" type="button" aria-label="Picture in picture" title="Picture in picture">⧉</button>
+  <div class="securityIcon" title="Private video call">🔒</div>
   </header>
 
   <div class="callStatusArea">
@@ -143,6 +159,7 @@ import{
   auth, db, collection, addDoc, doc, getDoc, setDoc, updateDoc,
   onSnapshot, serverTimestamp, onAuthStateChanged
 }from "./firebase.js";
+if(window.self!==window.top){ throw new Error("Call pages cannot open inside the call window."); }
 
 /* =====================================================
    WEBRTC SERVERS
@@ -207,7 +224,7 @@ function attachIceDiagnostics(pc){
     if(t==="host") iceInfo.host++; else if(t==="srflx") iceInfo.srflx++; else if(t==="relay") iceInfo.relay++;
     renderIceDebug();
   });
-  pc.addEventListener("icecandidateerror",e=>{ iceInfo.err=(e.errorCode||"")+" "+(e.url||"").replace(/^turns?:|^stuns?:/,"").slice(0,24); renderIceDebug(); });
+  pc.addEventListener("icecandidateerror",e=>{ if(!/^(READ|WRITE)/.test(iceInfo.err)) iceInfo.err="TURN "+(e.errorCode||"")+" "+(e.url||"").replace(/^turns?:|^stuns?:/,"").slice(0,24); renderIceDebug(); });
 }
 renderIceDebug();
 
@@ -446,7 +463,7 @@ function watchCandidates(sub,processed,pending){
       if(ch.type!=="added"||processed.has(ch.doc.id)) return;
       processed.add(ch.doc.id); addRemoteIceCandidate(ch.doc.data(),pending);
     });
-  },err=>console.error(sub+" listener error:",err));
+  },err=>{ console.error("listener error:",err); iceInfo.err="READ "+(err.code||err.message); renderIceDebug(); });
 }
 function startCallerCandidateListener(){ stopCallerCandidateListener(); if(callId) unsubscribeCallerCandidates=watchCandidates("callerCandidates",processedCallerCandidateIds,pendingCallerCandidates); }
 function startReceiverCandidateListener(){ stopReceiverCandidateListener(); if(callId) unsubscribeReceiverCandidates=watchCandidates("receiverCandidates",processedReceiverCandidateIds,pendingReceiverCandidates); }
@@ -488,7 +505,7 @@ async function startOutgoingVideoCall(){
     connection.addEventListener("icecandidate",async event=>{
       if(!event.candidate||!callId) return;
       try{ await addDoc(collection(db,"videoCalls",callId,"callerCandidates"),event.candidate.toJSON()); }
-      catch(e){ console.error("Caller ICE save error:",e); }
+      catch(e){ console.error("Caller ICE save error:",e); iceInfo.err="WRITE "+(e.code||e.message); renderIceDebug(); }
     });
 
     const offer=await connection.createOffer({offerToReceiveAudio:true,offerToReceiveVideo:true});
@@ -567,7 +584,7 @@ async function acceptIncomingVideoCall(){
     connection.addEventListener("icecandidate",async event=>{
       if(!event.candidate||!callId) return;
       try{ await addDoc(collection(db,"videoCalls",callId,"receiverCandidates"),event.candidate.toJSON()); }
-      catch(e){ console.error("Receiver ICE save error:",e); }
+      catch(e){ console.error("Receiver ICE save error:",e); iceInfo.err="WRITE "+(e.code||e.message); renderIceDebug(); }
     });
 
     await connection.setRemoteDescription(new RTCSessionDescription(latest.offer));
@@ -781,10 +798,11 @@ async function endVideoCall(forcedStatus=""){
   else{ updateCallStatus("ended","Call ended"); showCallMessage("The video call has ended."); }
   cleanupVideoCallResources(); resetIceCandidateState();
   callActionRunning=false;
-  setTimeout(()=>{ if(window.history.length>1) window.history.back(); else window.location.href="messages.html"; },900);
+  setTimeout(leaveToPreviousPage,900);
 }
 endVideoCallButton.addEventListener("click",()=>endVideoCall());
 backButton.addEventListener("click",async()=>{
+  if(isCallActive()){ minimizeCall(); return; }
   if(callId&&!pageClosing&&!callFinished){ await endVideoCall(); return; }
   if(window.history.length>1) window.history.back(); else window.location.href="messages.html";
 });
@@ -803,6 +821,107 @@ function leavePage(){
 window.addEventListener("pagehide",leavePage);
 window.addEventListener("beforeunload",leavePage);
 window.addEventListener("pageshow",e=>{ if(e.persisted) window.location.reload(); });
+
+/* =====================================================
+   MINIMIZE: keep the call running while the member uses
+   other pages (chat, feed...) inside a window under a
+   green "tap to return" bar. Also: screen stays awake,
+   system Back button never kills an active call.
+   ===================================================== */
+const MINI_HOME="messages.html";
+const miniBar=document.createElement("div");
+miniBar.id="miniBar"; miniBar.className="hidden";
+miniBar.innerHTML='<button type="button" id="miniReturn" class="miniReturn"><span class="miniDot"></span><span id="miniName"></span><span id="miniTime">00:00</span><span class="miniHint">Tap to return</span></button><button type="button" id="miniEnd" class="miniEnd" aria-label="End call">📵</button>';
+const appFrame=document.createElement("iframe");
+appFrame.id="appFrame"; appFrame.className="hidden"; appFrame.setAttribute("title","Faith Connect");
+document.body.append(appFrame,miniBar);
+let callMinimized=false,guardPushed=false,wakeLock=null;
+
+function isCallActive(){
+  if(callFinished||!callId) return false;
+  const st=getFirstValue(callData&&callData.status,lastCallStatus,"").toLowerCase();
+  return st==="accepted"||st==="connected"||Boolean(peerConnection&&peerConnection.connectionState==="connected");
+}
+function showMiniToast(text){
+  let t=document.getElementById("miniToast");
+  if(!t){ t=document.createElement("div"); t.id="miniToast"; document.body.appendChild(t); }
+  t.textContent=text; t.classList.remove("hidden");
+  clearTimeout(showMiniToast.timer); showMiniToast.timer=setTimeout(()=>t.classList.add("hidden"),2800);
+}
+function minimizeCall(){
+  if(!isCallActive()||callMinimized) return;
+  callMinimized=true;
+  const n=document.getElementById("remoteName");
+  document.getElementById("miniName").textContent=(n&&n.textContent)||"Call";
+  document.getElementById("miniTime").textContent=callTimer.textContent||"00:00";
+  document.body.classList.add("callMinimized");
+  if(!appFrame.getAttribute("src")) appFrame.setAttribute("src",MINI_HOME);
+  appFrame.classList.remove("hidden"); miniBar.classList.remove("hidden");
+}
+function expandCall(){
+  if(!callMinimized) return;
+  callMinimized=false;
+  document.body.classList.remove("callMinimized");
+  appFrame.classList.add("hidden"); miniBar.classList.add("hidden");
+  try{ playRemoteMedia&&playRemoteMedia(); }catch(e){}
+}
+appFrame.addEventListener("load",()=>{
+  try{
+    if(/(voice|video)-call\.html$/.test(appFrame.contentWindow.location.pathname)){
+      appFrame.setAttribute("src",MINI_HOME);
+      showMiniToast("You are already in a call. End it first.");
+    }
+  }catch(e){}
+});
+document.getElementById("miniReturn").addEventListener("click",expandCall);
+document.getElementById("miniEnd").addEventListener("click",()=>{ expandCall(); endVideoCall(); });
+const minimizeButton=document.getElementById("minimizeButton");
+if(minimizeButton) minimizeButton.addEventListener("click",()=>{
+  if(isCallActive()) minimizeCall(); else showMiniToast("You can minimize once the call is connected.");
+});
+
+/* Android Back button: minimize / expand instead of leaving the page */
+window.addEventListener("popstate",()=>{
+  if(!guardPushed) return;
+  if(isCallActive()){ history.pushState({callGuard:1},""); callMinimized?expandCall():minimizeCall(); }
+  else guardPushed=false;
+});
+/* Screen stays on during a call */
+async function keepAwake(){
+  try{
+    if("wakeLock" in navigator&&!wakeLock&&document.visibilityState==="visible"){
+      wakeLock=await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release",()=>{ wakeLock=null; });
+    }
+  }catch(e){ wakeLock=null; }
+}
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&isCallActive()) keepAwake(); });
+setInterval(()=>{
+  if(!isCallActive()) return;
+  if(!guardPushed){ history.pushState({callGuard:1},""); guardPushed=true; }
+  keepAwake();
+  if(callMinimized) document.getElementById("miniTime").textContent=callTimer.textContent||"00:00";
+},1000);
+function leaveToPreviousPage(){
+  let target=MINI_HOME;
+  try{ if(document.referrer&&new URL(document.referrer).origin===location.origin&&!/-call\.html/.test(document.referrer)) target=document.referrer; }catch(e){}
+  window.location.replace(target);
+}
+/* Picture-in-picture: video keeps showing over other apps */
+const pipButton=document.getElementById("pipButton");
+async function enterPip(){
+  try{
+    if(document.pictureInPictureElement){ await document.exitPictureInPicture(); return; }
+    if(remoteVideo.classList.contains("hidden")){ showMiniToast("Video appears when the other camera is on."); return; }
+    await remoteVideo.requestPictureInPicture();
+  }catch(e){ showMiniToast("Picture-in-picture is not available here."); }
+}
+if(pipButton){
+  if(!document.pictureInPictureEnabled) pipButton.classList.add("hidden");
+  else pipButton.addEventListener("click",enterPip);
+}
+try{ navigator.mediaSession.setActionHandler("enterpictureinpicture",()=>{ enterPip(); }); }catch(e){}
+
 
 /* ===== START ===== */
 disableVideoControls(); showRemotePlaceholder(); updateMicrophoneButton(); updateCameraButton(); updateSpeakerButton();
