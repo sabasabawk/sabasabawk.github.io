@@ -194,6 +194,23 @@ function getFirstValue(...values){
   return "";
 }
 
+/* ===== ICE DIAGNOSTICS (own line, never overwritten) ===== */
+const iceDebug=document.createElement("div");
+iceDebug.style.cssText="margin-top:8px;font-size:11px;line-height:1.4;color:#9fb3c8;text-align:center;word-break:break-word;padding:0 12px;";
+connectionText.parentElement.insertAdjacentElement("afterend",iceDebug);
+const iceInfo={state:"new",conn:"new",host:0,srflx:0,relay:0,remote:0,err:""};
+function renderIceDebug(){ iceDebug.textContent="ICE: "+iceInfo.state+" | conn: "+iceInfo.conn+" | local host "+iceInfo.host+", stun "+iceInfo.srflx+", turn "+iceInfo.relay+" | remote "+iceInfo.remote+(iceInfo.err?" | err "+iceInfo.err:""); }
+function attachIceDiagnostics(pc){
+  pc.addEventListener("icecandidate",e=>{
+    if(!e.candidate) return;
+    const t=e.candidate.type||((e.candidate.candidate||"").match(/ typ (\w+)/)||[])[1];
+    if(t==="host") iceInfo.host++; else if(t==="srflx") iceInfo.srflx++; else if(t==="relay") iceInfo.relay++;
+    renderIceDebug();
+  });
+  pc.addEventListener("icecandidateerror",e=>{ iceInfo.err=(e.errorCode||"")+" "+(e.url||"").replace(/^turns?:|^stuns?:/,"").slice(0,24); renderIceDebug(); });
+}
+renderIceDebug();
+
 /* ===== URL ===== */
 const params=new URLSearchParams(window.location.search);
 otherUserId=params.get("user")||params.get("uid")||"";
@@ -324,7 +341,7 @@ function handleRemoteTrack(event){
 function handleConnectionState(){
   if(!peerConnection) return;
   const state=peerConnection.connectionState;
-  console.log("Video connection state:",state);
+  console.log("Video connection state:",state); iceInfo.conn=state; renderIceDebug();
   if(state==="connecting"){ updateConnectionDisplay("connecting"); updateCallStatus("ringing","Connecting..."); }
   else if(state==="connected"){
     updateConnectionDisplay("connected"); updateCallStatus("connected","Connected"); hideCallMessage();
@@ -340,7 +357,7 @@ function handleIceConnectionState(){
   if(!peerConnection) return;
   const s=peerConnection.iceConnectionState;
   console.log("Video ICE state:",s);
-  connectionText.textContent="ICE: "+s; /* visible diagnostics */
+  iceInfo.state=s; renderIceDebug();
   if(s==="failed"){
     connectionDot.className="connectionDot failed";
     showCallMessage("The two phones could not reach each other. A TURN server is probably needed.",true);
@@ -349,6 +366,7 @@ function handleIceConnectionState(){
 async function createPeerConnection(){
   if(peerConnection) return peerConnection;
   peerConnection=new RTCPeerConnection(rtcConfiguration);
+  attachIceDiagnostics(peerConnection);
   remoteStream=new MediaStream();
   remoteVideo.srcObject=remoteStream; remoteAudio.srcObject=remoteStream;
   const media=await requestLocalMedia();
@@ -411,7 +429,7 @@ const peerHasRemoteDescription=()=>Boolean(peerConnection&&peerConnection.remote
 async function addRemoteIceCandidate(data,pending){
   if(!data||!peerConnection) return;
   try{
-    const c=new RTCIceCandidate(data);
+    const c=new RTCIceCandidate(data); iceInfo.remote++; renderIceDebug();
     if(peerHasRemoteDescription()) await peerConnection.addIceCandidate(c); else pending.push(c);
   }catch(e){ console.error("Remote ICE error:",e); }
 }
