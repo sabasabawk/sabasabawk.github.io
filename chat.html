@@ -19,7 +19,7 @@
 Private Chat | SABASABA Gospel Ministry
 </title>
 
-<link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="chat.css?v=20261006">
 </head>
 
 <body>
@@ -718,7 +718,28 @@ Private Chat | SABASABA Gospel Ministry
    OPEN JAVASCRIPT MODULE
 ===================================================== -->
 
-<script type="module" src="chat.js"></script>
+<script>
+/* Startup watchdog: shows a clear message on screen if chat.js
+   is old, incomplete, missing or blocked (instead of staying on
+   "Loading conversation..." forever). */
+(function(){
+  function show(text){
+    var area=document.getElementById("chatArea");
+    var box='<div style="margin:20px;padding:16px;border-radius:14px;background:#fdecec;color:#8a1f1f;font:700 14px/1.6 Arial,sans-serif;text-align:left">'+text+'</div>';
+    if(area){ area.innerHTML=box; } else { document.body.insertAdjacentHTML("afterbegin",box); }
+  }
+  window.addEventListener("error",function(e){
+    if(window.__chatLoaderRan) return;
+    show("Chat file problem: "+(e.message||"error")+"<br>File: "+String(e.filename||"").split("/").pop()+" (line "+(e.lineno||"?")+"). Upload chat.js again.");
+  });
+  setTimeout(function(){
+    if(!window.__chatLoaderRan){
+      show("chat.js did not start. It is missing, old or incomplete. Upload the new chat.js (small loader, about 2 KB) and chat-part1.js to chat-part4.js, then reload.");
+    }
+  },7000);
+})();
+</script>
+<script type="module" src="chat.js?v=20261006"></script>
 
 </body>
 
