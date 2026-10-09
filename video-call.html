@@ -84,7 +84,6 @@ body.callMinimized>*:not(#miniBar):not(#appFrame):not(#miniToast):not(audio):not
 
 <main class="videoCallPage">
   <section class="remoteVideoArea">
-    <!-- muted: sound is played by #remoteAudio so it is not doubled -->
     <video id="remoteVideo" class="remoteVideo hidden" autoplay playsinline muted></video>
     <div id="remotePlaceholder" class="remotePlaceholder">
       <img id="remoteAvatar" class="remoteAvatar" src="images/profile.png" alt="Member profile">
@@ -100,8 +99,8 @@ body.callMinimized>*:not(#miniBar):not(#appFrame):not(#miniToast):not(audio):not
       <div id="headerSubtitle" class="headerSubtitle">Faith Connect private video call</div>
     </div>
     <button id="minimizeButton" class="backButton" type="button" aria-label="Minimize call" title="Minimize">⌄</button>
-  <button id="pipButton" class="backButton" type="button" aria-label="Picture in picture" title="Picture in picture">⧉</button>
-  <div class="securityIcon" title="Private video call">🔒</div>
+    <button id="pipButton" class="backButton" type="button" aria-label="Picture in picture" title="Picture in picture">⧉</button>
+    <div class="securityIcon" title="Private video call">🔒</div>
   </header>
 
   <div class="callStatusArea">
@@ -154,6 +153,9 @@ body.callMinimized>*:not(#miniBar):not(#appFrame):not(#miniToast):not(audio):not
 
 <audio id="remoteAudio" autoplay playsinline hidden></audio>
 
+<!-- Load WhatsApp Call Sounds BEFORE Firebase module script so CallSounds object is globally present -->
+<script src="call-sounds.js"></script>
+
 <script type="module">
 import{
   auth, db, collection, addDoc, doc, getDoc, setDoc, updateDoc,
@@ -161,11 +163,15 @@ import{
 }from "./firebase.js";
 if(window.self!==window.top){ throw new Error("Call pages cannot open inside the call window."); }
 
+/* Helper to invoke CallSounds safely if loaded */
+function safeSound(action){
+  if(typeof window.CallSounds!=="undefined"&&typeof window.CallSounds[action]==="function"){
+    window.CallSounds[action]();
+  }
+}
+
 /* =====================================================
    WEBRTC SERVERS
-   !!! Replace the TURN entries with your OWN credentials
-   (Metered.ca, Twilio, Cloudflare...). The "openrelay"
-   entries are public test servers and may be limited.
 ===================================================== */
 const TURN_SERVERS=[
   {urls:"turn:openrelay.metered.ca:80",username:"openrelayproject",credential:"openrelayproject"},
@@ -211,7 +217,7 @@ function getFirstValue(...values){
   return "";
 }
 
-/* ===== ICE DIAGNOSTICS (own line, never overwritten) ===== */
+/* ===== ICE DIAGNOSTICS ===== */
 const iceDebug=document.createElement("div");
 iceDebug.style.cssText="margin-top:8px;font-size:11px;line-height:1.4;color:#9fb3c8;text-align:center;word-break:break-word;padding:0 12px;";
 connectionText.parentElement.insertAdjacentElement("afterend",iceDebug);
@@ -254,6 +260,7 @@ function showCallError(message){
   incomingVideoControls.classList.remove("show");
   outgoingVideoControls.classList.remove("hidden");
   endVideoCallButton.disabled=false;
+  safeSound("playEnded");
 }
 async function loadUserProfile(userId){
   if(!userId) return {};
@@ -361,11 +368,13 @@ function handleConnectionState(){
   console.log("Video connection state:",state); iceInfo.conn=state; renderIceDebug();
   if(state==="connecting"){ updateConnectionDisplay("connecting"); updateCallStatus("ringing","Connecting..."); }
   else if(state==="connected"){
+    safeSound("stopAll"); // Stop dial/ringtones on connection
     updateConnectionDisplay("connected"); updateCallStatus("connected","Connected"); hideCallMessage();
     enableVideoControls(); startCallTimer(); playRemoteMedia(); checkRemoteVideoTrack(); markConnected();
   }else if(state==="disconnected"){
     connectionText.textContent="Connection interrupted"; showCallMessage("The connection was interrupted. Trying to reconnect...");
   }else if(state==="failed"){
+    safeSound("playEnded");
     updateConnectionDisplay("failed"); updateCallStatus("ended","Connection failed");
     showCallMessage("The video connection failed. End the call and try again.",true);
   }
@@ -376,6 +385,7 @@ function handleIceConnectionState(){
   console.log("Video ICE state:",s);
   iceInfo.state=s; renderIceDebug();
   if(s==="failed"){
+    safeSound("playEnded");
     connectionDot.className="connectionDot failed";
     showCallMessage("The two phones could not reach each other. A TURN server is probably needed.",true);
   }
@@ -487,6 +497,7 @@ async function prepareOutgoingCall(){
     updateConnectionDisplay("connecting");
     showRemotePlaceholder();
     endVideoCallButton.disabled=false;
+    safeSound("playOutgoing"); // Play outgoing dial tone
     await startOutgoingVideoCall();
   }catch(error){
     console.error("Outgoing preparation error:",error);
@@ -529,6 +540,7 @@ async function startOutgoingVideoCall(){
   }catch(error){
     console.error("Outgoing call error:",error);
     outgoingCallStarted=false;
+    safeSound("playEnded");
     showCallError(error?.code==="permission-denied"?"Firebase denied permission to create the video call.":(error?.message||"Unable to start video call."));
     cleanupPeerConnection(); cleanupLocalMedia(); cleanupRemoteMedia();
   }finally{ callActionRunning=false; }
@@ -558,6 +570,7 @@ async function prepareIncomingCall(){
     outgoingVideoControls.classList.add("hidden");
     activeVideoControls.classList.add("hidden");
     acceptVideoCallButton.disabled=false; rejectVideoCallButton.disabled=false;
+    safeSound("playIncoming"); // Play incoming ringtone
     startCallDocumentListener();
   }catch(error){
     console.error("Incoming preparation error:",error);
@@ -568,6 +581,7 @@ async function prepareIncomingCall(){
 async function acceptIncomingVideoCall(){
   if(callActionRunning||!currentUser||!callId) return;
   callActionRunning=true;
+  safeSound("stopAll"); // Stop ringtone on accept
   acceptVideoCallButton.disabled=true; rejectVideoCallButton.disabled=true; acceptVideoCallButton.textContent="…";
   hideCallMessage(); updateCallStatus("ringing","Connecting..."); updateConnectionDisplay("connecting");
   try{
@@ -606,6 +620,7 @@ async function acceptIncomingVideoCall(){
     playRemoteMedia();
   }catch(error){
     console.error("Accept error:",error);
+    safeSound("playEnded");
     showCallError(error?.code==="permission-denied"?"Firebase denied permission to accept this video call.":(error?.message||"The video call could not be accepted."));
     cleanupPeerConnection(); cleanupLocalMedia(); cleanupRemoteMedia();
   }finally{
@@ -617,6 +632,7 @@ async function acceptIncomingVideoCall(){
 async function rejectIncomingVideoCall(){
   if(callActionRunning||!currentUser||!callId) return;
   callActionRunning=true;
+  safeSound("playEnded"); // Play disconnect beep on reject
   acceptVideoCallButton.disabled=true; rejectVideoCallButton.disabled=true; rejectVideoCallButton.textContent="…";
   try{
     await updateDoc(doc(db,"videoCalls",callId),{status:"rejected",endedBy:currentUser.uid,endedAt:serverTimestamp(),updatedAt:serverTimestamp()});
@@ -636,7 +652,7 @@ async function rejectIncomingVideoCall(){
 acceptVideoCallButton.addEventListener("click",acceptIncomingVideoCall);
 rejectVideoCallButton.addEventListener("click",rejectIncomingVideoCall);
 
-/* ===== ANSWER (caller) — flag set BEFORE await ===== */
+/* ===== ANSWER (caller) ===== */
 async function applyReceiverAnswer(answerData){
   if(callRole!=="caller"||!answerData||!peerConnection||receiverAnswerApplied) return;
   receiverAnswerApplied=true;
@@ -656,6 +672,7 @@ async function applyReceiverAnswer(answerData){
 /* ===== LIVE CALL DOCUMENT ===== */
 function finishCallScreen(statusText,messageText){
   callFinished=true;
+  safeSound("playEnded"); // Play disconnect sound
   stopCallTimer();
   incomingVideoControls.classList.remove("show"); activeVideoControls.classList.add("hidden"); outgoingVideoControls.classList.remove("hidden");
   disableVideoControls(); endVideoCallButton.disabled=true;
@@ -669,11 +686,18 @@ async function handleLiveCallStatus(status,d){
     case "ringing":
       updateCallStatus("ringing",callRole==="caller"?"Ringing...":"Incoming video call");
       updateConnectionDisplay("connecting"); showRemotePlaceholder();
-      if(callRole==="receiver"){ incomingVideoControls.classList.add("show"); outgoingVideoControls.classList.add("hidden"); activeVideoControls.classList.add("hidden"); }
-      else{ incomingVideoControls.classList.remove("show"); outgoingVideoControls.classList.remove("hidden"); activeVideoControls.classList.add("hidden"); endVideoCallButton.disabled=false; }
+      if(callRole==="receiver"){ 
+        safeSound("playIncoming");
+        incomingVideoControls.classList.add("show"); outgoingVideoControls.classList.add("hidden"); activeVideoControls.classList.add("hidden"); 
+      }
+      else{ 
+        safeSound("playOutgoing");
+        incomingVideoControls.classList.remove("show"); outgoingVideoControls.classList.remove("hidden"); activeVideoControls.classList.add("hidden"); endVideoCallButton.disabled=false; 
+      }
       break;
     case "accepted":
     case "connecting":
+      safeSound("stopAll");
       incomingVideoControls.classList.remove("show"); outgoingVideoControls.classList.remove("hidden"); activeVideoControls.classList.remove("hidden");
       endVideoCallButton.disabled=false;
       if(!peerConnection||peerConnection.connectionState!=="connected"){ updateCallStatus("ringing","Connecting..."); updateConnectionDisplay("connecting"); }
@@ -683,6 +707,7 @@ async function handleLiveCallStatus(status,d){
       }else await applyPendingCandidates(pendingCallerCandidates);
       break;
     case "connected":
+      safeSound("stopAll");
       if(callRole==="caller"&&d.answer&&!receiverAnswerApplied) await applyReceiverAnswer(d.answer);
       if(peerConnection&&peerConnection.connectionState==="connected"){
         updateCallStatus("connected","Connected"); updateConnectionDisplay("connected"); enableVideoControls(); startCallTimer();
@@ -698,6 +723,7 @@ async function handleLiveCallStatus(status,d){
     }
     case "missed": finishCallScreen("Missed call",callRole==="caller"?"The member did not answer your video call.":"You missed this video call."); break;
     case "failed":
+      safeSound("playEnded");
       disableVideoControls(); updateCallStatus("ended","Connection failed"); updateConnectionDisplay("failed");
       showCallMessage("The video connection failed. End the call and try again.",true); endVideoCallButton.disabled=false; break;
     default: console.log("Unknown status:",status);
@@ -737,7 +763,7 @@ cameraButton.addEventListener("click",()=>{
 });
 speakerButton.addEventListener("click",()=>{
   speakerMuted=!speakerMuted;
-  remoteAudio.muted=speakerMuted; /* remoteVideo stays muted: audio comes from remoteAudio */
+  remoteAudio.muted=speakerMuted;
   updateSpeakerButton();
   if(!speakerMuted) playRemoteMedia();
 });
@@ -748,11 +774,10 @@ async function switchCamera(){
   const next=currentFacingMode==="user"?"environment":"user";
   try{
     const old=localStream.getVideoTracks();
-    old.forEach(t=>{ localStream.removeTrack(t); t.stop(); }); /* release camera first (needed on many phones) */
+    old.forEach(t=>{ localStream.removeTrack(t); t.stop(); });
     const rep=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:next},width:{ideal:1280},height:{ideal:720}}});
     const newTrack=rep.getVideoTracks()[0];
     if(!newTrack) throw new Error("The selected camera could not be opened.");
-    const sender=peerConnection.getSenders().find(s=>s.track?s.track.kind==="video":true&&s.dtmf===undefined);
     const videoSender=peerConnection.getSenders().find(s=>s.track&&s.track.kind==="video")||peerConnection.getTransceivers().find(t=>t.receiver.track.kind==="video")?.sender;
     if(videoSender) await videoSender.replaceTrack(newTrack);
     localStream.addTrack(newTrack);
@@ -772,7 +797,7 @@ switchCameraButton.addEventListener("click",switchCamera);
 
 remoteVideo.addEventListener("playing",()=>{ checkRemoteVideoTrack(); speakerButton.disabled=false; });
 remoteVideo.addEventListener("loadedmetadata",playRemoteMedia);
-document.addEventListener("click",()=>{ if(remoteStream) playRemoteMedia(); }); /* mobile autoplay unlock */
+document.addEventListener("click",()=>{ if(remoteStream) playRemoteMedia(); });
 
 /* ===== END CALL ===== */
 function getFinalCallStatus(){
@@ -784,6 +809,7 @@ function getFinalCallStatus(){
 async function endVideoCall(forcedStatus=""){
   if(callActionRunning||pageClosing||callFinished) return;
   callActionRunning=true;
+  safeSound("playEnded"); // Play disconnect sound
   endVideoCallButton.disabled=true; acceptVideoCallButton.disabled=true; rejectVideoCallButton.disabled=true;
   const finalStatus=forcedStatus||getFinalCallStatus();
   callFinished=true;
@@ -807,10 +833,11 @@ backButton.addEventListener("click",async()=>{
   if(window.history.length>1) window.history.back(); else window.location.href="messages.html";
 });
 
-/* ===== PAGE LEAVE: cancel a call that is still ringing ===== */
+/* ===== PAGE LEAVE ===== */
 function leavePage(){
   if(pageClosing) return;
   pageClosing=true;
+  safeSound("stopAll");
   if(callId&&currentUser&&!callFinished){
     const st=getFirstValue(callData?.status,lastCallStatus,"ringing").toLowerCase();
     const next=FINAL_STATUSES.includes(st)?"":(st==="ringing"?(callRole==="caller"?"cancelled":"rejected"):"ended");
@@ -823,10 +850,7 @@ window.addEventListener("beforeunload",leavePage);
 window.addEventListener("pageshow",e=>{ if(e.persisted) window.location.reload(); });
 
 /* =====================================================
-   MINIMIZE: keep the call running while the member uses
-   other pages (chat, feed...) inside a window under a
-   green "tap to return" bar. Also: screen stays awake,
-   system Back button never kills an active call.
+   MINIMIZE
    ===================================================== */
 const MINI_HOME="messages.html";
 const miniBar=document.createElement("div");
@@ -880,13 +904,12 @@ if(minimizeButton) minimizeButton.addEventListener("click",()=>{
   if(isCallActive()) minimizeCall(); else showMiniToast("You can minimize once the call is connected.");
 });
 
-/* Android Back button: minimize / expand instead of leaving the page */
 window.addEventListener("popstate",()=>{
   if(!guardPushed) return;
   if(isCallActive()){ history.pushState({callGuard:1},""); callMinimized?expandCall():minimizeCall(); }
   else guardPushed=false;
 });
-/* Screen stays on during a call */
+
 async function keepAwake(){
   try{
     if("wakeLock" in navigator&&!wakeLock&&document.visibilityState==="visible"){
@@ -907,7 +930,7 @@ function leaveToPreviousPage(){
   try{ if(document.referrer&&new URL(document.referrer).origin===location.origin&&!/-call\.html/.test(document.referrer)) target=document.referrer; }catch(e){}
   window.location.replace(target);
 }
-/* Picture-in-picture: video keeps showing over other apps */
+
 const pipButton=document.getElementById("pipButton");
 async function enterPip(){
   try{
@@ -921,7 +944,6 @@ if(pipButton){
   else pipButton.addEventListener("click",enterPip);
 }
 try{ navigator.mediaSession.setActionHandler("enterpictureinpicture",()=>{ enterPip(); }); }catch(e){}
-
 
 /* ===== START ===== */
 disableVideoControls(); showRemotePlaceholder(); updateMicrophoneButton(); updateCameraButton(); updateSpeakerButton();
@@ -941,23 +963,20 @@ onAuthStateChanged(auth,async user=>{
 });
 console.log("Faith Connect video-call page ready.");
 </script>
-  <script>
-    // Register the Service Worker globally
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
-<!-- Load WhatsApp Call Sounds -->
-<script src="call-sounds.js"></script>
+
+<script>
+  // Register the Service Worker globally
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
-
-
