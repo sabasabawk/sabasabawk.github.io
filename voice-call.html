@@ -144,6 +144,9 @@ body.callMinimized>*:not(#miniBar):not(#appFrame):not(#miniToast):not(audio):not
 
 <audio id="remoteAudio" class="remoteAudio" autoplay playsinline></audio>
 
+<!-- Load WhatsApp Call Sounds BEFORE Firebase module script so CallSounds object is globally present -->
+<script src="call-sounds.js"></script>
+
 <script type="module">
 import{
   auth, db, collection, doc, getDoc, addDoc, setDoc, updateDoc,
@@ -151,12 +154,15 @@ import{
 }from "./firebase.js";
 if(window.self!==window.top){ throw new Error("Call pages cannot open inside the call window."); }
 
+/* Helper to invoke CallSounds safely if loaded */
+function safeSound(action){
+  if(typeof window.CallSounds!=="undefined"&&typeof window.CallSounds[action]==="function"){
+    window.CallSounds[action]();
+  }
+}
+
 /* =====================================================
    WEBRTC SERVERS
-   !!! Replace the TURN entries with your OWN credentials
-   (Metered.ca, Twilio, Cloudflare...). The "openrelay"
-   entries below are public test servers and may be
-   rate-limited or discontinued.
 ===================================================== */
 const TURN_SERVERS=[
   {urls:"turn:openrelay.metered.ca:80",username:"openrelayproject",credential:"openrelayproject"},
@@ -203,7 +209,7 @@ function getFirstValue(...values){
   return "";
 }
 
-/* ===== ICE DIAGNOSTICS (own line, never overwritten) ===== */
+/* ===== ICE DIAGNOSTICS ===== */
 const iceDebug=document.createElement("div");
 iceDebug.style.cssText="margin-top:8px;font-size:11px;line-height:1.4;color:#9fb3c8;text-align:center;word-break:break-word;padding:0 12px;";
 connectionText.parentElement.insertAdjacentElement("afterend",iceDebug);
@@ -253,6 +259,7 @@ function showCallError(message){
   activeCallControls.classList.add("hidden");
   outgoingCallControls.classList.remove("hidden");
   endCallButton.disabled=false;
+  safeSound("playEnded");
 }
 async function loadUserProfile(userId){
   if(!userId) return {};
@@ -325,12 +332,14 @@ async function createPeerConnection(){
     const state=peerConnection.connectionState;
     console.log("Voice connection state:",state); iceInfo.conn=state; renderIceDebug();
     if(state==="connected"){
+      safeSound("stopAll"); // Silence dial/ringtones on audio stream connection
       updateConnectionDisplay("connected"); updateCallStatus("connected","Connected");
       memberAvatarFrame.classList.remove("ringing"); hideCallMessage();
       enableConnectedCallControls(); startCallTimer();
       markConnected();
     }else if(state==="connecting"){ updateConnectionDisplay("connecting"); }
     else if(state==="failed"){
+      safeSound("playEnded");
       updateConnectionDisplay("failed");
       showCallMessage("The voice connection failed. Check your internet and try again.",true);
     }else if(state==="disconnected"){ connectionText.textContent="Voice connection interrupted"; }
@@ -340,9 +349,9 @@ async function createPeerConnection(){
     if(!peerConnection) return;
     const s=peerConnection.iceConnectionState;
     console.log("Voice ICE state:",s);
-    /* Visible on screen so problems can be diagnosed on a phone */
     iceInfo.state=s; renderIceDebug();
     if(s==="failed"){
+      safeSound("playEnded");
       updateConnectionDisplay("failed");
       showCallMessage("The two phones could not reach each other. A TURN server is probably needed.",true);
     }
@@ -437,6 +446,7 @@ async function prepareOutgoingCall(){
   memberAvatarFrame.classList.add("ringing");
   updateConnectionDisplay("connecting");
   endCallButton.disabled=false;
+  safeSound("playOutgoing"); // Play outgoing dialtone
   await startOutgoingCall();
 }
 
@@ -483,6 +493,7 @@ async function startOutgoingCall(){
   }catch(error){
     console.error("Outgoing call error:",error);
     outgoingCallStarted=false;
+    safeSound("playEnded");
     if(/microphone/i.test(error?.message||"")) showCallError(error.message);
     else if(error?.code==="permission-denied") showCallError("Firebase denied permission to create the voice call.");
     else showCallError("The voice call could not be started. Please try again.");
@@ -510,6 +521,7 @@ async function prepareIncomingCall(){
     outgoingCallControls.classList.add("hidden");
     activeCallControls.classList.add("hidden");
     permissionNotice.classList.remove("hidden");
+    safeSound("playIncoming"); // Play incoming ringtone
     startCallDocumentListener();
   }catch(error){
     console.error("Incoming call loading error:",error);
@@ -520,6 +532,7 @@ async function prepareIncomingCall(){
 async function acceptIncomingCall(){
   if(callActionRunning||!currentUser||!callId) return;
   callActionRunning=true;
+  safeSound("stopAll"); // Silence ringtone immediately upon tapping answer
   acceptCallButton.disabled=true; rejectCallButton.disabled=true; acceptCallButton.textContent="…";
   hideCallMessage();
   updateCallStatus("ringing","Connecting...");
@@ -560,6 +573,7 @@ async function acceptIncomingCall(){
     remoteAudio.play().catch(()=>{});
   }catch(error){
     console.error("Accept error:",error);
+    safeSound("playEnded");
     if(error?.code==="permission-denied") showCallError("Firebase denied permission to accept this voice call.");
     else showCallError(error?.message||"The voice call could not be accepted.");
     cleanupPeerConnection(); cleanupLocalMedia(); cleanupRemoteAudio();
@@ -572,6 +586,7 @@ async function acceptIncomingCall(){
 async function rejectIncomingCall(){
   if(callActionRunning||!currentUser||!callId) return;
   callActionRunning=true;
+  safeSound("playEnded"); // Play disconnect beep on reject
   acceptCallButton.disabled=true; rejectCallButton.disabled=true; rejectCallButton.textContent="…";
   try{
     await updateDoc(doc(db,"voiceCalls",callId),{status:"rejected",endedAt:serverTimestamp(),endedBy:currentUser.uid,updatedAt:serverTimestamp()});
@@ -592,7 +607,7 @@ async function rejectIncomingCall(){
 acceptCallButton.addEventListener("click",acceptIncomingCall);
 rejectCallButton.addEventListener("click",rejectIncomingCall);
 
-/* ===== ANSWER (caller) — flag set BEFORE await to avoid a race ===== */
+/* ===== ANSWER (caller) ===== */
 async function applyReceiverAnswer(answerData){
   if(callRole!=="caller"||!answerData||!peerConnection||receiverAnswerApplied) return;
   receiverAnswerApplied=true;
@@ -614,6 +629,7 @@ async function applyReceiverAnswer(answerData){
 /* ===== LIVE CALL DOCUMENT ===== */
 function finishCallScreen(statusText,messageText){
   callFinished=true;
+  safeSound("playEnded"); // Play disconnect beep
   stopCallTimer();
   memberAvatarFrame.classList.remove("ringing");
   incomingCallControls.classList.remove("show");
@@ -633,14 +649,17 @@ async function handleLiveCallStatus(status,d){
       updateConnectionDisplay("connecting");
       memberAvatarFrame.classList.add("ringing");
       if(callRole==="receiver"){
+        safeSound("playIncoming");
         incomingCallControls.classList.add("show"); outgoingCallControls.classList.add("hidden"); activeCallControls.classList.add("hidden");
       }else{
+        safeSound("playOutgoing");
         incomingCallControls.classList.remove("show"); outgoingCallControls.classList.remove("hidden");
         activeCallControls.classList.add("hidden"); endCallButton.disabled=false;
       }
       break;
     case "accepted":
     case "connecting":
+      safeSound("stopAll");
       memberAvatarFrame.classList.remove("ringing");
       incomingCallControls.classList.remove("show");
       outgoingCallControls.classList.remove("hidden");
@@ -658,6 +677,7 @@ async function handleLiveCallStatus(status,d){
       }
       break;
     case "connected":
+      safeSound("stopAll");
       memberAvatarFrame.classList.remove("ringing");
       if(callRole==="caller"&&d.answer&&!receiverAnswerApplied) await applyReceiverAnswer(d.answer);
       if(peerConnection&&peerConnection.connectionState==="connected"){
@@ -675,6 +695,7 @@ async function handleLiveCallStatus(status,d){
     }
     case "missed": finishCallScreen("Missed call",callRole==="caller"?"The member did not answer your voice call.":"You missed this voice call."); break;
     case "failed":
+      safeSound("playEnded");
       updateCallStatus("ended","Connection failed"); updateConnectionDisplay("failed");
       showCallMessage("The voice connection failed. End the call and try again.",true);
       endCallButton.disabled=false; break;
@@ -759,6 +780,7 @@ function getCallEndStatus(){
 async function endVoiceCall(forcedStatus=""){
   if(callActionRunning||pageIsClosing||callFinished) return;
   callActionRunning=true;
+  safeSound("playEnded"); // Play disconnect beep
   endCallButton.disabled=true; acceptCallButton.disabled=true; rejectCallButton.disabled=true;
   const finalStatus=forcedStatus||getCallEndStatus();
   callFinished=true;
@@ -788,6 +810,7 @@ backButton.addEventListener("click",async()=>{
 function leavePage(){
   if(pageIsClosing) return;
   pageIsClosing=true;
+  safeSound("stopAll");
   if(callId&&currentUser&&!callFinished){
     const st=getFirstValue(callData.status,lastCallStatus,"ringing").toLowerCase();
     const nextStatus=FINAL_STATUSES.includes(st)?"":(st==="ringing"?(callRole==="caller"?"cancelled":"rejected"):"ended");
@@ -802,10 +825,7 @@ window.addEventListener("beforeunload",leavePage);
 window.addEventListener("pageshow",e=>{ if(e.persisted) window.location.reload(); });
 
 /* =====================================================
-   MINIMIZE: keep the call running while the member uses
-   other pages (chat, feed...) inside a window under a
-   green "tap to return" bar. Also: screen stays awake,
-   system Back button never kills an active call.
+   MINIMIZE
    ===================================================== */
 const MINI_HOME="messages.html";
 const miniBar=document.createElement("div");
@@ -842,7 +862,6 @@ function expandCall(){
   callMinimized=false;
   document.body.classList.remove("callMinimized");
   appFrame.classList.add("hidden"); miniBar.classList.add("hidden");
-  try{ playRemoteMedia&&playRemoteMedia(); }catch(e){}
 }
 appFrame.addEventListener("load",()=>{
   try{
@@ -865,6 +884,7 @@ window.addEventListener("popstate",()=>{
   if(isCallActive()){ history.pushState({callGuard:1},""); callMinimized?expandCall():minimizeCall(); }
   else guardPushed=false;
 });
+
 /* Screen stays on during a call */
 async function keepAwake(){
   try{
@@ -887,7 +907,6 @@ function leaveToPreviousPage(){
   window.location.replace(target);
 }
 
-
 /* ===== START ===== */
 if(!urlIsValid){
   showCallError("The voice-call information is missing.");
@@ -904,23 +923,20 @@ if(!urlIsValid){
 }
 console.log("Faith Connect voice-call page ready.");
 </script>
-  <script>
-    // Register the Service Worker globally
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
-<!-- Load WhatsApp Call Sounds -->
-<script src="call-sounds.js"></script>
+
+<script>
+  // Register the Service Worker globally
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
-
-
