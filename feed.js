@@ -736,66 +736,92 @@ function formatPostDate(
 function updateAdminReportsLink(){
 
   if(!topBarActions){
-
     return;
-
   }
 
+  const existingReports =
+  document.getElementById("adminReportsLink");
 
-  const existingLink =
-  document.getElementById(
-    "adminReportsLink"
-  );
-
+  const existingFeedback =
+  document.getElementById("adminFeedbackLink");
 
   if(!currentUserIsAdmin){
 
-    if(existingLink){
+    if(existingReports){
+      existingReports.remove();
+    }
 
-      existingLink.remove();
-
+    if(existingFeedback){
+      existingFeedback.remove();
     }
 
     return;
 
   }
 
+  if(!existingFeedback){
 
-  if(existingLink){
+    const feedbackLink =
+    document.createElement("a");
 
-    return;
+    feedbackLink.id =
+    "adminFeedbackLink";
+
+    feedbackLink.href =
+    "admin-feedback.html";
+
+    feedbackLink.className =
+    "topIconLink";
+
+    feedbackLink.setAttribute(
+      "aria-label",
+      "Read user feedback"
+    );
+
+    feedbackLink.title =
+    "User feedback";
+
+    feedbackLink.textContent =
+    "📋";
+
+    topBarActions.insertBefore(
+      feedbackLink,
+      topBarActions.firstChild
+    );
 
   }
 
+  if(!existingReports){
 
-  const adminLink =
-  document.createElement("a");
+    const adminLink =
+    document.createElement("a");
 
-  adminLink.id =
-  "adminReportsLink";
+    adminLink.id =
+    "adminReportsLink";
 
-  adminLink.href =
-  "admin-reports.html";
+    adminLink.href =
+    "admin-reports.html";
 
-  adminLink.className =
-  "topIconLink";
+    adminLink.className =
+    "topIconLink";
 
-  adminLink.setAttribute(
-    "aria-label",
-    "Review reported posts"
-  );
+    adminLink.setAttribute(
+      "aria-label",
+      "Review reported posts"
+    );
 
-  adminLink.title =
-  "Reported posts";
+    adminLink.title =
+    "Reported posts";
 
-  adminLink.textContent =
-  "🛡️";
+    adminLink.textContent =
+    "🛡️";
 
+    topBarActions.insertBefore(
+      adminLink,
+      topBarActions.firstChild
+    );
 
-  topBarActions.insertBefore(
-    adminLink,
-    topBarActions.firstChild
-  );
+  }
 
 }
 /* =====================================================
