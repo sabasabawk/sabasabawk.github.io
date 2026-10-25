@@ -194,6 +194,109 @@ cursor:pointer;
 background:#555;
 }
 
+.dangerBtn{
+width:100%;
+padding:14px;
+margin-top:25px;
+border:2px solid #c62828;
+border-radius:10px;
+background:white;
+color:#c62828;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.dangerBtn:hover{
+background:#fdeceb;
+}
+
+.modalOverlay{
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,.55);
+z-index:1000;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.modalOverlay.open{
+display:flex;
+}
+
+.modalBox{
+background:white;
+border-radius:16px;
+padding:22px;
+width:100%;
+max-width:420px;
+}
+
+.modalBox h2{
+color:#c62828;
+font-size:20px;
+margin-bottom:10px;
+}
+
+.modalBox p{
+font-size:14px;
+line-height:1.6;
+color:#26333d;
+margin-bottom:10px;
+}
+
+.modalBox input{
+width:100%;
+padding:13px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.modalStatus{
+min-height:20px;
+font-size:14px;
+font-weight:bold;
+color:#c62828;
+margin-bottom:10px;
+}
+
+.modalActions{
+display:flex;
+gap:10px;
+}
+
+.modalActions button{
+flex:1;
+padding:13px;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.modalCancel{
+background:#e9edf1;
+color:#26333d;
+}
+
+.modalDelete{
+background:#c62828;
+color:white;
+}
+
+.modalActions button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
 </style>
 
 </head>
@@ -305,6 +408,61 @@ onclick="location.href='feed.html'">
 
 </button>
 
+<button
+id="deleteAccountBtn"
+class="dangerBtn"
+type="button">
+
+🗑 Delete My Account
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="deleteModal" class="modalOverlay">
+
+<div class="modalBox">
+
+<h2>Delete your account?</h2>
+
+<p>
+This permanently deletes your Faith Connect account, your profile,
+and the posts, comments and prayer requests you created.
+This cannot be undone.
+</p>
+
+<p>
+To confirm, enter your password.
+</p>
+
+<input
+id="deletePassword"
+type="password"
+placeholder="Your password"
+autocomplete="current-password">
+
+<div id="deleteStatus" class="modalStatus"></div>
+
+<div class="modalActions">
+
+<button
+id="deleteCancelBtn"
+class="modalCancel"
+type="button">
+Cancel
+</button>
+
+<button
+id="deleteConfirmBtn"
+class="modalDelete"
+type="button">
+Delete forever
+</button>
+
 </div>
 
 </div>
@@ -319,8 +477,20 @@ import{
   doc,
   getDoc,
   setDoc,
+  deleteDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  serverTimestamp,
   onAuthStateChanged
 }from "./firebase.js";
+
+import{
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider
+}from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 
 /* ========================================
@@ -1225,6 +1395,369 @@ function getFriendlyErrorMessage(error){
   "The profile could not be saved.";
 
 }
+
+
+/* ========================================
+   DELETE MY ACCOUNT
+======================================== */
+
+const deleteAccountBtn =
+document.getElementById("deleteAccountBtn");
+
+const deleteModal =
+document.getElementById("deleteModal");
+
+const deletePassword =
+document.getElementById("deletePassword");
+
+const deleteStatus =
+document.getElementById("deleteStatus");
+
+const deleteCancelBtn =
+document.getElementById("deleteCancelBtn");
+
+const deleteConfirmBtn =
+document.getElementById("deleteConfirmBtn");
+
+let isDeleting = false;
+
+
+/*
+   Content created by the member that is
+   removed together with the account.
+   [collection name, field holding the user id]
+*/
+
+const CONTENT_TO_DELETE = [
+  ["communityPosts","userId"],
+  ["communityPosts","authorId"],
+  ["communityPosts","uid"],
+  ["comments","userId"],
+  ["comments","authorId"],
+  ["faithMoments","userId"],
+  ["faithMoments","authorId"],
+  ["prayerRequests","userId"],
+  ["prayerRequests","authorId"],
+  ["notifications","recipientId"]
+];
+
+
+function openDeleteModal(){
+
+  deletePassword.value = "";
+
+  deleteStatus.textContent = "";
+
+  deleteModal.classList.add("open");
+
+  deletePassword.focus();
+
+}
+
+
+function closeDeleteModal(){
+
+  if(isDeleting){
+    return;
+  }
+
+  deleteModal.classList.remove("open");
+
+}
+
+
+function setDeleteBusy(busy){
+
+  isDeleting = busy;
+
+  deleteConfirmBtn.disabled = busy;
+
+  deleteCancelBtn.disabled = busy;
+
+  deletePassword.disabled = busy;
+
+}
+
+
+async function deleteDocumentsWhere(
+  collectionName,
+  fieldName,
+  userId
+){
+
+  try{
+
+    const snapshot =
+    await getDocs(
+      query(
+        collection(
+          db,
+          collectionName
+        ),
+        where(
+          fieldName,
+          "==",
+          userId
+        )
+      )
+    );
+
+    for(const documentSnapshot of snapshot.docs){
+
+      try{
+
+        await deleteDoc(
+          documentSnapshot.ref
+        );
+
+      }catch(error){
+
+        console.warn(
+          `Could not delete ${collectionName}/${documentSnapshot.id}:`,
+          error
+        );
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      `Could not search ${collectionName}.${fieldName}:`,
+      error
+    );
+
+  }
+
+}
+
+
+function getDeleteErrorMessage(error){
+
+  const code =
+  String(error?.code || "").toLowerCase();
+
+  if(
+    code.includes("wrong-password") ||
+    code.includes("invalid-credential") ||
+    code.includes("invalid-login")
+  ){
+
+    return "That password is not correct.";
+
+  }
+
+  if(code.includes("too-many-requests")){
+
+    return "Too many attempts. Please wait a few minutes and try again.";
+
+  }
+
+  if(code.includes("network")){
+
+    return "Network problem. Check your connection and try again.";
+
+  }
+
+  return "Something went wrong. Please try again.";
+
+}
+
+
+deleteAccountBtn.addEventListener(
+  "click",
+  openDeleteModal
+);
+
+
+deleteCancelBtn.addEventListener(
+  "click",
+  closeDeleteModal
+);
+
+
+deleteModal.addEventListener(
+  "click",
+  event => {
+
+    if(event.target === deleteModal){
+
+      closeDeleteModal();
+
+    }
+
+  }
+);
+
+
+deleteConfirmBtn.addEventListener(
+  "click",
+  async () => {
+
+    if(isDeleting){
+      return;
+    }
+
+    const user =
+    auth.currentUser;
+
+    if(!user || !user.email){
+
+      deleteStatus.textContent =
+      "Please sign in again, then try once more.";
+
+      return;
+
+    }
+
+    const password =
+    deletePassword.value;
+
+    if(!password){
+
+      deleteStatus.textContent =
+      "Please enter your password.";
+
+      return;
+
+    }
+
+    setDeleteBusy(true);
+
+
+    /* 1. Confirm the password */
+
+    try{
+
+      deleteStatus.textContent =
+      "Checking your password...";
+
+      await reauthenticateWithCredential(
+        user,
+        EmailAuthProvider.credential(
+          user.email,
+          password
+        )
+      );
+
+    }catch(error){
+
+      console.error(
+        "Re-authentication failed:",
+        error
+      );
+
+      deleteStatus.textContent =
+      getDeleteErrorMessage(error);
+
+      setDeleteBusy(false);
+
+      return;
+
+    }
+
+
+    try{
+
+      /* 2. Delete the member's content */
+
+      deleteStatus.textContent =
+      "Deleting your posts and content...";
+
+      for(const [collectionName,fieldName] of CONTENT_TO_DELETE){
+
+        await deleteDocumentsWhere(
+          collectionName,
+          fieldName,
+          user.uid
+        );
+
+      }
+
+
+      /* 3. Delete (or, if rules forbid it, erase)
+            the profile document */
+
+      deleteStatus.textContent =
+      "Deleting your profile...";
+
+      const profileReference =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+      try{
+
+        await deleteDoc(
+          profileReference
+        );
+
+      }catch(error){
+
+        console.warn(
+          "Profile could not be deleted, erasing its details instead:",
+          error
+        );
+
+        await setDoc(
+          profileReference,
+          {
+            fullName:"Deleted Member",
+            name:"Deleted Member",
+            displayName:"Deleted Member",
+            country:"",
+            about:"",
+            bio:"",
+            email:"",
+            profilePicture:"",
+            picture:"",
+            photoURL:"",
+            deleted:true,
+            deletedAt:serverTimestamp()
+          },
+          {
+            merge:true
+          }
+        );
+
+      }
+
+
+      /* 4. Delete the sign-in account itself */
+
+      deleteStatus.textContent =
+      "Deleting your account...";
+
+      await deleteUser(
+        user
+      );
+
+      alert(
+        "Your account has been deleted."
+      );
+
+      window.location.href =
+      "login.html";
+
+    }catch(error){
+
+      console.error(
+        "Account deletion error:",
+        error
+      );
+
+      deleteStatus.textContent =
+      "Your account could not be fully deleted. Please try again, or email sabasabawk@gmail.com for help.";
+
+      setDeleteBusy(false);
+
+    }
+
+  }
+);
 
 
 /* ========================================
