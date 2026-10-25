@@ -1,13 +1,12 @@
 /* =====================================================
-   PART 6 OF 10
-   FIREBASE IMPORTS, DOM ELEMENTS,
-   GLOBAL VARIABLES AND HELPER FUNCTIONS
+   FAITH CONNECT - COMMUNITY WALL (feed.js)
+   Complete file. Includes admin icons:
+   🛡️ Reports and 📋 Feedback (admin only)
 ===================================================== */
 
 
 /* =====================================================
    FIREBASE IMPORTS
-   (limit + startAfter added for pagination)
 ===================================================== */
 
 import{
@@ -32,153 +31,96 @@ import{
 
 
 /* =====================================================
+   ADMIN EMAILS
+   These accounts always see the admin icons
+   (Reports and Feedback). Real protection is
+   still your Firestore security rules.
+===================================================== */
+
+const ADMIN_EMAILS =
+[
+  "sabasabawk@gmail.com"
+];
+
+
+/* =====================================================
    PAGE ELEMENTS
 ===================================================== */
 
 const postsContainer =
-document.getElementById(
-  "postsContainer"
-);
-
+document.getElementById("postsContainer");
 
 const loadMoreSentinel =
-document.getElementById(
-  "loadMoreSentinel"
-);
-
+document.getElementById("loadMoreSentinel");
 
 const refreshButton =
-document.getElementById(
-  "refreshButton"
-);
-
+document.getElementById("refreshButton");
 
 const quickPostButton =
-document.getElementById(
-  "quickPostButton"
-);
-
+document.getElementById("quickPostButton");
 
 const quickPostAvatar =
-document.getElementById(
-  "quickPostAvatar"
-);
-
+document.getElementById("quickPostAvatar");
 
 const photoViewer =
-document.getElementById(
-  "photoViewer"
-);
-
+document.getElementById("photoViewer");
 
 const photoViewerImage =
-document.getElementById(
-  "photoViewerImage"
-);
-
+document.getElementById("photoViewerImage");
 
 const photoViewerVideo =
-document.getElementById(
-  "photoViewerVideo"
-);
-
+document.getElementById("photoViewerVideo");
 
 const closePhotoViewerButton =
-document.getElementById(
-  "closePhotoViewer"
-);
-
+document.getElementById("closePhotoViewer");
 
 const photoViewerPrevButton =
-document.getElementById(
-  "photoViewerPrevButton"
-);
-
+document.getElementById("photoViewerPrevButton");
 
 const photoViewerNextButton =
-document.getElementById(
-  "photoViewerNextButton"
-);
-
+document.getElementById("photoViewerNextButton");
 
 const photoViewerCounter =
-document.getElementById(
-  "photoViewerCounter"
-);
-
+document.getElementById("photoViewerCounter");
 
 let currentGalleryImages =
 [];
 
-
 let currentGalleryIndex =
 0;
 
-
 const videoReelViewer =
-document.getElementById(
-  "videoReelViewer"
-);
-
+document.getElementById("videoReelViewer");
 
 const videoReelTrack =
-document.getElementById(
-  "videoReelTrack"
-);
-
+document.getElementById("videoReelTrack");
 
 const closeVideoReelViewerButton =
-document.getElementById(
-  "closeVideoReelViewer"
-);
-
+document.getElementById("closeVideoReelViewer");
 
 const reportModal =
-document.getElementById(
-  "reportModal"
-);
-
+document.getElementById("reportModal");
 
 const reportReasonList =
-document.getElementById(
-  "reportReasonList"
-);
-
+document.getElementById("reportReasonList");
 
 const reportCancelButton =
-document.getElementById(
-  "reportCancelButton"
-);
-
+document.getElementById("reportCancelButton");
 
 const reportSubmitButton =
-document.getElementById(
-  "reportSubmitButton"
-);
-
+document.getElementById("reportSubmitButton");
 
 const notificationBadge =
-document.getElementById(
-  "notificationBadge"
-);
-
+document.getElementById("notificationBadge");
 
 const topBarActions =
-document.querySelector(
-  ".topBarActions"
-);
-
+document.querySelector(".topBarActions");
 
 const momentsRow =
-document.getElementById(
-  "momentsRow"
-);
-
+document.getElementById("momentsRow");
 
 const quickMomentAvatar =
-document.getElementById(
-  "quickMomentAvatar"
-);
+document.getElementById("quickMomentAvatar");
 
 
 /* =====================================================
@@ -188,41 +130,30 @@ document.getElementById(
 let currentUser =
 null;
 
-
 let currentProfile =
 {};
 
-
 /*
-   Set to true only for the app owner's
-   account, via an isAdmin:true field on
-   their profile document in Firestore. This
-   is what quietly unlocks report review and
-   removing any post — invisible to every
-   other account.
+   True for admin accounts: either the email is in
+   ADMIN_EMAILS, or the profile document in Firestore
+   has isAdmin:true. Unlocks the admin icons and the
+   ability to remove any post.
 */
 
 let currentUserIsAdmin =
 false;
 
-
 let unsubscribePosts =
 null;
-
 
 let unsubscribeNotifications =
 null;
 
-
 let unsubscribeMomentsStrip =
 null;
 
-
 const defaultProfilePicture =
 "images/profile.png";
-
-
-/* Stores loaded user profiles temporarily */
 
 const userProfileCache =
 new Map();
@@ -230,31 +161,15 @@ new Map();
 
 /* =====================================================
    PAGINATION STATE
-   (this is what stops the app loading every
-   post at once — only POSTS_PER_PAGE load
-   to start, more load as the user scrolls)
 ===================================================== */
 
 const POSTS_PER_PAGE =
 100;
 
 
-/*
+/* =====================================================
    SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
-
-   The first time the feed loads, it has to
-   wait for Firestore over the network — this
-   is what makes the app feel slow to open.
-   From then on, a lightweight copy of the
-   most recent posts is saved in the browser's
-   local storage. On the next visit, that
-   cached copy renders immediately while the
-   live Firestore listener quietly fetches
-   fresh data in the background and replaces
-   it the moment it arrives. This never
-   changes what data exists — it only changes
-   how fast something appears on screen.
-*/
+===================================================== */
 
 const FEED_CACHE_KEY =
 "sabasaba_feed_cache_v1";
@@ -272,36 +187,26 @@ function saveFeedCache(postDocuments){
 
     const cachedPosts =
     postDocuments
-
     .slice(0, FEED_CACHE_MAX_POSTS)
-
     .map(
       postDocument => ({
-
         id:
         postDocument.id,
 
         data:
         postDocument.data()
-
       })
     );
 
-
     window.localStorage.setItem(
-
       FEED_CACHE_KEY,
-
       JSON.stringify({
-
         savedAt:
         Date.now(),
 
         posts:
         cachedPosts
-
       })
-
     );
 
   }catch(error){
@@ -325,44 +230,27 @@ function loadFeedCache(){
       FEED_CACHE_KEY
     );
 
-
     if(!rawCache){
-
       return null;
-
     }
-
 
     const parsedCache =
     JSON.parse(rawCache);
-
 
     const cacheAge =
     Date.now() -
     (parsedCache.savedAt || 0);
 
-
     if(cacheAge > FEED_CACHE_MAX_AGE_MS){
-
       return null;
-
     }
-
 
     if(
-
-      !Array.isArray(
-        parsedCache.posts
-      ) ||
-
+      !Array.isArray(parsedCache.posts) ||
       parsedCache.posts.length === 0
-
     ){
-
       return null;
-
     }
-
 
     return parsedCache.posts;
 
@@ -372,7 +260,6 @@ function loadFeedCache(){
       "Feed cache could not be read:",
       error
     );
-
 
     return null;
 
@@ -386,7 +273,6 @@ function renderPostsFromCache(cachedPosts){
   postsContainer.innerHTML =
   "";
 
-
   cachedPosts.forEach(
     cachedPost => {
 
@@ -395,20 +281,16 @@ function renderPostsFromCache(cachedPosts){
         const postCard =
         createPostCard(
           {
-
             id:
             cachedPost.id,
 
             ...cachedPost.data
-
           }
         );
-
 
         postCard.classList.add(
           "postCardCached"
         );
-
 
         postsContainer.appendChild(
           postCard
@@ -426,7 +308,6 @@ function renderPostsFromCache(cachedPosts){
     }
   );
 
-
   startVideoAutoPlay();
 
 }
@@ -435,14 +316,11 @@ function renderPostsFromCache(cachedPosts){
 let lastVisibleDocument =
 null;
 
-
 let isLoadingMorePosts =
 false;
 
-
 let noMorePostsAvailable =
 false;
-
 
 let postsLoadObserver =
 null;
@@ -451,37 +329,24 @@ null;
 /*
    FACEBOOK-STYLE FEED MODEL
 
-   A single ordered list of every post currently
-   loaded into the page, newest first. Unlike the
-   old design, this list is never wholesale replaced
-   by the live listener — new posts are only ever
-   PREPENDED to the front as they arrive, and older
-   posts loaded by scrolling are only ever APPENDED
-   to the end. Nothing already on screen ever falls
-   out just because someone else posted something
-   new — the same behaviour Facebook, Instagram, etc.
-   all use for their feeds.
+   A single ordered list of every post currently loaded
+   into the page, newest first. New posts are only ever
+   PREPENDED; older posts loaded by scrolling are only
+   ever APPENDED.
 */
 
 let loadedPostsDocs =
 [];
 
-
 const loadedPostIds =
 new Set();
-
 
 let firstFeedSnapshotHandled =
 false;
 
-
 /*
-/*
-   Groups rapid bursts of live updates
-   (e.g. many people posting at once)
-   into a single smooth redraw instead
-   of rebuilding the feed dozens of
-   times in quick succession.
+   Groups rapid bursts of live updates into a single
+   smooth redraw.
 */
 
 let renderDebounceTimer =
@@ -515,14 +380,13 @@ function getFirstValue(
 
   }
 
-
   return "";
 
 }
 
 
 /* =====================================================
-   SHOW LOADING MESSAGE
+   SHOW LOADING / EMPTY / ERROR MESSAGES
 ===================================================== */
 
 function showLoadingMessage(){
@@ -539,10 +403,6 @@ function showLoadingMessage(){
 
 }
 
-
-/* =====================================================
-   SHOW EMPTY MESSAGE
-===================================================== */
 
 function showEmptyMessage(){
 
@@ -565,10 +425,6 @@ function showEmptyMessage(){
 }
 
 
-/* =====================================================
-   SHOW ERROR MESSAGE
-===================================================== */
-
 function showErrorMessage(
   message
 ){
@@ -576,20 +432,14 @@ function showErrorMessage(
   postsContainer.innerHTML =
   "";
 
-
   const errorCard =
-  document.createElement(
-    "div"
-  );
-
+  document.createElement("div");
 
   errorCard.className =
   "statusCard error";
 
-
   errorCard.textContent =
   message;
-
 
   postsContainer.appendChild(
     errorCard
@@ -607,11 +457,8 @@ function protectProfilePicture(
 ){
 
   if(!imageElement){
-
     return;
-
   }
-
 
   imageElement.addEventListener(
     "error",
@@ -638,16 +485,12 @@ function formatPostDate(
 ){
 
   if(!timestamp){
-
     return "Recently";
-
   }
-
 
   try{
 
     let postDate;
-
 
     if(
       typeof timestamp.toDate ===
@@ -663,8 +506,7 @@ function formatPostDate(
 
       postDate =
       new Date(
-        timestamp.seconds *
-        1000
+        timestamp.seconds * 1000
       );
 
     }else{
@@ -676,17 +518,13 @@ function formatPostDate(
 
     }
 
-
     if(
       Number.isNaN(
         postDate.getTime()
       )
     ){
-
       return "Recently";
-
     }
-
 
     return postDate.toLocaleString(
       undefined,
@@ -715,7 +553,6 @@ function formatPostDate(
       error
     );
 
-
     return "Recently";
 
   }
@@ -724,13 +561,11 @@ function formatPostDate(
 
 
 /* =====================================================
-   ADMIN REPORTS LINK
+   ADMIN ICONS IN THE TOP BAR
 
-   Creates the 🛡️ Reports icon in the top bar
-   only when currentUserIsAdmin is true — for
-   every other account this function does
-   nothing, so the icon is never added to the
-   page at all, not just hidden with CSS.
+   🛡️ Reports and 📋 Feedback are added only when
+   currentUserIsAdmin is true. For every other account
+   nothing is added to the page at all.
 ===================================================== */
 
 function updateAdminReportsLink(){
@@ -740,10 +575,14 @@ function updateAdminReportsLink(){
   }
 
   const existingReports =
-  document.getElementById("adminReportsLink");
+  document.getElementById(
+    "adminReportsLink"
+  );
 
   const existingFeedback =
-  document.getElementById("adminFeedbackLink");
+  document.getElementById(
+    "adminFeedbackLink"
+  );
 
   if(!currentUserIsAdmin){
 
@@ -824,32 +663,22 @@ function updateAdminReportsLink(){
   }
 
 }
-/* =====================================================
-   PART 7 OF 10
-   AUTHENTICATION, CURRENT USER PROFILE
-   AND QUICK POST NAVIGATION
-===================================================== */
 
 
 /* =====================================================
    LOAD CURRENT USER PROFILE
 
-   This now runs INDEPENDENTLY of the feed —
-   nothing else waits for this to finish. It
-   only fills in personal touches (your avatar,
-   the admin icon), so there is no reason the
-   whole Community Wall should sit on a blank
-   "Loading..." screen just because this one
-   Firestore read is slow on a weak connection.
+   Runs independently of the feed — nothing else waits
+   for this to finish.
 ===================================================== */
 
 async function loadCurrentUserProfile(){
 
-  currentProfile = {};
+  currentProfile =
+  {};
 
   currentUserIsAdmin =
   false;
-
 
   if(!currentUser){
 
@@ -866,6 +695,19 @@ async function loadCurrentUserProfile(){
 
   }
 
+  /*
+     Admin by email: works immediately, even before
+     (or without) the profile document loading.
+  */
+
+  currentUserIsAdmin =
+  ADMIN_EMAILS.includes(
+    String(
+      currentUser.email || ""
+    ).toLowerCase()
+  );
+
+  updateAdminReportsLink();
 
   try{
 
@@ -876,12 +718,10 @@ async function loadCurrentUserProfile(){
       currentUser.uid
     );
 
-
     const profileSnapshot =
     await getDoc(
       profileReference
     );
-
 
     if(
       profileSnapshot.exists()
@@ -890,13 +730,11 @@ async function loadCurrentUserProfile(){
       currentProfile =
       profileSnapshot.data();
 
-
       currentUserIsAdmin =
-      currentProfile.isAdmin ===
-      true;
+      currentUserIsAdmin ||
+      currentProfile.isAdmin === true;
 
     }
-
 
     const profilePicture =
     getFirstValue(
@@ -908,14 +746,12 @@ async function loadCurrentUserProfile(){
       defaultProfilePicture
     );
 
-
     if(quickPostAvatar){
 
       quickPostAvatar.src =
       profilePicture;
 
     }
-
 
     if(quickMomentAvatar){
 
@@ -931,7 +767,6 @@ async function loadCurrentUserProfile(){
       error
     );
 
-
     if(quickPostAvatar){
 
       quickPostAvatar.src =
@@ -941,17 +776,14 @@ async function loadCurrentUserProfile(){
 
   }
 
-
   updateAdminReportsLink();
 
 }
 
 
 /* =====================================================
-   QUICK POST BUTTON
-   (removed from the page — creating a post now
-   happens only through the floating + button,
-   which did the same thing)
+   QUICK POST BUTTON (not on the page any more,
+   kept safely guarded)
 ===================================================== */
 
 if(quickPostButton){
@@ -969,7 +801,6 @@ if(quickPostButton){
 
       }
 
-
       window.location.href =
       "createpost.html";
 
@@ -978,10 +809,6 @@ if(quickPostButton){
 
 }
 
-
-/* =====================================================
-   QUICK PROFILE PICTURE
-===================================================== */
 
 if(quickPostAvatar){
 
@@ -1007,7 +834,6 @@ function stopPostsListener(){
 
   }
 
-
   unsubscribePosts =
   null;
 
@@ -1022,46 +848,34 @@ function startCommunityFeed(){
 
   stopPostsListener();
 
-
-  if(
-    postsLoadObserver
-  ){
+  if(postsLoadObserver){
 
     postsLoadObserver.disconnect();
 
   }
 
-
   lastVisibleDocument =
   null;
-
 
   noMorePostsAvailable =
   false;
 
-
   isLoadingMorePosts =
   false;
-
 
   loadedPostsDocs =
   [];
 
-
   loadedPostIds.clear();
-
 
   firstFeedSnapshotHandled =
   false;
 
-
   loadMoreSentinel.textContent =
   "";
 
-
   const cachedPosts =
   loadFeedCache();
-
 
   if(cachedPosts){
 
@@ -1075,14 +889,13 @@ function startCommunityFeed(){
 
   }
 
-
   loadCommunityPosts();
 
 }
 
 
 /* =====================================================
-   STOP NOTIFICATION LISTENER
+   NOTIFICATIONS BADGE
 ===================================================== */
 
 function stopNotificationListener(){
@@ -1096,40 +909,30 @@ function stopNotificationListener(){
 
   }
 
-
   unsubscribeNotifications =
   null;
 
 }
 
 
-/* =====================================================
-   SHOW UNREAD NOTIFICATION NUMBER
-===================================================== */
-
 function startNotificationListener(){
 
   stopNotificationListener();
-
 
   if(!currentUser){
 
     notificationBadge.style.display =
     "none";
 
-
     notificationBadge.textContent =
     "0";
-
 
     return;
 
   }
 
-
   const unreadNotificationsQuery =
   query(
-
     collection(
       db,
       "notifications"
@@ -1146,27 +949,22 @@ function startNotificationListener(){
       "==",
       false
     )
-
   );
-
 
   unsubscribeNotifications =
   onSnapshot(
 
     unreadNotificationsQuery,
 
-
     function(snapshot){
 
       const totalUnread =
       snapshot.size;
 
-
       if(totalUnread > 0){
 
         notificationBadge.style.display =
         "flex";
-
 
         notificationBadge.textContent =
         totalUnread > 99
@@ -1178,7 +976,6 @@ function startNotificationListener(){
         notificationBadge.style.display =
         "none";
 
-
         notificationBadge.textContent =
         "0";
 
@@ -1186,14 +983,12 @@ function startNotificationListener(){
 
     },
 
-
     function(error){
 
       console.error(
         "Notification badge error:",
         error
       );
-
 
       notificationBadge.style.display =
       "none";
@@ -1213,26 +1008,20 @@ onAuthStateChanged(
 
   auth,
 
-
   function(user){
 
     currentUser =
     user || null;
 
-
     startCommunityFeed();
-
 
     startNotificationListener();
 
-
     startMomentsStripListener();
-
 
     loadCurrentUserProfile();
 
   },
-
 
   function(error){
 
@@ -1241,32 +1030,24 @@ onAuthStateChanged(
       error
     );
 
-
     currentUser =
     null;
-
 
     currentProfile =
     {};
 
-
     currentUserIsAdmin =
     false;
 
-
     updateAdminReportsLink();
 
-
     stopNotificationListener();
-
 
     notificationBadge.style.display =
     "none";
 
-
     notificationBadge.textContent =
     "0";
-
 
     if(quickPostAvatar){
 
@@ -1275,30 +1056,26 @@ onAuthStateChanged(
 
     }
 
-
     startCommunityFeed();
 
   }
 
 );
+
+
 /* =====================================================
-   PART 8 OF 10
    LOAD COMMUNITY POSTS FROM FIRESTORE
 ===================================================== */
 
-
 function scheduleCommunityPostsRender(){
 
-  if(
-    renderDebounceTimer
-  ){
+  if(renderDebounceTimer){
 
     clearTimeout(
       renderDebounceTimer
     );
 
   }
-
 
   renderDebounceTimer =
   window.setTimeout(
@@ -1307,12 +1084,9 @@ function scheduleCommunityPostsRender(){
       renderDebounceTimer =
       null;
 
-
       renderCommunityPosts();
 
-
       updateLoadMoreSentinel();
-
 
       scrollToSharedPost();
 
@@ -1328,10 +1102,8 @@ function renderCommunityPosts(){
   postsContainer.innerHTML =
   "";
 
-
   const combinedDocs =
   loadedPostsDocs;
-
 
   if(
     combinedDocs.length === 0
@@ -1343,27 +1115,22 @@ function renderCommunityPosts(){
 
   }
 
-
   combinedDocs.forEach(
     function(postDocument){
 
       try{
 
         const postData = {
-
           id:
           postDocument.id,
 
           ...postDocument.data()
-
         };
-
 
         const postCard =
         createPostCard(
           postData
         );
-
 
         postsContainer.appendChild(
           postCard
@@ -1381,10 +1148,8 @@ function renderCommunityPosts(){
     }
   );
 
-
   if(
-    postsContainer.children.length ===
-    0
+    postsContainer.children.length === 0
   ){
 
     showErrorMessage(
@@ -1394,7 +1159,6 @@ function renderCommunityPosts(){
     return;
 
   }
-
 
   startVideoAutoPlay();
 
@@ -1411,7 +1175,6 @@ function loadCommunityPosts(){
       "communityPosts"
     );
 
-
     const firstPageQuery =
     query(
       postsReference,
@@ -1424,28 +1187,18 @@ function loadCommunityPosts(){
       )
     );
 
-
     unsubscribePosts =
     onSnapshot(
 
       firstPageQuery,
 
-
       function(snapshot){
 
         /*
-           FACEBOOK-STYLE LIVE UPDATE
-
-           The very first snapshot fill loadedPostsDocs
-           from scratch (this is the initial page load).
-           Every snapshot AFTER that only ever PREPENDS
-           brand-new posts that were not already loaded —
-           it never removes or reshuffles anything already
-           on screen, even if a new post pushes an older
-           one out of this top-50 query window. That
-           reshuffling was exactly what caused the "oldest
-           post disappears" bug: the old code replaced the
-           whole top section on every single change.
+           The very first snapshot fills loadedPostsDocs
+           from scratch. Every snapshot AFTER that only
+           PREPENDS brand-new posts — it never removes or
+           reshuffles anything already on screen.
         */
 
         if(!firstFeedSnapshotHandled){
@@ -1453,13 +1206,10 @@ function loadCommunityPosts(){
           firstFeedSnapshotHandled =
           true;
 
-
           loadedPostsDocs =
           snapshot.docs.slice();
 
-
           loadedPostIds.clear();
-
 
           loadedPostsDocs.forEach(
             function(postDoc){
@@ -1470,7 +1220,6 @@ function loadCommunityPosts(){
 
             }
           );
-
 
           if(
             snapshot.docs.length > 0
@@ -1483,68 +1232,51 @@ function loadCommunityPosts(){
 
           }
 
-
           noMorePostsAvailable =
-          snapshot.docs.length ===
-          0;
-
+          snapshot.docs.length === 0;
 
           saveFeedCache(
             loadedPostsDocs
           );
 
-
           scheduleCommunityPostsRender();
-
 
           return;
 
         }
 
-
         const newlyAddedDocs =
         [];
-
 
         snapshot.docChanges().forEach(
           function(change){
 
             if(
-              change.type !==
-              "added"
+              change.type !== "added"
             ){
 
               /*
                  "modified" (likes/comments/edits) and
-                 "removed" (often just a post falling out
-                 of the top-50 window, not an actual
-                 delete) are intentionally ignored here —
-                 likes and edits already update their own
-                 post card directly, and real deletions are
-                 removed from the DOM immediately by the
-                 delete button itself, not by this listener.
+                 "removed" are intentionally ignored here;
+                 post cards update themselves and the
+                 delete button removes its own card.
               */
 
               return;
 
             }
 
-
             if(
               loadedPostIds.has(
                 change.doc.id
               )
             ){
-
               return;
-
             }
-
 
             loadedPostIds.add(
               change.doc.id
             );
-
 
             newlyAddedDocs.push(
               change.doc
@@ -1553,15 +1285,11 @@ function loadCommunityPosts(){
           }
         );
 
-
         if(
           newlyAddedDocs.length === 0
         ){
-
           return;
-
         }
-
 
         newlyAddedDocs.sort(
           function(firstDoc,secondDoc){
@@ -1570,28 +1298,23 @@ function loadCommunityPosts(){
             firstDoc.data()?.timestamp?.seconds ||
             0;
 
-
             const secondTime =
             secondDoc.data()?.timestamp?.seconds ||
             0;
-
 
             return secondTime - firstTime;
 
           }
         );
 
-
         loadedPostsDocs =
         newlyAddedDocs.concat(
           loadedPostsDocs
         );
 
-
         saveFeedCache(
           loadedPostsDocs
         );
-
 
         newlyAddedDocs
         .slice()
@@ -1602,20 +1325,16 @@ function loadCommunityPosts(){
             try{
 
               const postData = {
-
                 id:
                 postDoc.id,
 
                 ...postDoc.data()
-
               };
-
 
               const newCard =
               createPostCard(
                 postData
               );
-
 
               postsContainer.insertBefore(
                 newCard,
@@ -1634,11 +1353,9 @@ function loadCommunityPosts(){
           }
         );
 
-
         startVideoAutoPlay();
 
       },
-
 
       function(error){
 
@@ -1647,10 +1364,8 @@ function loadCommunityPosts(){
           error
         );
 
-
         if(
-          error.code ===
-          "permission-denied"
+          error.code === "permission-denied"
         ){
 
           showErrorMessage(
@@ -1661,10 +1376,8 @@ function loadCommunityPosts(){
 
         }
 
-
         if(
-          error.code ===
-          "failed-precondition"
+          error.code === "failed-precondition"
         ){
 
           showErrorMessage(
@@ -1675,10 +1388,8 @@ function loadCommunityPosts(){
 
         }
 
-
         if(
-          error.code ===
-          "unavailable"
+          error.code === "unavailable"
         ){
 
           showErrorMessage(
@@ -1688,7 +1399,6 @@ function loadCommunityPosts(){
           return;
 
         }
-
 
         showErrorMessage(
           "Community posts could not be loaded. Please try again."
@@ -1705,7 +1415,6 @@ function loadCommunityPosts(){
       error
     );
 
-
     showErrorMessage(
       "The Community Wall could not be started."
     );
@@ -1721,19 +1430,14 @@ async function loadMoreCommunityPosts(){
     isLoadingMorePosts ||
     noMorePostsAvailable
   ){
-
     return;
-
   }
-
 
   isLoadingMorePosts =
   true;
 
-
   loadMoreSentinel.textContent =
   "Loading more posts...";
-
 
   try{
 
@@ -1742,7 +1446,6 @@ async function loadMoreCommunityPosts(){
       db,
       "communityPosts"
     );
-
 
     const nextPageQuery =
     lastVisibleDocument
@@ -1772,12 +1475,10 @@ async function loadMoreCommunityPosts(){
         )
       );
 
-
     const snapshot =
     await getDocs(
       nextPageQuery
     );
-
 
     if(snapshot.empty){
 
@@ -1788,25 +1489,15 @@ async function loadMoreCommunityPosts(){
         noMorePostsAvailable =
         true;
 
-
         updateLoadMoreSentinel();
-
 
         return;
 
       }
 
-
       /*
-         Reached the true end of the feed —
-         loop back to the very top instead of
-         showing "no more posts". Everything
-         already loaded stays exactly where it
-         is (nothing is cleared or re-fetched),
-         so this is just a smooth scroll home;
-         the next scroll-down continues pulling
-         in the same posts again from the top,
-         exactly like Facebook's endless feed.
+         Reached the true end of the feed — loop back to
+         the very top instead of showing "no more posts".
       */
 
       lastVisibleDocument =
@@ -1818,7 +1509,6 @@ async function loadMoreCommunityPosts(){
 
       : null;
 
-
       window.scrollTo(
         {
           top:0,
@@ -1826,18 +1516,14 @@ async function loadMoreCommunityPosts(){
         }
       );
 
-
       isLoadingMorePosts =
       false;
 
-
       updateLoadMoreSentinel();
-
 
       return;
 
     }
-
 
     const newOlderDocs =
     snapshot.docs.filter(
@@ -1850,7 +1536,6 @@ async function loadMoreCommunityPosts(){
       }
     );
 
-
     newOlderDocs.forEach(
       function(postDoc){
 
@@ -1861,12 +1546,10 @@ async function loadMoreCommunityPosts(){
       }
     );
 
-
     loadedPostsDocs =
     loadedPostsDocs.concat(
       newOlderDocs
     );
-
 
     newOlderDocs.forEach(
       function(postDoc){
@@ -1874,20 +1557,16 @@ async function loadMoreCommunityPosts(){
         try{
 
           const postData = {
-
             id:
             postDoc.id,
 
             ...postDoc.data()
-
           };
-
 
           const olderCard =
           createPostCard(
             postData
           );
-
 
           postsContainer.appendChild(
             olderCard
@@ -1905,9 +1584,7 @@ async function loadMoreCommunityPosts(){
       }
     );
 
-
     startVideoAutoPlay();
-
 
     lastVisibleDocument =
     snapshot.docs.length <
@@ -1919,7 +1596,6 @@ async function loadMoreCommunityPosts(){
         snapshot.docs.length - 1
       ];
 
-
   }catch(error){
 
     console.error(
@@ -1927,23 +1603,18 @@ async function loadMoreCommunityPosts(){
       error
     );
 
-
     loadMoreSentinel.textContent =
     "Could not load more posts. Scroll to try again.";
 
-
     isLoadingMorePosts =
     false;
-
 
     return;
 
   }
 
-
   isLoadingMorePosts =
   false;
-
 
   updateLoadMoreSentinel();
 
@@ -1955,8 +1626,7 @@ function updateLoadMoreSentinel(){
   if(noMorePostsAvailable){
 
     loadMoreSentinel.textContent =
-    postsContainer.children.length >
-    0
+    postsContainer.children.length > 0
     ? ""
     : "Be the first to share something with the community 🙏";
 
@@ -1998,15 +1668,14 @@ new IntersectionObserver(
 
 );
 
-
 postsLoadObserver.observe(
   loadMoreSentinel
 );
+
+
 /* =====================================================
-   PART 9 OF 10
    CREATE EACH COMMUNITY POST CARD
 ===================================================== */
-
 
 function createPostCard(postData){
 
@@ -2022,14 +1691,12 @@ function createPostCard(postData){
   postCard.dataset.postId =
   postData.id;
 
-
   const authorId =
   getFirstValue(
     postData.userId,
     postData.authorId,
     postData.uid
   );
-
 
   const authorName =
   getFirstValue(
@@ -2038,7 +1705,6 @@ function createPostCard(postData){
     postData.displayName,
     "Community Member"
   );
-
 
   const authorPicture =
   getFirstValue(
@@ -2049,18 +1715,15 @@ function createPostCard(postData){
     defaultProfilePicture
   );
 
-
   const authorCountry =
   getFirstValue(
     postData.country
   );
 
-
   const postDate =
   formatPostDate(
     postData.timestamp
   );
-
 
   const postMessage =
   getFirstValue(
@@ -2071,7 +1734,6 @@ function createPostCard(postData){
     postData.description
   );
 
-
   const postCategory =
   getFirstValue(
     postData.category,
@@ -2080,19 +1742,16 @@ function createPostCard(postData){
     "General"
   );
 
-
   const mediaType =
   getFirstValue(
     postData.mediaType
   ).toLowerCase();
-
 
   let imageUrl =
   "";
 
   let videoUrl =
   "";
-
 
   if(mediaType === "image"){
 
@@ -2130,7 +1789,6 @@ function createPostCard(postData){
       postData.image
     );
 
-
     videoUrl =
     getFirstValue(
       postData.videoUrl,
@@ -2141,14 +1799,10 @@ function createPostCard(postData){
 
   }
 
-
   /*
      MULTIPLE PHOTOS PER POST
-     (Facebook-style — a post can now carry more
-     than one photo. imageUrls is the array field
-     createpost.html saves; older posts only ever
-     have the single imageUrl above, so those still
-     fall back to a one-photo gallery.)
+     imageUrls is the array field createpost.html saves;
+     older posts only have the single imageUrl above.
   */
 
   let imageUrls =
@@ -2167,7 +1821,6 @@ function createPostCard(postData){
     )
   : [];
 
-
   if(
     imageUrls.length === 0 &&
     imageUrl
@@ -2178,7 +1831,6 @@ function createPostCard(postData){
 
   }
 
-
   if(
     imageUrls.length > 0
   ){
@@ -2188,10 +1840,8 @@ function createPostCard(postData){
 
   }
 
-
   const MAXIMUM_GRID_PHOTOS_SHOWN =
   4;
-
 
   const likes =
   Array.isArray(
@@ -2199,7 +1849,6 @@ function createPostCard(postData){
   )
   ? postData.likes
   : [];
-
 
   const userHasLiked =
   Boolean(
@@ -2209,13 +1858,11 @@ function createPostCard(postData){
     )
   );
 
-
   const postHeader =
   document.createElement("div");
 
   postHeader.className =
   "postHeader";
-
 
   const profileImage =
   document.createElement("img");
@@ -2232,11 +1879,9 @@ function createPostCard(postData){
   profileImage.alt =
   `${authorName}'s profile picture`;
 
-
   protectProfilePicture(
     profileImage
   );
-
 
   const authorInformation =
   document.createElement("div");
@@ -2244,13 +1889,11 @@ function createPostCard(postData){
   authorInformation.className =
   "authorInformation";
 
-
   const authorNameRow =
   document.createElement("div");
 
   authorNameRow.className =
   "authorNameRow";
-
 
   const authorNameElement =
   document.createElement("div");
@@ -2261,17 +1904,14 @@ function createPostCard(postData){
   authorNameElement.textContent =
   authorName;
 
-
   const verifiedBadge =
   document.createElement("span");
 
   verifiedBadge.className =
   "verifiedBadge";
 
-
   const accountIsVerified =
   postData.verified === true;
-
 
   const accountType =
   getFirstValue(
@@ -2281,23 +1921,19 @@ function createPostCard(postData){
     "member"
   ).toLowerCase();
 
-
   if(accountIsVerified){
 
     verifiedBadge.classList.add(
       "show"
     );
 
-
     if(
-      accountType ===
-      "ministry"
+      accountType === "ministry"
     ){
 
       verifiedBadge.classList.add(
         "ministry"
       );
-
 
       verifiedBadge.textContent =
       "✔ Ministry";
@@ -2311,7 +1947,6 @@ function createPostCard(postData){
 
   }
 
-
   authorNameRow.appendChild(
     authorNameElement
   );
@@ -2319,7 +1954,6 @@ function createPostCard(postData){
   authorNameRow.appendChild(
     verifiedBadge
   );
-
 
   const postDetails =
   document.createElement("div");
@@ -2332,7 +1966,6 @@ function createPostCard(postData){
   ? `${authorCountry} • ${postDate}`
   : postDate;
 
-
   authorInformation.appendChild(
     authorNameRow
   );
@@ -2340,7 +1973,6 @@ function createPostCard(postData){
   authorInformation.appendChild(
     postDetails
   );
-
 
   postHeader.appendChild(
     profileImage
@@ -2350,11 +1982,9 @@ function createPostCard(postData){
     authorInformation
   );
 
-
   postCard.appendChild(
     postHeader
   );
-
 
   if(postCategory){
 
@@ -2367,13 +1997,11 @@ function createPostCard(postData){
     categoryElement.textContent =
     postCategory;
 
-
     postCard.appendChild(
       categoryElement
     );
 
   }
-
 
   if(postMessage){
 
@@ -2386,26 +2014,16 @@ function createPostCard(postData){
     messageElement.textContent =
     postMessage;
 
-
     postCard.appendChild(
       messageElement
     );
 
-
     /*
-       READ MORE / READ LESS
-
-       Long passages (testimonies, Bible study
-       notes, prayer requests) are clipped at a
-       fixed height and given a toggle link,
-       the same way Facebook and Instagram
-       shorten long captions instead of letting
-       them push the whole feed down.
+       READ MORE / READ LESS for long passages.
     */
 
     const READ_MORE_CHARACTER_LIMIT =
     280;
-
 
     if(
       postMessage.length >
@@ -2416,24 +2034,17 @@ function createPostCard(postData){
         "truncated"
       );
 
-
       const readMoreButton =
-      document.createElement(
-        "button"
-      );
-
+      document.createElement("button");
 
       readMoreButton.type =
       "button";
 
-
       readMoreButton.className =
       "readMoreToggle";
 
-
       readMoreButton.textContent =
       "Read more";
-
 
       readMoreButton.addEventListener(
         "click",
@@ -2444,7 +2055,6 @@ function createPostCard(postData){
             "truncated"
           );
 
-
           readMoreButton.textContent =
           isStillTruncated
           ? "Read more"
@@ -2452,7 +2062,6 @@ function createPostCard(postData){
 
         }
       );
-
 
       postCard.appendChild(
         readMoreButton
@@ -2462,13 +2071,11 @@ function createPostCard(postData){
 
   }
 
-
   const mediaContainer =
   document.createElement("div");
 
   mediaContainer.className =
   "postMediaContainer";
-
 
   if(imageUrls.length > 0){
 
@@ -2483,12 +2090,10 @@ function createPostCard(postData){
       )
     }`;
 
-
     photoGrid.dataset.images =
     JSON.stringify(
       imageUrls
     );
-
 
     const visibleImageUrls =
     imageUrls.slice(
@@ -2496,11 +2101,9 @@ function createPostCard(postData){
       MAXIMUM_GRID_PHOTOS_SHOWN
     );
 
-
     const remainingPhotosCount =
     imageUrls.length -
     visibleImageUrls.length;
-
 
     visibleImageUrls.forEach(
       function(url,index){
@@ -2510,7 +2113,6 @@ function createPostCard(postData){
 
         tile.className =
         "postPhotoTile";
-
 
         const postImage =
         document.createElement("img");
@@ -2533,7 +2135,6 @@ function createPostCard(postData){
         postImage.dataset.galleryIndex =
         String(index);
 
-
         postImage.addEventListener(
           "error",
           function(){
@@ -2546,16 +2147,13 @@ function createPostCard(postData){
           }
         );
 
-
         tile.appendChild(
           postImage
         );
 
-
         const isLastVisibleTile =
         index ===
         visibleImageUrls.length - 1;
-
 
         if(
           isLastVisibleTile &&
@@ -2571,13 +2169,11 @@ function createPostCard(postData){
           moreOverlay.textContent =
           `+${remainingPhotosCount}`;
 
-
           tile.appendChild(
             moreOverlay
           );
 
         }
-
 
         photoGrid.appendChild(
           tile
@@ -2585,7 +2181,6 @@ function createPostCard(postData){
 
       }
     );
-
 
     mediaContainer.appendChild(
       photoGrid
@@ -2598,7 +2193,6 @@ function createPostCard(postData){
 
     videoWrapper.className =
     "communityPostVideoWrapper";
-
 
     const postVideo =
     document.createElement("video");
@@ -2624,7 +2218,6 @@ function createPostCard(postData){
     postVideo.loop =
     true;
 
-
     postVideo.addEventListener(
       "error",
       function(){
@@ -2637,7 +2230,6 @@ function createPostCard(postData){
       }
     );
 
-
     const expandOverlay =
     document.createElement("div");
 
@@ -2647,7 +2239,6 @@ function createPostCard(postData){
     expandOverlay.innerHTML =
     "▶";
 
-
     videoWrapper.appendChild(
       postVideo
     );
@@ -2655,7 +2246,6 @@ function createPostCard(postData){
     videoWrapper.appendChild(
       expandOverlay
     );
-
 
     videoWrapper.addEventListener(
       "click",
@@ -2668,17 +2258,14 @@ function createPostCard(postData){
       }
     );
 
-
     mediaContainer.appendChild(
       videoWrapper
     );
 
   }
 
-
   if(
-    mediaContainer.children.length >
-    0
+    mediaContainer.children.length > 0
   ){
 
     postCard.appendChild(
@@ -2687,13 +2274,11 @@ function createPostCard(postData){
 
   }
 
-
   const actionsContainer =
   document.createElement("div");
 
   actionsContainer.className =
   "postActions";
-
 
   const likeButton =
   document.createElement("button");
@@ -2720,7 +2305,6 @@ function createPostCard(postData){
   likeButton.innerHTML =
   `❤️ <span>${likes.length}</span>`;
 
-
   const commentButton =
   document.createElement("button");
 
@@ -2738,12 +2322,10 @@ function createPostCard(postData){
     postData.commentsCount
   ) || 0;
 
-
   commentButton.innerHTML =
   commentsCount > 0
   ? `💬 <span>${commentsCount}</span>`
   : "💬 Comment";
-
 
   const shareButton =
   document.createElement("button");
@@ -2763,7 +2345,6 @@ function createPostCard(postData){
   shareButton.innerHTML =
   "🔗 Share";
 
-
   actionsContainer.appendChild(
     likeButton
   );
@@ -2775,7 +2356,6 @@ function createPostCard(postData){
   actionsContainer.appendChild(
     shareButton
   );
-
 
   if(
     currentUser &&
@@ -2804,18 +2384,15 @@ function createPostCard(postData){
     reportButton.innerHTML =
     "🚩 Report";
 
-
     actionsContainer.appendChild(
       reportButton
     );
 
   }
 
-
   postCard.appendChild(
     actionsContainer
   );
-
 
   if(
     currentUser &&
@@ -2827,7 +2404,6 @@ function createPostCard(postData){
 
     ownerActions.className =
     "postActions ownerActions";
-
 
     const editButton =
     document.createElement("button");
@@ -2847,7 +2423,6 @@ function createPostCard(postData){
     editButton.innerHTML =
     "✏️ Edit";
 
-
     const deleteButton =
     document.createElement("button");
 
@@ -2863,7 +2438,6 @@ function createPostCard(postData){
     deleteButton.innerHTML =
     "🗑️ Delete";
 
-
     ownerActions.appendChild(
       editButton
     );
@@ -2871,7 +2445,6 @@ function createPostCard(postData){
     ownerActions.appendChild(
       deleteButton
     );
-
 
     postCard.appendChild(
       ownerActions
@@ -2888,7 +2461,6 @@ function createPostCard(postData){
     adminActions.className =
     "postActions ownerActions adminActions";
 
-
     const adminDeleteButton =
     document.createElement("button");
 
@@ -2904,18 +2476,15 @@ function createPostCard(postData){
     adminDeleteButton.innerHTML =
     "🛡️ Remove Post (Admin)";
 
-
     adminActions.appendChild(
       adminDeleteButton
     );
-
 
     postCard.appendChild(
       adminActions
     );
 
   }
-
 
   if(authorId){
 
@@ -2932,7 +2501,6 @@ function createPostCard(postData){
       }
     );
 
-
     authorNameElement.addEventListener(
       "click",
       function(){
@@ -2948,16 +2516,14 @@ function createPostCard(postData){
 
   }
 
-
   return postCard;
 
 }
-/* =====================================================
-   PART 10 OF 10
-   POST ACTIONS, PHOTO VIEWER, REFRESH,
-   SHARED POST SCROLLING AND FINAL CLOSING
-===================================================== */
 
+
+/* =====================================================
+   POST ACTIONS
+===================================================== */
 
 async function createLikeNotification(
   recipientId,
@@ -2969,21 +2535,14 @@ async function createLikeNotification(
     !recipientId ||
     !postId
   ){
-
     return;
-
   }
-
 
   if(
-    recipientId ===
-    currentUser.uid
+    recipientId === currentUser.uid
   ){
-
     return;
-
   }
-
 
   const senderName =
   getFirstValue(
@@ -2994,7 +2553,6 @@ async function createLikeNotification(
     "A community member"
   );
 
-
   try{
 
     await addDoc(
@@ -3003,7 +2561,6 @@ async function createLikeNotification(
         "notifications"
       ),
       {
-
         recipientId:
         recipientId,
 
@@ -3030,7 +2587,6 @@ async function createLikeNotification(
 
         timestamp:
         serverTimestamp()
-
       }
     );
 
@@ -3059,26 +2615,19 @@ async function handleLikeButton(
 
   }
 
-
   const postId =
   button.dataset.postId;
-
 
   const postAuthorId =
   button.dataset.authorId ||
   "";
 
-
   if(!postId){
-
     return;
-
   }
-
 
   let likes =
   [];
-
 
   try{
 
@@ -3087,7 +2636,6 @@ async function handleLikeButton(
       button.dataset.likes ||
       "[]"
     );
-
 
     likes =
     Array.isArray(
@@ -3103,22 +2651,18 @@ async function handleLikeButton(
       error
     );
 
-
     likes =
     [];
 
   }
 
-
   const currentUserId =
   currentUser.uid;
-
 
   const userAlreadyLiked =
   likes.includes(
     currentUserId
   );
-
 
   const updatedLikes =
   userAlreadyLiked
@@ -3127,8 +2671,7 @@ async function handleLikeButton(
       function(userId){
 
         return (
-          userId !==
-          currentUserId
+          userId !== currentUserId
         );
 
       }
@@ -3139,10 +2682,8 @@ async function handleLikeButton(
       currentUserId
     ];
 
-
   button.disabled =
   true;
-
 
   try{
 
@@ -3153,7 +2694,6 @@ async function handleLikeButton(
       postId
     );
 
-
     await updateDoc(
       postReference,
       {
@@ -3162,24 +2702,20 @@ async function handleLikeButton(
       }
     );
 
-
     button.dataset.likes =
     JSON.stringify(
       updatedLikes
     );
-
 
     button.classList.toggle(
       "liked",
       !userAlreadyLiked
     );
 
-
     const likeCount =
     button.querySelector(
       "span"
     );
-
 
     if(likeCount){
 
@@ -3187,7 +2723,6 @@ async function handleLikeButton(
       updatedLikes.length;
 
     }
-
 
     if(!userAlreadyLiked){
 
@@ -3204,7 +2739,6 @@ async function handleLikeButton(
       "Error updating likes:",
       error
     );
-
 
     alert(
       "The like could not be updated."
@@ -3227,13 +2761,9 @@ function handleCommentButton(
   const postId =
   button.dataset.postId;
 
-
   if(!postId){
-
     return;
-
   }
-
 
   window.location.href =
   `comments.html?postId=${encodeURIComponent(postId)}`;
@@ -3248,22 +2778,16 @@ async function handleShareButton(
   const postId =
   button.dataset.postId;
 
-
   if(!postId){
-
     return;
-
   }
-
 
   const postMessage =
   button.dataset.message ||
   "";
 
-
   const postUrl =
   `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
-
 
   const shareText =
   postMessage
@@ -3271,7 +2795,6 @@ async function handleShareButton(
   ? `${postMessage}\n\nSABASABA Gospel Ministry`
 
   : "See this post on SABASABA Gospel Ministry.";
-
 
   try{
 
@@ -3281,7 +2804,6 @@ async function handleShareButton(
 
       await navigator.share(
         {
-
           title:
           "SABASABA Gospel Ministry",
 
@@ -3290,15 +2812,12 @@ async function handleShareButton(
 
           url:
           postUrl
-
         }
       );
-
 
       return;
 
     }
-
 
     if(
       navigator.clipboard &&
@@ -3309,16 +2828,13 @@ async function handleShareButton(
         postUrl
       );
 
-
       alert(
         "Post link copied."
       );
 
-
       return;
 
     }
-
 
     window.prompt(
       "Copy this post link:",
@@ -3328,15 +2844,13 @@ async function handleShareButton(
   }catch(error){
 
     if(
-      error.name !==
-      "AbortError"
+      error.name !== "AbortError"
     ){
 
       console.error(
         "Error sharing post:",
         error
       );
-
 
       alert(
         "The post could not be shared."
@@ -3362,22 +2876,16 @@ async function handleEditButton(
 
   }
 
-
   const postId =
   button.dataset.postId;
-
 
   const oldMessage =
   button.dataset.message ||
   "";
 
-
   if(!postId){
-
     return;
-
   }
-
 
   const newMessage =
   window.prompt(
@@ -3385,19 +2893,14 @@ async function handleEditButton(
     oldMessage
   );
 
-
   if(
     newMessage === null
   ){
-
     return;
-
   }
-
 
   const cleanedMessage =
   newMessage.trim();
-
 
   if(!cleanedMessage){
 
@@ -3409,10 +2912,8 @@ async function handleEditButton(
 
   }
 
-
   button.disabled =
   true;
-
 
   try{
 
@@ -3423,7 +2924,6 @@ async function handleEditButton(
       postId
     );
 
-
     await updateDoc(
       postReference,
       {
@@ -3431,7 +2931,6 @@ async function handleEditButton(
         cleanedMessage
       }
     );
-
 
     button.dataset.message =
     cleanedMessage;
@@ -3442,7 +2941,6 @@ async function handleEditButton(
       "Error editing post:",
       error
     );
-
 
     alert(
       "The post could not be edited."
@@ -3471,34 +2969,24 @@ async function handleDeleteButton(
 
   }
 
-
   const postId =
   button.dataset.postId;
 
-
   if(!postId){
-
     return;
-
   }
-
 
   const confirmed =
   window.confirm(
     "Are you sure you want to delete this post?"
   );
 
-
   if(!confirmed){
-
     return;
-
   }
-
 
   button.disabled =
   true;
-
 
   try{
 
@@ -3509,44 +2997,33 @@ async function handleDeleteButton(
       postId
     );
 
-
     await deleteDoc(
       postReference
     );
 
-
     /*
-       Remove it from the page and from the
-       loaded-post tracking right away — the
-       live listener now deliberately ignores
-       "removed" snapshot changes (since those
-       also fire when a post simply falls out
-       of the top-50 window, not just on real
-       deletes), so this button is what actually
-       takes a deleted post off the screen.
+       Remove it from the page and from the loaded-post
+       tracking right away — the live listener ignores
+       "removed" changes on purpose.
     */
 
     loadedPostIds.delete(
       postId
     );
 
-
     loadedPostsDocs =
     loadedPostsDocs.filter(
       function(postDoc){
 
-        return postDoc.id !==
-        postId;
+        return postDoc.id !== postId;
 
       }
     );
-
 
     const postCardElement =
     document.getElementById(
       `post-${postId}`
     );
-
 
     if(postCardElement){
 
@@ -3554,10 +3031,8 @@ async function handleDeleteButton(
 
     }
 
-
     if(
-      postsContainer.children.length ===
-      0
+      postsContainer.children.length === 0
     ){
 
       showEmptyMessage();
@@ -3571,11 +3046,9 @@ async function handleDeleteButton(
       error
     );
 
-
     alert(
       "The post could not be deleted."
     );
-
 
     button.disabled =
     false;
@@ -3584,6 +3057,10 @@ async function handleDeleteButton(
 
 }
 
+
+/* =====================================================
+   REPORT POST MODAL
+===================================================== */
 
 let reportTargetPostId =
 null;
@@ -3613,7 +3090,6 @@ function openReportModal(
 
   }
 
-
   reportTargetPostId =
   postId;
 
@@ -3627,7 +3103,6 @@ function openReportModal(
 
   selectedReportReason =
   null;
-
 
   if(reportReasonList){
 
@@ -3647,7 +3122,6 @@ function openReportModal(
 
   }
 
-
   if(reportSubmitButton){
 
     reportSubmitButton.disabled =
@@ -3657,7 +3131,6 @@ function openReportModal(
     "Submit report";
 
   }
-
 
   if(reportModal){
 
@@ -3671,7 +3144,6 @@ function openReportModal(
     );
 
   }
-
 
   document.body.style.overflow =
   "hidden";
@@ -3694,10 +3166,8 @@ function closeReportModal(){
 
   }
 
-
   document.body.style.overflow =
   "";
-
 
   reportTargetPostId =
   null;
@@ -3725,13 +3195,9 @@ if(reportReasonList){
         ".reportReasonOption"
       );
 
-
       if(!optionButton){
-
         return;
-
       }
-
 
       reportReasonList
       .querySelectorAll(
@@ -3747,16 +3213,13 @@ if(reportReasonList){
         }
       );
 
-
       optionButton.classList.add(
         "selected"
       );
 
-
       selectedReportReason =
       optionButton.dataset.reason ||
       "Other";
-
 
       if(reportSubmitButton){
 
@@ -3788,8 +3251,7 @@ if(reportModal){
     event => {
 
       if(
-        event.target ===
-        reportModal
+        event.target === reportModal
       ){
 
         closeReportModal();
@@ -3813,11 +3275,8 @@ if(reportSubmitButton){
         !reportTargetPostId ||
         !selectedReportReason
       ){
-
         return;
-
       }
-
 
       reportSubmitButton.disabled =
       true;
@@ -3825,34 +3284,23 @@ if(reportSubmitButton){
       reportSubmitButton.textContent =
       "Submitting...";
 
-
       const reporterName =
       getFirstValue(
-
         currentProfile.fullName,
-
         currentProfile.name,
-
         currentUser.displayName,
-
         currentUser.email,
-
         "A community member"
-
       );
-
 
       try{
 
         await addDoc(
-
           collection(
             db,
             "reports"
           ),
-
           {
-
             postId:
             reportTargetPostId,
 
@@ -3879,16 +3327,12 @@ if(reportSubmitButton){
 
             timestamp:
             serverTimestamp()
-
           }
-
         );
-
 
         alert(
           "Thank you — this post has been reported and will be reviewed."
         );
-
 
         closeReportModal();
 
@@ -3899,11 +3343,9 @@ if(reportSubmitButton){
           error
         );
 
-
         alert(
           "The report could not be submitted. Please try again."
         );
-
 
         reportSubmitButton.disabled =
         false;
@@ -3919,29 +3361,29 @@ if(reportSubmitButton){
 }
 
 
+/* =====================================================
+   PHOTO VIEWER
+===================================================== */
+
 function updatePhotoViewerNavigation(){
 
   const hasMultiplePhotos =
   currentGalleryImages.length > 1;
-
 
   photoViewerPrevButton.classList.toggle(
     "hidden",
     !hasMultiplePhotos
   );
 
-
   photoViewerNextButton.classList.toggle(
     "hidden",
     !hasMultiplePhotos
   );
 
-
   photoViewerCounter.classList.toggle(
     "hidden",
     !hasMultiplePhotos
   );
-
 
   if(hasMultiplePhotos){
 
@@ -3960,11 +3402,8 @@ function showGalleryImageAt(
   if(
     currentGalleryImages.length === 0
   ){
-
     return;
-
   }
-
 
   currentGalleryIndex =
   (
@@ -3976,12 +3415,10 @@ function showGalleryImageAt(
   ) %
   currentGalleryImages.length;
 
-
   photoViewerImage.src =
   currentGalleryImages[
     currentGalleryIndex
   ];
-
 
   updatePhotoViewerNavigation();
 
@@ -4011,19 +3448,14 @@ function openPhotoViewer(
       : []
     );
 
-
   if(
     galleryImages.length === 0
   ){
-
     return;
-
   }
-
 
   currentGalleryImages =
   galleryImages;
-
 
   photoViewerVideo.pause();
 
@@ -4036,30 +3468,24 @@ function openPhotoViewer(
   photoViewerVideo.style.display =
   "none";
 
-
   photoViewerImage.style.display =
   "block";
-
 
   showGalleryImageAt(
     startIndex
   );
 
-
   photoViewer.classList.add(
     "open"
   );
-
 
   photoViewer.setAttribute(
     "aria-hidden",
     "false"
   );
 
-
   document.body.style.overflow =
   "hidden";
-
 
   closePhotoViewerButton.focus();
 
@@ -4071,7 +3497,6 @@ photoViewerPrevButton.addEventListener(
   function(event){
 
     event.stopPropagation();
-
 
     showGalleryImageAt(
       currentGalleryIndex - 1
@@ -4087,7 +3512,6 @@ photoViewerNextButton.addEventListener(
 
     event.stopPropagation();
 
-
     showGalleryImageAt(
       currentGalleryIndex + 1
     );
@@ -4101,11 +3525,8 @@ function openVideoViewer(
 ){
 
   if(!videoUrl){
-
     return;
-
   }
-
 
   photoViewerImage.removeAttribute(
     "src"
@@ -4113,7 +3534,6 @@ function openVideoViewer(
 
   photoViewerImage.style.display =
   "none";
-
 
   photoViewerVideo.src =
   videoUrl;
@@ -4124,29 +3544,23 @@ function openVideoViewer(
   photoViewerVideo.muted =
   false;
 
-
   photoViewer.classList.add(
     "open"
   );
-
 
   photoViewer.setAttribute(
     "aria-hidden",
     "false"
   );
 
-
   document.body.style.overflow =
   "hidden";
-
 
   photoViewerVideo.play()
   .catch(
     function(){
-
     }
   );
-
 
   closePhotoViewerButton.focus();
 
@@ -4159,24 +3573,19 @@ function hidePhotoViewer(){
     "open"
   );
 
-
   photoViewer.setAttribute(
     "aria-hidden",
     "true"
   );
 
-
   photoViewerImage.src =
   "";
-
 
   currentGalleryImages =
   [];
 
-
   currentGalleryIndex =
   0;
-
 
   photoViewerVideo.pause();
 
@@ -4186,12 +3595,15 @@ function hidePhotoViewer(){
 
   photoViewerVideo.load();
 
-
   document.body.style.overflow =
   "";
 
 }
 
+
+/* =====================================================
+   REELS-STYLE VIDEO VIEWER
+===================================================== */
 
 let reelScrollObserver =
 null;
@@ -4204,10 +3616,8 @@ function collectFeedVideoUrls(){
     ".communityPostVideoWrapper video"
   );
 
-
   const videoUrls =
   [];
-
 
   videoElements.forEach(
     function(videoElement){
@@ -4228,7 +3638,6 @@ function collectFeedVideoUrls(){
     }
   );
 
-
   return videoUrls;
 
 }
@@ -4241,36 +3650,26 @@ function openVideoReelViewer(
   const videoUrls =
   collectFeedVideoUrls();
 
-
   if(
     videoUrls.length === 0
   ){
-
     return;
-
   }
-
 
   videoReelTrack.innerHTML =
   "";
-
 
   videoUrls.forEach(
     function(videoUrl){
 
       const slide =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
       slide.className =
       "videoReelSlide";
 
-
       const videoElement =
-      document.createElement(
-        "video"
-      );
+      document.createElement("video");
 
       videoElement.src =
       videoUrl;
@@ -4290,11 +3689,9 @@ function openVideoReelViewer(
       videoElement.muted =
       false;
 
-
       slide.appendChild(
         videoElement
       );
-
 
       videoReelTrack.appendChild(
         slide
@@ -4303,21 +3700,17 @@ function openVideoReelViewer(
     }
   );
 
-
   videoReelViewer.classList.add(
     "open"
   );
-
 
   videoReelViewer.setAttribute(
     "aria-hidden",
     "false"
   );
 
-
   document.body.style.overflow =
   "hidden";
-
 
   const startingIndex =
   Math.max(
@@ -4327,12 +3720,10 @@ function openVideoReelViewer(
     )
   );
 
-
   const allSlides =
   videoReelTrack.querySelectorAll(
     ".videoReelSlide"
   );
-
 
   if(
     allSlides[startingIndex]
@@ -4347,7 +3738,6 @@ function openVideoReelViewer(
 
   }
 
-
   startReelAutoplayObserver();
 
 }
@@ -4355,20 +3745,16 @@ function openVideoReelViewer(
 
 function startReelAutoplayObserver(){
 
-  if(
-    reelScrollObserver
-  ){
+  if(reelScrollObserver){
 
     reelScrollObserver.disconnect();
 
   }
 
-
   const allReelVideos =
   videoReelTrack.querySelectorAll(
     "video"
   );
-
 
   reelScrollObserver =
   new IntersectionObserver(
@@ -4381,19 +3767,16 @@ function startReelAutoplayObserver(){
           const video =
           entry.target;
 
-
           if(
             entry.isIntersecting &&
-            entry.intersectionRatio >=
-            0.6
+            entry.intersectionRatio >= 0.6
           ){
 
             allReelVideos.forEach(
               function(otherVideo){
 
                 if(
-                  otherVideo !==
-                  video
+                  otherVideo !== video
                 ){
 
                   otherVideo.pause();
@@ -4403,19 +3786,15 @@ function startReelAutoplayObserver(){
               }
             );
 
-
             const playPromise =
             video.play();
 
-
             if(
-              playPromise !==
-              undefined
+              playPromise !== undefined
             ){
 
               playPromise.catch(
                 function(){
-
                 }
               );
 
@@ -4442,7 +3821,6 @@ function startReelAutoplayObserver(){
 
   );
 
-
   allReelVideos.forEach(
     function(videoElement){
 
@@ -4458,9 +3836,7 @@ function startReelAutoplayObserver(){
 
 function closeVideoReelViewer(){
 
-  if(
-    reelScrollObserver
-  ){
+  if(reelScrollObserver){
 
     reelScrollObserver.disconnect();
 
@@ -4468,7 +3844,6 @@ function closeVideoReelViewer(){
     null;
 
   }
-
 
   videoReelTrack
   .querySelectorAll(
@@ -4482,21 +3857,17 @@ function closeVideoReelViewer(){
     }
   );
 
-
   videoReelViewer.classList.remove(
     "open"
   );
-
 
   videoReelViewer.setAttribute(
     "aria-hidden",
     "true"
   );
 
-
   videoReelTrack.innerHTML =
   "";
-
 
   document.body.style.overflow =
   "";
@@ -4510,6 +3881,10 @@ closeVideoReelViewerButton.addEventListener(
 );
 
 
+/* =====================================================
+   CLICK HANDLING FOR POSTS
+===================================================== */
+
 postsContainer.addEventListener(
   "click",
   function(event){
@@ -4518,7 +3893,6 @@ postsContainer.addEventListener(
     event.target.closest(
       ".likeButton"
     );
-
 
     if(likeButton){
 
@@ -4530,12 +3904,10 @@ postsContainer.addEventListener(
 
     }
 
-
     const commentButton =
     event.target.closest(
       ".commentButton"
     );
-
 
     if(commentButton){
 
@@ -4547,12 +3919,10 @@ postsContainer.addEventListener(
 
     }
 
-
     const shareButton =
     event.target.closest(
       ".shareButton"
     );
-
 
     if(shareButton){
 
@@ -4564,12 +3934,10 @@ postsContainer.addEventListener(
 
     }
 
-
     const editButton =
     event.target.closest(
       ".editButton"
     );
-
 
     if(editButton){
 
@@ -4581,12 +3949,10 @@ postsContainer.addEventListener(
 
     }
 
-
     const deleteButton =
     event.target.closest(
       ".deleteButton"
     );
-
 
     if(deleteButton){
 
@@ -4598,35 +3964,27 @@ postsContainer.addEventListener(
 
     }
 
-
     const reportButton =
     event.target.closest(
       ".reportButton"
     );
 
-
     if(reportButton){
 
       openReportModal(
-
         reportButton.dataset.postId,
-
         reportButton.dataset.authorId,
-
         reportButton.dataset.message
-
       );
 
       return;
 
     }
 
-
     const postImage =
     event.target.closest(
       ".communityPostImage"
     );
-
 
     if(postImage){
 
@@ -4635,10 +3993,8 @@ postsContainer.addEventListener(
         ".postPhotoGrid"
       );
 
-
       let galleryImages =
       [];
-
 
       try{
 
@@ -4657,11 +4013,8 @@ postsContainer.addEventListener(
 
       }
 
-
       if(
-        !Array.isArray(
-          galleryImages
-        ) ||
+        !Array.isArray(galleryImages) ||
         galleryImages.length === 0
       ){
 
@@ -4673,13 +4026,11 @@ postsContainer.addEventListener(
 
       }
 
-
       const startIndex =
       Number(
         postImage.dataset.galleryIndex
       ) ||
       0;
-
 
       openPhotoViewer(
         galleryImages,
@@ -4703,8 +4054,7 @@ photoViewer.addEventListener(
   function(event){
 
     if(
-      event.target ===
-      photoViewer
+      event.target === photoViewer
     ){
 
       hidePhotoViewer();
@@ -4726,8 +4076,7 @@ document.addEventListener(
     ){
 
       if(
-        event.key ===
-        "ArrowLeft"
+        event.key === "ArrowLeft"
       ){
 
         showGalleryImageAt(
@@ -4738,10 +4087,8 @@ document.addEventListener(
 
       }
 
-
       if(
-        event.key ===
-        "ArrowRight"
+        event.key === "ArrowRight"
       ){
 
         showGalleryImageAt(
@@ -4754,16 +4101,11 @@ document.addEventListener(
 
     }
 
-
     if(
-      event.key !==
-      "Escape"
+      event.key !== "Escape"
     ){
-
       return;
-
     }
-
 
     if(
       photoViewer.classList.contains(
@@ -4775,7 +4117,6 @@ document.addEventListener(
 
     }
 
-
     if(
       videoReelViewer.classList.contains(
         "open"
@@ -4786,15 +4127,11 @@ document.addEventListener(
 
     }
 
-
     if(
-
       reportModal &&
-
       reportModal.classList.contains(
         "open"
       )
-
     ){
 
       closeReportModal();
@@ -4814,20 +4151,16 @@ if(refreshButton){
       refreshButton.disabled =
       true;
 
-
       refreshButton.textContent =
       "⏳";
 
-
       startCommunityFeed();
-
 
       window.setTimeout(
         function(){
 
           refreshButton.disabled =
           false;
-
 
           refreshButton.textContent =
           "🔄";
@@ -4842,6 +4175,10 @@ if(refreshButton){
 }
 
 
+/* =====================================================
+   SCROLL TO A SHARED POST (?post=...)
+===================================================== */
+
 async function scrollToSharedPost(){
 
   const urlParameters =
@@ -4849,25 +4186,19 @@ async function scrollToSharedPost(){
     window.location.search
   );
 
-
   const sharedPostId =
   urlParameters.get(
     "post"
   );
 
-
   if(!sharedPostId){
-
     return;
-
   }
-
 
   let sharedPost =
   document.getElementById(
     `post-${sharedPostId}`
   );
-
 
   if(!sharedPost){
 
@@ -4880,38 +4211,31 @@ async function scrollToSharedPost(){
         sharedPostId
       );
 
-
       const postSnapshot =
       await getDoc(
         postReference
       );
-
 
       if(
         postSnapshot.exists()
       ){
 
         const postData = {
-
           id:
           postSnapshot.id,
 
           ...postSnapshot.data()
-
         };
-
 
         const postCard =
         createPostCard(
           postData
         );
 
-
         postsContainer.insertBefore(
           postCard,
           postsContainer.firstChild
         );
-
 
         sharedPost =
         postCard;
@@ -4929,26 +4253,20 @@ async function scrollToSharedPost(){
 
   }
 
-
   if(!sharedPost){
-
     return;
-
   }
-
 
   window.setTimeout(
     function(){
 
       sharedPost.scrollIntoView(
         {
-
           behavior:
           "smooth",
 
           block:
           "center"
-
         }
       );
 
@@ -4969,19 +4287,13 @@ window.addEventListener(
 
     stopMomentsStripListener();
 
-
-    if(
-      postsLoadObserver
-    ){
+    if(postsLoadObserver){
 
       postsLoadObserver.disconnect();
 
     }
 
-
-    if(
-      renderDebounceTimer
-    ){
+    if(renderDebounceTimer){
 
       clearTimeout(
         renderDebounceTimer
@@ -4998,6 +4310,10 @@ console.log(
 );
 
 
+/* =====================================================
+   VIDEO AUTOPLAY IN THE FEED
+===================================================== */
+
 let videoObserver =
 null;
 
@@ -5010,21 +4326,16 @@ function startVideoAutoPlay(){
 
   }
 
-
   const communityVideos =
   document.querySelectorAll(
     ".communityPostVideo"
   );
 
-
   if(
     !communityVideos.length
   ){
-
     return;
-
   }
-
 
   videoObserver =
   new IntersectionObserver(
@@ -5037,19 +4348,16 @@ function startVideoAutoPlay(){
           const video =
           entry.target;
 
-
           if(
             entry.isIntersecting &&
-            entry.intersectionRatio >=
-            0.7
+            entry.intersectionRatio >= 0.7
           ){
 
             communityVideos.forEach(
               function(otherVideo){
 
                 if(
-                  otherVideo !==
-                  video
+                  otherVideo !== video
                 ){
 
                   otherVideo.pause();
@@ -5059,18 +4367,14 @@ function startVideoAutoPlay(){
               }
             );
 
-
             video.muted =
             true;
-
 
             const playPromise =
             video.play();
 
-
             if(
-              playPromise !==
-              undefined
+              playPromise !== undefined
             ){
 
               playPromise.catch(
@@ -5109,17 +4413,14 @@ function startVideoAutoPlay(){
 
   );
 
-
   communityVideos.forEach(
     function(video){
 
       video.muted =
       true;
 
-
       video.playsInline =
       true;
-
 
       videoObserver.observe(
         video
@@ -5131,6 +4432,10 @@ function startVideoAutoPlay(){
 }
 
 
+/* =====================================================
+   FAITH MOMENTS STRIP
+===================================================== */
+
 function isMomentStillActiveForStrip(
   momentData
 ){
@@ -5140,9 +4445,7 @@ function isMomentStillActiveForStrip(
   momentData.createdAt;
 
   if(!rawTimestamp){
-
     return true;
-
   }
 
   let createdDate;
@@ -5178,9 +4481,7 @@ function isMomentStillActiveForStrip(
       createdDate.getTime()
     )
   ){
-
     return true;
-
   }
 
   const twentyFourHours =
@@ -5204,13 +4505,11 @@ function getStripMomentTypeIcon(
   ).toLowerCase();
 
   const icons = {
-
     verse:"📖",
     prayer:"🙏",
     testimony:"💬",
     photo:"🖼️",
     video:"🎥"
-
   };
 
   return icons[normalizedType] || "✨";
@@ -5233,9 +4532,7 @@ function getStripInitials(
   .filter(Boolean);
 
   if(words.length === 0){
-
     return "F";
-
   }
 
   return words
@@ -5268,10 +4565,8 @@ function renderMomentsStrip(
     }
   );
 
-
   const momentsByUser =
   new Map();
-
 
   momentsSnapshot.forEach(
     function(momentDoc){
@@ -5279,17 +4574,13 @@ function renderMomentsStrip(
       const momentData =
       momentDoc.data();
 
-
       if(
         !isMomentStillActiveForStrip(
           momentData
         )
       ){
-
         return;
-
       }
-
 
       const privacy =
       String(
@@ -5297,13 +4588,11 @@ function renderMomentsStrip(
         "everyone"
       ).toLowerCase();
 
-
       const momentUserId =
       momentData.userId ||
       momentData.authorId ||
       momentData.uid ||
       "";
-
 
       const isOwnMoment =
       Boolean(
@@ -5311,26 +4600,19 @@ function renderMomentsStrip(
         momentUserId === currentUser.uid
       );
 
-
       if(
         privacy !== "everyone" &&
         !isOwnMoment
       ){
-
         return;
-
       }
-
 
       if(
         !momentUserId ||
         momentsByUser.has(momentUserId)
       ){
-
         return;
-
       }
-
 
       momentsByUser.set(
         momentUserId,
@@ -5343,7 +4625,6 @@ function renderMomentsStrip(
     }
   );
 
-
   momentsByUser.forEach(
     function(momentData){
 
@@ -5355,7 +4636,6 @@ function renderMomentsStrip(
         "Faith Connect Member"
       );
 
-
       const profilePicture =
       getFirstValue(
         momentData.profilePicture,
@@ -5363,13 +4643,9 @@ function renderMomentsStrip(
         momentData.photoURL
       );
 
-
       /*
-         The card's BACKGROUND photo is the moment's
-         own content (what the person actually shared),
-         not their profile picture — that small circular
-         profile picture becomes the corner avatar
-         instead, the same way Facebook Stories work.
+         The card's BACKGROUND photo is the moment's own
+         content; the profile picture is the corner avatar.
       */
 
       const momentContentImage =
@@ -5384,29 +4660,22 @@ function renderMomentsStrip(
         momentData.contentUrl
       );
 
-
       const typeIcon =
       getStripMomentTypeIcon(
         momentData.type ||
         momentData.momentType
       );
 
-
       const momentCard =
-      document.createElement(
-        "a"
-      );
-
+      document.createElement("a");
 
       momentCard.href =
       `faith-moments.html?moment=${encodeURIComponent(
         momentData.id
       )}`;
 
-
       momentCard.className =
       "momentCard memberMomentCard";
-
 
       if(momentContentImage){
 
@@ -5420,7 +4689,6 @@ function renderMomentsStrip(
         );
 
       }
-
 
       momentCard.innerHTML = `
 
@@ -5447,7 +4715,6 @@ function renderMomentsStrip(
         </div>
 
       `;
-
 
       momentsRow.appendChild(
         momentCard
@@ -5480,7 +4747,6 @@ function startMomentsStripListener(){
 
   stopMomentsStripListener();
 
-
   const momentsQuery =
   query(
     collection(
@@ -5493,7 +4759,6 @@ function startMomentsStripListener(){
     ),
     limit(30)
   );
-
 
   unsubscribeMomentsStrip =
   onSnapshot(
