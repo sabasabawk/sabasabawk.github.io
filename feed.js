@@ -561,106 +561,119 @@ function formatPostDate(
 
 
 /* =====================================================
-   ADMIN ICONS IN THE TOP BAR
+   ADMIN SHORTCUTS
 
-   🛡️ Reports and 📋 Feedback are added only when
-   currentUserIsAdmin is true. For every other account
+   🛡️ Reports and 📋 Feedback appear as a slim strip
+   under the top bar (not inside it), so the top bar
+   keeps its room for "Faith Connect". Added only when
+   currentUserIsAdmin is true; for every other account
    nothing is added to the page at all.
 ===================================================== */
 
 function updateAdminReportsLink(){
 
-  if(!topBarActions){
-    return;
-  }
-
-  const existingReports =
+  const oldStrip =
   document.getElementById(
-    "adminReportsLink"
+    "adminToolsStrip"
   );
 
-  const existingFeedback =
-  document.getElementById(
+  /* remove any icons from earlier versions */
+
+  [
+    "adminReportsLink",
     "adminFeedbackLink"
+  ].forEach(
+    function(oldId){
+
+      const oldElement =
+      document.getElementById(
+        oldId
+      );
+
+      if(oldElement){
+
+        oldElement.remove();
+
+      }
+
+    }
   );
 
   if(!currentUserIsAdmin){
 
-    if(existingReports){
-      existingReports.remove();
-    }
+    if(oldStrip){
 
-    if(existingFeedback){
-      existingFeedback.remove();
+      oldStrip.remove();
+
     }
 
     return;
 
   }
 
-  if(!existingFeedback){
-
-    const feedbackLink =
-    document.createElement("a");
-
-    feedbackLink.id =
-    "adminFeedbackLink";
-
-    feedbackLink.href =
-    "admin-feedback.html";
-
-    feedbackLink.className =
-    "topIconLink";
-
-    feedbackLink.setAttribute(
-      "aria-label",
-      "Read user feedback"
-    );
-
-    feedbackLink.title =
-    "User feedback";
-
-    feedbackLink.textContent =
-    "📋";
-
-    topBarActions.insertBefore(
-      feedbackLink,
-      topBarActions.firstChild
-    );
-
+  if(oldStrip){
+    return;
   }
 
-  if(!existingReports){
+  const pageContainer =
+  document.querySelector(
+    ".pageContainer"
+  );
 
-    const adminLink =
-    document.createElement("a");
-
-    adminLink.id =
-    "adminReportsLink";
-
-    adminLink.href =
-    "admin-reports.html";
-
-    adminLink.className =
-    "topIconLink";
-
-    adminLink.setAttribute(
-      "aria-label",
-      "Review reported posts"
-    );
-
-    adminLink.title =
-    "Reported posts";
-
-    adminLink.textContent =
-    "🛡️";
-
-    topBarActions.insertBefore(
-      adminLink,
-      topBarActions.firstChild
-    );
-
+  if(!pageContainer){
+    return;
   }
+
+  const strip =
+  document.createElement("div");
+
+  strip.id =
+  "adminToolsStrip";
+
+  strip.style.cssText =
+  "display:flex;gap:8px;margin:0 0 10px;";
+
+  const adminLinks =
+  [
+    {
+      href:"admin-feedback.html",
+      label:"📋 User Feedback"
+    },
+    {
+      href:"admin-reports.html",
+      label:"🛡️ Reported Posts"
+    }
+  ];
+
+  adminLinks.forEach(
+    function(linkInfo){
+
+      const link =
+      document.createElement("a");
+
+      link.href =
+      linkInfo.href;
+
+      link.textContent =
+      linkInfo.label;
+
+      link.style.cssText =
+      "flex:1;text-align:center;padding:9px 6px;" +
+      "border-radius:12px;background:#e7f3ff;" +
+      "color:#0873c9;font-size:13px;font-weight:bold;" +
+      "text-decoration:none;";
+
+      strip.appendChild(
+        link
+      );
+
+    }
+  );
+
+  pageContainer.insertBefore(
+    strip,
+    pageContainer.firstChild
+  );
 
 }
 
