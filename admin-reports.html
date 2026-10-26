@@ -696,6 +696,9 @@ document.getElementById(
    GLOBAL STATE
 ===================================================== */
 
+const ADMIN_EMAILS =
+["sabasabawk@gmail.com"];
+
 let currentUser =
 null;
 
@@ -873,10 +876,16 @@ onAuthStateChanged(
 
       currentUserIsAdmin =
 
-        profileSnapshot.exists() &&
+        ADMIN_EMAILS.includes(
+          (currentUser.email || "").toLowerCase()
+        ) ||
 
-        profileSnapshot.data().isAdmin ===
-        true;
+        (
+          profileSnapshot.exists() &&
+
+          profileSnapshot.data().isAdmin ===
+          true
+        );
 
 
     }catch(error){
