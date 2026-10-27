@@ -4597,6 +4597,42 @@ function getStripMomentVideoUrl(
     return explicitVideo;
   }
 
+  /*
+     The video link may be saved under any field name,
+     so look through every text value of the moment for
+     a link that points to a video file.
+  */
+
+  const looksLikeVideo = function(value){
+
+    if(typeof value !== "string"){
+      return false;
+    }
+
+    if(!/^https?:\/\//i.test(value)){
+      return false;
+    }
+
+    return (
+      isStripVideoUrl(value) ||
+      value.indexOf("/video/upload/") !== -1
+    );
+
+  };
+
+  const allValues =
+  Object.values(
+    momentData
+  );
+
+  for(const value of allValues){
+
+    if(looksLikeVideo(value)){
+      return value;
+    }
+
+  }
+
   const type =
   String(
     momentData.type ||
@@ -4605,24 +4641,24 @@ function getStripMomentVideoUrl(
     ""
   ).toLowerCase();
 
-  const otherCandidates = [
-    imageCandidate,
-    momentData.mediaUrl,
-    momentData.contentUrl,
-    momentData.fileUrl
-  ];
+  if(type === "video"){
 
-  for(const candidate of otherCandidates){
+    const fallbackCandidates = [
+      momentData.mediaUrl,
+      momentData.contentUrl,
+      momentData.fileUrl
+    ];
 
-    if(!candidate){
-      continue;
-    }
+    for(const candidate of fallbackCandidates){
 
-    if(
-      isStripVideoUrl(candidate) ||
-      type === "video"
-    ){
-      return candidate;
+      if(
+        candidate &&
+        typeof candidate === "string" &&
+        !/\.(jpe?g|png|gif|webp|avif|bmp)(\?|#|$)/i.test(candidate)
+      ){
+        return candidate;
+      }
+
     }
 
   }
@@ -4797,7 +4833,6 @@ function renderMomentsStrip(
 
       const showVideoFrame =
       Boolean(
-        !momentContentImage &&
         momentVideoUrl
       );
 
@@ -4890,6 +4925,9 @@ function renderMomentsStrip(
             frameVideo.remove();
 
             if(
+              momentCard.classList.contains(
+                "momentCardFallback"
+              ) &&
               !momentCard.querySelector(
                 ".momentCardFallbackIcon"
               )
