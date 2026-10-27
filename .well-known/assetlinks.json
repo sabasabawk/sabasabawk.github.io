@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.sabasabawk.faithconnect",
+      "sha256_cert_fingerprints":
+        ["BA:33:59:1B:CF:34:F4:06:57:4C:8E:01:47:83:6F:9A:14:E6:64:CB:7B:31:24:00:09:4E:AB:F2:64:69:8D:79"]
+    }
+  }
+]
