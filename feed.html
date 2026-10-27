@@ -21,15 +21,9 @@
 
 <link rel="stylesheet" href="feed.css">
 
-
 </head>
-<!-- =====================================================
-   PART 5 OF 10
-   COMPLETE HTML PAGE STRUCTURE
-===================================================== -->
 
 <body>
-
 
 <!-- =====================================================
    TOP APPLICATION BAR
@@ -43,13 +37,10 @@
       href="index.html"
       class="appBrand"
     >
-
       <span class="appBrandText">
         Faith Connect
       </span>
-
     </a>
-
 
     <div class="topBarActions">
 
@@ -62,7 +53,6 @@
         🔍
       </a>
 
-
       <a
         href="notification.html"
         class="topIconLink"
@@ -70,7 +60,6 @@
         title="Notifications"
       >
         🔔
-
         <span
           id="notificationBadge"
           class="notificationBadge"
@@ -79,7 +68,6 @@
           0
         </span>
       </a>
-
 
       <a
         href="messages.html"
@@ -103,9 +91,8 @@
 
 <div class="pageContainer">
 
-
   <!-- =================================================
-       MOMENTS STRIP (like Facebook/Instagram Stories)
+       MOMENTS STRIP (Stories-style)
   ================================================== -->
 
   <section class="momentsSection">
@@ -120,7 +107,6 @@
         href="create-faith-moment.html"
         class="momentCard createMomentCard"
       >
-
         <div
           id="quickMomentAvatar"
           class="createMomentCardTop"
@@ -133,7 +119,6 @@
         <div class="createMomentCardBottom">
           Create Moment
         </div>
-
       </a>
 
     </div>
@@ -156,9 +141,6 @@
 
   <!-- =================================================
        LOAD MORE SENTINEL
-       (invisible marker — triggers loading the
-       next batch of older posts when scrolled
-       into view; also shows "no more posts")
   ================================================== -->
 
   <div id="loadMoreSentinel"></div>
@@ -188,100 +170,52 @@
 
   <div class="bottomNavigationInner">
 
-
     <a
       href="index.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        🏠
-      </span>
-
-      <span>
-        Home
-      </span>
-
+      <span class="bottomNavIcon">🏠</span>
+      <span>Home</span>
     </a>
-
 
     <a
       href="learn.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        📚
-      </span>
-
-      <span>
-        Learn
-      </span>
-
+      <span class="bottomNavIcon">📚</span>
+      <span>Learn</span>
     </a>
-
 
     <a
       href="groups.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        📖
-      </span>
-
-      <span>
-        Groups
-      </span>
-
+      <span class="bottomNavIcon">📖</span>
+      <span>Groups</span>
     </a>
-
 
     <a
       href="faith-moments.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        🌅
-      </span>
-
-      <span>
-        Moments
-      </span>
-
+      <span class="bottomNavIcon">🌅</span>
+      <span>Moments</span>
     </a>
-
 
     <a
       href="prayer-wall.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        🙏
-      </span>
-
-      <span>
-        Prayer
-      </span>
-
+      <span class="bottomNavIcon">🙏</span>
+      <span>Prayer</span>
     </a>
-
 
     <a
       href="profile.html"
       class="bottomNavItem"
     >
-
-      <span class="bottomNavIcon">
-        👤
-      </span>
-
-      <span>
-        Profile
-      </span>
-
+      <span class="bottomNavIcon">👤</span>
+      <span>Profile</span>
     </a>
 
   </div>
@@ -309,7 +243,6 @@
     ×
   </button>
 
-
   <button
     type="button"
     id="photoViewerPrevButton"
@@ -318,7 +251,6 @@
   >
     ‹
   </button>
-
 
   <button
     type="button"
@@ -329,19 +261,16 @@
     ›
   </button>
 
-
   <div
     id="photoViewerCounter"
     class="photoViewerCounter hidden"
   ></div>
-
 
   <img
     id="photoViewerImage"
     src=""
     alt="Full-size community post photo"
   >
-
 
   <video
     id="photoViewerVideo"
@@ -354,9 +283,6 @@
 
 <!-- =====================================================
    REELS-STYLE VIDEO VIEWER
-   (tap a video once, then scroll down for the
-   next one — each plays automatically with sound,
-   no need to tap again, like Instagram Reels)
 ===================================================== -->
 
 <div
@@ -376,7 +302,6 @@
   >
     ×
   </button>
-
 
   <div
     id="videoReelTrack"
@@ -400,15 +325,12 @@
 
   <div class="reportModalCard">
 
-    <h2>
-      🚩 Report this post
-    </h2>
+    <h2>🚩 Report this post</h2>
 
     <p>
       Let us know why you're reporting this post. Our
       team will review it.
     </p>
-
 
     <div id="reportReasonList">
 
@@ -454,7 +376,6 @@
 
     </div>
 
-
     <div class="reportModalActions">
 
       <button
@@ -480,28 +401,29 @@
 
 
 <!-- =====================================================
-   OPEN JAVASCRIPT MODULE
+   SCRIPTS
 ===================================================== -->
 
 <script type="module" src="feed.js"></script>
 <script src="swipe-nav.js"></script>
-  <script>
-    // Register the Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
+
+<script>
+  // Register the Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
 <!-- Load WhatsApp Call Sounds -->
 <script src="call-sounds.js"></script>
+
 </body>
 </html>
-
-
