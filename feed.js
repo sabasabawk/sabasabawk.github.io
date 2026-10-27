@@ -4853,8 +4853,19 @@ function renderMomentsStrip(
           ""
         );
 
+        frameVideo.loop =
+        true;
+
+        frameVideo.autoplay =
+        true;
+
+        frameVideo.setAttribute(
+          "loop",
+          ""
+        );
+
         frameVideo.preload =
-        "metadata";
+        "auto";
 
         frameVideo.disablePictureInPicture =
         true;
@@ -4868,8 +4879,7 @@ function renderMomentsStrip(
         */
 
         frameVideo.src =
-        momentVideoUrl.split("#")[0] +
-        "#t=0.1";
+        momentVideoUrl.split("#")[0];
 
         /* If the video cannot load, show the icon again. */
 
@@ -4913,6 +4923,71 @@ function renderMomentsStrip(
           frameVideo,
           momentCard.firstChild
         );
+
+        /*
+           Play silently and on a loop, like a Facebook
+           status. Only cards that are on screen play,
+           which saves battery and data.
+        */
+
+        const playQuietly = function(){
+
+          const playPromise =
+          frameVideo.play();
+
+          if(
+            playPromise &&
+            typeof playPromise.catch === "function"
+          ){
+
+            playPromise.catch(
+              function(){}
+            );
+
+          }
+
+        };
+
+        if("IntersectionObserver" in window){
+
+          const visibilityObserver =
+          new IntersectionObserver(
+            function(entries){
+
+              entries.forEach(
+                function(entry){
+
+                  if(entry.isIntersecting){
+
+                    playQuietly();
+
+                  }else{
+
+                    frameVideo.pause();
+
+                  }
+
+                }
+              );
+
+            },
+            {
+              threshold:0.4
+            }
+          );
+
+          visibilityObserver.observe(
+            momentCard
+          );
+
+        }else{
+
+          frameVideo.addEventListener(
+            "loadeddata",
+            playQuietly
+          );
+
+        }
 
       }
 
