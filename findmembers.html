@@ -3,253 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Search Members</title>
+<title>Search Members | Faith Connect</title>
 
 <style>
 
+/* =====================================================
+   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
+===================================================== */
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
 body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-margin:0;
-padding:20px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f0f2f5;
+  color:#050505;
+  min-height:100vh;
 }
 
 .container{
-max-width:900px;
-margin:auto;
+  width:100%;
+  max-width:680px;
+  margin:0 auto;
+  padding-bottom:100px;
 }
 
+/* =====================================================
+   HEADER & SEARCH BAR
+===================================================== */
+
 .header{
-background:linear-gradient(160deg,#0a3d8f 0%,#2196f3 100%);
-color:white;
-padding:25px;
-border-radius:18px;
-text-align:center;
-margin-bottom:20px;
+  background:#ffffff;
+  padding:16px 14px;
+  border-bottom:1px solid #e4e6eb;
 }
 
 .header .brand{
-color:#ffd54f;
-font-weight:bold;
-font-size:14px;
-letter-spacing:1px;
-text-transform:uppercase;
-margin-bottom:6px;
+  color:#0873c9;
+  font-weight:bold;
+  font-size:12px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:4px;
 }
 
 .header h1{
-margin:0;
+  margin:0;
+  font-size:20px;
+  color:#050505;
 }
 
 .header p{
-margin:8px 0 0;
+  margin:4px 0 0;
+  color:#65676b;
+  font-size:13px;
 }
 
 .search-box{
-margin-bottom:20px;
+  background:#ffffff;
+  padding:10px 12px;
+  border-bottom:1px solid #e4e6eb;
 }
 
 .search-box input{
-width:100%;
-padding:14px;
-font-size:16px;
-border:1px solid #ccc;
-border-radius:10px;
-box-sizing:border-box;
+  width:100%;
+  padding:10px 16px;
+  font-size:15px;
+  border:none;
+  border-radius:20px;
+  background:#f0f2f5;
+  outline:none;
+}
+
+.search-box input:focus{
+  background:#e4e6eb;
+}
+
+/* =====================================================
+   MEMBER ITEM ROWS
+===================================================== */
+
+#membersList{
+  width:100%;
+  background:#ffffff;
 }
 
 .member{
-display:flex;
-align-items:center;
-justify-content:space-between;
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#ffffff;
+  padding:12px 14px;
+  border-bottom:1px solid #e4e6eb;
+  gap:12px;
 }
 
 .left{
-display:flex;
-align-items:center;
+  display:flex;
+  align-items:center;
+  min-width:0;
+  flex:1;
 }
 
 .avatar{
-width:60px;
-height:60px;
-border-radius:50%;
-object-fit:cover;
-background:#ddd;
-margin-right:15px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#e5e9ed;
+  flex-shrink:0;
+  margin-right:12px;
+}
+
+.info{
+  min-width:0;
+  flex:1;
 }
 
 .info h3{
-margin:0;
-color:#0066cc;
+  margin:0;
+  color:#050505;
+  font-size:15px;
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .info p{
-margin:5px 0 0;
-color:#666;
-font-size:14px;
+  margin:2px 0 0;
+  color:#65676b;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .message-btn{
-background:#0066cc;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:8px;
-cursor:pointer;
+  background:#e4e6eb;
+  color:#050505;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:background .2s ease;
 }
 
 .message-btn:hover{
-background:#004d99;
+  background:#d8dadf;
 }
 
+/* =====================================================
+   LOAD MORE & FOOTER
+===================================================== */
+
 .loadMoreRow{
-text-align:center;
-margin:10px 0 20px;
+  text-align:center;
+  padding:16px;
+  background:#ffffff;
+  border-bottom:1px solid #e4e6eb;
 }
 
 .loadMoreRow button{
-background:#e5f1ff;
-color:#0056a6;
-border:none;
-padding:12px 22px;
-border-radius:10px;
-font-size:15px;
-font-weight:bold;
-cursor:pointer;
+  background:#f0f2f5;
+  color:#0873c9;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .loadMoreRow button:hover{
-background:#cfe5ff;
+  background:#e4e6eb;
 }
 
 .loadMoreRow button:disabled{
-opacity:.6;
-cursor:not-allowed;
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 .statusText{
-text-align:center;
-color:#666;
-padding:15px;
+  text-align:center;
+  color:#65676b;
+  padding:24px 14px;
+  font-size:15px;
 }
 
 .back{
-text-align:center;
-margin-top:30px;
+  text-align:center;
+  margin-top:20px;
+  padding:0 14px;
+}
+
+.back a{
+  text-decoration:none;
 }
 
 .back button{
-background:#0066cc;
-color:white;
-padding:12px 24px;
-border:none;
-border-radius:10px;
-cursor:pointer;
+  background:#ffffff;
+  color:#050505;
+  padding:10px 20px;
+  border:1px solid #ccd0d5;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="header">
+  <div class="header">
+    <div class="brand">Faith Connect</div>
+    <h1>🔍 Search Members</h1>
+    <p>Find believers and start a private conversation.</p>
+  </div>
 
-<div class="brand">Faith Connect</div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search by name or email..."
+    >
+  </div>
 
-<h1>🔍 Search Members</h1>
+  <div id="membersList">
+    <div class="statusText">Loading members...</div>
+  </div>
 
-<p>Find believers and start a private conversation.</p>
+  <div class="loadMoreRow" id="loadMoreRow" style="display:none;">
+    <button type="button" id="loadMoreButton">Load more members</button>
+  </div>
 
-</div>
-
-<div class="search-box">
-
-<input
-type="text"
-id="searchInput"
-placeholder="Search by name...">
-
-</div>
-
-<div id="membersList">
-
-<div class="statusText">
-Loading members...
-</div>
-
-</div>
-
-<div
-class="loadMoreRow"
-id="loadMoreRow"
-style="display:none;">
-
-<button
-type="button"
-id="loadMoreButton">
-Load more members
-</button>
-
-</div>
-
-<div class="back">
-
-<a href="messages.html">
-
-<button>
-
-⬅ Back to Messages
-
-</button>
-
-</a>
-
-</div>
+  <div class="back">
+    <a href="messages.html">
+      <button>⬅ Back to Messages</button>
+    </a>
+  </div>
 
 </div>
 
 <script type="module">
 
 import {
-db,
-collection,
-query,
-orderBy,
-limit,
-startAfter,
-getDocs
+  db,
+  collection,
+  query,
+  limit,
+  startAfter,
+  getDocs
 } from "./firebase.js";
 
-const membersList =
-document.getElementById("membersList");
-
-const searchInput =
-document.getElementById("searchInput");
-
-const loadMoreRow =
-document.getElementById("loadMoreRow");
-
-const loadMoreButton =
-document.getElementById("loadMoreButton");
-
-/*
-PAGE SIZE
-
-Instead of downloading every member account
-in the whole app at once (which is what was
-causing the slowness), only this many load
-to start. Tapping "Load more" fetches the
-next batch.
-*/
+const membersList = document.getElementById("membersList");
+const searchInput = document.getElementById("searchInput");
+const loadMoreRow = document.getElementById("loadMoreRow");
+const loadMoreButton = document.getElementById("loadMoreButton");
 
 const MEMBERS_PER_PAGE = 40;
 
@@ -258,374 +278,195 @@ let lastVisibleDoc = null;
 let noMoreMembers = false;
 let isLoadingMembers = false;
 
-/*
-SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
-
-Same idea as the Community Wall fix: this page
-used to wait for a fresh Firestore read every
-single time it opened, with nothing shown until
-that finished. Now, if a cached copy of the
-first page of members exists and isn't too old,
-it renders immediately while the live Firestore
-read still happens right away in the background
-and replaces it the moment it arrives. This never
-changes which members exist — it only changes
-how fast something appears on screen.
-*/
-
-const MEMBERS_CACHE_KEY =
-"sabasaba_members_cache_v1";
-
-const MEMBERS_CACHE_MAX_AGE_MS =
-30 * 60 * 1000;
+const MEMBERS_CACHE_KEY = "sabasaba_members_cache_v1";
+const MEMBERS_CACHE_MAX_AGE_MS = 30 * 60 * 1000;
 
 function saveMembersCache(memberList){
-
-try{
-
-window.localStorage.setItem(
-
-MEMBERS_CACHE_KEY,
-
-JSON.stringify({
-
-savedAt: Date.now(),
-
-members: memberList
-
-})
-
-);
-
-}catch(error){
-
-/*
-Local storage can fail (private browsing,
-storage full, etc.) — this is only a speed
-optimization, so a failure here is silently
-ignored and never shown to the user.
-*/
-
-console.warn(
-"Members cache could not be saved:",
-error
-);
-
-}
-
+  try{
+    window.localStorage.setItem(
+      MEMBERS_CACHE_KEY,
+      JSON.stringify({
+        savedAt: Date.now(),
+        members: memberList
+      })
+    );
+  }catch(error){
+    console.warn("Members cache could not be saved:", error);
+  }
 }
 
 function loadMembersCache(){
+  try{
+    const rawCache = window.localStorage.getItem(MEMBERS_CACHE_KEY);
+    if(!rawCache) return null;
 
-try{
+    const parsedCache = JSON.parse(rawCache);
+    const cacheAge = Date.now() - (parsedCache.savedAt || 0);
 
-const rawCache =
-window.localStorage.getItem(MEMBERS_CACHE_KEY);
+    if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS) return null;
 
-if(!rawCache){
+    if(!Array.isArray(parsedCache.members) || parsedCache.members.length === 0){
+      return null;
+    }
 
-return null;
-
-}
-
-const parsedCache =
-JSON.parse(rawCache);
-
-const cacheAge =
-Date.now() - (parsedCache.savedAt || 0);
-
-if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS){
-
-return null;
-
-}
-
-if(
-
-!Array.isArray(parsedCache.members) ||
-
-parsedCache.members.length === 0
-
-){
-
-return null;
-
-}
-
-return parsedCache.members;
-
-}catch(error){
-
-console.warn(
-"Members cache could not be read:",
-error
-);
-
-return null;
-
-}
-
+    return parsedCache.members;
+  }catch(error){
+    console.warn("Members cache could not be read:", error);
+    return null;
+  }
 }
 
 async function loadMembers(isLoadMore = false){
 
-if(isLoadingMembers || noMoreMembers){
-return;
-}
+  if(isLoadingMembers || noMoreMembers) return;
 
-isLoadingMembers = true;
+  isLoadingMembers = true;
+  loadMoreButton.disabled = true;
+  loadMoreButton.textContent = "Loading...";
 
-loadMoreButton.disabled = true;
+  try{
+    const usersReference = collection(db, "users");
+    let membersQuery;
 
-loadMoreButton.textContent =
-"Loading...";
+    /*
+       FIX: Removed orderBy("fullName") so accounts missing
+       a fullName field still get returned instead of excluded.
+    */
+    if(isLoadMore && lastVisibleDoc){
+      membersQuery = query(
+        usersReference,
+        startAfter(lastVisibleDoc),
+        limit(MEMBERS_PER_PAGE)
+      );
+    }else{
+      membersQuery = query(
+        usersReference,
+        limit(MEMBERS_PER_PAGE)
+      );
+    }
 
-try{
+    const snapshot = await getDocs(membersQuery);
+    const newMembers = [];
 
-const usersReference =
-collection(db,"users");
+    snapshot.forEach(docSnapshot => {
+      newMembers.push({
+        id: docSnapshot.id,
+        ...docSnapshot.data()
+      });
+    });
 
-let membersQuery;
+    if(isLoadMore){
+      members = members.concat(newMembers);
+    }else{
+      members = newMembers;
+    }
 
-if(isLoadMore && lastVisibleDoc){
+    if(snapshot.docs.length > 0){
+      lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+    }
 
-membersQuery = query(
-usersReference,
-orderBy("fullName"),
-startAfter(lastVisibleDoc),
-limit(MEMBERS_PER_PAGE)
-);
+    noMoreMembers = snapshot.docs.length < MEMBERS_PER_PAGE;
+    loadMoreRow.style.display = noMoreMembers ? "none" : "block";
 
-}else{
+    displayMembers(members);
 
-membersQuery = query(
-usersReference,
-orderBy("fullName"),
-limit(MEMBERS_PER_PAGE)
-);
+    if(!isLoadMore){
+      saveMembersCache(newMembers);
+    }
 
-}
-
-const snapshot =
-await getDocs(membersQuery);
-
-const newMembers = [];
-
-snapshot.forEach(docSnapshot=>{
-
-newMembers.push({
-id: docSnapshot.id,
-...docSnapshot.data()
-});
-
-});
-
-if(isLoadMore){
-
-members = members.concat(newMembers);
-
-}else{
-
-members = newMembers;
-
-}
-
-if(snapshot.docs.length > 0){
-
-lastVisibleDoc =
-snapshot.docs[snapshot.docs.length - 1];
-
-}
-
-noMoreMembers =
-snapshot.docs.length < MEMBERS_PER_PAGE;
-
-loadMoreRow.style.display =
-noMoreMembers ? "none" : "block";
-
-displayMembers(members);
-
-/*
-Only the first page gets cached — older
-pages loaded via "Load more" don't need to,
-since this cache exists purely to make the
-very first thing on screen appear instantly.
-*/
-
-if(!isLoadMore){
-
-saveMembersCache(newMembers);
-
-}
-
-}catch(error){
-
-console.error(
-"Error loading members:",
-error
-);
-
-membersList.innerHTML = `
-
-<div class="statusText">
-Members could not be loaded. Please try again.
-</div>
-
-`;
-
-}finally{
-
-isLoadingMembers = false;
-
-loadMoreButton.disabled = false;
-
-loadMoreButton.textContent =
-"Load more members";
-
-}
-
+  }catch(error){
+    console.error("Error loading members:", error);
+    membersList.innerHTML = `
+      <div class="statusText">
+        Members could not be loaded. Please try again.
+      </div>
+    `;
+  }finally{
+    isLoadingMembers = false;
+    loadMoreButton.disabled = false;
+    loadMoreButton.textContent = "Load more members";
+  }
 }
 
 function displayMembers(list){
 
-if(list.length === 0){
+  if(list.length === 0){
+    membersList.innerHTML = `
+      <div class="statusText">No members found.</div>
+    `;
+    return;
+  }
 
-membersList.innerHTML = `
+  membersList.innerHTML = list.map(user => {
+    const name = user.fullName || user.displayName || user.name || "Community Member";
+    const email = user.email || "";
+    const picture = user.profilePicture || user.picture || user.photoURL || 'images/profile.png';
 
-<div class="statusText">
-No members found.
-</div>
-
-`;
-
-return;
-
+    return `
+      <div class="member">
+        <div class="left">
+          <img
+            class="avatar"
+            loading="lazy"
+            src="${picture}"
+            onerror="this.src='images/profile.png';"
+            alt="${name}">
+          <div class="info">
+            <h3>${name}</h3>
+            <p>${email}</p>
+          </div>
+        </div>
+        <button
+          class="message-btn"
+          onclick="window.location.href='chat.html?uid=${user.id}'">
+          💬 Message
+        </button>
+      </div>
+    `;
+  }).join("");
 }
 
-membersList.innerHTML =
-list.map(user => `
+searchInput.addEventListener("input", function(){
+  const keyword = this.value.toLowerCase().trim();
 
-<div class="member">
+  const filtered = members.filter(user => {
+    const name = (user.fullName || user.displayName || user.name || "").toLowerCase();
+    const email = (user.email || "").toLowerCase();
+    return name.includes(keyword) || email.includes(keyword);
+  });
 
-<div class="left">
-
-<img
-class="avatar"
-loading="lazy"
-src="${user.profilePicture || 'images/profile.png'}"
-onerror="this.src='images/profile.png';">
-
-<div class="info">
-
-<h3>${user.fullName || "Unknown User"}</h3>
-
-<p>${user.email || ""}</p>
-
-</div>
-
-</div>
-
-<button
-class="message-btn"
-onclick="window.location.href='chat.html?uid=${user.id}'">
-
-💬 Message
-
-</button>
-
-</div>
-
-`).join("");
-
-}
-
-searchInput.addEventListener("input",function(){
-
-const keyword =
-this.value.toLowerCase();
-
-/*
-Search filters the members already loaded.
-If someone isn't found, tap "Load more"
-first to bring in additional members, then
-search again.
-*/
-
-const filtered =
-members.filter(user=>
-
-(user.fullName || "")
-.toLowerCase()
-.includes(keyword)
-
-);
-
-displayMembers(filtered);
-
+  displayMembers(filtered);
 });
 
-loadMoreButton.addEventListener(
-"click",
-()=>{
+loadMoreButton.addEventListener("click", () => {
+  loadMembers(true);
+});
 
-loadMembers(true);
-
-}
-);
-
-/*
-Show the cached first page instantly if we
-have one — this removes the blank "Loading
-members..." wait on a repeat visit. The live
-Firestore read below still runs immediately
-and replaces this the moment real data
-arrives, so the cache is never shown for more
-than a moment and never goes stale on screen.
-*/
-
-const cachedMembers =
-loadMembersCache();
-
+// Load cached copy immediately if available
+const cachedMembers = loadMembersCache();
 if(cachedMembers){
-
-members = cachedMembers;
-
-displayMembers(members);
-
+  members = cachedMembers;
+  displayMembers(members);
 }
 
+// Fetch live members
 loadMembers(false);
 
 </script>
-  <script>
-    // Register the Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
-  <script>
-    // Register the Service Worker globally
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
 </body>
 </html>
-
-
