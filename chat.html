@@ -25,13 +25,7 @@ Private Chat | SABASABA Gospel Ministry
 <body>
 
 <!-- =====================================================
-   PART 4 OF 10
-   COMPLETE HTML PAGE STRUCTURE
-===================================================== -->
-
-
-<!-- =====================================================
-   CHAT HEADER
+   CHAT HEADER (Edge-to-Edge Facebook Style)
 ===================================================== -->
 
 <header class="chatHeader">
@@ -96,16 +90,17 @@ Private Chat | SABASABA Gospel Ministry
       📞
     </button>
 
-<button
-  id="videoCallButton"
-  class="videoCallButton"
-  type="button"
-  aria-label="Start video call"
-  title="Video call"
-  disabled
->
-  📹
-</button>
+    <button
+      id="videoCallButton"
+      class="videoCallButton"
+      type="button"
+      aria-label="Start video call"
+      title="Video call"
+      disabled
+    >
+      📹
+    </button>
+
     <button
       id="headerOptionsButton"
       class="headerOptionsButton"
@@ -458,48 +453,28 @@ Private Chat | SABASABA Gospel Ministry
         class="attachmentOption"
         type="button"
       >
-
-        <span class="attachmentOptionIcon">
-          📷
-        </span>
-
-        <span>
-          Select Picture
-        </span>
-
+        <span class="attachmentOptionIcon">📷</span>
+        <span>Select Picture</span>
       </button>
-
 
       <button
         id="selectVideoButton"
         class="attachmentOption"
         type="button"
       >
-
-        <span class="attachmentOptionIcon">
-          🎥
-        </span>
-
-        <span>
-          Select Video
-        </span>
-
+        <span class="attachmentOptionIcon">🎥</span>
+        <span>Select Video</span>
       </button>
-<button
-  id="selectFileButton"
-  class="attachmentOption"
-  type="button"
->
 
-  <span class="attachmentOptionIcon">
-    📄
-  </span>
+      <button
+        id="selectFileButton"
+        class="attachmentOption"
+        type="button"
+      >
+        <span class="attachmentOptionIcon">📄</span>
+        <span>Select File</span>
+      </button>
 
-  <span>
-    Select File
-  </span>
-
-</button>
     </div>
 
 
@@ -552,12 +527,14 @@ Private Chat | SABASABA Gospel Ministry
   type="file"
   accept="video/*"
 >
+
 <input
   id="fileInput"
   class="hiddenFileInput"
   type="file"
   accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.csv,.rtf"
 >
+
 
 <!-- =====================================================
    FULL-SCREEN MEDIA VIEWER
@@ -581,13 +558,11 @@ Private Chat | SABASABA Gospel Ministry
     ×
   </button>
 
-
   <img
     id="viewerImage"
     class="viewerImage"
     alt="Full-screen shared picture"
   >
-
 
   <video
     id="viewerVideo"
@@ -610,21 +585,12 @@ Private Chat | SABASABA Gospel Ministry
 >
 
   <div class="chatBusyCard">
-
-    <div class="chatBusyIcon">
-      ⏳
-    </div>
-
-    <div
-      id="chatBusyText"
-      class="chatBusyText"
-    >
-      Please wait...
-    </div>
-
+    <div class="chatBusyIcon">⏳</div>
+    <div id="chatBusyText" class="chatBusyText">Please wait...</div>
   </div>
 
 </div>
+
 
 <!-- =====================================================
    INCOMING VOICE CALL OVERLAY
@@ -639,24 +605,20 @@ Private Chat | SABASABA Gospel Ministry
   <div class="incomingCallCard">
 
     <div
-  id="incomingCallTitle"
-  class="incomingCallTitle"
->
-  Incoming Voice Call
-</div>
-
+      id="incomingCallTitle"
+      class="incomingCallTitle"
+    >
+      Incoming Voice Call
+    </div>
 
     <div class="incomingCallerAvatarFrame">
-
       <img
         id="incomingCallerAvatar"
         class="incomingCallerAvatar"
         src="images/profile.png"
         alt="Incoming caller profile picture"
       >
-
     </div>
-
 
     <div
       id="incomingCallerName"
@@ -665,16 +627,13 @@ Private Chat | SABASABA Gospel Ministry
       Faith Connect Member
     </div>
 
-
     <div class="incomingCallText">
       is calling you...
     </div>
 
-
     <div class="incomingCallActions">
 
       <div class="incomingCallAction">
-
         <button
           id="declineIncomingCallButton"
           class="incomingCallActionButton decline"
@@ -683,16 +642,10 @@ Private Chat | SABASABA Gospel Ministry
         >
           📵
         </button>
-
-        <span class="incomingCallActionLabel">
-          Decline
-        </span>
-
+        <span class="incomingCallActionLabel">Decline</span>
       </div>
 
-
       <div class="incomingCallAction">
-
         <button
           id="acceptIncomingCallButton"
           class="incomingCallActionButton accept"
@@ -701,11 +654,7 @@ Private Chat | SABASABA Gospel Ministry
         >
           📞
         </button>
-
-        <span class="incomingCallActionLabel">
-          Accept
-        </span>
-
+        <span class="incomingCallActionLabel">Accept</span>
       </div>
 
     </div>
@@ -714,14 +663,12 @@ Private Chat | SABASABA Gospel Ministry
 
 </div>
 
+
 <!-- =====================================================
    OPEN JAVASCRIPT MODULE
 ===================================================== -->
 
 <script>
-/* Startup watchdog: shows a clear message on screen if chat.js
-   is old, incomplete, missing or blocked (instead of staying on
-   "Loading conversation..." forever). */
 (function(){
   function show(text){
     var area=document.getElementById("chatArea");
@@ -739,9 +686,10 @@ Private Chat | SABASABA Gospel Ministry
   },7000);
 })();
 </script>
+
 <script type="module" src="chat.js?v=20261006"></script>
+
 <script>
-  // Register the Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
@@ -754,5 +702,6 @@ Private Chat | SABASABA Gospel Ministry
     });
   }
 </script>
+
 </body>
 </html>
