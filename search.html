@@ -4,73 +4,164 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search Members</title>
+<title>Search Members | Faith Connect</title>
 
 <style>
 
+/* =====================================================
+   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-margin:0;
-padding:20px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f0f2f5;
+  color:#050505;
+  min-height:100vh;
 }
 
 .container{
-max-width:700px;
-margin:auto;
+  max-width:680px;
+  margin:auto;
+  padding:0 0 80px 0;
 }
 
 .header{
-background:#0066cc;
-color:white;
-padding:20px;
-text-align:center;
-border-radius:15px;
-margin-bottom:20px;
+  background:#ffffff;
+  color:#050505;
+  padding:16px 14px;
+  text-align:left;
+  border-bottom:1px solid #e4e6eb;
+  border-radius:0;
+  margin-bottom:0;
+}
+
+.header h1{
+  font-size:20px;
+  color:#050505;
+  margin:0;
+}
+
+.search-wrapper{
+  background:#ffffff;
+  padding:10px 12px;
+  border-bottom:1px solid #e4e6eb;
 }
 
 input{
-width:100%;
-padding:15px;
-font-size:18px;
-border:1px solid #ccc;
-border-radius:8px;
-box-sizing:border-box;
-margin-bottom:20px;
+  width:100%;
+  padding:10px 16px;
+  font-size:15px;
+  border:none;
+  border-radius:20px;
+  background:#f0f2f5;
+  color:#050505;
+  outline:none;
+  margin-bottom:0;
+}
+
+input:focus{
+  background:#e4e6eb;
+}
+
+#results{
+  background:#ffffff;
+  width:100%;
 }
 
 .member{
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-display:flex;
-align-items:center;
+  background:white;
+  padding:12px 14px;
+  border-bottom:1px solid #e4e6eb;
+  border-radius:0;
+  box-shadow:none;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:background .2s;
+}
+
+.member:hover{
+  background:#f2f4f7;
+}
+
+.member:active{
+  background:#e4e6eb;
 }
 
 .member img{
-width:60px;
-height:60px;
-border-radius:50%;
-margin-right:15px;
-object-fit:cover;
-border:2px solid #0066cc;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  margin-right:0;
+  object-fit:cover;
+  border:none;
+  background:#e5e9ed;
+  flex-shrink:0;
+}
+
+.member-info{
+  min-width:0;
+  flex:1;
 }
 
 .name{
-font-size:20px;
-font-weight:bold;
+  font-size:15px;
+  font-weight:bold;
+  color:#050505;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-button{
-background:#0066cc;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-margin-top:20px;
+.category{
+  font-size:13px;
+  color:#65676b;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.back-container{
+  text-align:center;
+  margin-top:20px;
+  padding:0 14px;
+}
+
+button.back-btn{
+  background:#ffffff;
+  color:#050505;
+  border:1px solid #ccd0d5;
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-top:0;
+  font-size:14px;
+  font-weight:bold;
+  transition:background .2s;
+}
+
+button.back-btn:hover{
+  background:#f0f2f5;
+}
+
+@media(max-width:600px){
+  .container{
+    padding:0;
+  }
+  .header{
+    padding:12px;
+  }
+  .member{
+    padding:10px 12px;
+  }
 }
 
 </style>
@@ -85,17 +176,21 @@ margin-top:20px;
 <h1>🔍 Search Members</h1>
 </div>
 
+<div class="search-wrapper">
 <input
 type="text"
 id="searchBox"
 placeholder="Search member..."
 onkeyup="searchMembers()">
+</div>
 
 <div id="results"></div>
 
-<a href="community.html">
-<button>⬅ Back</button>
+<div class="back-container">
+<a href="community.html" style="text-decoration:none;">
+<button class="back-btn">⬅ Back to Community</button>
 </a>
+</div>
 
 </div>
 
@@ -107,7 +202,7 @@ JSON.parse(localStorage.getItem("communityPosts")) || [];
 function searchMembers(){
 
 let keyword =
-document.getElementById("searchBox").value.toLowerCase();
+document.getElementById("searchBox").value.toLowerCase().trim();
 
 let results =
 document.getElementById("results");
@@ -118,27 +213,30 @@ let shown=[];
 
 posts.forEach(function(post){
 
+let name = post.name || "Community Member";
+let category = post.category || "";
+let picture = post.picture || "images/profile.png";
+
 if(
-post.name.toLowerCase().includes(keyword)
+name.toLowerCase().includes(keyword)
 &&
-!shown.includes(post.name)
+!shown.includes(name)
 ){
 
-shown.push(post.name);
+shown.push(name);
 
 results.innerHTML+=`
 
 <div class="member"
-onclick="openMember('${post.name}')"
-style="cursor:pointer;">
+onclick="openMember('${name.replaceAll("'", "\\'")}')">
 
-<img src="${post.picture}">
+<img src="${picture}" onerror="this.src='images/profile.png';">
 
-<div>
+<div class="member-info">
 
-<div class="name">${post.name}</div>
+<div class="name">${escapeHTML(name)}</div>
 
-<div>${post.category}</div>
+<div class="category">${escapeHTML(category)}</div>
 
 </div>
 
@@ -150,9 +248,27 @@ style="cursor:pointer;">
 
 });
 
+if(results.innerHTML === ""){
+results.innerHTML = `
+<div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">
+No members found matching your search.
+</div>
+`;
+}
+
+}
+
+function escapeHTML(value){
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 }
 
 searchMembers();
+
 function openMember(name){
 
 localStorage.setItem(
