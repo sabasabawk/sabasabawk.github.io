@@ -1,57 +1,83 @@
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Create and share a Faith Moment with the SABASABA Gospel Ministry community"
+  >
+
+  <title>
+    Create Faith Moment | SABASABA Gospel Ministry
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+  >
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    :root{
-      --primary:#1877f2;
-      --primary-dark:#166fe5;
-      --primary-light:#e7f3ff;
+    :root {
+      --primary: #1877f2;
+      --primary-dark: #166fe5;
+      --primary-light: #e7f3ff;
 
-      --background:#f0f2f5;
-      --surface:#ffffff;
+      --background: #f0f2f5;
+      --surface: #ffffff;
 
-      --text:#050505;
-      --muted:#65676b;
+      --text: #050505;
+      --muted: #65676b;
 
-      --border:#e4e6eb;
+      --border: #e4e6eb;
 
-      --success:#31a24c;
-      --danger:#b00020;
-
-      --radius-large:8px;
-      --radius-medium:6px;
-      --radius-small:4px;
+      --success: #31a24c;
+      --danger: #b00020;
     }
 
-    body{
-      min-height:100vh;
-      background:var(--background);
-      color:var(--text);
-      font-family:Arial,Helvetica,sans-serif;
+    body {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     button,
     input,
     textarea,
-    select{
-      font:inherit;
+    select {
+      font: inherit;
     }
 
-    button{
-      cursor:pointer;
+    button {
+      cursor: pointer;
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     img,
-    video{
-      display:block;
-      max-width:100%;
+    video {
+      display: block;
+      max-width: 100%;
     }
 
 
@@ -59,78 +85,78 @@
        TOP HEADER
     ===================================================== */
 
-    .topHeader{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      background:#ffffff;
-      border-bottom:1px solid var(--border);
+    .topHeader {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
     }
 
-    .topHeaderInner{
-      width:100%;
-      max-width:680px;
-      min-height:56px;
-      margin:auto;
-      padding:8px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    .topHeaderInner {
+      width: 100%;
+      max-width: 680px;
+      min-height: 56px;
+      margin: auto;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
-    .backButton{
-      width:38px;
-      height:38px;
-      flex-shrink:0;
-      border:0;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#f0f2f5;
-      color:var(--text);
-      font-size:20px;
-      font-weight:bold;
+    .backButton {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f2f5;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: bold;
     }
 
-    .backButton:hover{
-      background:#e4e6eb;
+    .backButton:hover {
+      background: #e4e6eb;
     }
 
-    .headerTitleArea{
-      min-width:0;
-      flex:1;
+    .headerTitleArea {
+      min-width: 0;
+      flex: 1;
     }
 
-    .headerTitle{
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      font-size:16px;
-      font-weight:bold;
+    .headerTitle {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 16px;
+      font-weight: bold;
     }
 
-    .headerSubtitle{
-      margin-top:1px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      color:var(--muted);
-      font-size:12px;
+    .headerSubtitle {
+      margin-top: 1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .headerIcon{
-      width:38px;
-      height:38px;
-      flex-shrink:0;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:var(--primary-light);
-      color:var(--primary);
-      font-size:18px;
+    .headerIcon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 18px;
     }
 
 
@@ -138,34 +164,34 @@
        PAGE CONTAINER
     ===================================================== */
 
-    .pageContainer{
-      width:100%;
-      max-width:680px;
-      margin:auto;
-      padding:12px 0 60px;
+    .pageContainer {
+      width: 100%;
+      max-width: 680px;
+      margin: auto;
+      padding: 12px 0 60px;
     }
 
-    .introCard{
-      margin-bottom:12px;
-      padding:16px;
-      border-radius:0;
-      background:#ffffff;
-      border-bottom:1px solid var(--border);
-      border-top:1px solid var(--border);
-      box-shadow:none;
+    .introCard {
+      margin-bottom: 12px;
+      padding: 16px;
+      border-radius: 0;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      box-shadow: none;
     }
 
-    .introTitle{
-      font-size:18px;
-      font-weight:bold;
-      color:var(--text);
+    .introTitle {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--text);
     }
 
-    .introText{
-      margin-top:4px;
-      font-size:13px;
-      line-height:1.4;
-      color:var(--muted);
+    .introText {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--muted);
     }
 
 
@@ -173,37 +199,37 @@
        FORM CARD
     ===================================================== */
 
-    .formCard{
-      padding:16px;
-      border:none;
-      border-radius:0;
-      background:var(--surface);
-      border-top:1px solid var(--border);
-      border-bottom:1px solid var(--border);
-      box-shadow:none;
+    .formCard {
+      padding: 16px;
+      border: none;
+      border-radius: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      box-shadow: none;
     }
 
-    .formSection{
-      margin-bottom:18px;
+    .formSection {
+      margin-bottom: 18px;
     }
 
-    .formSection:last-child{
-      margin-bottom:0;
+    .formSection:last-child {
+      margin-bottom: 0;
     }
 
-    .sectionLabel{
-      display:block;
-      margin-bottom:6px;
-      font-size:14px;
-      font-weight:bold;
+    .sectionLabel {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    .sectionHelp{
-      margin-top:-2px;
-      margin-bottom:8px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.4;
+    .sectionHelp {
+      margin-top: -2px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
     }
 
 
@@ -211,46 +237,46 @@
        MOMENT TYPES
     ===================================================== */
 
-    .momentTypeGrid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:8px;
+    .momentTypeGrid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
     }
 
-    .momentTypeButton{
-      min-height:76px;
-      padding:10px 6px;
-      border:1px solid var(--border);
-      border-radius:8px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:5px;
-      background:#ffffff;
-      color:var(--text);
-      text-align:center;
-      transition:border-color .2s ease, background .2s ease;
+    .momentTypeButton {
+      min-height: 76px;
+      padding: 10px 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: #ffffff;
+      color: var(--text);
+      text-align: center;
+      transition: border-color .2s ease, background .2s ease;
     }
 
-    .momentTypeButton:hover{
-      background:#f0f2f5;
+    .momentTypeButton:hover {
+      background: #f0f2f5;
     }
 
-    .momentTypeButton.active{
-      border-color:var(--primary);
-      background:var(--primary-light);
-      color:var(--primary);
+    .momentTypeButton.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
     }
 
-    .momentTypeIcon{
-      font-size:22px;
-      line-height:1;
+    .momentTypeIcon {
+      font-size: 22px;
+      line-height: 1;
     }
 
-    .momentTypeName{
-      font-size:11px;
-      font-weight:bold;
+    .momentTypeName {
+      font-size: 11px;
+      font-weight: bold;
     }
 
 
@@ -260,51 +286,51 @@
 
     .formInput,
     .formTextarea,
-    .formSelect{
-      width:100%;
-      border:1px solid #ccd0d5;
-      border-radius:6px;
-      background:#ffffff;
-      color:var(--text);
-      outline:none;
-      transition:border-color .2s ease;
+    .formSelect {
+      width: 100%;
+      border: 1px solid #ccd0d5;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease;
     }
 
     .formInput,
-    .formSelect{
-      min-height:42px;
-      padding:8px 12px;
-      font-size:14px;
+    .formSelect {
+      min-height: 42px;
+      padding: 8px 12px;
+      font-size: 14px;
     }
 
-    .formTextarea{
-      min-height:130px;
-      padding:10px 12px;
-      resize:vertical;
-      line-height:1.45;
-      font-size:14px;
+    .formTextarea {
+      min-height: 130px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.45;
+      font-size: 14px;
     }
 
     .formInput:focus,
     .formTextarea:focus,
-    .formSelect:focus{
-      border-color:var(--primary);
+    .formSelect:focus {
+      border-color: var(--primary);
     }
 
-    .characterCounter{
-      margin-top:4px;
-      color:var(--muted);
-      text-align:right;
-      font-size:11px;
+    .characterCounter {
+      margin-top: 4px;
+      color: var(--muted);
+      text-align: right;
+      font-size: 11px;
     }
 
-    .verseReferenceArea{
-      display:none;
-      margin-top:10px;
+    .verseReferenceArea {
+      display: none;
+      margin-top: 10px;
     }
 
-    .verseReferenceArea.show{
-      display:block;
+    .verseReferenceArea.show {
+      display: block;
     }
 
 
@@ -312,33 +338,33 @@
        MEDIA OPTIONS
     ===================================================== */
 
-    .mediaOptions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
+    .mediaOptions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
-    .mediaOptionButton{
-      min-height:42px;
-      padding:8px 10px;
-      border:1px solid var(--border);
-      border-radius:6px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      background:#f0f2f5;
-      color:var(--text);
-      font-size:12px;
-      font-weight:bold;
+    .mediaOptionButton {
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #f0f2f5;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: bold;
     }
 
-    .mediaOptionButton:hover{
-      background:#e4e6eb;
+    .mediaOptionButton:hover {
+      background: #e4e6eb;
     }
 
-    .hiddenFileInput{
-      display:none;
+    .hiddenFileInput {
+      display: none;
     }
 
 
@@ -346,74 +372,74 @@
        MEDIA PREVIEW
     ===================================================== */
 
-    .mediaPreview{
-      position:relative;
-      display:none;
-      margin-top:10px;
-      overflow:hidden;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:#000000;
+    .mediaPreview {
+      position: relative;
+      display: none;
+      margin-top: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #000000;
     }
 
-    .mediaPreview.show{
-      display:block;
+    .mediaPreview.show {
+      display: block;
     }
 
     .mediaPreview img,
-    .mediaPreview video{
-      width:100%;
-      max-height:380px;
-      object-fit:contain;
+    .mediaPreview video {
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
     }
 
-    .removeMediaButton{
-      position:absolute;
-      top:8px;
-      right:8px;
-      width:32px;
-      height:32px;
-      border:0;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.7);
-      color:#ffffff;
-      font-size:18px;
-      font-weight:bold;
+    .removeMediaButton {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: bold;
     }
 
-    .editMediaButton{
-      position:absolute;
-      top:8px;
-      left:8px;
-      width:32px;
-      height:32px;
-      border:0;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.7);
-      color:#ffffff;
-      font-size:14px;
+    .editMediaButton {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      font-size: 14px;
     }
 
-    .editMediaButton:hover{
-      background:var(--primary);
+    .editMediaButton:hover {
+      background: var(--primary);
     }
 
-    .selectedMediaLabel{
-      position:absolute;
-      left:8px;
-      bottom:8px;
-      padding:4px 8px;
-      border-radius:20px;
-      background:rgba(0,0,0,0.7);
-      color:#ffffff;
-      font-size:10px;
-      font-weight:bold;
+    .selectedMediaLabel {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: bold;
     }
 
 
@@ -421,14 +447,14 @@
        PRIVACY
     ===================================================== */
 
-    .privacyInformation{
-      margin-top:6px;
-      padding:8px 10px;
-      border-radius:6px;
-      background:#f0f2f5;
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.4;
+    .privacyInformation {
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #f0f2f5;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
     }
 
 
@@ -436,33 +462,33 @@
        FORM MESSAGE
     ===================================================== */
 
-    .formMessage{
-      display:none;
-      margin-bottom:12px;
-      padding:10px 12px;
-      border-radius:6px;
-      font-size:12px;
-      font-weight:bold;
-      line-height:1.4;
+    .formMessage {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.4;
     }
 
-    .formMessage.show{
-      display:block;
+    .formMessage.show {
+      display: block;
     }
 
-    .formMessage.error{
-      background:#fdecec;
-      color:var(--danger);
+    .formMessage.error {
+      background: #fdecec;
+      color: var(--danger);
     }
 
-    .formMessage.success{
-      background:#eaf7ee;
-      color:var(--success);
+    .formMessage.success {
+      background: #eaf7ee;
+      color: var(--success);
     }
 
-    .formMessage.loading{
-      background:var(--primary-light);
-      color:var(--primary);
+    .formMessage.loading {
+      background: var(--primary-light);
+      color: var(--primary);
     }
 
 
@@ -470,50 +496,50 @@
        FORM ACTIONS
     ===================================================== */
 
-    .formActions{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      margin-top:16px;
+    .formActions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
     }
 
     .cancelButton,
-    .publishButton{
-      min-height:42px;
-      border-radius:6px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      font-size:13px;
-      font-weight:bold;
+    .publishButton {
+      min-height: 42px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
-    .cancelButton{
-      flex:0 0 32%;
-      border:1px solid #ccd0d5;
-      background:#ffffff;
-      color:var(--muted);
+    .cancelButton {
+      flex: 0 0 32%;
+      border: 1px solid #ccd0d5;
+      background: #ffffff;
+      color: var(--muted);
     }
 
-    .cancelButton:hover{
-      background:#f0f2f5;
+    .cancelButton:hover {
+      background: #f0f2f5;
     }
 
-    .publishButton{
-      flex:1;
-      border:0;
-      background:var(--primary);
-      color:#ffffff;
+    .publishButton {
+      flex: 1;
+      border: 0;
+      background: var(--primary);
+      color: #ffffff;
     }
 
-    .publishButton:hover{
-      background:var(--primary-dark);
+    .publishButton:hover {
+      background: var(--primary-dark);
     }
 
-    .publishButton:disabled{
-      cursor:not-allowed;
-      opacity:.6;
+    .publishButton:disabled {
+      cursor: not-allowed;
+      opacity: .6;
     }
 
 
@@ -521,85 +547,85 @@
        PHOTO EDITOR MODAL
     ===================================================== */
 
-    .photoEditorModal{
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:2000;
-      background:#000000;
-      flex-direction:column;
+    .photoEditorModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: #000000;
+      flex-direction: column;
     }
 
-    .photoEditorModal.show{
-      display:flex;
+    .photoEditorModal.show {
+      display: flex;
     }
 
-    .photoEditorHeader{
-      flex:0 0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 14px;
-      background:#111111;
+    .photoEditorHeader {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: #111111;
     }
 
-    .photoEditorHeaderButton{
-      border:0;
-      background:none;
-      color:#ffffff;
-      font-size:15px;
-      font-weight:bold;
-      padding:4px 8px;
-      cursor:pointer;
+    .photoEditorHeaderButton {
+      border: 0;
+      background: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 4px 8px;
+      cursor: pointer;
     }
 
-    .photoEditorDoneButton{
-      color:#4fb0ff;
+    .photoEditorDoneButton {
+      color: #4fb0ff;
     }
 
-    .photoEditorCounterText{
-      color:#cccccc;
-      font-size:12px;
+    .photoEditorCounterText {
+      color: #cccccc;
+      font-size: 12px;
     }
 
-    .photoEditorImageArea{
-      flex:1 1 auto;
-      position:relative;
-      overflow:hidden;
-      min-height:0;
-      background:#000000;
+    .photoEditorImageArea {
+      flex: 1 1 auto;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      background: #000000;
     }
 
-    .photoEditorImageArea img{
-      display:block;
-      max-width:100%;
+    .photoEditorImageArea img {
+      display: block;
+      max-width: 100%;
     }
 
-    .photoEditorToolbar{
-      flex:0 0 auto;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      overflow-x:auto;
-      background:#111111;
+    .photoEditorToolbar {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      background: #111111;
     }
 
-    .photoEditorToolButton{
-      flex:0 0 auto;
-      padding:8px 12px;
-      border:1px solid rgba(255,255,255,.3);
-      border-radius:18px;
-      background:transparent;
-      color:#ffffff;
-      font-size:13px;
-      cursor:pointer;
-      white-space:nowrap;
+    .photoEditorToolButton {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 18px;
+      background: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    .photoEditorAspectButton.active{
-      background:var(--primary);
-      border-color:var(--primary);
+    .photoEditorAspectButton.active {
+      background: var(--primary);
+      border-color: var(--primary);
     }
 
 
@@ -607,35 +633,444 @@
        RESPONSIVE
     ===================================================== */
 
-    @media(max-width:600px){
-
-      .pageContainer{
-        padding:0;
+    @media(max-width:600px) {
+      .pageContainer {
+        padding: 0;
       }
-
       .introCard,
-      .formCard{
-        border-radius:0;
-        border-left:none;
-        border-right:none;
+      .formCard {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
       }
-
     }
 
-    @media(max-width:350px){
-
-      .mediaOptions{
-        grid-template-columns:1fr;
+    @media(max-width:350px) {
+      .mediaOptions {
+        grid-template-columns: 1fr;
       }
-
-      .formActions{
-        flex-direction:column;
+      .formActions {
+        flex-direction: column;
       }
-
       .cancelButton,
-      .publishButton{
-        width:100%;
-        flex:none;
+      .publishButton {
+        width: 100%;
+        flex: none;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="topHeader">
+    <div class="topHeaderInner">
+      <a href="feed.html" class="backButton" aria-label="Back to feed">←</a>
+      <div class="headerTitleArea">
+        <h1 class="headerTitle">Create Faith Moment</h1>
+        <div class="headerSubtitle">SABASABA Gospel Ministry</div>
+      </div>
+      <div class="headerIcon">🌅</div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="pageContainer">
+
+    <div class="introCard">
+      <div class="introTitle">Share Your Faith Moment</div>
+      <div class="introText">
+        Post an encouraging word, scripture, prayer, or testimony that will appear in the community moments bar for 24 hours.
+      </div>
+    </div>
+
+    <div class="formCard">
+
+      <div id="formMessage" class="formMessage"></div>
+
+      <form id="faithMomentForm">
+
+        <!-- MOMENT TYPE -->
+        <div class="formSection">
+          <label class="sectionLabel">Moment Type</label>
+          <div class="momentTypeGrid">
+            <button type="button" class="momentTypeButton active" data-type="encouragement">
+              <span class="momentTypeIcon">🕊️</span>
+              <span class="momentTypeName">Encouragement</span>
+            </button>
+            <button type="button" class="momentTypeButton" data-type="scripture">
+              <span class="momentTypeIcon">📖</span>
+              <span class="momentTypeName">Scripture</span>
+            </button>
+            <button type="button" class="momentTypeButton" data-type="testimony">
+              <span class="momentTypeIcon">✨</span>
+              <span class="momentTypeName">Testimony</span>
+            </button>
+          </div>
+          <input type="hidden" id="momentTypeInput" value="encouragement">
+        </div>
+
+        <!-- SCRIPTURE REFERENCE (conditional) -->
+        <div id="verseReferenceArea" class="formSection verseReferenceArea">
+          <label class="sectionLabel" for="verseReferenceInput">Scripture Reference</label>
+          <input type="text" id="verseReferenceInput" class="formInput" placeholder="e.g., John 3:16">
+        </div>
+
+        <!-- CONTENT / MESSAGE -->
+        <div class="formSection">
+          <label class="sectionLabel" for="momentMessageInput">Your Message</label>
+          <div class="sectionHelp">Write a short, uplifting message for the community.</div>
+          <textarea id="momentMessageInput" class="formTextarea" placeholder="What is God laying on your heart today?" maxlength="500" required></textarea>
+          <div id="characterCounter" class="characterCounter">500 characters remaining</div>
+        </div>
+
+        <!-- MEDIA ATTACHMENT -->
+        <div class="formSection">
+          <label class="sectionLabel">Background Photo or Video (Optional)</label>
+          <div class="sectionHelp">Add a visual background to make your faith moment stand out.</div>
+          <div class="mediaOptions">
+            <button type="button" id="choosePhotoBtn" class="mediaOptionButton">
+              📷 Choose Photo
+            </button>
+            <button type="button" id="chooseVideoBtn" class="mediaOptionButton">
+              🎥 Choose Video
+            </button>
+          </div>
+          <input type="file" id="mediaFileInput" class="hiddenFileInput" accept="image/*,video/*">
+
+          <div id="mediaPreview" class="mediaPreview">
+            <div id="previewContainer"></div>
+            <button type="button" id="editMediaBtn" class="editMediaButton" title="Edit photo">✏️</button>
+            <button type="button" id="removeMediaBtn" class="removeMediaButton" title="Remove media">×</button>
+            <div id="selectedMediaLabel" class="selectedMediaLabel">Photo selected</div>
+          </div>
+        </div>
+
+        <!-- PRIVACY NOTE -->
+        <div class="privacyInformation">
+          Faith moments are visible to all community members and automatically expire after 24 hours.
+        </div>
+
+        <!-- FORM ACTIONS -->
+        <div class="formActions">
+          <a href="feed.html" class="cancelButton">Cancel</a>
+          <button type="submit" id="publishButton" class="publishButton">
+            Share Faith Moment
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+
+
+  <!-- PHOTO EDITOR MODAL -->
+  <div id="photoEditorModal" class="photoEditorModal" aria-hidden="true">
+    <div class="photoEditorHeader">
+      <button type="button" id="photoEditorCancelButton" class="photoEditorHeaderButton">Cancel</button>
+      <span id="photoEditorCounter" class="photoEditorCounterText">Edit Photo</span>
+      <button type="button" id="photoEditorDoneButton" class="photoEditorHeaderButton photoEditorDoneButton">Done</button>
+    </div>
+    <div class="photoEditorImageArea">
+      <img id="photoEditorImage" src="" alt="Crop preview">
+    </div>
+    <div class="photoEditorToolbar">
+      <button type="button" id="photoEditorRotateLeftButton" class="photoEditorToolButton">Rotate ↺</button>
+      <button type="button" id="photoEditorRotateRightButton" class="photoEditorToolButton">Rotate ↻</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton active" data-ratio="0.5625">Story (9:16)</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1">Square (1:1)</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="NaN">Free</button>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT -->
+  <script type="module">
+
+    import {
+      auth,
+      db,
+      collection,
+      addDoc,
+      doc,
+      getDoc,
+      serverTimestamp,
+      onAuthStateChanged
+    } from "./firebase.js";
+
+    // ImageKit configuration
+    const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+    const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+    const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
+
+    let currentUser = null;
+    let currentUserProfile = null;
+    let selectedFile = null;
+    let selectedFileType = "none";
+    let objectUrl = null;
+    let cropper = null;
+
+    // DOM Elements
+    const form = document.getElementById("faithMomentForm");
+    const momentTypeButtons = document.querySelectorAll(".momentTypeButton");
+    const momentTypeInput = document.getElementById("momentTypeInput");
+    const verseReferenceArea = document.getElementById("verseReferenceArea");
+    const verseReferenceInput = document.getElementById("verseReferenceInput");
+    const momentMessageInput = document.getElementById("momentMessageInput");
+    const characterCounter = document.getElementById("characterCounter");
+    const choosePhotoBtn = document.getElementById("choosePhotoBtn");
+    const chooseVideoBtn = document.getElementById("chooseVideoBtn");
+    const mediaFileInput = document.getElementById("mediaFileInput");
+    const mediaPreview = document.getElementById("mediaPreview");
+    const previewContainer = document.getElementById("previewContainer");
+    const removeMediaBtn = document.getElementById("removeMediaBtn");
+    const editMediaBtn = document.getElementById("editMediaBtn");
+    const selectedMediaLabel = document.getElementById("selectedMediaLabel");
+    const formMessage = document.getElementById("formMessage");
+    const publishButton = document.getElementById("publishButton");
+
+    // Photo editor elements
+    const photoEditorModal = document.getElementById("photoEditorModal");
+    const photoEditorImage = document.getElementById("photoEditorImage");
+    const photoEditorCancelButton = document.getElementById("photoEditorCancelButton");
+    const photoEditorDoneButton = document.getElementById("photoEditorDoneButton");
+    const photoEditorRotateLeftButton = document.getElementById("photoEditorRotateLeftButton");
+    const photoEditorRotateRightButton = document.getElementById("photoEditorRotateRightButton");
+    const photoEditorAspectButtons = document.querySelectorAll(".photoEditorAspectButton");
+
+    // Auth state observer
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+      currentUser = user;
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          currentUserProfile = userDoc.data();
+        }
+      } catch (err) {
+        console.error("Profile load error:", err);
+      }
+    });
+
+    // Moment type selector
+    momentTypeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        momentTypeButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const type = btn.dataset.type;
+        momentTypeInput.value = type;
+        if (type === "scripture") {
+          verseReferenceArea.classList.add("show");
+        } else {
+          verseReferenceArea.classList.remove("show");
+          verseReferenceInput.value = "";
+        }
+      });
+    });
+
+    // Character counter
+    momentMessageInput.addEventListener("input", () => {
+      const remaining = 500 - momentMessageInput.value.length;
+      characterCounter.textContent = `${remaining} characters remaining`;
+    });
+
+    // Media picker buttons
+    choosePhotoBtn.addEventListener("click", () => {
+      mediaFileInput.accept = "image/*";
+      mediaFileInput.click();
+    });
+
+    chooseVideoBtn.addEventListener("click", () => {
+      mediaFileInput.accept = "video/*";
+      mediaFileInput.click();
+    });
+
+    mediaFileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      selectedFile = file;
+      objectUrl = URL.createObjectURL(file);
+      previewContainer.innerHTML = "";
+
+      if (file.type.startsWith("image/")) {
+        selectedFileType = "image";
+        const img = document.createElement("img");
+        img.src = objectUrl;
+        previewContainer.appendChild(img);
+        selectedMediaLabel.textContent = "Photo selected";
+        editMediaBtn.style.display = "flex";
+      } else if (file.type.startsWith("video/")) {
+        selectedFileType = "video";
+        const vid = document.createElement("video");
+        vid.src = objectUrl;
+        vid.controls = true;
+        previewContainer.appendChild(vid);
+        selectedMediaLabel.textContent = "Video selected";
+        editMediaBtn.style.display = "none";
       }
 
+      mediaPreview.classList.add("show");
+    });
+
+    removeMediaBtn.addEventListener("click", () => {
+      selectedFile = null;
+      selectedFileType = "none";
+      mediaFileInput.value = "";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+      previewContainer.innerHTML = "";
+      mediaPreview.classList.remove("show");
+    });
+
+    // Photo Editor Trigger
+    editMediaBtn.addEventListener("click", () => {
+      if (selectedFileType !== "image" || !objectUrl) return;
+      photoEditorImage.src = objectUrl;
+      photoEditorModal.classList.add("show");
+      photoEditorModal.setAttribute("aria-hidden", "false");
+
+      if (cropper) cropper.destroy();
+      cropper = new Cropper(photoEditorImage, {
+        viewMode: 1,
+        dragMode: "move",
+        autoCropArea: 1,
+        aspectRatio: 9 / 16,
+      });
+    });
+
+    photoEditorCancelButton.addEventListener("click", () => {
+      photoEditorModal.classList.remove("show");
+      photoEditorModal.setAttribute("aria-hidden", "true");
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
+    });
+
+    photoEditorRotateLeftButton.addEventListener("click", () => { if (cropper) cropper.rotate(-90); });
+    photoEditorRotateRightButton.addEventListener("click", () => { if (cropper) cropper.rotate(90); });
+
+    photoEditorAspectButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        photoEditorAspectButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (cropper) {
+          const ratio = eval(btn.dataset.ratio);
+          cropper.setAspectRatio(ratio);
+        }
+      });
+    });
+
+    photoEditorDoneButton.addEventListener("click", () => {
+      if (!cropper) return;
+      const canvas = cropper.getCroppedCanvas({ maxWidth: 1080, maxHeight: 1920 });
+      canvas.toBlob((blob) => {
+        selectedFile = new File([blob], "faith-moment.jpg", { type: "image/jpeg" });
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = URL.createObjectURL(selectedFile);
+        previewContainer.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = objectUrl;
+        previewContainer.appendChild(img);
+        photoEditorModal.classList.remove("show");
+        photoEditorModal.setAttribute("aria-hidden", "true");
+        cropper.destroy();
+        cropper = null;
+      }, "image/jpeg", 0.9);
+    });
+
+    // Form Submission
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUser) {
+        showMsg("Please sign in first.", "error");
+        return;
+      }
+
+      const message = momentMessageInput.value.trim();
+      if (!message) {
+        showMsg("Please enter a message.", "error");
+        return;
+      }
+
+      publishButton.disabled = true;
+      publishButton.textContent = "Publishing...";
+      showMsg("Uploading your faith moment...", "loading");
+
+      try {
+        let mediaUrl = "";
+        let mediaType = selectedFileType;
+
+        if (selectedFile) {
+          const authRes = await fetch(imagekitAuthEndpoint);
+          if (!authRes.ok) throw new Error("Failed to authenticate upload.");
+          const authParams = await authRes.json();
+
+          const formData = new FormData();
+          formData.append("file", selectedFile);
+          formData.append("fileName", selectedFile.name);
+          formData.append("publicKey", imagekitPublicKey);
+          formData.append("signature", authParams.signature);
+          formData.append("expire", authParams.expire);
+          formData.append("token", authParams.token);
+          formData.append("folder", "/faith-moments");
+
+          const uploadRes = await fetch(imagekitUploadUrl, {
+            method: "POST",
+            body: formData
+          });
+
+          const uploadData = await uploadRes.json();
+          if (!uploadRes.ok) throw new Error(uploadData.message || "Media upload failed.");
+          mediaUrl = uploadData.url;
+        }
+
+        const authorName = currentUserProfile?.name || currentUserProfile?.displayName || currentUser.displayName || "Community Member";
+        const authorPicture = currentUserProfile?.profilePicture || currentUser.photoURL || "images/profile.png";
+
+        await addDoc(collection(db, "faithMoments"), {
+          userId: currentUser.uid,
+          authorName: authorName,
+          authorPicture: authorPicture,
+          momentType: momentTypeInput.value,
+          verseReference: verseReferenceInput.value.trim(),
+          message: message,
+          mediaType: mediaType,
+          mediaUrl: mediaUrl,
+          timestamp: serverTimestamp(),
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours expiry
+        });
+
+        showMsg("Faith moment published successfully!", "success");
+        setTimeout(() => {
+          window.location.replace("feed.html");
+        }, 1200);
+
+      } catch (err) {
+        console.error(err);
+        showMsg(err.message || "Failed to publish moment.", "error");
+        publishButton.disabled = false;
+        publishButton.textContent = "Share Faith Moment";
+      }
+    });
+
+    function showMsg(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `formMessage show ${type}`;
     }
+
+  </script>
+
+</body>
+
+</html>
