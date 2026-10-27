@@ -4562,6 +4562,76 @@ function getStripInitials(
 }
 
 
+function isStripVideoUrl(
+  url
+){
+
+  const cleanUrl =
+  String(
+    url || ""
+  )
+  .split("?")[0]
+  .split("#")[0]
+  .toLowerCase();
+
+  return /\.(mp4|webm|mov|m4v|3gp|mkv|ogv)$/.test(
+    cleanUrl
+  );
+
+}
+
+
+function getStripMomentVideoUrl(
+  momentData,
+  imageCandidate
+){
+
+  const explicitVideo =
+  getFirstValue(
+    momentData.videoUrl,
+    momentData.videoURL,
+    momentData.video
+  );
+
+  if(explicitVideo){
+    return explicitVideo;
+  }
+
+  const type =
+  String(
+    momentData.type ||
+    momentData.momentType ||
+    momentData.mediaType ||
+    ""
+  ).toLowerCase();
+
+  const otherCandidates = [
+    imageCandidate,
+    momentData.mediaUrl,
+    momentData.contentUrl,
+    momentData.fileUrl
+  ];
+
+  for(const candidate of otherCandidates){
+
+    if(!candidate){
+      continue;
+    }
+
+    if(
+      isStripVideoUrl(candidate) ||
+      type === "video"
+    ){
+      return candidate;
+    }
+
+  }
+
+  return "";
+
+}
+
+
 function renderMomentsStrip(
   momentsSnapshot
 ){
@@ -4661,17 +4731,39 @@ function renderMomentsStrip(
          content; the profile picture is the corner avatar.
       */
 
-      const momentContentImage =
+      const momentImageCandidate =
       getFirstValue(
+        momentData.thumbnailUrl,
+        momentData.thumbnailURL,
+        momentData.videoThumbnail,
         momentData.imageUrl,
         momentData.imageURL,
         momentData.photoUrl,
         momentData.photoURL,
         momentData.mediaUrl,
-        momentData.thumbnailUrl,
-        momentData.videoThumbnail,
         momentData.contentUrl
       );
+
+      /*
+         A video link can never be used as a background
+         image (that is why video moments showed only the
+         camera icon). Find the video link separately and
+         show its first frame instead, like a Facebook status.
+      */
+
+      const momentVideoUrl =
+      getStripMomentVideoUrl(
+        momentData,
+        momentImageCandidate
+      );
+
+      const momentContentImage =
+      (
+        momentImageCandidate &&
+        !isStripVideoUrl(momentImageCandidate)
+      )
+      ? momentImageCandidate
+      : "";
 
       const typeIcon =
       getStripMomentTypeIcon(
@@ -4703,12 +4795,18 @@ function renderMomentsStrip(
 
       }
 
+      const showVideoFrame =
+      Boolean(
+        !momentContentImage &&
+        momentVideoUrl
+      );
+
       momentCard.innerHTML = `
 
         <div class="momentCardGradient"></div>
 
         ${
-          !momentContentImage
+          (!momentContentImage && !showVideoFrame)
           ? `<div class="momentCardFallbackIcon">${typeIcon}</div>`
           : ""
         }
@@ -4728,6 +4826,95 @@ function renderMomentsStrip(
         </div>
 
       `;
+
+      if(showVideoFrame){
+
+        const frameVideo =
+        document.createElement("video");
+
+        frameVideo.muted =
+        true;
+
+        frameVideo.defaultMuted =
+        true;
+
+        frameVideo.setAttribute(
+          "muted",
+          ""
+        );
+
+        frameVideo.setAttribute(
+          "playsinline",
+          ""
+        );
+
+        frameVideo.setAttribute(
+          "webkit-playsinline",
+          ""
+        );
+
+        frameVideo.preload =
+        "metadata";
+
+        frameVideo.disablePictureInPicture =
+        true;
+
+        frameVideo.style.cssText =
+        "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;border-radius:inherit;";
+
+        /*
+           "#t=0.1" makes the browser show a frame
+           of the video straight away, with no tap.
+        */
+
+        frameVideo.src =
+        momentVideoUrl.split("#")[0] +
+        "#t=0.1";
+
+        /* If the video cannot load, show the icon again. */
+
+        frameVideo.addEventListener(
+          "error",
+          function(){
+
+            frameVideo.remove();
+
+            if(
+              !momentCard.querySelector(
+                ".momentCardFallbackIcon"
+              )
+            ){
+
+              const iconElement =
+              document.createElement("div");
+
+              iconElement.className =
+              "momentCardFallbackIcon";
+
+              iconElement.textContent =
+              typeIcon;
+
+              momentCard.appendChild(
+                iconElement
+              );
+
+            }
+
+          }
+        );
+
+        momentCard.style.position =
+        "relative";
+
+        momentCard.style.overflow =
+        "hidden";
+
+        momentCard.insertBefore(
+          frameVideo,
+          momentCard.firstChild
+        );
+
+      }
 
       momentsRow.appendChild(
         momentCard
