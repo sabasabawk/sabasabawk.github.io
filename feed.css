@@ -20,7 +20,7 @@ html{
 
 body{
   min-height:100vh;
-  background:#eef3f8;
+  background:#f0f2f5; /* Facebook-style light gray background */
   color:#222222;
   font-family:Arial,Helvetica,sans-serif;
 }
@@ -62,15 +62,15 @@ a{
   width:100%;
   background:#ffffff;
   border-bottom:1px solid #d7e0e8;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
 }
 
 .appTopBarInner{
   width:100%;
-  max-width:760px;
-  min-height:64px;
+  max-width:680px;
+  min-height:56px;
   margin:auto;
-  padding:8px 14px;
+  padding:8px 12px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -114,8 +114,8 @@ a{
 
 .topIconLink{
   position:relative;
-  width:42px;
-  height:42px;
+  width:40px;
+  height:40px;
   flex-shrink:0;
   border-radius:50%;
   display:flex;
@@ -124,7 +124,7 @@ a{
   background:#edf3f8;
   color:#1f2933;
   text-decoration:none;
-  font-size:20px;
+  font-size:18px;
   transition:
     background .2s ease,
     transform .2s ease;
@@ -165,14 +165,14 @@ a{
 
 
 /* =====================================================
-   MAIN PAGE CONTAINER
+   MAIN PAGE CONTAINER (Full Screen Edge-to-Edge)
 ===================================================== */
 
 .pageContainer{
   width:100%;
-  max-width:760px;
+  max-width:680px; /* Constrains width on desktops like Facebook, full width on mobile */
   margin:auto;
-  padding:16px 14px 115px;
+  padding:0 0 115px; /* Removed side padding for full-width layout */
 }
 
 
@@ -203,14 +203,14 @@ a:focus-visible{
   }
 
   .topIconLink{
-    width:39px;
-    height:39px;
-    font-size:18px;
+    width:38px;
+    height:38px;
+    font-size:17px;
   }
 
   .pageContainer{
-    padding-left:10px;
-    padding-right:10px;
+    padding-left:0;
+    padding-right:0;
   }
 
 }
@@ -227,39 +227,40 @@ a:focus-visible{
 
 .quickPostBox{
   width:100%;
-  padding:16px;
+  padding:12px 14px;
   background:#ffffff;
-  border-radius:20px;
-  box-shadow:0 5px 18px rgba(0,0,0,.09);
+  border-radius:0; /* Flat edge-to-edge style */
+  border-bottom:1px solid #e4e6eb;
+  box-shadow:none;
+  margin-bottom:8px;
 }
 
 .quickPostRow{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
 }
 
 .quickPostAvatar{
-  width:52px;
-  height:52px;
+  width:42px;
+  height:42px;
   flex-shrink:0;
   border-radius:50%;
   object-fit:cover;
   background:#e5e9ed;
-  border:3px solid #d8efff;
 }
 
 .quickPostButton{
   flex:1;
   min-width:0;
-  min-height:50px;
-  padding:12px 17px;
-  border:1px solid #d3dce4;
-  border-radius:28px;
-  background:#f4f6f8;
+  min-height:40px;
+  padding:8px 14px;
+  border:1px solid #ccd0d5;
+  border-radius:20px;
+  background:#f0f2f5;
   color:#65717c;
   text-align:left;
-  font-size:16px;
+  font-size:15px;
   line-height:1.4;
   transition:
     background .2s ease,
@@ -267,8 +268,7 @@ a:focus-visible{
 }
 
 .quickPostButton:hover{
-  background:#e9eef3;
-  border-color:#bfcdd9;
+  background:#e4e6eb;
 }
 
 .quickPostButton:active{
@@ -281,50 +281,45 @@ a:focus-visible{
 ===================================================== */
 
 .momentsSection{
-  margin-top:16px;
+  margin-top:0;
+  margin-bottom:8px;
+  background:#ffffff;
+  padding:10px 0;
+  border-bottom:1px solid #e4e6eb;
 }
 
 .momentsRow{
   display:flex;
   align-items:flex-start;
-  gap:13px;
+  gap:8px;
   overflow-x:auto;
   overscroll-behavior-inline:contain;
-  padding:2px 2px 6px;
-  scrollbar-width:thin;
-  scrollbar-color:#c4d5e1 transparent;
+  padding:0 12px;
+  scrollbar-width:none; /* Clean scrollbar like FB */
 }
 
 .momentsRow::-webkit-scrollbar{
-  height:5px;
-}
-
-.momentsRow::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-.momentsRow::-webkit-scrollbar-thumb{
-  border-radius:999px;
-  background:#c4d5e1;
+  display:none;
 }
 
 .momentCard{
   position:relative;
   display:block;
-  width:112px;
-  flex:0 0 112px;
-  height:188px;
-  border-radius:14px;
+  width:104px;
+  flex:0 0 104px;
+  height:170px;
+  border-radius:12px;
   overflow:hidden;
   background:#0b3d63 no-repeat center/cover;
   color:#ffffff;
   text-decoration:none;
-  box-shadow:0 4px 12px rgba(0,0,0,.18);
+  box-shadow:none;
+  border:1px solid rgba(0,0,0,0.05);
   transition:transform .2s ease;
 }
 
 .momentCard:hover{
-  transform:translateY(-2px);
+  transform:scale(1.02);
 }
 
 .momentCard:active{
@@ -341,7 +336,7 @@ a:focus-visible{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:40px;
+  font-size:36px;
   opacity:.9;
 }
 
@@ -357,10 +352,10 @@ a:focus-visible{
 
 .momentCardAvatar{
   position:absolute;
-  top:10px;
-  left:10px;
-  width:34px;
-  height:34px;
+  top:8px;
+  left:8px;
+  width:32px;
+  height:32px;
   border-radius:50%;
   overflow:hidden;
   border:3px solid #087bd1;
@@ -368,7 +363,6 @@ a:focus-visible{
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 2px 6px rgba(0,0,0,.25);
 }
 
 .momentCardAvatar img{
@@ -379,20 +373,20 @@ a:focus-visible{
 
 .momentCardAvatarInitials{
   color:#60727f;
-  font-size:13px;
+  font-size:12px;
   font-weight:900;
 }
 
 .momentCardName{
   position:absolute;
-  left:9px;
-  right:9px;
-  bottom:9px;
+  left:8px;
+  right:8px;
+  bottom:8px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
   color:#ffffff;
-  font-size:12px;
+  font-size:11px;
   font-weight:bold;
   text-shadow:0 1px 4px rgba(0,0,0,.6);
 }
@@ -400,15 +394,13 @@ a:focus-visible{
 
 /* =====================================================
    CREATE MOMENT CARD
-   (Facebook-style — your own photo fills the top,
-   a blue "+" straddles the boundary, and a white
-   bar underneath reads "Create Moment")
 ===================================================== */
 
 .createMomentCard{
   display:flex;
   flex-direction:column;
-  background:#eef3f8;
+  background:#ffffff;
+  border:1px solid #e4e6eb;
 }
 
 .createMomentCardTop{
@@ -421,35 +413,35 @@ a:focus-visible{
 .createMomentCardPlusButton{
   position:absolute;
   left:50%;
-  bottom:29px;
+  bottom:24px;
   z-index:5;
   transform:translateX(-50%);
-  width:34px;
-  height:34px;
+  width:32px;
+  height:32px;
   border-radius:50%;
-  background:#087bd1;
+  background:#1877f2;
   color:#ffffff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
+  font-size:20px;
   font-weight:900;
   line-height:1;
   border:3px solid #ffffff;
-  box-shadow:0 3px 8px rgba(0,0,0,.25);
+  box-shadow:0 2px 4px rgba(0,0,0,.15);
 }
 
 .createMomentCardBottom{
-  height:46px;
+  height:40px;
   flex-shrink:0;
   background:#ffffff;
   display:flex;
   align-items:flex-end;
   justify-content:center;
-  padding-bottom:8px;
+  padding-bottom:6px;
   color:#1f2933;
   font-size:11px;
-  font-weight:900;
+  font-weight:bold;
   text-align:center;
 }
 
@@ -459,20 +451,17 @@ a:focus-visible{
 ===================================================== */
 
 .wallTitleBar{
-  margin:18px 0;
-  padding:16px 18px;
-  border-radius:20px;
+  margin:0 0 8px 0;
+  padding:12px 14px;
+  border-radius:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  background:linear-gradient(
-    135deg,
-    #087bd1,
-    #0055a5
-  );
-  color:#ffffff;
-  box-shadow:0 6px 16px rgba(0,0,0,.14);
+  background:#ffffff;
+  border-bottom:1px solid #e4e6eb;
+  color:#222222;
+  box-shadow:none;
 }
 
 .wallTitleText{
@@ -480,15 +469,16 @@ a:focus-visible{
 }
 
 .wallTitleText h1{
-  font-size:22px;
+  font-size:18px;
+  color:#050505;
   line-height:1.25;
 }
 
 .wallTitleText p{
-  margin-top:4px;
-  color:#e7f4ff;
-  font-size:13px;
-  line-height:1.5;
+  margin-top:2px;
+  color:#65676b;
+  font-size:12px;
+  line-height:1.4;
 }
 
 
@@ -497,25 +487,25 @@ a:focus-visible{
 ===================================================== */
 
 .refreshButton{
-  width:46px;
-  height:46px;
+  width:38px;
+  height:38px;
   flex-shrink:0;
   border:none;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#ffffff;
+  background:#f0f2f5;
   color:#0873c9;
-  font-size:21px;
-  box-shadow:0 3px 9px rgba(0,0,0,.15);
+  font-size:18px;
+  box-shadow:none;
   transition:
     transform .2s ease,
     background .2s ease;
 }
 
 .refreshButton:hover{
-  background:#eef6ff;
+  background:#e4e6eb;
   transform:rotate(20deg);
 }
 
@@ -540,15 +530,16 @@ a:focus-visible{
 ===================================================== */
 
 .statusCard{
-  margin-top:18px;
-  padding:36px 24px;
-  border-radius:22px;
+  margin-top:0;
+  padding:24px 16px;
+  border-radius:0;
   background:#ffffff;
   color:#66717c;
   text-align:center;
-  font-size:17px;
-  line-height:1.7;
-  box-shadow:0 6px 18px rgba(0,0,0,.09);
+  font-size:15px;
+  line-height:1.5;
+  box-shadow:none;
+  border-bottom:1px solid #e4e6eb;
 }
 
 .statusCard.error{
@@ -570,10 +561,10 @@ a:focus-visible{
 
 #loadMoreSentinel{
   width:100%;
-  padding:20px;
+  padding:16px;
   text-align:center;
   color:#8a95a1;
-  font-size:14px;
+  font-size:13px;
 }
 
 
@@ -584,33 +575,33 @@ a:focus-visible{
 @media(max-width:600px){
 
   .quickPostBox{
-    padding:14px;
+    padding:10px 12px;
   }
 
   .quickPostAvatar{
-    width:48px;
-    height:48px;
+    width:38px;
+    height:38px;
   }
 
   .quickPostButton{
-    font-size:15px;
+    font-size:14px;
   }
 
   .wallTitleBar{
-    padding:14px 16px;
+    padding:10px 12px;
   }
 
   .wallTitleText h1{
-    font-size:20px;
+    font-size:17px;
   }
 
   .wallTitleText p{
-    font-size:12px;
+    font-size:11px;
   }
 
   .statusCard{
-    padding:30px 18px;
-    font-size:16px;
+    padding:20px 14px;
+    font-size:15px;
   }
 
 }
@@ -621,25 +612,25 @@ a:focus-visible{
 
 
 /* =====================================================
-   COMMUNITY POST CARD
+   COMMUNITY POST CARD (Edge-to-Edge Facebook Style)
 ===================================================== */
 
 .postCard{
   width:100%;
-  margin-bottom:20px;
-  padding:18px;
+  margin-bottom:8px; /* Facebook-style thin divider gap between posts */
+  padding:12px 0 0 0; /* Vertical padding only, edge-to-edge horizontally */
   background:#ffffff;
-  border-radius:22px;
+  border-radius:0; /* Removes floating card rounded corners */
   overflow:hidden;
-  box-shadow:0 6px 18px rgba(0,0,0,.09);
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
+  box-shadow:none; /* Removes shadow */
+  border-top:1px solid #e4e6eb;
+  border-bottom:1px solid #e4e6eb;
+  transition:none;
 }
 
 .postCard:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  transform:none;
+  box-shadow:none;
 }
 
 
@@ -650,17 +641,18 @@ a:focus-visible{
 .postHeader{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
+  padding:0 12px; /* Inner padding so author info isn't glued to phone edge */
 }
 
 .authorPicture{
-  width:56px;
-  height:56px;
+  width:40px;
+  height:40px;
   flex-shrink:0;
   border-radius:50%;
   object-fit:cover;
   background:#e5e9ed;
-  border:3px solid #d8efff;
+  border:none;
   cursor:pointer;
 }
 
@@ -670,10 +662,10 @@ a:focus-visible{
 }
 
 .authorName{
-  color:#0873c9;
-  font-size:18px;
+  color:#050505;
+  font-size:15px;
   font-weight:bold;
-  line-height:1.3;
+  line-height:1.2;
   word-break:break-word;
   cursor:pointer;
 }
@@ -692,14 +684,14 @@ a:focus-visible{
 
 .verifiedBadge{
   display:none;
-  min-height:20px;
-  padding:4px 7px;
+  min-height:18px;
+  padding:2px 6px;
   border-radius:999px;
   align-items:center;
   justify-content:center;
   gap:3px;
   background:#e7f3ff;
-  color:#0873c9;
+  color:#1877f2;
   font-size:9px;
   font-weight:bold;
   line-height:1;
@@ -720,10 +712,10 @@ a:focus-visible{
 }
 
 .postDetails{
-  margin-top:4px;
-  color:#747f89;
-  font-size:13px;
-  line-height:1.5;
+  margin-top:2px;
+  color:#65676b;
+  font-size:12px;
+  line-height:1.3;
 }
 
 
@@ -733,12 +725,12 @@ a:focus-visible{
 
 .postCategory{
   display:inline-block;
-  margin-top:15px;
-  padding:7px 12px;
-  border-radius:18px;
+  margin:8px 12px 0 12px;
+  padding:4px 10px;
+  border-radius:14px;
   background:#e7f3ff;
-  color:#0873c9;
-  font-size:13px;
+  color:#1877f2;
+  font-size:12px;
   font-weight:bold;
 }
 
@@ -748,10 +740,11 @@ a:focus-visible{
 ===================================================== */
 
 .postMessage{
-  margin-top:15px;
-  color:#20252a;
-  font-size:17px;
-  line-height:1.7;
+  margin-top:8px;
+  padding:0 12px;
+  color:#050505;
+  font-size:15px;
+  line-height:1.5;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
@@ -763,24 +756,21 @@ a:focus-visible{
 
 /* =====================================================
    READ MORE / READ LESS
-   (long post text is clipped at a fixed height by
-   default, Facebook/Instagram style, with a toggle
-   link to expand or collapse it again)
 ===================================================== */
 
 .postMessage.truncated{
-  max-height:158px;
+  max-height:150px;
   overflow:hidden;
   position:relative;
 }
 
 .readMoreToggle{
   display:inline-block;
-  margin-top:6px;
+  margin:4px 12px 0 12px;
   border:0;
   background:none;
   padding:0;
-  color:#0873c9;
+  color:#65676b;
   font-size:14px;
   font-weight:bold;
 }
@@ -791,12 +781,12 @@ a:focus-visible{
 
 
 /* =====================================================
-   POST MEDIA
+   POST MEDIA (Edge-to-Edge)
 ===================================================== */
 
 .postMediaContainer{
   width:100%;
-  margin-top:16px;
+  margin-top:10px;
 }
 
 .postMediaContainer:empty{
@@ -808,9 +798,9 @@ a:focus-visible{
   display:block;
   width:100%;
   max-height:560px;
-  border-radius:16px;
+  border-radius:0; /* Edge-to-edge images like Facebook */
   background:#000000;
-  object-fit:contain;
+  object-fit:cover;
 }
 
 .communityPostImage{
@@ -824,17 +814,14 @@ a:focus-visible{
 
 /* =====================================================
    MULTI-PHOTO GRID
-   (Facebook-style layout — 1 photo shows full
-   width, 2 or 3 photos share the row/column, and
-   4 or more show as a 2x2 grid with a "+N" overlay
-   on the last tile covering any extra photos)
 ===================================================== */
 
 .postPhotoGrid{
   display:grid;
-  gap:4px;
-  border-radius:16px;
+  gap:2px;
+  border-radius:0;
   overflow:hidden;
+  margin-top:10px;
 }
 
 .postPhotoGrid.count-1{
@@ -884,7 +871,7 @@ a:focus-visible{
 
 .postPhotoGrid.count-1 .communityPostImage{
   max-height:560px;
-  object-fit:contain;
+  object-fit:cover;
 }
 
 .postPhotoMoreOverlay{
@@ -904,10 +891,11 @@ a:focus-visible{
   position:relative;
   width:100%;
   max-height:560px;
-  border-radius:16px;
+  border-radius:0;
   overflow:hidden;
   background:#000000;
   cursor:pointer;
+  margin-top:10px;
 }
 
 .communityPostVideoWrapper .communityPostVideo{
@@ -939,29 +927,28 @@ a:focus-visible{
 .postActions{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:18px;
-  padding-top:15px;
-  border-top:1px solid #e1e6eb;
+  gap:4px;
+  margin-top:0;
+  padding:4px 12px;
+  border-top:1px solid #e4e6eb;
+  background:#ffffff;
 }
 
 .postActions button{
-  min-height:44px;
-  padding:10px 8px;
+  min-height:36px;
+  padding:8px 4px;
   border:none;
-  border-radius:12px;
-  background:#edf3f8;
-  color:#35414c;
+  border-radius:4px;
+  background:transparent; /* Facebook flat action button style */
+  color:#65676b;
   font-size:13px;
   font-weight:bold;
-  transition:
-    background .2s ease,
-    transform .2s ease;
+  transition:background .2s ease;
 }
 
 .postActions button:hover{
-  background:#dce9f4;
-  transform:translateY(-1px);
+  background:#f0f2f5;
+  transform:none;
 }
 
 .postActions button:active{
@@ -979,8 +966,8 @@ a:focus-visible{
 ===================================================== */
 
 .likeButton.liked{
-  background:#ffe5ea;
-  color:#c2183b;
+  background:transparent;
+  color:#e41e3f;
 }
 
 
@@ -990,36 +977,36 @@ a:focus-visible{
 
 .ownerActions{
   grid-template-columns:repeat(2,1fr);
-  margin-top:10px;
-  padding-top:0;
-  border-top:none;
+  margin-top:0;
+  padding:4px 12px;
+  border-top:1px solid #e4e6eb;
 }
 
 .editButton{
-  background:#fff3cd !important;
+  background:transparent !important;
   color:#755600 !important;
 }
 
 .editButton:hover{
-  background:#ffe8a3 !important;
+  background:#f0f2f5 !important;
 }
 
 .deleteButton{
-  background:#ffe1e1 !important;
+  background:transparent !important;
   color:#b00020 !important;
 }
 
 .deleteButton:hover{
-  background:#ffd2d2 !important;
+  background:#f0f2f5 !important;
 }
 
 .reportButton{
-  background:#fff0e0 !important;
+  background:transparent !important;
   color:#a35a00 !important;
 }
 
 .reportButton:hover{
-  background:#ffe2c2 !important;
+  background:#f0f2f5 !important;
 }
 
 .adminActions{
@@ -1027,12 +1014,12 @@ a:focus-visible{
 }
 
 .adminDeleteButton{
-  background:#3a1010 !important;
-  color:#ffffff !important;
+  background:transparent !important;
+  color:#b00020 !important;
 }
 
 .adminDeleteButton:hover{
-  background:#511616 !important;
+  background:#f0f2f5 !important;
 }
 
 
@@ -1061,7 +1048,7 @@ a:focus-visible{
   max-height:88vh;
   overflow-y:auto;
   padding:24px;
-  border-radius:20px;
+  border-radius:12px;
   background:#ffffff;
   box-shadow:0 12px 32px rgba(0,0,0,.25);
 }
@@ -1145,26 +1132,26 @@ a:focus-visible{
 @media(max-width:600px){
 
   .postCard{
-    padding:16px;
-    border-radius:18px;
+    padding:10px 0 0 0;
+    border-radius:0;
   }
 
   .authorPicture{
-    width:52px;
-    height:52px;
+    width:36px;
+    height:36px;
   }
 
   .authorName{
-    font-size:17px;
+    font-size:14px;
   }
 
   .postMessage{
-    font-size:16px;
+    font-size:14px;
   }
 
   .postActions button{
     font-size:12px;
-    min-height:42px;
+    min-height:34px;
   }
 
 }
@@ -1181,32 +1168,28 @@ a:focus-visible{
 
 .floatingCreateButton{
   position:fixed;
-  right:18px;
-  bottom:96px;
+  right:16px;
+  bottom:80px;
   z-index:850;
-  width:60px;
-  height:60px;
+  width:52px;
+  height:52px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(
-    135deg,
-    #087bd1,
-    #0055a5
-  );
+  background:#1877f2;
   color:#ffffff;
   text-decoration:none;
-  font-size:32px;
+  font-size:28px;
   font-weight:bold;
-  box-shadow:0 8px 22px rgba(0,0,0,.28);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
   transition:
     transform .2s ease,
     box-shadow .2s ease;
 }
 
 .floatingCreateButton:hover{
-  transform:translateY(-2px) scale(1.04);
+  transform:scale(1.05);
 }
 
 .floatingCreateButton:active{
@@ -1226,12 +1209,12 @@ a:focus-visible{
   z-index:900;
   background:#ffffff;
   border-top:1px solid #d7dee6;
-  box-shadow:0 -3px 14px rgba(0,0,0,.10);
+  box-shadow:0 -2px 8px rgba(0,0,0,.06);
 }
 
 .bottomNavigationInner{
   width:100%;
-  max-width:760px;
+  max-width:680px;
   margin:auto;
   display:grid;
   grid-template-columns:repeat(6,1fr);
@@ -1245,7 +1228,7 @@ a:focus-visible{
   align-items:center;
   justify-content:center;
   gap:3px;
-  color:#66717c;
+  color:#65676b;
   text-align:center;
   text-decoration:none;
   font-size:10px;
@@ -1260,11 +1243,11 @@ a:focus-visible{
 }
 
 .bottomNavItem.active{
-  color:#0873c9;
+  color:#1877f2;
 }
 
 .bottomNavIcon{
-  font-size:21px;
+  font-size:20px;
   line-height:1;
 }
 
@@ -1305,8 +1288,6 @@ a:focus-visible{
 
 /* =====================================================
    PHOTO VIEWER GALLERY NAVIGATION
-   (prev/next buttons and a "2 of 5" counter, shown
-   only when a post has more than one photo)
 ===================================================== */
 
 .photoViewerNavButton{
@@ -1314,8 +1295,8 @@ a:focus-visible{
   top:50%;
   transform:translateY(-50%);
   z-index:1210;
-  width:52px;
-  height:52px;
+  width:48px;
+  height:48px;
   border:none;
   border-radius:50%;
   display:flex;
@@ -1323,7 +1304,7 @@ a:focus-visible{
   justify-content:center;
   background:rgba(255,255,255,.18);
   color:#ffffff;
-  font-size:32px;
+  font-size:28px;
   line-height:1;
   cursor:pointer;
   transition:background .2s ease;
@@ -1412,8 +1393,8 @@ a:focus-visible{
   top:15px;
   right:15px;
   z-index:1310;
-  width:48px;
-  height:48px;
+  width:44px;
+  height:44px;
   border:none;
   border-radius:50%;
   display:flex;
@@ -1421,7 +1402,7 @@ a:focus-visible{
   justify-content:center;
   background:rgba(255,255,255,.22);
   color:#ffffff;
-  font-size:28px;
+  font-size:26px;
   cursor:pointer;
   transition:background .2s ease;
 }
@@ -1434,8 +1415,8 @@ a:focus-visible{
   position:absolute;
   top:15px;
   right:15px;
-  width:48px;
-  height:48px;
+  width:44px;
+  height:44px;
   border:none;
   border-radius:50%;
   display:flex;
@@ -1443,7 +1424,7 @@ a:focus-visible{
   justify-content:center;
   background:rgba(255,255,255,.22);
   color:#ffffff;
-  font-size:28px;
+  font-size:26px;
   cursor:pointer;
   transition:background .2s ease;
 }
@@ -1460,11 +1441,11 @@ a:focus-visible{
 @media(max-width:600px){
 
   .floatingCreateButton{
-    width:56px;
-    height:56px;
-    right:15px;
-    bottom:88px;
-    font-size:30px;
+    width:48px;
+    height:48px;
+    right:12px;
+    bottom:74px;
+    font-size:26px;
   }
 
   .bottomNavItem{
@@ -1472,13 +1453,13 @@ a:focus-visible{
   }
 
   .bottomNavIcon{
-    font-size:20px;
+    font-size:19px;
   }
 
   #closePhotoViewer{
-    width:44px;
-    height:44px;
-    font-size:26px;
+    width:40px;
+    height:40px;
+    font-size:24px;
   }
 
 }
