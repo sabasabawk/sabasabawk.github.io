@@ -1,24 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="description"
-    content="Create and share a Faith Moment with the Faith Connect community."
-  >
-
-  <title>Create Faith Moment | Faith Connect</title>
-
-  <style>
-
     *{
       box-sizing:border-box;
       margin:0;
@@ -26,39 +5,31 @@
     }
 
     :root{
-      --primary:#087bd1;
-      --primary-dark:#0667b1;
-      --primary-light:#e9f5fd;
+      --primary:#1877f2;
+      --primary-dark:#166fe5;
+      --primary-light:#e7f3ff;
 
-      --background:#f2f5f8;
+      --background:#f0f2f5;
       --surface:#ffffff;
 
-      --text:#1f2b34;
-      --muted:#687680;
+      --text:#050505;
+      --muted:#65676b;
 
-      --border:#dce4ea;
+      --border:#e4e6eb;
 
-      --success:#27874f;
-      --danger:#c84444;
+      --success:#31a24c;
+      --danger:#b00020;
 
-      --shadow:
-        0 6px 20px rgba(25,55,75,.10);
-
-      --radius-large:22px;
-      --radius-medium:16px;
-      --radius-small:12px;
+      --radius-large:8px;
+      --radius-medium:6px;
+      --radius-small:4px;
     }
 
     body{
       min-height:100vh;
-
       background:var(--background);
       color:var(--text);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family:Arial,Helvetica,sans-serif;
     }
 
     button,
@@ -92,42 +63,39 @@
       position:sticky;
       top:0;
       z-index:1000;
-
       background:#ffffff;
       border-bottom:1px solid var(--border);
     }
 
     .topHeaderInner{
       width:100%;
-      max-width:720px;
-      min-height:62px;
-
+      max-width:680px;
+      min-height:56px;
       margin:auto;
-      padding:8px 14px;
-
+      padding:8px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
     }
 
     .backButton{
-      width:42px;
-      height:42px;
+      width:38px;
+      height:38px;
       flex-shrink:0;
-
       border:0;
       border-radius:50%;
-
       display:flex;
       align-items:center;
       justify-content:center;
-
-      background:#edf3f7;
+      background:#f0f2f5;
       color:var(--text);
+      font-size:20px;
+      font-weight:bold;
+    }
 
-      font-size:23px;
-      font-weight:700;
+    .backButton:hover{
+      background:#e4e6eb;
     }
 
     .headerTitleArea{
@@ -139,90 +107,65 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-
-      font-size:17px;
-      font-weight:900;
+      font-size:16px;
+      font-weight:bold;
     }
 
     .headerSubtitle{
-      margin-top:2px;
-
+      margin-top:1px;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-
       color:var(--muted);
-
-      font-size:11px;
-      font-weight:700;
+      font-size:12px;
     }
 
     .headerIcon{
-      width:42px;
-      height:42px;
+      width:38px;
+      height:38px;
       flex-shrink:0;
-
-      border-radius:14px;
-
+      border-radius:50%;
       display:flex;
       align-items:center;
       justify-content:center;
-
-      background:
-        linear-gradient(
-          145deg,
-          var(--primary),
-          #4ca9e5
-        );
-
-      color:#ffffff;
-      font-size:20px;
+      background:var(--primary-light);
+      color:var(--primary);
+      font-size:18px;
     }
 
 
     /* =====================================================
-       PAGE
+       PAGE CONTAINER
     ===================================================== */
 
     .pageContainer{
       width:100%;
-      max-width:720px;
-
+      max-width:680px;
       margin:auto;
-      padding:18px 14px 35px;
+      padding:12px 0 60px;
     }
 
     .introCard{
-      margin-bottom:17px;
-      padding:20px;
-
-      border-radius:var(--radius-large);
-
-      background:
-        linear-gradient(
-          135deg,
-          #087bd1,
-          #4ba9e6
-        );
-
-      color:#ffffff;
-
-      box-shadow:
-        0 8px 24px rgba(8,123,209,.23);
+      margin-bottom:12px;
+      padding:16px;
+      border-radius:0;
+      background:#ffffff;
+      border-bottom:1px solid var(--border);
+      border-top:1px solid var(--border);
+      box-shadow:none;
     }
 
     .introTitle{
-      font-size:23px;
-      font-weight:900;
+      font-size:18px;
+      font-weight:bold;
+      color:var(--text);
     }
 
     .introText{
-      margin-top:7px;
-
+      margin-top:4px;
       font-size:13px;
-      line-height:1.55;
-
-      opacity:.93;
+      line-height:1.4;
+      color:var(--muted);
     }
 
 
@@ -231,18 +174,17 @@
     ===================================================== */
 
     .formCard{
-      padding:18px;
-
-      border:1px solid var(--border);
-      border-radius:var(--radius-large);
-
+      padding:16px;
+      border:none;
+      border-radius:0;
       background:var(--surface);
-
-      box-shadow:var(--shadow);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      box-shadow:none;
     }
 
     .formSection{
-      margin-bottom:22px;
+      margin-bottom:18px;
     }
 
     .formSection:last-child{
@@ -251,21 +193,17 @@
 
     .sectionLabel{
       display:block;
-
-      margin-bottom:9px;
-
+      margin-bottom:6px;
       font-size:14px;
-      font-weight:900;
+      font-weight:bold;
     }
 
     .sectionHelp{
-      margin-top:-4px;
-      margin-bottom:10px;
-
+      margin-top:-2px;
+      margin-bottom:8px;
       color:var(--muted);
-
-      font-size:11px;
-      line-height:1.45;
+      font-size:12px;
+      line-height:1.4;
     }
 
 
@@ -275,62 +213,44 @@
 
     .momentTypeGrid{
       display:grid;
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
-
-      gap:9px;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:8px;
     }
 
     .momentTypeButton{
-      min-height:84px;
-      padding:11px 8px;
-
+      min-height:76px;
+      padding:10px 6px;
       border:1px solid var(--border);
-      border-radius:14px;
-
+      border-radius:8px;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:7px;
-
+      gap:5px;
       background:#ffffff;
       color:var(--text);
-
       text-align:center;
-
-      transition:
-        border-color .2s ease,
-        background .2s ease,
-        transform .2s ease;
+      transition:border-color .2s ease, background .2s ease;
     }
 
     .momentTypeButton:hover{
-      border-color:#9bcbe9;
-    }
-
-    .momentTypeButton:active{
-      transform:scale(.97);
+      background:#f0f2f5;
     }
 
     .momentTypeButton.active{
       border-color:var(--primary);
-
       background:var(--primary-light);
       color:var(--primary);
     }
 
     .momentTypeIcon{
-      font-size:25px;
+      font-size:22px;
       line-height:1;
     }
 
     .momentTypeName{
       font-size:11px;
-      font-weight:900;
+      font-weight:bold;
     }
 
 
@@ -342,56 +262,45 @@
     .formTextarea,
     .formSelect{
       width:100%;
-
-      border:1px solid var(--border);
-      border-radius:13px;
-
+      border:1px solid #ccd0d5;
+      border-radius:6px;
       background:#ffffff;
       color:var(--text);
-
       outline:none;
-
-      transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
+      transition:border-color .2s ease;
     }
 
     .formInput,
     .formSelect{
-      min-height:48px;
-      padding:11px 13px;
+      min-height:42px;
+      padding:8px 12px;
+      font-size:14px;
     }
 
     .formTextarea{
-      min-height:150px;
-      padding:13px;
-
+      min-height:130px;
+      padding:10px 12px;
       resize:vertical;
-      line-height:1.55;
+      line-height:1.45;
+      font-size:14px;
     }
 
     .formInput:focus,
     .formTextarea:focus,
     .formSelect:focus{
       border-color:var(--primary);
-
-      box-shadow:
-        0 0 0 3px rgba(8,123,209,.12);
     }
 
     .characterCounter{
-      margin-top:7px;
-
+      margin-top:4px;
       color:var(--muted);
-
       text-align:right;
       font-size:11px;
-      font-weight:700;
     }
 
     .verseReferenceArea{
       display:none;
-      margin-top:11px;
+      margin-top:10px;
     }
 
     .verseReferenceArea.show{
@@ -406,31 +315,26 @@
     .mediaOptions{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:10px;
+      gap:8px;
     }
 
     .mediaOptionButton{
-      min-height:48px;
-      padding:10px 12px;
-
+      min-height:42px;
+      padding:8px 10px;
       border:1px solid var(--border);
-      border-radius:13px;
-
+      border-radius:6px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-
-      background:#f7fafc;
+      gap:6px;
+      background:#f0f2f5;
       color:var(--text);
-
       font-size:12px;
-      font-weight:900;
+      font-weight:bold;
     }
 
     .mediaOptionButton:hover{
-      border-color:#9bcbe9;
-      background:var(--primary-light);
+      background:#e4e6eb;
     }
 
     .hiddenFileInput{
@@ -444,17 +348,12 @@
 
     .mediaPreview{
       position:relative;
-
       display:none;
-
-      margin-top:13px;
-
+      margin-top:10px;
       overflow:hidden;
-
       border:1px solid var(--border);
-      border-radius:16px;
-
-      background:#101820;
+      border-radius:8px;
+      background:#000000;
     }
 
     .mediaPreview.show{
@@ -464,72 +363,57 @@
     .mediaPreview img,
     .mediaPreview video{
       width:100%;
-      max-height:430px;
-
+      max-height:380px;
       object-fit:contain;
     }
 
     .removeMediaButton{
       position:absolute;
-      top:10px;
-      right:10px;
-
-      width:38px;
-      height:38px;
-
+      top:8px;
+      right:8px;
+      width:32px;
+      height:32px;
       border:0;
       border-radius:50%;
-
       display:flex;
       align-items:center;
       justify-content:center;
-
-      background:rgba(0,0,0,.68);
+      background:rgba(0,0,0,0.7);
       color:#ffffff;
-
-      font-size:21px;
-      font-weight:900;
+      font-size:18px;
+      font-weight:bold;
     }
 
     .editMediaButton{
       position:absolute;
-      top:10px;
-      left:10px;
-
-      width:38px;
-      height:38px;
-
+      top:8px;
+      left:8px;
+      width:32px;
+      height:32px;
       border:0;
       border-radius:50%;
-
       display:flex;
       align-items:center;
       justify-content:center;
-
-      background:rgba(0,0,0,.68);
+      background:rgba(0,0,0,0.7);
       color:#ffffff;
-
-      font-size:16px;
+      font-size:14px;
     }
 
     .editMediaButton:hover{
-      background:rgba(8,123,209,.9);
+      background:var(--primary);
     }
 
     .selectedMediaLabel{
       position:absolute;
-      left:10px;
-      bottom:10px;
-
-      padding:7px 10px;
-
-      border-radius:999px;
-
-      background:rgba(0,0,0,.68);
+      left:8px;
+      bottom:8px;
+      padding:4px 8px;
+      border-radius:20px;
+      background:rgba(0,0,0,0.7);
       color:#ffffff;
-
       font-size:10px;
-      font-weight:900;
+      font-weight:bold;
     }
 
 
@@ -538,16 +422,13 @@
     ===================================================== */
 
     .privacyInformation{
-      margin-top:9px;
-      padding:11px 12px;
-
-      border-radius:12px;
-
-      background:#f1f7fb;
+      margin-top:6px;
+      padding:8px 10px;
+      border-radius:6px;
+      background:#f0f2f5;
       color:var(--muted);
-
       font-size:11px;
-      line-height:1.5;
+      line-height:1.4;
     }
 
 
@@ -557,15 +438,12 @@
 
     .formMessage{
       display:none;
-
-      margin-bottom:13px;
-      padding:12px 13px;
-
-      border-radius:13px;
-
+      margin-bottom:12px;
+      padding:10px 12px;
+      border-radius:6px;
       font-size:12px;
-      font-weight:800;
-      line-height:1.45;
+      font-weight:bold;
+      line-height:1.4;
     }
 
     .formMessage.show{
@@ -574,17 +452,17 @@
 
     .formMessage.error{
       background:#fdecec;
-      color:#a52f2f;
+      color:var(--danger);
     }
 
     .formMessage.success{
       background:#eaf7ee;
-      color:#267343;
+      color:var(--success);
     }
 
     .formMessage.loading{
-      background:#eaf5fd;
-      color:#0869ad;
+      background:var(--primary-light);
+      color:var(--primary);
     }
 
 
@@ -595,43 +473,38 @@
     .formActions{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
+      margin-top:16px;
     }
 
     .cancelButton,
     .publishButton{
-      min-height:49px;
-
-      border-radius:14px;
-
+      min-height:42px;
+      border-radius:6px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-
+      gap:6px;
       font-size:13px;
-      font-weight:900;
+      font-weight:bold;
     }
 
     .cancelButton{
-      flex:0 0 36%;
-
-      border:1px solid var(--border);
-
+      flex:0 0 32%;
+      border:1px solid #ccd0d5;
       background:#ffffff;
       color:var(--muted);
     }
 
+    .cancelButton:hover{
+      background:#f0f2f5;
+    }
+
     .publishButton{
       flex:1;
-
       border:0;
-
       background:var(--primary);
       color:#ffffff;
-
-      box-shadow:
-        0 5px 14px rgba(8,123,209,.24);
     }
 
     .publishButton:hover{
@@ -640,13 +513,12 @@
 
     .publishButton:disabled{
       cursor:not-allowed;
-      opacity:.65;
+      opacity:.6;
     }
 
 
     /* =====================================================
-       PHOTO EDITOR (crop / rotate before posting,
-       the same tool used on the Create Post page)
+       PHOTO EDITOR MODAL
     ===================================================== */
 
     .photoEditorModal{
@@ -667,7 +539,7 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:14px 16px;
+      padding:12px 14px;
       background:#111111;
     }
 
@@ -675,9 +547,9 @@
       border:0;
       background:none;
       color:#ffffff;
-      font-size:16px;
+      font-size:15px;
       font-weight:bold;
-      padding:6px 10px;
+      padding:4px 8px;
       cursor:pointer;
     }
 
@@ -687,7 +559,7 @@
 
     .photoEditorCounterText{
       color:#cccccc;
-      font-size:13px;
+      font-size:12px;
     }
 
     .photoEditorImageArea{
@@ -707,20 +579,20 @@
       flex:0 0 auto;
       display:flex;
       align-items:center;
-      gap:10px;
-      padding:12px 14px;
+      gap:8px;
+      padding:10px 12px;
       overflow-x:auto;
       background:#111111;
     }
 
     .photoEditorToolButton{
       flex:0 0 auto;
-      padding:9px 14px;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:20px;
+      padding:8px 12px;
+      border:1px solid rgba(255,255,255,.3);
+      border-radius:18px;
       background:transparent;
       color:#ffffff;
-      font-size:14px;
+      font-size:13px;
       cursor:pointer;
       white-space:nowrap;
     }
@@ -735,27 +607,17 @@
        RESPONSIVE
     ===================================================== */
 
-    @media(max-width:520px){
+    @media(max-width:600px){
 
       .pageContainer{
-        padding-left:10px;
-        padding-right:10px;
+        padding:0;
       }
 
+      .introCard,
       .formCard{
-        padding:15px;
-      }
-
-      .momentTypeGrid{
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0,1fr)
-          );
-      }
-
-      .introTitle{
-        font-size:21px;
+        border-radius:0;
+        border-left:none;
+        border-right:none;
       }
 
     }
@@ -777,2399 +639,3 @@
       }
 
     }
-
-  </style>
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
-  >
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
-
-</head>
-<body>
-
-  <!-- =====================================================
-       TOP HEADER
-  ====================================================== -->
-
-  <header class="topHeader">
-
-    <div class="topHeaderInner">
-
-      <a
-        href="faith-moments.html"
-        class="backButton"
-        aria-label="Return to Faith Moments"
-        title="Back"
-      >
-        ←
-      </a>
-
-      <div class="headerTitleArea">
-
-        <div class="headerTitle">
-          Create Faith Moment
-        </div>
-
-        <div class="headerSubtitle">
-          Share faith, hope and encouragement
-        </div>
-
-      </div>
-
-      <div class="headerIcon">
-        ✨
-      </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- =====================================================
-       MAIN PAGE
-  ====================================================== -->
-
-  <main class="pageContainer">
-
-
-    <!-- INTRODUCTION -->
-
-    <section class="introCard">
-
-      <h1 class="introTitle">
-        🌅 Share a Faith Moment
-      </h1>
-
-      <p class="introText">
-        Share one meaningful Bible verse, prayer, testimony,
-        photograph or short video. Your moment will remain active
-        for 24 hours.
-      </p>
-
-    </section>
-
-
-    <!-- FORM -->
-
-    <form
-      id="createFaithMomentForm"
-      class="formCard"
-    >
-
-
-      <!-- FORM MESSAGE -->
-
-      <div
-        id="formMessage"
-        class="formMessage"
-        role="status"
-        aria-live="polite"
-      ></div>
-
-
-      <!-- MOMENT TYPE -->
-
-      <section class="formSection">
-
-        <label class="sectionLabel">
-          1. Choose the type of moment
-        </label>
-
-        <p class="sectionHelp">
-          Select the content you want to share.
-        </p>
-
-        <div
-          id="momentTypeGrid"
-          class="momentTypeGrid"
-        >
-
-          <button
-            class="momentTypeButton active"
-            type="button"
-            data-type="verse"
-          >
-            <span class="momentTypeIcon">
-              📖
-            </span>
-
-            <span class="momentTypeName">
-              Bible Verse
-            </span>
-          </button>
-
-
-          <button
-            class="momentTypeButton"
-            type="button"
-            data-type="prayer"
-          >
-            <span class="momentTypeIcon">
-              🙏
-            </span>
-
-            <span class="momentTypeName">
-              Prayer
-            </span>
-          </button>
-
-
-          <button
-            class="momentTypeButton"
-            type="button"
-            data-type="testimony"
-          >
-            <span class="momentTypeIcon">
-              💬
-            </span>
-
-            <span class="momentTypeName">
-              Testimony
-            </span>
-          </button>
-
-
-          <button
-            class="momentTypeButton"
-            type="button"
-            data-type="photo"
-          >
-            <span class="momentTypeIcon">
-              🖼️
-            </span>
-
-            <span class="momentTypeName">
-              Photo
-            </span>
-          </button>
-
-
-          <button
-            class="momentTypeButton"
-            type="button"
-            data-type="video"
-          >
-            <span class="momentTypeIcon">
-              🎥
-            </span>
-
-            <span class="momentTypeName">
-              Video
-            </span>
-          </button>
-
-
-          <button
-            class="momentTypeButton"
-            type="button"
-            data-type="text"
-          >
-            <span class="momentTypeIcon">
-              ✨
-            </span>
-
-            <span class="momentTypeName">
-              Encouragement
-            </span>
-          </button>
-
-        </div>
-
-        <input
-          id="selectedMomentType"
-          name="selectedMomentType"
-          type="hidden"
-          value="verse"
-        >
-
-      </section>
-
-
-      <!-- MESSAGE -->
-
-      <section class="formSection">
-
-        <label
-          id="messageLabel"
-          class="sectionLabel"
-          for="momentMessage"
-        >
-          2. Write the Bible verse or message
-        </label>
-
-        <textarea
-          id="momentMessage"
-          class="formTextarea"
-          maxlength="1200"
-          placeholder="Write a Bible verse or faith message..."
-          required
-        ></textarea>
-
-        <div
-          id="characterCounter"
-          class="characterCounter"
-        >
-          0 / 1200
-        </div>
-
-
-        <!-- VERSE REFERENCE -->
-
-        <div
-          id="verseReferenceArea"
-          class="verseReferenceArea show"
-        >
-
-          <label
-            class="sectionLabel"
-            for="verseReference"
-          >
-            Bible reference
-          </label>
-
-          <input
-            id="verseReference"
-            class="formInput"
-            type="text"
-            maxlength="100"
-            placeholder="Example: John 3:16"
-          >
-
-        </div>
-
-      </section>
-
-
-      <!-- MEDIA -->
-
-      <section class="formSection">
-
-        <label class="sectionLabel">
-          3. Add media
-        </label>
-
-        <p class="sectionHelp">
-          Add one photo or one short video. This is optional unless
-          you selected Photo or Video.
-        </p>
-
-        <div class="mediaOptions">
-
-          <button
-            id="selectPhotoButton"
-            class="mediaOptionButton"
-            type="button"
-          >
-            <span>📷</span>
-            <span>Select Photo</span>
-          </button>
-
-          <button
-            id="selectVideoButton"
-            class="mediaOptionButton"
-            type="button"
-          >
-            <span>🎥</span>
-            <span>Select Video</span>
-          </button>
-
-        </div>
-
-
-        <input
-          id="photoInput"
-          class="hiddenFileInput"
-          type="file"
-          accept="image/*"
-        >
-
-        <input
-          id="videoInput"
-          class="hiddenFileInput"
-          type="file"
-          accept="video/*"
-        >
-
-
-        <!-- MEDIA PREVIEW -->
-
-        <div
-          id="mediaPreview"
-          class="mediaPreview"
-        >
-
-          <div id="mediaPreviewContent"></div>
-
-          <button
-            id="editMediaButton"
-            class="editMediaButton"
-            type="button"
-            aria-label="Edit selected photo"
-            title="Edit photo"
-          >
-            ✏️
-          </button>
-
-          <button
-            id="removeMediaButton"
-            class="removeMediaButton"
-            type="button"
-            aria-label="Remove selected media"
-            title="Remove media"
-          >
-            ×
-          </button>
-
-          <span
-            id="selectedMediaLabel"
-            class="selectedMediaLabel"
-          >
-            Selected media
-          </span>
-
-        </div>
-
-      </section>
-
-
-      <!-- PRIVACY -->
-
-      <section class="formSection">
-
-        <label
-          class="sectionLabel"
-          for="momentPrivacy"
-        >
-          4. Who can see this moment?
-        </label>
-
-        <select
-          id="momentPrivacy"
-          class="formSelect"
-        >
-
-          <option value="everyone">
-            🌍 Everyone
-          </option>
-
-          <option value="only-me">
-            🔒 Only Me
-          </option>
-
-        </select>
-
-        <div class="privacyInformation">
-          Everyone allows Faith Connect members to view your moment.
-          Only Me saves the moment privately to your account.
-        </div>
-
-      </section>
-
-
-      <!-- ACTION BUTTONS -->
-
-      <section class="formActions">
-
-        <a
-          href="faith-moments.html"
-          class="cancelButton"
-        >
-          Cancel
-        </a>
-
-        <button
-          id="publishMomentButton"
-          class="publishButton"
-          type="submit"
-        >
-          <span>✨</span>
-          <span id="publishButtonText">
-            Publish Moment
-          </span>
-        </button>
-
-      </section>
-
-    </form>
-
-  </main>
-
-
-  <!-- =====================================================
-       PHOTO EDITOR
-       (crop / rotate a photo before it is shared —
-       opens automatically right after a photo is chosen,
-       and can be reopened from the ✏️ button)
-  ====================================================== -->
-
-  <div
-    id="photoEditorModal"
-    class="photoEditorModal"
-    aria-hidden="true"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Edit photo"
-  >
-
-    <div class="photoEditorHeader">
-
-      <button
-        type="button"
-        id="photoEditorCancelButton"
-        class="photoEditorHeaderButton"
-      >
-        ✕
-      </button>
-
-      <span
-        id="photoEditorCounter"
-        class="photoEditorCounterText"
-      ></span>
-
-      <button
-        type="button"
-        id="photoEditorDoneButton"
-        class="photoEditorHeaderButton photoEditorDoneButton"
-      >
-        ✓ Done
-      </button>
-
-    </div>
-
-
-    <div class="photoEditorImageArea">
-
-      <img
-        id="photoEditorImage"
-        src=""
-        alt="Photo being edited"
-      >
-
-    </div>
-
-
-    <div class="photoEditorToolbar">
-
-      <button
-        type="button"
-        id="photoEditorRotateLeftButton"
-        class="photoEditorToolButton"
-        title="Rotate left"
-      >
-        ⟲
-      </button>
-
-      <button
-        type="button"
-        id="photoEditorRotateRightButton"
-        class="photoEditorToolButton"
-        title="Rotate right"
-      >
-        ⟳
-      </button>
-
-      <button
-        type="button"
-        class="photoEditorToolButton photoEditorAspectButton active"
-        data-ratio="free"
-      >
-        Free
-      </button>
-
-      <button
-        type="button"
-        class="photoEditorToolButton photoEditorAspectButton"
-        data-ratio="1"
-      >
-        1:1
-      </button>
-
-      <button
-        type="button"
-        class="photoEditorToolButton photoEditorAspectButton"
-        data-ratio="0.8"
-      >
-        4:5
-      </button>
-
-      <button
-        type="button"
-        class="photoEditorToolButton photoEditorAspectButton"
-        data-ratio="1.7778"
-      >
-        16:9
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       JAVASCRIPT
-  ====================================================== -->
-
-  <script type="module">
-
-    import{
-  auth,
-  db,
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  serverTimestamp,
-  onAuthStateChanged
-}from "./firebase.js";
-
-/* =====================================================
-   IMAGEKIT SETTINGS
-===================================================== */
-
-const imagekitPublicKey =
-  "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
-
-const imagekitUrlEndpoint =
-  "https://ik.imagekit.io/f5si9ehav";
-
-const imagekitAuthEndpoint =
-  "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
-
-const imagekitUploadUrl =
-  "https://upload.imagekit.io/api/v1/files/upload";
-
-    /* =====================================================
-       PAGE ELEMENTS
-    ===================================================== */
-
-    const createFaithMomentForm =
-      document.getElementById(
-        "createFaithMomentForm"
-      );
-
-    const momentTypeButtons =
-      document.querySelectorAll(
-        ".momentTypeButton"
-      );
-
-    const selectedMomentTypeInput =
-      document.getElementById(
-        "selectedMomentType"
-      );
-
-    const messageLabel =
-      document.getElementById(
-        "messageLabel"
-      );
-
-    const momentMessage =
-      document.getElementById(
-        "momentMessage"
-      );
-
-    const characterCounter =
-      document.getElementById(
-        "characterCounter"
-      );
-
-    const verseReferenceArea =
-      document.getElementById(
-        "verseReferenceArea"
-      );
-
-    const verseReference =
-      document.getElementById(
-        "verseReference"
-      );
-
-    const selectPhotoButton =
-      document.getElementById(
-        "selectPhotoButton"
-      );
-
-    const selectVideoButton =
-      document.getElementById(
-        "selectVideoButton"
-      );
-
-    const photoInput =
-      document.getElementById(
-        "photoInput"
-      );
-
-    const videoInput =
-      document.getElementById(
-        "videoInput"
-      );
-
-    const mediaPreview =
-      document.getElementById(
-        "mediaPreview"
-      );
-
-    const mediaPreviewContent =
-      document.getElementById(
-        "mediaPreviewContent"
-      );
-
-    const removeMediaButton =
-      document.getElementById(
-        "removeMediaButton"
-      );
-
-    const editMediaButton =
-      document.getElementById(
-        "editMediaButton"
-      );
-
-    const selectedMediaLabel =
-      document.getElementById(
-        "selectedMediaLabel"
-      );
-
-    const momentPrivacy =
-      document.getElementById(
-        "momentPrivacy"
-      );
-
-    const formMessage =
-      document.getElementById(
-        "formMessage"
-      );
-
-    const publishMomentButton =
-      document.getElementById(
-        "publishMomentButton"
-      );
-
-    const publishButtonText =
-      document.getElementById(
-        "publishButtonText"
-      );
-
-
-    /* =====================================================
-       PHOTO EDITOR ELEMENTS
-    ===================================================== */
-
-    const photoEditorModal =
-      document.getElementById(
-        "photoEditorModal"
-      );
-
-    const photoEditorImage =
-      document.getElementById(
-        "photoEditorImage"
-      );
-
-    const photoEditorCounter =
-      document.getElementById(
-        "photoEditorCounter"
-      );
-
-    const photoEditorCancelButton =
-      document.getElementById(
-        "photoEditorCancelButton"
-      );
-
-    const photoEditorDoneButton =
-      document.getElementById(
-        "photoEditorDoneButton"
-      );
-
-    const photoEditorRotateLeftButton =
-      document.getElementById(
-        "photoEditorRotateLeftButton"
-      );
-
-    const photoEditorRotateRightButton =
-      document.getElementById(
-        "photoEditorRotateRightButton"
-      );
-
-    const photoEditorAspectButtons =
-      document.querySelectorAll(
-        ".photoEditorAspectButton"
-      );
-
-
-    /* =====================================================
-   PAGE STATE
-===================================================== */
-
-let currentUser = null;
-let currentProfile = null;
-
-let selectedMomentType = "verse";
-
-let selectedMediaFile = null;
-let selectedMediaType = "none";
-let mediaPreviewUrl = "";
-
-let isPublishing = false;
-
-
-/* =====================================================
-   PHOTO EDITOR STATE
-
-   "fresh" -> a photo was just chosen with the file
-   picker and has not been added to the moment yet.
-   "reedit" -> re-editing the photo that is already
-   selected, opened from the ✏️ button.
-===================================================== */
-
-let photoEditorCropper = null;
-let photoEditorMode = "fresh";
-let photoEditorPendingFile = null;
-let photoEditorActiveObjectUrl = "";
-
-
-    /* =====================================================
-       FORM MESSAGE
-    ===================================================== */
-
-    function showFormMessage(
-      message,
-      type = "error"
-    ){
-
-      formMessage.textContent =
-        message;
-
-      formMessage.className =
-        `formMessage show ${type}`;
-
-      formMessage.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
-
-    }
-
-
-    function hideFormMessage(){
-
-      formMessage.textContent = "";
-      formMessage.className =
-        "formMessage";
-
-    }
-
-
-    /* =====================================================
-       TEXT HELPERS
-    ===================================================== */
-
-    function cleanText(value){
-
-      return String(value || "").trim();
-
-    }
-
-
-    function getProfileName(){
-
-      return (
-        currentProfile?.name ||
-        currentProfile?.fullName ||
-        currentProfile?.displayName ||
-        currentUser?.displayName ||
-        currentUser?.email?.split("@")[0] ||
-        "Faith Connect Member"
-      );
-
-    }
-
-
-    function getProfilePicture(){
-
-      return (
-        currentProfile?.profilePicture ||
-        currentProfile?.picture ||
-        currentProfile?.photoURL ||
-        currentUser?.photoURL ||
-        ""
-      );
-
-    }
-
-
-    /* =====================================================
-       LOAD CURRENT MEMBER PROFILE
-    ===================================================== */
-
-    async function loadCurrentMemberProfile(){
-
-      currentProfile = null;
-
-      if(!currentUser){
-        return;
-      }
-
-      try{
-
-        const userReference =
-          doc(
-            db,
-            "users",
-            currentUser.uid
-          );
-
-        const userSnapshot =
-          await getDoc(userReference);
-
-        if(userSnapshot.exists()){
-
-          currentProfile = {
-            id:userSnapshot.id,
-            ...userSnapshot.data()
-          };
-
-        }
-
-      }catch(error){
-
-        console.error(
-          "Profile loading error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       AUTHENTICATION
-    ===================================================== */
-
-    onAuthStateChanged(
-      auth,
-      async user => {
-
-        currentUser = user || null;
-
-        if(!currentUser){
-
-          showFormMessage(
-            "Please sign in before creating a Faith Moment.",
-            "error"
-          );
-
-          publishMomentButton.disabled =
-            true;
-
-          publishButtonText.textContent =
-            "Sign In Required";
-
-          setTimeout(
-            () => {
-
-              window.location.href =
-                "login.html";
-
-            },
-            1600
-          );
-
-          return;
-
-        }
-
-        await loadCurrentMemberProfile();
-
-        publishMomentButton.disabled =
-          false;
-
-        publishButtonText.textContent =
-          "Publish Moment";
-
-      }
-    );
-
-
-    /* =====================================================
-       MOMENT TYPE SETTINGS
-    ===================================================== */
-
-    const momentTypeSettings = {
-
-      verse:{
-        label:
-          "2. Write the Bible verse or message",
-
-        placeholder:
-          "Write a Bible verse or faith message...",
-
-        media:
-          "optional"
-      },
-
-      prayer:{
-        label:
-          "2. Write your prayer",
-
-        placeholder:
-          "Write the prayer you want to share...",
-
-        media:
-          "optional"
-      },
-
-      testimony:{
-        label:
-          "2. Share your testimony",
-
-        placeholder:
-          "Tell the community what God has done...",
-
-        media:
-          "optional"
-      },
-
-      photo:{
-        label:
-          "2. Write a caption",
-
-        placeholder:
-          "Write a short message about your photo...",
-
-        media:
-          "photo"
-      },
-
-      video:{
-        label:
-          "2. Write a caption",
-
-        placeholder:
-          "Write a short message about your video...",
-
-        media:
-          "video"
-      },
-
-      text:{
-        label:
-          "2. Write an encouragement",
-
-        placeholder:
-          "Share hope, faith or encouragement...",
-
-        media:
-          "optional"
-      }
-
-    };
-
-
-    function selectMomentType(type){
-
-      selectedMomentType =
-        momentTypeSettings[type]
-          ? type
-          : "verse";
-
-      selectedMomentTypeInput.value =
-        selectedMomentType;
-
-
-      momentTypeButtons.forEach(button => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.type ===
-            selectedMomentType
-        );
-
-      });
-
-
-      const settings =
-        momentTypeSettings[
-          selectedMomentType
-        ];
-
-      messageLabel.textContent =
-        settings.label;
-
-      momentMessage.placeholder =
-        settings.placeholder;
-
-
-      verseReferenceArea.classList.toggle(
-        "show",
-        selectedMomentType === "verse"
-      );
-
-
-      if(selectedMomentType !== "verse"){
-
-        verseReference.value = "";
-
-      }
-
-
-      if(
-        selectedMomentType === "photo" &&
-        selectedMediaType === "video"
-      ){
-
-        clearSelectedMedia();
-
-      }
-
-
-      if(
-        selectedMomentType === "video" &&
-        selectedMediaType === "photo"
-      ){
-
-        clearSelectedMedia();
-
-      }
-
-      hideFormMessage();
-
-    }
-
-
-    momentTypeButtons.forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          selectMomentType(
-            button.dataset.type
-          );
-
-        }
-      );
-
-    });
-
-
-    /* =====================================================
-       CHARACTER COUNTER
-    ===================================================== */
-
-    function updateCharacterCounter(){
-
-      const length =
-        momentMessage.value.length;
-
-      characterCounter.textContent =
-        `${length} / 1200`;
-
-    }
-
-
-    momentMessage.addEventListener(
-      "input",
-      updateCharacterCounter
-    );
-
-
-    /* =====================================================
-       FILE SELECTION BUTTONS
-    ===================================================== */
-
-    selectPhotoButton.addEventListener(
-      "click",
-      () => {
-
-        photoInput.click();
-
-      }
-    );
-
-
-    selectVideoButton.addEventListener(
-      "click",
-      () => {
-
-        videoInput.click();
-
-      }
-    );
-
-
-    /* =====================================================
-       CLEAR SELECTED MEDIA
-    ===================================================== */
-
-    function clearSelectedMedia(){
-
-      if(mediaPreviewUrl){
-
-        URL.revokeObjectURL(
-          mediaPreviewUrl
-        );
-
-      }
-
-      selectedMediaFile = null;
-      selectedMediaType = "none";
-      mediaPreviewUrl = "";
-
-      photoInput.value = "";
-      videoInput.value = "";
-
-      mediaPreviewContent.innerHTML = "";
-
-      mediaPreview.classList.remove(
-        "show"
-      );
-
-      editMediaButton.style.display =
-        "none";
-
-      selectedMediaLabel.textContent =
-        "Selected media";
-
-    }
-
-
-    removeMediaButton.addEventListener(
-      "click",
-      clearSelectedMedia
-    );
-
-
-    /* =====================================================
-       PHOTO EDITOR
-       (crop / rotate, using Cropper.js -- same tool
-       used on the Create Post page)
-    ===================================================== */
-
-    function destroyPhotoEditorCropper(){
-
-      if(photoEditorCropper){
-
-        photoEditorCropper.destroy();
-
-        photoEditorCropper = null;
-
-      }
-
-      if(photoEditorActiveObjectUrl){
-
-        URL.revokeObjectURL(
-          photoEditorActiveObjectUrl
-        );
-
-        photoEditorActiveObjectUrl = "";
-
-      }
-
-    }
-
-
-    function setPhotoEditorAspectButtonsToFree(){
-
-      photoEditorAspectButtons.forEach(
-        button => {
-
-          button.classList.toggle(
-            "active",
-            button.dataset.ratio === "free"
-          );
-
-        }
-      );
-
-    }
-
-
-    function openPhotoEditorModal(
-      imageUrl,
-      counterText
-    ){
-
-      photoEditorCounter.textContent =
-        counterText;
-
-      setPhotoEditorAspectButtonsToFree();
-
-      photoEditorModal.classList.add(
-        "show"
-      );
-
-      photoEditorModal.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      destroyPhotoEditorCropper();
-
-      photoEditorActiveObjectUrl =
-        imageUrl;
-
-      photoEditorImage.src =
-        imageUrl;
-
-      photoEditorImage.onload =
-        () => {
-
-          photoEditorCropper =
-            new Cropper(
-              photoEditorImage,
-              {
-                viewMode:1,
-                dragMode:"move",
-                autoCropArea:1,
-                background:false,
-                responsive:true,
-                aspectRatio:NaN
-              }
-            );
-
-        };
-
-    }
-
-
-    function closePhotoEditorModal(){
-
-      photoEditorModal.classList.remove(
-        "show"
-      );
-
-      photoEditorModal.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-      destroyPhotoEditorCropper();
-
-    }
-
-
-    function getCroppedImageFile(
-      originalFile
-    ){
-
-      return new Promise(resolve => {
-
-        if(!photoEditorCropper){
-
-          resolve(originalFile);
-          return;
-
-        }
-
-        const canvas =
-          photoEditorCropper.getCroppedCanvas({
-            maxWidth:2048,
-            maxHeight:2048,
-            imageSmoothingQuality:"high"
-          });
-
-        if(!canvas){
-
-          resolve(originalFile);
-          return;
-
-        }
-
-        canvas.toBlob(
-          blob => {
-
-            if(!blob){
-
-              resolve(originalFile);
-              return;
-
-            }
-
-            resolve(
-              new File(
-                [blob],
-                originalFile.name,
-                {type:"image/jpeg"}
-              )
-            );
-
-          },
-          "image/jpeg",
-          0.9
-        );
-
-      });
-
-    }
-
-
-    function openPhotoEditorForFreshFile(
-      file
-    ){
-
-      photoEditorMode = "fresh";
-      photoEditorPendingFile = file;
-
-      const temporaryUrl =
-        URL.createObjectURL(file);
-
-      openPhotoEditorModal(
-        temporaryUrl,
-        "Edit photo"
-      );
-
-    }
-
-
-    function openPhotoEditorForReedit(){
-
-      if(
-        selectedMediaType !== "photo" ||
-        !selectedMediaFile
-      ){
-        return;
-      }
-
-      photoEditorMode = "reedit";
-
-      const temporaryUrl =
-        URL.createObjectURL(
-          selectedMediaFile
-        );
-
-      openPhotoEditorModal(
-        temporaryUrl,
-        "Edit photo"
-      );
-
-    }
-
-
-    editMediaButton.addEventListener(
-      "click",
-      openPhotoEditorForReedit
-    );
-
-
-    photoEditorRotateLeftButton.addEventListener(
-      "click",
-      () => {
-
-        if(photoEditorCropper){
-
-          photoEditorCropper.rotate(-90);
-
-        }
-
-      }
-    );
-
-
-    photoEditorRotateRightButton.addEventListener(
-      "click",
-      () => {
-
-        if(photoEditorCropper){
-
-          photoEditorCropper.rotate(90);
-
-        }
-
-      }
-    );
-
-
-    photoEditorAspectButtons.forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            photoEditorAspectButtons.forEach(
-              otherButton => {
-
-                otherButton.classList.remove(
-                  "active"
-                );
-
-              }
-            );
-
-            button.classList.add(
-              "active"
-            );
-
-            if(!photoEditorCropper){
-              return;
-            }
-
-            const ratioValue =
-              button.dataset.ratio;
-
-            photoEditorCropper.setAspectRatio(
-              ratioValue === "free"
-                ? NaN
-                : parseFloat(ratioValue)
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    photoEditorCancelButton.addEventListener(
-      "click",
-      () => {
-
-        if(photoEditorMode === "fresh"){
-
-          photoInput.value = "";
-          photoEditorPendingFile = null;
-
-        }
-
-        closePhotoEditorModal();
-
-      }
-    );
-
-
-    photoEditorDoneButton.addEventListener(
-      "click",
-      async () => {
-
-        if(photoEditorMode === "fresh"){
-
-          const originalFile =
-            photoEditorPendingFile;
-
-          photoEditorPendingFile = null;
-
-          if(!originalFile){
-
-            closePhotoEditorModal();
-            return;
-
-          }
-
-          const editedFile =
-            await getCroppedImageFile(
-              originalFile
-            );
-
-          closePhotoEditorModal();
-
-          finishPhotoSelection(
-            editedFile
-          );
-
-          return;
-
-        }
-
-
-        /* =====================================================
-           RE-EDIT MODE
-        ===================================================== */
-
-        if(!selectedMediaFile){
-
-          closePhotoEditorModal();
-          return;
-
-        }
-
-        const editedFile =
-          await getCroppedImageFile(
-            selectedMediaFile
-          );
-
-        closePhotoEditorModal();
-
-        finishPhotoSelection(
-          editedFile
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       PHOTO PREVIEW
-    ===================================================== */
-
-    function finishPhotoSelection(file){
-
-      clearSelectedMedia();
-
-      selectedMediaFile = file;
-      selectedMediaType = "photo";
-
-      mediaPreviewUrl =
-        URL.createObjectURL(file);
-
-      mediaPreviewContent.innerHTML = `
-
-        <img
-          src="${mediaPreviewUrl}"
-          alt="Selected Faith Moment photograph"
-        >
-
-      `;
-
-      selectedMediaLabel.textContent =
-        "📷 Selected Photo";
-
-      editMediaButton.style.display =
-        "flex";
-
-      mediaPreview.classList.add(
-        "show"
-      );
-
-
-      if(selectedMomentType === "video"){
-
-        selectMomentType("photo");
-
-      }
-
-    }
-
-
-    function handleSelectedPhoto(file){
-
-      hideFormMessage();
-
-      if(!file){
-        return;
-      }
-
-
-      if(
-        !file.type.startsWith("image/")
-      ){
-
-        showFormMessage(
-          "Please select a valid photograph.",
-          "error"
-        );
-
-        photoInput.value = "";
-        return;
-
-      }
-
-
-      const maximumPhotoSize =
-        10 * 1024 * 1024;
-
-      if(file.size > maximumPhotoSize){
-
-        showFormMessage(
-          "The photograph is too large. Select an image smaller than 10 MB.",
-          "error"
-        );
-
-        photoInput.value = "";
-        return;
-
-      }
-
-
-      /*
-         Opens the crop / rotate editor right after a
-         photo is chosen, the same way Create Post does,
-         instead of adding the raw photo straight away.
-      */
-
-      openPhotoEditorForFreshFile(file);
-
-    }
-
-
-    photoInput.addEventListener(
-      "change",
-      event => {
-
-        handleSelectedPhoto(
-          event.target.files?.[0]
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       VIDEO PREVIEW
-    ===================================================== */
-
-    function handleSelectedVideo(file){
-
-      hideFormMessage();
-
-      if(!file){
-        return;
-      }
-
-
-      if(
-        !file.type.startsWith("video/")
-      ){
-
-        showFormMessage(
-          "Please select a valid video.",
-          "error"
-        );
-
-        videoInput.value = "";
-        return;
-
-      }
-
-
-      const maximumVideoSize =
-        50 * 1024 * 1024;
-
-      if(file.size > maximumVideoSize){
-
-        showFormMessage(
-          "The video is too large. Select a video smaller than 50 MB.",
-          "error"
-        );
-
-        videoInput.value = "";
-        return;
-
-      }
-
-
-      clearSelectedMedia();
-
-      selectedMediaFile = file;
-      selectedMediaType = "video";
-
-      mediaPreviewUrl =
-        URL.createObjectURL(file);
-
-      mediaPreviewContent.innerHTML = `
-
-        <video
-          src="${mediaPreviewUrl}"
-          controls
-          playsinline
-          preload="metadata"
-        ></video>
-
-      `;
-
-      selectedMediaLabel.textContent =
-        "🎥 Selected Video";
-
-      editMediaButton.style.display =
-        "none";
-
-      mediaPreview.classList.add(
-        "show"
-      );
-
-
-      if(selectedMomentType === "photo"){
-
-        selectMomentType("video");
-
-      }
-
-    }
-
-
-    videoInput.addEventListener(
-      "change",
-      event => {
-
-        handleSelectedVideo(
-          event.target.files?.[0]
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       INITIAL SETTINGS
-    ===================================================== */
-
-    selectMomentType("verse");
-    updateCharacterCounter();
-    /* =====================================================
-       FORM VALIDATION
-    ===================================================== */
-
-    function validateFaithMoment(){
-
-      if(!currentUser){
-
-        showFormMessage(
-          "Please sign in before publishing.",
-          "error"
-        );
-
-        return false;
-
-      }
-
-
-      const message =
-        cleanText(momentMessage.value);
-
-      const reference =
-        cleanText(verseReference.value);
-
-
-      if(!message){
-
-        showFormMessage(
-          "Please write a message for your Faith Moment.",
-          "error"
-        );
-
-        momentMessage.focus();
-        return false;
-
-      }
-
-
-      if(message.length < 3){
-
-        showFormMessage(
-          "Your message is too short.",
-          "error"
-        );
-
-        momentMessage.focus();
-        return false;
-
-      }
-
-
-      if(
-        selectedMomentType === "verse" &&
-        !reference
-      ){
-
-        showFormMessage(
-          "Please enter the Bible reference, for example John 3:16.",
-          "error"
-        );
-
-        verseReference.focus();
-        return false;
-
-      }
-
-
-      if(
-        selectedMomentType === "photo" &&
-        selectedMediaType !== "photo"
-      ){
-
-        showFormMessage(
-          "Please select a photograph for this Faith Moment.",
-          "error"
-        );
-
-        return false;
-
-      }
-
-
-      if(
-        selectedMomentType === "video" &&
-        selectedMediaType !== "video"
-      ){
-
-        showFormMessage(
-          "Please select a video for this Faith Moment.",
-          "error"
-        );
-
-        return false;
-
-      }
-
-
-      return true;
-
-    }
-
-
-    /* =====================================================
-   GET IMAGEKIT UPLOAD AUTHENTICATION
-===================================================== */
-
-async function getImagekitAuthParameters(){
-
-  const response =
-    await fetch(
-      imagekitAuthEndpoint
-    );
-
-  if(!response.ok){
-
-    throw new Error(
-      "Could not authenticate the media upload. Please try again."
-    );
-
-  }
-
-  return response.json();
-
-}
-
-
-    /* =====================================================
-   UPLOAD MEDIA TO IMAGEKIT
-===================================================== */
-
-async function uploadSelectedMedia(){
-
-  if(
-    !selectedMediaFile ||
-    selectedMediaType === "none"
-  ){
-
-    return {
-      imageUrl:"",
-      videoUrl:""
-    };
-
-  }
-
-
-  const authParameters =
-    await getImagekitAuthParameters();
-
-
-  return new Promise(
-    (resolve,reject) => {
-
-      const formData =
-        new FormData();
-
-      formData.append(
-        "file",
-        selectedMediaFile
-      );
-
-      formData.append(
-        "fileName",
-        selectedMediaFile.name
-      );
-
-      formData.append(
-        "publicKey",
-        imagekitPublicKey
-      );
-
-      formData.append(
-        "signature",
-        authParameters.signature
-      );
-
-      formData.append(
-        "expire",
-        authParameters.expire
-      );
-
-      formData.append(
-        "token",
-        authParameters.token
-      );
-
-      formData.append(
-        "folder",
-        "/sabasaba-faith-moments"
-      );
-
-
-      const request =
-        new XMLHttpRequest();
-
-
-      request.open(
-        "POST",
-        imagekitUploadUrl,
-        true
-      );
-
-
-      request.upload.addEventListener(
-        "progress",
-        event => {
-
-          if(!event.lengthComputable){
-            return;
-          }
-
-
-          const progress =
-            Math.round(
-              (
-                event.loaded /
-                event.total
-              ) * 100
-            );
-
-
-          showFormMessage(
-            `Uploading ${selectedMediaType}: ${progress}%`,
-            "loading"
-          );
-
-          publishButtonText.textContent =
-            `Uploading ${progress}%`;
-
-        }
-      );
-
-
-      request.addEventListener(
-        "load",
-        () => {
-
-          try{
-
-            const response =
-              JSON.parse(
-                request.responseText || "{}"
-              );
-
-
-            if(
-              request.status < 200 ||
-              request.status >= 300 ||
-              !response.url
-            ){
-
-              const imagekitMessage =
-                response?.message ||
-                "ImageKit could not upload the selected media.";
-
-              reject(
-                new Error(
-                  imagekitMessage
-                )
-              );
-
-              return;
-
-            }
-
-
-            const uploadedUrl =
-              response.url;
-
-
-            resolve({
-
-              imageUrl:
-                selectedMediaType === "photo"
-                  ? uploadedUrl
-                  : "",
-
-              videoUrl:
-                selectedMediaType === "video"
-                  ? uploadedUrl
-                  : ""
-
-            });
-
-          }catch(error){
-
-            reject(
-              new Error(
-                "ImageKit returned an invalid upload response."
-              )
-            );
-
-          }
-
-        }
-      );
-
-
-      request.addEventListener(
-        "error",
-        () => {
-
-          reject(
-            new Error(
-              "The media upload failed because of a network problem."
-            )
-          );
-
-        }
-      );
-
-
-      request.addEventListener(
-        "abort",
-        () => {
-
-          reject(
-            new Error(
-              "The media upload was cancelled."
-            )
-          );
-
-        }
-      );
-
-
-      request.send(
-        formData
-      );
-
-    }
-  );
-
-}
-    /* =====================================================
-       CREATE EXPIRY DATE
-    ===================================================== */
-
-    function createExpiryDate(){
-
-      const expiryDate =
-        new Date();
-
-      expiryDate.setHours(
-        expiryDate.getHours() + 24
-      );
-
-      return expiryDate;
-
-    }
-
-
-    /* =====================================================
-       RESET FORM
-    ===================================================== */
-
-    function resetFaithMomentForm(){
-
-      createFaithMomentForm.reset();
-
-      selectedMomentType = "verse";
-
-      clearSelectedMedia();
-      selectMomentType("verse");
-
-      momentMessage.value = "";
-      verseReference.value = "";
-
-      updateCharacterCounter();
-
-    }
-
-
-    /* =====================================================
-       PUBLISH FAITH MOMENT
-    ===================================================== */
-
-    async function publishFaithMoment(
-      event
-    ){
-
-      event.preventDefault();
-
-      if(isPublishing){
-        return;
-      }
-
-
-      hideFormMessage();
-
-
-      if(!validateFaithMoment()){
-        return;
-      }
-
-
-      isPublishing = true;
-
-      publishMomentButton.disabled =
-        true;
-
-      publishButtonText.textContent =
-        "Preparing...";
-
-
-      try{
-
-        let uploadedMedia = {
-          imageUrl:"",
-          videoUrl:""
-        };
-
-
-        if(selectedMediaFile){
-
-          uploadedMedia =
-            await uploadSelectedMedia();
-
-        }
-
-
-        showFormMessage(
-          "Publishing your Faith Moment...",
-          "loading"
-        );
-
-        publishButtonText.textContent =
-          "Publishing...";
-
-
-        const profileName =
-          getProfileName();
-
-        const profilePicture =
-          getProfilePicture();
-
-        const country =
-          currentProfile?.country ||
-          currentProfile?.location ||
-          "";
-
-
-        const momentDocument = {
-
-          userId:
-            currentUser.uid,
-
-          name:
-            profileName,
-
-          fullName:
-            profileName,
-
-          profilePicture:
-            profilePicture,
-
-          country:
-            country,
-
-          type:
-            selectedMomentType,
-
-          momentType:
-            selectedMomentType,
-
-          message:
-            cleanText(
-              momentMessage.value
-            ),
-
-          verseReference:
-            selectedMomentType === "verse"
-              ? cleanText(
-                  verseReference.value
-                )
-              : "",
-
-          imageUrl:
-            uploadedMedia.imageUrl,
-
-          videoUrl:
-            uploadedMedia.videoUrl,
-
-          audioUrl:
-            "",
-
-          privacy:
-            momentPrivacy.value ||
-            "everyone",
-
-          timestamp:
-            serverTimestamp(),
-
-          createdAt:
-            serverTimestamp(),
-
-          expiresAt:
-            createExpiryDate(),
-
-          encouragedBy:
-            [],
-
-          prayedBy:
-            [],
-
-          encouragementCount:
-            0,
-
-          prayedCount:
-            0
-
-        };
-
-
-        const createdDocument =
-          await addDoc(
-            collection(
-              db,
-              "faithMoments"
-            ),
-            momentDocument
-          );
-
-
-        showFormMessage(
-          "Your Faith Moment was published successfully.",
-          "success"
-        );
-
-        publishButtonText.textContent =
-          "Published ✓";
-
-
-        resetFaithMomentForm();
-
-
-        setTimeout(
-          () => {
-
-            window.location.href =
-              `faith-moments.html?moment=${encodeURIComponent(
-                createdDocument.id
-              )}`;
-
-          },
-          1100
-        );
-
-      }catch(error){
-
-        console.error(
-          "Faith Moment publishing error:",
-          error
-        );
-
-
-        let errorMessage =
-          "The Faith Moment could not be published. Please try again.";
-
-
-        if(
-  error?.code ===
-  "permission-denied"
-){
-
-  errorMessage =
-    "Firestore denied permission to create this Faith Moment.";
-
-}else if(
-  error?.message
-    ?.toLowerCase()
-    .includes("network")
-){
-
-  errorMessage =
-    "A network error occurred during the media upload. Check your internet connection.";
-
-}else if(
-  error?.message
-){
-
-  errorMessage =
-    error.message;
-
-}
-
-
-        showFormMessage(
-          errorMessage,
-          "error"
-        );
-
-        publishButtonText.textContent =
-          "Publish Moment";
-
-      }finally{
-
-        isPublishing = false;
-
-        publishMomentButton.disabled =
-          !currentUser;
-
-      }
-
-    }
-
-
-    createFaithMomentForm.addEventListener(
-      "submit",
-      publishFaithMoment
-    );
-
-
-    /* =====================================================
-       WARN BEFORE LEAVING DURING UPLOAD
-    ===================================================== */
-
-    window.addEventListener(
-      "beforeunload",
-      event => {
-
-        if(!isPublishing){
-          return;
-        }
-
-        event.preventDefault();
-        event.returnValue = "";
-
-      }
-    );
-
-
-    /* =====================================================
-       CLEAN UP PREVIEW URL
-    ===================================================== */
-
-    window.addEventListener(
-      "pagehide",
-      () => {
-
-        if(mediaPreviewUrl){
-
-          URL.revokeObjectURL(
-            mediaPreviewUrl
-          );
-
-        }
-
-      }
-    );
-
-  </script>
-  <script>
-    // Register the Service Worker globally
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
-</body>
-</html>
-
