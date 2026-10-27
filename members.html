@@ -5,12 +5,15 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Find Members | SABASABA Gospel Ministry</title>
 
 <style>
+
+/* =====================================================
+   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
+===================================================== */
 
 *{
 margin:0;
@@ -19,205 +22,263 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
+font-family:Arial,Helvetica,sans-serif;
+background:#f0f2f5;
+color:#050505;
+min-height:100vh;
 }
 
 .container{
-max-width:1200px;
+max-width:680px;
 margin:auto;
-padding:20px;
+padding:0 0 80px 0;
 }
 
 .header{
-
-background:linear-gradient(135deg,#0066cc,#004d99);
-color:white;
-padding:35px;
-border-radius:20px;
-text-align:center;
-margin-bottom:25px;
-
+background:#ffffff;
+color:#050505;
+padding:16px 14px;
+border-bottom:1px solid #e4e6eb;
+text-align:left;
+border-radius:0;
+margin-bottom:0;
 }
 
 .header h1{
-
-font-size:38px;
-margin-bottom:10px;
-
+font-size:20px;
+color:#050505;
+margin-bottom:2px;
 }
 
 .header p{
-
-font-size:18px;
-line-height:1.6;
-
+font-size:13px;
+color:#65676b;
+line-height:1.4;
 }
 
 .searchBox{
-
-margin-bottom:25px;
-
+background:#ffffff;
+padding:10px 12px;
+border-bottom:1px solid #e4e6eb;
+margin-bottom:0;
 }
 
 .searchBox input{
-
 width:100%;
-padding:15px;
-border-radius:12px;
-border:1px solid #ccc;
-font-size:17px;
+padding:10px 16px;
+border-radius:20px;
+border:none;
+font-size:15px;
 outline:none;
-
+background:#f0f2f5;
+color:#050505;
 }
 
 .searchBox input:focus{
-
-border-color:#0066cc;
-
+background:#e4e6eb;
 }
 
+/* =====================================================
+   MEMBER ROWS (FLAT EDGE-TO-EDGE LIST)
+===================================================== */
+
 .memberGrid{
-
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-
+display:flex;
+flex-direction:column;
+background:#ffffff;
+gap:0;
 }
 
 .memberCard{
-
-background:white;
-border-radius:18px;
-padding:20px;
-text-align:center;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-transition:.3s;
-
+background:#ffffff;
+border-radius:0;
+padding:12px 14px;
+text-align:left;
+box-shadow:none;
+border-bottom:1px solid #e4e6eb;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+transition:background .2s;
 }
 
 .memberCard:hover{
+background:#f2f4f7;
+transform:none;
+}
 
-transform:translateY(-5px);
-
+.leftInfo{
+display:flex;
+align-items:center;
+min-width:0;
+flex:1;
+gap:12px;
 }
 
 .memberPhoto{
-
-width:100px;
-height:100px;
+width:50px;
+height:50px;
 border-radius:50%;
 object-fit:cover;
-background:#ddd;
-margin:auto;
-margin-bottom:15px;
+background:#e5e9ed;
+flex-shrink:0;
+margin:0;
+border:none;
+}
 
+.textDetails{
+min-width:0;
+flex:1;
 }
 
 .memberCard h2{
-
-color:#0066cc;
-margin-bottom:8px;
-font-size:24px;
-
+color:#050505;
+margin-bottom:2px;
+font-size:15px;
+font-weight:bold;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .memberInfo{
-
-color:#666;
-margin-bottom:18px;
-font-size:16px;
-line-height:1.5;
-
+color:#65676b;
+margin-bottom:0;
+font-size:13px;
+line-height:1.3;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .buttonRow{
-
 display:flex;
-gap:10px;
+align-items:center;
+gap:6px;
+flex-shrink:0;
+}
 
+.messageBtn,
+.profileBtn{
+border:none;
+padding:8px 12px;
+border-radius:6px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:4px;
+white-space:nowrap;
+transition:background .2s;
 }
 
 .messageBtn{
-
-flex:1;
-background:#0066cc;
-color:white;
-border:none;
-padding:12px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-
-}
-
-.profileBtn{
-
-flex:1;
-background:#28a745;
-color:white;
-border:none;
-padding:12px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-
+background:#e4e6eb;
+color:#050505;
 }
 
 .messageBtn:hover{
+background:#d8dadf;
+}
 
-background:#004d99;
-
+.profileBtn{
+background:#1877f2;
+color:#ffffff;
 }
 
 .profileBtn:hover{
-
-background:#1f7f36;
-
+background:#166fe5;
 }
 
 .empty{
-
-background:white;
-padding:40px;
+background:#ffffff;
+padding:30px 14px;
 text-align:center;
-border-radius:18px;
-color:#777;
-font-size:18px;
-
+border-radius:0;
+border-bottom:1px solid #e4e6eb;
+color:#65676b;
+font-size:14px;
 }
 
 .back{
-
-margin-top:30px;
+margin-top:20px;
+padding:0 14px;
 text-align:center;
+}
 
+.back a{
+text-decoration:none;
 }
 
 .back button{
-
-background:#0066cc;
-color:white;
-border:none;
-padding:14px 30px;
-border-radius:10px;
-font-size:17px;
+background:#ffffff;
+color:#050505;
+border:1px solid #ccd0d5;
+padding:10px 20px;
+border-radius:8px;
+font-size:14px;
+font-weight:bold;
 cursor:pointer;
-
+transition:background .2s;
 }
 
-@media(max-width:700px){
+.back button:hover{
+background:#f0f2f5;
+}
 
-.buttonRow{
+@media(max-width:600px){
 
-flex-direction:column;
+.container{
+padding:0;
+}
 
+.header{
+padding:12px;
 }
 
 .header h1{
+font-size:18px;
+}
 
-font-size:30px;
+.memberCard{
+padding:10px 12px;
+}
 
+.memberPhoto{
+width:44px;
+height:44px;
+}
+
+.memberCard h2{
+font-size:14px;
+}
+
+.memberInfo{
+font-size:12px;
+}
+
+.messageBtn,
+.profileBtn{
+padding:6px 10px;
+font-size:12px;
+}
+
+}
+
+@media(max-width:400px){
+
+.buttonRow{
+flex-direction:column;
+align-items:stretch;
+gap:4px;
+}
+
+.messageBtn,
+.profileBtn{
+justify-content:center;
+padding:6px 8px;
 }
 
 }
@@ -232,13 +293,10 @@ font-size:30px;
 
 <div class="header">
 
-<h1>👥 find Members</h1>
+<h1>👥 Find Members</h1>
 
 <p>
-
-Connect with Christians around the world.
-View profiles and start private conversations.
-
+Connect with Christians around the world. View profiles and start private conversations.
 </p>
 
 </div>
@@ -248,7 +306,7 @@ View profiles and start private conversations.
 <input
 id="searchInput"
 type="text"
-placeholder="Search members...">
+placeholder="Search members by name or country...">
 
 </div>
 
@@ -268,7 +326,7 @@ Loading members...
 
 <a href="community.html">
 
-<button>
+<button type="button">
 
 ⬅ Back to Community
 
@@ -331,11 +389,11 @@ allMembers.push({
 
 uid:doc.id,
 
-name:data.fullName||"Unknown Member",
+name:data.fullName||data.displayName||data.name||"Community Member",
 
-country:data.country||"",
+country:data.country||data.location||"",
 
-photo:data.profilePicture||"images/profile.png"
+photo:data.profilePicture||data.photoURL||"images/profile.png"
 
 });
 
@@ -347,7 +405,7 @@ renderMembers(allMembers);
 
 memberGrid.innerHTML=`
 <div class="empty">
-Failed to load members.
+Failed to load members. Please try again.
 </div>
 `;
 
@@ -375,20 +433,33 @@ return;
 
 list.forEach(member=>{
 
-memberGrid.innerHTML+=`
+const card=document.createElement("div");
+card.className="memberCard";
 
-<div class="memberCard">
+const safeName=escapeHTML(member.name);
+const safeCountry=escapeHTML(member.country);
+
+card.innerHTML=`
+
+<div class="leftInfo">
 
 <img
 class="memberPhoto"
 src="${member.photo}"
-onerror="this.src='images/profile.png'">
+onerror="this.src='images/profile.png'"
+alt="${safeName}">
 
-<h2>${member.name}</h2>
+<div class="textDetails">
+
+<h2>${safeName}</h2>
 
 <div class="memberInfo">
 
-${member.country}
+${safeCountry || "Member"}
+
+</div>
+
+</div>
 
 </div>
 
@@ -396,6 +467,7 @@ ${member.country}
 
 <button
 class="messageBtn"
+type="button"
 onclick="location.href='chat.html?uid=${member.uid}'">
 
 💬 Message
@@ -404,6 +476,7 @@ onclick="location.href='chat.html?uid=${member.uid}'">
 
 <button
 class="profileBtn"
+type="button"
 onclick="location.href='profileview.html?uid=${member.uid}'">
 
 👤 View Profile
@@ -412,17 +485,26 @@ onclick="location.href='profileview.html?uid=${member.uid}'">
 
 </div>
 
-</div>
-
 `;
+
+memberGrid.appendChild(card);
 
 });
 
 }
 
+function escapeHTML(value){
+return String(value ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+}
+
 searchInput.addEventListener("input",()=>{
 
-const keyword=searchInput.value.toLowerCase();
+const keyword=searchInput.value.toLowerCase().trim();
 
 const filtered=allMembers.filter(member=>
 
