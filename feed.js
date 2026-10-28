@@ -26,7 +26,17 @@ import {
 ===================================================== */
 
 const ADMIN_EMAILS = ["sabasabawk@gmail.com"];
-const DEFAULT_PICTURE = "images/profile.png";
+/* Default profile picture drawn by the app itself (grey person),
+   so it works even if images/profile.png is missing. */
+const DEFAULT_PICTURE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+    '<rect width="100" height="100" fill="#dfe6ec"/>' +
+    '<circle cx="50" cy="38" r="18" fill="#9aa8b4"/>' +
+    '<path d="M14 100c0-22 16-38 36-38s36 16 36 38z" fill="#9aa8b4"/>' +
+    '</svg>'
+  );
 const POSTS_PER_PAGE = 100;
 const MOMENTS_LIMIT = 60;
 const MOMENT_LIFETIME_MS = 24 * 60 * 60 * 1000;
