@@ -1577,6 +1577,9 @@ function buildMomentCard(momentData) {
 
   const { imageUrl, videoUrl } = getMomentMedia(momentData);
   const icon = momentTypeIcon(momentData.momentType || momentData.type);
+  const messageText = String(
+    getFirstValue(momentData.message, momentData.text, momentData.content) || ""
+  ).trim().slice(0, 140);
 
   const card = document.createElement("a");
   card.href = `faith-moments.html?moment=${encodeURIComponent(momentData.id)}`;
@@ -1590,7 +1593,9 @@ function buildMomentCard(momentData) {
   card.innerHTML = `
     <div class="momentCardGradient"></div>
     ${(!imageUrl && !videoUrl)
-      ? `<div class="momentCardFallbackIcon">${icon}</div>`
+      ? (messageText
+          ? `<div class="momentCardText"><span class="momentCardTextIcon">${icon}</span>${escapeHtml(messageText)}</div>`
+          : `<div class="momentCardFallbackIcon">${icon}</div>`)
       : ""}
     <div class="momentCardAvatar">
       ${profilePicture
