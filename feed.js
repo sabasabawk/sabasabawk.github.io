@@ -1531,6 +1531,21 @@ function getMomentMedia(momentData) {
 
   let videoUrl = explicitVideo;
 
+  /* The video link may be saved under any field name, so look
+     through every text value for a link that points to a video. */
+  if (!videoUrl) {
+    for (const value of Object.values(momentData)) {
+      if (
+        typeof value === "string" &&
+        /^https?:\/\//i.test(value) &&
+        (isVideoUrl(value) || value.indexOf("/video/upload/") !== -1)
+      ) {
+        videoUrl = value;
+        break;
+      }
+    }
+  }
+
   if (!videoUrl && mediaType === "video") {
     videoUrl = getFirstValue(
       momentData.mediaUrl, momentData.contentUrl, momentData.fileUrl
