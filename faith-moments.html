@@ -3111,12 +3111,14 @@
           "",
 
         name:
+          data.authorName ||
           data.name ||
           data.fullName ||
           data.displayName ||
           "Faith Connect Member",
 
         profilePicture:
+          data.authorPicture ||
           data.profilePicture ||
           data.picture ||
           data.photoURL ||
@@ -3150,12 +3152,22 @@
           data.imageURL ||
           data.photoUrl ||
           data.photoURL ||
-          "",
+          (
+            data.mediaUrl &&
+            String(data.mediaType || "").toLowerCase() === "image"
+              ? data.mediaUrl
+              : ""
+          ),
 
         videoUrl:
           data.videoUrl ||
           data.videoURL ||
-          "",
+          (
+            data.mediaUrl &&
+            String(data.mediaType || "").toLowerCase() === "video"
+              ? data.mediaUrl
+              : ""
+          ),
 
         audioUrl:
           data.audioUrl ||
