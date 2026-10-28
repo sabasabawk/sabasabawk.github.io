@@ -795,7 +795,8 @@ async function loadCurrentUserProfile(){
 
 
 /* =====================================================
-   QUICK POST BUTTON
+   QUICK POST BUTTON (not on the page any more,
+   kept safely guarded)
 ===================================================== */
 
 if(quickPostButton){
@@ -1206,6 +1207,13 @@ function loadCommunityPosts(){
 
       function(snapshot){
 
+        /*
+           The very first snapshot fills loadedPostsDocs
+           from scratch. Every snapshot AFTER that only
+           PREPENDS brand-new posts — it never removes or
+           reshuffles anything already on screen.
+        */
+
         if(!firstFeedSnapshotHandled){
 
           firstFeedSnapshotHandled =
@@ -1259,7 +1267,16 @@ function loadCommunityPosts(){
             if(
               change.type !== "added"
             ){
+
+              /*
+                 "modified" (likes/comments/edits) and
+                 "removed" are intentionally ignored here;
+                 post cards update themselves and the
+                 delete button removes its own card.
+              */
+
               return;
+
             }
 
             if(
@@ -1490,6 +1507,11 @@ async function loadMoreCommunityPosts(){
         return;
 
       }
+
+      /*
+         Reached the true end of the feed — loop back to
+         the very top instead of showing "no more posts".
+      */
 
       lastVisibleDocument =
       loadedPostsDocs.length > 0
@@ -1790,6 +1812,12 @@ function createPostCard(postData){
 
   }
 
+  /*
+     MULTIPLE PHOTOS PER POST
+     imageUrls is the array field createpost.html saves;
+     older posts only have the single imageUrl above.
+  */
+
   let imageUrls =
   Array.isArray(
     postData.imageUrls
@@ -2002,6 +2030,10 @@ function createPostCard(postData){
     postCard.appendChild(
       messageElement
     );
+
+    /*
+       READ MORE / READ LESS for long passages.
+    */
 
     const READ_MORE_CHARACTER_LIMIT =
     280;
@@ -2981,6 +3013,12 @@ async function handleDeleteButton(
     await deleteDoc(
       postReference
     );
+
+    /*
+       Remove it from the page and from the loaded-post
+       tracking right away — the live listener ignores
+       "removed" changes on purpose.
+    */
 
     loadedPostIds.delete(
       postId
@@ -4559,6 +4597,12 @@ function getStripMomentVideoUrl(
     return explicitVideo;
   }
 
+  /*
+     The video link may be saved under any field name,
+     so look through every text value of the moment for
+     a link that points to a video file.
+  */
+
   const looksLikeVideo = function(value){
 
     if(typeof value !== "string"){
@@ -4718,6 +4762,11 @@ function renderMomentsStrip(
         momentData.photoURL
       );
 
+      /*
+         The card's BACKGROUND photo is the moment's own
+         content; the profile picture is the corner avatar.
+      */
+
       const momentImageCandidate =
       getFirstValue(
         momentData.thumbnailUrl,
@@ -4730,6 +4779,13 @@ function renderMomentsStrip(
         momentData.mediaUrl,
         momentData.contentUrl
       );
+
+      /*
+         A video link can never be used as a background
+         image (that is why video moments showed only the
+         camera icon). Find the video link separately and
+         show its first frame instead, like a Facebook status.
+      */
 
       const momentVideoUrl =
       getStripMomentVideoUrl(
@@ -4852,8 +4908,15 @@ function renderMomentsStrip(
         frameVideo.style.cssText =
         "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;border-radius:inherit;";
 
+        /*
+           "#t=0.1" makes the browser show a frame
+           of the video straight away, with no tap.
+        */
+
         frameVideo.src =
         momentVideoUrl.split("#")[0];
+
+        /* If the video cannot load, show the icon again. */
 
         frameVideo.addEventListener(
           "error",
@@ -4898,6 +4961,12 @@ function renderMomentsStrip(
           frameVideo,
           momentCard.firstChild
         );
+
+        /*
+           Play silently and on a loop, like a Facebook
+           status. Only cards that are on screen play,
+           which saves battery and data.
+        */
 
         const playQuietly = function(){
 
