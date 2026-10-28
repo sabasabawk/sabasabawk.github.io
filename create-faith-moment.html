@@ -799,6 +799,10 @@
       addDoc,
       doc,
       getDoc,
+      getDocs,
+      deleteDoc,
+      query,
+      where,
       serverTimestamp,
       onAuthStateChanged
     } from "./firebase.js";
@@ -965,7 +969,7 @@
         photoEditorAspectButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         if (cropper) {
-          const ratio = eval(btn.dataset.ratio);
+          const ratio = Number(btn.dataset.ratio);
           cropper.setAspectRatio(ratio);
         }
       });
@@ -1035,13 +1039,65 @@
           mediaUrl = uploadData.url;
         }
 
-        const authorName = currentUserProfile?.name || currentUserProfile?.displayName || currentUser.displayName || "Community Member";
-        const authorPicture = currentUserProfile?.profilePicture || currentUser.photoURL || "images/profile.png";
+        const authorName =
+          currentUserProfile?.fullName ||
+          currentUserProfile?.name ||
+          currentUserProfile?.displayName ||
+          currentUser.displayName ||
+          "Community Member";
+
+        const authorPicture =
+          currentUserProfile?.picture ||
+          currentUserProfile?.profilePicture ||
+          currentUserProfile?.photoURL ||
+          currentUser.photoURL ||
+          "images/profile.png";
+
+        /* ONE MOMENT PER PERSON: find this person's active moments.
+           The upload above is already done, so if anything fails the
+           old moment is still safe. */
+        const oldMomentIds = [];
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        for (const fieldName of ["userId", "authorId", "uid"]) {
+          try {
+            const found = await getDocs(
+              query(collection(db, "faithMoments"), where(fieldName, "==", currentUser.uid))
+            );
+            found.forEach((momentDoc) => {
+              const data = momentDoc.data();
+              const created = data.timestamp?.toDate ? data.timestamp.toDate() : null;
+              const stillActive = !created || (created.getTime() + twentyFourHours) > Date.now();
+              if (stillActive && !oldMomentIds.includes(momentDoc.id)) {
+                oldMomentIds.push(momentDoc.id);
+              }
+            });
+          } catch (checkError) {
+            console.warn("Could not check existing moments:", checkError);
+          }
+        }
+
+        if (oldMomentIds.length > 0) {
+          const replaceIt = window.confirm(
+            "You already have a Moment.\n\nOnly one Moment is allowed at a time. Replace it with this new one?"
+          );
+          if (!replaceIt) {
+            showMsg("Cancelled. Your current Moment was kept.", "error");
+            publishButton.disabled = false;
+            publishButton.textContent = "Share Faith Moment";
+            return;
+          }
+          await Promise.all(
+            oldMomentIds.map((id) => deleteDoc(doc(db, "faithMoments", id)))
+          );
+        }
 
         await addDoc(collection(db, "faithMoments"), {
           userId: currentUser.uid,
           authorName: authorName,
           authorPicture: authorPicture,
+          name: authorName,
+          profilePicture: authorPicture,
           momentType: momentTypeInput.value,
           verseReference: verseReferenceInput.value.trim(),
           message: message,
