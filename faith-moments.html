@@ -2,1873 +2,577 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="description"
-    content="Faith Moments — share Bible verses, prayers, testimonies and encouragement with the Faith Connect community."
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Faith Moments — share encouragement, scripture and testimonies with the Faith Connect community.">
   <title>Faith Moments | Faith Connect</title>
 
   <style>
 
-    /* =====================================================
-       GENERAL RESET
-    ===================================================== */
+    /* ===================== RESET ===================== */
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
 
     :root{
       --primary:#087bd1;
       --primary-dark:#0667b1;
       --primary-soft:#eaf5fd;
-
       --background:#f3f6f9;
       --surface:#ffffff;
-
       --text:#1f2a33;
       --muted:#66737e;
-
       --border:#dce4ea;
-
-      --success:#258c52;
-      --warning:#d88917;
-      --purple:#7751b9;
-      --danger:#c84343;
-
-      --shadow:
-        0 6px 22px rgba(24,50,70,.10);
-
       --radius-large:22px;
       --radius-medium:16px;
-      --radius-small:11px;
     }
 
-    html{
-      scroll-behavior:smooth;
-    }
+    html{scroll-behavior:smooth}
 
     body{
       min-height:100vh;
-
+      padding-bottom:90px;
       background:var(--background);
       color:var(--text);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+      font-family:Arial,Helvetica,sans-serif;
     }
 
-    button,
-    input,
-    textarea,
-    select{
-      font:inherit;
-    }
-
-    button,
-    a{
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    img,
-    video{
-      display:block;
-      max-width:100%;
-    }
+    button,input,textarea,select{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    button{cursor:pointer}
+    img,video{display:block;max-width:100%}
+    :focus-visible{outline:3px solid rgba(8,123,209,.32);outline-offset:3px}
 
 
-    /* =====================================================
-       ACCESSIBILITY
-    ===================================================== */
-
-    .visuallyHidden{
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      white-space:nowrap;
-      border:0;
-    }
-
-    :focus-visible{
-      outline:3px solid rgba(8,123,209,.32);
-      outline-offset:3px;
-    }
-
-
-    /* =====================================================
-       TOP APP BAR
-    ===================================================== */
+    /* ===================== TOP BAR ===================== */
 
     .topAppBar{
-      position:sticky;
-      top:0;
-      z-index:1000;
-
+      position:sticky;top:0;z-index:1000;
       background:rgba(255,255,255,.96);
       border-bottom:1px solid var(--border);
       backdrop-filter:blur(12px);
     }
 
     .topAppBarInner{
-      width:100%;
-      max-width:760px;
-      min-height:62px;
-
-      margin:auto;
-      padding:8px 14px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      width:100%;max-width:760px;min-height:62px;
+      margin:auto;padding:8px 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
 
     .brandArea{
-      min-width:0;
-
-      display:flex;
-      align-items:center;
-      gap:10px;
-
-      text-decoration:none;
-      color:var(--text);
+      min-width:0;flex:1;
+      display:flex;align-items:center;gap:10px;
+      text-decoration:none;color:var(--text);
     }
 
     .brandLogo{
-      width:42px;
-      height:42px;
-      flex-shrink:0;
-
-      border-radius:14px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:
-        linear-gradient(
-          145deg,
-          var(--primary),
-          #45a9eb
-        );
-
-      color:white;
-      font-size:21px;
-
-      box-shadow:
-        0 5px 14px rgba(8,123,209,.24);
+      width:42px;height:42px;flex-shrink:0;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(145deg,var(--primary),#45a9eb);
+      color:#fff;font-size:21px;
+      box-shadow:0 5px 14px rgba(8,123,209,.24);
     }
 
-    .brandText{
-      min-width:0;
-    }
+    .brandText{min-width:0}
 
     .brandTitle{
-      display:block;
-
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-
-      font-size:16px;
-      font-weight:800;
-      line-height:1.15;
+      display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      font-size:16px;font-weight:800;line-height:1.15;
     }
 
     .brandSubtitle{
-      display:block;
-      margin-top:2px;
-
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-
-      color:var(--muted);
-      font-size:11px;
-      font-weight:600;
+      display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      color:var(--muted);font-size:11px;font-weight:600;
     }
 
-    .topActions{
-      display:flex;
-      align-items:center;
-      gap:7px;
-    }
+    .topActions{display:flex;align-items:center;gap:7px}
 
     .topIconButton{
-      width:41px;
-      height:41px;
-
-      border:0;
-      border-radius:50%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#eef4f8;
-      color:var(--text);
-
-      text-decoration:none;
-      font-size:19px;
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
+      width:41px;height:41px;flex-shrink:0;border:0;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:#eef4f8;color:var(--text);text-decoration:none;font-size:19px;
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .topIconButton:hover{
-      background:#e0edf6;
-    }
-
-    .topIconButton:active{
-      transform:scale(.95);
-    }
+    .topIconButton:hover{background:#e0edf6}
+    .topIconButton:active{transform:scale(.95)}
 
 
-    /* =====================================================
-       PAGE CONTAINER
-    ===================================================== */
+    /* ===================== PAGE ===================== */
 
-    .pageContainer{
-      width:100%;
-      max-width:760px;
-
-      margin:auto;
-      padding:
-        18px 14px
-        32px;
-    }
-
-
-    /* =====================================================
-       PAGE INTRODUCTION
-    ===================================================== */
+    .pageContainer{width:100%;max-width:760px;margin:auto;padding:18px 14px 32px}
 
     .pageHeading{
       margin-bottom:16px;
-
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
     }
 
-    .pageHeadingText{
-      min-width:0;
-    }
-
-    .pageTitle{
-      font-size:27px;
-      font-weight:900;
-      letter-spacing:-.5px;
-    }
+    .pageHeadingText{min-width:0}
+    .pageTitle{font-size:27px;font-weight:900;letter-spacing:-.5px}
 
     .pageDescription{
-      max-width:570px;
-      margin-top:6px;
-
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
+      max-width:570px;margin-top:6px;
+      color:var(--muted);font-size:14px;line-height:1.55;
     }
 
     .createMomentButton{
-      flex-shrink:0;
-
-      min-height:42px;
-      padding:10px 14px;
-
-      border:0;
-      border-radius:13px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-
-      background:var(--primary);
-      color:white;
-
-      text-decoration:none;
-      font-size:13px;
-      font-weight:800;
-
-      box-shadow:
-        0 5px 14px rgba(8,123,209,.23);
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
+      flex-shrink:0;min-height:42px;padding:10px 14px;border:0;border-radius:13px;
+      display:flex;align-items:center;justify-content:center;gap:7px;
+      background:var(--primary);color:#fff;text-decoration:none;
+      font-size:13px;font-weight:800;
+      box-shadow:0 5px 14px rgba(8,123,209,.23);
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .createMomentButton:hover{
-      background:var(--primary-dark);
-    }
-
-    .createMomentButton:active{
-      transform:scale(.97);
-    }
+    .createMomentButton:hover{background:var(--primary-dark)}
+    .createMomentButton:active{transform:scale(.97)}
 
 
-    /* =====================================================
-       RESPONSIVE — PART 1
-    ===================================================== */
-
-    @media(max-width:560px){
-
-      .pageContainer{
-        padding-top:14px;
-      }
-
-      .pageHeading{
-        align-items:stretch;
-        flex-direction:column;
-      }
-
-      .createMomentButton{
-        align-self:flex-start;
-      }
-
-      .pageTitle{
-        font-size:24px;
-      }
-
-    }
-
-    @media(max-width:390px){
-
-      .brandSubtitle{
-        display:none;
-      }
-
-      .topAppBarInner{
-        padding-left:10px;
-        padding-right:10px;
-      }
-
-      .pageContainer{
-        padding-left:10px;
-        padding-right:10px;
-      }
-
-    }
-    /* =====================================================
-       TODAY'S BLESSING CARD
-    ===================================================== */
+    /* ===================== DAILY BLESSING ===================== */
 
     .dailyBlessingCard{
-      position:relative;
-      overflow:hidden;
-
-      margin-bottom:20px;
-      padding:22px;
-
+      position:relative;overflow:hidden;margin-bottom:20px;padding:22px;
       border-radius:var(--radius-large);
-
-      background:
-        linear-gradient(
-          135deg,
-          #087bd1,
-          #4ba9e7
-        );
-
-      color:#ffffff;
-
-      box-shadow:
-        0 10px 28px rgba(8,123,209,.24);
+      background:linear-gradient(135deg,#087bd1,#4ba9e7);
+      color:#fff;box-shadow:0 10px 28px rgba(8,123,209,.24);
     }
 
-    .dailyBlessingCard::before{
-      content:"";
-      position:absolute;
-      top:-50px;
-      right:-35px;
+    .dailyBlessingCard::before,
+    .dailyBlessingCard::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.09)}
+    .dailyBlessingCard::before{top:-50px;right:-35px;width:150px;height:150px}
+    .dailyBlessingCard::after{bottom:-60px;left:-45px;width:170px;height:170px}
 
-      width:150px;
-      height:150px;
-
-      border-radius:50%;
-
-      background:
-        rgba(255,255,255,.10);
-    }
-
-    .dailyBlessingCard::after{
-      content:"";
-      position:absolute;
-      bottom:-60px;
-      left:-45px;
-
-      width:170px;
-      height:170px;
-
-      border-radius:50%;
-
-      background:
-        rgba(255,255,255,.08);
-    }
-
-    .dailyBlessingContent{
-      position:relative;
-      z-index:2;
-    }
+    .dailyBlessingContent{position:relative;z-index:2}
 
     .dailyBlessingLabel{
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-
-      margin-bottom:13px;
-      padding:7px 11px;
-
-      border-radius:999px;
-
-      background:
-        rgba(255,255,255,.17);
-
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.2px;
+      display:inline-flex;align-items:center;gap:7px;margin-bottom:13px;padding:7px 11px;
+      border-radius:999px;background:rgba(255,255,255,.17);
+      font-size:12px;font-weight:800;
     }
 
     .dailyBlessingText{
       max-width:650px;
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-      font-size:20px;
-      font-weight:700;
-      line-height:1.5;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:20px;font-weight:700;line-height:1.5;
     }
 
-    .dailyBlessingReference{
-      margin-top:12px;
-
-      font-size:13px;
-      font-weight:800;
-      opacity:.94;
-    }
+    .dailyBlessingReference{margin-top:12px;font-size:13px;font-weight:800;opacity:.94}
 
     .dailyBlessingFooter{
       margin-top:18px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
 
-    .dailyBlessingDate{
-      font-size:11px;
-      font-weight:700;
-      opacity:.82;
-    }
+    .dailyBlessingDate{font-size:11px;font-weight:700;opacity:.82}
 
     .shareBlessingButton{
-      min-height:38px;
-      padding:8px 12px;
-
-      border:1px solid rgba(255,255,255,.38);
-      border-radius:12px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-
-      background:
-        rgba(255,255,255,.14);
-
-      color:#ffffff;
-
-      font-size:12px;
-      font-weight:800;
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
+      min-height:38px;padding:8px 12px;
+      border:1px solid rgba(255,255,255,.38);border-radius:12px;
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      background:rgba(255,255,255,.14);color:#fff;font-size:12px;font-weight:800;
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .shareBlessingButton:hover{
-      background:
-        rgba(255,255,255,.23);
-    }
-
-    .shareBlessingButton:active{
-      transform:scale(.96);
-    }
+    .shareBlessingButton:hover{background:rgba(255,255,255,.23)}
+    .shareBlessingButton:active{transform:scale(.96)}
 
 
-    /* =====================================================
-       FAITH MOMENTS SECTION HEADER
-    ===================================================== */
+    /* ===================== MOMENT CIRCLES ===================== */
 
-    .momentsSection{
-      margin-bottom:22px;
-    }
+    .momentsSection{margin-bottom:22px}
 
     .sectionHeader{
       margin-bottom:12px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
 
-    .sectionTitle{
-      font-size:18px;
-      font-weight:900;
-    }
-
-    .sectionSubtitle{
-      margin-top:3px;
-
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.4;
-    }
+    .sectionTitle{font-size:18px;font-weight:900}
+    .sectionSubtitle{margin-top:3px;color:var(--muted);font-size:12px;line-height:1.4}
 
     .refreshMomentsButton{
-      width:39px;
-      height:39px;
-      flex-shrink:0;
-
-      border:0;
-      border-radius:50%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#e9f2f8;
-      color:var(--primary);
-
-      font-size:18px;
-
-      transition:
-        background .2s ease,
-        transform .25s ease;
+      width:39px;height:39px;flex-shrink:0;border:0;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:#e9f2f8;color:var(--primary);font-size:18px;
+      transition:background .2s ease,transform .25s ease;
     }
 
-    .refreshMomentsButton:hover{
-      background:#dcecf7;
-    }
-
-    .refreshMomentsButton:active{
-      transform:rotate(120deg);
-    }
-
-
-    /* =====================================================
-       HORIZONTAL MOMENTS ROW
-    ===================================================== */
+    .refreshMomentsButton:hover{background:#dcecf7}
+    .refreshMomentsButton:active{transform:rotate(120deg)}
 
     .momentsRow{
-      display:flex;
-      align-items:flex-start;
-      gap:13px;
-
-      overflow-x:auto;
-      overscroll-behavior-inline:contain;
-
-      padding:
-        4px 2px
-        12px;
-
-      scrollbar-width:thin;
-      scrollbar-color:
-        #c4d5e1
-        transparent;
+      display:flex;align-items:flex-start;gap:13px;
+      overflow-x:auto;overscroll-behavior-inline:contain;
+      padding:4px 2px 12px;
+      scrollbar-width:thin;scrollbar-color:#c4d5e1 transparent;
     }
 
-    .momentsRow::-webkit-scrollbar{
-      height:5px;
-    }
-
-    .momentsRow::-webkit-scrollbar-track{
-      background:transparent;
-    }
-
-    .momentsRow::-webkit-scrollbar-thumb{
-      border-radius:999px;
-      background:#c4d5e1;
-    }
+    .momentsRow::-webkit-scrollbar{height:5px}
+    .momentsRow::-webkit-scrollbar-thumb{border-radius:999px;background:#c4d5e1}
 
     .momentCircleButton{
-      width:76px;
-      flex:0 0 76px;
-
-      border:0;
-      background:transparent;
-
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:7px;
-
-      color:var(--text);
-      text-align:center;
+      width:76px;flex:0 0 76px;border:0;background:transparent;
+      display:flex;flex-direction:column;align-items:center;gap:7px;
+      color:var(--text);text-align:center;text-decoration:none;
     }
 
     .momentAvatarOuter{
-      position:relative;
-
-      width:68px;
-      height:68px;
-
-      padding:3px;
-
-      border-radius:50%;
-
-      background:
-        linear-gradient(
-          145deg,
-          var(--primary),
-          #55c1f1
-        );
-
-      box-shadow:
-        0 5px 14px rgba(30,75,104,.15);
-    }
-
-    .momentAvatarInner{
-      width:100%;
-      height:100%;
-
-      border:3px solid #ffffff;
-      border-radius:50%;
-
-      overflow:hidden;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#e7eef3;
-
-      color:#60727f;
-      font-size:22px;
-      font-weight:900;
-    }
-
-    .momentAvatarInner img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .momentTypeBadge{
-      position:absolute;
-      right:-2px;
-      bottom:-2px;
-
-      min-width:25px;
-      height:25px;
-      padding:0 5px;
-
-      border:2px solid #ffffff;
-      border-radius:999px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#ffffff;
-
-      font-size:13px;
-
-      box-shadow:
-        0 3px 9px rgba(0,0,0,.16);
-    }
-
-    .momentTypeBadge.verse{
-      background:#e5f3fe;
-    }
-
-    .momentTypeBadge.prayer{
-      background:#e8f7ed;
-    }
-
-    .momentTypeBadge.testimony{
-      background:#fff2dd;
-    }
-
-    .momentTypeBadge.photo{
-      background:#f0e9fb;
-    }
-
-    .momentTypeBadge.video{
-      background:#fde8e8;
-    }
-
-    .momentName{
-      width:100%;
-
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-
-      font-size:11px;
-      font-weight:800;
-      line-height:1.25;
-    }
-
-    .momentCircleButton:hover
-    .momentAvatarOuter{
-      transform:translateY(-2px);
-    }
-
-    .momentAvatarOuter{
+      position:relative;width:68px;height:68px;padding:3px;border-radius:50%;
+      background:linear-gradient(145deg,var(--primary),#55c1f1);
+      box-shadow:0 5px 14px rgba(30,75,104,.15);
       transition:transform .2s ease;
     }
 
-    .momentCircleButton:active
-    .momentAvatarOuter{
-      transform:scale(.95);
-    }
+    .momentCircleButton:hover .momentAvatarOuter{transform:translateY(-2px)}
+    .momentCircleButton:active .momentAvatarOuter{transform:scale(.95)}
 
-
-    /* =====================================================
-       CREATE YOUR MOMENT CIRCLE
-    ===================================================== */
-
-    .createMomentCircle
-    .momentAvatarOuter{
-      background:
-        linear-gradient(
-          145deg,
-          #dce8f0,
-          #eef4f8
-        );
-    }
-
-    .createMomentCircle
     .momentAvatarInner{
-      background:#ffffff;
-      color:var(--primary);
-
-      font-size:28px;
+      width:100%;height:100%;border:3px solid #fff;border-radius:50%;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      background:#e7eef3;color:#60727f;font-size:22px;font-weight:900;
     }
 
-    .createMomentCircle
+    .momentAvatarInner img{width:100%;height:100%;object-fit:cover}
+
     .momentTypeBadge{
-      background:var(--primary);
-      color:#ffffff;
-
-      font-size:15px;
-      font-weight:900;
+      position:absolute;right:-2px;bottom:-2px;
+      min-width:25px;height:25px;padding:0 5px;
+      border:2px solid #fff;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background:#fff;font-size:13px;box-shadow:0 3px 9px rgba(0,0,0,.16);
     }
 
+    .momentTypeBadge.encouragement{background:#e8f7ed}
+    .momentTypeBadge.scripture{background:#e5f3fe}
+    .momentTypeBadge.testimony{background:#fff2dd}
 
-    /* =====================================================
-       MOMENT TYPE FILTERS
-    ===================================================== */
+    .momentName{
+      width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      font-size:11px;font-weight:800;line-height:1.25;
+    }
+
+    .createMomentCircle .momentAvatarOuter{background:linear-gradient(145deg,#dce8f0,#eef4f8)}
+    .createMomentCircle .momentAvatarInner{background:#fff;color:var(--primary);font-size:28px}
+    .createMomentCircle .momentTypeBadge{background:var(--primary);color:#fff;font-size:15px;font-weight:900}
+
+
+    /* ===================== FILTERS ===================== */
 
     .momentFilters{
-      margin-bottom:18px;
-
-      display:flex;
-      align-items:center;
-      gap:8px;
-
-      overflow-x:auto;
-
-      padding-bottom:5px;
-
-      scrollbar-width:none;
+      margin-bottom:18px;display:flex;align-items:center;gap:8px;
+      overflow-x:auto;padding-bottom:5px;scrollbar-width:none;
     }
 
-    .momentFilters::-webkit-scrollbar{
-      display:none;
-    }
+    .momentFilters::-webkit-scrollbar{display:none}
 
     .momentFilterButton{
-      flex-shrink:0;
-
-      min-height:37px;
-      padding:8px 12px;
-
-      border:1px solid var(--border);
-      border-radius:999px;
-
-      background:#ffffff;
-      color:var(--muted);
-
-      font-size:12px;
-      font-weight:800;
-
-      transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease,
-        transform .2s ease;
+      flex-shrink:0;min-height:37px;padding:8px 12px;
+      border:1px solid var(--border);border-radius:999px;
+      background:#fff;color:var(--muted);font-size:12px;font-weight:800;
+      transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
     }
 
-    .momentFilterButton:hover{
-      border-color:#b5d6eb;
-      color:var(--primary);
-    }
-
-    .momentFilterButton:active{
-      transform:scale(.96);
-    }
-
-    .momentFilterButton.active{
-      border-color:var(--primary);
-      background:var(--primary-soft);
-      color:var(--primary);
-    }
+    .momentFilterButton:hover{border-color:#b5d6eb;color:var(--primary)}
+    .momentFilterButton:active{transform:scale(.96)}
+    .momentFilterButton.active{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
 
 
-    /* =====================================================
-       MOMENTS FEED CONTAINER
-    ===================================================== */
+    /* ===================== MOMENT CARDS ===================== */
 
-    .momentsFeed{
-      display:grid;
-      grid-template-columns:
-        repeat(
-          2,
-          minmax(0,1fr)
-        );
-
-      gap:14px;
-    }
+    .momentsFeed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 
     .momentPreviewCard{
-      overflow:hidden;
-
-      border:1px solid var(--border);
-      border-radius:var(--radius-medium);
-
-      background:var(--surface);
-
-      box-shadow:
-        0 4px 14px rgba(35,65,86,.07);
-
-      cursor:pointer;
-
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+      overflow:hidden;border:1px solid var(--border);border-radius:var(--radius-medium);
+      background:var(--surface);box-shadow:0 4px 14px rgba(35,65,86,.07);cursor:pointer;
+      transition:transform .2s ease,box-shadow .2s ease;
     }
 
-    .momentPreviewCard:hover{
-      transform:translateY(-3px);
-
-      box-shadow:
-        0 8px 22px rgba(35,65,86,.12);
-    }
-
-    .momentPreviewCard:active{
-      transform:scale(.985);
-    }
+    .momentPreviewCard:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(35,65,86,.12)}
+    .momentPreviewCard:active{transform:scale(.985)}
 
     .momentPreviewMedia{
-      position:relative;
-
-      min-height:190px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      overflow:hidden;
-
-      background:
-        linear-gradient(
-          145deg,
-          #dceffa,
-          #edf6fc
-        );
+      position:relative;min-height:190px;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(145deg,#dceffa,#edf6fc);
     }
 
     .momentPreviewMedia img,
     .momentPreviewMedia video{
-      width:100%;
-      height:100%;
-      min-height:190px;
-      max-height:250px;
-
-      object-fit:cover;
+      width:100%;height:100%;min-height:190px;max-height:250px;object-fit:cover;
     }
 
     .momentTextPreview{
-      width:100%;
-      min-height:190px;
-      padding:25px 20px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
+      width:100%;min-height:190px;padding:25px 20px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
       text-align:center;
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-      font-size:18px;
-      font-weight:700;
-      line-height:1.5;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:18px;font-weight:700;line-height:1.5;
     }
 
-    .momentTextPreview.verse{
-      background:
-        linear-gradient(
-          145deg,
-          #dff1fd,
-          #f3f9fd
-        );
+    .momentTextPreview small{font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:800;opacity:.8}
 
-      color:#174c70;
-    }
-
-    .momentTextPreview.prayer{
-      background:
-        linear-gradient(
-          145deg,
-          #e3f5e9,
-          #f4fbf6
-        );
-
-      color:#275f3c;
-    }
-
-    .momentTextPreview.testimony{
-      background:
-        linear-gradient(
-          145deg,
-          #fff0d3,
-          #fffaf0
-        );
-
-      color:#76501f;
-    }
+    .momentTextPreview.scripture{background:linear-gradient(145deg,#dff1fd,#f3f9fd);color:#174c70}
+    .momentTextPreview.encouragement{background:linear-gradient(145deg,#e3f5e9,#f4fbf6);color:#275f3c}
+    .momentTextPreview.testimony{background:linear-gradient(145deg,#fff0d3,#fffaf0);color:#76501f}
 
     .momentPreviewType{
-      position:absolute;
-      top:10px;
-      left:10px;
-
-      padding:6px 9px;
-
-      border-radius:999px;
-
-      background:
-        rgba(255,255,255,.92);
-
-      color:var(--text);
-
-      font-size:10px;
-      font-weight:900;
-
-      box-shadow:
-        0 3px 10px rgba(0,0,0,.10);
+      position:absolute;top:10px;left:10px;padding:6px 9px;border-radius:999px;
+      background:rgba(255,255,255,.92);color:var(--text);
+      font-size:10px;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.10);
     }
 
     .momentPreviewDuration{
-      position:absolute;
-      right:10px;
-      bottom:10px;
-
-      padding:5px 8px;
-
-      border-radius:999px;
-
-      background:
-        rgba(0,0,0,.66);
-
-      color:#ffffff;
-
-      font-size:10px;
-      font-weight:800;
+      position:absolute;right:10px;bottom:10px;padding:5px 8px;border-radius:999px;
+      background:rgba(0,0,0,.66);color:#fff;font-size:10px;font-weight:800;
     }
 
-    .momentPreviewBody{
-      padding:12px;
-    }
-
-    .momentPreviewAuthor{
-      display:flex;
-      align-items:center;
-      gap:9px;
-    }
+    .momentPreviewBody{padding:12px}
+    .momentPreviewAuthor{display:flex;align-items:center;gap:9px}
 
     .momentPreviewAvatar{
-      width:34px;
-      height:34px;
-      flex-shrink:0;
-
-      border-radius:50%;
-      overflow:hidden;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#e5edf3;
-
-      color:#5e7180;
-      font-size:12px;
-      font-weight:900;
+      width:34px;height:34px;flex-shrink:0;border-radius:50%;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      background:#e5edf3;color:#5e7180;font-size:12px;font-weight:900;
     }
 
-    .momentPreviewAvatar img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .momentPreviewAuthorText{
-      min-width:0;
-      flex:1;
-    }
+    .momentPreviewAvatar img{width:100%;height:100%;object-fit:cover}
+    .momentPreviewAuthorText{min-width:0;flex:1}
 
     .momentPreviewName{
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-
-      font-size:12px;
-      font-weight:900;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      font-size:12px;font-weight:900;
     }
 
-    .momentPreviewTime{
-      margin-top:2px;
-
-      color:var(--muted);
-      font-size:10px;
-      font-weight:600;
-    }
+    .momentPreviewTime{margin-top:2px;color:var(--muted);font-size:10px;font-weight:600}
 
 
-    /* =====================================================
-       LOADING, EMPTY AND ERROR STATES
-    ===================================================== */
+    /* ===================== STATUS CARDS ===================== */
 
     .momentsStatusCard{
-      grid-column:1 / -1;
-
-      padding:30px 18px;
-
-      border:1px solid var(--border);
-      border-radius:var(--radius-medium);
-
-      background:#ffffff;
-
-      text-align:center;
-
-      box-shadow:
-        0 4px 14px rgba(35,65,86,.06);
+      grid-column:1 / -1;padding:30px 18px;
+      border:1px solid var(--border);border-radius:var(--radius-medium);
+      background:#fff;text-align:center;box-shadow:0 4px 14px rgba(35,65,86,.06);
     }
 
-    .momentsStatusIcon{
-      margin-bottom:10px;
-
-      font-size:32px;
-    }
-
-    .momentsStatusTitle{
-      font-size:16px;
-      font-weight:900;
-    }
-
-    .momentsStatusText{
-      max-width:460px;
-      margin:
-        7px auto
-        0;
-
-      color:var(--muted);
-
-      font-size:13px;
-      line-height:1.55;
-    }
+    .momentsStatusIcon{margin-bottom:10px;font-size:32px}
+    .momentsStatusTitle{font-size:16px;font-weight:900}
+    .momentsStatusText{max-width:460px;margin:7px auto 0;color:var(--muted);font-size:13px;line-height:1.55}
 
     .momentsStatusButton{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-
-      margin-top:15px;
-      min-height:40px;
-      padding:9px 14px;
-
-      border:0;
-      border-radius:12px;
-
-      background:var(--primary);
-      color:#ffffff;
-
-      text-decoration:none;
-      font-size:12px;
-      font-weight:800;
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      margin-top:15px;min-height:40px;padding:9px 14px;border:0;border-radius:12px;
+      background:var(--primary);color:#fff;text-decoration:none;font-size:12px;font-weight:800;
     }
 
 
-    /* =====================================================
-       RESPONSIVE — PART 2
-    ===================================================== */
-
-    @media(max-width:560px){
-
-      .dailyBlessingCard{
-        padding:19px 17px;
-      }
-
-      .dailyBlessingText{
-        font-size:18px;
-      }
-
-      .dailyBlessingFooter{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .momentsFeed{
-        grid-template-columns:1fr;
-      }
-
-      .momentPreviewMedia,
-      .momentTextPreview{
-        min-height:210px;
-      }
-
-    }
-
-    @media(max-width:390px){
-
-      .momentCircleButton{
-        width:69px;
-        flex-basis:69px;
-      }
-
-      .momentAvatarOuter{
-        width:62px;
-        height:62px;
-      }
-
-      .dailyBlessingText{
-        font-size:17px;
-      }
-
-    }
-    /* =====================================================
-       FLOATING CREATE BUTTON
-    ===================================================== */
+    /* ===================== FLOATING BUTTON + NAV ===================== */
 
     .floatingCreateButton{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      z-index:950;
-
-      width:58px;
-      height:58px;
-
-      border-radius:50%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:var(--primary);
-      color:#ffffff;
-
-      text-decoration:none;
-      font-size:32px;
-      font-weight:400;
-      line-height:1;
-
-      box-shadow:
-        0 8px 22px rgba(8,123,209,.30);
-
-      transition:
-        background .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
+      position:fixed;right:22px;bottom:22px;z-index:950;
+      width:58px;height:58px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:var(--primary);color:#fff;text-decoration:none;
+      font-size:32px;line-height:1;box-shadow:0 8px 22px rgba(8,123,209,.30);
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .floatingCreateButton:hover{
-      background:var(--primary-dark);
-
-      transform:translateY(-2px);
-
-      box-shadow:
-        0 10px 26px rgba(8,123,209,.36);
-    }
-
-    .floatingCreateButton:active{
-      transform:scale(.95);
-    }
+    .floatingCreateButton:hover{background:var(--primary-dark);transform:translateY(-2px)}
+    .floatingCreateButton:active{transform:scale(.95)}
 
 
-    /* =====================================================
-       BOTTOM NAVIGATION
-    ===================================================== */
-
-    .bottomNavigation{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:900;
-
-      width:100%;
-
-      background:rgba(255,255,255,.97);
-      border-top:1px solid var(--border);
-
-      box-shadow:
-        0 -4px 18px rgba(20,45,63,.09);
-
-      backdrop-filter:blur(12px);
-    }
-
-    .bottomNavigationInner{
-      width:100%;
-      max-width:760px;
-      min-height:70px;
-
-      margin:auto;
-      padding:6px 8px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-around;
-      gap:3px;
-    }
-
-    .bottomNavItem{
-      min-width:0;
-      flex:1;
-
-      padding:7px 3px;
-
-      border-radius:13px;
-
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:4px;
-
-      color:#65727c;
-
-      text-decoration:none;
-      font-size:10px;
-      font-weight:800;
-
-      transition:
-        background .2s ease,
-        color .2s ease,
-        transform .2s ease;
-    }
-
-    .bottomNavIcon{
-      font-size:20px;
-      line-height:1;
-    }
-
-    .bottomNavItem:hover{
-      background:#edf5fb;
-      color:var(--primary);
-    }
-
-    .bottomNavItem:active{
-      transform:scale(.96);
-    }
-
-    .bottomNavItem.active{
-      background:var(--primary-soft);
-      color:var(--primary);
-    }
-
-
-    /* =====================================================
-       FULL-SCREEN MOMENT VIEWER
-    ===================================================== */
+    /* ===================== FULL-SCREEN VIEWER ===================== */
 
     .momentViewer{
-      position:fixed;
-      inset:0;
-      z-index:3000;
-
-      display:none;
-      align-items:center;
-      justify-content:center;
-
-      background:
-        rgba(9,18,26,.94);
-
-      color:#ffffff;
+      position:fixed;inset:0;z-index:3000;display:none;
+      align-items:center;justify-content:center;
+      background:rgba(9,18,26,.94);color:#fff;
     }
 
-    .momentViewer.open{
-      display:flex;
-    }
+    .momentViewer.open{display:flex}
 
     .momentViewerShell{
-      position:relative;
-
-      width:100%;
-      max-width:760px;
-      height:100%;
-
-      display:flex;
-      flex-direction:column;
-
-      overflow:hidden;
-
-      background:#101820;
+      position:relative;width:100%;max-width:760px;height:100%;
+      display:flex;flex-direction:column;overflow:hidden;background:#101820;
     }
 
     .momentViewerProgress{
-      position:absolute;
-      top:8px;
-      left:12px;
-      right:12px;
-      z-index:5;
-
-      height:3px;
-
-      border-radius:999px;
-
-      overflow:hidden;
-
-      background:
-        rgba(255,255,255,.26);
+      position:absolute;top:8px;left:12px;right:12px;z-index:5;
+      display:flex;gap:4px;
     }
 
-    .momentViewerProgressBar{
-      width:0%;
-      height:100%;
-
-      border-radius:999px;
-
-      background:#ffffff;
-
-      transition:width .2s linear;
+    .momentViewerSegment{
+      flex:1;height:3px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.26);
     }
+
+    .momentViewerSegment > div{width:0;height:100%;border-radius:999px;background:#fff}
+    .momentViewerSegment.done > div{width:100%}
 
     .momentViewerHeader{
-      position:relative;
-      z-index:4;
-
-      min-height:74px;
-      padding:
-        19px 14px
-        10px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,.54),
-          rgba(0,0,0,0)
-        );
+      position:relative;z-index:4;min-height:74px;padding:19px 14px 10px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:linear-gradient(to bottom,rgba(0,0,0,.54),rgba(0,0,0,0));
     }
 
-    .momentViewerAuthor{
-      min-width:0;
-
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+    .momentViewerAuthor{min-width:0;display:flex;align-items:center;gap:10px}
 
     .momentViewerAvatar{
-      width:42px;
-      height:42px;
-      flex-shrink:0;
-
-      border:2px solid rgba(255,255,255,.75);
-      border-radius:50%;
-
-      overflow:hidden;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:#d9e4eb;
-      color:#50616c;
-
-      font-size:14px;
-      font-weight:900;
+      width:42px;height:42px;flex-shrink:0;
+      border:2px solid rgba(255,255,255,.75);border-radius:50%;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      background:#d9e4eb;color:#50616c;font-size:14px;font-weight:900;
     }
 
-    .momentViewerAvatar img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .momentViewerAuthorText{
-      min-width:0;
-    }
+    .momentViewerAvatar img{width:100%;height:100%;object-fit:cover}
+    .momentViewerAuthorText{min-width:0}
 
     .momentViewerName{
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-
-      font-size:14px;
-      font-weight:900;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+      font-size:14px;font-weight:900;
     }
 
-    .momentViewerMeta{
-      margin-top:3px;
-
-      color:rgba(255,255,255,.78);
-
-      font-size:11px;
-      font-weight:600;
-    }
+    .momentViewerMeta{margin-top:3px;color:rgba(255,255,255,.78);font-size:11px;font-weight:600}
 
     .closeMomentViewer{
-      width:40px;
-      height:40px;
-      flex-shrink:0;
-
-      border:0;
-      border-radius:50%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      background:
-        rgba(255,255,255,.15);
-
-      color:#ffffff;
-
-      font-size:22px;
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
+      width:40px;height:40px;flex-shrink:0;border:0;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.15);color:#fff;font-size:22px;
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .closeMomentViewer:hover{
-      background:
-        rgba(255,255,255,.24);
-    }
-
-    .closeMomentViewer:active{
-      transform:scale(.94);
-    }
-
-
-    /* =====================================================
-       VIEWER CONTENT
-    ===================================================== */
+    .closeMomentViewer:hover{background:rgba(255,255,255,.24)}
+    .closeMomentViewer:active{transform:scale(.94)}
 
     .momentViewerContent{
-      position:relative;
-      flex:1;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      overflow:hidden;
+      position:relative;flex:1;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
     }
 
     .momentViewerMedia{
-      width:100%;
-      height:100%;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      position:relative;width:100%;height:100%;
+      display:flex;align-items:center;justify-content:center;
     }
 
     .momentViewerMedia img,
-    .momentViewerMedia video{
-      width:100%;
-      height:100%;
-
-      object-fit:contain;
-
-      background:#000000;
-    }
+    .momentViewerMedia video{width:100%;height:100%;object-fit:contain;background:#000}
 
     .momentViewerText{
-      width:100%;
-      height:100%;
-      padding:
-        70px 28px
-        120px;
-
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-
+      width:100%;height:100%;padding:70px 28px 120px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
       text-align:center;
     }
 
-    .momentViewerText.verse{
-      background:
-        linear-gradient(
-          145deg,
-          #155b85,
-          #071f32
-        );
-    }
-
-    .momentViewerText.prayer{
-      background:
-        linear-gradient(
-          145deg,
-          #2c7448,
-          #102b1c
-        );
-    }
-
-    .momentViewerText.testimony{
-      background:
-        linear-gradient(
-          145deg,
-          #9b641d,
-          #3a220a
-        );
-    }
-
-    .momentViewerText.default{
-      background:
-        linear-gradient(
-          145deg,
-          #5d4a8e,
-          #1f1736
-        );
-    }
+    .momentViewerText.scripture{background:linear-gradient(145deg,#155b85,#071f32)}
+    .momentViewerText.encouragement{background:linear-gradient(145deg,#2c7448,#102b1c)}
+    .momentViewerText.testimony{background:linear-gradient(145deg,#9b641d,#3a220a)}
 
     .momentViewerType{
-      margin-bottom:18px;
-      padding:7px 11px;
-
-      border:1px solid rgba(255,255,255,.28);
-      border-radius:999px;
-
-      background:
-        rgba(255,255,255,.12);
-
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:.3px;
-      text-transform:uppercase;
+      margin-bottom:18px;padding:7px 11px;
+      border:1px solid rgba(255,255,255,.28);border-radius:999px;
+      background:rgba(255,255,255,.12);
+      font-size:11px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;
     }
 
     .momentViewerMessage{
       max-width:640px;
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-      font-size:27px;
-      font-weight:700;
-      line-height:1.5;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:27px;font-weight:700;line-height:1.5;
+      overflow-wrap:anywhere;white-space:pre-wrap;
     }
 
-    .momentViewerReference{
-      margin-top:18px;
-
-      font-size:14px;
-      font-weight:800;
-
-      opacity:.88;
-    }
+    .momentViewerReference{margin-top:18px;font-size:14px;font-weight:800;opacity:.88}
 
     .momentViewerCaption{
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:105px;
-      z-index:3;
-
-      max-height:135px;
-      overflow-y:auto;
-
-      padding:13px 15px;
-
-      border-radius:15px;
-
-      background:
-        rgba(0,0,0,.52);
-
-      color:#ffffff;
-
-      font-size:14px;
-      line-height:1.5;
-
-      backdrop-filter:blur(8px);
+      position:absolute;left:18px;right:18px;bottom:105px;z-index:3;
+      max-height:135px;overflow-y:auto;padding:13px 15px;border-radius:15px;
+      background:rgba(0,0,0,.52);color:#fff;font-size:14px;line-height:1.5;
+      overflow-wrap:anywhere;white-space:pre-wrap;backdrop-filter:blur(8px);
     }
 
-
-    /* =====================================================
-       VIEWER ACTIONS
-    ===================================================== */
+    .momentViewerCaption strong{display:block;margin-bottom:4px;font-size:12px;opacity:.85}
 
     .momentViewerActions{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:4;
-
-      min-height:88px;
-      padding:
-        12px 14px
-        15px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-
-      background:
-        linear-gradient(
-          to top,
-          rgba(0,0,0,.72),
-          rgba(0,0,0,0)
-        );
+      position:absolute;left:0;right:0;bottom:0;z-index:4;
+      min-height:88px;padding:12px 14px 15px;
+      display:flex;align-items:center;justify-content:center;gap:9px;
+      background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,0));
     }
 
     .momentActionButton{
-      min-height:42px;
-      padding:9px 13px;
-
-      border:1px solid rgba(255,255,255,.28);
-      border-radius:999px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:7px;
-
-      background:
-        rgba(255,255,255,.13);
-
-      color:#ffffff;
-
-      font-size:12px;
-      font-weight:800;
-
+      min-height:42px;padding:9px 13px;
+      border:1px solid rgba(255,255,255,.28);border-radius:999px;
+      display:flex;align-items:center;justify-content:center;gap:7px;
+      background:rgba(255,255,255,.13);color:#fff;font-size:12px;font-weight:800;
       backdrop-filter:blur(8px);
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
+      transition:background .2s ease,transform .2s ease;
     }
 
-    .momentActionButton:hover{
-      background:
-        rgba(255,255,255,.22);
-    }
-
-    .momentActionButton:active{
-      transform:scale(.96);
-    }
-
-    .momentActionButton.active{
-      background:
-        rgba(255,255,255,.28);
-    }
-
-
-    /* =====================================================
-       PREVIOUS AND NEXT VIEWER AREAS
-    ===================================================== */
+    .momentActionButton:hover{background:rgba(255,255,255,.22)}
+    .momentActionButton:active{transform:scale(.96)}
+    .momentActionButton.active{background:rgba(255,255,255,.28)}
+    .momentActionButton:disabled{opacity:.6}
 
     .momentViewerTapArea{
-      position:absolute;
-      top:74px;
-      bottom:90px;
-      z-index:2;
-
-      width:28%;
-
-      border:0;
-      background:transparent;
+      position:absolute;top:74px;bottom:90px;z-index:2;width:28%;
+      border:0;background:transparent;
     }
 
-    .momentViewerPrevious{
-      left:0;
-    }
+    .momentViewerPrevious{left:0}
+    .momentViewerNext{right:0}
 
-    .momentViewerNext{
-      right:0;
-    }
+    /* Video: keep the tap areas off the video controls */
+    .momentViewer.hasVideo .momentViewerTapArea{width:18%;top:90px;bottom:170px}
 
 
-    /* =====================================================
-       TOAST MESSAGE
-    ===================================================== */
+    /* ===================== TOAST ===================== */
 
     .toastMessage{
-      position:fixed;
-      left:50%;
-      bottom:26px;
-      z-index:5000;
-
-      max-width:
-        calc(100% - 30px);
-
-      padding:11px 15px;
-
-      border-radius:999px;
-
-      background:#17242d;
-      color:#ffffff;
-
-      font-size:12px;
-      font-weight:800;
-      text-align:center;
-
-      box-shadow:
-        0 7px 20px rgba(0,0,0,.25);
-
-      opacity:0;
-      visibility:hidden;
-
-      transform:
-        translate(-50%,16px);
-
-      transition:
-        opacity .25s ease,
-        visibility .25s ease,
-        transform .25s ease;
+      position:fixed;left:50%;bottom:26px;z-index:5000;
+      max-width:calc(100% - 30px);padding:11px 15px;border-radius:999px;
+      background:#17242d;color:#fff;font-size:12px;font-weight:800;text-align:center;
+      box-shadow:0 7px 20px rgba(0,0,0,.25);
+      opacity:0;visibility:hidden;transform:translate(-50%,16px);
+      transition:opacity .25s ease,visibility .25s ease,transform .25s ease;
     }
 
-    .toastMessage.show{
-      opacity:1;
-      visibility:visible;
-
-      transform:
-        translate(-50%,0);
-    }
+    .toastMessage.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
 
-    /* =====================================================
-       FINAL RESPONSIVE STYLES
-    ===================================================== */
+    /* ===================== RESPONSIVE ===================== */
 
     @media(max-width:560px){
-
-      .floatingCreateButton{
-        right:16px;
-        bottom:16px;
-
-        width:54px;
-        height:54px;
-
-        font-size:29px;
-      }
-
-      .momentViewerMessage{
-        font-size:23px;
-      }
-
-      .momentViewerActions{
-        gap:6px;
-        padding-left:8px;
-        padding-right:8px;
-      }
-
-      .momentActionButton{
-        flex:1;
-        min-width:0;
-
-        padding-left:8px;
-        padding-right:8px;
-
-        font-size:11px;
-      }
-
-      .momentViewerCaption{
-        left:10px;
-        right:10px;
-      }
-
+      .pageContainer{padding-top:14px}
+      .pageHeading{align-items:stretch;flex-direction:column}
+      .createMomentButton{align-self:flex-start}
+      .pageTitle{font-size:24px}
+      .dailyBlessingCard{padding:19px 17px}
+      .dailyBlessingText{font-size:18px}
+      .dailyBlessingFooter{align-items:flex-start;flex-direction:column}
+      .momentsFeed{grid-template-columns:1fr}
+      .momentPreviewMedia,.momentTextPreview{min-height:210px}
+      .floatingCreateButton{right:16px;bottom:16px;width:54px;height:54px;font-size:29px}
+      .momentViewerMessage{font-size:23px}
+      .momentViewerActions{gap:6px;padding-left:8px;padding-right:8px}
+      .momentActionButton{flex:1;min-width:0;padding-left:8px;padding-right:8px;font-size:11px}
+      .momentViewerCaption{left:10px;right:10px}
     }
 
     @media(max-width:390px){
-
-      .bottomNavigationInner{
-        padding-left:3px;
-        padding-right:3px;
-      }
-
-      .bottomNavItem{
-        padding-left:1px;
-        padding-right:1px;
-
-        font-size:9px;
-      }
-
-      .bottomNavIcon{
-        font-size:19px;
-      }
-
-      .momentViewerText{
-        padding-left:18px;
-        padding-right:18px;
-      }
-
-      .momentViewerMessage{
-        font-size:21px;
-      }
-
-      .momentActionButton{
-        font-size:10px;
-      }
-
+      .brandSubtitle{display:none}
+      .topAppBarInner{padding-left:10px;padding-right:10px}
+      .pageContainer{padding-left:10px;padding-right:10px}
+      .momentCircleButton{width:69px;flex-basis:69px}
+      .momentAvatarOuter{width:62px;height:62px}
+      .dailyBlessingText{font-size:17px}
+      .momentViewerText{padding-left:18px;padding-right:18px}
+      .momentViewerMessage{font-size:21px}
+      .momentActionButton{font-size:10px}
     }
 
   </style>
 </head>
+
 <body>
 
-  <!-- =====================================================
-       TOP APP BAR
-  ====================================================== -->
+  <!-- ===================== TOP BAR ===================== -->
 
   <header class="topAppBar">
-
     <div class="topAppBarInner">
 
       <button
@@ -1876,176 +580,77 @@
         class="topIconButton"
         title="Back"
         aria-label="Go back"
-        onclick="if(document.referrer){window.history.back();}else{window.location.href='feed.html';}"
-      >
-        ←
-      </button>
+        id="backButton"
+      >←</button>
 
-      <a
-        href="index.html"
-        class="brandArea"
-        aria-label="Go to Faith Connect home"
-      >
-
-        <div class="brandLogo">
-          ✨
-        </div>
-
+      <a href="index.html" class="brandArea" aria-label="Go to Faith Connect home">
+        <div class="brandLogo">✨</div>
         <div class="brandText">
-
-          <span class="brandTitle">
-            Faith Connect
-          </span>
-
-          <span class="brandSubtitle">
-            Faith Moments
-          </span>
-
+          <span class="brandTitle">Faith Connect</span>
+          <span class="brandSubtitle">Faith Moments</span>
         </div>
-
       </a>
 
-
       <div class="topActions">
-
-        <a
-          href="notification.html"
-          class="topIconButton"
-          aria-label="Open notifications"
-          title="Notifications"
-        >
-          🔔
-        </a>
-
-        <a
-          href="profile.html"
-          class="topIconButton"
-          aria-label="Open your profile"
-          title="Profile"
-        >
-          👤
-        </a>
-
+        <a href="notification.html" class="topIconButton" aria-label="Open notifications" title="Notifications">🔔</a>
+        <a href="profile.html" class="topIconButton" aria-label="Open your profile" title="Profile">👤</a>
       </div>
 
     </div>
-
   </header>
 
 
-  <!-- =====================================================
-       MAIN PAGE
-  ====================================================== -->
+  <!-- ===================== MAIN ===================== -->
 
   <main class="pageContainer">
 
-
-    <!-- =====================================================
-         PAGE HEADING
-    ====================================================== -->
-
     <section class="pageHeading">
-
       <div class="pageHeadingText">
-
-        <h1 class="pageTitle">
-          🌅 Faith Moments
-        </h1>
-
+        <h1 class="pageTitle">🌅 Faith Moments</h1>
         <p class="pageDescription">
-          Share one meaningful moment of faith through a Bible verse,
-          prayer, testimony, photo or short video.
+          Share one meaningful moment of faith through encouragement,
+          scripture or a testimony, with an optional photo or short video.
         </p>
-
       </div>
 
-      <a
-        href="create-faith-moment.html"
-        class="createMomentButton"
-      >
+      <a href="create-faith-moment.html" class="createMomentButton">
         <span>＋</span>
         <span>Create Moment</span>
       </a>
-
     </section>
 
 
-    <!-- =====================================================
-         TODAY'S BLESSING
-    ====================================================== -->
+    <!-- TODAY'S BLESSING -->
 
-    <section
-      class="dailyBlessingCard"
-      aria-labelledby="dailyBlessingHeading"
-    >
-
+    <section class="dailyBlessingCard" aria-labelledby="dailyBlessingHeading">
       <div class="dailyBlessingContent">
 
-        <div
-          id="dailyBlessingHeading"
-          class="dailyBlessingLabel"
-        >
-          🌅 Today’s Blessing
-        </div>
+        <div id="dailyBlessingHeading" class="dailyBlessingLabel">🌅 Today’s Blessing</div>
 
-        <blockquote
-          id="dailyBlessingText"
-          class="dailyBlessingText"
-        >
-          “The Lord is my strength and my shield; my heart trusted in
-          Him, and I am helped.”
-        </blockquote>
-
-        <p
-          id="dailyBlessingReference"
-          class="dailyBlessingReference"
-        >
-          Psalm 28:7
-        </p>
+        <blockquote id="dailyBlessingText" class="dailyBlessingText"></blockquote>
+        <p id="dailyBlessingReference" class="dailyBlessingReference"></p>
 
         <div class="dailyBlessingFooter">
+          <span id="dailyBlessingDate" class="dailyBlessingDate">Today</span>
 
-          <span
-            id="dailyBlessingDate"
-            class="dailyBlessingDate"
-          >
-            Today
-          </span>
-
-          <button
-            id="shareBlessingButton"
-            class="shareBlessingButton"
-            type="button"
-          >
+          <button id="shareBlessingButton" class="shareBlessingButton" type="button">
             <span>↗</span>
             <span>Share Blessing</span>
           </button>
-
         </div>
 
       </div>
-
     </section>
 
 
-    <!-- =====================================================
-         MEMBER MOMENTS
-    ====================================================== -->
+    <!-- MOMENT CIRCLES -->
 
     <section class="momentsSection">
 
       <div class="sectionHeader">
-
         <div>
-
-          <h2 class="sectionTitle">
-            Faith Moments
-          </h2>
-
-          <p class="sectionSubtitle">
-            Active moments disappear after 24 hours.
-          </p>
-
+          <h2 class="sectionTitle">Faith Moments</h2>
+          <p class="sectionSubtitle">Active moments disappear after 24 hours.</p>
         </div>
 
         <button
@@ -2054,346 +659,108 @@
           type="button"
           aria-label="Refresh Faith Moments"
           title="Refresh"
-        >
-          ↻
-        </button>
-
+        >↻</button>
       </div>
 
+      <div id="momentsRow" class="momentsRow" aria-label="Active Faith Moments">
 
-      <!-- HORIZONTAL PROFILE CIRCLES -->
-
-      <div
-        id="momentsRow"
-        class="momentsRow"
-        aria-label="Active Faith Moments"
-      >
-
-        <a
-          href="create-faith-moment.html"
-          class="momentCircleButton createMomentCircle"
-        >
-
+        <a href="create-faith-moment.html" class="momentCircleButton createMomentCircle">
           <div class="momentAvatarOuter">
-
-            <div
-              id="currentUserMomentAvatar"
-              class="momentAvatarInner"
-            >
-              ＋
-            </div>
-
-            <span class="momentTypeBadge">
-              ＋
-            </span>
-
+            <div id="currentUserMomentAvatar" class="momentAvatarInner">＋</div>
+            <span class="momentTypeBadge">＋</span>
           </div>
-
-          <span class="momentName">
-            Your Moment
-          </span>
-
+          <span class="momentName">Your Moment</span>
         </a>
 
-
-        <div
-          id="momentsRowLoading"
-          class="momentCircleButton"
-          aria-hidden="true"
-        >
-
-          <div class="momentAvatarOuter">
-
-            <div class="momentAvatarInner">
-              …
-            </div>
-
-            <span class="momentTypeBadge">
-              ✨
-            </span>
-
-          </div>
-
-          <span class="momentName">
-            Loading
-          </span>
-
-        </div>
-
       </div>
 
     </section>
 
 
-    <!-- =====================================================
-         MOMENT FILTERS
-    ====================================================== -->
+    <!-- FILTERS -->
 
-    <section
-      class="momentFilters"
-      aria-label="Filter Faith Moments"
-    >
-
-      <button
-        class="momentFilterButton active"
-        type="button"
-        data-filter="all"
-      >
-        ✨ All
-      </button>
-
-      <button
-        class="momentFilterButton"
-        type="button"
-        data-filter="verse"
-      >
-        📖 Verses
-      </button>
-
-      <button
-        class="momentFilterButton"
-        type="button"
-        data-filter="prayer"
-      >
-        🙏 Prayers
-      </button>
-
-      <button
-        class="momentFilterButton"
-        type="button"
-        data-filter="testimony"
-      >
-        💬 Testimonies
-      </button>
-
-      <button
-        class="momentFilterButton"
-        type="button"
-        data-filter="photo"
-      >
-        🖼️ Photos
-      </button>
-
-      <button
-        class="momentFilterButton"
-        type="button"
-        data-filter="video"
-      >
-        🎥 Videos
-      </button>
-
+    <section class="momentFilters" aria-label="Filter Faith Moments">
+      <button class="momentFilterButton active" type="button" data-filter="all">✨ All</button>
+      <button class="momentFilterButton" type="button" data-filter="encouragement">🕊️ Encouragement</button>
+      <button class="momentFilterButton" type="button" data-filter="scripture">📖 Scripture</button>
+      <button class="momentFilterButton" type="button" data-filter="testimony">✨ Testimony</button>
+      <button class="momentFilterButton" type="button" data-filter="photo">🖼️ Photos</button>
+      <button class="momentFilterButton" type="button" data-filter="video">🎥 Videos</button>
     </section>
 
 
-    <!-- =====================================================
-         MOMENTS FEED
-    ====================================================== -->
+    <!-- FEED -->
 
-    <section
-      id="momentsFeed"
-      class="momentsFeed"
-      aria-live="polite"
-    >
-
-      <div class="momentsStatusCard">
-
-        <div class="momentsStatusIcon">
-          ✨
-        </div>
-
-        <h3 class="momentsStatusTitle">
-          Loading Faith Moments
-        </h3>
-
-        <p class="momentsStatusText">
-          Please wait while we load active moments from the community.
-        </p>
-
-      </div>
-
-    </section>
+    <section id="momentsFeed" class="momentsFeed" aria-live="polite"></section>
 
   </main>
 
-
-  <!-- =====================================================
-       FLOATING CREATE BUTTON
-  ====================================================== -->
 
   <a
     href="create-faith-moment.html"
     class="floatingCreateButton"
     aria-label="Create a Faith Moment"
     title="Create Faith Moment"
-  >
-    ＋
-  </a>
+  >＋</a>
 
 
-  <!-- =====================================================
-       FULL-SCREEN MOMENT VIEWER
-  ====================================================== -->
+  <!-- ===================== VIEWER ===================== -->
 
-  <section
-    id="momentViewer"
-    class="momentViewer"
-    aria-hidden="true"
-    aria-label="Faith Moment viewer"
-  >
-
+  <section id="momentViewer" class="momentViewer" aria-hidden="true" aria-label="Faith Moment viewer">
     <div class="momentViewerShell">
 
-
-      <!-- VIEWER PROGRESS -->
-
-      <div class="momentViewerProgress">
-
-        <div
-          id="momentViewerProgressBar"
-          class="momentViewerProgressBar"
-        ></div>
-
-      </div>
-
-
-      <!-- VIEWER HEADER -->
+      <div id="momentViewerProgress" class="momentViewerProgress"></div>
 
       <div class="momentViewerHeader">
-
         <div class="momentViewerAuthor">
-
-          <div
-            id="momentViewerAvatar"
-            class="momentViewerAvatar"
-          >
-            F
-          </div>
-
+          <div id="momentViewerAvatar" class="momentViewerAvatar">F</div>
           <div class="momentViewerAuthorText">
-
-            <div
-              id="momentViewerName"
-              class="momentViewerName"
-            >
-              Faith Connect Member
-            </div>
-
-            <div
-              id="momentViewerMeta"
-              class="momentViewerMeta"
-            >
-              Just now
-            </div>
-
+            <div id="momentViewerName" class="momentViewerName">Faith Connect Member</div>
+            <div id="momentViewerMeta" class="momentViewerMeta">Just now</div>
           </div>
-
         </div>
 
-        <button
-          id="closeMomentViewer"
-          class="closeMomentViewer"
-          type="button"
-          aria-label="Close Faith Moment viewer"
-        >
-          ×
-        </button>
-
+        <button id="closeMomentViewer" class="closeMomentViewer" type="button" aria-label="Close Faith Moment viewer">×</button>
       </div>
-
-
-      <!-- VIEWER CONTENT -->
 
       <div class="momentViewerContent">
+        <div id="momentViewerMedia" class="momentViewerMedia"></div>
 
-        <div
-          id="momentViewerMedia"
-          class="momentViewerMedia"
-        ></div>
-
-        <button
-          id="momentViewerPrevious"
-          class="momentViewerTapArea momentViewerPrevious"
-          type="button"
-          aria-label="View previous Faith Moment"
-        ></button>
-
-        <button
-          id="momentViewerNext"
-          class="momentViewerTapArea momentViewerNext"
-          type="button"
-          aria-label="View next Faith Moment"
-        ></button>
-
+        <button id="momentViewerPrevious" class="momentViewerTapArea momentViewerPrevious" type="button" aria-label="Previous Faith Moment"></button>
+        <button id="momentViewerNext" class="momentViewerTapArea momentViewerNext" type="button" aria-label="Next Faith Moment"></button>
       </div>
 
-
-      <!-- VIEWER ACTIONS -->
-
       <div class="momentViewerActions">
-
-        <button
-          id="encourageMomentButton"
-          class="momentActionButton"
-          type="button"
-        >
-          <span>❤️</span>
-          <span id="encourageMomentText">
-            Encourage
-          </span>
+        <button id="encourageMomentButton" class="momentActionButton" type="button">
+          <span>❤️</span><span id="encourageMomentText">Encourage</span>
         </button>
 
-        <button
-          id="prayedMomentButton"
-          class="momentActionButton"
-          type="button"
-        >
-          <span>🙏</span>
-          <span id="prayedMomentText">
-            I Prayed
-          </span>
+        <button id="prayedMomentButton" class="momentActionButton" type="button">
+          <span>🙏</span><span id="prayedMomentText">I Prayed</span>
         </button>
 
-        <button
-          id="replyMomentButton"
-          class="momentActionButton"
-          type="button"
-        >
-          <span>💬</span>
-          <span>Reply</span>
+        <button id="replyMomentButton" class="momentActionButton" type="button">
+          <span>💬</span><span>Reply</span>
         </button>
-
       </div>
 
     </div>
-
   </section>
 
-
-  <!-- =====================================================
-       TOAST MESSAGE
-  ====================================================== -->
-
-  <div
-    id="toastMessage"
-    class="toastMessage"
-    role="status"
-    aria-live="polite"
-  >
-    Faith Moment updated.
-  </div>
+  <div id="toastMessage" class="toastMessage" role="status" aria-live="polite"></div>
 
 
-  <!-- =====================================================
-       JAVASCRIPT MODULE
-  ====================================================== -->
+  <!-- ===================== SCRIPT ===================== -->
 
   <script type="module">
-    import{
+
+    import {
       auth,
       db,
       collection,
       query,
       orderBy,
+      limit,
       onSnapshot,
       doc,
       getDoc,
@@ -2401,1210 +768,469 @@
       arrayUnion,
       arrayRemove,
       onAuthStateChanged
-    }from "./firebase.js";
+    } from "./firebase.js";
 
 
     /* =====================================================
-       PAGE ELEMENTS
+       CONFIG
     ===================================================== */
 
-    const momentsRow =
-      document.getElementById("momentsRow");
+    const MOMENT_LIFETIME_MS = 24 * 60 * 60 * 1000;
+    const MOMENTS_LIMIT = 100;
+    const SLIDE_DURATION_MS = 7000;
 
-    const momentsRowLoading =
-      document.getElementById("momentsRowLoading");
+    const DAILY_BLESSINGS = [
+      { text: "The Lord is my strength and my shield; my heart trusted in Him, and I am helped.", reference: "Psalm 28:7" },
+      { text: "Fear thou not; for I am with thee: be not dismayed; for I am thy God.", reference: "Isaiah 41:10" },
+      { text: "I can do all things through Christ which strengtheneth me.", reference: "Philippians 4:13" },
+      { text: "The Lord is good, a strong hold in the day of trouble; and He knoweth them that trust in Him.", reference: "Nahum 1:7" },
+      { text: "Casting all your care upon Him; for He careth for you.", reference: "1 Peter 5:7" },
+      { text: "They that wait upon the Lord shall renew their strength.", reference: "Isaiah 40:31" },
+      { text: "The Lord shall fight for you, and ye shall hold your peace.", reference: "Exodus 14:14" }
+    ];
 
-    const momentsFeed =
-      document.getElementById("momentsFeed");
-
-    const refreshMomentsButton =
-      document.getElementById("refreshMomentsButton");
-
-    const currentUserMomentAvatar =
-      document.getElementById("currentUserMomentAvatar");
-
-    const momentFilterButtons =
-      document.querySelectorAll(".momentFilterButton");
-
-    const shareBlessingButton =
-      document.getElementById("shareBlessingButton");
-
-    const dailyBlessingText =
-      document.getElementById("dailyBlessingText");
-
-    const dailyBlessingReference =
-      document.getElementById("dailyBlessingReference");
-
-    const dailyBlessingDate =
-      document.getElementById("dailyBlessingDate");
-
-    const toastMessage =
-      document.getElementById("toastMessage");
+    const TYPE_DETAILS = {
+      encouragement: { icon: "🕊️", label: "Encouragement", className: "encouragement" },
+      scripture:     { icon: "📖", label: "Scripture",     className: "scripture" },
+      testimony:     { icon: "✨", label: "Testimony",     className: "testimony" }
+    };
 
 
     /* =====================================================
-       VIEWER ELEMENTS
+       ELEMENTS
     ===================================================== */
 
-    const momentViewer =
-      document.getElementById("momentViewer");
+    const $ = (id) => document.getElementById(id);
 
-    const momentViewerProgressBar =
-      document.getElementById("momentViewerProgressBar");
+    const momentsRow = $("momentsRow");
+    const momentsFeed = $("momentsFeed");
+    const refreshMomentsButton = $("refreshMomentsButton");
+    const currentUserMomentAvatar = $("currentUserMomentAvatar");
+    const momentFilterButtons = document.querySelectorAll(".momentFilterButton");
+    const shareBlessingButton = $("shareBlessingButton");
+    const dailyBlessingText = $("dailyBlessingText");
+    const dailyBlessingReference = $("dailyBlessingReference");
+    const dailyBlessingDate = $("dailyBlessingDate");
+    const toastMessage = $("toastMessage");
+    const backButton = $("backButton");
 
-    const momentViewerAvatar =
-      document.getElementById("momentViewerAvatar");
-
-    const momentViewerName =
-      document.getElementById("momentViewerName");
-
-    const momentViewerMeta =
-      document.getElementById("momentViewerMeta");
-
-    const momentViewerMedia =
-      document.getElementById("momentViewerMedia");
-
-    const closeMomentViewerButton =
-      document.getElementById("closeMomentViewer");
-
-    const previousMomentButton =
-      document.getElementById("momentViewerPrevious");
-
-    const nextMomentButton =
-      document.getElementById("momentViewerNext");
-
-    const encourageMomentButton =
-      document.getElementById("encourageMomentButton");
-
-    const prayedMomentButton =
-      document.getElementById("prayedMomentButton");
-
-    const replyMomentButton =
-      document.getElementById("replyMomentButton");
-
-    const encourageMomentText =
-      document.getElementById("encourageMomentText");
-
-    const prayedMomentText =
-      document.getElementById("prayedMomentText");
+    const momentViewer = $("momentViewer");
+    const momentViewerProgress = $("momentViewerProgress");
+    const momentViewerAvatar = $("momentViewerAvatar");
+    const momentViewerName = $("momentViewerName");
+    const momentViewerMeta = $("momentViewerMeta");
+    const momentViewerMedia = $("momentViewerMedia");
+    const closeMomentViewerButton = $("closeMomentViewer");
+    const previousMomentButton = $("momentViewerPrevious");
+    const nextMomentButton = $("momentViewerNext");
+    const encourageMomentButton = $("encourageMomentButton");
+    const prayedMomentButton = $("prayedMomentButton");
+    const replyMomentButton = $("replyMomentButton");
+    const encourageMomentText = $("encourageMomentText");
+    const prayedMomentText = $("prayedMomentText");
 
 
     /* =====================================================
-       PAGE STATE
+       STATE
     ===================================================== */
 
     let currentUser = null;
     let currentProfile = null;
 
-    let allFaithMoments = [];
-    let filteredFaithMoments = [];
-
+    let allMoments = [];
+    let filteredMoments = [];
     let activeFilter = "all";
-    let activeMomentIndex = 0;
 
-    let unsubscribeFaithMoments = null;
-    let viewerProgressTimer = null;
+    let viewerMoments = [];
+    let activeIndex = 0;
+
+    let unsubscribeMoments = null;
+    let progressTimer = null;
     let toastTimer = null;
+    let pendingSharedMomentId = new URLSearchParams(window.location.search).get("moment");
 
 
     /* =====================================================
-       DAILY BLESSINGS
+       HELPERS
     ===================================================== */
 
-    const dailyBlessings = [
-
-      {
-        text:
-          "The Lord is my strength and my shield; my heart trusted in Him, and I am helped.",
-        reference:
-          "Psalm 28:7"
-      },
-
-      {
-        text:
-          "Fear thou not; for I am with thee: be not dismayed; for I am thy God.",
-        reference:
-          "Isaiah 41:10"
-      },
-
-      {
-        text:
-          "I can do all things through Christ which strengtheneth me.",
-        reference:
-          "Philippians 4:13"
-      },
-
-      {
-        text:
-          "The Lord is good, a strong hold in the day of trouble; and He knoweth them that trust in Him.",
-        reference:
-          "Nahum 1:7"
-      },
-
-      {
-        text:
-          "Casting all your care upon Him; for He careth for you.",
-        reference:
-          "1 Peter 5:7"
-      },
-
-      {
-        text:
-          "They that wait upon the Lord shall renew their strength.",
-        reference:
-          "Isaiah 40:31"
-      },
-
-      {
-        text:
-          "The Lord shall fight for you, and ye shall hold your peace.",
-        reference:
-          "Exodus 14:14"
-      }
-
-    ];
-
-
-    /* =====================================================
-       GENERAL HELPERS
-    ===================================================== */
-
-    function escapeHtml(value){
-
-      const temporaryElement =
-        document.createElement("div");
-
-      temporaryElement.textContent =
-        String(value || "");
-
-      return temporaryElement.innerHTML;
-
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
-
-    function getInitials(name){
-
-      const cleanName =
-        String(name || "Faith Member").trim();
-
-      const words =
-        cleanName
-          .split(/\s+/)
-          .filter(Boolean);
-
-      if(words.length === 0){
-        return "F";
-      }
-
-      return words
-        .slice(0,2)
-        .map(word => word.charAt(0).toUpperCase())
-        .join("");
-
+    function getInitials(name) {
+      const words = String(name || "Faith Member").trim().split(/\s+/).filter(Boolean);
+      if (words.length === 0) return "F";
+      return words.slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("");
     }
 
-
-    function getMomentTypeDetails(type){
-
-      const normalizedType =
-        String(type || "").toLowerCase();
-
-      const details = {
-
-        verse:{
-          icon:"📖",
-          label:"Bible Verse",
-          className:"verse"
-        },
-
-        prayer:{
-          icon:"🙏",
-          label:"Prayer",
-          className:"prayer"
-        },
-
-        testimony:{
-          icon:"💬",
-          label:"Testimony",
-          className:"testimony"
-        },
-
-        photo:{
-          icon:"🖼️",
-          label:"Photo",
-          className:"photo"
-        },
-
-        video:{
-          icon:"🎥",
-          label:"Video",
-          className:"video"
-        },
-
-        text:{
-          icon:"✨",
-          label:"Faith Moment",
-          className:"default"
-        }
-
-      };
-
-      return details[normalizedType] || details.text;
-
+    function typeDetails(type) {
+      return TYPE_DETAILS[type] || TYPE_DETAILS.encouragement;
     }
 
-
-    function getTimestampDate(timestamp){
-
-      if(!timestamp){
-        return null;
-      }
-
-      if(typeof timestamp.toDate === "function"){
-        return timestamp.toDate();
-      }
-
-      if(timestamp.seconds){
-        return new Date(timestamp.seconds * 1000);
-      }
-
-      const parsedDate =
-        new Date(timestamp);
-
-      return Number.isNaN(parsedDate.getTime())
-        ? null
-        : parsedDate;
-
+    function toDate(timestamp) {
+      if (!timestamp) return null;
+      let date;
+      if (typeof timestamp.toDate === "function") date = timestamp.toDate();
+      else if (timestamp.seconds) date = new Date(timestamp.seconds * 1000);
+      else date = new Date(timestamp);
+      return Number.isNaN(date.getTime()) ? null : date;
     }
 
+    function formatTime(timestamp) {
+      const date = toDate(timestamp);
+      if (!date) return "Just now";
 
-    function formatMomentTime(timestamp){
+      const diff = Date.now() - date.getTime();
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
 
-      const date =
-        getTimestampDate(timestamp);
+      if (minutes < 1) return "Just now";
+      if (minutes < 60) return `${minutes} min ago`;
+      if (hours < 24) return `${hours} hr ago`;
 
-      if(!date){
-        return "Recently";
-      }
-
-      const difference =
-        Date.now() - date.getTime();
-
-      const minutes =
-        Math.floor(difference / 60000);
-
-      const hours =
-        Math.floor(difference / 3600000);
-
-      if(minutes < 1){
-        return "Just now";
-      }
-
-      if(minutes < 60){
-        return `${minutes} min ago`;
-      }
-
-      if(hours < 24){
-        return `${hours} hr ago`;
-      }
-
-      return date.toLocaleDateString(
-        "en-US",
-        {
-          month:"short",
-          day:"numeric"
-        }
-      );
-
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
     }
 
-
-    function showToast(message){
-
+    function showToast(message) {
       clearTimeout(toastTimer);
-
-      toastMessage.textContent =
-        message;
-
+      toastMessage.textContent = message;
       toastMessage.classList.add("show");
-
-      toastTimer = setTimeout(
-        () => {
-          toastMessage.classList.remove("show");
-        },
-        2600
-      );
-
+      toastTimer = setTimeout(() => toastMessage.classList.remove("show"), 2600);
     }
 
-
-    function showMomentsLoading(){
-
-      momentsFeed.innerHTML = `
-
-        <div class="momentsStatusCard">
-
-          <div class="momentsStatusIcon">
-            ✨
-          </div>
-
-          <h3 class="momentsStatusTitle">
-            Loading Faith Moments
-          </h3>
-
-          <p class="momentsStatusText">
-            Please wait while we load active moments from the community.
-          </p>
-
-        </div>
-
-      `;
-
+    function isVideoUrl(url) {
+      const clean = String(url || "").split("?")[0].split("#")[0].toLowerCase();
+      return /\.(mp4|webm|mov|m4v|3gp|mkv|ogv)$/.test(clean);
     }
 
-
-    function showMomentsEmpty(){
-
-      momentsFeed.innerHTML = `
-
-        <div class="momentsStatusCard">
-
-          <div class="momentsStatusIcon">
-            🌅
-          </div>
-
-          <h3 class="momentsStatusTitle">
-            No active Faith Moments
-          </h3>
-
-          <p class="momentsStatusText">
-            Be the first person to share a Bible verse,
-            prayer, testimony, photo or short video today.
-          </p>
-
-          <a
-            href="create-faith-moment.html"
-            class="momentsStatusButton"
-          >
-            ＋ Create Faith Moment
-          </a>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function showMomentsError(){
-
-      momentsFeed.innerHTML = `
-
-        <div class="momentsStatusCard">
-
-          <div class="momentsStatusIcon">
-            ⚠️
-          </div>
-
-          <h3 class="momentsStatusTitle">
-            Faith Moments could not load
-          </h3>
-
-          <p class="momentsStatusText">
-            Check your internet connection and try refreshing the page.
-          </p>
-
-          <button
-            id="retryMomentsButton"
-            class="momentsStatusButton"
-            type="button"
-          >
-            ↻ Try Again
-          </button>
-
-        </div>
-
-      `;
-
-      const retryButton =
-        document.getElementById("retryMomentsButton");
-
-      retryButton?.addEventListener(
-        "click",
-        startFaithMomentsListener
-      );
-
+    function avatarHtml(picture, name) {
+      return picture
+        ? `<img src="${escapeHtml(picture)}" alt="${escapeHtml(name)}" onerror="this.replaceWith(document.createTextNode('${escapeHtml(getInitials(name))}'))">`
+        : escapeHtml(getInitials(name));
     }
 
 
     /* =====================================================
-       TODAY'S BLESSING SYSTEM
+       STATUS CARDS
     ===================================================== */
 
-    function setDailyBlessing(){
+    function showStatus(icon, title, text, extraHtml = "") {
+      momentsFeed.innerHTML = `
+        <div class="momentsStatusCard">
+          <div class="momentsStatusIcon">${icon}</div>
+          <h3 class="momentsStatusTitle">${title}</h3>
+          <p class="momentsStatusText">${text}</p>
+          ${extraHtml}
+        </div>`;
+    }
 
-      const today =
-        new Date();
+    const showLoading = () => showStatus(
+      "✨", "Loading Faith Moments",
+      "Please wait while we load active moments from the community."
+    );
 
-      const dayNumber =
-        Math.floor(
-          today.getTime() / 86400000
-        );
+    const showEmpty = () => showStatus(
+      "🌅", "No active Faith Moments",
+      "Be the first person to share encouragement, scripture or a testimony today.",
+      `<a href="create-faith-moment.html" class="momentsStatusButton">＋ Create Faith Moment</a>`
+    );
 
-      const selectedBlessing =
-        dailyBlessings[
-          dayNumber % dailyBlessings.length
-        ];
-
-      dailyBlessingText.textContent =
-        `“${selectedBlessing.text}”`;
-
-      dailyBlessingReference.textContent =
-        selectedBlessing.reference;
-
-      dailyBlessingDate.textContent =
-        today.toLocaleDateString(
-          "en-US",
-          {
-            weekday:"long",
-            month:"long",
-            day:"numeric"
-          }
-        );
-
+    function showError(message) {
+      showStatus(
+        "⚠️", "Faith Moments could not load",
+        escapeHtml(message || "Check your internet connection and try again."),
+        `<button id="retryMomentsButton" class="momentsStatusButton" type="button">↻ Try Again</button>`
+      );
+      $("retryMomentsButton")?.addEventListener("click", startMomentsListener);
     }
 
 
-    async function shareDailyBlessing(){
+    /* =====================================================
+       TODAY'S BLESSING
+    ===================================================== */
 
+    function setDailyBlessing() {
+      const today = new Date();
+      const dayNumber = Math.floor(today.getTime() / 86400000);
+      const blessing = DAILY_BLESSINGS[dayNumber % DAILY_BLESSINGS.length];
+
+      dailyBlessingText.textContent = `“${blessing.text}”`;
+      dailyBlessingReference.textContent = blessing.reference;
+      dailyBlessingDate.textContent = today.toLocaleDateString("en-US", {
+        weekday: "long", month: "long", day: "numeric"
+      });
+    }
+
+    async function shareDailyBlessing() {
       const text =
         `${dailyBlessingText.textContent}\n\n${dailyBlessingReference.textContent}\n\nShared from Faith Connect`;
 
-      try{
-
-        if(navigator.share){
-
-          await navigator.share({
-            title:"Today's Blessing",
-            text
-          });
-
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Today's Blessing", text });
           return;
-
         }
-
         await navigator.clipboard.writeText(text);
-
-        showToast(
-          "Today’s Blessing copied."
-        );
-
-      }catch(error){
-
-        if(error?.name !== "AbortError"){
-          showToast(
-            "Unable to share the blessing."
-          );
-        }
-
+        showToast("Today’s Blessing copied.");
+      } catch (error) {
+        if (error?.name !== "AbortError") showToast("Unable to share the blessing.");
       }
-
     }
-
-
-    /* =====================================================
-       LOAD CURRENT MEMBER PROFILE
-    ===================================================== */
-
-    async function loadCurrentMemberProfile(user){
-
-      currentProfile = null;
-
-      try{
-
-        const profileReference =
-          doc(db,"users",user.uid);
-
-        const profileSnapshot =
-          await getDoc(profileReference);
-
-        if(profileSnapshot.exists()){
-
-          currentProfile = {
-            id:profileSnapshot.id,
-            ...profileSnapshot.data()
-          };
-
-        }
-
-      }catch(error){
-
-        console.error(
-          "Could not load current profile:",
-          error
-        );
-
-      }
-
-      const profileName =
-        currentProfile?.name ||
-        currentProfile?.fullName ||
-        user.displayName ||
-        "You";
-
-      const profilePicture =
-        currentProfile?.profilePicture ||
-        currentProfile?.picture ||
-        currentProfile?.photoURL ||
-        user.photoURL ||
-        "";
-
-      if(profilePicture){
-
-        currentUserMomentAvatar.innerHTML = `
-          <img
-            src="${escapeHtml(profilePicture)}"
-            alt="${escapeHtml(profileName)}"
-          >
-        `;
-
-      }else{
-
-        currentUserMomentAvatar.textContent =
-          getInitials(profileName);
-
-      }
-
-    }
-
-
-    /* =====================================================
-       AUTHENTICATION
-    ===================================================== */
-
-    onAuthStateChanged(
-      auth,
-      async user => {
-
-        currentUser = user || null;
-
-        if(user){
-          await loadCurrentMemberProfile(user);
-        }else{
-          currentUserMomentAvatar.textContent = "＋";
-        }
-
-        startFaithMomentsListener();
-
-      }
-    );
-
-
-    /* =====================================================
-       BASIC EVENTS
-    ===================================================== */
-
-    shareBlessingButton.addEventListener(
-      "click",
-      shareDailyBlessing
-    );
-
-    refreshMomentsButton.addEventListener(
-      "click",
-      () => {
-
-        showToast(
-          "Refreshing Faith Moments..."
-        );
-
-        startFaithMomentsListener();
-
-      }
-    );
 
     setDailyBlessing();
-    /* =====================================================
-       ACTIVE MOMENT RULES
-    ===================================================== */
+    shareBlessingButton.addEventListener("click", shareDailyBlessing);
 
-    function isMomentStillActive(moment){
-
-      const expiresDate =
-        getTimestampDate(moment.expiresAt);
-
-      if(expiresDate){
-        return expiresDate.getTime() > Date.now();
-      }
-
-      const createdDate =
-        getTimestampDate(moment.timestamp);
-
-      if(!createdDate){
-        return true;
-      }
-
-      const twentyFourHours =
-        24 * 60 * 60 * 1000;
-
-      return (
-        createdDate.getTime() + twentyFourHours
-      ) > Date.now();
-
-    }
-
-
-    function canCurrentUserViewMoment(moment){
-
-      const privacy =
-        String(
-          moment.privacy ||
-          "everyone"
-        ).toLowerCase();
-
-      if(privacy === "everyone"){
-        return true;
-      }
-
-      if(!currentUser){
-        return false;
-      }
-
-      if(moment.userId === currentUser.uid){
-        return true;
-      }
-
-      if(privacy === "only-me"){
-        return false;
-      }
-
-      /*
-        Friends-only support will be connected later
-        when the friends system is available.
-      */
-
-      if(privacy === "friends"){
-        return false;
-      }
-
-      return true;
-
-    }
+    backButton.addEventListener("click", () => {
+      if (document.referrer) window.history.back();
+      else window.location.href = "feed.html";
+    });
 
 
     /* =====================================================
-       NORMALIZE FIRESTORE MOMENT
+       CURRENT USER
     ===================================================== */
 
-    function normalizeFaithMoment(
-      documentId,
-      data
-    ){
+    async function loadCurrentProfile(user) {
+      currentProfile = null;
+
+      try {
+        const snapshot = await getDoc(doc(db, "users", user.uid));
+        if (snapshot.exists()) currentProfile = { id: snapshot.id, ...snapshot.data() };
+      } catch (error) {
+        console.error("Could not load current profile:", error);
+      }
+
+      const name =
+        currentProfile?.name || currentProfile?.fullName || user.displayName || "You";
+
+      const picture =
+        currentProfile?.profilePicture || currentProfile?.picture ||
+        currentProfile?.photoURL || user.photoURL || "";
+
+      currentUserMomentAvatar.innerHTML = picture
+        ? `<img src="${escapeHtml(picture)}" alt="${escapeHtml(name)}">`
+        : escapeHtml(getInitials(name));
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user || null;
+
+      if (user) await loadCurrentProfile(user);
+      else currentUserMomentAvatar.textContent = "＋";
+
+      startMomentsListener();
+    });
+
+
+    /* =====================================================
+       MOMENT DATA
+       Reads what create-faith-moment.html saves:
+       momentType, mediaType, mediaUrl, message,
+       verseReference, authorName, authorPicture.
+    ===================================================== */
+
+    function normalizeType(rawType) {
+      const type = String(rawType || "").toLowerCase();
+      if (TYPE_DETAILS[type]) return type;
+      if (type === "verse") return "scripture";
+      return "encouragement";
+    }
+
+    function normalizeMoment(id, data) {
+      const mediaType = String(data.mediaType || "").toLowerCase();
+      const mediaUrl = data.mediaUrl || data.contentUrl || data.fileUrl || "";
+
+      let imageUrl =
+        data.imageUrl || data.imageURL || data.photoUrl || data.photoURL || "";
+
+      let videoUrl = data.videoUrl || data.videoURL || data.video || "";
+
+      if (mediaUrl) {
+        if (mediaType === "video" || isVideoUrl(mediaUrl)) videoUrl = videoUrl || mediaUrl;
+        else if (mediaType === "image" || mediaType === "") imageUrl = imageUrl || mediaUrl;
+      }
+
+      if (imageUrl && isVideoUrl(imageUrl)) {
+        videoUrl = videoUrl || imageUrl;
+        imageUrl = "";
+      }
+
+      const encouragedBy = Array.isArray(data.encouragedBy) ? data.encouragedBy : [];
+      const prayedBy = Array.isArray(data.prayedBy) ? data.prayedBy : [];
 
       return {
-
-        id:documentId,
-
-        userId:
-          data.userId ||
-          data.authorId ||
-          data.uid ||
-          "",
-
-        name:
-          data.authorName ||
-          data.name ||
-          data.fullName ||
-          data.displayName ||
-          "Faith Connect Member",
-
-        profilePicture:
-          data.authorPicture ||
-          data.profilePicture ||
-          data.picture ||
-          data.photoURL ||
-          "",
-
-        country:
-          data.country ||
-          "",
-
-        type:
-          String(
-            data.type ||
-            data.momentType ||
-            "text"
-          ).toLowerCase(),
-
-        message:
-          data.message ||
-          data.text ||
-          data.content ||
-          data.caption ||
-          "",
-
-        verseReference:
-          data.verseReference ||
-          data.reference ||
-          "",
-
-        imageUrl:
-          data.imageUrl ||
-          data.imageURL ||
-          data.photoUrl ||
-          data.photoURL ||
-          (
-            data.mediaUrl &&
-            String(data.mediaType || "").toLowerCase() === "image"
-              ? data.mediaUrl
-              : ""
-          ),
-
-        videoUrl:
-          data.videoUrl ||
-          data.videoURL ||
-          (
-            data.mediaUrl &&
-            String(data.mediaType || "").toLowerCase() === "video"
-              ? data.mediaUrl
-              : ""
-          ),
-
-        audioUrl:
-          data.audioUrl ||
-          data.audioURL ||
-          "",
-
-        privacy:
-          data.privacy ||
-          "everyone",
-
-        timestamp:
-          data.timestamp ||
-          data.createdAt ||
-          null,
-
-        expiresAt:
-          data.expiresAt ||
-          null,
-
-        encouragedBy:
-          Array.isArray(data.encouragedBy)
-            ? data.encouragedBy
-            : [],
-
-        prayedBy:
-          Array.isArray(data.prayedBy)
-            ? data.prayedBy
-            : [],
-
-        encouragementCount:
-          Number(
-            data.encouragementCount || 0
-          ),
-
-        prayedCount:
-          Number(
-            data.prayedCount || 0
-          )
-
+        id,
+        userId: data.userId || data.authorId || data.uid || "",
+        name: data.authorName || data.name || data.fullName || data.displayName || "Faith Connect Member",
+        profilePicture: data.authorPicture || data.profilePicture || data.picture || data.photoURL || "",
+        type: normalizeType(data.momentType || data.type),
+        message: data.message || data.text || data.content || data.caption || "",
+        verseReference: data.verseReference || data.reference || "",
+        imageUrl,
+        videoUrl,
+        privacy: String(data.privacy || "everyone").toLowerCase(),
+        timestamp: data.timestamp || data.createdAt || null,
+        expiresAt: data.expiresAt || null,
+        encouragedBy,
+        prayedBy,
+        encouragementCount: Math.max(Number(data.encouragementCount || 0), encouragedBy.length),
+        prayedCount: Math.max(Number(data.prayedCount || 0), prayedBy.length)
       };
+    }
 
+    function isActive(moment) {
+      const expires = toDate(moment.expiresAt);
+      if (expires) return expires.getTime() > Date.now();
+
+      const created = toDate(moment.timestamp);
+      if (!created) return true;
+
+      return created.getTime() + MOMENT_LIFETIME_MS > Date.now();
+    }
+
+    function canView(moment) {
+      if (moment.privacy === "everyone") return true;
+      if (!currentUser) return false;
+      return moment.userId === currentUser.uid;
+    }
+
+    function matchesFilter(moment, filter) {
+      if (filter === "all") return true;
+      if (filter === "photo") return Boolean(moment.imageUrl);
+      if (filter === "video") return Boolean(moment.videoUrl);
+      return moment.type === filter;
     }
 
 
     /* =====================================================
-       RENDER MOMENT PROFILE CIRCLES
+       CIRCLES (one per member)
     ===================================================== */
 
-    function renderMomentCircles(){
+    function renderCircles() {
+      momentsRow.querySelectorAll(".memberMomentCircle").forEach((el) => el.remove());
 
-      momentsRow
-        .querySelectorAll(
-          ".memberMomentCircle"
-        )
-        .forEach(element => element.remove());
+      const latestByUser = new Map();
 
-
-      if(momentsRowLoading){
-        momentsRowLoading.remove();
-      }
-
-
-      const momentsByUser =
-        new Map();
-
-
-      allFaithMoments.forEach(moment => {
-
-        if(
-          !moment.userId ||
-          momentsByUser.has(moment.userId)
-        ){
-          return;
+      allMoments.forEach((moment) => {
+        if (moment.userId && !latestByUser.has(moment.userId)) {
+          latestByUser.set(moment.userId, moment);
         }
-
-        momentsByUser.set(
-          moment.userId,
-          moment
-        );
-
       });
 
+      latestByUser.forEach((moment, userId) => {
+        const details = typeDetails(moment.type);
 
-      momentsByUser.forEach(moment => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "momentCircleButton memberMomentCircle";
 
-        const typeDetails =
-          getMomentTypeDetails(moment.type);
-
-        const circleButton =
-          document.createElement("button");
-
-        circleButton.type = "button";
-
-        circleButton.className =
-          "momentCircleButton memberMomentCircle";
-
-        circleButton.dataset.momentId =
-          moment.id;
-
-
-        const safeName =
-          escapeHtml(moment.name);
-
-        const safePicture =
-          escapeHtml(moment.profilePicture);
-
-
-        circleButton.innerHTML = `
-
+        button.innerHTML = `
           <div class="momentAvatarOuter">
-
-            <div class="momentAvatarInner">
-
-              ${
-                safePicture
-                  ? `
-                    <img
-                      src="${safePicture}"
-                      alt="${safeName}"
-                    >
-                  `
-                  : escapeHtml(
-                      getInitials(moment.name)
-                    )
-              }
-
-            </div>
-
-            <span
-              class="
-                momentTypeBadge
-                ${typeDetails.className}
-              "
-              title="${escapeHtml(typeDetails.label)}"
-            >
-              ${typeDetails.icon}
-            </span>
-
+            <div class="momentAvatarInner">${avatarHtml(moment.profilePicture, moment.name)}</div>
+            <span class="momentTypeBadge ${details.className}" title="${escapeHtml(details.label)}">${details.icon}</span>
           </div>
+          <span class="momentName">${escapeHtml(moment.name)}</span>`;
 
-          <span class="momentName">
-            ${safeName}
-          </span>
+        /* Opens all of this member's active moments, oldest first, like stories */
+        button.addEventListener("click", () => {
+          const memberMoments = allMoments.filter((m) => m.userId === userId).reverse();
+          openViewer(0, memberMoments);
+        });
 
-        `;
-
-
-        circleButton.addEventListener(
-          "click",
-          () => {
-
-            const momentIndex =
-              filteredFaithMoments.findIndex(
-                item => item.id === moment.id
-              );
-
-            const allIndex =
-              allFaithMoments.findIndex(
-                item => item.id === moment.id
-              );
-
-            openMomentViewer(
-              momentIndex >= 0
-                ? momentIndex
-                : allIndex,
-              momentIndex >= 0
-                ? filteredFaithMoments
-                : allFaithMoments
-            );
-
-          }
-        );
-
-
-        momentsRow.appendChild(
-          circleButton
-        );
-
+        momentsRow.appendChild(button);
       });
-
     }
 
 
     /* =====================================================
-       CREATE MOMENT PREVIEW CARD
+       FEED CARDS
     ===================================================== */
 
-    function createMomentPreviewCard(moment){
+    function createPreviewCard(moment) {
+      const details = typeDetails(moment.type);
 
-      const typeDetails =
-        getMomentTypeDetails(moment.type);
-
-      const article =
-        document.createElement("article");
-
-      article.className =
-        "momentPreviewCard";
-
+      const article = document.createElement("article");
+      article.className = "momentPreviewCard";
       article.tabIndex = 0;
+      article.dataset.momentId = moment.id;
 
-      article.dataset.momentId =
-        moment.id;
+      let mediaHtml;
 
-
-      let mediaHtml = "";
-
-      if(
-        moment.type === "video" &&
-        moment.videoUrl
-      ){
-
+      if (moment.videoUrl) {
         mediaHtml = `
+          <video src="${escapeHtml(moment.videoUrl)}#t=0.1" muted playsinline preload="metadata"></video>
+          <span class="momentPreviewDuration">▶ Play</span>`;
 
-          <video
-            src="${escapeHtml(moment.videoUrl)}"
-            muted
-            preload="metadata"
-          ></video>
-
-          <span class="momentPreviewDuration">
-            ▶ Play
-          </span>
-
-        `;
-
-      }else if(
-        moment.imageUrl
-      ){
-
+      } else if (moment.imageUrl) {
         mediaHtml = `
+          <img src="${escapeHtml(moment.imageUrl)}" alt="${escapeHtml(moment.message || moment.name)}" loading="lazy">`;
 
-          <img
-            src="${escapeHtml(moment.imageUrl)}"
-            alt="${escapeHtml(moment.message || moment.name)}"
-            loading="lazy"
-          >
-
-        `;
-
-      }else{
-
-        const previewClass =
-          [
-            "verse",
-            "prayer",
-            "testimony"
-          ].includes(typeDetails.className)
-            ? typeDetails.className
-            : "verse";
-
+      } else {
         mediaHtml = `
-
-          <div
-            class="
-              momentTextPreview
-              ${previewClass}
-            "
-          >
-            ${
-              escapeHtml(
-                moment.message ||
-                "A new Faith Moment"
-              )
-            }
-          </div>
-
-        `;
-
+          <div class="momentTextPreview ${details.className}">
+            <span>${escapeHtml(moment.message || "A new Faith Moment")}</span>
+            ${moment.verseReference ? `<small>${escapeHtml(moment.verseReference)}</small>` : ""}
+          </div>`;
       }
-
 
       article.innerHTML = `
-
         <div class="momentPreviewMedia">
-
           ${mediaHtml}
-
-          <span class="momentPreviewType">
-            ${typeDetails.icon}
-            ${escapeHtml(typeDetails.label)}
-          </span>
-
+          <span class="momentPreviewType">${details.icon} ${escapeHtml(details.label)}</span>
         </div>
 
         <div class="momentPreviewBody">
-
           <div class="momentPreviewAuthor">
-
-            <div class="momentPreviewAvatar">
-
-              ${
-                moment.profilePicture
-                  ? `
-                    <img
-                      src="${escapeHtml(moment.profilePicture)}"
-                      alt="${escapeHtml(moment.name)}"
-                    >
-                  `
-                  : escapeHtml(
-                      getInitials(moment.name)
-                    )
-              }
-
-            </div>
-
+            <div class="momentPreviewAvatar">${avatarHtml(moment.profilePicture, moment.name)}</div>
             <div class="momentPreviewAuthorText">
-
-              <div class="momentPreviewName">
-                ${escapeHtml(moment.name)}
-              </div>
-
-              <div class="momentPreviewTime">
-                ${escapeHtml(
-                  formatMomentTime(
-                    moment.timestamp
-                  )
-                )}
-              </div>
-
+              <div class="momentPreviewName">${escapeHtml(moment.name)}</div>
+              <div class="momentPreviewTime">${escapeHtml(formatTime(moment.timestamp))}</div>
             </div>
-
           </div>
+        </div>`;
 
-        </div>
-
-      `;
-
-
-      const openCardMoment = () => {
-
-        const momentIndex =
-          filteredFaithMoments.findIndex(
-            item => item.id === moment.id
-          );
-
-        openMomentViewer(
-          momentIndex,
-          filteredFaithMoments
-        );
-
+      const open = () => {
+        const index = filteredMoments.findIndex((m) => m.id === moment.id);
+        openViewer(index, filteredMoments);
       };
 
-
-      article.addEventListener(
-        "click",
-        openCardMoment
-      );
-
-
-      article.addEventListener(
-        "keydown",
-        event => {
-
-          if(
-            event.key === "Enter" ||
-            event.key === " "
-          ){
-
-            event.preventDefault();
-            openCardMoment();
-
-          }
-
+      article.addEventListener("click", open);
+      article.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open();
         }
-      );
-
-
-      return article;
-
-    }
-
-
-    /* =====================================================
-       RENDER FILTERED MOMENTS
-    ===================================================== */
-
-    function renderFilteredMoments(){
-
-      filteredFaithMoments =
-        activeFilter === "all"
-          ? [...allFaithMoments]
-          : allFaithMoments.filter(
-              moment =>
-                moment.type === activeFilter
-            );
-
-
-      momentsFeed.innerHTML = "";
-
-
-      if(filteredFaithMoments.length === 0){
-
-        showMomentsEmpty();
-        return;
-
-      }
-
-
-      filteredFaithMoments.forEach(moment => {
-
-        momentsFeed.appendChild(
-          createMomentPreviewCard(moment)
-        );
-
       });
 
+      return article;
     }
 
+    function renderFeed() {
+      filteredMoments = allMoments.filter((m) => matchesFilter(m, activeFilter));
 
-    /* =====================================================
-       FILTER BUTTONS
-    ===================================================== */
+      if (filteredMoments.length === 0) {
+        showEmpty();
+        return;
+      }
 
-    momentFilterButtons.forEach(button => {
+      momentsFeed.innerHTML = "";
+      const fragment = document.createDocumentFragment();
+      filteredMoments.forEach((m) => fragment.appendChild(createPreviewCard(m)));
+      momentsFeed.appendChild(fragment);
+    }
 
-      button.addEventListener(
-        "click",
-        () => {
-
-          activeFilter =
-            button.dataset.filter || "all";
-
-          momentFilterButtons
-            .forEach(filterButton => {
-
-              filterButton.classList.toggle(
-                "active",
-                filterButton === button
-              );
-
-            });
-
-          renderFilteredMoments();
-
-        }
-      );
-
+    momentFilterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter || "all";
+        momentFilterButtons.forEach((b) => b.classList.toggle("active", b === button));
+        renderFeed();
+      });
     });
 
 
@@ -3612,1259 +1238,463 @@
        FIRESTORE LISTENER
     ===================================================== */
 
-    function startFaithMomentsListener(){
-
-      if(unsubscribeFaithMoments){
-
-        unsubscribeFaithMoments();
-        unsubscribeFaithMoments = null;
-
+    function startMomentsListener() {
+      if (unsubscribeMoments) {
+        unsubscribeMoments();
+        unsubscribeMoments = null;
       }
 
+      showLoading();
 
-      showMomentsLoading();
+      const momentsQuery = query(
+        collection(db, "faithMoments"),
+        orderBy("timestamp", "desc"),
+        limit(MOMENTS_LIMIT)
+      );
 
+      unsubscribeMoments = onSnapshot(
+        momentsQuery,
 
-      const momentsQuery =
-        query(
-          collection(
-            db,
-            "faithMoments"
-          ),
-          orderBy(
-            "timestamp",
-            "desc"
-          )
-        );
+        (snapshot) => {
+          allMoments = snapshot.docs
+            .map((d) => normalizeMoment(d.id, d.data()))
+            .filter((m) => isActive(m) && canView(m));
 
+          renderCircles();
+          renderFeed();
 
-      unsubscribeFaithMoments =
-        onSnapshot(
+          /* ?moment=ID from the feed strip */
+          if (pendingSharedMomentId) {
+            const index = allMoments.findIndex((m) => m.id === pendingSharedMomentId);
 
-          momentsQuery,
-
-          snapshot => {
-
-            allFaithMoments =
-              snapshot.docs
-                .map(momentDocument => {
-
-                  return normalizeFaithMoment(
-                    momentDocument.id,
-                    momentDocument.data()
-                  );
-
-                })
-                .filter(moment => {
-
-                  return (
-                    isMomentStillActive(moment) &&
-                    canCurrentUserViewMoment(moment)
-                  );
-
-                });
-
-
-            renderMomentCircles();
-            renderFilteredMoments();
-
-
-            const sharedMomentId =
-              new URLSearchParams(
-                window.location.search
-              ).get("moment");
-
-
-            if(sharedMomentId){
-
-              const sharedMomentIndex =
-                filteredFaithMoments.findIndex(
-                  moment =>
-                    moment.id === sharedMomentId
-                );
-
-              if(sharedMomentIndex >= 0){
-
-                openMomentViewer(
-                  sharedMomentIndex,
-                  filteredFaithMoments
-                );
-
-                const cleanUrl =
-                  window.location.pathname;
-
-                window.history.replaceState(
-                  {},
-                  "",
-                  cleanUrl
-                );
-
-              }
-
+            if (index >= 0) {
+              pendingSharedMomentId = null;
+              window.history.replaceState({}, "", window.location.pathname);
+              openViewer(index, allMoments);
+            } else if (allMoments.length > 0) {
+              pendingSharedMomentId = null;
+              showToast("That Faith Moment is no longer available.");
             }
-
-          },
-
-          error => {
-
-            console.error(
-              "Faith Moments listener error:",
-              error
-            );
-
-            showMomentsError();
-
           }
+        },
 
-        );
-
+        (error) => {
+          console.error("Faith Moments listener error:", error);
+          showError(
+            error.code === "permission-denied"
+              ? "Firebase permission denied access to Faith Moments."
+              : error.code === "failed-precondition"
+                ? "Firebase needs an index for Faith Moments."
+                : ""
+          );
+        }
+      );
     }
+
+    refreshMomentsButton.addEventListener("click", () => {
+      showToast("Refreshing Faith Moments...");
+      startMomentsListener();
+    });
+
+
     /* =====================================================
-       VIEWER STATE
+       VIEWER: PROGRESS SEGMENTS
     ===================================================== */
 
-    let viewerMoments = [];
-
-
-    /* =====================================================
-       VIEWER PROGRESS
-    ===================================================== */
-
-    function stopViewerProgress(){
-
-      if(viewerProgressTimer){
-
-        clearInterval(viewerProgressTimer);
-        viewerProgressTimer = null;
-
+    function stopProgress() {
+      if (progressTimer) {
+        cancelAnimationFrame(progressTimer);
+        progressTimer = null;
       }
-
-      momentViewerProgressBar.style.width =
-        "0%";
-
     }
 
+    function buildProgressSegments() {
+      momentViewerProgress.innerHTML = "";
+      viewerMoments.forEach(() => {
+        const segment = document.createElement("div");
+        segment.className = "momentViewerSegment";
+        segment.innerHTML = "<div></div>";
+        momentViewerProgress.appendChild(segment);
+      });
+    }
 
-    function startViewerProgress(){
+    function paintSegments(fraction) {
+      momentViewerProgress.querySelectorAll(".momentViewerSegment").forEach((segment, index) => {
+        const bar = segment.firstElementChild;
 
-      stopViewerProgress();
+        if (index < activeIndex) {
+          segment.classList.add("done");
+          bar.style.width = "";
+        } else if (index === activeIndex) {
+          segment.classList.remove("done");
+          bar.style.width = `${Math.min(100, Math.max(0, fraction * 100))}%`;
+        } else {
+          segment.classList.remove("done");
+          bar.style.width = "0";
+        }
+      });
+    }
 
-      let progress = 0;
+    /* Timed progress for photos and text. Videos report their own progress. */
+    function startProgress() {
+      stopProgress();
 
-      momentViewerProgressBar.style.width =
-        "0%";
+      const startedAt = performance.now();
 
+      const tick = (now) => {
+        const fraction = (now - startedAt) / SLIDE_DURATION_MS;
+        paintSegments(fraction);
 
-      viewerProgressTimer =
-        setInterval(
-          () => {
+        if (fraction >= 1) {
+          progressTimer = null;
+          showNext();
+          return;
+        }
 
-            progress += 1;
+        progressTimer = requestAnimationFrame(tick);
+      };
 
-            momentViewerProgressBar.style.width =
-              `${progress}%`;
-
-
-            if(progress >= 100){
-
-              stopViewerProgress();
-              showNextMoment();
-
-            }
-
-          },
-          80
-        );
-
+      progressTimer = requestAnimationFrame(tick);
     }
 
 
     /* =====================================================
-       VIEWER AUTHOR
+       VIEWER: CONTENT
     ===================================================== */
 
-    function renderViewerAuthor(moment){
+    function getActiveMoment() {
+      return viewerMoments[activeIndex] || null;
+    }
 
-      const safeName =
-        moment.name ||
-        "Faith Connect Member";
-
-      momentViewerName.textContent =
-        safeName;
-
+    function renderAuthor(moment) {
+      momentViewerName.textContent = moment.name;
       momentViewerMeta.textContent =
-        `${formatMomentTime(moment.timestamp)} · ${
-          getMomentTypeDetails(moment.type).label
-        }`;
+        `${formatTime(moment.timestamp)} · ${typeDetails(moment.type).label}`;
 
-
-      if(moment.profilePicture){
-
-        momentViewerAvatar.innerHTML = `
-
-          <img
-            src="${escapeHtml(moment.profilePicture)}"
-            alt="${escapeHtml(safeName)}"
-          >
-
-        `;
-
-      }else{
-
-        momentViewerAvatar.textContent =
-          getInitials(safeName);
-
-      }
-
+      momentViewerAvatar.innerHTML = avatarHtml(moment.profilePicture, moment.name);
     }
 
+    function buildCaption(moment) {
+      if (!moment.message && !moment.verseReference) return null;
 
-    /* =====================================================
-       VIEWER CONTENT
-    ===================================================== */
+      const caption = document.createElement("div");
+      caption.className = "momentViewerCaption";
 
-    function renderViewerContent(moment){
+      if (moment.verseReference) {
+        const reference = document.createElement("strong");
+        reference.textContent = moment.verseReference;
+        caption.appendChild(reference);
+      }
 
-      const typeDetails =
-        getMomentTypeDetails(moment.type);
+      if (moment.message) caption.appendChild(document.createTextNode(moment.message));
+
+      return caption;
+    }
+
+    function renderContent(moment) {
+      const details = typeDetails(moment.type);
 
       momentViewerMedia.innerHTML = "";
+      momentViewer.classList.toggle("hasVideo", Boolean(moment.videoUrl));
+      paintSegments(0);
 
-
-      if(
-        moment.type === "video" &&
-        moment.videoUrl
-      ){
-
-        const video =
-          document.createElement("video");
-
-        video.src =
-          moment.videoUrl;
-
+      /* ----- VIDEO ----- */
+      if (moment.videoUrl) {
+        const video = document.createElement("video");
+        video.src = moment.videoUrl;
         video.controls = true;
         video.autoplay = true;
         video.playsInline = true;
 
-        video.addEventListener(
-          "play",
-          stopViewerProgress
-        );
+        video.addEventListener("timeupdate", () => {
+          if (video.duration) paintSegments(video.currentTime / video.duration);
+        });
 
-        video.addEventListener(
-          "pause",
-          startViewerProgress
-        );
+        video.addEventListener("ended", showNext);
 
-        video.addEventListener(
-          "ended",
-          showNextMoment
-        );
+        video.addEventListener("error", () => {
+          showToast("This video could not be played.");
+          startProgress();
+        });
 
         momentViewerMedia.appendChild(video);
 
+        const caption = buildCaption(moment);
+        if (caption) momentViewerMedia.appendChild(caption);
 
-        if(moment.message){
-
-          const caption =
-            document.createElement("div");
-
-          caption.className =
-            "momentViewerCaption";
-
-          caption.textContent =
-            moment.message;
-
-          momentViewerMedia.appendChild(
-            caption
-          );
-
+        const playing = video.play();
+        if (playing && typeof playing.catch === "function") {
+          playing.catch(() => {
+            /* Browser blocked sound autoplay: retry muted */
+            video.muted = true;
+            video.play().catch(() => {});
+          });
         }
 
         return;
-
       }
 
+      /* ----- PHOTO ----- */
+      if (moment.imageUrl) {
+        const image = document.createElement("img");
+        image.src = moment.imageUrl;
+        image.alt = moment.message || `${moment.name}'s Faith Moment`;
 
-      if(moment.imageUrl){
-
-        const image =
-          document.createElement("img");
-
-        image.src =
-          moment.imageUrl;
-
-        image.alt =
-          moment.message ||
-          `${moment.name}'s Faith Moment`;
-
-        image.addEventListener(
-          "load",
-          startViewerProgress
-        );
-
-        image.addEventListener(
-          "error",
-          () => {
-
-            showToast(
-              "This image could not be displayed."
-            );
-
-            startViewerProgress();
-
-          }
-        );
+        image.addEventListener("load", startProgress);
+        image.addEventListener("error", () => {
+          showToast("This image could not be displayed.");
+          startProgress();
+        });
 
         momentViewerMedia.appendChild(image);
 
-
-        if(moment.message){
-
-          const caption =
-            document.createElement("div");
-
-          caption.className =
-            "momentViewerCaption";
-
-          caption.textContent =
-            moment.message;
-
-          momentViewerMedia.appendChild(
-            caption
-          );
-
-        }
+        const caption = buildCaption(moment);
+        if (caption) momentViewerMedia.appendChild(caption);
 
         return;
-
       }
 
+      /* ----- TEXT ONLY ----- */
+      const container = document.createElement("div");
+      container.className = `momentViewerText ${details.className}`;
 
-      const textContainer =
-        document.createElement("div");
+      const label = document.createElement("div");
+      label.className = "momentViewerType";
+      label.textContent = `${details.icon} ${details.label}`;
 
-      textContainer.className =
-        `momentViewerText ${
-          [
-            "verse",
-            "prayer",
-            "testimony"
-          ].includes(typeDetails.className)
-            ? typeDetails.className
-            : "default"
-        }`;
+      const message = document.createElement("div");
+      message.className = "momentViewerMessage";
+      message.textContent = moment.message || "A meaningful Faith Moment";
 
+      container.append(label, message);
 
-      const typeLabel =
-        document.createElement("div");
-
-      typeLabel.className =
-        "momentViewerType";
-
-      typeLabel.textContent =
-        `${typeDetails.icon} ${typeDetails.label}`;
-
-
-      const message =
-        document.createElement("div");
-
-      message.className =
-        "momentViewerMessage";
-
-      message.textContent =
-        moment.message ||
-        "A meaningful Faith Moment";
-
-
-      textContainer.appendChild(
-        typeLabel
-      );
-
-      textContainer.appendChild(
-        message
-      );
-
-
-      if(moment.verseReference){
-
-        const reference =
-          document.createElement("div");
-
-        reference.className =
-          "momentViewerReference";
-
-        reference.textContent =
-          moment.verseReference;
-
-        textContainer.appendChild(
-          reference
-        );
-
+      if (moment.verseReference) {
+        const reference = document.createElement("div");
+        reference.className = "momentViewerReference";
+        reference.textContent = moment.verseReference;
+        container.appendChild(reference);
       }
 
-
-      momentViewerMedia.appendChild(
-        textContainer
-      );
-
-
-      startViewerProgress();
-
+      momentViewerMedia.appendChild(container);
+      startProgress();
     }
 
+    function updateActionButtons(moment) {
+      const uid = currentUser?.uid;
 
-    /* =====================================================
-       VIEWER ACTION COUNTS
-    ===================================================== */
-
-    function updateViewerActionButtons(moment){
-
-      const hasEncouraged =
-        Boolean(
-          currentUser &&
-          moment.encouragedBy.includes(
-            currentUser.uid
-          )
-        );
-
-      const hasPrayed =
-        Boolean(
-          currentUser &&
-          moment.prayedBy.includes(
-            currentUser.uid
-          )
-        );
-
-
-      encourageMomentButton.classList.toggle(
-        "active",
-        hasEncouraged
-      );
-
-      prayedMomentButton.classList.toggle(
-        "active",
-        hasPrayed
-      );
-
-
-      const encouragementTotal =
-        Math.max(
-          moment.encouragementCount,
-          moment.encouragedBy.length
-        );
-
-      const prayedTotal =
-        Math.max(
-          moment.prayedCount,
-          moment.prayedBy.length
-        );
-
+      encourageMomentButton.classList.toggle("active", Boolean(uid && moment.encouragedBy.includes(uid)));
+      prayedMomentButton.classList.toggle("active", Boolean(uid && moment.prayedBy.includes(uid)));
 
       encourageMomentText.textContent =
-        encouragementTotal > 0
-          ? `Encourage ${encouragementTotal}`
-          : "Encourage";
+        moment.encouragementCount > 0 ? `Encourage ${moment.encouragementCount}` : "Encourage";
 
       prayedMomentText.textContent =
-        prayedTotal > 0
-          ? `I Prayed ${prayedTotal}`
-          : "I Prayed";
+        moment.prayedCount > 0 ? `I Prayed ${moment.prayedCount}` : "I Prayed";
+    }
 
+    function renderCurrent() {
+      const moment = getActiveMoment();
+      if (!moment) return;
+
+      stopProgress();
+      renderAuthor(moment);
+      renderContent(moment);
+      updateActionButtons(moment);
     }
 
 
     /* =====================================================
-       OPEN MOMENT VIEWER
+       VIEWER: OPEN / CLOSE / NAVIGATE
     ===================================================== */
 
-    function openMomentViewer(
-      requestedIndex,
-      momentsSource = filteredFaithMoments
-    ){
+    function openViewer(index, source) {
+      if (!Array.isArray(source) || source.length === 0) return;
 
-      if(
-        !Array.isArray(momentsSource) ||
-        momentsSource.length === 0
-      ){
-        return;
-      }
+      viewerMoments = [...source];
+      activeIndex = Number.isInteger(index) && index >= 0 && index < viewerMoments.length ? index : 0;
 
-
-      viewerMoments =
-        [...momentsSource];
-
-
-      activeMomentIndex =
-        Number.isInteger(requestedIndex)
-          ? requestedIndex
-          : 0;
-
-
-      if(activeMomentIndex < 0){
-        activeMomentIndex = 0;
-      }
-
-
-      if(
-        activeMomentIndex >=
-        viewerMoments.length
-      ){
-        activeMomentIndex = 0;
-      }
-
-
-      const moment =
-        viewerMoments[
-          activeMomentIndex
-        ];
-
-
-      if(!moment){
-        return;
-      }
-
-
-      renderViewerAuthor(moment);
-      renderViewerContent(moment);
-      updateViewerActionButtons(moment);
-
+      buildProgressSegments();
+      renderCurrent();
 
       momentViewer.classList.add("open");
-
-      momentViewer.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-      document.body.style.overflow =
-        "hidden";
-
-
+      momentViewer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
       closeMomentViewerButton.focus();
-
     }
 
+    function closeViewer() {
+      stopProgress();
 
-    /* =====================================================
-       CLOSE MOMENT VIEWER
-    ===================================================== */
-
-    function closeMomentViewer(){
-
-      stopViewerProgress();
-
-
-      const activeVideo =
-        momentViewerMedia.querySelector(
-          "video"
-        );
-
-      if(activeVideo){
-
-        activeVideo.pause();
-
-        activeVideo.removeAttribute(
-          "src"
-        );
-
-        activeVideo.load();
-
+      const video = momentViewerMedia.querySelector("video");
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
       }
 
-
-      momentViewer.classList.remove("open");
-
-      momentViewer.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
+      momentViewer.classList.remove("open", "hasVideo");
+      momentViewer.setAttribute("aria-hidden", "true");
       momentViewerMedia.innerHTML = "";
-
       document.body.style.overflow = "";
-
     }
 
-
-    /* =====================================================
-       PREVIOUS AND NEXT MOMENTS
-    ===================================================== */
-
-    function showMomentAtIndex(index){
-
-      if(viewerMoments.length === 0){
+    function showNext() {
+      if (activeIndex >= viewerMoments.length - 1) {
+        closeViewer();
         return;
       }
+      activeIndex += 1;
+      renderCurrent();
+    }
 
+    function showPrevious() {
+      if (activeIndex > 0) activeIndex -= 1;
+      renderCurrent();
+    }
 
-      if(index < 0){
+    closeMomentViewerButton.addEventListener("click", closeViewer);
+    previousMomentButton.addEventListener("click", showPrevious);
+    nextMomentButton.addEventListener("click", showNext);
 
-        activeMomentIndex =
-          viewerMoments.length - 1;
+    momentViewer.addEventListener("click", (event) => {
+      if (event.target === momentViewer) closeViewer();
+    });
 
-      }else if(
-        index >= viewerMoments.length
-      ){
+    document.addEventListener("keydown", (event) => {
+      if (!momentViewer.classList.contains("open")) return;
 
-        activeMomentIndex = 0;
+      if (event.key === "Escape") closeViewer();
+      else if (event.key === "ArrowLeft") showPrevious();
+      else if (event.key === "ArrowRight") showNext();
+    });
 
-      }else{
+    document.addEventListener("visibilitychange", () => {
+      if (!momentViewer.classList.contains("open")) return;
 
-        activeMomentIndex = index;
+      const moment = getActiveMoment();
 
+      if (document.hidden) {
+        stopProgress();
+        momentViewerMedia.querySelector("video")?.pause();
+      } else if (moment && !moment.videoUrl) {
+        startProgress();
       }
-
-
-      const moment =
-        viewerMoments[
-          activeMomentIndex
-        ];
-
-
-      stopViewerProgress();
-
-      renderViewerAuthor(moment);
-      renderViewerContent(moment);
-      updateViewerActionButtons(moment);
-
-    }
-
-
-    function showPreviousMoment(){
-
-      showMomentAtIndex(
-        activeMomentIndex - 1
-      );
-
-    }
-
-
-    function showNextMoment(){
-
-      showMomentAtIndex(
-        activeMomentIndex + 1
-      );
-
-    }
+    });
 
 
     /* =====================================================
-       VIEWER CONTROLS
+       VIEWER: ACTIONS
     ===================================================== */
 
-    closeMomentViewerButton.addEventListener(
-      "click",
-      closeMomentViewer
-    );
+    function requireLogin() {
+      if (currentUser) return true;
 
-
-    previousMomentButton.addEventListener(
-      "click",
-      showPreviousMoment
-    );
-
-
-    nextMomentButton.addEventListener(
-      "click",
-      showNextMoment
-    );
-
-
-    momentViewer.addEventListener(
-      "click",
-      event => {
-
-        if(event.target === momentViewer){
-          closeMomentViewer();
-        }
-
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if(
-          !momentViewer.classList.contains(
-            "open"
-          )
-        ){
-          return;
-        }
-
-
-        if(event.key === "Escape"){
-
-          closeMomentViewer();
-
-        }else if(
-          event.key === "ArrowLeft"
-        ){
-
-          showPreviousMoment();
-
-        }else if(
-          event.key === "ArrowRight"
-        ){
-
-          showNextMoment();
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       PAUSE PROGRESS DURING TOUCH
-    ===================================================== */
-
-    momentViewer.addEventListener(
-      "pointerdown",
-      event => {
-
-        if(
-          event.target.closest(
-            ".momentActionButton"
-          ) ||
-          event.target.closest(
-            ".closeMomentViewer"
-          ) ||
-          event.target.closest("video")
-        ){
-          return;
-        }
-
-        stopViewerProgress();
-
-      }
-    );
-
-
-    momentViewer.addEventListener(
-      "pointerup",
-      event => {
-
-        if(
-          event.target.closest(
-            ".momentActionButton"
-          ) ||
-          event.target.closest(
-            ".closeMomentViewer"
-          ) ||
-          event.target.closest("video")
-        ){
-          return;
-        }
-
-        const activeMoment =
-          viewerMoments[
-            activeMomentIndex
-          ];
-
-        if(
-          activeMoment &&
-          activeMoment.type !== "video"
-        ){
-          startViewerProgress();
-        }
-
-      }
-    );
-    /* =====================================================
-       LOGIN PROTECTION
-    ===================================================== */
-
-    function requireMomentLogin(){
-
-      if(currentUser){
-        return true;
-      }
-
-      showToast(
-        "Please sign in to interact with Faith Moments."
-      );
-
-      setTimeout(
-        () => {
-          window.location.href =
-            "login.html";
-        },
-        900
-      );
-
+      showToast("Please sign in to interact with Faith Moments.");
+      setTimeout(() => { window.location.href = "login.html"; }, 900);
       return false;
-
     }
 
-
-    /* =====================================================
-       ACTIVE VIEWER MOMENT
-    ===================================================== */
-
-    function getActiveViewerMoment(){
-
-      return (
-        viewerMoments[
-          activeMomentIndex
-        ] || null
-      );
-
+    function replaceMoment(updated) {
+      const swap = (list) => list.map((m) => (m.id === updated.id ? updated : m));
+      allMoments = swap(allMoments);
+      filteredMoments = swap(filteredMoments);
+      viewerMoments = swap(viewerMoments);
     }
 
+    async function toggleReaction({ button, field, countField, onText, offText, errorText }) {
+      if (!requireLogin()) return;
 
-    /* =====================================================
-       UPDATE LOCAL MOMENT COPY
-    ===================================================== */
+      const moment = getActiveMoment();
+      if (!moment) return;
 
-    function replaceMomentEverywhere(
-      momentId,
-      updatedMoment
-    ){
+      const uid = currentUser.uid;
+      const already = moment[field].includes(uid);
+      const updatedList = already ? moment[field].filter((id) => id !== uid) : [...moment[field], uid];
 
-      allFaithMoments =
-        allFaithMoments.map(moment => {
+      button.disabled = true;
 
-          return moment.id === momentId
-            ? updatedMoment
-            : moment;
-
+      try {
+        await updateDoc(doc(db, "faithMoments", moment.id), {
+          [field]: already ? arrayRemove(uid) : arrayUnion(uid),
+          [countField]: updatedList.length
         });
 
+        const updated = { ...moment, [field]: updatedList, [countField]: updatedList.length };
+        replaceMoment(updated);
+        updateActionButtons(updated);
 
-      filteredFaithMoments =
-        filteredFaithMoments.map(moment => {
+        showToast(already ? offText : onText);
 
-          return moment.id === momentId
-            ? updatedMoment
-            : moment;
-
-        });
-
-
-      viewerMoments =
-        viewerMoments.map(moment => {
-
-          return moment.id === momentId
-            ? updatedMoment
-            : moment;
-
-        });
-
+      } catch (error) {
+        console.error(errorText, error);
+        showToast(errorText);
+      } finally {
+        button.disabled = false;
+      }
     }
 
+    encourageMomentButton.addEventListener("click", () => toggleReaction({
+      button: encourageMomentButton,
+      field: "encouragedBy",
+      countField: "encouragementCount",
+      onText: "You encouraged this Faith Moment.",
+      offText: "Encouragement removed.",
+      errorText: "Unable to update encouragement."
+    }));
 
-    /* =====================================================
-       ENCOURAGE MOMENT
-    ===================================================== */
+    prayedMomentButton.addEventListener("click", () => toggleReaction({
+      button: prayedMomentButton,
+      field: "prayedBy",
+      countField: "prayedCount",
+      onText: "Thank you for praying.",
+      offText: "Prayer response removed.",
+      errorText: "Unable to update prayer response."
+    }));
 
-    async function handleEncourageMoment(){
+    replyMomentButton.addEventListener("click", () => {
+      if (!requireLogin()) return;
 
-      if(!requireMomentLogin()){
+      const moment = getActiveMoment();
+      if (!moment) return;
+
+      if (!moment.userId || moment.userId === currentUser.uid) {
+        showToast("This is your Faith Moment.");
         return;
       }
 
+      const snippet = moment.message
+        ? (moment.message.length > 80 ? `${moment.message.slice(0, 80)}…` : moment.message)
+        : (moment.verseReference || typeDetails(moment.type).label);
 
-      const moment =
-        getActiveViewerMoment();
-
-      if(!moment){
-        return;
+      try {
+        window.sessionStorage.setItem("pendingMomentReply", JSON.stringify({
+          momentId: moment.id,
+          momentType: moment.type,
+          momentUserId: moment.userId,
+          momentUserName: moment.name || "Faith Connect Member",
+          momentSnippet: snippet,
+          momentImageUrl: moment.videoUrl ? "" : (moment.imageUrl || ""),
+          momentVideoUrl: moment.videoUrl || ""
+        }));
+      } catch (error) {
+        console.warn("Could not hand off Faith Moment reply context:", error);
       }
 
-
-      const alreadyEncouraged =
-        moment.encouragedBy.includes(
-          currentUser.uid
-        );
-
-
-      encourageMomentButton.disabled =
-        true;
-
-
-      try{
-
-        const momentReference =
-          doc(
-            db,
-            "faithMoments",
-            moment.id
-          );
-
-
-        const updatedEncouragedBy =
-          alreadyEncouraged
-            ? moment.encouragedBy.filter(
-                userId =>
-                  userId !== currentUser.uid
-              )
-            : [
-                ...moment.encouragedBy,
-                currentUser.uid
-              ];
-
-
-        await updateDoc(
-          momentReference,
-          {
-            encouragedBy:
-              alreadyEncouraged
-                ? arrayRemove(currentUser.uid)
-                : arrayUnion(currentUser.uid),
-
-            encouragementCount:
-              updatedEncouragedBy.length
-          }
-        );
-
-
-        const updatedMoment = {
-          ...moment,
-          encouragedBy:
-            updatedEncouragedBy,
-          encouragementCount:
-            updatedEncouragedBy.length
-        };
-
-
-        replaceMomentEverywhere(
-          moment.id,
-          updatedMoment
-        );
-
-
-        updateViewerActionButtons(
-          updatedMoment
-        );
-
-
-        showToast(
-          alreadyEncouraged
-            ? "Encouragement removed."
-            : "You encouraged this Faith Moment."
-        );
-
-      }catch(error){
-
-        console.error(
-          "Could not update encouragement:",
-          error
-        );
-
-        showToast(
-          "Unable to update encouragement."
-        );
-
-      }finally{
-
-        encourageMomentButton.disabled =
-          false;
-
-      }
-
-    }
+      window.location.href = `chat.html?uid=${encodeURIComponent(moment.userId)}`;
+    });
 
 
     /* =====================================================
-       I PRAYED ACTION
+       CLEANUP
     ===================================================== */
 
-    async function handlePrayedMoment(){
-
-      if(!requireMomentLogin()){
-        return;
-      }
-
-
-      const moment =
-        getActiveViewerMoment();
-
-      if(!moment){
-        return;
-      }
-
-
-      const alreadyPrayed =
-        moment.prayedBy.includes(
-          currentUser.uid
-        );
-
-
-      prayedMomentButton.disabled =
-        true;
-
-
-      try{
-
-        const momentReference =
-          doc(
-            db,
-            "faithMoments",
-            moment.id
-          );
-
-
-        const updatedPrayedBy =
-          alreadyPrayed
-            ? moment.prayedBy.filter(
-                userId =>
-                  userId !== currentUser.uid
-              )
-            : [
-                ...moment.prayedBy,
-                currentUser.uid
-              ];
-
-
-        await updateDoc(
-          momentReference,
-          {
-            prayedBy:
-              alreadyPrayed
-                ? arrayRemove(currentUser.uid)
-                : arrayUnion(currentUser.uid),
-
-            prayedCount:
-              updatedPrayedBy.length
-          }
-        );
-
-
-        const updatedMoment = {
-          ...moment,
-          prayedBy:
-            updatedPrayedBy,
-          prayedCount:
-            updatedPrayedBy.length
-        };
-
-
-        replaceMomentEverywhere(
-          moment.id,
-          updatedMoment
-        );
-
-
-        updateViewerActionButtons(
-          updatedMoment
-        );
-
-
-        showToast(
-          alreadyPrayed
-            ? "Prayer response removed."
-            : "Thank you for praying."
-        );
-
-      }catch(error){
-
-        console.error(
-          "Could not update prayer response:",
-          error
-        );
-
-        showToast(
-          "Unable to update prayer response."
-        );
-
-      }finally{
-
-        prayedMomentButton.disabled =
-          false;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       PRIVATE REPLY
-    ===================================================== */
-
-    function handleReplyMoment(){
-
-      if(!requireMomentLogin()){
-        return;
-      }
-
-
-      const moment =
-        getActiveViewerMoment();
-
-      if(!moment){
-        return;
-      }
-
-
-      if(
-        !moment.userId ||
-        moment.userId === currentUser.uid
-      ){
-
-        showToast(
-          "This is your Faith Moment."
-        );
-
-        return;
-
-      }
-
-
-      const messageSnippet =
-        moment.message
-
-        ? (
-            moment.message.length > 80
-              ? `${moment.message.slice(0,80)}…`
-              : moment.message
-          )
-
-        : moment.verseReference ||
-          getMomentTypeDetails(
-            moment.type
-          ).label;
-
-
-      const momentReplyHandoff = {
-
-        momentId:
-        moment.id,
-
-        momentType:
-        moment.type,
-
-        momentUserId:
-        moment.userId,
-
-        momentUserName:
-        moment.name ||
-        "Faith Connect Member",
-
-        momentSnippet:
-        messageSnippet,
-
-        momentImageUrl:
-        moment.type === "video"
-          ? ""
-          : moment.imageUrl || "",
-
-        momentVideoUrl:
-        moment.type === "video"
-          ? moment.videoUrl || ""
-          : ""
-
-      };
-
-
-      try{
-
-        window.sessionStorage.setItem(
-          "pendingMomentReply",
-          JSON.stringify(
-            momentReplyHandoff
-          )
-        );
-
-      }catch(error){
-
-        console.warn(
-          "Could not hand off Faith Moment reply context:",
-          error
-        );
-
-      }
-
-
-      window.location.href =
-        `chat.html?uid=${encodeURIComponent(
-          moment.userId
-        )}`;
-
-    }
-
-
-    /* =====================================================
-       ACTION EVENTS
-    ===================================================== */
-
-    encourageMomentButton.addEventListener(
-      "click",
-      handleEncourageMoment
-    );
-
-
-    prayedMomentButton.addEventListener(
-      "click",
-      handlePrayedMoment
-    );
-
-
-    replyMomentButton.addEventListener(
-      "click",
-      handleReplyMoment
-    );
-
-
-    /* =====================================================
-       PAGE VISIBILITY
-    ===================================================== */
-
-    document.addEventListener(
-      "visibilitychange",
-      () => {
-
-        if(document.hidden){
-
-          stopViewerProgress();
-          return;
-
-        }
-
-
-        if(
-          momentViewer.classList.contains(
-            "open"
-          )
-        ){
-
-          const activeMoment =
-            getActiveViewerMoment();
-
-          if(
-            activeMoment &&
-            activeMoment.type !== "video"
-          ){
-            startViewerProgress();
-          }
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       PAGE CLEANUP
-    ===================================================== */
-
-    window.addEventListener(
-      "beforeunload",
-      () => {
-
-        stopViewerProgress();
-
-        if(unsubscribeFaithMoments){
-          unsubscribeFaithMoments();
-        }
-
-      }
-    );
+    window.addEventListener("beforeunload", () => {
+      stopProgress();
+      if (unsubscribeMoments) unsubscribeMoments();
+    });
 
   </script>
-<script src="swipe-nav.js"></script>
+
+  <script src="swipe-nav.js"></script>
 </body>
 </html>
