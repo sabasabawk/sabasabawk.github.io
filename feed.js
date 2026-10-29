@@ -1,7 +1,7 @@
 /* =====================================================
    FEED.JS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
-   Autoplay/Pause Videos on Scroll, Truncated Posts,
-   Admin Bar, Post Deletion, and Moments Tray
+   Auto-Advancing Moments (Facebook Stories Style),
+   Autoplay Videos on Scroll, Truncated Posts & Admin Bar
 ===================================================== */
 
 import {
@@ -39,7 +39,12 @@ let selectedReportReason = "";
 
 let currentPhotoUrls = [];
 let currentPhotoIndex = 0;
-let videoObserver = null; // Observer for autoplay/pause
+let videoObserver = null;
+
+// Moments Auto-Advance Player State
+let activeMomentsList = [];
+let currentMomentIndex = 0;
+let momentTimer = null;
 
 const postsContainer = document.getElementById("postsContainer");
 const momentsRow = document.getElementById("momentsRow");
@@ -132,6 +137,10 @@ function listenToNotifications() {
   });
 }
 
+/* =====================================================
+   FAITH MOMENTS (STORIES) LISTENER & PLAYER
+===================================================== */
+
 function listenToMoments() {
   if (!momentsRow) return;
 
@@ -153,6 +162,7 @@ function listenToMoments() {
     `;
 
     let momentsHTML = createCardHTML;
+    activeMomentsList = []; // Reset active moments cache
     const now = new Date();
 
     snapshot.forEach((docSnap) => {
@@ -162,6 +172,8 @@ function listenToMoments() {
       if (moment.expiresAt && moment.expiresAt.toDate() < now) {
         return;
       }
+
+      activeMomentsList.push(moment);
 
       let bgMediaHTML = "";
 
@@ -193,7 +205,7 @@ function listenToMoments() {
         : `<div class="momentAvatar" style="background:#e4e6eb;display:flex;align-items:center;justify-content:center;font-size:14px;">👤</div>`;
 
       momentsHTML += `
-        <div class="momentCard" data-moment-id="${moment.id}" data-media-url="${moment.mediaUrl || ''}" data-media-type="${moment.mediaType || 'none'}">
+        <div class="momentCard" data-moment-index="${activeMomentsList.length - 1}">
           ${bgMediaHTML}
           ${avatarMarkup}
           <span class="momentName">${escapeHTML(authorName)}</span>
@@ -212,19 +224,94 @@ function attachMomentClickEvents() {
   const cards = momentsRow.querySelectorAll(".momentCard:not(.createMomentCard)");
   cards.forEach((card) => {
     card.addEventListener("click", () => {
-      const mediaUrl = card.dataset.mediaUrl;
-      const mediaType = card.dataset.mediaType;
-
-      if (!mediaUrl) return;
-
-      if (mediaType === "video" || mediaUrl.includes(".mp4")) {
-        openVideoReel(mediaUrl);
-      } else {
-        openPhotoViewer([mediaUrl], 0);
+      const idx = parseInt(card.dataset.momentIndex, 10);
+      if (!isNaN(idx) && activeMomentsList[idx]) {
+        playMomentAtIndex(idx);
       }
     });
   });
 }
+
+/* Auto-Advancing Story Player Functions */
+function playMomentAtIndex(index) {
+  if (index < 0 || index >= activeMomentsList.length) {
+    closeMomentPlayer();
+    return;
+  }
+
+  currentMomentIndex = index;
+  const moment = activeMomentsList[currentMomentIndex];
+  clearTimeout(momentTimer);
+
+  if (!videoReelViewer || !videoReelTrack) return;
+
+  const isVideo = moment.mediaType === "video" || (moment.mediaUrl && moment.mediaUrl.includes(".mp4"));
+
+  if (isVideo) {
+    videoReelTrack.innerHTML = `
+      <div style="position:absolute;top:12px;left:12px;right:12px;z-index:3020;color:#fff;font-weight:bold;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,0.8);">
+        ${escapeHTML(moment.authorName || "Faith Moment")}
+      </div>
+      <video id="activeMomentVideo" controls autoplay playsinline style="max-width:100%;max-height:100vh;object-fit:contain;">
+        <source src="${moment.mediaUrl}" type="video/mp4">
+      </video>
+    `;
+
+    const vid = document.getElementById("activeMomentVideo");
+    if (vid) {
+      vid.onended = () => {
+        playNextMoment();
+      };
+      vid.onerror = () => {
+        momentTimer = setTimeout(playNextMoment, 3000);
+      };
+    }
+  } else {
+    // Image or Text-Only Moment (Plays for 5 Seconds then Auto-Advances)
+    videoReelTrack.innerHTML = `
+      <div style="position:absolute;top:12px;left:12px;right:12px;z-index:3020;color:#fff;font-weight:bold;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,0.8);">
+        ${escapeHTML(moment.authorName || "Faith Moment")}
+      </div>
+      ${moment.mediaUrl ? `<img src="${moment.mediaUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;">` : `
+        <div style="padding:20px;color:#fff;font-size:20px;text-align:center;">
+          <p>${escapeHTML(moment.message || moment.text || "")}</p>
+        </div>
+      `}
+    `;
+
+    momentTimer = setTimeout(() => {
+      playNextMoment();
+    }, 5000); // 5 Seconds Auto-Advance
+  }
+
+  videoReelViewer.classList.add("show");
+  videoReelViewer.setAttribute("aria-hidden", "false");
+}
+
+function playNextMoment() {
+  playMomentAtIndex(currentMomentIndex + 1);
+}
+
+function closeMomentPlayer() {
+  clearTimeout(momentTimer);
+  if (!videoReelViewer || !videoReelTrack) return;
+
+  const vid = videoReelTrack.querySelector("video");
+  if (vid) vid.pause();
+
+  videoReelTrack.innerHTML = "";
+  videoReelViewer.classList.remove("show");
+  videoReelViewer.setAttribute("aria-hidden", "true");
+}
+
+if (closeVideoReelViewer) {
+  closeVideoReelViewer.addEventListener("click", closeMomentPlayer);
+}
+
+
+/* =====================================================
+   COMMUNITY POSTS - INITIAL LOAD & PAGINATION
+===================================================== */
 
 async function loadInitialPosts() {
   isLoadingPosts = true;
@@ -318,29 +405,23 @@ function setupInfiniteScroll() {
   observer.observe(loadMoreSentinel);
 }
 
-/* =====================================================
-   FACEBOOK-STYLE VIDEO AUTOPLAY/AUTOPAUSE ON SCROLL
-===================================================== */
-
 function setupVideoAutoplayObserver() {
   if (videoObserver) videoObserver.disconnect();
 
   const options = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.6 // Video must be at least 60% visible on screen to play
+    threshold: 0.6
   };
 
   videoObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const video = entry.target;
       if (entry.isIntersecting) {
-        // Play video automatically when in view
         video.play().catch((err) => {
           console.log("Autoplay prevented by browser policy:", err);
         });
       } else {
-        // Pause video automatically when scrolled out of view
         video.pause();
       }
     });
@@ -442,7 +523,6 @@ function renderPostCard(postId, postData) {
     </div>
   `;
 
-  // Observe the video element for autoplay/pause if present
   const videoEl = card.querySelector(".feedVideoPlayer");
   if (videoEl && videoObserver) {
     videoObserver.observe(videoEl);
@@ -608,28 +688,6 @@ if (photoViewerNextButton) {
     }
   });
 }
-
-function openVideoReel(videoUrl) {
-  if (!videoUrl || !videoReelViewer || !videoReelTrack) return;
-  videoReelTrack.innerHTML = `
-    <video controls autoplay playsinline style="max-width:100%;max-height:100vh;object-fit:contain;">
-      <source src="${videoUrl}" type="video/mp4">
-    </video>
-  `;
-  videoReelViewer.classList.add("show");
-  videoReelViewer.setAttribute("aria-hidden", "false");
-}
-
-function closeVideoReel() {
-  if (!videoReelViewer || !videoReelTrack) return;
-  const vid = videoReelTrack.querySelector("video");
-  if (vid) vid.pause();
-  videoReelTrack.innerHTML = "";
-  videoReelViewer.classList.remove("show");
-  videoReelViewer.setAttribute("aria-hidden", "true");
-}
-
-if (closeVideoReelViewer) closeVideoReelViewer.addEventListener("click", closeVideoReel);
 
 function openReportModal(postId) {
   reportingPostId = postId;
