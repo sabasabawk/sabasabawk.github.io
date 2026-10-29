@@ -795,6 +795,10 @@
     import {
       auth,
       db,
+      storage,
+      ref,
+      uploadBytesResumable,
+      getDownloadURL,
       collection,
       addDoc,
       doc,
@@ -806,11 +810,6 @@
       serverTimestamp,
       onAuthStateChanged
     } from "./firebase.js";
-
-    // ImageKit configuration
-    const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
-    const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
-    const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
 
     let currentUser = null;
     let currentUserProfile = null;
@@ -1015,28 +1014,28 @@
         let mediaUrl = "";
         let mediaType = selectedFileType;
 
+        // Upload directly to Firebase Storage bucket
         if (selectedFile) {
-          const authRes = await fetch(imagekitAuthEndpoint);
-          if (!authRes.ok) throw new Error("Failed to authenticate upload.");
-          const authParams = await authRes.json();
+          const fileExtension = selectedFile.name.split('.').pop();
+          const fileName = `faithMoments/${Date.now()}_${currentUser.uid}.${fileExtension}`;
+          const storageRefInstance = ref(storage, fileName);
 
-          const formData = new FormData();
-          formData.append("file", selectedFile);
-          formData.append("fileName", selectedFile.name);
-          formData.append("publicKey", imagekitPublicKey);
-          formData.append("signature", authParams.signature);
-          formData.append("expire", authParams.expire);
-          formData.append("token", authParams.token);
-          formData.append("folder", "/faith-moments");
+          const uploadTask = uploadBytesResumable(storageRefInstance, selectedFile);
 
-          const uploadRes = await fetch(imagekitUploadUrl, {
-            method: "POST",
-            body: formData
+          await new Promise((resolve, reject) => {
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                publishButton.textContent = `Uploading Media (${progress}%)...`;
+              },
+              (error) => reject(error),
+              async () => {
+                mediaUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve();
+              }
+            );
           });
-
-          const uploadData = await uploadRes.json();
-          if (!uploadRes.ok) throw new Error(uploadData.message || "Media upload failed.");
-          mediaUrl = uploadData.url;
         }
 
         const authorName =
@@ -1051,11 +1050,9 @@
           currentUserProfile?.profilePicture ||
           currentUserProfile?.photoURL ||
           currentUser.photoURL ||
-          "images/profile.png";
+          "";
 
-        /* ONE MOMENT PER PERSON: find this person's active moments.
-           The upload above is already done, so if anything fails the
-           old moment is still safe. */
+        // Check for existing active moments by this user (One Moment Per Person rule)
         const oldMomentIds = [];
         const twentyFourHours = 24 * 60 * 60 * 1000;
 
@@ -1079,7 +1076,7 @@
 
         if (oldMomentIds.length > 0) {
           const replaceIt = window.confirm(
-            "You already have a Moment.\n\nOnly one Moment is allowed at a time. Replace it with this new one?"
+            "You already have an active Moment.\n\nOnly one Moment is allowed at a time. Replace it with this new one?"
           );
           if (!replaceIt) {
             showMsg("Cancelled. Your current Moment was kept.", "error");
@@ -1092,6 +1089,7 @@
           );
         }
 
+        // Save new moment record to Firestore
         await addDoc(collection(db, "faithMoments"), {
           userId: currentUser.uid,
           authorName: authorName,
