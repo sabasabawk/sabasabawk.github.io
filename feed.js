@@ -1,3035 +1,605 @@
 /* =====================================================
-   FAITH CONNECT - COMMUNITY WALL (feed.js)
-   Complete file. Includes admin icons:
-   🛡️ Reports and 📋 Feedback (admin only)
+   FEED.JS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
+   Real-Time Firestore Integration, Video Thumbnails,
+   Robust Avatar Fallbacks, Likes & Infinite Scroll
 ===================================================== */
 
-
-/* =====================================================
-   FIREBASE IMPORTS
-===================================================== */
-
-import{
+import {
   auth,
   db,
   collection,
-  addDoc,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
   doc,
   getDoc,
   getDocs,
+  addDoc,
   updateDoc,
-  deleteDoc,
-  serverTimestamp,
-  onAuthStateChanged,
+  query,
+  orderBy,
   limit,
-  startAfter
-}from "./firebase.js";
+  startAfter,
+  onSnapshot,
+  arrayUnion,
+  arrayRemove,
+  onAuthStateChanged
+} from "./firebase.js";
+
+import {
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
 /* =====================================================
-   ADMIN EMAILS
-   These accounts always see the admin icons
-   (Reports and Feedback). Real protection is
-   still your Firestore security rules.
+   GLOBAL STATE VARIABLES
 ===================================================== */
 
-const ADMIN_EMAILS =
-[
-  "sabasabawk@gmail.com"
-];
+let currentUser = null;
+let currentUserProfile = {};
+let lastVisiblePostDoc = null;
+let isLoadingPosts = false;
+let hasMorePosts = true;
+const POSTS_PER_PAGE = 10;
+let reportingPostId = null;
+let selectedReportReason = "";
+
+let currentPhotoUrls = [];
+let currentPhotoIndex = 0;
 
 
 /* =====================================================
-   PAGE ELEMENTS
+   DOM ELEMENTS
 ===================================================== */
 
-const postsContainer =
-document.getElementById("postsContainer");
+const postsContainer = document.getElementById("postsContainer");
+const momentsRow = document.getElementById("momentsRow");
+const quickMomentAvatar = document.getElementById("quickMomentAvatar");
+const notificationBadge = document.getElementById("notificationBadge");
+const loadMoreSentinel = document.getElementById("loadMoreSentinel");
 
-const loadMoreSentinel =
-document.getElementById("loadMoreSentinel");
+const photoViewer = document.getElementById("photoViewer");
+const photoViewerImage = document.getElementById("photoViewerImage");
+const photoViewerVideo = document.getElementById("photoViewerVideo");
+const closePhotoViewer = document.getElementById("closePhotoViewer");
+const photoViewerPrevButton = document.getElementById("photoViewerPrevButton");
+const photoViewerNextButton = document.getElementById("photoViewerNextButton");
+const photoViewerCounter = document.getElementById("photoViewerCounter");
 
-const refreshButton =
-document.getElementById("refreshButton");
+const videoReelViewer = document.getElementById("videoReelViewer");
+const videoReelTrack = document.getElementById("videoReelTrack");
+const closeVideoReelViewer = document.getElementById("closeVideoReelViewer");
 
-const quickPostButton =
-document.getElementById("quickPostButton");
-
-const quickPostAvatar =
-document.getElementById("quickPostAvatar");
-
-const photoViewer =
-document.getElementById("photoViewer");
-
-const photoViewerImage =
-document.getElementById("photoViewerImage");
-
-const photoViewerVideo =
-document.getElementById("photoViewerVideo");
-
-const closePhotoViewerButton =
-document.getElementById("closePhotoViewer");
-
-const photoViewerPrevButton =
-document.getElementById("photoViewerPrevButton");
-
-const photoViewerNextButton =
-document.getElementById("photoViewerNextButton");
-
-const photoViewerCounter =
-document.getElementById("photoViewerCounter");
-
-let currentGalleryImages =
-[];
-
-let currentGalleryIndex =
-0;
-
-const videoReelViewer =
-document.getElementById("videoReelViewer");
-
-const videoReelTrack =
-document.getElementById("videoReelTrack");
-
-const closeVideoReelViewerButton =
-document.getElementById("closeVideoReelViewer");
-
-const reportModal =
-document.getElementById("reportModal");
-
-const reportReasonList =
-document.getElementById("reportReasonList");
-
-const reportCancelButton =
-document.getElementById("reportCancelButton");
-
-const reportSubmitButton =
-document.getElementById("reportSubmitButton");
-
-const notificationBadge =
-document.getElementById("notificationBadge");
-
-const topBarActions =
-document.querySelector(".topBarActions");
-
-const momentsRow =
-document.getElementById("momentsRow");
-
-const quickMomentAvatar =
-document.getElementById("quickMomentAvatar");
+const reportModal = document.getElementById("reportModal");
+const reportReasonList = document.getElementById("reportReasonList");
+const reportCancelButton = document.getElementById("reportCancelButton");
+const reportSubmitButton = document.getElementById("reportSubmitButton");
 
 
 /* =====================================================
-   GLOBAL VARIABLES
+   INITIALIZATION & AUTH OBSERVER
 ===================================================== */
 
-let currentUser =
-null;
-
-let currentProfile =
-{};
-
-/*
-   True for admin accounts: either the email is in
-   ADMIN_EMAILS, or the profile document in Firestore
-   has isAdmin:true. Unlocks the admin icons and the
-   ability to remove any post.
-*/
-
-let currentUserIsAdmin =
-false;
-
-let unsubscribePosts =
-null;
-
-let unsubscribeNotifications =
-null;
-
-let unsubscribeMomentsStrip =
-null;
-
-const defaultProfilePicture =
-"images/profile.png";
-
-const userProfileCache =
-new Map();
-
-
-/* =====================================================
-   PAGINATION STATE
-===================================================== */
-
-const POSTS_PER_PAGE =
-100;
-
-
-/* =====================================================
-   SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
-===================================================== */
-
-const FEED_CACHE_KEY =
-"sabasaba_feed_cache_v1";
-
-const FEED_CACHE_MAX_POSTS =
-20;
-
-const FEED_CACHE_MAX_AGE_MS =
-30 * 60 * 1000;
-
-
-function saveFeedCache(postDocuments){
-
-  try{
-
-    const cachedPosts =
-    postDocuments
-    .slice(0, FEED_CACHE_MAX_POSTS)
-    .map(
-      postDocument => ({
-        id:
-        postDocument.id,
-
-        data:
-        postDocument.data()
-      })
-    );
-
-    window.localStorage.setItem(
-      FEED_CACHE_KEY,
-      JSON.stringify({
-        savedAt:
-        Date.now(),
-
-        posts:
-        cachedPosts
-      })
-    );
-
-  }catch(error){
-
-    console.warn(
-      "Feed cache could not be saved:",
-      error
-    );
-
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.replace("login.html");
+    return;
   }
 
-}
+  currentUser = user;
+  await loadUserProfile();
+  listenToNotifications();
+  listenToMoments();
+  loadInitialPosts();
+  setupInfiniteScroll();
+});
 
 
-function loadFeedCache(){
+/* =====================================================
+   USER PROFILE & NOTIFICATIONS
+===================================================== */
 
-  try{
+async function loadUserProfile() {
+  if (!currentUser) return;
+  try {
+    const userDocRef = doc(db, "users", currentUser.uid);
+    const userDocSnap = await getDoc(userDocRef);
 
-    const rawCache =
-    window.localStorage.getItem(
-      FEED_CACHE_KEY
-    );
+    if (userDocSnap.exists()) {
+      currentUserProfile = userDocSnap.data();
+      const avatarUrl = currentUserProfile.profilePicture || currentUserProfile.photoURL || currentUser.photoURL || "";
 
-    if(!rawCache){
-      return null;
-    }
-
-    const parsedCache =
-    JSON.parse(rawCache);
-
-    const cacheAge =
-    Date.now() -
-    (parsedCache.savedAt || 0);
-
-    if(cacheAge > FEED_CACHE_MAX_AGE_MS){
-      return null;
-    }
-
-    if(
-      !Array.isArray(parsedCache.posts) ||
-      parsedCache.posts.length === 0
-    ){
-      return null;
-    }
-
-    return parsedCache.posts;
-
-  }catch(error){
-
-    console.warn(
-      "Feed cache could not be read:",
-      error
-    );
-
-    return null;
-
-  }
-
-}
-
-
-function renderPostsFromCache(cachedPosts){
-
-  postsContainer.innerHTML =
-  "";
-
-  cachedPosts.forEach(
-    cachedPost => {
-
-      try{
-
-        const postCard =
-        createPostCard(
-          {
-            id:
-            cachedPost.id,
-
-            ...cachedPost.data
-          }
-        );
-
-        postCard.classList.add(
-          "postCardCached"
-        );
-
-        postsContainer.appendChild(
-          postCard
-        );
-
-      }catch(error){
-
-        console.error(
-          "Error rendering cached post:",
-          error
-        );
-
+      if (quickMomentAvatar) {
+        if (avatarUrl) {
+          quickMomentAvatar.style.backgroundImage = `url('${avatarUrl}')`;
+        }
       }
-
     }
+  } catch (error) {
+    console.error("Error loading user profile:", error);
+  }
+}
+
+function listenToNotifications() {
+  if (!currentUser || !notificationBadge) return;
+
+  const notificationsQuery = query(
+    collection(db, "notifications"),
+    orderBy("timestamp", "desc"),
+    limit(20)
   );
 
-  startVideoAutoPlay();
+  onSnapshot(notificationsQuery, (snapshot) => {
+    let unreadCount = 0;
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      if (data.recipientId === currentUser.uid && !data.read) {
+        unreadCount++;
+      }
+    });
 
+    notificationBadge.textContent = unreadCount;
+    notificationBadge.style.display = unreadCount > 0 ? "inline-block" : "none";
+  }, (error) => {
+    console.error("Notifications listener error:", error);
+  });
 }
 
 
-let lastVisibleDocument =
-null;
+/* =====================================================
+   FAITH MOMENTS (STORIES) LISTENER & RENDERER
+===================================================== */
 
-let isLoadingMorePosts =
-false;
+function listenToMoments() {
+  if (!momentsRow) return;
 
-let noMorePostsAvailable =
-false;
+  const momentsQuery = query(
+    collection(db, "faithMoments"),
+    orderBy("timestamp", "desc"),
+    limit(20)
+  );
 
-let postsLoadObserver =
-null;
+  onSnapshot(momentsQuery, (snapshot) => {
+    const myAvatar = currentUserProfile.profilePicture || currentUserProfile.photoURL || currentUser?.photoURL || "";
+    
+    let createCardHTML = `
+      <a href="create-faith-moment.html" class="momentCard createMomentCard">
+        <div id="quickMomentAvatar" class="createMomentCardTop" ${myAvatar ? `style="background-image: url('${myAvatar}')"` : ''}></div>
+        <div class="createMomentCardPlusButton">＋</div>
+        <div class="createMomentCardBottom">Create Moment</div>
+      </a>
+    `;
 
+    let momentsHTML = createCardHTML;
+    const now = new Date();
 
-/*
-   FACEBOOK-STYLE FEED MODEL
+    snapshot.forEach((docSnap) => {
+      const moment = docSnap.data();
+      moment.id = docSnap.id;
 
-   A single ordered list of every post currently loaded
-   into the page, newest first. New posts are only ever
-   PREPENDED; older posts loaded by scrolling are only
-   ever APPENDED.
-*/
+      if (moment.expiresAt && moment.expiresAt.toDate() < now) {
+        return;
+      }
 
-let loadedPostsDocs =
-[];
+      let bgMediaHTML = "";
 
-const loadedPostIds =
-new Set();
+      if (moment.mediaUrl) {
+        if (moment.mediaType === "video" || moment.mediaUrl.includes(".mp4")) {
+          bgMediaHTML = `
+            <video class="momentBg" muted playsinline preload="metadata">
+              <source src="${moment.mediaUrl}#t=0.5" type="video/mp4">
+            </video>
+          `;
+        } else {
+          bgMediaHTML = `
+            <img class="momentBg" src="${moment.mediaUrl}" alt="${escapeHTML(moment.authorName || 'Faith Moment')}" loading="lazy">
+          `;
+        }
+      } else {
+        bgMediaHTML = `
+          <div class="momentFallbackBg">
+            <span>🕊️</span>
+          </div>
+        `;
+      }
 
-let firstFeedSnapshotHandled =
-false;
+      const avatarUrl = moment.authorPicture || moment.picture || "";
+      const authorName = moment.authorName || moment.name || "Member";
 
-/*
-   Groups rapid bursts of live updates into a single
-   smooth redraw.
-*/
+      const avatarMarkup = avatarUrl 
+        ? `<img class="momentAvatar" src="${avatarUrl}" alt="${escapeHTML(authorName)}" onerror="this.style.display='none';">`
+        : `<div class="momentAvatar" style="background:#e4e6eb;display:flex;align-items:center;justify-content:center;font-size:14px;">👤</div>`;
 
-let renderDebounceTimer =
-null;
+      momentsHTML += `
+        <div class="momentCard" data-moment-id="${moment.id}" data-media-url="${moment.mediaUrl || ''}" data-media-type="${moment.mediaType || 'none'}">
+          ${bgMediaHTML}
+          ${avatarMarkup}
+          <span class="momentName">${escapeHTML(authorName)}</span>
+        </div>
+      `;
+    });
+
+    momentsRow.innerHTML = momentsHTML;
+    attachMomentClickEvents();
+  }, (error) => {
+    console.error("Moments listener error:", error);
+  });
+}
+
+function attachMomentClickEvents() {
+  const cards = momentsRow.querySelectorAll(".momentCard:not(.createMomentCard)");
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const mediaUrl = card.dataset.mediaUrl;
+      const mediaType = card.dataset.mediaType;
+
+      if (!mediaUrl) return;
+
+      if (mediaType === "video" || mediaUrl.includes(".mp4")) {
+        openVideoReel(mediaUrl);
+      } else {
+        openPhotoViewer([mediaUrl], 0);
+      }
+    });
+  });
+}
 
 
 /* =====================================================
-   RETURN FIRST AVAILABLE VALUE
+   COMMUNITY POSTS - INITIAL LOAD & PAGINATION
 ===================================================== */
 
-function getFirstValue(
-  ...values
-){
+async function loadInitialPosts() {
+  isLoadingPosts = true;
+  postsContainer.innerHTML = `<div class="statusCard loading">Loading community posts...</div>`;
 
-  for(
-    const value
-    of values
-  ){
+  try {
+    const postsQuery = query(
+      collection(db, "communityPosts"),
+      orderBy("timestamp", "desc"),
+      limit(POSTS_PER_PAGE)
+    );
 
-    if(
-      value !== undefined &&
-      value !== null &&
-      String(value).trim() !== ""
-    ){
+    const snapshot = await getDocs(postsQuery);
 
-      return String(
-        value
-      ).trim();
-
+    if (snapshot.empty) {
+      postsContainer.innerHTML = `<div class="statusCard">No posts shared yet. Be the first to post!</div>`;
+      hasMorePosts = false;
+      isLoadingPosts = false;
+      return;
     }
 
+    lastVisiblePostDoc = snapshot.docs[snapshot.docs.length - 1];
+    postsContainer.innerHTML = "";
+
+    snapshot.forEach((docSnap) => {
+      const postCard = renderPostCard(docSnap.id, docSnap.data());
+      postsContainer.appendChild(postCard);
+    });
+
+    if (snapshot.docs.length < POSTS_PER_PAGE) {
+      hasMorePosts = false;
+    }
+  } catch (error) {
+    console.error("Error loading initial posts:", error);
+    postsContainer.innerHTML = `<div class="statusCard">Unable to load posts right now. Please refresh.</div>`;
+  } finally {
+    isLoadingPosts = false;
   }
+}
 
-  return "";
+async function loadMorePosts() {
+  if (isLoadingPosts || !hasMorePosts || !lastVisiblePostDoc) return;
 
+  isLoadingPosts = true;
+
+  try {
+    const postsQuery = query(
+      collection(db, "communityPosts"),
+      orderBy("timestamp", "desc"),
+      startAfter(lastVisiblePostDoc),
+      limit(POSTS_PER_PAGE)
+    );
+
+    const snapshot = await getDocs(postsQuery);
+
+    if (snapshot.empty) {
+      hasMorePosts = false;
+      isLoadingPosts = false;
+      return;
+    }
+
+    lastVisiblePostDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    snapshot.forEach((docSnap) => {
+      const postCard = renderPostCard(docSnap.id, docSnap.data());
+      postsContainer.appendChild(postCard);
+    });
+
+    if (snapshot.docs.length < POSTS_PER_PAGE) {
+      hasMorePosts = false;
+    }
+  } catch (error) {
+    console.error("Error loading more posts:", error);
+  } finally {
+    isLoadingPosts = false;
+  }
+}
+
+function setupInfiniteScroll() {
+  if (!loadMoreSentinel) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && hasMorePosts && !isLoadingPosts) {
+        loadMorePosts();
+      }
+    },
+    { rootMargin: "200px" }
+  );
+
+  observer.observe(loadMoreSentinel);
 }
 
 
 /* =====================================================
-   SHOW LOADING / EMPTY / ERROR MESSAGES
+   POST CARD RENDERER (WITH ROBUST AVATAR FALLBACK)
 ===================================================== */
 
-function showLoadingMessage(){
+function renderPostCard(postId, postData) {
+  const card = document.createElement("article");
+  card.className = "postCard";
+  card.id = `post-${postId}`;
 
-  postsContainer.innerHTML = `
+  const likesArray = Array.isArray(postData.likes) ? postData.likes : [];
+  const isLiked = currentUser ? likesArray.includes(currentUser.uid) : false;
+  const likeCount = likesArray.length;
+  const commentCount = postData.commentCount || 0;
 
-    <div class="statusCard loading">
+  const authorName = postData.fullName || postData.name || "Community Member";
+  const avatarUrl = postData.profilePicture || postData.picture || "";
+  const formattedDate = formatDate(postData.timestamp);
+  const category = postData.category || "General";
+  const postText = postData.post || postData.message || "";
 
-      Loading community posts...
+  // Robust Avatar Markup (Shows profile photo or falls back to icon silhouette)
+  const avatarMarkup = avatarUrl
+    ? `<img class="postAvatar" src="${avatarUrl}" alt="${escapeHTML(authorName)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+       <div class="postAvatarFallback" style="display:none;">👤</div>`
+    : `<div class="postAvatarFallback">👤</div>`;
 
+  let mediaHTML = "";
+  const imageUrls = postData.imageUrls || (postData.imageUrl ? [postData.imageUrl] : []);
+  const videoUrl = postData.videoUrl || (postData.mediaType === "video" ? postData.mediaUrl : "");
+
+  if (videoUrl) {
+    mediaHTML = `
+      <div class="postMediaContainer">
+        <video controls playsinline preload="metadata">
+          <source src="${videoUrl}" type="video/mp4">
+        </video>
+      </div>
+    `;
+  } else if (imageUrls.length > 0) {
+    mediaHTML = `
+      <div class="postMediaContainer mediaGrid grid-${Math.min(imageUrls.length, 4)}">
+        ${imageUrls.map((url, idx) => `
+          <img src="${url}" alt="Post image ${idx + 1}" loading="lazy" data-idx="${idx}">
+        `).join("")}
+      </div>
+    `;
+  }
+
+  card.innerHTML = `
+    <div class="postHeader">
+      <div class="postAuthorArea">
+        ${avatarMarkup}
+        <div class="postAuthorMeta">
+          <div class="postAuthorName">${escapeHTML(authorName)}</div>
+          <div class="postCategoryDate">${escapeHTML(category)} • ${formattedDate}</div>
+        </div>
+      </div>
+      <button class="topIconLink reportTrigger" aria-label="Report post" title="Report">🚩</button>
     </div>
 
-  `;
+    ${postText ? `<div class="postText">${escapeHTML(postText)}</div>` : ""}
 
-}
+    ${mediaHTML}
 
-
-function showEmptyMessage(){
-
-  postsContainer.innerHTML = `
-
-    <div class="statusCard empty">
-
-      No community posts are available yet.
-
-      <br><br>
-
-      Be the first person to share
-      a testimony, prayer,
-      encouragement, photo or video.
-
+    <div class="postActionRow">
+      <button class="postActionButton likeButton ${isLiked ? 'liked' : ''}">
+        <span>${isLiked ? '❤️' : '🤍'}</span>
+        <span class="likeCountText">${likeCount > 0 ? likeCount : ''} Like${likeCount === 1 ? '' : 's'}</span>
+      </button>
+      <a href="comments.html?postId=${postId}" class="postActionButton">
+        <span>💬</span>
+        <span>${commentCount > 0 ? commentCount : ''} Comment${commentCount === 1 ? '' : 's'}</span>
+      </a>
+      <button class="postActionButton shareButton">
+        <span>↪️</span>
+        <span>Share</span>
+      </button>
     </div>
-
   `;
 
-}
+  const likeBtn = card.querySelector(".likeButton");
+  likeBtn.addEventListener("click", () => handleToggleLike(postId, likeBtn));
 
+  const shareBtn = card.querySelector(".shareButton");
+  shareBtn.addEventListener("click", () => handleSharePost(postId, postText));
 
-function showErrorMessage(
-  message
-){
+  const reportBtn = card.querySelector(".reportTrigger");
+  reportBtn.addEventListener("click", () => openReportModal(postId));
 
-  postsContainer.innerHTML =
-  "";
-
-  const errorCard =
-  document.createElement("div");
-
-  errorCard.className =
-  "statusCard error";
-
-  errorCard.textContent =
-  message;
-
-  postsContainer.appendChild(
-    errorCard
-  );
-
-}
-
-
-/* =====================================================
-   PROTECT PROFILE PICTURES
-===================================================== */
-
-function protectProfilePicture(
-  imageElement
-){
-
-  if(!imageElement){
-    return;
+  if (imageUrls.length > 0) {
+    const images = card.querySelectorAll(".postMediaContainer img");
+    images.forEach((img) => {
+      img.addEventListener("click", () => {
+        const index = parseInt(img.dataset.idx, 10) || 0;
+        openPhotoViewer(imageUrls, index);
+      });
+    });
   }
 
-  imageElement.addEventListener(
-    "error",
-    function(){
-
-      imageElement.src =
-      defaultProfilePicture;
-
-    },
-    {
-      once:true
-    }
-  );
-
+  return card;
 }
 
 
 /* =====================================================
-   FORMAT FIREBASE DATE
+   POST ACTIONS (LIKE & SHARE)
 ===================================================== */
 
-function formatPostDate(
-  timestamp
-){
+async function handleToggleLike(postId, likeBtn) {
+  if (!currentUser) return;
 
-  if(!timestamp){
-    return "Recently";
+  const postRef = doc(db, "communityPosts", postId);
+  const isCurrentlyLiked = likeBtn.classList.contains("liked");
+  const countSpan = likeBtn.querySelector(".likeCountText");
+  const iconSpan = likeBtn.querySelector("span:first-child");
+
+  let currentLikes = parseInt(countSpan.textContent, 10) || 0;
+  if (isCurrentlyLiked) {
+    likeBtn.classList.remove("liked");
+    iconSpan.textContent = "🤍";
+    currentLikes = Math.max(0, currentLikes - 1);
+  } else {
+    likeBtn.classList.add("liked");
+    iconSpan.textContent = "❤️";
+    currentLikes += 1;
   }
+  countSpan.textContent = `${currentLikes > 0 ? currentLikes : ''} Like${currentLikes === 1 ? '' : 's'}`;
 
-  try{
-
-    let postDate;
-
-    if(
-      typeof timestamp.toDate ===
-      "function"
-    ){
-
-      postDate =
-      timestamp.toDate();
-
-    }else if(
-      timestamp.seconds
-    ){
-
-      postDate =
-      new Date(
-        timestamp.seconds * 1000
-      );
-
-    }else{
-
-      postDate =
-      new Date(
-        timestamp
-      );
-
-    }
-
-    if(
-      Number.isNaN(
-        postDate.getTime()
-      )
-    ){
-      return "Recently";
-    }
-
-    return postDate.toLocaleString(
-      undefined,
-      {
-        year:
-        "numeric",
-
-        month:
-        "short",
-
-        day:
-        "numeric",
-
-        hour:
-        "numeric",
-
-        minute:
-        "2-digit"
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Date formatting error:",
-      error
-    );
-
-    return "Recently";
-
+  try {
+    await updateDoc(postRef, {
+      likes: isCurrentlyLiked
+        ? arrayRemove(currentUser.uid)
+        : arrayUnion(currentUser.uid)
+    });
+  } catch (error) {
+    console.error("Error toggling like:", error);
+    likeBtn.classList.toggle("liked", isCurrentlyLiked);
+    iconSpan.textContent = isCurrentlyLiked ? "❤️" : "🤍";
   }
+}
 
+async function handleSharePost(postId, postText) {
+  const shareUrl = `${window.location.origin}/comments.html?postId=${postId}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Faith Connect Community Post",
+        text: postText ? postText.slice(0, 100) : "Check out this post on Faith Connect!",
+        url: shareUrl
+      });
+    } catch (err) {
+      if (err.name !== "AbortError") console.error("Share failed:", err);
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert("Post link copied to clipboard!");
+    } catch (err) {
+      console.error("Clipboard copy failed:", err);
+    }
+  }
 }
 
 
 /* =====================================================
-   ADMIN SHORTCUTS
-
-   🛡️ Reports and 📋 Feedback appear as a slim strip
-   under the top bar (not inside it), so the top bar
-   keeps its room for "Faith Connect". Added only when
-   currentUserIsAdmin is true; for every other account
-   nothing is added to the page at all.
+   FULLSCREEN PHOTO VIEWER MODAL
 ===================================================== */
 
-function updateAdminReportsLink(){
+function openPhotoViewer(urls, initialIndex = 0) {
+  if (!urls || urls.length === 0) return;
 
-  const oldStrip =
-  document.getElementById(
-    "adminToolsStrip"
-  );
+  currentPhotoUrls = urls;
+  currentPhotoIndex = initialIndex;
 
-  /* remove any icons from earlier versions */
+  updatePhotoViewerDisplay();
+  photoViewer.classList.add("show");
+  photoViewer.setAttribute("aria-hidden", "false");
+}
 
-  [
-    "adminReportsLink",
-    "adminFeedbackLink"
-  ].forEach(
-    function(oldId){
+function updatePhotoViewerDisplay() {
+  const currentUrl = currentPhotoUrls[currentPhotoIndex];
 
-      const oldElement =
-      document.getElementById(
-        oldId
-      );
+  photoViewerVideo.style.display = "none";
+  photoViewerImage.style.display = "block";
+  photoViewerImage.src = currentUrl;
 
-      if(oldElement){
-
-        oldElement.remove();
-
-      }
-
-    }
-  );
-
-  if(!currentUserIsAdmin){
-
-    if(oldStrip){
-
-      oldStrip.remove();
-
-    }
-
-    return;
-
+  if (currentPhotoUrls.length > 1) {
+    photoViewerCounter.textContent = `${currentPhotoIndex + 1} / ${currentPhotoUrls.length}`;
+    photoViewerCounter.classList.remove("hidden");
+    photoViewerPrevButton.classList.remove("hidden");
+    photoViewerNextButton.classList.remove("hidden");
+  } else {
+    photoViewerCounter.classList.add("hidden");
+    photoViewerPrevButton.classList.add("hidden");
+    photoViewerNextButton.classList.add("hidden");
   }
+}
 
-  if(oldStrip){
-    return;
-  }
+function closePhotoViewerModal() {
+  photoViewer.classList.remove("show");
+  photoViewer.setAttribute("aria-hidden", "true");
+  photoViewerImage.src = "";
+  photoViewerVideo.pause();
+  photoViewerVideo.src = "";
+  currentPhotoUrls = [];
+  currentPhotoIndex = 0;
+}
 
-  const pageContainer =
-  document.querySelector(
-    ".pageContainer"
-  );
+if (closePhotoViewer) {
+  closePhotoViewer.addEventListener("click", closePhotoViewerModal);
+}
 
-  if(!pageContainer){
-    return;
-  }
-
-  const strip =
-  document.createElement("div");
-
-  strip.id =
-  "adminToolsStrip";
-
-  strip.style.cssText =
-  "display:flex;gap:8px;margin:0 0 10px;";
-
-  const adminLinks =
-  [
-    {
-      href:"admin-feedback.html",
-      label:"📋 User Feedback"
-    },
-    {
-      href:"admin-reports.html",
-      label:"🛡️ Reported Posts"
+if (photoViewerPrevButton) {
+  photoViewerPrevButton.addEventListener("click", () => {
+    if (currentPhotoIndex > 0) {
+      currentPhotoIndex--;
+      updatePhotoViewerDisplay();
     }
-  ];
+  });
+}
 
-  adminLinks.forEach(
-    function(linkInfo){
-
-      const link =
-      document.createElement("a");
-
-      link.href =
-      linkInfo.href;
-
-      link.textContent =
-      linkInfo.label;
-
-      link.style.cssText =
-      "flex:1;text-align:center;padding:9px 6px;" +
-      "border-radius:12px;background:#e7f3ff;" +
-      "color:#0873c9;font-size:13px;font-weight:bold;" +
-      "text-decoration:none;";
-
-      strip.appendChild(
-        link
-      );
-
+if (photoViewerNextButton) {
+  photoViewerNextButton.addEventListener("click", () => {
+    if (currentPhotoIndex < currentPhotoUrls.length - 1) {
+      currentPhotoIndex++;
+      updatePhotoViewerDisplay();
     }
-  );
-
-  pageContainer.insertBefore(
-    strip,
-    pageContainer.firstChild
-  );
-
+  });
 }
 
 
 /* =====================================================
-   LOAD CURRENT USER PROFILE
-
-   Runs independently of the feed — nothing else waits
-   for this to finish.
+   REELS-STYLE VIDEO VIEWER MODAL
 ===================================================== */
 
-async function loadCurrentUserProfile(){
+function openVideoReel(videoUrl) {
+  if (!videoUrl || !videoReelViewer || !videoReelTrack) return;
 
-  currentProfile =
-  {};
+  videoReelTrack.innerHTML = `
+    <video controls autoplay playsinline style="max-width:100%;max-height:100vh;object-fit:contain;">
+      <source src="${videoUrl}" type="video/mp4">
+    </video>
+  `;
 
-  currentUserIsAdmin =
-  false;
-
-  if(!currentUser){
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      defaultProfilePicture;
-
-    }
-
-    updateAdminReportsLink();
-
-    return;
-
-  }
-
-  /*
-     Admin by email: works immediately, even before
-     (or without) the profile document loading.
-  */
-
-  currentUserIsAdmin =
-  ADMIN_EMAILS.includes(
-    String(
-      currentUser.email || ""
-    ).toLowerCase()
-  );
-
-  updateAdminReportsLink();
-
-  try{
-
-    const profileReference =
-    doc(
-      db,
-      "users",
-      currentUser.uid
-    );
-
-    const profileSnapshot =
-    await getDoc(
-      profileReference
-    );
-
-    if(
-      profileSnapshot.exists()
-    ){
-
-      currentProfile =
-      profileSnapshot.data();
-
-      currentUserIsAdmin =
-      currentUserIsAdmin ||
-      currentProfile.isAdmin === true;
-
-    }
-
-    const profilePicture =
-    getFirstValue(
-      currentProfile.picture,
-      currentProfile.profilePicture,
-      currentProfile.photoURL,
-      currentProfile.photoUrl,
-      currentUser.photoURL,
-      defaultProfilePicture
-    );
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      profilePicture;
-
-    }
-
-    if(quickMomentAvatar){
-
-      quickMomentAvatar.style.backgroundImage =
-      `url("${profilePicture}")`;
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Error loading current user profile:",
-      error
-    );
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      defaultProfilePicture;
-
-    }
-
-  }
-
-  updateAdminReportsLink();
-
+  videoReelViewer.classList.add("show");
+  videoReelViewer.setAttribute("aria-hidden", "false");
 }
 
+function closeVideoReel() {
+  if (!videoReelViewer || !videoReelTrack) return;
 
-/* =====================================================
-   QUICK POST BUTTON
-===================================================== */
+  const vid = videoReelTrack.querySelector("video");
+  if (vid) vid.pause();
 
-if(quickPostButton){
-
-  quickPostButton.addEventListener(
-    "click",
-    function(){
-
-      if(!currentUser){
-
-        window.location.href =
-        "login.html";
-
-        return;
-
-      }
-
-      window.location.href =
-      "createpost.html";
-
-    }
-  );
-
+  videoReelTrack.innerHTML = "";
+  videoReelViewer.classList.remove("show");
+  videoReelViewer.setAttribute("aria-hidden", "true");
 }
 
-
-if(quickPostAvatar){
-
-  protectProfilePicture(
-    quickPostAvatar
-  );
-
-}
-
-
-/* =====================================================
-   STOP CURRENT FIRESTORE LISTENER
-===================================================== */
-
-function stopPostsListener(){
-
-  if(
-    typeof unsubscribePosts ===
-    "function"
-  ){
-
-    unsubscribePosts();
-
-  }
-
-  unsubscribePosts =
-  null;
-
-}
-
-
-/* =====================================================
-   START COMMUNITY FEED
-===================================================== */
-
-function startCommunityFeed(){
-
-  stopPostsListener();
-
-  if(postsLoadObserver){
-
-    postsLoadObserver.disconnect();
-
-  }
-
-  lastVisibleDocument =
-  null;
-
-  noMorePostsAvailable =
-  false;
-
-  isLoadingMorePosts =
-  false;
-
-  loadedPostsDocs =
-  [];
-
-  loadedPostIds.clear();
-
-  firstFeedSnapshotHandled =
-  false;
-
-  loadMoreSentinel.textContent =
-  "";
-
-  const cachedPosts =
-  loadFeedCache();
-
-  if(cachedPosts){
-
-    renderPostsFromCache(
-      cachedPosts
-    );
-
-  }else{
-
-    showLoadingMessage();
-
-  }
-
-  loadCommunityPosts();
-
-}
-
-
-/* =====================================================
-   NOTIFICATIONS BADGE
-===================================================== */
-
-function stopNotificationListener(){
-
-  if(
-    typeof unsubscribeNotifications ===
-    "function"
-  ){
-
-    unsubscribeNotifications();
-
-  }
-
-  unsubscribeNotifications =
-  null;
-
-}
-
-
-function startNotificationListener(){
-
-  stopNotificationListener();
-
-  if(!currentUser){
-
-    notificationBadge.style.display =
-    "none";
-
-    notificationBadge.textContent =
-    "0";
-
-    return;
-
-  }
-
-  const unreadNotificationsQuery =
-  query(
-    collection(
-      db,
-      "notifications"
-    ),
-
-    where(
-      "recipientId",
-      "==",
-      currentUser.uid
-    ),
-
-    where(
-      "read",
-      "==",
-      false
-    )
-  );
-
-  unsubscribeNotifications =
-  onSnapshot(
-
-    unreadNotificationsQuery,
-
-    function(snapshot){
-
-      const totalUnread =
-      snapshot.size;
-
-      if(totalUnread > 0){
-
-        notificationBadge.style.display =
-        "flex";
-
-        notificationBadge.textContent =
-        totalUnread > 99
-        ? "99+"
-        : String(totalUnread);
-
-      }else{
-
-        notificationBadge.style.display =
-        "none";
-
-        notificationBadge.textContent =
-        "0";
-
-      }
-
-    },
-
-    function(error){
-
-      console.error(
-        "Notification badge error:",
-        error
-      );
-
-      notificationBadge.style.display =
-      "none";
-
-    }
-
-  );
-
-}
-
-
-/* =====================================================
-   AUTHENTICATION LISTENER
-===================================================== */
-
-onAuthStateChanged(
-
-  auth,
-
-  function(user){
-
-    currentUser =
-    user || null;
-
-    startCommunityFeed();
-
-    startNotificationListener();
-
-    startMomentsStripListener();
-
-    loadCurrentUserProfile();
-
-  },
-
-  function(error){
-
-    console.error(
-      "Authentication listener error:",
-      error
-    );
-
-    currentUser =
-    null;
-
-    currentProfile =
-    {};
-
-    currentUserIsAdmin =
-    false;
-
-    updateAdminReportsLink();
-
-    stopNotificationListener();
-
-    notificationBadge.style.display =
-    "none";
-
-    notificationBadge.textContent =
-    "0";
-
-    if(quickPostAvatar){
-
-      quickPostAvatar.src =
-      defaultProfilePicture;
-
-    }
-
-    startCommunityFeed();
-
-  }
-
-);
-
-
-/* =====================================================
-   LOAD COMMUNITY POSTS FROM FIRESTORE
-===================================================== */
-
-function scheduleCommunityPostsRender(){
-
-  if(renderDebounceTimer){
-
-    clearTimeout(
-      renderDebounceTimer
-    );
-
-  }
-
-  renderDebounceTimer =
-  window.setTimeout(
-    function(){
-
-      renderDebounceTimer =
-      null;
-
-      renderCommunityPosts();
-
-      updateLoadMoreSentinel();
-
-      scrollToSharedPost();
-
-    },
-    250
-  );
-
-}
-
-
-function renderCommunityPosts(){
-
-  postsContainer.innerHTML =
-  "";
-
-  const combinedDocs =
-  loadedPostsDocs;
-
-  if(
-    combinedDocs.length === 0
-  ){
-
-    showEmptyMessage();
-
-    return;
-
-  }
-
-  combinedDocs.forEach(
-    function(postDocument){
-
-      try{
-
-        const postData = {
-          id:
-          postDocument.id,
-
-          ...postDocument.data()
-        };
-
-        const postCard =
-        createPostCard(
-          postData
-        );
-
-        postsContainer.appendChild(
-          postCard
-        );
-
-      }catch(error){
-
-        console.error(
-          "Error creating post card:",
-          error
-        );
-
-      }
-
-    }
-  );
-
-  if(
-    postsContainer.children.length === 0
-  ){
-
-    showErrorMessage(
-      "Community posts were found, but they could not be displayed."
-    );
-
-    return;
-
-  }
-
-  startVideoAutoPlay();
-
-}
-
-
-function loadCommunityPosts(){
-
-  try{
-
-    const postsReference =
-    collection(
-      db,
-      "communityPosts"
-    );
-
-    const firstPageQuery =
-    query(
-      postsReference,
-      orderBy(
-        "timestamp",
-        "desc"
-      ),
-      limit(
-        POSTS_PER_PAGE
-      )
-    );
-
-    unsubscribePosts =
-    onSnapshot(
-
-      firstPageQuery,
-
-      function(snapshot){
-
-        if(!firstFeedSnapshotHandled){
-
-          firstFeedSnapshotHandled =
-          true;
-
-          loadedPostsDocs =
-          snapshot.docs.slice();
-
-          loadedPostIds.clear();
-
-          loadedPostsDocs.forEach(
-            function(postDoc){
-
-              loadedPostIds.add(
-                postDoc.id
-              );
-
-            }
-          );
-
-          if(
-            snapshot.docs.length > 0
-          ){
-
-            lastVisibleDocument =
-            snapshot.docs[
-              snapshot.docs.length - 1
-            ];
-
-          }
-
-          noMorePostsAvailable =
-          snapshot.docs.length === 0;
-
-          saveFeedCache(
-            loadedPostsDocs
-          );
-
-          scheduleCommunityPostsRender();
-
-          return;
-
-        }
-
-        const newlyAddedDocs =
-        [];
-
-        snapshot.docChanges().forEach(
-          function(change){
-
-            if(
-              change.type !== "added"
-            ){
-              return;
-            }
-
-            if(
-              loadedPostIds.has(
-                change.doc.id
-              )
-            ){
-              return;
-            }
-
-            loadedPostIds.add(
-              change.doc.id
-            );
-
-            newlyAddedDocs.push(
-              change.doc
-            );
-
-          }
-        );
-
-        if(
-          newlyAddedDocs.length === 0
-        ){
-          return;
-        }
-
-        newlyAddedDocs.sort(
-          function(firstDoc,secondDoc){
-
-            const firstTime =
-            firstDoc.data()?.timestamp?.seconds ||
-            0;
-
-            const secondTime =
-            secondDoc.data()?.timestamp?.seconds ||
-            0;
-
-            return secondTime - firstTime;
-
-          }
-        );
-
-        loadedPostsDocs =
-        newlyAddedDocs.concat(
-          loadedPostsDocs
-        );
-
-        saveFeedCache(
-          loadedPostsDocs
-        );
-
-        newlyAddedDocs
-        .slice()
-        .reverse()
-        .forEach(
-          function(postDoc){
-
-            try{
-
-              const postData = {
-                id:
-                postDoc.id,
-
-                ...postDoc.data()
-              };
-
-              const newCard =
-              createPostCard(
-                postData
-              );
-
-              postsContainer.insertBefore(
-                newCard,
-                postsContainer.firstChild
-              );
-
-            }catch(error){
-
-              console.error(
-                "Error inserting new post card:",
-                error
-              );
-
-            }
-
-          }
-        );
-
-        startVideoAutoPlay();
-
-      },
-
-      function(error){
-
-        console.error(
-          "Error loading community posts:",
-          error
-        );
-
-        if(
-          error.code === "permission-denied"
-        ){
-
-          showErrorMessage(
-            "Firebase permission denied access to community posts."
-          );
-
-          return;
-
-        }
-
-        if(
-          error.code === "failed-precondition"
-        ){
-
-          showErrorMessage(
-            "Firebase requires an index before community posts can be displayed."
-          );
-
-          return;
-
-        }
-
-        if(
-          error.code === "unavailable"
-        ){
-
-          showErrorMessage(
-            "The Community Wall is temporarily unavailable. Check your internet connection and try again."
-          );
-
-          return;
-
-        }
-
-        showErrorMessage(
-          "Community posts could not be loaded. Please try again."
-        );
-
-      }
-
-    );
-
-  }catch(error){
-
-    console.error(
-      "Community feed setup error:",
-      error
-    );
-
-    showErrorMessage(
-      "The Community Wall could not be started."
-    );
-
-  }
-
-}
-
-
-async function loadMoreCommunityPosts(){
-
-  if(
-    isLoadingMorePosts ||
-    noMorePostsAvailable
-  ){
-    return;
-  }
-
-  isLoadingMorePosts =
-  true;
-
-  loadMoreSentinel.textContent =
-  "Loading more posts...";
-
-  try{
-
-    const postsReference =
-    collection(
-      db,
-      "communityPosts"
-    );
-
-    const nextPageQuery =
-    lastVisibleDocument
-
-    ? query(
-        postsReference,
-        orderBy(
-          "timestamp",
-          "desc"
-        ),
-        startAfter(
-          lastVisibleDocument
-        ),
-        limit(
-          POSTS_PER_PAGE
-        )
-      )
-
-    : query(
-        postsReference,
-        orderBy(
-          "timestamp",
-          "desc"
-        ),
-        limit(
-          POSTS_PER_PAGE
-        )
-      );
-
-    const snapshot =
-    await getDocs(
-      nextPageQuery
-    );
-
-    if(snapshot.empty){
-
-      if(
-        loadedPostsDocs.length === 0
-      ){
-
-        noMorePostsAvailable =
-        true;
-
-        updateLoadMoreSentinel();
-
-        return;
-
-      }
-
-      lastVisibleDocument =
-      loadedPostsDocs.length > 0
-
-      ? loadedPostsDocs[
-          loadedPostsDocs.length - 1
-        ]
-
-      : null;
-
-      window.scrollTo(
-        {
-          top:0,
-          behavior:"smooth"
-        }
-      );
-
-      isLoadingMorePosts =
-      false;
-
-      updateLoadMoreSentinel();
-
-      return;
-
-    }
-
-    const newOlderDocs =
-    snapshot.docs.filter(
-      function(postDoc){
-
-        return !loadedPostIds.has(
-          postDoc.id
-        );
-
-      }
-    );
-
-    newOlderDocs.forEach(
-      function(postDoc){
-
-        loadedPostIds.add(
-          postDoc.id
-        );
-
-      }
-    );
-
-    loadedPostsDocs =
-    loadedPostsDocs.concat(
-      newOlderDocs
-    );
-
-    newOlderDocs.forEach(
-      function(postDoc){
-
-        try{
-
-          const postData = {
-            id:
-            postDoc.id,
-
-            ...postDoc.data()
-          };
-
-          const olderCard =
-          createPostCard(
-            postData
-          );
-
-          postsContainer.appendChild(
-            olderCard
-          );
-
-        }catch(error){
-
-          console.error(
-            "Error appending older post card:",
-            error
-          );
-
-        }
-
-      }
-    );
-
-    startVideoAutoPlay();
-
-    lastVisibleDocument =
-    snapshot.docs.length <
-    POSTS_PER_PAGE
-
-    ? null
-
-    : snapshot.docs[
-        snapshot.docs.length - 1
-      ];
-
-  }catch(error){
-
-    console.error(
-      "Error loading more community posts:",
-      error
-    );
-
-    loadMoreSentinel.textContent =
-    "Could not load more posts. Scroll to try again.";
-
-    isLoadingMorePosts =
-    false;
-
-    return;
-
-  }
-
-  isLoadingMorePosts =
-  false;
-
-  updateLoadMoreSentinel();
-
-}
-
-
-function updateLoadMoreSentinel(){
-
-  if(noMorePostsAvailable){
-
-    loadMoreSentinel.textContent =
-    postsContainer.children.length > 0
-    ? ""
-    : "Be the first to share something with the community 🙏";
-
-  }else{
-
-    loadMoreSentinel.textContent =
-    "";
-
-  }
-
-}
-
-
-postsLoadObserver =
-new IntersectionObserver(
-
-  function(entries){
-
-    entries.forEach(
-      function(entry){
-
-        if(
-          entry.isIntersecting
-        ){
-
-          loadMoreCommunityPosts();
-
-        }
-
-      }
-    );
-
-  },
-
-  {
-    rootMargin:
-    "300px"
-  }
-
-);
-
-postsLoadObserver.observe(
-  loadMoreSentinel
-);
-
-
-/* =====================================================
-   CREATE EACH COMMUNITY POST CARD
-===================================================== */
-
-function createPostCard(postData){
-
-  const postCard =
-  document.createElement("article");
-
-  postCard.className =
-  "postCard";
-
-  postCard.id =
-  `post-${postData.id}`;
-
-  postCard.dataset.postId =
-  postData.id;
-
-  const authorId =
-  getFirstValue(
-    postData.userId,
-    postData.authorId,
-    postData.uid
-  );
-
-  const authorName =
-  getFirstValue(
-    postData.name,
-    postData.fullName,
-    postData.displayName,
-    "Community Member"
-  );
-
-  const authorPicture =
-  getFirstValue(
-    postData.picture,
-    postData.profilePicture,
-    postData.photoURL,
-    postData.photoUrl,
-    defaultProfilePicture
-  );
-
-  const authorCountry =
-  getFirstValue(
-    postData.country
-  );
-
-  const postDate =
-  formatPostDate(
-    postData.timestamp
-  );
-
-  const postMessage =
-  getFirstValue(
-    postData.post,
-    postData.message,
-    postData.content,
-    postData.text,
-    postData.description
-  );
-
-  const postCategory =
-  getFirstValue(
-    postData.category,
-    postData.postCategory,
-    postData.type,
-    "General"
-  );
-
-  const mediaType =
-  getFirstValue(
-    postData.mediaType
-  ).toLowerCase();
-
-  let imageUrl =
-  "";
-
-  let videoUrl =
-  "";
-
-  if(mediaType === "image"){
-
-    imageUrl =
-    getFirstValue(
-      postData.imageUrl,
-      postData.imageURL,
-      postData.photoUrl,
-      postData.photoURL,
-      postData.postImage,
-      postData.image,
-      postData.mediaUrl
-    );
-
-  }else if(mediaType === "video"){
-
-    videoUrl =
-    getFirstValue(
-      postData.videoUrl,
-      postData.videoURL,
-      postData.postVideo,
-      postData.video,
-      postData.mediaUrl
-    );
-
-  }else{
-
-    imageUrl =
-    getFirstValue(
-      postData.imageUrl,
-      postData.imageURL,
-      postData.photoUrl,
-      postData.photoURL,
-      postData.postImage,
-      postData.image
-    );
-
-    videoUrl =
-    getFirstValue(
-      postData.videoUrl,
-      postData.videoURL,
-      postData.postVideo,
-      postData.video
-    );
-
-  }
-
-  let imageUrls =
-  Array.isArray(
-    postData.imageUrls
-  )
-  ? postData.imageUrls.filter(
-      function(url){
-
-        return (
-          typeof url === "string" &&
-          url.trim() !== ""
-        );
-
-      }
-    )
-  : [];
-
-  if(
-    imageUrls.length === 0 &&
-    imageUrl
-  ){
-
-    imageUrls =
-    [imageUrl];
-
-  }
-
-  if(
-    imageUrls.length > 0
-  ){
-
-    imageUrl =
-    imageUrls[0];
-
-  }
-
-  const MAXIMUM_GRID_PHOTOS_SHOWN =
-  4;
-
-  const likes =
-  Array.isArray(
-    postData.likes
-  )
-  ? postData.likes
-  : [];
-
-  const userHasLiked =
-  Boolean(
-    currentUser &&
-    likes.includes(
-      currentUser.uid
-    )
-  );
-
-  const postHeader =
-  document.createElement("div");
-
-  postHeader.className =
-  "postHeader";
-
-  const profileImage =
-  document.createElement("img");
-
-  profileImage.className =
-  "authorPicture";
-
-  profileImage.src =
-  authorPicture;
-
-  profileImage.loading =
-  "lazy";
-
-  profileImage.alt =
-  `${authorName}'s profile picture`;
-
-  protectProfilePicture(
-    profileImage
-  );
-
-  const authorInformation =
-  document.createElement("div");
-
-  authorInformation.className =
-  "authorInformation";
-
-  const authorNameRow =
-  document.createElement("div");
-
-  authorNameRow.className =
-  "authorNameRow";
-
-  const authorNameElement =
-  document.createElement("div");
-
-  authorNameElement.className =
-  "authorName";
-
-  authorNameElement.textContent =
-  authorName;
-
-  const verifiedBadge =
-  document.createElement("span");
-
-  verifiedBadge.className =
-  "verifiedBadge";
-
-  const accountIsVerified =
-  postData.verified === true;
-
-  const accountType =
-  getFirstValue(
-    postData.accountType,
-    postData.userType,
-    postData.profileType,
-    "member"
-  ).toLowerCase();
-
-  if(accountIsVerified){
-
-    verifiedBadge.classList.add(
-      "show"
-    );
-
-    if(
-      accountType === "ministry"
-    ){
-
-      verifiedBadge.classList.add(
-        "ministry"
-      );
-
-      verifiedBadge.textContent =
-      "✔ Ministry";
-
-    }else{
-
-      verifiedBadge.textContent =
-      "✔ Verified";
-
-    }
-
-  }
-
-  authorNameRow.appendChild(
-    authorNameElement
-  );
-
-  authorNameRow.appendChild(
-    verifiedBadge
-  );
-
-  const postDetails =
-  document.createElement("div");
-
-  postDetails.className =
-  "postDetails";
-
-  postDetails.textContent =
-  authorCountry
-  ? `${authorCountry} • ${postDate}`
-  : postDate;
-
-  authorInformation.appendChild(
-    authorNameRow
-  );
-
-  authorInformation.appendChild(
-    postDetails
-  );
-
-  postHeader.appendChild(
-    profileImage
-  );
-
-  postHeader.appendChild(
-    authorInformation
-  );
-
-  postCard.appendChild(
-    postHeader
-  );
-
-  if(postCategory){
-
-    const categoryElement =
-    document.createElement("div");
-
-    categoryElement.className =
-    "postCategory";
-
-    categoryElement.textContent =
-    postCategory;
-
-    postCard.appendChild(
-      categoryElement
-    );
-
-  }
-
-  if(postMessage){
-
-    const messageElement =
-    document.createElement("div");
-
-    messageElement.className =
-    "postMessage";
-
-    messageElement.textContent =
-    postMessage;
-
-    postCard.appendChild(
-      messageElement
-    );
-
-    const READ_MORE_CHARACTER_LIMIT =
-    280;
-
-    if(
-      postMessage.length >
-      READ_MORE_CHARACTER_LIMIT
-    ){
-
-      messageElement.classList.add(
-        "truncated"
-      );
-
-      const readMoreButton =
-      document.createElement("button");
-
-      readMoreButton.type =
-      "button";
-
-      readMoreButton.className =
-      "readMoreToggle";
-
-      readMoreButton.textContent =
-      "Read more";
-
-      readMoreButton.addEventListener(
-        "click",
-        function(){
-
-          const isStillTruncated =
-          messageElement.classList.toggle(
-            "truncated"
-          );
-
-          readMoreButton.textContent =
-          isStillTruncated
-          ? "Read more"
-          : "Read less";
-
-        }
-      );
-
-      postCard.appendChild(
-        readMoreButton
-      );
-
-    }
-
-  }
-
-  const mediaContainer =
-  document.createElement("div");
-
-  mediaContainer.className =
-  "postMediaContainer";
-
-  if(imageUrls.length > 0){
-
-    const photoGrid =
-    document.createElement("div");
-
-    photoGrid.className =
-    `postPhotoGrid count-${
-      Math.min(
-        imageUrls.length,
-        MAXIMUM_GRID_PHOTOS_SHOWN
-      )
-    }`;
-
-    photoGrid.dataset.images =
-    JSON.stringify(
-      imageUrls
-    );
-
-    const visibleImageUrls =
-    imageUrls.slice(
-      0,
-      MAXIMUM_GRID_PHOTOS_SHOWN
-    );
-
-    const remainingPhotosCount =
-    imageUrls.length -
-    visibleImageUrls.length;
-
-    visibleImageUrls.forEach(
-      function(url,index){
-
-        const tile =
-        document.createElement("div");
-
-        tile.className =
-        "postPhotoTile";
-
-        const postImage =
-        document.createElement("img");
-
-        postImage.className =
-        "communityPostImage";
-
-        postImage.src =
-        url;
-
-        postImage.alt =
-        `Community post photo ${index + 1}`;
-
-        postImage.loading =
-        "lazy";
-
-        postImage.dataset.fullImage =
-        url;
-
-        postImage.dataset.galleryIndex =
-        String(index);
-
-        postImage.addEventListener(
-          "error",
-          function(){
-
-            tile.remove();
-
-          },
-          {
-            once:true
-          }
-        );
-
-        tile.appendChild(
-          postImage
-        );
-
-        const isLastVisibleTile =
-        index ===
-        visibleImageUrls.length - 1;
-
-        if(
-          isLastVisibleTile &&
-          remainingPhotosCount > 0
-        ){
-
-          const moreOverlay =
-          document.createElement("div");
-
-          moreOverlay.className =
-          "postPhotoMoreOverlay";
-
-          moreOverlay.textContent =
-          `+${remainingPhotosCount}`;
-
-          tile.appendChild(
-            moreOverlay
-          );
-
-        }
-
-        photoGrid.appendChild(
-          tile
-        );
-
-      }
-    );
-
-    mediaContainer.appendChild(
-      photoGrid
-    );
-
-  }else if(videoUrl){
-
-    const videoWrapper =
-    document.createElement("div");
-
-    videoWrapper.className =
-    "communityPostVideoWrapper";
-
-    const postVideo =
-    document.createElement("video");
-
-    postVideo.className =
-    "communityPostVideo";
-
-    postVideo.src =
-    videoUrl;
-
-    postVideo.controls =
-    false;
-
-    postVideo.muted =
-    true;
-
-    postVideo.preload =
-    "metadata";
-
-    postVideo.playsInline =
-    true;
-
-    postVideo.loop =
-    true;
-
-    postVideo.addEventListener(
-      "error",
-      function(){
-
-        videoWrapper.remove();
-
-      },
-      {
-        once:true
-      }
-    );
-
-    const expandOverlay =
-    document.createElement("div");
-
-    expandOverlay.className =
-    "videoExpandOverlay";
-
-    expandOverlay.innerHTML =
-    "▶";
-
-    videoWrapper.appendChild(
-      postVideo
-    );
-
-    videoWrapper.appendChild(
-      expandOverlay
-    );
-
-    videoWrapper.addEventListener(
-      "click",
-      function(){
-
-        openVideoReelViewer(
-          videoUrl
-        );
-
-      }
-    );
-
-    mediaContainer.appendChild(
-      videoWrapper
-    );
-
-  }
-
-  if(
-    mediaContainer.children.length > 0
-  ){
-
-    postCard.appendChild(
-      mediaContainer
-    );
-
-  }
-
-  const actionsContainer =
-  document.createElement("div");
-
-  actionsContainer.className =
-  "postActions";
-
-  const likeButton =
-  document.createElement("button");
-
-  likeButton.type =
-  "button";
-
-  likeButton.className =
-  userHasLiked
-  ? "likeButton liked"
-  : "likeButton";
-
-  likeButton.dataset.postId =
-  postData.id;
-
-  likeButton.dataset.authorId =
-  authorId;
-
-  likeButton.dataset.likes =
-  JSON.stringify(
-    likes
-  );
-
-  likeButton.innerHTML =
-  `❤️ <span>${likes.length}</span>`;
-
-  const commentButton =
-  document.createElement("button");
-
-  commentButton.type =
-  "button";
-
-  commentButton.className =
-  "commentButton";
-
-  commentButton.dataset.postId =
-  postData.id;
-
-  const commentsCount =
-  Number(
-    postData.commentsCount
-  ) || 0;
-
-  commentButton.innerHTML =
-  commentsCount > 0
-  ? `💬 <span>${commentsCount}</span>`
-  : "💬 Comment";
-
-  const shareButton =
-  document.createElement("button");
-
-  shareButton.type =
-  "button";
-
-  shareButton.className =
-  "shareButton";
-
-  shareButton.dataset.postId =
-  postData.id;
-
-  shareButton.dataset.message =
-  postMessage;
-
-  shareButton.innerHTML =
-  "🔗 Share";
-
-  actionsContainer.appendChild(
-    likeButton
-  );
-
-  actionsContainer.appendChild(
-    commentButton
-  );
-
-  actionsContainer.appendChild(
-    shareButton
-  );
-
-  if(
-    currentUser &&
-    authorId &&
-    authorId !== currentUser.uid
-  ){
-
-    const reportButton =
-    document.createElement("button");
-
-    reportButton.type =
-    "button";
-
-    reportButton.className =
-    "reportButton";
-
-    reportButton.dataset.postId =
-    postData.id;
-
-    reportButton.dataset.authorId =
-    authorId;
-
-    reportButton.dataset.message =
-    postMessage;
-
-    reportButton.innerHTML =
-    "🚩 Report";
-
-    actionsContainer.appendChild(
-      reportButton
-    );
-
-  }
-
-  postCard.appendChild(
-    actionsContainer
-  );
-
-  if(
-    currentUser &&
-    authorId === currentUser.uid
-  ){
-
-    const ownerActions =
-    document.createElement("div");
-
-    ownerActions.className =
-    "postActions ownerActions";
-
-    const editButton =
-    document.createElement("button");
-
-    editButton.type =
-    "button";
-
-    editButton.className =
-    "editButton";
-
-    editButton.dataset.postId =
-    postData.id;
-
-    editButton.dataset.message =
-    postMessage;
-
-    editButton.innerHTML =
-    "✏️ Edit";
-
-    const deleteButton =
-    document.createElement("button");
-
-    deleteButton.type =
-    "button";
-
-    deleteButton.className =
-    "deleteButton";
-
-    deleteButton.dataset.postId =
-    postData.id;
-
-    deleteButton.innerHTML =
-    "🗑️ Delete";
-
-    ownerActions.appendChild(
-      editButton
-    );
-
-    ownerActions.appendChild(
-      deleteButton
-    );
-
-    postCard.appendChild(
-      ownerActions
-    );
-
-  }else if(
-    currentUserIsAdmin &&
-    currentUser
-  ){
-
-    const adminActions =
-    document.createElement("div");
-
-    adminActions.className =
-    "postActions ownerActions adminActions";
-
-    const adminDeleteButton =
-    document.createElement("button");
-
-    adminDeleteButton.type =
-    "button";
-
-    adminDeleteButton.className =
-    "deleteButton adminDeleteButton";
-
-    adminDeleteButton.dataset.postId =
-    postData.id;
-
-    adminDeleteButton.innerHTML =
-    "🛡️ Remove Post (Admin)";
-
-    adminActions.appendChild(
-      adminDeleteButton
-    );
-
-    postCard.appendChild(
-      adminActions
-    );
-
-  }
-
-  if(authorId){
-
-    profileImage.addEventListener(
-      "click",
-      function(){
-
-        window.location.href =
-        "user-profile.html?uid=" +
-        encodeURIComponent(
-          authorId
-        );
-
-      }
-    );
-
-    authorNameElement.addEventListener(
-      "click",
-      function(){
-
-        window.location.href =
-        "user-profile.html?uid=" +
-        encodeURIComponent(
-          authorId
-        );
-
-      }
-    );
-
-  }
-
-  return postCard;
-
-}
-
-
-/* =====================================================
-   POST ACTIONS
-===================================================== */
-
-async function createLikeNotification(
-  recipientId,
-  postId
-){
-
-  if(
-    !currentUser ||
-    !recipientId ||
-    !postId
-  ){
-    return;
-  }
-
-  if(
-    recipientId === currentUser.uid
-  ){
-    return;
-  }
-
-  const senderName =
-  getFirstValue(
-    currentProfile.fullName,
-    currentProfile.name,
-    currentUser.displayName,
-    currentUser.email,
-    "A community member"
-  );
-
-  try{
-
-    await addDoc(
-      collection(
-        db,
-        "notifications"
-      ),
-      {
-        recipientId:
-        recipientId,
-
-        senderId:
-        currentUser.uid,
-
-        senderName:
-        senderName,
-
-        type:
-        "like",
-
-        postId:
-        postId,
-
-        targetUrl:
-        `feed.html?post=${encodeURIComponent(postId)}`,
-
-        message:
-        `${senderName} liked your post.`,
-
-        read:
-        false,
-
-        timestamp:
-        serverTimestamp()
-      }
-    );
-
-  }catch(error){
-
-    console.error(
-      "Error creating like notification:",
-      error
-    );
-
-  }
-
-}
-
-
-async function handleLikeButton(
-  button
-){
-
-  if(!currentUser){
-
-    window.location.href =
-    "login.html";
-
-    return;
-
-  }
-
-  const postId =
-  button.dataset.postId;
-
-  const postAuthorId =
-  button.dataset.authorId ||
-  "";
-
-  if(!postId){
-    return;
-  }
-
-  let likes =
-  [];
-
-  try{
-
-    const savedLikes =
-    JSON.parse(
-      button.dataset.likes ||
-      "[]"
-    );
-
-    likes =
-    Array.isArray(
-      savedLikes
-    )
-    ? savedLikes
-    : [];
-
-  }catch(error){
-
-    console.error(
-      "Could not read post likes:",
-      error
-    );
-
-    likes =
-    [];
-
-  }
-
-  const currentUserId =
-  currentUser.uid;
-
-  const userAlreadyLiked =
-  likes.includes(
-    currentUserId
-  );
-
-  const updatedLikes =
-  userAlreadyLiked
-
-  ? likes.filter(
-      function(userId){
-
-        return (
-          userId !== currentUserId
-        );
-
-      }
-    )
-
-  : [
-      ...likes,
-      currentUserId
-    ];
-
-  button.disabled =
-  true;
-
-  try{
-
-    const postReference =
-    doc(
-      db,
-      "communityPosts",
-      postId
-    );
-
-    await updateDoc(
-      postReference,
-      {
-        likes:
-        updatedLikes
-      }
-    );
-
-    button.dataset.likes =
-    JSON.stringify(
-      updatedLikes
-    );
-
-    button.classList.toggle(
-      "liked",
-      !userAlreadyLiked
-    );
-
-    const likeCount =
-    button.querySelector(
-      "span"
-    );
-
-    if(likeCount){
-
-      likeCount.textContent =
-      updatedLikes.length;
-
-    }
-
-    if(!userAlreadyLiked){
-
-      await createLikeNotification(
-        postAuthorId,
-        postId
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Error updating likes:",
-      error
-    );
-
-    alert(
-      "The like could not be updated."
-    );
-
-  }finally{
-
-    button.disabled =
-    false;
-
-  }
-
-}
-
-
-function handleCommentButton(
-  button
-){
-
-  const postId =
-  button.dataset.postId;
-
-  if(!postId){
-    return;
-  }
-
-  window.location.href =
-  `comments.html?postId=${encodeURIComponent(postId)}`;
-
-}
-
-
-async function handleShareButton(
-  button
-){
-
-  const postId =
-  button.dataset.postId;
-
-  if(!postId){
-    return;
-  }
-
-  const postMessage =
-  button.dataset.message ||
-  "";
-
-  const postUrl =
-  `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
-
-  const shareText =
-  postMessage
-
-  ? `${postMessage}\n\nSABASABA Gospel Ministry`
-
-  : "See this post on SABASABA Gospel Ministry.";
-
-  try{
-
-    if(
-      navigator.share
-    ){
-
-      await navigator.share(
-        {
-          title:
-          "SABASABA Gospel Ministry",
-
-          text:
-          shareText,
-
-          url:
-          postUrl
-        }
-      );
-
-      return;
-
-    }
-
-    if(
-      navigator.clipboard &&
-      window.isSecureContext
-    ){
-
-      await navigator.clipboard.writeText(
-        postUrl
-      );
-
-      alert(
-        "Post link copied."
-      );
-
-      return;
-
-    }
-
-    window.prompt(
-      "Copy this post link:",
-      postUrl
-    );
-
-  }catch(error){
-
-    if(
-      error.name !== "AbortError"
-    ){
-
-      console.error(
-        "Error sharing post:",
-        error
-      );
-
-      alert(
-        "The post could not be shared."
-      );
-
-    }
-
-  }
-
-}
-
-
-async function handleEditButton(
-  button
-){
-
-  if(!currentUser){
-
-    window.location.href =
-    "login.html";
-
-    return;
-
-  }
-
-  const postId =
-  button.dataset.postId;
-
-  const oldMessage =
-  button.dataset.message ||
-  "";
-
-  if(!postId){
-    return;
-  }
-
-  const newMessage =
-  window.prompt(
-    "Edit your post:",
-    oldMessage
-  );
-
-  if(
-    newMessage === null
-  ){
-    return;
-  }
-
-  const cleanedMessage =
-  newMessage.trim();
-
-  if(!cleanedMessage){
-
-    alert(
-      "The post cannot be empty."
-    );
-
-    return;
-
-  }
-
-  button.disabled =
-  true;
-
-  try{
-
-    const postReference =
-    doc(
-      db,
-      "communityPosts",
-      postId
-    );
-
-    await updateDoc(
-      postReference,
-      {
-        post:
-        cleanedMessage
-      }
-    );
-
-    button.dataset.message =
-    cleanedMessage;
-
-  }catch(error){
-
-    console.error(
-      "Error editing post:",
-      error
-    );
-
-    alert(
-      "The post could not be edited."
-    );
-
-  }finally{
-
-    button.disabled =
-    false;
-
-  }
-
-}
-
-
-async function handleDeleteButton(
-  button
-){
-
-  if(!currentUser){
-
-    window.location.href =
-    "login.html";
-
-    return;
-
-  }
-
-  const postId =
-  button.dataset.postId;
-
-  if(!postId){
-    return;
-  }
-
-  const confirmed =
-  window.confirm(
-    "Are you sure you want to delete this post?"
-  );
-
-  if(!confirmed){
-    return;
-  }
-
-  button.disabled =
-  true;
-
-  try{
-
-    const postReference =
-    doc(
-      db,
-      "communityPosts",
-      postId
-    );
-
-    await deleteDoc(
-      postReference
-    );
-
-    loadedPostIds.delete(
-      postId
-    );
-
-    loadedPostsDocs =
-    loadedPostsDocs.filter(
-      function(postDoc){
-
-        return postDoc.id !== postId;
-
-      }
-    );
-
-    const postCardElement =
-    document.getElementById(
-      `post-${postId}`
-    );
-
-    if(postCardElement){
-
-      postCardElement.remove();
-
-    }
-
-    if(
-      postsContainer.children.length === 0
-    ){
-
-      showEmptyMessage();
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Error deleting post:",
-      error
-    );
-
-    alert(
-      "The post could not be deleted."
-    );
-
-    button.disabled =
-    false;
-
-  }
-
+if (closeVideoReelViewer) {
+  closeVideoReelViewer.addEventListener("click", closeVideoReel);
 }
 
 
@@ -3037,2000 +607,92 @@ async function handleDeleteButton(
    REPORT POST MODAL
 ===================================================== */
 
-let reportTargetPostId =
-null;
+function openReportModal(postId) {
+  reportingPostId = postId;
+  selectedReportReason = "";
 
-let reportTargetAuthorId =
-null;
+  const options = reportReasonList.querySelectorAll(".reportReasonOption");
+  options.forEach((opt) => opt.classList.remove("selected"));
 
-let reportTargetMessage =
-"";
-
-let selectedReportReason =
-null;
-
-
-function openReportModal(
-  postId,
-  authorId,
-  message
-){
-
-  if(!currentUser){
-
-    window.location.href =
-    "login.html";
-
-    return;
-
-  }
-
-  reportTargetPostId =
-  postId;
-
-  reportTargetAuthorId =
-  authorId ||
-  "";
-
-  reportTargetMessage =
-  message ||
-  "";
-
-  selectedReportReason =
-  null;
-
-  if(reportReasonList){
-
-    reportReasonList
-    .querySelectorAll(
-      ".reportReasonOption"
-    )
-    .forEach(
-      optionButton => {
-
-        optionButton.classList.remove(
-          "selected"
-        );
-
-      }
-    );
-
-  }
-
-  if(reportSubmitButton){
-
-    reportSubmitButton.disabled =
-    true;
-
-    reportSubmitButton.textContent =
-    "Submit report";
-
-  }
-
-  if(reportModal){
-
-    reportModal.classList.add(
-      "open"
-    );
-
-    reportModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-  document.body.style.overflow =
-  "hidden";
-
+  reportSubmitButton.disabled = true;
+  reportModal.classList.add("show");
+  reportModal.setAttribute("aria-hidden", "false");
 }
 
-
-function closeReportModal(){
-
-  if(reportModal){
-
-    reportModal.classList.remove(
-      "open"
-    );
-
-    reportModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-  document.body.style.overflow =
-  "";
-
-  reportTargetPostId =
-  null;
-
-  reportTargetAuthorId =
-  null;
-
-  reportTargetMessage =
-  "";
-
-  selectedReportReason =
-  null;
-
+function closeReportModal() {
+  reportingPostId = null;
+  selectedReportReason = "";
+  reportModal.classList.remove("show");
+  reportModal.setAttribute("aria-hidden", "true");
 }
 
-
-if(reportReasonList){
-
-  reportReasonList.addEventListener(
-    "click",
-    event => {
-
-      const optionButton =
-      event.target.closest(
-        ".reportReasonOption"
-      );
-
-      if(!optionButton){
-        return;
-      }
-
-      reportReasonList
-      .querySelectorAll(
-        ".reportReasonOption"
-      )
-      .forEach(
-        button => {
-
-          button.classList.remove(
-            "selected"
-          );
-
-        }
-      );
-
-      optionButton.classList.add(
-        "selected"
-      );
-
-      selectedReportReason =
-      optionButton.dataset.reason ||
-      "Other";
-
-      if(reportSubmitButton){
-
-        reportSubmitButton.disabled =
-        false;
-
-      }
-
-    }
-  );
-
+if (reportReasonList) {
+  reportReasonList.querySelectorAll(".reportReasonOption").forEach((button) => {
+    button.addEventListener("click", () => {
+      reportReasonList.querySelectorAll(".reportReasonOption").forEach((btn) => btn.classList.remove("selected"));
+      button.classList.add("selected");
+      selectedReportReason = button.dataset.reason;
+      reportSubmitButton.disabled = false;
+    });
+  });
 }
 
-
-if(reportCancelButton){
-
-  reportCancelButton.addEventListener(
-    "click",
-    closeReportModal
-  );
-
+if (reportCancelButton) {
+  reportCancelButton.addEventListener("click", closeReportModal);
 }
 
-
-if(reportModal){
-
-  reportModal.addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target === reportModal
-      ){
-
-        closeReportModal();
-
-      }
-
-    }
-  );
-
-}
-
-
-if(reportSubmitButton){
-
-  reportSubmitButton.addEventListener(
-    "click",
-    async () => {
-
-      if(
-        !currentUser ||
-        !reportTargetPostId ||
-        !selectedReportReason
-      ){
-        return;
-      }
-
-      reportSubmitButton.disabled =
-      true;
-
-      reportSubmitButton.textContent =
-      "Submitting...";
-
-      const reporterName =
-      getFirstValue(
-        currentProfile.fullName,
-        currentProfile.name,
-        currentUser.displayName,
-        currentUser.email,
-        "A community member"
-      );
-
-      try{
-
-        await addDoc(
-          collection(
-            db,
-            "reports"
-          ),
-          {
-            postId:
-            reportTargetPostId,
-
-            postAuthorId:
-            reportTargetAuthorId,
-
-            postMessageSnapshot:
-            reportTargetMessage.slice(
-              0,
-              300
-            ),
-
-            reporterId:
-            currentUser.uid,
-
-            reporterName:
-            reporterName,
-
-            reason:
-            selectedReportReason,
-
-            status:
-            "pending",
-
-            timestamp:
-            serverTimestamp()
-          }
-        );
-
-        alert(
-          "Thank you — this post has been reported and will be reviewed."
-        );
-
-        closeReportModal();
-
-      }catch(error){
-
-        console.error(
-          "Error submitting report:",
-          error
-        );
-
-        alert(
-          "The report could not be submitted. Please try again."
-        );
-
-        reportSubmitButton.disabled =
-        false;
-
-        reportSubmitButton.textContent =
-        "Submit report";
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   PHOTO VIEWER
-===================================================== */
-
-function updatePhotoViewerNavigation(){
-
-  const hasMultiplePhotos =
-  currentGalleryImages.length > 1;
-
-  photoViewerPrevButton.classList.toggle(
-    "hidden",
-    !hasMultiplePhotos
-  );
-
-  photoViewerNextButton.classList.toggle(
-    "hidden",
-    !hasMultiplePhotos
-  );
-
-  photoViewerCounter.classList.toggle(
-    "hidden",
-    !hasMultiplePhotos
-  );
-
-  if(hasMultiplePhotos){
-
-    photoViewerCounter.textContent =
-    `${currentGalleryIndex + 1} of ${currentGalleryImages.length}`;
-
-  }
-
-}
-
-
-function showGalleryImageAt(
-  index
-){
-
-  if(
-    currentGalleryImages.length === 0
-  ){
-    return;
-  }
-
-  currentGalleryIndex =
-  (
-    (
-      index %
-      currentGalleryImages.length
-    ) +
-    currentGalleryImages.length
-  ) %
-  currentGalleryImages.length;
-
-  photoViewerImage.src =
-  currentGalleryImages[
-    currentGalleryIndex
-  ];
-
-  updatePhotoViewerNavigation();
-
-}
-
-
-function openPhotoViewer(
-  images,
-  startIndex = 0
-){
-
-  const galleryImages =
-  Array.isArray(images)
-  ? images.filter(
-      function(url){
-
-        return (
-          typeof url === "string" &&
-          url.trim() !== ""
-        );
-
-      }
-    )
-  : (
-      images
-      ? [images]
-      : []
-    );
-
-  if(
-    galleryImages.length === 0
-  ){
-    return;
-  }
-
-  currentGalleryImages =
-  galleryImages;
-
-  photoViewerVideo.pause();
-
-  photoViewerVideo.removeAttribute(
-    "src"
-  );
-
-  photoViewerVideo.load();
-
-  photoViewerVideo.style.display =
-  "none";
-
-  photoViewerImage.style.display =
-  "block";
-
-  showGalleryImageAt(
-    startIndex
-  );
-
-  photoViewer.classList.add(
-    "open"
-  );
-
-  photoViewer.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.style.overflow =
-  "hidden";
-
-  closePhotoViewerButton.focus();
-
-}
-
-
-photoViewerPrevButton.addEventListener(
-  "click",
-  function(event){
-
-    event.stopPropagation();
-
-    showGalleryImageAt(
-      currentGalleryIndex - 1
-    );
-
-  }
-);
-
-
-photoViewerNextButton.addEventListener(
-  "click",
-  function(event){
-
-    event.stopPropagation();
-
-    showGalleryImageAt(
-      currentGalleryIndex + 1
-    );
-
-  }
-);
-
-
-function openVideoViewer(
-  videoUrl
-){
-
-  if(!videoUrl){
-    return;
-  }
-
-  photoViewerImage.removeAttribute(
-    "src"
-  );
-
-  photoViewerImage.style.display =
-  "none";
-
-  photoViewerVideo.src =
-  videoUrl;
-
-  photoViewerVideo.style.display =
-  "block";
-
-  photoViewerVideo.muted =
-  false;
-
-  photoViewer.classList.add(
-    "open"
-  );
-
-  photoViewer.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.style.overflow =
-  "hidden";
-
-  photoViewerVideo.play()
-  .catch(
-    function(){
-    }
-  );
-
-  closePhotoViewerButton.focus();
-
-}
-
-
-function hidePhotoViewer(){
-
-  photoViewer.classList.remove(
-    "open"
-  );
-
-  photoViewer.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  photoViewerImage.src =
-  "";
-
-  currentGalleryImages =
-  [];
-
-  currentGalleryIndex =
-  0;
-
-  photoViewerVideo.pause();
-
-  photoViewerVideo.removeAttribute(
-    "src"
-  );
-
-  photoViewerVideo.load();
-
-  document.body.style.overflow =
-  "";
-
-}
-
-
-/* =====================================================
-   REELS-STYLE VIDEO VIEWER
-===================================================== */
-
-let reelScrollObserver =
-null;
-
-
-function collectFeedVideoUrls(){
-
-  const videoElements =
-  document.querySelectorAll(
-    ".communityPostVideoWrapper video"
-  );
-
-  const videoUrls =
-  [];
-
-  videoElements.forEach(
-    function(videoElement){
-
-      if(
-        videoElement.src &&
-        !videoUrls.includes(
-          videoElement.src
-        )
-      ){
-
-        videoUrls.push(
-          videoElement.src
-        );
-
-      }
-
-    }
-  );
-
-  return videoUrls;
-
-}
-
-
-function openVideoReelViewer(
-  startingVideoUrl
-){
-
-  const videoUrls =
-  collectFeedVideoUrls();
-
-  if(
-    videoUrls.length === 0
-  ){
-    return;
-  }
-
-  videoReelTrack.innerHTML =
-  "";
-
-  videoUrls.forEach(
-    function(videoUrl){
-
-      const slide =
-      document.createElement("div");
-
-      slide.className =
-      "videoReelSlide";
-
-      const videoElement =
-      document.createElement("video");
-
-      videoElement.src =
-      videoUrl;
-
-      videoElement.controls =
-      true;
-
-      videoElement.loop =
-      true;
-
-      videoElement.playsInline =
-      true;
-
-      videoElement.preload =
-      "metadata";
-
-      videoElement.muted =
-      false;
-
-      slide.appendChild(
-        videoElement
-      );
-
-      videoReelTrack.appendChild(
-        slide
-      );
-
-    }
-  );
-
-  videoReelViewer.classList.add(
-    "open"
-  );
-
-  videoReelViewer.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.style.overflow =
-  "hidden";
-
-  const startingIndex =
-  Math.max(
-    0,
-    videoUrls.indexOf(
-      startingVideoUrl
-    )
-  );
-
-  const allSlides =
-  videoReelTrack.querySelectorAll(
-    ".videoReelSlide"
-  );
-
-  if(
-    allSlides[startingIndex]
-  ){
-
-    allSlides[startingIndex].scrollIntoView(
-      {
-        behavior:
-        "auto"
-      }
-    );
-
-  }
-
-  startReelAutoplayObserver();
-
-}
-
-
-function startReelAutoplayObserver(){
-
-  if(reelScrollObserver){
-
-    reelScrollObserver.disconnect();
-
-  }
-
-  const allReelVideos =
-  videoReelTrack.querySelectorAll(
-    "video"
-  );
-
-  reelScrollObserver =
-  new IntersectionObserver(
-
-    function(entries){
-
-      entries.forEach(
-        function(entry){
-
-          const video =
-          entry.target;
-
-          if(
-            entry.isIntersecting &&
-            entry.intersectionRatio >= 0.6
-          ){
-
-            allReelVideos.forEach(
-              function(otherVideo){
-
-                if(
-                  otherVideo !== video
-                ){
-
-                  otherVideo.pause();
-
-                }
-
-              }
-            );
-
-            const playPromise =
-            video.play();
-
-            if(
-              playPromise !== undefined
-            ){
-
-              playPromise.catch(
-                function(){
-                }
-              );
-
-            }
-
-          }else{
-
-            video.pause();
-
-          }
-
-        }
-      );
-
-    },
-
-    {
-      threshold:[
-        0,
-        0.6,
-        1
-      ]
-    }
-
-  );
-
-  allReelVideos.forEach(
-    function(videoElement){
-
-      reelScrollObserver.observe(
-        videoElement
-      );
-
-    }
-  );
-
-}
-
-
-function closeVideoReelViewer(){
-
-  if(reelScrollObserver){
-
-    reelScrollObserver.disconnect();
-
-    reelScrollObserver =
-    null;
-
-  }
-
-  videoReelTrack
-  .querySelectorAll(
-    "video"
-  )
-  .forEach(
-    function(videoElement){
-
-      videoElement.pause();
-
-    }
-  );
-
-  videoReelViewer.classList.remove(
-    "open"
-  );
-
-  videoReelViewer.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  videoReelTrack.innerHTML =
-  "";
-
-  document.body.style.overflow =
-  "";
-
-}
-
-
-closeVideoReelViewerButton.addEventListener(
-  "click",
-  closeVideoReelViewer
-);
-
-
-/* =====================================================
-   CLICK HANDLING FOR POSTS
-===================================================== */
-
-postsContainer.addEventListener(
-  "click",
-  function(event){
-
-    const likeButton =
-    event.target.closest(
-      ".likeButton"
-    );
-
-    if(likeButton){
-
-      handleLikeButton(
-        likeButton
-      );
-
-      return;
-
-    }
-
-    const commentButton =
-    event.target.closest(
-      ".commentButton"
-    );
-
-    if(commentButton){
-
-      handleCommentButton(
-        commentButton
-      );
-
-      return;
-
-    }
-
-    const shareButton =
-    event.target.closest(
-      ".shareButton"
-    );
-
-    if(shareButton){
-
-      handleShareButton(
-        shareButton
-      );
-
-      return;
-
-    }
-
-    const editButton =
-    event.target.closest(
-      ".editButton"
-    );
-
-    if(editButton){
-
-      handleEditButton(
-        editButton
-      );
-
-      return;
-
-    }
-
-    const deleteButton =
-    event.target.closest(
-      ".deleteButton"
-    );
-
-    if(deleteButton){
-
-      handleDeleteButton(
-        deleteButton
-      );
-
-      return;
-
-    }
-
-    const reportButton =
-    event.target.closest(
-      ".reportButton"
-    );
-
-    if(reportButton){
-
-      openReportModal(
-        reportButton.dataset.postId,
-        reportButton.dataset.authorId,
-        reportButton.dataset.message
-      );
-
-      return;
-
-    }
-
-    const postImage =
-    event.target.closest(
-      ".communityPostImage"
-    );
-
-    if(postImage){
-
-      const photoGrid =
-      postImage.closest(
-        ".postPhotoGrid"
-      );
-
-      let galleryImages =
-      [];
-
-      try{
-
-        galleryImages =
-        photoGrid
-        ? JSON.parse(
-            photoGrid.dataset.images ||
-            "[]"
-          )
-        : [];
-
-      }catch(error){
-
-        galleryImages =
-        [];
-
-      }
-
-      if(
-        !Array.isArray(galleryImages) ||
-        galleryImages.length === 0
-      ){
-
-        galleryImages =
-        [
-          postImage.dataset.fullImage ||
-          postImage.src
-        ];
-
-      }
-
-      const startIndex =
-      Number(
-        postImage.dataset.galleryIndex
-      ) ||
-      0;
-
-      openPhotoViewer(
-        galleryImages,
-        startIndex
-      );
-
-    }
-
-  }
-);
-
-
-closePhotoViewerButton.addEventListener(
-  "click",
-  hidePhotoViewer
-);
-
-
-photoViewer.addEventListener(
-  "click",
-  function(event){
-
-    if(
-      event.target === photoViewer
-    ){
-
-      hidePhotoViewer();
-
-    }
-
-  }
-);
-
-
-document.addEventListener(
-  "keydown",
-  function(event){
-
-    if(
-      photoViewer.classList.contains(
-        "open"
-      )
-    ){
-
-      if(
-        event.key === "ArrowLeft"
-      ){
-
-        showGalleryImageAt(
-          currentGalleryIndex - 1
-        );
-
-        return;
-
-      }
-
-      if(
-        event.key === "ArrowRight"
-      ){
-
-        showGalleryImageAt(
-          currentGalleryIndex + 1
-        );
-
-        return;
-
-      }
-
-    }
-
-    if(
-      event.key !== "Escape"
-    ){
-      return;
-    }
-
-    if(
-      photoViewer.classList.contains(
-        "open"
-      )
-    ){
-
-      hidePhotoViewer();
-
-    }
-
-    if(
-      videoReelViewer.classList.contains(
-        "open"
-      )
-    ){
-
-      closeVideoReelViewer();
-
-    }
-
-    if(
-      reportModal &&
-      reportModal.classList.contains(
-        "open"
-      )
-    ){
-
+if (reportSubmitButton) {
+  reportSubmitButton.addEventListener("click", async () => {
+    if (!reportingPostId || !selectedReportReason || !currentUser) return;
+
+    reportSubmitButton.disabled = true;
+    reportSubmitButton.textContent = "Submitting...";
+
+    try {
+      await addDoc(collection(db, "reports"), {
+        postId: reportingPostId,
+        reporterId: currentUser.uid,
+        reason: selectedReportReason,
+        timestamp: serverTimestamp()
+      });
+
+      alert("Thank you. Your report has been submitted for review.");
       closeReportModal();
-
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("Could not submit report right now. Please try again.");
+    } finally {
+      reportSubmitButton.textContent = "Submit report";
     }
-
-  }
-);
-
-
-if(refreshButton){
-
-  refreshButton.addEventListener(
-    "click",
-    function(){
-
-      refreshButton.disabled =
-      true;
-
-      refreshButton.textContent =
-      "⏳";
-
-      startCommunityFeed();
-
-      window.setTimeout(
-        function(){
-
-          refreshButton.disabled =
-          false;
-
-          refreshButton.textContent =
-          "🔄";
-
-        },
-        1000
-      );
-
-    }
-  );
-
+  });
 }
 
 
 /* =====================================================
-   SCROLL TO A SHARED POST (?post=...)
+   HELPER UTILITIES
 ===================================================== */
 
-async function scrollToSharedPost(){
-
-  const urlParameters =
-  new URLSearchParams(
-    window.location.search
-  );
-
-  const sharedPostId =
-  urlParameters.get(
-    "post"
-  );
-
-  if(!sharedPostId){
-    return;
-  }
-
-  let sharedPost =
-  document.getElementById(
-    `post-${sharedPostId}`
-  );
-
-  if(!sharedPost){
-
-    try{
-
-      const postReference =
-      doc(
-        db,
-        "communityPosts",
-        sharedPostId
-      );
-
-      const postSnapshot =
-      await getDoc(
-        postReference
-      );
-
-      if(
-        postSnapshot.exists()
-      ){
-
-        const postData = {
-          id:
-          postSnapshot.id,
-
-          ...postSnapshot.data()
-        };
-
-        const postCard =
-        createPostCard(
-          postData
-        );
-
-        postsContainer.insertBefore(
-          postCard,
-          postsContainer.firstChild
-        );
-
-        sharedPost =
-        postCard;
-
-      }
-
-    }catch(error){
-
-      console.error(
-        "Error loading shared post:",
-        error
-      );
-
-    }
-
-  }
-
-  if(!sharedPost){
-    return;
-  }
-
-  window.setTimeout(
-    function(){
-
-      sharedPost.scrollIntoView(
-        {
-          behavior:
-          "smooth",
-
-          block:
-          "center"
-        }
-      );
-
-    },
-    150
-  );
-
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
+function formatDate(timestamp) {
+  if (!timestamp) return "Just now";
 
-window.addEventListener(
-  "beforeunload",
-  function(){
+  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
 
-    stopPostsListener();
+  if (diffInSeconds < 60) return "Just now";
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
 
-    stopNotificationListener();
-
-    stopMomentsStripListener();
-
-    if(postsLoadObserver){
-
-      postsLoadObserver.disconnect();
-
-    }
-
-    if(renderDebounceTimer){
-
-      clearTimeout(
-        renderDebounceTimer
-      );
-
-    }
-
-  }
-);
-
-
-console.log(
-  "Faith Connect Community Wall is ready."
-);
-
-
-/* =====================================================
-   VIDEO AUTOPLAY IN THE FEED
-===================================================== */
-
-let videoObserver =
-null;
-
-
-function startVideoAutoPlay(){
-
-  if(videoObserver){
-
-    videoObserver.disconnect();
-
-  }
-
-  const communityVideos =
-  document.querySelectorAll(
-    ".communityPostVideo"
-  );
-
-  if(
-    !communityVideos.length
-  ){
-    return;
-  }
-
-  videoObserver =
-  new IntersectionObserver(
-
-    function(entries){
-
-      entries.forEach(
-        function(entry){
-
-          const video =
-          entry.target;
-
-          if(
-            entry.isIntersecting &&
-            entry.intersectionRatio >= 0.7
-          ){
-
-            communityVideos.forEach(
-              function(otherVideo){
-
-                if(
-                  otherVideo !== video
-                ){
-
-                  otherVideo.pause();
-
-                }
-
-              }
-            );
-
-            video.muted =
-            true;
-
-            const playPromise =
-            video.play();
-
-            if(
-              playPromise !== undefined
-            ){
-
-              playPromise.catch(
-                function(error){
-
-                  console.log(
-                    "Video autoplay was blocked:",
-                    error
-                  );
-
-                }
-              );
-
-            }
-
-          }else{
-
-            video.pause();
-
-          }
-
-        }
-      );
-
-    },
-
-    {
-      threshold:[
-        0,
-        0.25,
-        0.5,
-        0.7,
-        1
-      ]
-    }
-
-  );
-
-  communityVideos.forEach(
-    function(video){
-
-      video.muted =
-      true;
-
-      video.playsInline =
-      true;
-
-      videoObserver.observe(
-        video
-      );
-
-    }
-  );
-
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
-
-
-/* =====================================================
-   FAITH MOMENTS STRIP
-===================================================== */
-
-function isMomentStillActiveForStrip(
-  momentData
-){
-
-  const rawTimestamp =
-  momentData.timestamp ||
-  momentData.createdAt;
-
-  if(!rawTimestamp){
-    return true;
-  }
-
-  let createdDate;
-
-  if(
-    typeof rawTimestamp.toDate ===
-    "function"
-  ){
-
-    createdDate =
-    rawTimestamp.toDate();
-
-  }else if(
-    rawTimestamp.seconds
-  ){
-
-    createdDate =
-    new Date(
-      rawTimestamp.seconds * 1000
-    );
-
-  }else{
-
-    createdDate =
-    new Date(
-      rawTimestamp
-    );
-
-  }
-
-  if(
-    Number.isNaN(
-      createdDate.getTime()
-    )
-  ){
-    return true;
-  }
-
-  const twentyFourHours =
-  24 * 60 * 60 * 1000;
-
-  return (
-    createdDate.getTime() +
-    twentyFourHours
-  ) > Date.now();
-
-}
-
-
-function getStripMomentTypeIcon(
-  type
-){
-
-  const normalizedType =
-  String(
-    type || ""
-  ).toLowerCase();
-
-  const icons = {
-    verse:"📖",
-    prayer:"🙏",
-    testimony:"💬",
-    photo:"🖼️",
-    video:"🎥"
-  };
-
-  return icons[normalizedType] || "✨";
-
-}
-
-
-function getStripInitials(
-  name
-){
-
-  const cleanName =
-  String(
-    name || "Faith Member"
-  ).trim();
-
-  const words =
-  cleanName
-  .split(/\s+/)
-  .filter(Boolean);
-
-  if(words.length === 0){
-    return "F";
-  }
-
-  return words
-  .slice(0,2)
-  .map(
-    function(word){
-
-      return word.charAt(0).toUpperCase();
-
-    }
-  )
-  .join("");
-
-}
-
-
-function isStripVideoUrl(
-  url
-){
-
-  const cleanUrl =
-  String(
-    url || ""
-  )
-  .split("?")[0]
-  .split("#")[0]
-  .toLowerCase();
-
-  return /\.(mp4|webm|mov|m4v|3gp|mkv|ogv)$/.test(
-    cleanUrl
-  );
-
-}
-
-
-function getStripMomentVideoUrl(
-  momentData,
-  imageCandidate
-){
-
-  const explicitVideo =
-  getFirstValue(
-    momentData.videoUrl,
-    momentData.videoURL,
-    momentData.video
-  );
-
-  if(explicitVideo){
-    return explicitVideo;
-  }
-
-  const looksLikeVideo = function(value){
-
-    if(typeof value !== "string"){
-      return false;
-    }
-
-    if(!/^https?:\/\//i.test(value)){
-      return false;
-    }
-
-    return (
-      isStripVideoUrl(value) ||
-      value.indexOf("/video/upload/") !== -1
-    );
-
-  };
-
-  const allValues =
-  Object.values(
-    momentData
-  );
-
-  for(const value of allValues){
-
-    if(looksLikeVideo(value)){
-      return value;
-    }
-
-  }
-
-  const type =
-  String(
-    momentData.type ||
-    momentData.momentType ||
-    momentData.mediaType ||
-    ""
-  ).toLowerCase();
-
-  if(type === "video"){
-
-    const fallbackCandidates = [
-      momentData.mediaUrl,
-      momentData.contentUrl,
-      momentData.fileUrl
-    ];
-
-    for(const candidate of fallbackCandidates){
-
-      if(
-        candidate &&
-        typeof candidate === "string" &&
-        !/\.(jpe?g|png|gif|webp|avif|bmp)(\?|#|$)/i.test(candidate)
-      ){
-        return candidate;
-      }
-
-    }
-
-  }
-
-  return "";
-
-}
-
-
-function renderMomentsStrip(
-  momentsSnapshot
-){
-
-  momentsRow
-  .querySelectorAll(
-    ".memberMomentCard"
-  )
-  .forEach(
-    function(element){
-
-      element.remove();
-
-    }
-  );
-
-  const momentsByUser =
-  new Map();
-
-  momentsSnapshot.forEach(
-    function(momentDoc){
-
-      const momentData =
-      momentDoc.data();
-
-      if(
-        !isMomentStillActiveForStrip(
-          momentData
-        )
-      ){
-        return;
-      }
-
-      const privacy =
-      String(
-        momentData.privacy ||
-        "everyone"
-      ).toLowerCase();
-
-      const momentUserId =
-      momentData.userId ||
-      momentData.authorId ||
-      momentData.uid ||
-      "";
-
-      const isOwnMoment =
-      Boolean(
-        currentUser &&
-        momentUserId === currentUser.uid
-      );
-
-      if(
-        privacy !== "everyone" &&
-        !isOwnMoment
-      ){
-        return;
-      }
-
-      if(
-        !momentUserId ||
-        momentsByUser.has(momentUserId)
-      ){
-        return;
-      }
-
-      momentsByUser.set(
-        momentUserId,
-        {
-          id:momentDoc.id,
-          ...momentData
-        }
-      );
-
-    }
-  );
-
-  momentsByUser.forEach(
-    function(momentData){
-
-      const name =
-      getFirstValue(
-        momentData.name,
-        momentData.fullName,
-        momentData.displayName,
-        "Faith Connect Member"
-      );
-
-      const profilePicture =
-      getFirstValue(
-        momentData.profilePicture,
-        momentData.picture,
-        momentData.photoURL
-      );
-
-      const momentImageCandidate =
-      getFirstValue(
-        momentData.thumbnailUrl,
-        momentData.thumbnailURL,
-        momentData.videoThumbnail,
-        momentData.imageUrl,
-        momentData.imageURL,
-        momentData.photoUrl,
-        momentData.photoURL,
-        momentData.mediaUrl,
-        momentData.contentUrl
-      );
-
-      const momentVideoUrl =
-      getStripMomentVideoUrl(
-        momentData,
-        momentImageCandidate
-      );
-
-      const momentContentImage =
-      (
-        momentImageCandidate &&
-        !isStripVideoUrl(momentImageCandidate)
-      )
-      ? momentImageCandidate
-      : "";
-
-      const typeIcon =
-      getStripMomentTypeIcon(
-        momentData.type ||
-        momentData.momentType
-      );
-
-      const momentCard =
-      document.createElement("a");
-
-      momentCard.href =
-      `faith-moments.html?moment=${encodeURIComponent(
-        momentData.id
-      )}`;
-
-      momentCard.className =
-      "momentCard memberMomentCard";
-
-      if(momentContentImage){
-
-        momentCard.style.backgroundImage =
-        `url("${momentContentImage}")`;
-
-      }else{
-
-        momentCard.classList.add(
-          "momentCardFallback"
-        );
-
-      }
-
-      const showVideoFrame =
-      Boolean(
-        momentVideoUrl
-      );
-
-      momentCard.innerHTML = `
-
-        <div class="momentCardGradient"></div>
-
-        ${
-          (!momentContentImage && !showVideoFrame)
-          ? `<div class="momentCardFallbackIcon">${typeIcon}</div>`
-          : ""
-        }
-
-        <div class="momentCardAvatar">
-
-          ${
-            profilePicture
-            ? `<img src="${profilePicture}" alt="${name}">`
-            : `<span class="momentCardAvatarInitials">${getStripInitials(name)}</span>`
-          }
-
-        </div>
-
-        <div class="momentCardName">
-          ${name}
-        </div>
-
-      `;
-
-      if(showVideoFrame){
-
-        const frameVideo =
-        document.createElement("video");
-
-        frameVideo.muted =
-        true;
-
-        frameVideo.defaultMuted =
-        true;
-
-        frameVideo.setAttribute(
-          "muted",
-          ""
-        );
-
-        frameVideo.setAttribute(
-          "playsinline",
-          ""
-        );
-
-        frameVideo.setAttribute(
-          "webkit-playsinline",
-          ""
-        );
-
-        frameVideo.loop =
-        true;
-
-        frameVideo.autoplay =
-        true;
-
-        frameVideo.setAttribute(
-          "loop",
-          ""
-        );
-
-        frameVideo.preload =
-        "auto";
-
-        frameVideo.disablePictureInPicture =
-        true;
-
-        frameVideo.style.cssText =
-        "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;border-radius:inherit;";
-
-        frameVideo.src =
-        momentVideoUrl.split("#")[0];
-
-        frameVideo.addEventListener(
-          "error",
-          function(){
-
-            frameVideo.remove();
-
-            if(
-              momentCard.classList.contains(
-                "momentCardFallback"
-              ) &&
-              !momentCard.querySelector(
-                ".momentCardFallbackIcon"
-              )
-            ){
-
-              const iconElement =
-              document.createElement("div");
-
-              iconElement.className =
-              "momentCardFallbackIcon";
-
-              iconElement.textContent =
-              typeIcon;
-
-              momentCard.appendChild(
-                iconElement
-              );
-
-            }
-
-          }
-        );
-
-        momentCard.style.position =
-        "relative";
-
-        momentCard.style.overflow =
-        "hidden";
-
-        momentCard.insertBefore(
-          frameVideo,
-          momentCard.firstChild
-        );
-
-        const playQuietly = function(){
-
-          const playPromise =
-          frameVideo.play();
-
-          if(
-            playPromise &&
-            typeof playPromise.catch === "function"
-          ){
-
-            playPromise.catch(
-              function(){}
-            );
-
-          }
-
-        };
-
-        if("IntersectionObserver" in window){
-
-          const visibilityObserver =
-          new IntersectionObserver(
-            function(entries){
-
-              entries.forEach(
-                function(entry){
-
-                  if(entry.isIntersecting){
-
-                    playQuietly();
-
-                  }else{
-
-                    frameVideo.pause();
-
-                  }
-
-                }
-              );
-
-            },
-            {
-              threshold:0.4
-            }
-          );
-
-          visibilityObserver.observe(
-            momentCard
-          );
-
-        }else{
-
-          frameVideo.addEventListener(
-            "loadeddata",
-            playQuietly
-          );
-
-        }
-
-      }
-
-      momentsRow.appendChild(
-        momentCard
-      );
-
-    }
-  );
-
-}
-
-
-function stopMomentsStripListener(){
-
-  if(
-    typeof unsubscribeMomentsStrip ===
-    "function"
-  ){
-
-    unsubscribeMomentsStrip();
-
-  }
-
-  unsubscribeMomentsStrip =
-  null;
-
-}
-
-
-function startMomentsStripListener(){
-
-  stopMomentsStripListener();
-
-  const momentsQuery =
-  query(
-    collection(
-      db,
-      "faithMoments"
-    ),
-    orderBy(
-      "timestamp",
-      "desc"
-    ),
-    limit(30)
-  );
-
-  unsubscribeMomentsStrip =
-  onSnapshot(
-
-    momentsQuery,
-
-    function(snapshot){
-
-      renderMomentsStrip(
-        snapshot
-      );
-
-    },
-
-    function(error){
-
-      console.error(
-        "Faith Moments strip error:",
-        error
-      );
-
-    }
-
-  );
-
-}
-
-
-/* =====================================================
-   END JAVASCRIPT MODULE
-===================================================== */
