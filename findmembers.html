@@ -83,7 +83,7 @@ body{
 }
 
 /* =====================================================
-   MEMBER ITEM ROWS
+   MEMBER ITEM ROWS & AVATAR FALLBACKS
 ===================================================== */
 
 #membersList{
@@ -114,6 +114,20 @@ body{
   border-radius:50%;
   object-fit:cover;
   background:#e5e9ed;
+  flex-shrink:0;
+  margin-right:12px;
+}
+
+.avatarFallback{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#e4e6eb;
+  color:#65676b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
   flex-shrink:0;
   margin-right:12px;
 }
@@ -328,10 +342,6 @@ async function loadMembers(isLoadMore = false){
     const usersReference = collection(db, "users");
     let membersQuery;
 
-    /*
-       FIX: Removed orderBy("fullName") so accounts missing
-       a fullName field still get returned instead of excluded.
-    */
     if(isLoadMore && lastVisibleDoc){
       membersQuery = query(
         usersReference,
@@ -398,19 +408,20 @@ function displayMembers(list){
   }
 
   membersList.innerHTML = list.map(user => {
-    const name = user.fullName || user.displayName || user.name || "Community Member";
-    const email = user.email || "";
-    const picture = user.profilePicture || user.picture || user.photoURL || 'images/profile.png';
+    const name = escapeHTML(user.fullName || user.displayName || user.name || "Community Member");
+    const email = escapeHTML(user.email || "");
+    const picture = user.profilePicture || user.picture || user.photoURL || "";
+
+    // Robust Avatar Markup: Displays profile photo or falls back to centered silhouette
+    const avatarMarkup = picture
+      ? `<img class="avatar" loading="lazy" src="${picture}" alt="${name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+         <div class="avatarFallback" style="display:none;">👤</div>`
+      : `<div class="avatarFallback">👤</div>`;
 
     return `
       <div class="member">
         <div class="left">
-          <img
-            class="avatar"
-            loading="lazy"
-            src="${picture}"
-            onerror="this.src='images/profile.png';"
-            alt="${name}">
+          ${avatarMarkup}
           <div class="info">
             <h3>${name}</h3>
             <p>${email}</p>
@@ -424,6 +435,16 @@ function displayMembers(list){
       </div>
     `;
   }).join("");
+}
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 searchInput.addEventListener("input", function(){
