@@ -797,7 +797,7 @@
       db,
       storage,
       ref,
-      uploadBytesResumable,
+      uploadBytes,
       getDownloadURL,
       collection,
       addDoc,
@@ -1008,34 +1008,20 @@
 
       publishButton.disabled = true;
       publishButton.textContent = "Publishing...";
-      showMsg("Publishing your faith moment...", "loading");
+      showMsg("Uploading media & publishing...", "loading");
 
       try {
         let mediaUrl = "";
-        let mediaType = selectedFileType; // 'image', 'video', or 'none'
+        let mediaType = selectedFileType;
 
-        // Upload media to Firebase Storage if a file was selected
+        // Upload video or photo directly using uploadBytes for reliability on mobile
         if (selectedFile) {
-          const fileExtension = selectedFile.name.split('.').pop();
+          const fileExtension = selectedFile.name.split('.').pop() || (selectedFileType === 'video' ? 'mp4' : 'jpg');
           const fileName = `faithMoments/${Date.now()}_${currentUser.uid}.${fileExtension}`;
           const storageRefInstance = ref(storage, fileName);
 
-          const uploadTask = uploadBytesResumable(storageRefInstance, selectedFile);
-
-          await new Promise((resolve, reject) => {
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                publishButton.textContent = `Uploading Media (${progress}%)...`;
-              },
-              (error) => reject(error),
-              async () => {
-                mediaUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                resolve();
-              }
-            );
-          });
+          const snapshot = await uploadBytes(storageRefInstance, selectedFile);
+          mediaUrl = await getDownloadURL(snapshot.ref);
         }
 
         const authorName =
@@ -1089,18 +1075,18 @@
           );
         }
 
-        // Save new moment record to Firestore with correct momentType and media fields
+        // Save new moment record to Firestore
         await addDoc(collection(db, "faithMoments"), {
           userId: currentUser.uid,
           authorName: authorName,
           authorPicture: authorPicture,
           name: authorName,
           profilePicture: authorPicture,
-          momentType: momentTypeInput.value, // 'encouragement', 'scripture', or 'testimony'
+          momentType: momentTypeInput.value,
           verseReference: verseReferenceInput.value.trim(),
           message: message,
-          mediaType: mediaType, // correctly saves 'video', 'image', or 'none'
-          mediaUrl: mediaUrl,   // saves URL or empty string for text-only moments
+          mediaType: mediaType,
+          mediaUrl: mediaUrl,
           timestamp: serverTimestamp(),
           expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours expiry
         });
