@@ -1,5 +1,7 @@
 /* =====================================================
    FEED.JS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
+   Autoplay/Pause Videos on Scroll, Truncated Posts,
+   Admin Bar, Post Deletion, and Moments Tray
 ===================================================== */
 
 import {
@@ -37,6 +39,7 @@ let selectedReportReason = "";
 
 let currentPhotoUrls = [];
 let currentPhotoIndex = 0;
+let videoObserver = null; // Observer for autoplay/pause
 
 const postsContainer = document.getElementById("postsContainer");
 const momentsRow = document.getElementById("momentsRow");
@@ -73,6 +76,7 @@ onAuthStateChanged(auth, async (user) => {
   listenToMoments();
   loadInitialPosts();
   setupInfiniteScroll();
+  setupVideoAutoplayObserver();
 });
 
 async function loadUserProfile() {
@@ -314,6 +318,35 @@ function setupInfiniteScroll() {
   observer.observe(loadMoreSentinel);
 }
 
+/* =====================================================
+   FACEBOOK-STYLE VIDEO AUTOPLAY/AUTOPAUSE ON SCROLL
+===================================================== */
+
+function setupVideoAutoplayObserver() {
+  if (videoObserver) videoObserver.disconnect();
+
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.6 // Video must be at least 60% visible on screen to play
+  };
+
+  videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        // Play video automatically when in view
+        video.play().catch((err) => {
+          console.log("Autoplay prevented by browser policy:", err);
+        });
+      } else {
+        // Pause video automatically when scrolled out of view
+        video.pause();
+      }
+    });
+  }, options);
+}
+
 function renderPostCard(postId, postData) {
   const card = document.createElement("article");
   card.className = "postCard";
@@ -360,7 +393,7 @@ function renderPostCard(postId, postData) {
   if (videoUrl) {
     mediaHTML = `
       <div class="postMediaContainer">
-        <video controls playsinline preload="metadata">
+        <video class="feedVideoPlayer" controls muted playsinline preload="metadata">
           <source src="${videoUrl}" type="video/mp4">
         </video>
       </div>
@@ -408,6 +441,12 @@ function renderPostCard(postId, postData) {
       </button>
     </div>
   `;
+
+  // Observe the video element for autoplay/pause if present
+  const videoEl = card.querySelector(".feedVideoPlayer");
+  if (videoEl && videoObserver) {
+    videoObserver.observe(videoEl);
+  }
 
   const likeBtn = card.querySelector(".likeButton");
   likeBtn.addEventListener("click", () => handleToggleLike(postId, likeBtn));
