@@ -1001,20 +1001,20 @@
       }
 
       const message = momentMessageInput.value.trim();
-      if (!message) {
-        showMsg("Please enter a message.", "error");
+      if (!message && !selectedFile) {
+        showMsg("Please enter a message or choose media.", "error");
         return;
       }
 
       publishButton.disabled = true;
       publishButton.textContent = "Publishing...";
-      showMsg("Uploading your faith moment...", "loading");
+      showMsg("Publishing your faith moment...", "loading");
 
       try {
         let mediaUrl = "";
-        let mediaType = selectedFileType;
+        let mediaType = selectedFileType; // 'image', 'video', or 'none'
 
-        // Upload directly to Firebase Storage bucket
+        // Upload media to Firebase Storage if a file was selected
         if (selectedFile) {
           const fileExtension = selectedFile.name.split('.').pop();
           const fileName = `faithMoments/${Date.now()}_${currentUser.uid}.${fileExtension}`;
@@ -1089,18 +1089,18 @@
           );
         }
 
-        // Save new moment record to Firestore
+        // Save new moment record to Firestore with correct momentType and media fields
         await addDoc(collection(db, "faithMoments"), {
           userId: currentUser.uid,
           authorName: authorName,
           authorPicture: authorPicture,
           name: authorName,
           profilePicture: authorPicture,
-          momentType: momentTypeInput.value,
+          momentType: momentTypeInput.value, // 'encouragement', 'scripture', or 'testimony'
           verseReference: verseReferenceInput.value.trim(),
           message: message,
-          mediaType: mediaType,
-          mediaUrl: mediaUrl,
+          mediaType: mediaType, // correctly saves 'video', 'image', or 'none'
+          mediaUrl: mediaUrl,   // saves URL or empty string for text-only moments
           timestamp: serverTimestamp(),
           expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours expiry
         });
