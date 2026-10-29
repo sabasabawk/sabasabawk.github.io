@@ -1,6 +1,5 @@
 /* =====================================================
    FEED.CSS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
-   Facebook-Style Edge-to-Edge Design & Moments Tray
 ===================================================== */
 
 * {
@@ -17,10 +16,7 @@ body {
   padding-bottom: 60px;
 }
 
-button,
-input,
-textarea,
-select {
+button, input, textarea, select {
   font-family: inherit;
 }
 
@@ -34,17 +30,12 @@ a {
   color: inherit;
 }
 
-img,
-video {
+img, video {
   display: block;
   max-width: 100%;
 }
 
-
-/* =====================================================
-   TOP APPLICATION BAR
-===================================================== */
-
+/* TOP APPLICATION BAR */
 .appTopBar {
   position: sticky;
   top: 0;
@@ -106,26 +97,48 @@ video {
   border: 2px solid #ffffff;
 }
 
+/* ADMIN-ONLY BAR (Hidden by default until verified) */
+.adminBar {
+  display: none; /* Controlled by JS */
+  max-width: 680px;
+  margin: 10px auto 0 auto;
+  padding: 0 14px;
+  gap: 10px;
+}
 
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
+.adminNavLink {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e4e6eb;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #1877f2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
 
+.adminNavLink:hover {
+  background: #f0f2f5;
+}
+
+/* MAIN CONTAINER */
 .pageContainer {
   width: 100%;
   max-width: 680px;
   margin: auto;
-  padding: 0 0 70px 0;
+  padding: 10px 0 70px 0;
 }
 
-
-/* =====================================================
-   MOMENTS STRIP (STORIES) - TALL 9:16 FACEBOOK RATIO
-===================================================== */
-
+/* MOMENTS STRIP */
 .momentsSection {
   background: #ffffff;
   border-bottom: 1px solid #e4e6eb;
+  border-top: 1px solid #e4e6eb;
   margin-bottom: 12px;
 }
 
@@ -153,11 +166,6 @@ video {
   scroll-snap-align: start;
   text-decoration: none;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
-}
-
-.momentCard:hover {
-  transform: scale(1.02);
 }
 
 .momentCard .momentBg {
@@ -182,13 +190,7 @@ video {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.2) 0%,
-    transparent 35%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.75) 100%
-  );
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 35%, transparent 55%, rgba(0,0,0,0.75) 100%);
   pointer-events: none;
 }
 
@@ -215,14 +217,13 @@ video {
   font-size: 12px;
   font-weight: bold;
   line-height: 1.2;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* "Create Moment" Card */
 .momentCard.createMomentCard {
   background: #ffffff;
   display: flex;
@@ -282,11 +283,7 @@ video {
   justify-content: center;
 }
 
-
-/* =====================================================
-   POSTS & COMMUNITY FEED CARDS
-===================================================== */
-
+/* POSTS & FEED CARDS */
 #postsContainer {
   display: flex;
   flex-direction: column;
@@ -299,7 +296,6 @@ video {
   border-top: 1px solid #e4e6eb;
   border-bottom: 1px solid #e4e6eb;
   padding: 12px 14px;
-  box-shadow: none;
 }
 
 .postHeader {
@@ -314,6 +310,12 @@ video {
   align-items: center;
   gap: 10px;
   min-width: 0;
+}
+
+.postHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .postAvatar {
@@ -357,13 +359,26 @@ video {
   margin-top: 1px;
 }
 
-.postText {
+/* Truncated Text Styles */
+.postText, .postTextWrapper {
   font-size: 14px;
   line-height: 1.45;
   color: #050505;
   white-space: pre-wrap;
   word-break: break-word;
   margin-bottom: 10px;
+}
+
+.seeMoreButton {
+  background: none;
+  border: none;
+  color: #1877f2;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0;
+  margin-left: 4px;
+  display: inline;
+  cursor: pointer;
 }
 
 .postMediaContainer {
@@ -414,11 +429,7 @@ video {
   color: #1877f2;
 }
 
-
-/* =====================================================
-   STATUS & LOADING CARDS
-===================================================== */
-
+/* STATUS & LOADING */
 .statusCard {
   background: #ffffff;
   padding: 30px 14px;
@@ -429,11 +440,7 @@ video {
   border-bottom: 1px solid #e4e6eb;
 }
 
-
-/* =====================================================
-   FLOATING CREATE BUTTON
-===================================================== */
-
+/* FLOATING CREATE BUTTON */
 .floatingCreateButton {
   position: fixed;
   bottom: 70px;
@@ -448,19 +455,10 @@ video {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.floatingCreateButton:hover {
-  background: #166fe5;
-}
-
-
-/* =====================================================
-   BOTTOM NAVIGATION BAR
-===================================================== */
-
+/* BOTTOM NAVIGATION */
 .bottomNavigation {
   position: fixed;
   bottom: 0;
@@ -496,46 +494,37 @@ video {
   font-size: 18px;
 }
 
-.bottomNavItem:hover,
-.bottomNavItem.active {
+.bottomNavItem:hover, .bottomNavItem.active {
   color: #1877f2;
 }
 
-
-/* =====================================================
-   FULLSCREEN PHOTO & VIDEO VIEWERS
-===================================================== */
-
-#photoViewer,
-.videoReelViewer {
+/* VIEWERS & MODALS */
+#photoViewer, .videoReelViewer, #reportModal {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 3000;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0,0,0,0.95);
   align-items: center;
   justify-content: center;
 }
 
-#photoViewer.show,
-.videoReelViewer.show {
+#photoViewer.show, .videoReelViewer.show, #reportModal.show {
   display: flex;
 }
 
-#photoViewer img,
-#photoViewer video {
+#photoViewer img, #photoViewer video {
   max-width: 100%;
   max-height: 100vh;
   object-fit: contain;
 }
 
-#closePhotoViewer,
-.closeReelButton {
+#closePhotoViewer, .closeReelButton {
   position: absolute;
   top: 16px;
   right: 16px;
   z-index: 3010;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.2);
   color: #ffffff;
   border: none;
   width: 38px;
@@ -548,18 +537,10 @@ video {
   cursor: pointer;
 }
 
-
-/* =====================================================
-   RESPONSIVE OVERRIDES
-===================================================== */
-
-@media (max-width: 600px) {
-  .pageContainer {
-    padding: 0;
-  }
-  .postCard {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-  }
+.reportModalCard {
+  background: #ffffff;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 8px;
 }
