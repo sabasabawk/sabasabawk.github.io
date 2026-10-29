@@ -1,7 +1,7 @@
 /* =====================================================
    FEED.JS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
-   Real-Time Firestore Integration, Video Thumbnails,
-   Robust Avatar Fallbacks, Likes & Infinite Scroll
+   Truncated Posts, Admin-Only Checks, Post Deletion,
+   Video Thumbnails & Avatar Fallbacks
 ===================================================== */
 
 import {
@@ -13,6 +13,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  deleteDoc,
   query,
   orderBy,
   limit,
@@ -93,7 +94,7 @@ onAuthStateChanged(auth, async (user) => {
 
 
 /* =====================================================
-   USER PROFILE & NOTIFICATIONS
+   USER PROFILE & ADMIN CHECK
 ===================================================== */
 
 async function loadUserProfile() {
@@ -106,9 +107,17 @@ async function loadUserProfile() {
       currentUserProfile = userDocSnap.data();
       const avatarUrl = currentUserProfile.profilePicture || currentUserProfile.photoURL || currentUser.photoURL || "";
 
-      if (quickMomentAvatar) {
-        if (avatarUrl) {
-          quickMomentAvatar.style.backgroundImage = `url('${avatarUrl}')`;
+      if (quickMomentAvatar && avatarUrl) {
+        quickMomentAvatar.style.backgroundImage = `url('${avatarUrl}')`;
+      }
+
+      // Check Admin Privileges & Show/Hide Admin Bar
+      const adminBar = document.getElementById("adminBar");
+      if (adminBar) {
+        if (currentUserProfile.isAdmin || currentUserProfile.role === "admin") {
+          adminBar.style.display = "flex";
+        } else {
+          adminBar.style.display = "none";
         }
       }
     }
@@ -144,7 +153,7 @@ function listenToNotifications() {
 
 
 /* =====================================================
-   FAITH MOMENTS (STORIES) LISTENER & RENDERER
+   FAITH MOMENTS (STORIES) LISTENER
 ===================================================== */
 
 function listenToMoments() {
@@ -340,7 +349,7 @@ function setupInfiniteScroll() {
 
 
 /* =====================================================
-   POST CARD RENDERER (WITH ROBUST AVATAR FALLBACK)
+   POST CARD RENDERER (TRUNCATED TEXT & DELETE OPTION)
 ===================================================== */
 
 function renderPostCard(postId, postData) {
@@ -359,11 +368,31 @@ function renderPostCard(postId, postData) {
   const category = postData.category || "General";
   const postText = postData.post || postData.message || "";
 
-  // Robust Avatar Markup (Shows profile photo or falls back to icon silhouette)
+  // Check if current user is author of this post
+  const isAuthor = currentUser && postData.userId === currentUser.uid;
+
+  // Avatar Markup
   const avatarMarkup = avatarUrl
     ? `<img class="postAvatar" src="${avatarUrl}" alt="${escapeHTML(authorName)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
        <div class="postAvatarFallback" style="display:none;">👤</div>`
     : `<div class="postAvatarFallback">👤</div>`;
+
+  // Facebook-Style Text Truncation ("See More")
+  const CHARACTER_LIMIT = 220;
+  let formattedTextHTML = "";
+
+  if (postText.length > CHARACTER_LIMIT) {
+    const shortText = postText.substring(0, CHARACTER_LIMIT);
+    formattedTextHTML = `
+      <div class="postTextWrapper">
+        <span class="postTextSnippet">${escapeHTML(shortText)}...</span>
+        <span class="postTextFull" style="display:none;">${escapeHTML(postText)}</span>
+        <button type="button" class="seeMoreButton">See More</button>
+      </div>
+    `;
+  } else {
+    formattedTextHTML = `<div class="postText">${escapeHTML(postText)}</div>`;
+  }
 
   let mediaHTML = "";
   const imageUrls = postData.imageUrls || (postData.imageUrl ? [postData.imageUrl] : []);
@@ -396,10 +425,13 @@ function renderPostCard(postId, postData) {
           <div class="postCategoryDate">${escapeHTML(category)} • ${formattedDate}</div>
         </div>
       </div>
-      <button class="topIconLink reportTrigger" aria-label="Report post" title="Report">🚩</button>
+      <div class="postHeaderActions">
+        ${isAuthor ? `<button class="topIconLink deletePostTrigger" aria-label="Delete post" title="Delete Post">🗑️</button>` : ""}
+        <button class="topIconLink reportTrigger" aria-label="Report post" title="Report">🚩</button>
+      </div>
     </div>
 
-    ${postText ? `<div class="postText">${escapeHTML(postText)}</div>` : ""}
+    ${formattedTextHTML}
 
     ${mediaHTML}
 
@@ -419,6 +451,7 @@ function renderPostCard(postId, postData) {
     </div>
   `;
 
+  // Attach Event Listeners
   const likeBtn = card.querySelector(".likeButton");
   likeBtn.addEventListener("click", () => handleToggleLike(postId, likeBtn));
 
@@ -427,6 +460,23 @@ function renderPostCard(postId, postData) {
 
   const reportBtn = card.querySelector(".reportTrigger");
   reportBtn.addEventListener("click", () => openReportModal(postId));
+
+  if (isAuthor) {
+    const deleteBtn = card.querySelector(".deletePostTrigger");
+    deleteBtn.addEventListener("click", () => handleDeletePost(postId, card));
+  }
+
+  // "See More" Text Toggle Listener
+  const seeMoreBtn = card.querySelector(".seeMoreButton");
+  if (seeMoreBtn) {
+    seeMoreBtn.addEventListener("click", () => {
+      const snippet = card.querySelector(".postTextSnippet");
+      const full = card.querySelector(".postTextFull");
+      snippet.style.display = "none";
+      full.style.display = "inline";
+      seeMoreBtn.style.display = "none";
+    });
+  }
 
   if (imageUrls.length > 0) {
     const images = card.querySelectorAll(".postMediaContainer img");
@@ -443,7 +493,7 @@ function renderPostCard(postId, postData) {
 
 
 /* =====================================================
-   POST ACTIONS (LIKE & SHARE)
+   POST ACTIONS (LIKE, SHARE, DELETE)
 ===================================================== */
 
 async function handleToggleLike(postId, likeBtn) {
@@ -479,6 +529,18 @@ async function handleToggleLike(postId, likeBtn) {
   }
 }
 
+async function handleDeletePost(postId, cardElement) {
+  if (!confirm("Are you sure you want to delete this post?")) return;
+
+  try {
+    await deleteDoc(doc(db, "communityPosts", postId));
+    cardElement.remove();
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    alert("Could not delete post. Please try again.");
+  }
+}
+
 async function handleSharePost(postId, postText) {
   const shareUrl = `${window.location.origin}/comments.html?postId=${postId}`;
 
@@ -504,7 +566,7 @@ async function handleSharePost(postId, postText) {
 
 
 /* =====================================================
-   FULLSCREEN PHOTO VIEWER MODAL
+   MODALS (PHOTO VIEWER, REELS, REPORT)
 ===================================================== */
 
 function openPhotoViewer(urls, initialIndex = 0) {
@@ -569,11 +631,6 @@ if (photoViewerNextButton) {
   });
 }
 
-
-/* =====================================================
-   REELS-STYLE VIDEO VIEWER MODAL
-===================================================== */
-
 function openVideoReel(videoUrl) {
   if (!videoUrl || !videoReelViewer || !videoReelTrack) return;
 
@@ -601,11 +658,6 @@ function closeVideoReel() {
 if (closeVideoReelViewer) {
   closeVideoReelViewer.addEventListener("click", closeVideoReel);
 }
-
-
-/* =====================================================
-   REPORT POST MODAL
-===================================================== */
 
 function openReportModal(postId) {
   reportingPostId = postId;
