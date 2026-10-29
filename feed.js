@@ -1,7 +1,5 @@
 /* =====================================================
    FEED.JS - SABASABA GOSPEL MINISTRY COMMUNITY FEED
-   Truncated Posts, Admin-Only Checks, Post Deletion,
-   Video Thumbnails & Avatar Fallbacks
 ===================================================== */
 
 import {
@@ -28,11 +26,6 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-
-/* =====================================================
-   GLOBAL STATE VARIABLES
-===================================================== */
-
 let currentUser = null;
 let currentUserProfile = {};
 let lastVisiblePostDoc = null;
@@ -44,11 +37,6 @@ let selectedReportReason = "";
 
 let currentPhotoUrls = [];
 let currentPhotoIndex = 0;
-
-
-/* =====================================================
-   DOM ELEMENTS
-===================================================== */
 
 const postsContainer = document.getElementById("postsContainer");
 const momentsRow = document.getElementById("momentsRow");
@@ -73,11 +61,6 @@ const reportReasonList = document.getElementById("reportReasonList");
 const reportCancelButton = document.getElementById("reportCancelButton");
 const reportSubmitButton = document.getElementById("reportSubmitButton");
 
-
-/* =====================================================
-   INITIALIZATION & AUTH OBSERVER
-===================================================== */
-
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.replace("login.html");
@@ -91,11 +74,6 @@ onAuthStateChanged(auth, async (user) => {
   loadInitialPosts();
   setupInfiniteScroll();
 });
-
-
-/* =====================================================
-   USER PROFILE & ADMIN CHECK
-===================================================== */
 
 async function loadUserProfile() {
   if (!currentUser) return;
@@ -111,7 +89,6 @@ async function loadUserProfile() {
         quickMomentAvatar.style.backgroundImage = `url('${avatarUrl}')`;
       }
 
-      // Check Admin Privileges & Show/Hide Admin Bar
       const adminBar = document.getElementById("adminBar");
       if (adminBar) {
         if (currentUserProfile.isAdmin || currentUserProfile.role === "admin") {
@@ -150,11 +127,6 @@ function listenToNotifications() {
     console.error("Notifications listener error:", error);
   });
 }
-
-
-/* =====================================================
-   FAITH MOMENTS (STORIES) LISTENER
-===================================================== */
 
 function listenToMoments() {
   if (!momentsRow) return;
@@ -250,11 +222,6 @@ function attachMomentClickEvents() {
   });
 }
 
-
-/* =====================================================
-   COMMUNITY POSTS - INITIAL LOAD & PAGINATION
-===================================================== */
-
 async function loadInitialPosts() {
   isLoadingPosts = true;
   postsContainer.innerHTML = `<div class="statusCard loading">Loading community posts...</div>`;
@@ -347,11 +314,6 @@ function setupInfiniteScroll() {
   observer.observe(loadMoreSentinel);
 }
 
-
-/* =====================================================
-   POST CARD RENDERER (TRUNCATED TEXT & DELETE OPTION)
-===================================================== */
-
 function renderPostCard(postId, postData) {
   const card = document.createElement("article");
   card.className = "postCard";
@@ -368,16 +330,13 @@ function renderPostCard(postId, postData) {
   const category = postData.category || "General";
   const postText = postData.post || postData.message || "";
 
-  // Check if current user is author of this post
   const isAuthor = currentUser && postData.userId === currentUser.uid;
 
-  // Avatar Markup
   const avatarMarkup = avatarUrl
     ? `<img class="postAvatar" src="${avatarUrl}" alt="${escapeHTML(authorName)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
        <div class="postAvatarFallback" style="display:none;">👤</div>`
     : `<div class="postAvatarFallback">👤</div>`;
 
-  // Facebook-Style Text Truncation ("See More")
   const CHARACTER_LIMIT = 220;
   let formattedTextHTML = "";
 
@@ -432,7 +391,6 @@ function renderPostCard(postId, postData) {
     </div>
 
     ${formattedTextHTML}
-
     ${mediaHTML}
 
     <div class="postActionRow">
@@ -451,7 +409,6 @@ function renderPostCard(postId, postData) {
     </div>
   `;
 
-  // Attach Event Listeners
   const likeBtn = card.querySelector(".likeButton");
   likeBtn.addEventListener("click", () => handleToggleLike(postId, likeBtn));
 
@@ -466,7 +423,6 @@ function renderPostCard(postId, postData) {
     deleteBtn.addEventListener("click", () => handleDeletePost(postId, card));
   }
 
-  // "See More" Text Toggle Listener
   const seeMoreBtn = card.querySelector(".seeMoreButton");
   if (seeMoreBtn) {
     seeMoreBtn.addEventListener("click", () => {
@@ -491,11 +447,6 @@ function renderPostCard(postId, postData) {
   return card;
 }
 
-
-/* =====================================================
-   POST ACTIONS (LIKE, SHARE, DELETE)
-===================================================== */
-
 async function handleToggleLike(postId, likeBtn) {
   if (!currentUser) return;
 
@@ -518,9 +469,7 @@ async function handleToggleLike(postId, likeBtn) {
 
   try {
     await updateDoc(postRef, {
-      likes: isCurrentlyLiked
-        ? arrayRemove(currentUser.uid)
-        : arrayUnion(currentUser.uid)
+      likes: isCurrentlyLiked ? arrayRemove(currentUser.uid) : arrayUnion(currentUser.uid)
     });
   } catch (error) {
     console.error("Error toggling like:", error);
@@ -564,17 +513,10 @@ async function handleSharePost(postId, postText) {
   }
 }
 
-
-/* =====================================================
-   MODALS (PHOTO VIEWER, REELS, REPORT)
-===================================================== */
-
 function openPhotoViewer(urls, initialIndex = 0) {
   if (!urls || urls.length === 0) return;
-
   currentPhotoUrls = urls;
   currentPhotoIndex = initialIndex;
-
   updatePhotoViewerDisplay();
   photoViewer.classList.add("show");
   photoViewer.setAttribute("aria-hidden", "false");
@@ -582,7 +524,6 @@ function openPhotoViewer(urls, initialIndex = 0) {
 
 function updatePhotoViewerDisplay() {
   const currentUrl = currentPhotoUrls[currentPhotoIndex];
-
   photoViewerVideo.style.display = "none";
   photoViewerImage.style.display = "block";
   photoViewerImage.src = currentUrl;
@@ -609,9 +550,7 @@ function closePhotoViewerModal() {
   currentPhotoIndex = 0;
 }
 
-if (closePhotoViewer) {
-  closePhotoViewer.addEventListener("click", closePhotoViewerModal);
-}
+if (closePhotoViewer) closePhotoViewer.addEventListener("click", closePhotoViewerModal);
 
 if (photoViewerPrevButton) {
   photoViewerPrevButton.addEventListener("click", () => {
@@ -633,39 +572,30 @@ if (photoViewerNextButton) {
 
 function openVideoReel(videoUrl) {
   if (!videoUrl || !videoReelViewer || !videoReelTrack) return;
-
   videoReelTrack.innerHTML = `
     <video controls autoplay playsinline style="max-width:100%;max-height:100vh;object-fit:contain;">
       <source src="${videoUrl}" type="video/mp4">
     </video>
   `;
-
   videoReelViewer.classList.add("show");
   videoReelViewer.setAttribute("aria-hidden", "false");
 }
 
 function closeVideoReel() {
   if (!videoReelViewer || !videoReelTrack) return;
-
   const vid = videoReelTrack.querySelector("video");
   if (vid) vid.pause();
-
   videoReelTrack.innerHTML = "";
   videoReelViewer.classList.remove("show");
   videoReelViewer.setAttribute("aria-hidden", "true");
 }
 
-if (closeVideoReelViewer) {
-  closeVideoReelViewer.addEventListener("click", closeVideoReel);
-}
+if (closeVideoReelViewer) closeVideoReelViewer.addEventListener("click", closeVideoReel);
 
 function openReportModal(postId) {
   reportingPostId = postId;
   selectedReportReason = "";
-
-  const options = reportReasonList.querySelectorAll(".reportReasonOption");
-  options.forEach((opt) => opt.classList.remove("selected"));
-
+  reportReasonList.querySelectorAll(".reportReasonOption").forEach((opt) => opt.classList.remove("selected"));
   reportSubmitButton.disabled = true;
   reportModal.classList.add("show");
   reportModal.setAttribute("aria-hidden", "false");
@@ -689,14 +619,11 @@ if (reportReasonList) {
   });
 }
 
-if (reportCancelButton) {
-  reportCancelButton.addEventListener("click", closeReportModal);
-}
+if (reportCancelButton) reportCancelButton.addEventListener("click", closeReportModal);
 
 if (reportSubmitButton) {
   reportSubmitButton.addEventListener("click", async () => {
     if (!reportingPostId || !selectedReportReason || !currentUser) return;
-
     reportSubmitButton.disabled = true;
     reportSubmitButton.textContent = "Submitting...";
 
@@ -707,7 +634,6 @@ if (reportSubmitButton) {
         reason: selectedReportReason,
         timestamp: serverTimestamp()
       });
-
       alert("Thank you. Your report has been submitted for review.");
       closeReportModal();
     } catch (error) {
@@ -718,11 +644,6 @@ if (reportSubmitButton) {
     }
   });
 }
-
-
-/* =====================================================
-   HELPER UTILITIES
-===================================================== */
 
 function escapeHTML(str) {
   if (!str) return "";
@@ -736,7 +657,6 @@ function escapeHTML(str) {
 
 function formatDate(timestamp) {
   if (!timestamp) return "Just now";
-
   const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
   const now = new Date();
   const diffInSeconds = Math.floor((now - date) / 1000);
