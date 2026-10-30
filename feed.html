@@ -3,25 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Community Wall | SABASABA Gospel Ministry</title>
-  <link rel="stylesheet" href="feed.css">
+  <title>Faith Connect | SABASABA Gospel Ministry</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
+    
+    /* Top Facebook Header */
+    .top-header { background: #fff; padding: 10px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo-area { font-size: 20px; font-weight: bold; color: #1877f2; display: flex; align-items: center; gap: 6px; }
+    .header-icons { display: flex; gap: 8px; }
+    .icon-btn { background: #e4e6eb; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; text-decoration: none; color: #050505; }
+
+    .feed-container { max-width: 600px; margin: 0 auto; padding: 8px; }
+
+    /* Stories / Moments Row */
+    .stories-row { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 8px; scrollbar-width: none; }
+    .stories-row::-webkit-scrollbar { display: none; }
+    .story-card { flex: 0 0 110px; height: 180px; background: #fff; border-radius: 10px; border: 1px solid #e4e6eb; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; text-decoration: none; color: #fff; background-size: cover; background-position: center; }
+    .story-card.create { background: #fff; color: #050505; justify-content: center; align-items: center; text-align: center; }
+    .story-avatar { width: 32px; height: 32px; border-radius: 50%; border: 3px solid #1877f2; position: absolute; top: 8px; left: 8px; object-fit: cover; }
+    .story-name { font-size: 11px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); z-index: 2; }
+    .create-story-icon { width: 36px; height: 36px; background: #1877f2; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; margin-bottom: 6px; }
+
+    /* Post Card (Facebook Style) */
+    .post-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .post-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 8px 12px; }
+    .author-info { display: flex; align-items: center; gap: 10px; }
+    .author-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #ddd; }
+    .author-name { font-weight: bold; font-size: 14px; color: #050505; }
+    .post-time { font-size: 11px; color: #65676b; }
+    
+    .category-badge { display: inline-block; background: #e7f3ff; color: #1877f2; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin: 0 12px 8px 12px; }
+    .post-message { font-size: 14px; line-height: 1.45; padding: 0 12px 10px 12px; white-space: pre-wrap; word-break: break-word; }
+
+    /* Media Box */
+    .media-box { width: 100%; background: #000; overflow: hidden; }
+    .media-box video, .media-box img { width: 100%; max-height: 450px; object-fit: contain; display: block; margin: 0 auto; }
+    .video-fallback { display: block; padding: 8px; background: #111; color: #ffeb3b; text-align: center; font-size: 12px; text-decoration: none; }
+
+    /* Facebook Action Buttons Bar */
+    .post-stats { display: flex; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: #65676b; border-bottom: 1px solid #e4e6eb; }
+    .post-actions { display: flex; justify-content: space-around; padding: 4px 0; }
+    .action-btn { flex: 1; background: none; border: none; padding: 8px; font-size: 13px; font-weight: bold; color: #65676b; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; border-radius: 4px; }
+    .action-btn:hover { background: #f0f2f5; }
+    .delete-btn { color: #b00020; background: #fdecec; border: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
+
+    /* Bottom Nav Bar (Facebook Style) */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e6eb; display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #65676b; font-size: 10px; font-weight: bold; gap: 2px; }
+    .nav-item.active { color: #1877f2; }
+    .nav-item span.icon { font-size: 20px; }
+
+    .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 8px; }
+  </style>
 </head>
 <body>
 
-  <header class="header">
-    <h1>💬 Community Wall</h1>
-    <div class="nav-links">
-      <a href="create-post.html" class="nav-btn">+ Create Post</a>
-      <a href="faith-moments.html" class="nav-btn" style="background:#42b72a;">Moments</a>
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="logo-area">Faith Connect</div>
+    <div class="header-icons">
+      <a href="create-post.html" class="icon-btn" title="Create Post">➕</a>
+      <a href="search.html" class="icon-btn" title="Search">🔍</a>
+      <a href="profile.html" class="icon-btn" title="Profile">💬</a>
     </div>
   </header>
 
   <main class="feed-container">
+    
+    <!-- Stories Row / Moments Carousel -->
+    <div class="stories-row" id="storiesRow">
+      <a href="create-faith-moment.html" class="story-card create">
+        <div class="create-story-icon">+</div>
+        <div class="story-name" style="color:#050505;">Create Moment</div>
+      </a>
+    </div>
+
+    <!-- Community Feed -->
     <div id="communityFeed">
       <div class="loading">Loading community posts...</div>
     </div>
   </main>
 
-  <script type="module" src="feed.js"></script>
+  <!-- Bottom Nav Bar -->
+  <nav class="bottom-nav">
+    <a href="feed.html" class="nav-item active"><span class="icon">🏠</span>Home</a>
+    <a href="learn.html" class="nav-item"><span class="icon">📚</span>Learn</a>
+    <a href="groups.html" class="nav-item"><span class="icon">👥</span>Groups</a>
+    <a href="faith-moments.html" class="nav-item"><span class="icon">🌅</span>Moments</a>
+    <a href="prayer.html" class="nav-item"><span class="icon">🙏</span>Prayer</a>
+    <a href="profile.html" class="nav-item"><span class="icon">👤</span>Profile</a>
+  </nav>
+
+  <script type="module">
+    import { db, auth, collection, getDocs, doc, deleteDoc, query, orderBy, onAuthStateChanged } from "./firebase.js";
+
+    const feedContainer = document.getElementById("communityFeed");
+    const storiesRow = document.getElementById("storiesRow");
+    let currentAuthUser = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+      currentAuthUser = user;
+      loadFeedAndStories();
+    });
+
+    async function loadFeedAndStories() {
+      try {
+        // Load Faith Moments for the top stories row
+        const momentsQuery = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
+        const momentsSnap = await getDocs(momentsQuery);
+        
+        let storiesHTML = `
+          <a href="create-faith-moment.html" class="story-card create">
+            <div class="create-story-icon">+</div>
+            <div class="story-name" style="color:#050505;">Create Moment</div>
+          </a>
+        `;
+
+        const now = Date.now();
+        momentsSnap.forEach((docSnap) => {
+          const m = docSnap.data();
+          const createdAt = m.timestamp?.toMillis ? m.timestamp.toMillis() : (m.timestamp?.seconds ? m.timestamp.seconds * 1000 : now);
+          if ((now - createdAt) <= (24 * 60 * 60 * 1000)) { // Active within 24h
+            const bg = m.imageUrl || m.mediaUrl || "https://via.placeholder.com/150";
+            const avatar = m.authorPicture || m.profilePicture || "https://via.placeholder.com/40";
+            const name = m.authorName || m.name || "Member";
+            storiesHTML += `
+              <a href="faith-moments.html" class="story-card" style="background-image: url('${bg}');">
+                <img src="${avatar}" class="story-avatar" alt="Avatar">
+                <div class="story-name">${escapeHTML(name)}</div>
+              </a>
+            `;
+          }
+        });
+        storiesRow.innerHTML = storiesHTML;
+
+        // Load Community Posts (Facebook style)
+        const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
+        const postsSnap = await getDocs(postsQuery);
+
+        if (postsSnap.empty) {
+          feedContainer.innerHTML = `<div class="empty">No posts shared on the Community Wall yet. Be the first!</div>`;
+          return;
+        }
+
+        let postsHTML = "";
+        postsSnap.forEach((docSnap) => {
+          const data = docSnap.data();
+          const postId = docSnap.id;
+
+          const createdAt = data.timestamp?.toMillis ? data.timestamp.toMillis() : (data.timestamp?.seconds ? data.timestamp.seconds * 1000 : now);
+          const name = data.name || data.fullName || "Community Member";
+          const avatar = data.picture || data.profilePicture || "https://via.placeholder.com/40";
+          const timeAgo = timeSince(createdAt);
+          const category = data.category || "Encouragement";
+          const message = data.post || data.message || "";
+
+          let mediaHTML = "";
+          let mediaUrl = data.videoUrl || data.imageUrl || data.mediaUrl || "";
+          if (mediaUrl.includes("imagekit.io")) mediaUrl = "";
+
+          if (mediaUrl) {
+            if (data.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
+              mediaHTML = `
+                <div class="media-box">
+                  <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
+                  <a href="${mediaUrl}" target="_blank" class="video-fallback">⚠️ Tap to open video directly if player fails</a>
+                </div>
+              `;
+            } else {
+              mediaHTML = `
+                <div class="media-box">
+                  <img src="${mediaUrl}" alt="Post media">
+                </div>
+              `;
+            }
+          }
+
+          const isOwner = currentAuthUser && (data.userId === currentAuthUser.uid || data.authorId === currentAuthUser.uid || data.uid === currentAuthUser.uid);
+          const deleteBtn = isOwner ? `<button class="delete-btn" onclick="window.deletePost('${postId}')">Delete</button>` : "";
+
+          postsHTML += `
+            <div class="post-card" id="post-${postId}">
+              <div class="post-header">
+                <div class="author-info">
+                  <img src="${avatar}" class="author-avatar" alt="Avatar">
+                  <div>
+                    <div class="author-name">${escapeHTML(name)}</div>
+                    <div class="post-time">${timeAgo}</div>
+                  </div>
+                </div>
+                ${deleteBtn}
+              </div>
+              <div class="category-badge">${escapeHTML(category)}</div>
+              <div class="post-message">${escapeHTML(message)}</div>
+              ${mediaHTML}
+              <div class="post-stats">
+                <span>❤️ ${data.likes?.length || 0} Likes</span>
+                <span>💬 ${data.commentCount || 0} Comments</span>
+              </div>
+              <div class="post-actions">
+                <button class="action-btn">👍 Like</button>
+                <button class="action-btn">💬 Comment</button>
+                <button class="action-btn">↗️ Share</button>
+              </div>
+            </div>
+          `;
+        });
+
+        feedContainer.innerHTML = postsHTML;
+
+      } catch (err) {
+        console.error("Error loading feed:", err);
+        feedContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load feed. Please refresh.</div>`;
+      }
+    }
+
+    window.deletePost = async function(postId) {
+      if (!window.confirm("Are you sure you want to delete this post?")) return;
+      try {
+        await deleteDoc(doc(db, "communityPosts", postId));
+        document.getElementById(`post-${postId}`)?.remove();
+      } catch (err) {
+        alert("Failed to delete post: " + err.message);
+      }
+    };
+
+    function timeSince(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + "y ago";
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + "mo ago";
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + "d ago";
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + "h ago";
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + "m ago";
+      return "Just now";
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+  </script>
 </body>
 </html>
