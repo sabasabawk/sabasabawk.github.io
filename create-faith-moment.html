@@ -60,6 +60,7 @@
 
     .mediaOptions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .mediaOptionButton { min-height: 42px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; background: #f0f2f5; color: var(--text); font-size: 12px; font-weight: bold; }
+    .mediaOptionButton:disabled { opacity: .6; cursor: not-allowed; }
     .hiddenFileInput { display: none; }
 
     .mediaPreview { position: relative; display: none; margin-top: 10px; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: #000000; }
@@ -68,6 +69,11 @@
     .removeMediaButton { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); color: #ffffff; font-size: 18px; font-weight: bold; }
     .editMediaButton { position: absolute; top: 8px; left: 8px; width: 32px; height: 32px; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); color: #ffffff; font-size: 14px; }
     .selectedMediaLabel { position: absolute; left: 8px; bottom: 8px; padding: 4px 8px; border-radius: 20px; background: rgba(0,0,0,0.7); color: #ffffff; font-size: 10px; font-weight: bold; }
+
+    .uploadArea { display: none; margin-bottom: 12px; }
+    .uploadArea.show { display: block; }
+    .progressContainer { width: 100%; height: 10px; overflow: hidden; background: var(--border); border-radius: 20px; }
+    .uploadProgress { width: 0%; height: 100%; background: var(--primary); transition: width .2s ease; }
 
     .privacyInformation { margin-top: 6px; padding: 8px 10px; border-radius: 6px; background: #f0f2f5; color: var(--muted); font-size: 11px; line-height: 1.4; }
 
@@ -89,9 +95,9 @@
     .photoEditorHeaderButton { border: 0; background: none; color: #ffffff; font-size: 15px; font-weight: bold; padding: 4px 8px; }
     .photoEditorDoneButton { color: #4fb0ff; }
     .photoEditorCounterText { color: #cccccc; font-size: 12px; }
-    .photoEditorImageArea { flex: 1 1 auto; position: relative; overflow: hidden; background: #000000; }
+    .photoEditorImageArea { flex: 1 1 auto; position: relative; overflow: hidden; min-height: 0; background: #000000; }
     .photoEditorToolbar { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 10px 12px; overflow-x: auto; background: #111111; }
-    .photoEditorToolButton { flex: 0 0 auto; padding: 8px 12px; border: 1px solid rgba(255,255,255,.3); border-radius: 18px; background: transparent; color: #ffffff; font-size: 13px; }
+    .photoEditorToolButton { flex: 0 0 auto; padding: 8px 12px; border: 1px solid rgba(255,255,255,.3); border-radius: 18px; background: transparent; color: #ffffff; font-size: 13px; white-space: nowrap; }
     .photoEditorAspectButton.active { background: var(--primary); border-color: var(--primary); }
   </style>
 </head>
@@ -151,7 +157,7 @@
 
         <div class="formSection">
           <label class="sectionLabel">Background Photo or Video (Optional)</label>
-          <div class="sectionHelp">Add a visual background to make your faith moment stand out.</div>
+          <div class="sectionHelp">Add a visual background to make your faith moment stand out. Photos up to 10 MB, videos up to 100 MB.</div>
           <div class="mediaOptions">
             <button type="button" id="choosePhotoBtn" class="mediaOptionButton">📷 Choose Photo</button>
             <button type="button" id="chooseVideoBtn" class="mediaOptionButton">🎥 Choose Video</button>
@@ -164,6 +170,10 @@
             <button type="button" id="removeMediaBtn" class="removeMediaButton" title="Remove media">×</button>
             <div id="selectedMediaLabel" class="selectedMediaLabel">Photo selected</div>
           </div>
+        </div>
+
+        <div id="uploadArea" class="uploadArea">
+          <div class="progressContainer"><div id="uploadProgress" class="uploadProgress"></div></div>
         </div>
 
         <div class="privacyInformation">Faith moments are visible to all community members and automatically expire after 24 hours.</div>
@@ -195,13 +205,11 @@
   </div>
 
   <script type="module">
+    /* Firebase is still used for sign-in and Firestore.
+       Photos and videos now upload to ImageKit (no Firebase Storage). */
     import {
       auth,
       db,
-      storage,
-      ref,
-      uploadBytesResumable,
-      getDownloadURL,
       collection,
       addDoc,
       doc,
@@ -214,12 +222,22 @@
       onAuthStateChanged
     } from "./firebase.js";
 
+    const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+    const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+    const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
+
+    const MAXIMUM_PHOTO_BYTES = 10 * 1024 * 1024;
+    const MAXIMUM_VIDEO_BYTES = 100 * 1024 * 1024;
+    const AUTH_TIMEOUT_MS = 15000;
+
     let currentUser = null;
     let currentUserProfile = null;
     let selectedFile = null;
     let selectedFileType = "none";
     let objectUrl = null;
     let cropper = null;
+    let activeUploadRequest = null;
+    let isPublishing = false;
 
     const form = document.getElementById("faithMomentForm");
     const momentTypeButtons = document.querySelectorAll(".momentTypeButton");
@@ -238,6 +256,8 @@
     const selectedMediaLabel = document.getElementById("selectedMediaLabel");
     const formMessage = document.getElementById("formMessage");
     const publishButton = document.getElementById("publishButton");
+    const uploadArea = document.getElementById("uploadArea");
+    const uploadProgress = document.getElementById("uploadProgress");
 
     const photoEditorModal = document.getElementById("photoEditorModal");
     const photoEditorImage = document.getElementById("photoEditorImage");
@@ -246,6 +266,51 @@
     const photoEditorRotateLeftButton = document.getElementById("photoEditorRotateLeftButton");
     const photoEditorRotateRightButton = document.getElementById("photoEditorRotateRightButton");
     const photoEditorAspectButtons = document.querySelectorAll(".photoEditorAspectButton");
+
+    /* ---------- HELPERS ---------- */
+
+    function showMsg(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `formMessage show ${type}`;
+    }
+
+    function setPublishing(active) {
+      isPublishing = active;
+      publishButton.disabled = active;
+      publishButton.textContent = active ? "Publishing..." : "Share Faith Moment";
+      choosePhotoBtn.disabled = active;
+      chooseVideoBtn.disabled = active;
+    }
+
+    function resetUploadDisplay() {
+      uploadArea.classList.remove("show");
+      uploadProgress.style.width = "0%";
+    }
+
+    /* Checks that this device can actually play the chosen video */
+    function canBrowserPlayVideo(file) {
+      return new Promise((resolve) => {
+        const v = document.createElement("video");
+        const url = URL.createObjectURL(file);
+        let finished = false;
+
+        const done = (ok) => {
+          if (finished) return;
+          finished = true;
+          URL.revokeObjectURL(url);
+          resolve(ok);
+        };
+
+        v.preload = "metadata";
+        v.muted = true;
+        v.onloadedmetadata = () => done(v.videoWidth > 0);
+        v.onerror = () => done(false);
+        setTimeout(() => done(false), 8000);
+        v.src = url;
+      });
+    }
+
+    /* ---------- AUTH ---------- */
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -260,6 +325,8 @@
         console.error("Profile load error:", err);
       }
     });
+
+    /* ---------- MOMENT TYPE ---------- */
 
     momentTypeButtons.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -281,37 +348,87 @@
       characterCounter.textContent = `${remaining} characters remaining`;
     });
 
+    /* ---------- MEDIA PICKER ---------- */
+
     choosePhotoBtn.addEventListener("click", () => {
+      mediaFileInput.value = "";
       mediaFileInput.accept = "image/*";
       mediaFileInput.click();
     });
 
     chooseVideoBtn.addEventListener("click", () => {
+      mediaFileInput.value = "";
       mediaFileInput.accept = "video/*";
       mediaFileInput.click();
     });
 
-    mediaFileInput.addEventListener("change", (e) => {
+    function clearSelectedMedia() {
+      selectedFile = null;
+      selectedFileType = "none";
+      mediaFileInput.value = "";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+      previewContainer.innerHTML = "";
+      mediaPreview.classList.remove("show");
+    }
+
+    mediaFileInput.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
+
+      formMessage.className = "formMessage";
+
+      const isImage = file.type.startsWith("image/");
+      const isVideo = file.type.startsWith("video/");
+
+      if (!isImage && !isVideo) {
+        showMsg("Please select a valid photo or video.", "error");
+        return;
+      }
+
+      if (isImage && file.size > MAXIMUM_PHOTO_BYTES) {
+        mediaFileInput.value = "";
+        showMsg("Photo must be 10 MB or smaller.", "error");
+        return;
+      }
+
+      if (isVideo) {
+        if (file.size > MAXIMUM_VIDEO_BYTES) {
+          mediaFileInput.value = "";
+          showMsg("Video must be 100 MB or smaller.", "error");
+          return;
+        }
+
+        showMsg("Checking your video...", "loading");
+        const playable = await canBrowserPlayVideo(file);
+
+        if (!playable) {
+          mediaFileInput.value = "";
+          showMsg("This video format can't be played. Record or convert it to MP4 (H.264) and try again.", "error");
+          return;
+        }
+
+        formMessage.className = "formMessage";
+      }
 
       if (objectUrl) URL.revokeObjectURL(objectUrl);
       selectedFile = file;
       objectUrl = URL.createObjectURL(file);
       previewContainer.innerHTML = "";
 
-      if (file.type.startsWith("image/")) {
+      if (isImage) {
         selectedFileType = "image";
         const img = document.createElement("img");
         img.src = objectUrl;
         previewContainer.appendChild(img);
         selectedMediaLabel.textContent = "Photo selected";
         editMediaBtn.style.display = "flex";
-      } else if (file.type.startsWith("video/")) {
+      } else {
         selectedFileType = "video";
         const vid = document.createElement("video");
         vid.src = objectUrl;
         vid.controls = true;
+        vid.playsInline = true;
         previewContainer.appendChild(vid);
         selectedMediaLabel.textContent = "Video selected";
         editMediaBtn.style.display = "none";
@@ -321,20 +438,25 @@
     });
 
     removeMediaBtn.addEventListener("click", () => {
-      selectedFile = null;
-      selectedFileType = "none";
-      mediaFileInput.value = "";
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-      objectUrl = null;
-      previewContainer.innerHTML = "";
-      mediaPreview.classList.remove("show");
+      if (activeUploadRequest) {
+        activeUploadRequest.abort();
+        activeUploadRequest = null;
+      }
+      resetUploadDisplay();
+      clearSelectedMedia();
     });
+
+    /* ---------- PHOTO EDITOR ---------- */
 
     editMediaBtn.addEventListener("click", () => {
       if (selectedFileType !== "image" || !objectUrl) return;
       photoEditorImage.src = objectUrl;
       photoEditorModal.classList.add("show");
       photoEditorModal.setAttribute("aria-hidden", "false");
+
+      photoEditorAspectButtons.forEach((b) =>
+        b.classList.toggle("active", b.dataset.ratio === "0.5625")
+      );
 
       if (cropper) cropper.destroy();
       cropper = new Cropper(photoEditorImage, {
@@ -365,7 +487,9 @@
     photoEditorDoneButton.addEventListener("click", () => {
       if (!cropper) return;
       const canvas = cropper.getCroppedCanvas({ maxWidth: 1080, maxHeight: 1920 });
+      if (!canvas) return;
       canvas.toBlob((blob) => {
+        if (!blob) return;
         selectedFile = new File([blob], "faith-moment.jpg", { type: "image/jpeg" });
         if (objectUrl) URL.revokeObjectURL(objectUrl);
         objectUrl = URL.createObjectURL(selectedFile);
@@ -380,8 +504,101 @@
       }, "image/jpeg", 0.9);
     });
 
+    /* ---------- IMAGEKIT UPLOAD ---------- */
+
+    async function getImagekitAuthParameters() {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS);
+
+      try {
+        const response = await fetch(imagekitAuthEndpoint, { signal: controller.signal });
+
+        if (!response.ok) {
+          throw new Error(`Could not authenticate upload (${response.status}).`);
+        }
+
+        return await response.json();
+
+      } catch (error) {
+        if (error.name === "AbortError") {
+          throw new Error("The upload server did not respond. Please try again.");
+        }
+        throw error;
+
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function uploadToImagekit(file, onProgress) {
+      const authParameters = await getImagekitAuthParameters();
+
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", file.name || (file.type.startsWith("video/") ? "moment.mp4" : "moment.jpg"));
+        formData.append("publicKey", imagekitPublicKey);
+        formData.append("signature", authParameters.signature);
+        formData.append("expire", authParameters.expire);
+        formData.append("token", authParameters.token);
+        formData.append("folder", "/sabasaba-moments");
+
+        const request = new XMLHttpRequest();
+        activeUploadRequest = request;
+
+        request.open("POST", imagekitUploadUrl, true);
+        request.timeout = 300000;
+
+        request.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable && typeof onProgress === "function") {
+            onProgress(Math.round((event.loaded / event.total) * 100));
+          }
+        });
+
+        request.addEventListener("load", () => {
+          activeUploadRequest = null;
+
+          try {
+            const response = JSON.parse(request.responseText);
+
+            if (request.status < 200 || request.status >= 300) {
+              throw new Error(response?.message || "Upload failed.");
+            }
+
+            if (!response.url) throw new Error("No URL returned.");
+
+            resolve(response.url);
+
+          } catch (error) {
+            reject(error);
+          }
+        });
+
+        request.addEventListener("error", () => {
+          activeUploadRequest = null;
+          reject(new Error("Network error. Check your connection and try again."));
+        });
+
+        request.addEventListener("timeout", () => {
+          activeUploadRequest = null;
+          reject(new Error("Upload timed out. Check your connection and try again."));
+        });
+
+        request.addEventListener("abort", () => {
+          activeUploadRequest = null;
+          reject(new Error("Upload cancelled."));
+        });
+
+        request.send(formData);
+      });
+    }
+
+    /* ---------- PUBLISH ---------- */
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (isPublishing) return;
+
       if (!currentUser) {
         showMsg("Please sign in first.", "error");
         return;
@@ -393,8 +610,7 @@
         return;
       }
 
-      publishButton.disabled = true;
-      publishButton.textContent = "Publishing...";
+      setPublishing(true);
       showMsg("Preparing upload...", "loading");
 
       try {
@@ -404,24 +620,12 @@
         let videoUrl = "";
 
         if (selectedFile) {
-          const fileExtension = selectedFile.name.split('.').pop() || (selectedFileType === 'video' ? 'mp4' : 'jpg');
-          const fileName = `faithMoments/${Date.now()}_${currentUser.uid}.${fileExtension}`;
-          const storageRefInstance = ref(storage, fileName);
+          uploadArea.classList.add("show");
+          uploadProgress.style.width = "0%";
 
-          const uploadTask = uploadBytesResumable(storageRefInstance, selectedFile);
-          
-          mediaUrl = await new Promise((resolve, reject) => {
-            uploadTask.on('state_changed', 
-              (snapshot) => {
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                showMsg(`Uploading media: ${progress}%`, "loading");
-              }, 
-              (error) => reject(error), 
-              async () => {
-                const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                resolve(downloadUrl);
-              }
-            );
+          mediaUrl = await uploadToImagekit(selectedFile, (progress) => {
+            uploadProgress.style.width = `${progress}%`;
+            showMsg(`Uploading ${mediaType === "video" ? "video" : "photo"}: ${progress}%`, "loading");
           });
 
           if (mediaType === "video") {
@@ -432,9 +636,9 @@
         }
 
         const authorName = currentUserProfile?.fullName || currentUserProfile?.name || currentUser.displayName || "Community Member";
-        const authorPicture = currentUserProfile?.picture || currentUser.photoURL || "";
+        const authorPicture = currentUserProfile?.picture || currentUserProfile?.profilePicture || currentUser.photoURL || "";
 
-        // Check one active moment rule
+        /* One active moment per user */
         const oldMomentIds = [];
         const twentyFourHours = 24 * 60 * 60 * 1000;
 
@@ -456,8 +660,8 @@
           const replaceIt = window.confirm("You already have an active Moment. Replace it with this new one?");
           if (!replaceIt) {
             showMsg("Cancelled.", "error");
-            publishButton.disabled = false;
-            publishButton.textContent = "Share Faith Moment";
+            resetUploadDisplay();
+            setPublishing(false);
             return;
           }
           await Promise.all(oldMomentIds.map((id) => deleteDoc(doc(db, "faithMoments", id))));
@@ -483,20 +687,16 @@
         });
 
         showMsg("Faith moment published successfully!", "success");
+        resetUploadDisplay();
         setTimeout(() => { window.location.replace("faith-moments.html"); }, 1200);
 
       } catch (err) {
         console.error(err);
+        resetUploadDisplay();
         showMsg(err.message || "Failed to publish moment.", "error");
-        publishButton.disabled = false;
-        publishButton.textContent = "Share Faith Moment";
+        setPublishing(false);
       }
     });
-
-    function showMsg(text, type) {
-      formMessage.textContent = text;
-      formMessage.className = `formMessage show ${type}`;
-    }
   </script>
 </body>
 </html>
