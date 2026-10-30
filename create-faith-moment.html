@@ -1,144 +1,1112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Faith Moments | SABASABA Gospel Ministry</title>
+  <meta name="description" content="Create and share a Faith Moment with the SABASABA Gospel Ministry community">
+  <title>Create Faith Moment | SABASABA Gospel Ministry</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
-    .header { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-    .header h1 { font-size: 18px; color: #1877f2; }
-    .create-btn { background: #1877f2; color: #fff; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; }
-    .feed-container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
-    .moment-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; padding: 12px; }
-    .moment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .author-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #ddd; }
-    .author-name { font-weight: bold; font-size: 14px; }
-    .moment-time { font-size: 11px; color: #65676b; }
-    .moment-message { font-size: 14px; line-height: 1.4; margin-bottom: 10px; white-space: pre-wrap; }
-    .verse-box { background: #e7f3ff; border-left: 4px solid #1877f2; padding: 8px; font-size: 13px; margin-bottom: 10px; font-style: italic; }
-    .media-box { width: 100%; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px; }
-    .media-box video, .media-box img { width: 100%; max-height: 450px; object-fit: contain; display: block; }
-    .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; }
+
+    :root {
+      --primary: #1877f2;
+      --primary-dark: #166fe5;
+      --primary-light: #e7f3ff;
+      --background: #f0f2f5;
+      --surface: #ffffff;
+      --text: #050505;
+      --muted: #65676b;
+      --border: #e4e6eb;
+      --success: #31a24c;
+      --danger: #b00020;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; max-width: 100%; }
+
+
+    /* ---------- HEADER ---------- */
+
+    .topHeader {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topHeaderInner {
+      width: 100%;
+      max-width: 680px;
+      min-height: 56px;
+      margin: auto;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .backButton {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f2f5;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .backButton:hover { background: #e4e6eb; }
+
+    .headerTitleArea { min-width: 0; flex: 1; }
+
+    .headerTitle {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .headerSubtitle {
+      margin-top: 1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .headerIcon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-light);
+      font-size: 18px;
+    }
+
+
+    /* ---------- PAGE ---------- */
+
+    .pageContainer {
+      width: 100%;
+      max-width: 680px;
+      margin: auto;
+      padding: 12px 0 60px;
+    }
+
+    .introCard,
+    .formCard {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px;
+    }
+
+    .introCard { margin-bottom: 12px; }
+    .introTitle { font-size: 18px; font-weight: bold; }
+    .introText { margin-top: 4px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+
+    .formSection { margin-bottom: 18px; }
+
+    .sectionLabel {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .sectionHelp {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+
+    /* ---------- MOMENT TYPES ---------- */
+
+    .momentTypeGrid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .momentTypeButton {
+      min-height: 76px;
+      padding: 10px 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: #ffffff;
+      color: var(--text);
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .momentTypeButton:hover { background: #f0f2f5; }
+
+    .momentTypeButton.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .momentTypeIcon { font-size: 22px; line-height: 1; }
+    .momentTypeName { font-size: 11px; font-weight: bold; }
+
+
+    /* ---------- INPUTS ---------- */
+
+    .formInput,
+    .formTextarea {
+      width: 100%;
+      border: 1px solid #ccd0d5;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease;
+    }
+
+    .formInput { min-height: 42px; padding: 8px 12px; font-size: 14px; }
+
+    .formTextarea {
+      min-height: 130px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .formInput:focus,
+    .formTextarea:focus { border-color: var(--primary); }
+
+    .characterCounter {
+      margin-top: 4px;
+      color: var(--muted);
+      text-align: right;
+      font-size: 11px;
+    }
+
+    .verseReferenceArea { display: none; }
+    .verseReferenceArea.show { display: block; }
+
+
+    /* ---------- MEDIA ---------- */
+
+    .mediaOptions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .mediaOptionButton {
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #f0f2f5;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .mediaOptionButton:hover { background: #e4e6eb; }
+    .mediaOptionButton:disabled { opacity: .6; cursor: not-allowed; }
+
+    .hiddenFileInput { display: none; }
+
+    .mediaPreview {
+      position: relative;
+      display: none;
+      margin-top: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #000000;
+    }
+
+    .mediaPreview.show { display: block; }
+
+    .mediaPreview img,
+    .mediaPreview video {
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+    }
+
+    .removeMediaButton,
+    .editMediaButton {
+      position: absolute;
+      top: 8px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+    }
+
+    .removeMediaButton { right: 8px; font-size: 18px; font-weight: bold; }
+    .editMediaButton { left: 8px; font-size: 14px; }
+    .editMediaButton:hover { background: var(--primary); }
+
+    .selectedMediaLabel {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+
+    /* ---------- PRIVACY + MESSAGE ---------- */
+
+    .privacyInformation {
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #f0f2f5;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .formMessage {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    .formMessage.show { display: block; }
+    .formMessage.error { background: #fdecec; color: var(--danger); }
+    .formMessage.success { background: #eaf7ee; color: var(--success); }
+    .formMessage.loading { background: var(--primary-light); color: var(--primary); }
+
+
+    /* ---------- ACTIONS ---------- */
+
+    .formActions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .cancelButton,
+    .publishButton {
+      min-height: 42px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .cancelButton {
+      flex: 0 0 32%;
+      border: 1px solid #ccd0d5;
+      background: #ffffff;
+      color: var(--muted);
+    }
+
+    .cancelButton:hover { background: #f0f2f5; }
+
+    .publishButton {
+      flex: 1;
+      border: 0;
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .publishButton:hover { background: var(--primary-dark); }
+    .publishButton:disabled { cursor: not-allowed; opacity: .6; }
+
+
+    /* ---------- PHOTO EDITOR ---------- */
+
+    .photoEditorModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: #000000;
+      flex-direction: column;
+    }
+
+    .photoEditorModal.show { display: flex; }
+
+    .photoEditorHeader {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: #111111;
+    }
+
+    .photoEditorHeaderButton {
+      border: 0;
+      background: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 4px 8px;
+    }
+
+    .photoEditorDoneButton { color: #4fb0ff; }
+    .photoEditorCounterText { color: #cccccc; font-size: 12px; }
+
+    .photoEditorImageArea {
+      flex: 1 1 auto;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      background: #000000;
+    }
+
+    .photoEditorImageArea img { display: block; max-width: 100%; }
+
+    .photoEditorToolbar {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      background: #111111;
+    }
+
+    .photoEditorToolButton {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 18px;
+      background: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .photoEditorAspectButton.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+
+    /* ---------- RESPONSIVE ---------- */
+
+    @media (max-width: 600px) {
+      .pageContainer { padding: 0 0 60px; }
+    }
+
+    @media (max-width: 350px) {
+      .mediaOptions { grid-template-columns: 1fr; }
+      .formActions { flex-direction: column; }
+      .cancelButton, .publishButton { width: 100%; flex: none; }
+    }
   </style>
 </head>
+
 <body>
 
-  <header class="header">
-    <h1>🌅 Faith Moments</h1>
-    <a href="create-faith-moment.html" class="create-btn">+ Create Moment</a>
+  <!-- HEADER -->
+  <header class="topHeader">
+    <div class="topHeaderInner">
+      <a href="feed.html" class="backButton" aria-label="Back to feed">←</a>
+      <div class="headerTitleArea">
+        <h1 class="headerTitle">Create Faith Moment</h1>
+        <div class="headerSubtitle">SABASABA Gospel Ministry</div>
+      </div>
+      <div class="headerIcon">🌅</div>
+    </div>
   </header>
 
-  <main class="feed-container">
-    <div id="momentsFeed">
-      <div class="loading">Loading faith moments...</div>
+  <!-- MAIN -->
+  <main class="pageContainer">
+
+    <div class="introCard">
+      <div class="introTitle">Share Your Faith Moment</div>
+      <div class="introText">
+        Post an encouraging word, scripture, prayer, or testimony that will appear in the community moments bar for 24 hours.
+      </div>
+    </div>
+
+    <div class="formCard">
+
+      <div id="formMessage" class="formMessage" role="status" aria-live="polite"></div>
+
+      <form id="faithMomentForm">
+
+        <!-- TYPE -->
+        <div class="formSection">
+          <label class="sectionLabel">Moment Type</label>
+          <div class="momentTypeGrid">
+            <button type="button" class="momentTypeButton active" data-type="encouragement">
+              <span class="momentTypeIcon">🕊️</span>
+              <span class="momentTypeName">Encouragement</span>
+            </button>
+            <button type="button" class="momentTypeButton" data-type="scripture">
+              <span class="momentTypeIcon">📖</span>
+              <span class="momentTypeName">Scripture</span>
+            </button>
+            <button type="button" class="momentTypeButton" data-type="testimony">
+              <span class="momentTypeIcon">✨</span>
+              <span class="momentTypeName">Testimony</span>
+            </button>
+          </div>
+          <input type="hidden" id="momentTypeInput" value="encouragement">
+        </div>
+
+        <!-- SCRIPTURE REFERENCE -->
+        <div id="verseReferenceArea" class="formSection verseReferenceArea">
+          <label class="sectionLabel" for="verseReferenceInput">Scripture Reference</label>
+          <input type="text" id="verseReferenceInput" class="formInput" placeholder="e.g., John 3:16" maxlength="80">
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="formSection">
+          <label class="sectionLabel" for="momentMessageInput">Your Message</label>
+          <div class="sectionHelp">Write a short, uplifting message for the community.</div>
+          <textarea id="momentMessageInput" class="formTextarea" placeholder="What is God laying on your heart today?" maxlength="500" required></textarea>
+          <div id="characterCounter" class="characterCounter">500 characters remaining</div>
+        </div>
+
+        <!-- MEDIA -->
+        <div class="formSection">
+          <label class="sectionLabel">Background Photo or Video (Optional)</label>
+          <div class="sectionHelp">Add a visual background to make your faith moment stand out.</div>
+
+          <div class="mediaOptions">
+            <button type="button" id="choosePhotoBtn" class="mediaOptionButton">📷 Choose Photo</button>
+            <button type="button" id="chooseVideoBtn" class="mediaOptionButton">🎥 Choose Video</button>
+          </div>
+
+          <input type="file" id="mediaFileInput" class="hiddenFileInput" accept="image/*,video/*">
+
+          <div id="mediaPreview" class="mediaPreview">
+            <div id="previewContainer"></div>
+            <button type="button" id="editMediaBtn" class="editMediaButton" title="Edit photo" aria-label="Edit photo">✏️</button>
+            <button type="button" id="removeMediaBtn" class="removeMediaButton" title="Remove media" aria-label="Remove media">×</button>
+            <div id="selectedMediaLabel" class="selectedMediaLabel">Photo selected</div>
+          </div>
+        </div>
+
+        <div class="privacyInformation">
+          Faith moments are visible to all community members and automatically expire after 24 hours.
+        </div>
+
+        <div class="formActions">
+          <a href="feed.html" class="cancelButton" id="cancelButton">Cancel</a>
+          <button type="submit" id="publishButton" class="publishButton">Share Faith Moment</button>
+        </div>
+
+      </form>
     </div>
   </main>
 
-  <script type="module">
-    import { db, auth, collection, getDocs, query, orderBy, onAuthStateChanged } from "./firebase.js";
 
-    const feedContainer = document.getElementById("momentsFeed");
+  <!-- PHOTO EDITOR -->
+  <div id="photoEditorModal" class="photoEditorModal" aria-hidden="true">
+    <div class="photoEditorHeader">
+      <button type="button" id="photoEditorCancelButton" class="photoEditorHeaderButton">Cancel</button>
+      <span class="photoEditorCounterText">Edit Photo</span>
+      <button type="button" id="photoEditorDoneButton" class="photoEditorHeaderButton photoEditorDoneButton">Done</button>
+    </div>
+
+    <div class="photoEditorImageArea">
+      <img id="photoEditorImage" src="" alt="Crop preview">
+    </div>
+
+    <div class="photoEditorToolbar">
+      <button type="button" id="photoEditorRotateLeftButton" class="photoEditorToolButton">Rotate ↺</button>
+      <button type="button" id="photoEditorRotateRightButton" class="photoEditorToolButton">Rotate ↻</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton active" data-ratio="0.5625">Story (9:16)</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1">Square (1:1)</button>
+      <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="free">Free</button>
+    </div>
+  </div>
+
+
+  <script type="module">
+
+    import {
+      auth,
+      db,
+      collection,
+      addDoc,
+      doc,
+      getDoc,
+      serverTimestamp,
+      onAuthStateChanged
+    } from "./firebase.js";
+
+
+    /* =====================================================
+       CONFIG
+    ===================================================== */
+
+    const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+    const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+    const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
+
+    const MOMENT_LIFETIME_MS = 24 * 60 * 60 * 1000;
+    const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
+    const AUTH_TIMEOUT_MS = 15000;
+    const UPLOAD_TIMEOUT_MS = 120000;
+    const SAVE_TIMEOUT_MS = 20000;
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let currentUser = null;
+    let currentUserProfile = null;
+    let selectedFile = null;
+    let selectedFileType = "none";
+    let objectUrl = null;
+    let cropper = null;
+    let isPublishing = false;
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const $ = (id) => document.getElementById(id);
+
+    const form = $("faithMomentForm");
+    const momentTypeButtons = document.querySelectorAll(".momentTypeButton");
+    const momentTypeInput = $("momentTypeInput");
+    const verseReferenceArea = $("verseReferenceArea");
+    const verseReferenceInput = $("verseReferenceInput");
+    const momentMessageInput = $("momentMessageInput");
+    const characterCounter = $("characterCounter");
+    const choosePhotoBtn = $("choosePhotoBtn");
+    const chooseVideoBtn = $("chooseVideoBtn");
+    const mediaFileInput = $("mediaFileInput");
+    const mediaPreview = $("mediaPreview");
+    const previewContainer = $("previewContainer");
+    const removeMediaBtn = $("removeMediaBtn");
+    const editMediaBtn = $("editMediaBtn");
+    const selectedMediaLabel = $("selectedMediaLabel");
+    const formMessage = $("formMessage");
+    const publishButton = $("publishButton");
+    const cancelButton = $("cancelButton");
+
+    const photoEditorModal = $("photoEditorModal");
+    const photoEditorImage = $("photoEditorImage");
+    const photoEditorCancelButton = $("photoEditorCancelButton");
+    const photoEditorDoneButton = $("photoEditorDoneButton");
+    const photoEditorRotateLeftButton = $("photoEditorRotateLeftButton");
+    const photoEditorRotateRightButton = $("photoEditorRotateRightButton");
+    const photoEditorAspectButtons = document.querySelectorAll(".photoEditorAspectButton");
+
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function showMsg(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `formMessage show ${type}`;
+      formMessage.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function hideMsg() {
+      formMessage.className = "formMessage";
+      formMessage.textContent = "";
+    }
+
+    function setPublishing(active) {
+      isPublishing = active;
+      publishButton.disabled = active;
+      publishButton.textContent = active ? "Publishing..." : "Share Faith Moment";
+      choosePhotoBtn.disabled = active;
+      chooseVideoBtn.disabled = active;
+    }
+
+    function withTimeout(promise, ms, message) {
+      let timer;
+      const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(message)), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+    }
+
+    async function fetchWithTimeout(url, options, ms, message) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), ms);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } catch (err) {
+        if (err.name === "AbortError") throw new Error(message);
+        throw new Error("Network problem. Check your connection and try again.");
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    /* Shrinks large photos so they upload fast on slow networks */
+    function compressImage(file) {
+      return new Promise((resolve) => {
+        if (!file.type.startsWith("image/")) return resolve(file);
+
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+
+        img.onload = () => {
+          const scale = Math.min(1, 1080 / img.width, 1920 / img.height);
+
+          /* Already small enough: keep as is */
+          if (scale === 1 && file.size < 800 * 1024) {
+            URL.revokeObjectURL(url);
+            return resolve(file);
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+
+          canvas.toBlob(
+            (blob) => resolve(
+              blob ? new File([blob], "faith-moment.jpg", { type: "image/jpeg" }) : file
+            ),
+            "image/jpeg",
+            0.85
+          );
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          resolve(file);
+        };
+
+        img.src = url;
+      });
+    }
+
+    /* Checks that this device can actually play the chosen video */
+    function canBrowserPlayVideo(file) {
+      return new Promise((resolve) => {
+        const v = document.createElement("video");
+        const url = URL.createObjectURL(file);
+        let finished = false;
+
+        const done = (ok) => {
+          if (finished) return;
+          finished = true;
+          URL.revokeObjectURL(url);
+          resolve(ok);
+        };
+
+        v.preload = "metadata";
+        v.muted = true;
+        v.onloadedmetadata = () => done(v.videoWidth > 0);
+        v.onerror = () => done(false);
+        setTimeout(() => done(false), 8000);
+        v.src = url;
+      });
+    }
+
+    function clearMedia() {
+      selectedFile = null;
+      selectedFileType = "none";
+      mediaFileInput.value = "";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+      previewContainer.innerHTML = "";
+      mediaPreview.classList.remove("show");
+    }
+
+    function showImagePreview(url) {
+      previewContainer.innerHTML = "";
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Selected photo";
+      previewContainer.appendChild(img);
+    }
+
+    function closePhotoEditor() {
+      photoEditorModal.classList.remove("show");
+      photoEditorModal.setAttribute("aria-hidden", "true");
+      if (cropper) {
+        cropper.destroy();
+        cropper = null;
+      }
+    }
+
+
+    /* =====================================================
+       AUTH
+    ===================================================== */
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.replace("login.html");
         return;
       }
-      loadFaithMoments();
+
+      currentUser = user;
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) currentUserProfile = userDoc.data();
+      } catch (err) {
+        console.error("Profile load error:", err);
+      }
     });
 
-    async function loadFaithMoments() {
-      try {
-        const q = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
 
-        if (snapshot.empty) {
-          feedContainer.innerHTML = `<div class="empty">No faith moments shared yet. Be the first to share!</div>`;
+    /* =====================================================
+       MOMENT TYPE
+    ===================================================== */
+
+    momentTypeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        momentTypeButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const type = btn.dataset.type;
+        momentTypeInput.value = type;
+
+        if (type === "scripture") {
+          verseReferenceArea.classList.add("show");
+        } else {
+          verseReferenceArea.classList.remove("show");
+          verseReferenceInput.value = "";
+        }
+      });
+    });
+
+
+    /* =====================================================
+       CHARACTER COUNTER
+    ===================================================== */
+
+    momentMessageInput.addEventListener("input", () => {
+      const remaining = 500 - momentMessageInput.value.length;
+      characterCounter.textContent = `${remaining} characters remaining`;
+    });
+
+
+    /* =====================================================
+       MEDIA PICKER
+    ===================================================== */
+
+    choosePhotoBtn.addEventListener("click", () => {
+      mediaFileInput.accept = "image/*";
+      mediaFileInput.click();
+    });
+
+    chooseVideoBtn.addEventListener("click", () => {
+      mediaFileInput.accept = "video/*";
+      mediaFileInput.click();
+    });
+
+    mediaFileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.type.startsWith("video/") && file.size > MAX_VIDEO_BYTES) {
+        mediaFileInput.value = "";
+        showMsg("That video is too large. Please choose one under 100 MB.", "error");
+        return;
+      }
+
+      if (file.type.startsWith("video/")) {
+        showMsg("Checking your video...", "loading");
+
+        if (!(await canBrowserPlayVideo(file))) {
+          mediaFileInput.value = "";
+          showMsg(
+            "This video format can't be played. Record or convert it to MP4 (H.264) and try again.",
+            "error"
+          );
+          return;
+        }
+      }
+
+      hideMsg();
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      selectedFile = file;
+      objectUrl = URL.createObjectURL(file);
+      previewContainer.innerHTML = "";
+
+      if (file.type.startsWith("image/")) {
+        selectedFileType = "image";
+        showImagePreview(objectUrl);
+        selectedMediaLabel.textContent = "Photo selected";
+        editMediaBtn.style.display = "flex";
+
+      } else if (file.type.startsWith("video/")) {
+        selectedFileType = "video";
+        const vid = document.createElement("video");
+        vid.src = objectUrl;
+        vid.controls = true;
+        vid.playsInline = true;
+        previewContainer.appendChild(vid);
+        selectedMediaLabel.textContent = "Video selected";
+        editMediaBtn.style.display = "none";
+
+      } else {
+        clearMedia();
+        showMsg("Please choose a photo or a video.", "error");
+        return;
+      }
+
+      mediaPreview.classList.add("show");
+    });
+
+    removeMediaBtn.addEventListener("click", clearMedia);
+
+
+    /* =====================================================
+       PHOTO EDITOR
+    ===================================================== */
+
+    editMediaBtn.addEventListener("click", () => {
+      if (selectedFileType !== "image" || !objectUrl) return;
+
+      photoEditorImage.src = objectUrl;
+      photoEditorModal.classList.add("show");
+      photoEditorModal.setAttribute("aria-hidden", "false");
+
+      photoEditorAspectButtons.forEach((b) =>
+        b.classList.toggle("active", b.dataset.ratio === "0.5625")
+      );
+
+      if (cropper) cropper.destroy();
+      cropper = new Cropper(photoEditorImage, {
+        viewMode: 1,
+        dragMode: "move",
+        autoCropArea: 1,
+        aspectRatio: 9 / 16
+      });
+    });
+
+    photoEditorCancelButton.addEventListener("click", closePhotoEditor);
+
+    photoEditorRotateLeftButton.addEventListener("click", () => {
+      if (cropper) cropper.rotate(-90);
+    });
+
+    photoEditorRotateRightButton.addEventListener("click", () => {
+      if (cropper) cropper.rotate(90);
+    });
+
+    photoEditorAspectButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        photoEditorAspectButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        if (!cropper) return;
+
+        const value = btn.dataset.ratio;
+        cropper.setAspectRatio(value === "free" ? NaN : parseFloat(value));
+      });
+    });
+
+    photoEditorDoneButton.addEventListener("click", () => {
+      if (!cropper) return;
+
+      const canvas = cropper.getCroppedCanvas({ maxWidth: 1080, maxHeight: 1920 });
+
+      if (!canvas) {
+        closePhotoEditor();
+        showMsg("The photo could not be cropped. Please try again.", "error");
+        return;
+      }
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          closePhotoEditor();
+          showMsg("The photo could not be cropped. Please try again.", "error");
           return;
         }
 
-        let html = "";
-        const now = Date.now();
+        selectedFile = new File([blob], "faith-moment.jpg", { type: "image/jpeg" });
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = URL.createObjectURL(selectedFile);
 
-        snapshot.forEach((docSnap) => {
-          const post = docSnap.data();
-          
-          // Check expiration (24 hours)
-          const createdAt = post.timestamp?.toMillis ? post.timestamp.toMillis() : (post.timestamp?.seconds ? post.timestamp.seconds * 1000 : now);
-          const isExpired = (now - createdAt) > (24 * 60 * 60 * 1000);
-          if (isExpired) return; // Skip expired moments
+        showImagePreview(objectUrl);
+        closePhotoEditor();
+      }, "image/jpeg", 0.9);
+    });
 
-          const name = post.authorName || post.name || "Community Member";
-          const avatar = post.authorPicture || post.profilePicture || "https://via.placeholder.com/40";
-          const timeAgo = timeSince(createdAt);
 
-          let mediaHTML = "";
-          const mediaUrl = post.videoUrl || post.imageUrl || post.mediaUrl || "";
+    /* =====================================================
+       PUBLISH
+    ===================================================== */
 
-          if (mediaUrl) {
-            if (post.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
-              mediaHTML = `
-                <div class="media-box">
-                  <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
-                </div>
-              `;
-            } else {
-              mediaHTML = `
-                <div class="media-box">
-                  <img src="${mediaUrl}" alt="Faith moment media">
-                </div>
-              `;
-            }
-          }
+    async function uploadToImageKit(file) {
+      const authRes = await fetchWithTimeout(
+        imagekitAuthEndpoint,
+        {},
+        AUTH_TIMEOUT_MS,
+        "The upload server did not respond. Please try again."
+      );
 
-          let verseHTML = post.verseReference ? `<div class="verse-box">📖 <b>${post.verseReference}</b></div>` : "";
+      if (!authRes.ok) {
+        throw new Error(`Upload authentication failed (${authRes.status}).`);
+      }
 
-          html += `
-            <div class="moment-card">
-              <div class="moment-header">
-                <img src="${avatar}" class="author-avatar" alt="Avatar">
-                <div>
-                  <div class="author-name">${escapeHTML(name)}</div>
-                  <div class="moment-time">${timeAgo} • <span style="text-transform:capitalize;">${post.momentType || 'encouragement'}</span></div>
-                </div>
-              </div>
-              ${verseHTML}
-              <div class="moment-message">${escapeHTML(post.message || "")}</div>
-              ${mediaHTML}
-            </div>
-          `;
-        });
+      const authParams = await authRes.json();
 
-        feedContainer.innerHTML = html || `<div class="empty">No active faith moments right now.</div>`;
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("fileName", file.name);
+      formData.append("publicKey", imagekitPublicKey);
+      formData.append("signature", authParams.signature);
+      formData.append("expire", authParams.expire);
+      formData.append("token", authParams.token);
+      formData.append("folder", "/faith-moments");
+
+      const uploadRes = await fetchWithTimeout(
+        imagekitUploadUrl,
+        { method: "POST", body: formData },
+        UPLOAD_TIMEOUT_MS,
+        "The upload took too long. Check your connection and try again."
+      );
+
+      let uploadData = {};
+      try {
+        uploadData = await uploadRes.json();
+      } catch (err) {
+        /* non-JSON response */
+      }
+
+      if (!uploadRes.ok || !uploadData.url) {
+        throw new Error(uploadData.message || "Media upload failed.");
+      }
+
+      return uploadData.url;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (isPublishing) return;
+
+      if (!currentUser) {
+        showMsg("Please wait a moment, or sign in first.", "error");
+        return;
+      }
+
+      const message = momentMessageInput.value.trim();
+      if (!message) {
+        showMsg("Please enter a message.", "error");
+        return;
+      }
+
+      setPublishing(true);
+
+      try {
+        let mediaUrl = "";
+        const mediaType = selectedFile ? selectedFileType : "none";
+
+        if (selectedFile) {
+          showMsg("Preparing your media...", "loading");
+
+          const fileToUpload = mediaType === "image"
+            ? await compressImage(selectedFile)
+            : selectedFile;
+
+          showMsg("Uploading your faith moment...", "loading");
+          mediaUrl = await uploadToImageKit(fileToUpload);
+        }
+
+        showMsg("Saving your faith moment...", "loading");
+
+        const authorName =
+          currentUserProfile?.name ||
+          currentUserProfile?.fullName ||
+          currentUserProfile?.displayName ||
+          currentUser.displayName ||
+          "Community Member";
+
+        const authorPicture =
+          currentUserProfile?.profilePicture ||
+          currentUserProfile?.picture ||
+          currentUser.photoURL ||
+          "images/profile.png";
+
+        await withTimeout(
+          addDoc(collection(db, "faithMoments"), {
+            userId: currentUser.uid,
+            authorName,
+            authorPicture,
+            momentType: momentTypeInput.value,
+            verseReference: verseReferenceInput.value.trim(),
+            message,
+            mediaType,
+            mediaUrl,
+            privacy: "everyone",
+            timestamp: serverTimestamp(),
+            expiresAt: new Date(Date.now() + MOMENT_LIFETIME_MS)
+          }),
+          SAVE_TIMEOUT_MS,
+          "Saving timed out. Check your connection and try again."
+        );
+
+        showMsg("Faith moment published successfully!", "success");
+        setTimeout(() => window.location.replace("feed.html"), 1200);
 
       } catch (err) {
-        console.error("Error loading moments:", err);
-        feedContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load moments. Please refresh.</div>`;
+        console.error("Publish error:", err);
+        showMsg(err.message || "Failed to publish moment.", "error");
+        setPublishing(false);
       }
-    }
+    });
 
-    function timeSince(date) {
-      const seconds = Math.floor((new Date() - date) / 1000);
-      let interval = seconds / 31536000;
-      if (interval > 1) return Math.floor(interval) + "y ago";
-      interval = seconds / 2592000;
-      if (interval > 1) return Math.floor(interval) + "mo ago";
-      interval = seconds / 86400;
-      if (interval > 1) return Math.floor(interval) + "d ago";
-      interval = seconds / 3600;
-      if (interval > 1) return Math.floor(interval) + "h ago";
-      interval = seconds / 60;
-      if (interval > 1) return Math.floor(interval) + "m ago";
-      return "Just now";
-    }
-
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
   </script>
+
 </body>
+
 </html>
