@@ -4,69 +4,37 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create and publish a post on the SABASABA Gospel Ministry Community Wall">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<title>Create Post | SABASABA Gospel Ministry</title>
 
-<meta
-  name="description"
-  content="Create and publish a post on the SABASABA Gospel Ministry Community Wall"
->
-
-<title>
-  Create Post | SABASABA Gospel Ministry
-</title>
-
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
->
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <style>
 
 /* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
+   EDGE-TO-EDGE CLEAN DESIGN
 ===================================================== */
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
-  margin:0;
-  padding:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f0f2f5;
   color:#050505;
   min-height:100vh;
 }
 
-button,
-input,
-select,
-textarea{
-  font-family:inherit;
-}
+button,input,select,textarea{font-family:inherit}
 
-button{
-  -webkit-tap-highlight-color:transparent;
-  cursor:pointer;
-}
+button{-webkit-tap-highlight-color:transparent;cursor:pointer}
 
 
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
+/* ---------- CONTAINER ---------- */
 
 .container{
   width:100%;
@@ -74,14 +42,10 @@ button{
   margin:0 auto;
   padding:0 0 90px 0;
   background:#f0f2f5;
-  box-shadow:none;
-  border-radius:0;
 }
 
 
-/* =====================================================
-   PAGE TITLE & HEADER
-===================================================== */
+/* ---------- HEADER ---------- */
 
 .header{
   background:#ffffff;
@@ -89,15 +53,9 @@ button{
   padding:16px 14px;
   border-bottom:1px solid #e4e6eb;
   text-align:left;
-  margin-bottom:0;
 }
 
-h1{
-  margin:0 0 2px;
-  text-align:left;
-  color:#050505;
-  font-size:20px;
-}
+h1{margin:0 0 2px;text-align:left;color:#050505;font-size:20px}
 
 .page-description{
   margin:0;
@@ -108,9 +66,7 @@ h1{
 }
 
 
-/* =====================================================
-   FORM CARD SECTION
-===================================================== */
+/* ---------- FORM ---------- */
 
 .form-body{
   background:#ffffff;
@@ -126,13 +82,9 @@ label{
   font-size:13px;
 }
 
-label:first-of-type{
-  margin-top:0;
-}
+label:first-of-type{margin-top:0}
 
-input,
-select,
-textarea{
+input,select,textarea{
   width:100%;
   margin-top:6px;
   padding:10px 12px;
@@ -144,536 +96,245 @@ textarea{
   outline:none;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:#1877f2;
-}
+input:focus,select:focus,textarea:focus{border-color:#1877f2}
 
-textarea{
-  min-height:140px;
-  resize:vertical;
-  line-height:1.4;
-}
+textarea{min-height:140px;resize:vertical;line-height:1.4}
 
 
-/* =====================================================
-   EMOJI TOOLBAR
-===================================================== */
+/* ---------- EMOJI ---------- */
 
-.emojiToolbarRow{
-  margin-top:8px;
-  position:relative;
-  display:flex;
-  align-items:center;
-}
+.emojiToolbarRow{margin-top:8px;position:relative;display:flex;align-items:center}
 
 .emojiToggleButton{
-  width:34px;
-  height:34px;
-  border:none;
-  border-radius:50%;
-  background:transparent;
-  color:#1877f2;
-  font-size:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:34px;height:34px;border:none;border-radius:50%;
+  background:transparent;color:#1877f2;font-size:18px;
+  display:flex;align-items:center;justify-content:center;
 }
 
-.emojiToggleButton:hover{
-  background:#e7f3ff;
-}
+.emojiToggleButton:hover{background:#e7f3ff}
 
 .emojiPicker{
-  position:absolute;
-  left:0;
-  top:40px;
-  z-index:40;
-  width:260px;
-  max-width:calc(100vw - 20px);
-  max-height:200px;
-  overflow-y:auto;
-  display:none;
-  padding:8px;
-  border:1px solid #e4e6eb;
-  border-radius:12px;
-  grid-template-columns:repeat(6,1fr);
-  gap:6px;
-  background:#ffffff;
-  box-shadow:0 4px 16px rgba(0,0,0,.15);
+  position:absolute;left:0;top:40px;z-index:40;
+  width:260px;max-width:calc(100vw - 20px);max-height:200px;
+  overflow-y:auto;display:none;padding:8px;
+  border:1px solid #e4e6eb;border-radius:12px;
+  grid-template-columns:repeat(6,1fr);gap:6px;
+  background:#ffffff;box-shadow:0 4px 16px rgba(0,0,0,.15);
 }
 
-.emojiPicker.show{
-  display:grid;
-}
+.emojiPicker.show{display:grid}
 
 .emojiPicker button{
-  min-height:34px;
-  border:0;
-  border-radius:6px;
-  background:transparent;
-  font-size:20px;
+  min-height:34px;border:0;border-radius:6px;
+  background:transparent;font-size:20px;
 }
 
-.emojiPicker button:hover{
-  background:#f0f2f5;
-}
+.emojiPicker button:hover{background:#f0f2f5}
 
 
-/* =====================================================
-   MEDIA SELECTION AREA
-===================================================== */
+/* ---------- MEDIA OPTIONS ---------- */
 
 .media-options{
-  margin-top:0;
   padding:12px 14px;
   background:#ffffff;
   border-bottom:1px solid #e4e6eb;
-  border-radius:0;
 }
 
-.media-options-title{
-  margin:0;
-  color:#050505;
-  font-weight:bold;
-  font-size:14px;
-}
+.media-options-title{margin:0;color:#050505;font-weight:bold;font-size:14px}
 
 .media-picker-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px;
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;
 }
 
 .media-picker-button{
-  width:100%;
-  padding:9px 10px;
-  border:1px solid #ccd0d5;
-  border-radius:6px;
-  background:#f0f2f5;
-  color:#050505;
-  font-size:13px;
-  font-weight:bold;
-  cursor:pointer;
+  width:100%;padding:9px 10px;
+  border:1px solid #ccd0d5;border-radius:6px;
+  background:#f0f2f5;color:#050505;
+  font-size:13px;font-weight:bold;cursor:pointer;
   transition:background .2s;
 }
 
-.media-picker-button:hover{
-  background:#e4e6eb;
-  border-color:#ccd0d5;
-}
+.media-picker-button:hover{background:#e4e6eb}
+.media-picker-button:disabled{opacity:.6;cursor:not-allowed}
 
-.media-picker-button:active{
-  transform:none;
-}
-
-.media-help{
-  margin:8px 0 0;
-  color:#65676b;
-  font-size:11px;
-  line-height:1.3;
-}
+.media-help{margin:8px 0 0;color:#65676b;font-size:11px;line-height:1.3}
 
 
-/* =====================================================
-   MEDIA PREVIEW
-===================================================== */
+/* ---------- MEDIA PREVIEW ---------- */
 
 #mediaPreview{
   display:none;
-  margin-top:0;
   padding:12px 14px;
   background:#ffffff;
   border-bottom:1px solid #e4e6eb;
-  border-radius:0;
   text-align:center;
 }
 
 #mediaPreview video{
-  display:block;
-  width:100%;
-  max-height:360px;
-  object-fit:contain;
-  border-radius:8px;
-  background:#000000;
+  display:block;width:100%;max-height:360px;
+  object-fit:contain;border-radius:8px;background:#000000;
 }
 
-.preview-name{
-  margin:8px 0 0;
-  color:#65676b;
-  font-size:12px;
-  word-break:break-word;
-}
+.preview-name{margin:8px 0 0;color:#65676b;font-size:12px;word-break:break-word}
 
 
-/* =====================================================
-   MULTI-PHOTO PREVIEW GRID
-===================================================== */
+/* ---------- PHOTO GRID ---------- */
 
 #imagePreviewGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-  text-align:left;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:left;
 }
 
 .imagePreviewTile{
-  position:relative;
-  aspect-ratio:1/1;
-  overflow:hidden;
-  border-radius:6px;
-  background:#000000;
+  position:relative;aspect-ratio:1/1;overflow:hidden;
+  border-radius:6px;background:#000000;
 }
 
-.imagePreviewTile img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+.imagePreviewTile img{display:block;width:100%;height:100%;object-fit:cover}
 
-.imagePreviewRemoveButton{
-  position:absolute;
-  top:4px;
-  right:4px;
-  width:24px;
-  height:24px;
-  border:0;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.7);
-  color:#ffffff;
-  font-size:12px;
-  font-weight:bold;
-  line-height:1;
-  cursor:pointer;
-}
-
-.imagePreviewRemoveButton:hover{
-  background:rgba(176,0,32,.9);
-}
-
+.imagePreviewRemoveButton,
 .imagePreviewEditButton{
-  position:absolute;
-  top:4px;
-  left:4px;
-  width:24px;
-  height:24px;
-  border:0;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.7);
-  color:#ffffff;
-  font-size:11px;
-  line-height:1;
-  cursor:pointer;
+  position:absolute;top:4px;width:24px;height:24px;
+  border:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.7);color:#ffffff;line-height:1;cursor:pointer;
 }
 
-.imagePreviewEditButton:hover{
-  background:#1877f2;
-}
+.imagePreviewRemoveButton{right:4px;font-size:12px;font-weight:bold}
+.imagePreviewEditButton{left:4px;font-size:11px}
+
+.imagePreviewRemoveButton:hover{background:rgba(176,0,32,.9)}
+.imagePreviewEditButton:hover{background:#1877f2}
 
 .addMorePhotosTile{
-  aspect-ratio:1/1;
-  border:2px dashed #ccd0d5;
-  border-radius:6px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#f0f2f5;
-  color:#1877f2;
-  font-size:22px;
-  font-weight:bold;
-  cursor:pointer;
+  aspect-ratio:1/1;border:2px dashed #ccd0d5;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  background:#f0f2f5;color:#1877f2;
+  font-size:22px;font-weight:bold;cursor:pointer;
 }
 
-.addMorePhotosTile:hover{
-  background:#e4e6eb;
-  border-color:#1877f2;
-}
+.addMorePhotosTile:hover{background:#e4e6eb;border-color:#1877f2}
 
 
-/* =====================================================
-   PHOTO EDITOR (crop / rotate before posting)
-===================================================== */
+/* ---------- PHOTO EDITOR ---------- */
 
 .photoEditorModal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:2000;
-  background:#000000;
-  flex-direction:column;
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:#000000;flex-direction:column;
 }
 
-.photoEditorModal.show{
-  display:flex;
-}
+.photoEditorModal.show{display:flex}
 
 .photoEditorHeader{
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 14px;
-  background:#111111;
+  flex:0 0 auto;display:flex;align-items:center;
+  justify-content:space-between;padding:12px 14px;background:#111111;
 }
 
 .photoEditorHeaderButton{
-  border:0;
-  background:none;
-  color:#ffffff;
-  font-size:15px;
-  font-weight:bold;
-  padding:4px 8px;
-  cursor:pointer;
+  border:0;background:none;color:#ffffff;
+  font-size:15px;font-weight:bold;padding:4px 8px;cursor:pointer;
 }
 
-.photoEditorDoneButton{
-  color:#4fb0ff;
-}
-
-.photoEditorCounterText{
-  color:#cccccc;
-  font-size:12px;
-}
+.photoEditorDoneButton{color:#4fb0ff}
+.photoEditorCounterText{color:#cccccc;font-size:12px}
 
 .photoEditorImageArea{
-  flex:1 1 auto;
-  position:relative;
-  overflow:hidden;
-  min-height:0;
-  background:#000000;
+  flex:1 1 auto;position:relative;overflow:hidden;
+  min-height:0;background:#000000;
 }
 
-.photoEditorImageArea img{
-  display:block;
-  max-width:100%;
-}
+.photoEditorImageArea img{display:block;max-width:100%}
 
 .photoEditorToolbar{
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 12px;
-  overflow-x:auto;
-  background:#111111;
+  flex:0 0 auto;display:flex;align-items:center;gap:8px;
+  padding:10px 12px;overflow-x:auto;background:#111111;
 }
 
 .photoEditorToolButton{
-  flex:0 0 auto;
-  padding:8px 12px;
-  border:1px solid rgba(255,255,255,.3);
-  border-radius:18px;
-  background:transparent;
-  color:#ffffff;
-  font-size:13px;
-  cursor:pointer;
-  white-space:nowrap;
+  flex:0 0 auto;padding:8px 12px;
+  border:1px solid rgba(255,255,255,.3);border-radius:18px;
+  background:transparent;color:#ffffff;font-size:13px;
+  cursor:pointer;white-space:nowrap;
 }
 
-.photoEditorAspectButton.active{
-  background:#1877f2;
-  border-color:#1877f2;
-}
+.photoEditorAspectButton.active{background:#1877f2;border-color:#1877f2}
 
-.photoEditorSkipButton{
-  margin-left:auto;
-  color:#ffb703;
-  border-color:rgba(255,183,3,.4);
-}
+.photoEditorSkipButton{margin-left:auto;color:#ffb703;border-color:rgba(255,183,3,.4)}
 
 
-/* =====================================================
-   BUTTONS & FOOTER ACTIONS
-===================================================== */
+/* ---------- BUTTONS ---------- */
 
-.action-card{
-  background:#ffffff;
-  padding:12px 14px;
-  border-bottom:1px solid #e4e6eb;
-}
+.action-card{background:#ffffff;padding:12px 14px;border-bottom:1px solid #e4e6eb}
 
 .publish-button{
-  width:100%;
-  margin-top:0;
-  padding:10px 16px;
-  border:none;
-  border-radius:6px;
-  background:#1877f2;
-  color:#ffffff;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:background .2s;
+  width:100%;padding:10px 16px;border:none;border-radius:6px;
+  background:#1877f2;color:#ffffff;
+  font-size:15px;font-weight:bold;cursor:pointer;transition:background .2s;
 }
 
-.publish-button:hover{
-  background:#166fe5;
-}
-
-.publish-button:disabled{
-  background:#e4e6eb;
-  color:#8d949e;
-  cursor:not-allowed;
-}
+.publish-button:hover{background:#166fe5}
+.publish-button:disabled{background:#e4e6eb;color:#8d949e;cursor:not-allowed}
 
 .remove-media-button{
-  margin-top:10px;
-  padding:7px 12px;
-  border:none;
-  border-radius:6px;
-  background:#fdecec;
-  color:#b00020;
-  font-size:13px;
-  font-weight:bold;
-  cursor:pointer;
+  margin-top:10px;padding:7px 12px;border:none;border-radius:6px;
+  background:#fdecec;color:#b00020;
+  font-size:13px;font-weight:bold;cursor:pointer;
 }
 
-.remove-media-button:hover{
-  background:#fcd1d1;
-}
+.remove-media-button:hover{background:#fcd1d1}
 
-.back{
-  margin-top:16px;
-  text-align:center;
-  padding:0 14px;
-}
-
-.back a{
-  display:block;
-  text-decoration:none;
-}
+.back{margin-top:16px;text-align:center;padding:0 14px}
+.back a{display:block;text-decoration:none}
 
 .back-button{
-  display:block;
-  width:100%;
-  margin-top:0;
-  padding:10px 16px;
-  border:1px solid #ccd0d5;
-  border-radius:8px;
-  background:#ffffff;
-  color:#050505;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:background .2s;
+  display:block;width:100%;padding:10px 16px;
+  border:1px solid #ccd0d5;border-radius:8px;
+  background:#ffffff;color:#050505;
+  font-size:14px;font-weight:bold;cursor:pointer;transition:background .2s;
 }
 
-.back-button:hover{
-  background:#f0f2f5;
-}
+.back-button:hover{background:#f0f2f5}
 
 
-/* =====================================================
-   UPLOAD PROGRESS
-===================================================== */
+/* ---------- UPLOAD PROGRESS ---------- */
 
 #uploadArea{
-  display:none;
-  margin-top:0;
-  padding:12px 14px;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
+  display:none;padding:12px 14px;
+  background:#ffffff;border-bottom:1px solid #e4e6eb;
 }
 
 .progress-container{
-  width:100%;
-  height:10px;
-  overflow:hidden;
-  background:#e4e6eb;
-  border-radius:20px;
+  width:100%;height:10px;overflow:hidden;
+  background:#e4e6eb;border-radius:20px;
 }
 
-#uploadProgress{
-  width:0%;
-  height:100%;
-  background:#1877f2;
-  transition:width .2s ease;
-}
+#uploadProgress{width:0%;height:100%;background:#1877f2;transition:width .2s ease}
 
-#uploadText{
-  margin:6px 0 0;
-  color:#65676b;
-  font-size:12px;
-  text-align:center;
-}
+#uploadText{margin:6px 0 0;color:#65676b;font-size:12px;text-align:center}
 
 
-/* =====================================================
-   SUCCESS AND ERROR MESSAGES
-===================================================== */
+/* ---------- MESSAGES ---------- */
 
 #message{
-  min-height:20px;
-  margin-top:0;
-  padding:10px 14px;
-  font-size:13px;
-  font-weight:bold;
-  line-height:1.4;
-  text-align:center;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
+  min-height:20px;padding:10px 14px;
+  font-size:13px;font-weight:bold;line-height:1.4;text-align:center;
+  background:#ffffff;border-bottom:1px solid #e4e6eb;
 }
 
-.success-message{
-  color:#31a24c;
-  background:#eaf7ee !important;
-}
-
-.error-message{
-  color:#b00020;
-  background:#fdecec !important;
-}
+.success-message{color:#31a24c;background:#eaf7ee !important}
+.error-message{color:#b00020;background:#fdecec !important}
+.info-message{color:#1877f2;background:#e7f3ff !important}
 
 
-/* =====================================================
-   MOBILE DESIGN
-===================================================== */
+/* ---------- MOBILE ---------- */
 
 @media(max-width:600px){
-
-  body{
-    padding:0;
-  }
-
-  .container{
-    padding:0;
-    border-radius:0;
-  }
-
-  .header{
-    padding:12px;
-  }
-
-  h1{
-    font-size:18px;
-  }
-
-  textarea{
-    min-height:120px;
-  }
-
+  .header{padding:12px}
+  h1{font-size:18px}
+  textarea{min-height:120px}
 }
 
-
 @media(max-width:480px){
-
-  .media-picker-buttons{
-    grid-template-columns:1fr;
-  }
-
-  #imagePreviewGrid{
-    grid-template-columns:repeat(3,1fr);
-  }
-
+  .media-picker-buttons{grid-template-columns:1fr}
 }
 
 </style>
@@ -685,294 +346,152 @@ textarea{
 
 <div class="container">
 
-<!-- =====================================================
-     PAGE HEADING
-===================================================== -->
+<!-- HEADING -->
 
 <div class="header">
-<h1>
-✍️ Create a Post
-</h1>
-
-<p class="page-description">
-Share encouragement, Bible verses, testimonies, and photos with the community.
-</p>
+  <h1>✍️ Create a Post</h1>
+  <p class="page-description">
+    Share encouragement, Bible verses, testimonies, and photos with the community.
+  </p>
 </div>
 
 
 <div class="form-body">
-<!-- =====================================================
-     YOUR NAME
-===================================================== -->
 
-<label for="name">
-Your Name
-</label>
+  <label for="name">Your Name</label>
+  <input type="text" id="name" placeholder="Enter your name" autocomplete="name">
 
-<input
-  type="text"
-  id="name"
-  placeholder="Enter your name"
-  autocomplete="name"
->
+  <label for="category">Category</label>
+  <select id="category">
+    <option value="Encouragement">Encouragement</option>
+    <option value="Bible Verse">Bible Verse</option>
+    <option value="Prayer Request">Prayer Request</option>
+    <option value="Testimony">Testimony</option>
+    <option value="Announcement">Announcement</option>
+    <option value="Question">Question</option>
+  </select>
 
+  <label for="post">Your Post</label>
+  <textarea id="post" maxlength="5000" placeholder="What's on your mind?"></textarea>
 
-<!-- =====================================================
-     POST CATEGORY
-===================================================== -->
+  <!-- EMOJI -->
 
-<label for="category">
-Category
-</label>
+  <div class="emojiToolbarRow">
 
-<select id="category">
+    <button
+      id="emojiToggleButton"
+      type="button"
+      class="emojiToggleButton"
+      aria-label="Open emoji picker"
+      title="Emoji"
+    >😊</button>
 
-<option value="Encouragement">
-Encouragement
-</option>
+    <div id="emojiPicker" class="emojiPicker">
+      <button type="button">😀</button>
+      <button type="button">😁</button>
+      <button type="button">😂</button>
+      <button type="button">🤣</button>
+      <button type="button">😊</button>
+      <button type="button">😍</button>
 
-<option value="Bible Verse">
-Bible Verse
-</option>
+      <button type="button">🥰</button>
+      <button type="button">😘</button>
+      <button type="button">😇</button>
+      <button type="button">🙏</button>
+      <button type="button">❤️</button>
+      <button type="button">👍</button>
 
-<option value="Prayer Request">
-Prayer Request
-</option>
+      <button type="button">👏</button>
+      <button type="button">🔥</button>
+      <button type="button">🎉</button>
+      <button type="button">💪</button>
+      <button type="button">🙌</button>
+      <button type="button">🤝</button>
 
-<option value="Testimony">
-Testimony
-</option>
+      <button type="button">📖</button>
+      <button type="button">✝️</button>
+      <button type="button">⛪</button>
+      <button type="button">🕊️</button>
+      <button type="button">🌍</button>
+      <button type="button">🌞</button>
 
-<option value="Announcement">
-Announcement
-</option>
-
-<option value="Question">
-Question
-</option>
-
-</select>
-
-
-<!-- =====================================================
-     POST MESSAGE
-===================================================== -->
-
-<label for="post">
-Your Post
-</label>
-
-<textarea
-  id="post"
-  maxlength="5000"
-  placeholder="What's on your mind?"
-></textarea>
-
-
-<!-- =====================================================
-     EMOJI TOOLBAR
-===================================================== -->
-
-<div class="emojiToolbarRow">
-
-  <button
-    id="emojiToggleButton"
-    type="button"
-    class="emojiToggleButton"
-    aria-label="Open emoji picker"
-    title="Emoji"
-  >
-    😊
-  </button>
-
-
-  <div
-    id="emojiPicker"
-    class="emojiPicker"
-  >
-
-    <button type="button">😀</button>
-    <button type="button">😁</button>
-    <button type="button">😂</button>
-    <button type="button">🤣</button>
-    <button type="button">😊</button>
-    <button type="button">😍</button>
-
-    <button type="button">🥰</button>
-    <button type="button">😘</button>
-    <button type="button">😇</button>
-    <button type="button">🙏</button>
-    <button type="button">❤️</button>
-    <button type="button">👍</button>
-
-    <button type="button">👏</button>
-    <button type="button">🔥</button>
-    <button type="button">🎉</button>
-    <button type="button">💪</button>
-    <button type="button">🙌</button>
-    <button type="button">🤝</button>
-
-    <button type="button">📖</button>
-    <button type="button">✝️</button>
-    <button type="button">⛪</button>
-    <button type="button">🕊️</button>
-    <button type="button">🌍</button>
-    <button type="button">🌞</button>
-
-    <button type="button">😢</button>
-    <button type="button">😭</button>
-    <button type="button">😔</button>
-    <button type="button">🤗</button>
-    <button type="button">💖</button>
-    <button type="button">✨</button>
+      <button type="button">😢</button>
+      <button type="button">😭</button>
+      <button type="button">😔</button>
+      <button type="button">🤗</button>
+      <button type="button">💖</button>
+      <button type="button">✨</button>
+    </div>
 
   </div>
 
 </div>
-</div>
 
 
-<!-- =====================================================
-     PHOTO OR VIDEO
-===================================================== -->
+<!-- PHOTO OR VIDEO -->
 
 <div class="media-options">
 
-<p class="media-options-title">
-Add Photos or a Video
-</p>
+  <p class="media-options-title">Add Photos or a Video</p>
 
-<div class="media-picker-buttons">
+  <div class="media-picker-buttons">
+    <button type="button" id="choosePhotoBtn" class="media-picker-button">📷 Choose Photos</button>
+    <button type="button" id="chooseVideoBtn" class="media-picker-button">🎥 Choose Video</button>
+  </div>
 
-<button
-  type="button"
-  id="choosePhotoBtn"
-  class="media-picker-button"
->
-📷 Choose Photos
-</button>
+  <input type="file" id="mediaFile" accept="image/*,video/*" hidden>
 
-<button
-  type="button"
-  id="chooseVideoBtn"
-  class="media-picker-button"
->
-🎥 Choose Video
-</button>
+  <p class="media-help">
+    Up to 10 photos or 1 video. Photos max 10MB each. Videos max 100MB.
+  </p>
 
 </div>
 
 
-<input
-  type="file"
-  id="mediaFile"
-  accept="image/*,video/*"
-  hidden
->
-
-
-<p class="media-help">
-Up to 10 photos or 1 video. Photos max 10MB each. Videos max 100MB.
-</p>
-
-</div>
-
-
-<!-- =====================================================
-     MEDIA PREVIEW
-===================================================== -->
+<!-- PREVIEW -->
 
 <div id="mediaPreview">
-
-<div id="imagePreviewGrid"></div>
-
-<div id="previewContent"></div>
-
-<p
-  id="previewFileName"
-  class="preview-name"
-></p>
-
-<button
-  type="button"
-  id="removeMediaBtn"
-  class="remove-media-button"
->
-❌ Remove Media
-</button>
-
+  <div id="imagePreviewGrid"></div>
+  <div id="previewContent"></div>
+  <p id="previewFileName" class="preview-name"></p>
+  <button type="button" id="removeMediaBtn" class="remove-media-button">❌ Remove Media</button>
 </div>
 
 
-<!-- =====================================================
-     UPLOAD PROGRESS
-===================================================== -->
+<!-- UPLOAD PROGRESS -->
 
 <div id="uploadArea">
-
-<div class="progress-container">
-
-<div id="uploadProgress"></div>
-
-</div>
-
-<p id="uploadText">
-Preparing upload...
-</p>
-
+  <div class="progress-container">
+    <div id="uploadProgress"></div>
+  </div>
+  <p id="uploadText">Preparing upload...</p>
 </div>
 
 
-<!-- =====================================================
-     STATUS MESSAGE
-===================================================== -->
+<!-- STATUS MESSAGE -->
 
-<p
-  id="message"
-  aria-live="polite"
-></p>
+<p id="message" aria-live="polite"></p>
 
 
-<!-- =====================================================
-     PUBLISH BUTTON
-===================================================== -->
+<!-- PUBLISH -->
 
 <div class="action-card">
-<button
-  type="button"
-  id="publishBtn"
-  class="publish-button"
->
-📢 Publish Post
-</button>
+  <button type="button" id="publishBtn" class="publish-button">📢 Publish Post</button>
 </div>
 
 
-<!-- =====================================================
-     BACK BUTTON
-===================================================== -->
+<!-- BACK -->
 
 <div class="back">
-
-<a href="feed.html">
-
-<button
-  type="button"
-  class="back-button"
->
-⬅ Back to Community Wall
-</button>
-
-</a>
-
+  <a href="feed.html">
+    <button type="button" class="back-button">⬅ Back to Community Wall</button>
+  </a>
 </div>
 
 </div>
 
 
-<!-- =====================================================
-     PHOTO EDITOR MODAL
-===================================================== -->
+<!-- PHOTO EDITOR MODAL -->
 
 <div
   id="photoEditorModal"
@@ -983,111 +502,35 @@ Preparing upload...
   aria-label="Edit photo"
 >
 
-<div class="photoEditorHeader">
+  <div class="photoEditorHeader">
+    <button type="button" id="photoEditorCancelButton" class="photoEditorHeaderButton">✕</button>
+    <span id="photoEditorCounter" class="photoEditorCounterText"></span>
+    <button type="button" id="photoEditorDoneButton" class="photoEditorHeaderButton photoEditorDoneButton">✓ Done</button>
+  </div>
 
-<button
-  type="button"
-  id="photoEditorCancelButton"
-  class="photoEditorHeaderButton"
->
-✕
-</button>
+  <div class="photoEditorImageArea">
+    <img id="photoEditorImage" src="" alt="Photo being edited">
+  </div>
 
-<span
-  id="photoEditorCounter"
-  class="photoEditorCounterText"
-></span>
+  <div class="photoEditorToolbar">
+    <button type="button" id="photoEditorRotateLeftButton" class="photoEditorToolButton" title="Rotate left">⟲</button>
+    <button type="button" id="photoEditorRotateRightButton" class="photoEditorToolButton" title="Rotate right">⟳</button>
 
-<button
-  type="button"
-  id="photoEditorDoneButton"
-  class="photoEditorHeaderButton photoEditorDoneButton"
->
-✓ Done
-</button>
+    <button type="button" class="photoEditorToolButton photoEditorAspectButton active" data-ratio="free">Free</button>
+    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1">1:1</button>
+    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="0.8">4:5</button>
+    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1.7778">16:9</button>
 
-</div>
-
-
-<div class="photoEditorImageArea">
-
-<img
-  id="photoEditorImage"
-  src=""
-  alt="Photo being edited"
->
-
-</div>
-
-
-<div class="photoEditorToolbar">
-
-<button
-  type="button"
-  id="photoEditorRotateLeftButton"
-  class="photoEditorToolButton"
-  title="Rotate left"
->
-⟲
-</button>
-
-<button
-  type="button"
-  id="photoEditorRotateRightButton"
-  class="photoEditorToolButton"
-  title="Rotate right"
->
-⟳
-</button>
-
-<button
-  type="button"
-  class="photoEditorToolButton photoEditorAspectButton active"
-  data-ratio="free"
->
-Free
-</button>
-
-<button
-  type="button"
-  class="photoEditorToolButton photoEditorAspectButton"
-  data-ratio="1"
->
-1:1
-</button>
-
-<button
-  type="button"
-  class="photoEditorToolButton photoEditorAspectButton"
-  data-ratio="0.8"
->
-4:5
-</button>
-
-<button
-  type="button"
-  class="photoEditorToolButton photoEditorAspectButton"
-  data-ratio="1.7778"
->
-16:9
-</button>
-
-<button
-  type="button"
-  id="photoEditorSkipButton"
-  class="photoEditorToolButton photoEditorSkipButton"
->
-Skip editing
-</button>
-
-</div>
+    <button type="button" id="photoEditorSkipButton" class="photoEditorToolButton photoEditorSkipButton">Skip editing</button>
+  </div>
 
 </div>
 
 
 <script type="module">
+
 /* =====================================================
-   FIREBASE IMPORTS & IMAGEKIT SETUP
+   FIREBASE + IMAGEKIT
 ===================================================== */
 
 import {
@@ -1100,35 +543,35 @@ import {
   onAuthStateChanged
 } from "./firebase.js";
 
-
 import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
-const imagekitPublicKey =
-"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
-
-const imagekitUrlEndpoint =
-"https://ik.imagekit.io/f5si9ehav";
-
-const imagekitAuthEndpoint =
-"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
-
-const imagekitUploadUrl =
-"https://upload.imagekit.io/api/v1/files/upload";
-
+const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
 
 const MAXIMUM_PHOTOS_PER_POST = 10;
+const MAXIMUM_PHOTO_BYTES = 10 * 1024 * 1024;
+const MAXIMUM_VIDEO_BYTES = 100 * 1024 * 1024;
+const AUTH_TIMEOUT_MS = 15000;
+
+
+/* =====================================================
+   STATE
+===================================================== */
 
 let currentUser = null;
 let currentProfile = {};
+
 let selectedImageFiles = [];
 let selectedImagePreviewUrls = [];
 let selectedVideoFile = null;
 let selectedVideoPreviewUrl = "";
 let selectedMediaType = "none";
 let activeUploadRequest = null;
+let isPublishing = false;
 
 let photoEditorCropper = null;
 let photoEditorMode = "queue";
@@ -1139,168 +582,233 @@ let photoEditQueuePosition = 0;
 let photoEditorActiveObjectUrl = "";
 
 
-const nameInput = document.getElementById("name");
-const categoryInput = document.getElementById("category");
-const postInput = document.getElementById("post");
-const emojiToggleButton = document.getElementById("emojiToggleButton");
-const emojiPicker = document.getElementById("emojiPicker");
-const mediaFileInput = document.getElementById("mediaFile");
-const choosePhotoBtn = document.getElementById("choosePhotoBtn");
-const chooseVideoBtn = document.getElementById("chooseVideoBtn");
-const mediaPreview = document.getElementById("mediaPreview");
-const imagePreviewGrid = document.getElementById("imagePreviewGrid");
-const previewContent = document.getElementById("previewContent");
-const previewFileName = document.getElementById("previewFileName");
-const removeMediaBtn = document.getElementById("removeMediaBtn");
-const uploadArea = document.getElementById("uploadArea");
-const uploadProgress = document.getElementById("uploadProgress");
-const uploadText = document.getElementById("uploadText");
-const publishBtn = document.getElementById("publishBtn");
-const messageElement = document.getElementById("message");
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-const photoEditorModal = document.getElementById("photoEditorModal");
-const photoEditorImage = document.getElementById("photoEditorImage");
-const photoEditorCounter = document.getElementById("photoEditorCounter");
-const photoEditorCancelButton = document.getElementById("photoEditorCancelButton");
-const photoEditorDoneButton = document.getElementById("photoEditorDoneButton");
-const photoEditorSkipButton = document.getElementById("photoEditorSkipButton");
-const photoEditorRotateLeftButton = document.getElementById("photoEditorRotateLeftButton");
-const photoEditorRotateRightButton = document.getElementById("photoEditorRotateRightButton");
+const $ = (id) => document.getElementById(id);
+
+const nameInput = $("name");
+const categoryInput = $("category");
+const postInput = $("post");
+const emojiToggleButton = $("emojiToggleButton");
+const emojiPicker = $("emojiPicker");
+const mediaFileInput = $("mediaFile");
+const choosePhotoBtn = $("choosePhotoBtn");
+const chooseVideoBtn = $("chooseVideoBtn");
+const mediaPreview = $("mediaPreview");
+const imagePreviewGrid = $("imagePreviewGrid");
+const previewContent = $("previewContent");
+const previewFileName = $("previewFileName");
+const removeMediaBtn = $("removeMediaBtn");
+const uploadArea = $("uploadArea");
+const uploadProgress = $("uploadProgress");
+const uploadText = $("uploadText");
+const publishBtn = $("publishBtn");
+const messageElement = $("message");
+
+const photoEditorModal = $("photoEditorModal");
+const photoEditorImage = $("photoEditorImage");
+const photoEditorCounter = $("photoEditorCounter");
+const photoEditorCancelButton = $("photoEditorCancelButton");
+const photoEditorDoneButton = $("photoEditorDoneButton");
+const photoEditorSkipButton = $("photoEditorSkipButton");
+const photoEditorRotateLeftButton = $("photoEditorRotateLeftButton");
+const photoEditorRotateRightButton = $("photoEditorRotateRightButton");
 const photoEditorAspectButtons = document.querySelectorAll(".photoEditorAspectButton");
 
 
-function getFirstValue(...values){
-  for(const value of values){
-    if(value !== undefined && value !== null && String(value).trim() !== ""){
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function getFirstValue(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && String(value).trim() !== "") {
       return String(value).trim();
     }
   }
   return "";
 }
 
-function showMessage(message, type = "error"){
+function showMessage(message, type = "error") {
   messageElement.textContent = message;
-  messageElement.className = type === "success" ? "success-message" : "error-message";
+  messageElement.className =
+    type === "success" ? "success-message" :
+    type === "info" ? "info-message" :
+    "error-message";
 }
 
-function clearMessage(){
+function clearMessage() {
   messageElement.textContent = "";
   messageElement.className = "";
 }
 
-function resetUploadDisplay(){
+function resetUploadDisplay() {
   uploadArea.style.display = "none";
   uploadProgress.style.width = "0%";
   uploadText.textContent = "Preparing upload...";
 }
 
-function enablePublishButton(){
-  publishBtn.disabled = false;
-  publishBtn.textContent = "📢 Publish Post";
+function setPublishing(active) {
+  isPublishing = active;
+  publishBtn.disabled = active;
+  publishBtn.textContent = active ? "Publishing..." : "📢 Publish Post";
+  choosePhotoBtn.disabled = active;
+  chooseVideoBtn.disabled = active;
 }
 
-function disablePublishButton(){
-  publishBtn.disabled = true;
-  publishBtn.textContent = "Publishing...";
+/* Checks that this device can actually play the chosen video */
+function canBrowserPlayVideo(file) {
+  return new Promise((resolve) => {
+    const v = document.createElement("video");
+    const url = URL.createObjectURL(file);
+    let finished = false;
+
+    const done = (ok) => {
+      if (finished) return;
+      finished = true;
+      URL.revokeObjectURL(url);
+      resolve(ok);
+    };
+
+    v.preload = "metadata";
+    v.muted = true;
+    v.onloadedmetadata = () => done(v.videoWidth > 0);
+    v.onerror = () => done(false);
+    setTimeout(() => done(false), 8000);
+    v.src = url;
+  });
 }
 
 
-emojiToggleButton.addEventListener("click", function(event){
+/* =====================================================
+   EMOJI PICKER
+===================================================== */
+
+emojiToggleButton.addEventListener("click", (event) => {
   event.stopPropagation();
   emojiPicker.classList.toggle("show");
 });
 
-
-emojiPicker.querySelectorAll("button").forEach(function(emojiOption){
-  emojiOption.addEventListener("click", function(){
+emojiPicker.querySelectorAll("button").forEach((emojiOption) => {
+  emojiOption.addEventListener("click", () => {
     const emoji = emojiOption.textContent;
-    const selectionStart = postInput.selectionStart ?? postInput.value.length;
-    const selectionEnd = postInput.selectionEnd ?? postInput.value.length;
-    postInput.value = postInput.value.slice(0, selectionStart) + emoji + postInput.value.slice(selectionEnd);
-    const newPos = selectionStart + emoji.length;
+    const start = postInput.selectionStart ?? postInput.value.length;
+    const end = postInput.selectionEnd ?? postInput.value.length;
+
+    postInput.value = postInput.value.slice(0, start) + emoji + postInput.value.slice(end);
+
+    const newPosition = start + emoji.length;
     postInput.focus();
-    postInput.setSelectionRange(newPos, newPos);
+    postInput.setSelectionRange(newPosition, newPosition);
     emojiPicker.classList.remove("show");
   });
 });
 
-
-document.addEventListener("click", function(event){
-  if(!emojiPicker.contains(event.target) && event.target !== emojiToggleButton){
+document.addEventListener("click", (event) => {
+  if (!emojiPicker.contains(event.target) && event.target !== emojiToggleButton) {
     emojiPicker.classList.remove("show");
   }
 });
 
 
-async function loadCurrentProfile(){
+/* =====================================================
+   PROFILE + AUTH
+===================================================== */
+
+async function loadCurrentProfile() {
   currentProfile = {};
-  if(!currentUser) return;
-  try{
-    const profileSnapshot = await getDoc(doc(db, "users", currentUser.uid));
-    if(profileSnapshot.exists()){
-      currentProfile = profileSnapshot.data();
-      const savedName = getFirstValue(currentProfile.name, currentProfile.fullName, currentProfile.displayName, currentUser.displayName);
-      if(savedName) nameInput.value = savedName;
+  if (!currentUser) return;
+
+  try {
+    const snapshot = await getDoc(doc(db, "users", currentUser.uid));
+
+    if (snapshot.exists()) {
+      currentProfile = snapshot.data();
+
+      const savedName = getFirstValue(
+        currentProfile.name, currentProfile.fullName,
+        currentProfile.displayName, currentUser.displayName
+      );
+
+      if (savedName) nameInput.value = savedName;
     }
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
 }
 
-
-onAuthStateChanged(auth, async function(user){
-  if(!user){
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
     window.location.replace("login.html");
     return;
   }
+
   currentUser = user;
   await loadCurrentProfile();
 });
 
 
-function openMediaPicker(mediaType){
+/* =====================================================
+   MEDIA PICKER
+===================================================== */
+
+function openMediaPicker(mediaType) {
   clearMessage();
   mediaFileInput.value = "";
-  if(mediaType === "image"){
+
+  if (mediaType === "image") {
     mediaFileInput.accept = "image/*";
     mediaFileInput.multiple = true;
-  } else if(mediaType === "video"){
+  } else if (mediaType === "video") {
     mediaFileInput.accept = "video/*";
     mediaFileInput.multiple = false;
   } else {
     mediaFileInput.accept = "image/*,video/*";
     mediaFileInput.multiple = false;
   }
+
   mediaFileInput.click();
 }
-
 
 choosePhotoBtn.addEventListener("click", () => openMediaPicker("image"));
 chooseVideoBtn.addEventListener("click", () => openMediaPicker("video"));
 
 
-function destroyPhotoEditorCropper(){
-  if(photoEditorCropper){
+/* =====================================================
+   PHOTO EDITOR
+===================================================== */
+
+function destroyPhotoEditorCropper() {
+  if (photoEditorCropper) {
     photoEditorCropper.destroy();
     photoEditorCropper = null;
   }
-  if(photoEditorActiveObjectUrl){
+
+  if (photoEditorActiveObjectUrl) {
     URL.revokeObjectURL(photoEditorActiveObjectUrl);
     photoEditorActiveObjectUrl = "";
   }
 }
 
-
-function openPhotoEditorModal(imageUrl, counterText, showSkipButton){
+function openPhotoEditorModal(imageUrl, counterText, showSkipButton) {
   photoEditorCounter.textContent = counterText;
   photoEditorSkipButton.style.display = showSkipButton ? "inline-block" : "none";
-  photoEditorAspectButtons.forEach(b => b.classList.toggle("active", b.dataset.ratio === "free"));
+
+  photoEditorAspectButtons.forEach((b) =>
+    b.classList.toggle("active", b.dataset.ratio === "free")
+  );
+
   photoEditorModal.classList.add("show");
   photoEditorModal.setAttribute("aria-hidden", "false");
+
   destroyPhotoEditorCropper();
+
   photoEditorActiveObjectUrl = imageUrl;
   photoEditorImage.src = imageUrl;
-  photoEditorImage.onload = function(){
+
+  photoEditorImage.onload = () => {
     photoEditorCropper = new Cropper(photoEditorImage, {
       viewMode: 1,
       dragMode: "move",
@@ -1312,37 +820,42 @@ function openPhotoEditorModal(imageUrl, counterText, showSkipButton){
   };
 }
 
-
-function closePhotoEditorModal(){
+function closePhotoEditorModal() {
   photoEditorModal.classList.remove("show");
   photoEditorModal.setAttribute("aria-hidden", "true");
   destroyPhotoEditorCropper();
 }
 
+function getCroppedImageFile(originalFile) {
+  return new Promise((resolve) => {
+    if (!photoEditorCropper) {
+      resolve(originalFile);
+      return;
+    }
 
-function getCroppedImageFile(originalFile){
-  return new Promise(function(resolve){
-    if(!photoEditorCropper){
+    const canvas = photoEditorCropper.getCroppedCanvas({
+      maxWidth: 2048,
+      maxHeight: 2048,
+      imageSmoothingQuality: "high"
+    });
+
+    if (!canvas) {
       resolve(originalFile);
       return;
     }
-    const canvas = photoEditorCropper.getCroppedCanvas({ maxWidth: 2048, maxHeight: 2048, imageSmoothingQuality: "high" });
-    if(!canvas){
-      resolve(originalFile);
-      return;
-    }
-    canvas.toBlob(function(blob){
-      if(!blob){
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
         resolve(originalFile);
         return;
       }
+
       resolve(new File([blob], originalFile.name, { type: "image/jpeg" }));
     }, "image/jpeg", 0.9);
   });
 }
 
-
-function startPhotoEditQueue(files){
+function startPhotoEditQueue(files) {
   photoEditorMode = "queue";
   photoEditQueueFiles = files;
   photoEditQueueEditedFiles = [];
@@ -1350,127 +863,174 @@ function startPhotoEditQueue(files){
   showNextQueuedPhotoInEditor();
 }
 
-
-function showNextQueuedPhotoInEditor(){
-  if(photoEditQueuePosition >= photoEditQueueFiles.length){
+function showNextQueuedPhotoInEditor() {
+  if (photoEditQueuePosition >= photoEditQueueFiles.length) {
     closePhotoEditorModal();
     finishPhotoEditQueue();
     return;
   }
+
   const file = photoEditQueueFiles[photoEditQueuePosition];
-  const temporaryUrl = URL.createObjectURL(file);
-  openPhotoEditorModal(temporaryUrl, `Edit photo ${photoEditQueuePosition + 1} of ${photoEditQueueFiles.length}`, true);
+
+  openPhotoEditorModal(
+    URL.createObjectURL(file),
+    `Edit photo ${photoEditQueuePosition + 1} of ${photoEditQueueFiles.length}`,
+    true
+  );
 }
 
-
-function finishPhotoEditQueue(){
+function finishPhotoEditQueue() {
   selectedImageFiles = photoEditQueueEditedFiles;
-  selectedImagePreviewUrls = selectedImageFiles.map(file => URL.createObjectURL(file));
+  selectedImagePreviewUrls = selectedImageFiles.map((file) => URL.createObjectURL(file));
   selectedMediaType = selectedImageFiles.length > 0 ? "image" : "none";
-  if(selectedImageFiles.length === 0){
+
+  if (selectedImageFiles.length === 0) {
     clearSelectedMedia();
     return;
   }
+
   showMediaPreview();
 }
 
-
-function openPhotoEditorForIndex(index){
+function openPhotoEditorForIndex(index) {
   photoEditorMode = "single";
   photoEditorSingleIndex = index;
-  const file = selectedImageFiles[index];
-  if(!file) return;
-  const temporaryUrl = URL.createObjectURL(file);
-  openPhotoEditorModal(temporaryUrl, `Edit photo ${index + 1} of ${selectedImageFiles.length}`, false);
-}
 
+  const file = selectedImageFiles[index];
+  if (!file) return;
+
+  openPhotoEditorModal(
+    URL.createObjectURL(file),
+    `Edit photo ${index + 1} of ${selectedImageFiles.length}`,
+    false
+  );
+}
 
 photoEditorRotateLeftButton.addEventListener("click", () => photoEditorCropper?.rotate(-90));
 photoEditorRotateRightButton.addEventListener("click", () => photoEditorCropper?.rotate(90));
 
-photoEditorAspectButtons.forEach(button => {
-  button.addEventListener("click", function(){
-    photoEditorAspectButtons.forEach(b => b.classList.remove("active"));
+photoEditorAspectButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    photoEditorAspectButtons.forEach((b) => b.classList.remove("active"));
     button.classList.add("active");
-    if(photoEditorCropper){
+
+    if (photoEditorCropper) {
       const ratio = button.dataset.ratio;
       photoEditorCropper.setAspectRatio(ratio === "free" ? NaN : parseFloat(ratio));
     }
   });
 });
 
-photoEditorCancelButton.addEventListener("click", function(){
-  if(photoEditorMode === "queue"){
-    if(!window.confirm("Discard selected photos?")) return;
+photoEditorCancelButton.addEventListener("click", () => {
+  if (photoEditorMode === "queue") {
+    if (!window.confirm("Discard selected photos?")) return;
+
     closePhotoEditorModal();
     photoEditQueueFiles = [];
     photoEditQueueEditedFiles = [];
     return;
   }
+
   closePhotoEditorModal();
 });
 
-photoEditorSkipButton.addEventListener("click", function(){
-  if(photoEditorMode !== "queue") return;
+photoEditorSkipButton.addEventListener("click", () => {
+  if (photoEditorMode !== "queue") return;
+
   photoEditQueueEditedFiles.push(photoEditQueueFiles[photoEditQueuePosition]);
   photoEditQueuePosition++;
   closePhotoEditorModal();
   showNextQueuedPhotoInEditor();
 });
 
-photoEditorDoneButton.addEventListener("click", async function(){
-  if(photoEditorMode === "queue"){
-    const editedFile = await getCroppedImageFile(photoEditQueueFiles[photoEditQueuePosition]);
-    photoEditQueueEditedFiles.push(editedFile);
+photoEditorDoneButton.addEventListener("click", async () => {
+  if (photoEditorMode === "queue") {
+    const edited = await getCroppedImageFile(photoEditQueueFiles[photoEditQueuePosition]);
+    photoEditQueueEditedFiles.push(edited);
     photoEditQueuePosition++;
     closePhotoEditorModal();
     showNextQueuedPhotoInEditor();
     return;
   }
-  const originalFile = selectedImageFiles[photoEditorSingleIndex];
-  if(!originalFile){
+
+  const original = selectedImageFiles[photoEditorSingleIndex];
+
+  if (!original) {
     closePhotoEditorModal();
     return;
   }
-  const editedFile = await getCroppedImageFile(originalFile);
+
+  const edited = await getCroppedImageFile(original);
+
   URL.revokeObjectURL(selectedImagePreviewUrls[photoEditorSingleIndex]);
-  selectedImageFiles[photoEditorSingleIndex] = editedFile;
-  selectedImagePreviewUrls[photoEditorSingleIndex] = URL.createObjectURL(editedFile);
+  selectedImageFiles[photoEditorSingleIndex] = edited;
+  selectedImagePreviewUrls[photoEditorSingleIndex] = URL.createObjectURL(edited);
+
   closePhotoEditorModal();
   showMediaPreview();
 });
 
 
-mediaFileInput.addEventListener("change", function(event){
+/* =====================================================
+   FILE SELECTION
+===================================================== */
+
+mediaFileInput.addEventListener("change", async (event) => {
   clearMessage();
+
   const files = Array.from(event.target.files || []);
-  if(files.length === 0) return;
+  if (files.length === 0) return;
+
   const firstFile = files[0];
   const isImageBatch = firstFile.type.startsWith("image/");
   const isVideo = files.length === 1 && firstFile.type.startsWith("video/");
 
-  if(!isImageBatch && !isVideo){
+  if (!isImageBatch && !isVideo) {
     showMessage("Please select valid photos or a video.");
     return;
   }
 
-  if(isImageBatch){
+  /* ----- PHOTOS ----- */
+  if (isImageBatch) {
     clearSelectedMedia();
-    const validFiles = files.filter(f => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024);
-    let filesToUse = validFiles.slice(0, MAXIMUM_PHOTOS_PER_POST);
-    if(filesToUse.length === 0){
+
+    const validFiles = files.filter(
+      (f) => f.type.startsWith("image/") && f.size <= MAXIMUM_PHOTO_BYTES
+    );
+
+    const filesToUse = validFiles.slice(0, MAXIMUM_PHOTOS_PER_POST);
+
+    if (filesToUse.length === 0) {
       showMessage("Selected photos exceed 10 MB or are invalid.");
       return;
     }
+
     startPhotoEditQueue(filesToUse);
     return;
   }
 
+  /* ----- VIDEO ----- */
   clearSelectedMedia();
-  if(firstFile.size > 100 * 1024 * 1024){
+
+  if (firstFile.size > MAXIMUM_VIDEO_BYTES) {
     showMessage("Video must be 100 MB or smaller.");
     return;
   }
+
+  showMessage("Checking your video...", "info");
+
+  const playable = await canBrowserPlayVideo(firstFile);
+
+  if (!playable) {
+    mediaFileInput.value = "";
+    showMessage(
+      "This video format can't be played. Record or convert it to MP4 (H.264) and try again."
+    );
+    return;
+  }
+
+  clearMessage();
+
   selectedVideoFile = firstFile;
   selectedVideoPreviewUrl = URL.createObjectURL(firstFile);
   selectedMediaType = "video";
@@ -1478,26 +1038,36 @@ mediaFileInput.addEventListener("change", function(event){
 });
 
 
-function showMediaPreview(){
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+function showMediaPreview() {
   imagePreviewGrid.innerHTML = "";
   previewContent.innerHTML = "";
   previewFileName.textContent = "";
 
-  if(selectedMediaType === "image"){
-    selectedImagePreviewUrls.forEach(function(previewUrl, index){
+  if (selectedMediaType === "image") {
+    selectedImagePreviewUrls.forEach((previewUrl, index) => {
       const tile = document.createElement("div");
       tile.className = "imagePreviewTile";
+
       tile.innerHTML = `
         <img src="${previewUrl}" alt="Photo ${index + 1}" loading="lazy">
         <button type="button" class="imagePreviewEditButton" aria-label="Edit">✏️</button>
         <button type="button" class="imagePreviewRemoveButton" aria-label="Remove">✕</button>
       `;
-      tile.querySelector(".imagePreviewEditButton").addEventListener("click", () => openPhotoEditorForIndex(index));
-      tile.querySelector(".imagePreviewRemoveButton").addEventListener("click", () => removeSelectedImageAt(index));
+
+      tile.querySelector(".imagePreviewEditButton")
+        .addEventListener("click", () => openPhotoEditorForIndex(index));
+
+      tile.querySelector(".imagePreviewRemoveButton")
+        .addEventListener("click", () => removeSelectedImageAt(index));
+
       imagePreviewGrid.appendChild(tile);
     });
 
-    if(selectedImageFiles.length < MAXIMUM_PHOTOS_PER_POST){
+    if (selectedImageFiles.length < MAXIMUM_PHOTOS_PER_POST) {
       const addMoreTile = document.createElement("button");
       addMoreTile.type = "button";
       addMoreTile.className = "addMorePhotosTile";
@@ -1506,72 +1076,101 @@ function showMediaPreview(){
       imagePreviewGrid.appendChild(addMoreTile);
     }
 
-    previewFileName.textContent = `${selectedImageFiles.length} photo${selectedImageFiles.length === 1 ? "" : "s"} selected`;
+    previewFileName.textContent =
+      `${selectedImageFiles.length} photo${selectedImageFiles.length === 1 ? "" : "s"} selected`;
+
     mediaPreview.style.display = "block";
     return;
   }
 
-  if(selectedMediaType === "video"){
+  if (selectedMediaType === "video") {
     const video = document.createElement("video");
     video.src = selectedVideoPreviewUrl;
     video.controls = true;
     video.playsInline = true;
     previewContent.appendChild(video);
+
     previewFileName.textContent = selectedVideoFile ? selectedVideoFile.name : "";
     mediaPreview.style.display = "block";
   }
 }
 
-
-function removeSelectedImageAt(indexToRemove){
+function removeSelectedImageAt(indexToRemove) {
   URL.revokeObjectURL(selectedImagePreviewUrls[indexToRemove]);
+
   selectedImageFiles = selectedImageFiles.filter((_, i) => i !== indexToRemove);
   selectedImagePreviewUrls = selectedImagePreviewUrls.filter((_, i) => i !== indexToRemove);
-  if(selectedImageFiles.length === 0){
+
+  if (selectedImageFiles.length === 0) {
     clearSelectedMedia();
     return;
   }
+
   showMediaPreview();
 }
 
-
-function clearSelectedMedia(){
+function clearSelectedMedia() {
   selectedImageFiles = [];
-  selectedImagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
+  selectedImagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
   selectedImagePreviewUrls = [];
-  if(selectedVideoPreviewUrl) URL.revokeObjectURL(selectedVideoPreviewUrl);
+
+  if (selectedVideoPreviewUrl) URL.revokeObjectURL(selectedVideoPreviewUrl);
+
   selectedVideoFile = null;
   selectedVideoPreviewUrl = "";
   selectedMediaType = "none";
   mediaFileInput.value = "";
+
   imagePreviewGrid.innerHTML = "";
   previewContent.innerHTML = "";
   previewFileName.textContent = "";
   mediaPreview.style.display = "none";
 }
 
-
-removeMediaBtn.addEventListener("click", function(){
-  if(activeUploadRequest){
+removeMediaBtn.addEventListener("click", () => {
+  if (activeUploadRequest) {
     activeUploadRequest.abort();
     activeUploadRequest = null;
   }
+
   resetUploadDisplay();
   clearSelectedMedia();
   clearMessage();
 });
 
 
-async function getImagekitAuthParameters(){
-  const response = await fetch(imagekitAuthEndpoint);
-  if(!response.ok) throw new Error("Could not authenticate upload.");
-  return response.json();
+/* =====================================================
+   IMAGEKIT UPLOAD
+===================================================== */
+
+async function getImagekitAuthParameters() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(imagekitAuthEndpoint, { signal: controller.signal });
+
+    if (!response.ok) {
+      throw new Error(`Could not authenticate upload (${response.status}).`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    if (error.name === "AbortError") {
+      throw new Error("The upload server did not respond. Please try again.");
+    }
+    throw error;
+
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
-
-async function uploadSingleFileToImagekit(file, onProgress){
+async function uploadSingleFileToImagekit(file, onProgress) {
   const authParameters = await getImagekitAuthParameters();
-  return new Promise(function(resolve, reject){
+
+  return new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("fileName", file.name);
@@ -1583,70 +1182,114 @@ async function uploadSingleFileToImagekit(file, onProgress){
 
     const request = new XMLHttpRequest();
     activeUploadRequest = request;
+
     request.open("POST", imagekitUploadUrl, true);
     request.timeout = 300000;
 
-    request.upload.addEventListener("progress", function(event){
-      if(event.lengthComputable && typeof onProgress === "function"){
+    request.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable && typeof onProgress === "function") {
         onProgress(Math.round((event.loaded / event.total) * 100));
       }
     });
 
-    request.addEventListener("load", function(){
+    request.addEventListener("load", () => {
       activeUploadRequest = null;
-      try{
+
+      try {
         const response = JSON.parse(request.responseText);
-        if(request.status < 200 || request.status >= 300) throw new Error(response?.message || "Upload failed.");
-        if(!response.url) throw new Error("No URL returned.");
+
+        if (request.status < 200 || request.status >= 300) {
+          throw new Error(response?.message || "Upload failed.");
+        }
+
+        if (!response.url) throw new Error("No URL returned.");
+
         resolve({ url: response.url, name: file.name });
-      }catch(error){
+
+      } catch (error) {
         reject(error);
       }
     });
 
-    request.addEventListener("error", () => { activeUploadRequest = null; reject(new Error("Network error.")); });
-    request.addEventListener("timeout", () => { activeUploadRequest = null; reject(new Error("Upload timeout.")); });
-    request.addEventListener("abort", () => { activeUploadRequest = null; reject(new Error("Upload cancelled.")); });
+    request.addEventListener("error", () => {
+      activeUploadRequest = null;
+      reject(new Error("Network error. Check your connection and try again."));
+    });
+
+    request.addEventListener("timeout", () => {
+      activeUploadRequest = null;
+      reject(new Error("Upload timed out. Check your connection and try again."));
+    });
+
+    request.addEventListener("abort", () => {
+      activeUploadRequest = null;
+      reject(new Error("Upload cancelled."));
+    });
+
     request.send(formData);
   });
 }
 
+async function uploadPostMedia() {
+  if (!currentUser) throw new Error("Please sign in.");
 
-async function uploadPostMedia(){
-  if(!currentUser) throw new Error("Please sign in.");
-  if(selectedMediaType === "none") return { mediaType: "none", mediaUrl: "", mediaName: "", imageUrls: [] };
+  if (selectedMediaType === "none") {
+    return { mediaType: "none", mediaUrl: "", mediaName: "", imageUrls: [] };
+  }
 
   uploadArea.style.display = "block";
   uploadProgress.style.width = "0%";
   uploadText.textContent = "Preparing upload...";
 
-  if(selectedMediaType === "image"){
+  if (selectedMediaType === "image") {
     const total = selectedImageFiles.length;
     const uploadedUrls = [];
-    for(let i = 0; i < total; i++){
-      const res = await uploadSingleFileToImagekit(selectedImageFiles[i], function(progress){
+
+    for (let i = 0; i < total; i++) {
+      const result = await uploadSingleFileToImagekit(selectedImageFiles[i], (progress) => {
         uploadProgress.style.width = `${progress}%`;
         uploadText.textContent = `Uploading photo ${i + 1} of ${total}: ${progress}%`;
       });
-      uploadedUrls.push(res.url);
+
+      uploadedUrls.push(result.url);
     }
+
     uploadProgress.style.width = "100%";
     uploadText.textContent = "Photos uploaded successfully.";
-    return { mediaType: "image", mediaUrl: uploadedUrls[0] || "", mediaName: `${total} photos`, imageUrls: uploadedUrls };
+
+    return {
+      mediaType: "image",
+      mediaUrl: uploadedUrls[0] || "",
+      mediaName: `${total} photos`,
+      imageUrls: uploadedUrls
+    };
   }
 
-  const videoRes = await uploadSingleFileToImagekit(selectedVideoFile, function(progress){
+  const videoResult = await uploadSingleFileToImagekit(selectedVideoFile, (progress) => {
     uploadProgress.style.width = `${progress}%`;
     uploadText.textContent = `Uploading video: ${progress}%`;
   });
+
   uploadProgress.style.width = "100%";
   uploadText.textContent = "Video uploaded successfully.";
-  return { mediaType: "video", mediaUrl: videoRes.url, mediaName: videoRes.name, imageUrls: [] };
+
+  return {
+    mediaType: "video",
+    mediaUrl: videoResult.url,
+    mediaName: videoResult.name,
+    imageUrls: []
+  };
 }
 
 
-async function publishPost(){
-  if(!currentUser){
+/* =====================================================
+   PUBLISH
+===================================================== */
+
+async function publishPost() {
+  if (isPublishing) return;
+
+  if (!currentUser) {
     showMessage("Please wait for account loading.");
     return;
   }
@@ -1655,26 +1298,36 @@ async function publishPost(){
   const category = categoryInput.value;
   const post = postInput.value.trim();
 
-  if(name === ""){
+  if (name === "") {
     showMessage("Please enter your name.");
     nameInput.focus();
     return;
   }
 
-  const hasMedia = (selectedMediaType === "image" && selectedImageFiles.length > 0) || (selectedMediaType === "video" && selectedVideoFile);
-  if(post === "" && !hasMedia){
+  const hasMedia =
+    (selectedMediaType === "image" && selectedImageFiles.length > 0) ||
+    (selectedMediaType === "video" && selectedVideoFile);
+
+  if (post === "" && !hasMedia) {
     showMessage("Please write a message or attach media.");
     postInput.focus();
     return;
   }
 
-  const savedPicture = getFirstValue(currentProfile?.profilePicture, currentProfile?.picture, currentProfile?.photoURL, currentUser.photoURL, "");
-  const picture = savedPicture && !savedPicture.startsWith("data:image/") ? savedPicture : "images/profile.png";
+  const savedPicture = getFirstValue(
+    currentProfile?.profilePicture, currentProfile?.picture,
+    currentProfile?.photoURL, currentUser.photoURL, ""
+  );
 
-  disablePublishButton();
+  const picture =
+    savedPicture && !savedPicture.startsWith("data:image/")
+      ? savedPicture
+      : "images/profile.png";
+
+  setPublishing(true);
   clearMessage();
 
-  try{
+  try {
     const mediaResult = await uploadPostMedia();
     const imageUrls = mediaResult.mediaType === "image" ? mediaResult.imageUrls : [];
 
@@ -1700,7 +1353,7 @@ async function publishPost(){
       videoUrl: mediaResult.mediaType === "video" ? mediaResult.mediaUrl : ""
     });
 
-    let totalPosts = parseInt(localStorage.getItem("posts")) || 0;
+    const totalPosts = parseInt(localStorage.getItem("posts")) || 0;
     localStorage.setItem("posts", totalPosts + 1);
 
     showMessage("✅ Your post has been published successfully!", "success");
@@ -1713,23 +1366,23 @@ async function publishPost(){
       window.location.replace("feed.html");
     }, 900);
 
-  }catch(error){
+  } catch (error) {
     console.error(error);
     resetUploadDisplay();
     showMessage(error.message || "Failed to publish post.");
-    enablePublishButton();
+    setPublishing(false);
   }
 }
 
-
 publishBtn.addEventListener("click", publishPost);
 
-postInput.addEventListener("keydown", function(event){
-  if(event.ctrlKey && event.key === "Enter"){
+postInput.addEventListener("keydown", (event) => {
+  if (event.ctrlKey && event.key === "Enter") {
     event.preventDefault();
     publishPost();
   }
 });
+
 </script>
 
 </body>
