@@ -48,7 +48,7 @@
       text-align: center;
       border: 1px solid #e4e6eb;
     }
-    .create-moment-plus { width: 38px; height: 38px; background: #1877f2; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+    .create-moment-plus { width: 44px; height: 44px; background: #1877f2; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin-bottom: 6px; border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .story-avatar-badge { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #1877f2; position: absolute; top: 8px; left: 8px; object-fit: cover; background: #fff; }
     .story-card-name { font-size: 11px; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.9); z-index: 2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
     .story-dove-icon { font-size: 32px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
@@ -104,7 +104,7 @@
     <div class="moments-row" id="momentsRow">
       <a href="create-faith-moment.html" class="moment-story-card create">
         <div class="create-moment-plus">+</div>
-        <div style="font-size:12px; font-weight:bold; color:#050505;">Moment</div>
+        <div style="font-size:12px; font-weight:bold; color:#050505;">Create Moment</div>
       </a>
     </div>
 
@@ -143,14 +143,13 @@
 
     async function loadFaithConnectFeed() {
       try {
-        // 1. Load active Faith Moments for the top carousel (with the blue gradient & dove icon)
         const momentsQuery = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
         const momentsSnap = await getDocs(momentsQuery);
 
         let momentsHTML = `
           <a href="create-faith-moment.html" class="moment-story-card create">
             <div class="create-moment-plus">+</div>
-            <div style="font-size:12px; font-weight:bold; color:#050505;">Moment</div>
+            <div style="font-size:12px; font-weight:bold; color:#050505;">Create Moment</div>
           </a>
         `;
 
@@ -159,7 +158,7 @@
           const m = docSnap.data();
           const createdAt = m.timestamp?.toMillis ? m.timestamp.toMillis() : (m.timestamp?.seconds ? m.timestamp.seconds * 1000 : now);
           
-          if ((now - createdAt) <= (24 * 60 * 60 * 1000)) { // active 24h
+          if ((now - createdAt) <= (24 * 60 * 60 * 1000)) {
             const avatar = m.authorPicture || m.profilePicture || "https://via.placeholder.com/40";
             const name = m.authorName || m.name || "Member";
             
@@ -174,7 +173,6 @@
         });
         momentsRow.innerHTML = momentsHTML;
 
-        // 2. Load Community Posts
         const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
         const postsSnap = await getDocs(postsQuery);
 
