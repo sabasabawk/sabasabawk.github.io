@@ -152,8 +152,24 @@ null;
 let unsubscribeMomentsStrip =
 null;
 
+/*
+   DEFAULT PROFILE PICTURE
+   A blue head-and-shoulders picture built right into the
+   code, so it always shows (no image file needed). It is
+   used when someone has no picture OR their picture is
+   broken.
+*/
+
 const defaultProfilePicture =
-"images/profile.png";
+"data:image/svg+xml;charset=utf-8," +
+encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+  '<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+  '<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+  '<g clip-path="url(#c)" fill="#1877f2">' +
+  '<circle cx="100" cy="76" r="38"/>' +
+  '<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+);
 
 const userProfileCache =
 new Map();
@@ -450,6 +466,7 @@ function showErrorMessage(
 
 /* =====================================================
    PROTECT PROFILE PICTURES
+   If a picture is broken, show the blue head instead.
 ===================================================== */
 
 function protectProfilePicture(
@@ -464,8 +481,15 @@ function protectProfilePicture(
     "error",
     function(){
 
-      imageElement.src =
-      defaultProfilePicture;
+      if(
+        imageElement.src !==
+        defaultProfilePicture
+      ){
+
+        imageElement.src =
+        defaultProfilePicture;
+
+      }
 
     },
     {
@@ -4447,11 +4471,6 @@ function startVideoAutoPlay(){
 
 /* =====================================================
    FAITH MOMENTS STRIP  (Facebook-status style)
-
-   HOW TO USE:
-   In feed.js, find the heading "FAITH MOMENTS STRIP".
-   Delete that heading and EVERYTHING below it to the end
-   of the file, then paste this whole file in its place.
 ===================================================== */
 
 const MOMENT_LIFETIME_MS =
