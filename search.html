@@ -7,7 +7,6 @@
 <title>Search Members | Faith Connect</title>
 
 <style>
-
 /* =====================================================
    FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
 ===================================================== */
@@ -163,9 +162,7 @@ button.back-btn:hover{
     padding:10px 12px;
   }
 }
-
 </style>
-
 </head>
 
 <body>
@@ -173,112 +170,140 @@ button.back-btn:hover{
 <div class="container">
 
 <div class="header">
-<h1>🔍 Search Members</h1>
+  <h1>🔍 Search Members</h1>
 </div>
 
 <div class="search-wrapper">
-<input
-type="text"
-id="searchBox"
-placeholder="Search member..."
-onkeyup="searchMembers()">
+  <input
+    type="text"
+    id="searchBox"
+    placeholder="Search member..."
+    id="searchBox">
 </div>
 
-<div id="results"></div>
+<div id="results">
+  <div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">Loading members...</div>
+</div>
 
 <div class="back-container">
-<a href="community.html" style="text-decoration:none;">
-<button class="back-btn">⬅ Back to Community</button>
-</a>
+  <a href="feed.html" style="text-decoration:none;">
+    <button class="back-btn">⬅ Back to Feed</button>
+  </a>
 </div>
 
 </div>
 
-<script>
+<script type="module">
+import { db, collection, getDocs, query, orderBy } from "./firebase.js";
 
-let posts =
-JSON.parse(localStorage.getItem("communityPosts")) || [];
+let allMembers = [];
 
-function searchMembers(){
+async function initSearch() {
+  const resultsContainer = document.getElementById("results");
+  const searchInput = document.getElementById("searchBox");
 
-let keyword =
-document.getElementById("searchBox").value.toLowerCase().trim();
+  try {
+    // 1. Fetch live users from Firebase Firestore
+    const usersQuery = query(collection(db, "users"));
+    const usersSnap = await getDocs(usersQuery);
 
-let results =
-document.getElementById("results");
+    allMembers = [];
 
-results.innerHTML="";
+    usersSnap.forEach((docSnap) => {
+      const u = docSnap.data();
+      allMembers.push({
+        id: docSnap.id,
+        name: u.name || u.fullName || "Community Member",
+        picture: u.picture || u.profilePicture || "https://via.placeholder.com/48",
+        bio: u.bio || u.role || "Believer in Christ"
+      });
+    });
 
-let shown=[];
+    // 2. If users collection is sparse, also pull distinct post authors from communityPosts
+    if (allMembers.length === 0) {
+      const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
+      const postsSnap = await getDocs(postsQuery);
+      const addedNames = new Set();
 
-posts.forEach(function(post){
+      postsSnap.forEach((docSnap) => {
+        const p = docSnap.data();
+        const authorName = p.name || p.fullName || "Community Member";
+        if (!addedNames.has(authorName)) {
+          addedNames.add(authorName);
+          allMembers.push({
+            id: p.userId || p.authorId || "",
+            name: authorName,
+            picture: p.picture || p.profilePicture || "https://via.placeholder.com/48",
+            bio: p.category || "Community Contributor"
+          });
+        }
+      });
+    }
 
-let name = post.name || "Community Member";
-let category = post.category || "";
-let picture = post.picture || "images/profile.png";
+    renderSearch("");
 
-if(
-name.toLowerCase().includes(keyword)
-&&
-!shown.includes(name)
-){
+    searchInput.addEventListener("input", (e) => {
+      renderSearch(e.target.value);
+    });
 
-shown.push(name);
-
-results.innerHTML+=`
-
-<div class="member"
-onclick="openMember('${name.replaceAll("'", "\\'")}')">
-
-<img src="${picture}" onerror="this.src='images/profile.png';">
-
-<div class="member-info">
-
-<div class="name">${escapeHTML(name)}</div>
-
-<div class="category">${escapeHTML(category)}</div>
-
-</div>
-
-</div>
-
-`;
-
+  } catch (err) {
+    console.error("Search initialization error:", err);
+    resultsContainer.innerHTML = `
+      <div style="text-align:center; padding:30px; color:red; font-size:14px;">
+        Failed to load members. Please refresh page.
+      </div>
+    `;
+  }
 }
 
-});
+function renderSearch(keyword) {
+  const resultsContainer = document.getElementById("results");
+  const term = keyword.toLowerCase().trim();
+  resultsContainer.innerHTML = "";
 
-if(results.innerHTML === ""){
-results.innerHTML = `
-<div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">
-No members found matching your search.
-</div>
-`;
+  const filtered = allMembers.filter(m => m.name.toLowerCase().includes(term));
+
+  if (filtered.length === 0) {
+    resultsContainer.innerHTML = `
+      <div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">
+        No members found matching your search.
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+  filtered.forEach((member) => {
+    html += `
+      <div class="member" onclick="window.openMember('${escapeHTML(member.name)}', '${member.id}')">
+        <img src="${member.picture}" onerror="this.src='https://via.placeholder.com/48';">
+        <div class="member-info">
+          <div class="name">${escapeHTML(member.name)}</div>
+          <div class="category">${escapeHTML(member.bio)}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  resultsContainer.innerHTML = html;
 }
 
+window.openMember = function(name, userId) {
+  localStorage.setItem("selectedMember", name);
+  if (userId) {
+    window.location.href = `member.html?userId=${userId}`;
+  } else {
+    window.location.href = "member.html";
+  }
+};
+
+function escapeHTML(str) {
+  return String(str || "").replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
 }
 
-function escapeHTML(value){
-return String(value ?? "")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-}
-
-searchMembers();
-
-function openMember(name){
-
-localStorage.setItem(
-"selectedMember",
-name
-);
-
-window.location.href="member.html";
-
-}
+initSearch();
 </script>
 
 </body>
