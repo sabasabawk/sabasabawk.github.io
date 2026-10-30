@@ -1,225 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SABASABA Gospel Ministry Community Wall">
-
-<title>Community Wall | SABASABA Gospel Ministry</title>
-
-<!-- ?v=3 forces phones to download the newest files instead of old cached ones -->
-<link rel="stylesheet" href="feed.css?v=3">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Wall | SABASABA Gospel Ministry</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
+    
+    .header { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .header h1 { font-size: 18px; color: #1877f2; }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-btn { background: #1877f2; color: #fff; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; }
+    
+    .feed-container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
+    
+    .post-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; padding: 12px; }
+    .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .author-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #ddd; }
+    .author-name { font-weight: bold; font-size: 14px; }
+    .post-time { font-size: 11px; color: #65676b; }
+    .category-badge { display: inline-block; background: #e7f3ff; color: #1877f2; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
+    
+    .post-message { font-size: 14px; line-height: 1.4; margin-bottom: 10px; white-space: pre-wrap; word-break: break-word; }
+    
+    .media-box { width: 100%; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px; }
+    .media-box video, .media-box img { width: 100%; max-height: 450px; object-fit: contain; display: block; }
+    .video-fallback { display: block; padding: 10px; background: #000; color: #ffeb3b; text-align: center; font-size: 13px; text-decoration: none; border-top: 1px solid #333; }
+    
+    .post-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #e4e6eb; font-size: 13px; color: #65676b; }
+    .delete-btn { background: #fdecec; color: #b00020; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    
+    .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; }
+  </style>
 </head>
-
 <body>
 
-<!-- ===================== TOP BAR ===================== -->
-
-<nav class="appTopBar">
-  <div class="appTopBarInner">
-
-    <a href="index.html" class="appBrand">
-      <span class="appBrandText">Faith Connect</span>
-    </a>
-
-    <div class="topBarActions">
-
-      <a href="members.html" class="topIconLink" aria-label="Search community members" title="Search members">🔍</a>
-
-      <a href="notification.html" class="topIconLink" aria-label="Open notifications" title="Notifications">
-        🔔
-        <span id="notificationBadge" class="notificationBadge" aria-label="Unread notifications">0</span>
-      </a>
-
-      <a href="messages.html" class="topIconLink" aria-label="Open conversations" title="Messages">💬</a>
-
+  <header class="header">
+    <h1>💬 Community Wall</h1>
+    <div class="nav-links">
+      <a href="create-post.html" class="nav-btn">+ Create Post</a>
+      <a href="faith-moments.html" class="nav-btn" style="background:#42b72a;">Moments</a>
     </div>
+  </header>
 
-  </div>
-</nav>
-
-
-<!-- ===================== MAIN ===================== -->
-
-<div class="pageContainer">
-
-  <!-- MOMENTS STRIP -->
-
-  <section class="momentsSection">
-
-    <div id="momentsRow" class="momentsRow" aria-label="Faith Moments">
-
-      <a href="create-faith-moment.html" class="momentCard createMomentCard">
-        <div id="quickMomentAvatar" class="createMomentCardTop"></div>
-        <div class="createMomentCardPlusButton">＋</div>
-        <div class="createMomentCardBottom">Create Moment</div>
-      </a>
-
+  <main class="feed-container">
+    <div id="communityFeed">
+      <div class="loading">Loading community posts...</div>
     </div>
-
-  </section>
-
-
-  <!-- POSTS -->
-
-  <main id="postsContainer">
-    <div class="statusCard loading">Loading community posts...</div>
   </main>
 
+  <script type="module">
+    import { db, auth, collection, getDocs, doc, deleteDoc, query, orderBy, onAuthStateChanged } from "./firebase.js";
 
-  <!-- LOAD MORE -->
+    const feedContainer = document.getElementById("communityFeed");
+    let currentAuthUser = null;
 
-  <div id="loadMoreSentinel"></div>
-
-</div>
-
-
-<!-- ===================== FLOATING BUTTON ===================== -->
-
-<a href="createpost.html" class="floatingCreateButton" aria-label="Create a new post" title="Create post">+</a>
-
-
-<!-- ===================== BOTTOM NAV ===================== -->
-
-<nav class="bottomNavigation">
-  <div class="bottomNavigationInner">
-
-    <a href="index.html" class="bottomNavItem">
-      <span class="bottomNavIcon">🏠</span>
-      <span>Home</span>
-    </a>
-
-    <a href="learn.html" class="bottomNavItem">
-      <span class="bottomNavIcon">📚</span>
-      <span>Learn</span>
-    </a>
-
-    <a href="groups.html" class="bottomNavItem">
-      <span class="bottomNavIcon">📖</span>
-      <span>Groups</span>
-    </a>
-
-    <a href="faith-moments.html" class="bottomNavItem">
-      <span class="bottomNavIcon">🌅</span>
-      <span>Moments</span>
-    </a>
-
-    <a href="prayer-wall.html" class="bottomNavItem">
-      <span class="bottomNavIcon">🙏</span>
-      <span>Prayer</span>
-    </a>
-
-    <a href="profile.html" class="bottomNavItem">
-      <span class="bottomNavIcon">👤</span>
-      <span>Profile</span>
-    </a>
-
-  </div>
-</nav>
-
-
-<!-- ===================== PHOTO VIEWER ===================== -->
-
-<div
-  id="photoViewer"
-  aria-hidden="true"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Community post photo viewer"
->
-
-  <button type="button" id="closePhotoViewer" aria-label="Close photo viewer">×</button>
-
-  <button type="button" id="photoViewerPrevButton" class="photoViewerNavButton photoViewerPrevButton hidden" aria-label="Previous photo">‹</button>
-
-  <button type="button" id="photoViewerNextButton" class="photoViewerNavButton photoViewerNextButton hidden" aria-label="Next photo">›</button>
-
-  <div id="photoViewerCounter" class="photoViewerCounter hidden"></div>
-
-  <img id="photoViewerImage" src="" alt="Full-size community post photo">
-
-  <video id="photoViewerVideo" controls playsinline></video>
-
-</div>
-
-
-<!-- ===================== REELS-STYLE VIDEO VIEWER ===================== -->
-
-<div
-  id="videoReelViewer"
-  class="videoReelViewer"
-  aria-hidden="true"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Video viewer"
->
-
-  <button type="button" id="closeVideoReelViewer" class="closeReelButton" aria-label="Close video viewer">×</button>
-
-  <div id="videoReelTrack" class="videoReelTrack"></div>
-
-</div>
-
-
-<!-- ===================== REPORT MODAL ===================== -->
-
-<div
-  id="reportModal"
-  aria-hidden="true"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Report this post"
->
-
-  <div class="reportModalCard">
-
-    <h2>🚩 Report this post</h2>
-
-    <p>Let us know why you're reporting this post. Our team will review it.</p>
-
-    <div id="reportReasonList">
-      <button type="button" class="reportReasonOption" data-reason="Spam">Spam or misleading</button>
-      <button type="button" class="reportReasonOption" data-reason="Abusive language">Abusive or hateful language</button>
-      <button type="button" class="reportReasonOption" data-reason="False teaching">False teaching or misinformation</button>
-      <button type="button" class="reportReasonOption" data-reason="Inappropriate content">Inappropriate content</button>
-      <button type="button" class="reportReasonOption" data-reason="Other">Other</button>
-    </div>
-
-    <div class="reportModalActions">
-      <button type="button" id="reportCancelButton">Cancel</button>
-      <button type="button" id="reportSubmitButton" disabled>Submit report</button>
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ===================== SCRIPTS ===================== -->
-
-<script type="module" src="feed.js?v=3"></script>
-<script src="swipe-nav.js"></script>
-
-<script>
-  // Register the Service Worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registered successfully:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+      currentAuthUser = user;
+      loadCommunityPosts();
     });
-  }
-</script>
 
-<!-- Load WhatsApp Call Sounds -->
-<script src="call-sounds.js"></script>
+    async function loadCommunityPosts() {
+      try {
+        const q = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
 
+        if (snapshot.empty) {
+          feedContainer.innerHTML = `<div class="empty">No posts shared on the Community Wall yet. Be the first!</div>`;
+          return;
+        }
+
+        let html = "";
+
+        snapshot.forEach((docSnap) => {
+          const post = docSnap.id;
+          const data = docSnap.data();
+          const postId = docSnap.id;
+
+          const createdAt = data.timestamp?.toMillis ? data.timestamp.toMillis() : (data.timestamp?.seconds ? data.timestamp.seconds * 1000 : Date.now());
+          const name = data.name || data.fullName || "Community Member";
+          const avatar = data.picture || data.profilePicture || "https://via.placeholder.com/40";
+          const timeAgo = timeSince(createdAt);
+          const category = data.category || "Encouragement";
+          const message = data.post || data.message || "";
+
+          let mediaHTML = "";
+          let mediaUrl = data.videoUrl || data.imageUrl || data.mediaUrl || "";
+
+          // Explicitly ignore any legacy ImageKit links
+          if (mediaUrl.includes("imagekit.io")) {
+            mediaUrl = "";
+          }
+
+          if (mediaUrl) {
+            if (data.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
+              mediaHTML = `
+                <div class="media-box">
+                  <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
+                  <a href="${mediaUrl}" target="_blank" class="video-fallback">⚠️ Having trouble playing? Tap to open video directly.</a>
+                </div>
+              `;
+            } else {
+              mediaHTML = `
+                <div class="media-box">
+                  <img src="${mediaUrl}" alt="Post media">
+                </div>
+              `;
+            }
+          }
+
+          // Check if current user can delete this post
+          const isOwner = currentAuthUser && (data.userId === currentAuthUser.uid || data.authorId === currentAuthUser.uid || data.uid === currentAuthUser.uid);
+          const deleteButtonHTML = isOwner ? `<button class="delete-btn" onclick="window.deleteCommunityPost('${postId}')">Delete</button>` : "";
+
+          html += `
+            <div class="post-card" id="post-${postId}">
+              <div class="post-header">
+                <img src="${avatar}" class="author-avatar" alt="Avatar">
+                <div>
+                  <div class="author-name">${escapeHTML(name)}</div>
+                  <div class="post-time">${timeAgo}</div>
+                </div>
+              </div>
+              <div class="category-badge">${escapeHTML(category)}</div>
+              <div class="post-message">${escapeHTML(message)}</div>
+              ${mediaHTML}
+              <div class="post-footer">
+                <span>❤️ ${data.likes?.length || 0} Likes</span>
+                ${deleteButtonHTML}
+              </div>
+            </div>
+          `;
+        });
+
+        feedContainer.innerHTML = html;
+
+      } catch (err) {
+        console.error("Error loading feed:", err);
+        feedContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load posts. Please refresh.</div>`;
+      }
+    }
+
+    // Global delete handler for community posts
+    window.deleteCommunityPost = async function(postId) {
+      if (!window.confirm("Are you sure you want to delete this post?")) return;
+      try {
+        await deleteDoc(doc(db, "communityPosts", postId));
+        const postElement = document.getElementById(`post-${postId}`);
+        if (postElement) postElement.remove();
+      } catch (err) {
+        alert("Failed to delete post: " + err.message);
+      }
+    };
+
+    function timeSince(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + "y ago";
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + "mo ago";
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + "d ago";
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + "h ago";
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + "m ago";
+      return "Just now";
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+  </script>
 </body>
 </html>
