@@ -81,10 +81,7 @@
             if (post.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
               mediaHTML = `
                 <div class="media-box">
-                  <video controls preload="metadata" playsinline>
-                    <source src="${mediaUrl}" type="video/mp4">
-                    Your browser does not support the video tag.
-                  </video>
+                  <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
                 </div>
               `;
             } else {
