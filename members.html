@@ -1,472 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Members | Faith Connect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Members | Faith Connect</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
 
-<style>
+    .header { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .header h1 { font-size: 18px; color: #1877f2; }
+    .back-btn { text-decoration: none; color: #1877f2; font-weight: bold; font-size: 14px; }
 
-/* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
-===================================================== */
+    .container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+    .search-box { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .search-input { width: 100%; border: none; outline: none; font-size: 14px; background: transparent; }
 
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f0f2f5;
-  color:#050505;
-  min-height:100vh;
-}
+    .members-list { display: flex; flex-direction: column; gap: 8px; }
+    
+    .member-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; padding: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .member-info { display: flex; align-items: center; gap: 12px; }
+    .member-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; background: #e4e6eb; }
+    .member-name { font-weight: bold; font-size: 15px; color: #050505; }
+    .member-role { font-size: 12px; color: #65676b; margin-top: 2px; }
 
-.container{
-  width:100%;
-  max-width:680px;
-  margin:0 auto;
-  padding-bottom:100px;
-}
+    .member-actions { display: flex; gap: 6px; }
+    .btn-msg { background: #1877f2; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-decoration: none; }
+    .btn-profile { background: #e4e6eb; color: #050505; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-decoration: none; }
 
-/* =====================================================
-   HEADER & SEARCH BAR
-===================================================== */
-
-.header{
-  background:#ffffff;
-  padding:16px 14px;
-  border-bottom:1px solid #e4e6eb;
-}
-
-.header .brand{
-  color:#0873c9;
-  font-weight:bold;
-  font-size:12px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  margin-bottom:4px;
-}
-
-.header h1{
-  margin:0;
-  font-size:20px;
-  color:#050505;
-}
-
-.header p{
-  margin:4px 0 0;
-  color:#65676b;
-  font-size:13px;
-}
-
-.search-box{
-  background:#ffffff;
-  padding:10px 12px;
-  border-bottom:1px solid #e4e6eb;
-}
-
-.search-box input{
-  width:100%;
-  padding:10px 16px;
-  font-size:15px;
-  border:none;
-  border-radius:20px;
-  background:#f0f2f5;
-  outline:none;
-}
-
-.search-box input:focus{
-  background:#e4e6eb;
-}
-
-/* =====================================================
-   MEMBER ITEM ROWS
-===================================================== */
-
-#membersList{
-  width:100%;
-  background:#ffffff;
-}
-
-.member{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#ffffff;
-  padding:12px 14px;
-  border-bottom:1px solid #e4e6eb;
-  gap:12px;
-}
-
-.left{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  flex:1;
-}
-
-.avatar{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#e5e9ed;
-  flex-shrink:0;
-  margin-right:12px;
-}
-
-.info{
-  min-width:0;
-  flex:1;
-}
-
-.info h3{
-  margin:0;
-  color:#050505;
-  font-size:15px;
-  font-weight:bold;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.info p{
-  margin:2px 0 0;
-  color:#65676b;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.message-btn{
-  background:#e4e6eb;
-  color:#050505;
-  border:none;
-  padding:8px 14px;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:bold;
-  cursor:pointer;
-  flex-shrink:0;
-  transition:background .2s ease;
-}
-
-.message-btn:hover{
-  background:#d8dadf;
-}
-
-/* =====================================================
-   LOAD MORE & FOOTER
-===================================================== */
-
-.loadMoreRow{
-  text-align:center;
-  padding:16px;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
-}
-
-.loadMoreRow button{
-  background:#f0f2f5;
-  color:#0873c9;
-  border:none;
-  padding:10px 20px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.loadMoreRow button:hover{
-  background:#e4e6eb;
-}
-
-.loadMoreRow button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.statusText{
-  text-align:center;
-  color:#65676b;
-  padding:24px 14px;
-  font-size:15px;
-}
-
-.back{
-  text-align:center;
-  margin-top:20px;
-  padding:0 14px;
-}
-
-.back a{
-  text-decoration:none;
-}
-
-.back button{
-  background:#ffffff;
-  color:#050505;
-  padding:10px 20px;
-  border:1px solid #ccd0d5;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-</style>
+    .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
+  <header class="header">
+    <a href="feed.html" class="back-btn">← Back</a>
+    <h1>Find Members</h1>
+    <div style="width: 40px;"></div>
+  </header>
 
-  <div class="header">
-    <div class="brand">Faith Connect</div>
-    <h1>🔍 Search Members</h1>
-    <p>Find believers and start a private conversation.</p>
-  </div>
+  <main class="container">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search members by name...">
+    </div>
 
-  <div class="search-box">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Search by name or email..."
-    >
-  </div>
+    <div class="members-list" id="membersList">
+      <div class="loading">Loading members...</div>
+    </div>
+  </main>
 
-  <div id="membersList">
-    <div class="statusText">Loading members...</div>
-  </div>
+  <script type="module">
+    import { db, auth, collection, getDocs, query, orderBy, onAuthStateChanged } from "./firebase.js";
 
-  <div class="loadMoreRow" id="loadMoreRow" style="display:none;">
-    <button type="button" id="loadMoreButton">Load more members</button>
-  </div>
+    const membersListContainer = document.getElementById("membersList");
+    const searchInput = document.getElementById("searchInput");
+    let allMembers = [];
+    let currentUserId = null;
 
-  <div class="back">
-    <a href="messages.html">
-      <button>⬅ Back to Messages</button>
-    </a>
-  </div>
-
-</div>
-
-<script type="module">
-
-import {
-  db,
-  collection,
-  query,
-  limit,
-  startAfter,
-  getDocs
-} from "./firebase.js";
-
-const membersList = document.getElementById("membersList");
-const searchInput = document.getElementById("searchInput");
-const loadMoreRow = document.getElementById("loadMoreRow");
-const loadMoreButton = document.getElementById("loadMoreButton");
-
-const MEMBERS_PER_PAGE = 40;
-
-let members = [];
-let lastVisibleDoc = null;
-let noMoreMembers = false;
-let isLoadingMembers = false;
-
-const MEMBERS_CACHE_KEY = "sabasaba_members_cache_v1";
-const MEMBERS_CACHE_MAX_AGE_MS = 30 * 60 * 1000;
-
-function saveMembersCache(memberList){
-  try{
-    window.localStorage.setItem(
-      MEMBERS_CACHE_KEY,
-      JSON.stringify({
-        savedAt: Date.now(),
-        members: memberList
-      })
-    );
-  }catch(error){
-    console.warn("Members cache could not be saved:", error);
-  }
-}
-
-function loadMembersCache(){
-  try{
-    const rawCache = window.localStorage.getItem(MEMBERS_CACHE_KEY);
-    if(!rawCache) return null;
-
-    const parsedCache = JSON.parse(rawCache);
-    const cacheAge = Date.now() - (parsedCache.savedAt || 0);
-
-    if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS) return null;
-
-    if(!Array.isArray(parsedCache.members) || parsedCache.members.length === 0){
-      return null;
-    }
-
-    return parsedCache.members;
-  }catch(error){
-    console.warn("Members cache could not be read:", error);
-    return null;
-  }
-}
-
-async function loadMembers(isLoadMore = false){
-
-  if(isLoadingMembers || noMoreMembers) return;
-
-  isLoadingMembers = true;
-  loadMoreButton.disabled = true;
-  loadMoreButton.textContent = "Loading...";
-
-  try{
-    const usersReference = collection(db, "users");
-    let membersQuery;
-
-    /*
-       FIX: Removed orderBy("fullName") so accounts missing
-       a fullName field still get returned instead of excluded.
-    */
-    if(isLoadMore && lastVisibleDoc){
-      membersQuery = query(
-        usersReference,
-        startAfter(lastVisibleDoc),
-        limit(MEMBERS_PER_PAGE)
-      );
-    }else{
-      membersQuery = query(
-        usersReference,
-        limit(MEMBERS_PER_PAGE)
-      );
-    }
-
-    const snapshot = await getDocs(membersQuery);
-    const newMembers = [];
-
-    snapshot.forEach(docSnapshot => {
-      newMembers.push({
-        id: docSnapshot.id,
-        ...docSnapshot.data()
-      });
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+      currentUserId = user.uid;
+      loadMembers();
     });
 
-    if(isLoadMore){
-      members = members.concat(newMembers);
-    }else{
-      members = newMembers;
-    }
+    async function loadMembers() {
+      try {
+        const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
 
-    if(snapshot.docs.length > 0){
-      lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-    }
-
-    noMoreMembers = snapshot.docs.length < MEMBERS_PER_PAGE;
-    loadMoreRow.style.display = noMoreMembers ? "none" : "block";
-
-    displayMembers(members);
-
-    if(!isLoadMore){
-      saveMembersCache(newMembers);
-    }
-
-  }catch(error){
-    console.error("Error loading members:", error);
-    membersList.innerHTML = `
-      <div class="statusText">
-        Members could not be loaded. Please try again.
-      </div>
-    `;
-  }finally{
-    isLoadingMembers = false;
-    loadMoreButton.disabled = false;
-    loadMoreButton.textContent = "Load more members";
-  }
-}
-
-function displayMembers(list){
-
-  if(list.length === 0){
-    membersList.innerHTML = `
-      <div class="statusText">No members found.</div>
-    `;
-    return;
-  }
-
-  membersList.innerHTML = list.map(user => {
-    const name = user.fullName || user.displayName || user.name || "Community Member";
-    const email = user.email || "";
-    const picture = user.profilePicture || user.picture || user.photoURL || 'images/profile.png';
-
-    return `
-      <div class="member">
-        <div class="left">
-          <img
-            class="avatar"
-            loading="lazy"
-            src="${picture}"
-            onerror="this.src='images/profile.png';"
-            alt="${name}">
-          <div class="info">
-            <h3>${name}</h3>
-            <p>${email}</p>
-          </div>
-        </div>
-        <button
-          class="message-btn"
-          onclick="window.location.href='chat.html?uid=${user.id}'">
-          💬 Message
-        </button>
-      </div>
-    `;
-  }).join("");
-}
-
-searchInput.addEventListener("input", function(){
-  const keyword = this.value.toLowerCase().trim();
-
-  const filtered = members.filter(user => {
-    const name = (user.fullName || user.displayName || user.name || "").toLowerCase();
-    const email = (user.email || "").toLowerCase();
-    return name.includes(keyword) || email.includes(keyword);
-  });
-
-  displayMembers(filtered);
-});
-
-loadMoreButton.addEventListener("click", () => {
-  loadMembers(true);
-});
-
-// Load cached copy immediately if available
-const cachedMembers = loadMembersCache();
-if(cachedMembers){
-  members = cachedMembers;
-  displayMembers(members);
-}
-
-// Fetch live members
-loadMembers(false);
-
-</script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registered:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
+        allMembers = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (docSnap.id !== currentUserId) {
+            allMembers.push({ id: docSnap.id, ...data });
+          }
         });
-    });
-  }
-</script>
 
+        renderMembers(allMembers);
+      } catch (err) {
+        console.error("Error loading members:", err);
+        membersListContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load members.</div>`;
+      }
+    }
+
+    function renderMembers(members) {
+      if (members.length === 0) {
+        membersListContainer.innerHTML = `<div class="empty">No other members found.</div>`;
+        return;
+      }
+
+      let html = "";
+      members.forEach((m) => {
+        const name = m.name || m.fullName || "Faith Connect Member";
+        const avatar = m.picture || m.profilePicture || "https://via.placeholder.com/50";
+        const role = m.bio || m.role || "Believer in Christ";
+
+        html += `
+          <div class="member-card">
+            <div class="member-info">
+              <img src="${avatar}" class="member-avatar" alt="Avatar">
+              <div>
+                <div class="member-name">${escapeHTML(name)}</div>
+                <div class="member-role">${escapeHTML(role)}</div>
+              </div>
+            </div>
+            <div class="member-actions">
+              <a href="chat-room.html?userId=${m.id}" class="btn-msg">Message</a>
+              <a href="profile-view.html?userId=${m.id}" class="btn-profile">Profile</a>
+            </div>
+          </div>
+        `;
+      });
+
+      membersListContainer.innerHTML = html;
+    }
+
+    searchInput.addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allMembers.filter(m => {
+        const name = (m.name || m.fullName || "").toLowerCase();
+        return name.includes(term);
+      });
+      renderMembers(filtered);
+    });
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+  </script>
 </body>
 </html>
