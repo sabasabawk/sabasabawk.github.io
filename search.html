@@ -3,165 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Search Members | Faith Connect</title>
 
 <style>
-/* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
-===================================================== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; color: #050505; min-height: 100vh; padding-bottom: 80px; }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+.container { max-width: 600px; margin: 0 auto; padding: 12px 8px; }
 
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f0f2f5;
-  color:#050505;
-  min-height:100vh;
+/* Blue Banner Header */
+.search-banner {
+  background: linear-gradient(135deg, #0d47a1 0%, #1877f2 100%);
+  color: #ffffff;
+  padding: 24px 16px;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
+.search-banner h1 { font-size: 22px; margin-bottom: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.search-banner p { font-size: 13px; opacity: 0.9; line-height: 1.4; max-width: 400px; margin: 0 auto; }
 
-.container{
-  max-width:680px;
-  margin:auto;
-  padding:0 0 80px 0;
-}
+/* Search Input */
+.search-box-wrapper { background: #fff; padding: 10px 14px; border-radius: 20px; border: 1px solid #e4e6eb; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.search-input { width: 100%; border: none; outline: none; font-size: 14px; background: transparent; }
 
-.header{
-  background:#ffffff;
-  color:#050505;
-  padding:16px 14px;
-  text-align:left;
-  border-bottom:1px solid #e4e6eb;
-  border-radius:0;
-  margin-bottom:0;
-}
+/* Member Card Layout */
+.results-grid { display: flex; flex-direction: column; gap: 12px; }
 
-.header h1{
-  font-size:20px;
-  color:#050505;
-  margin:0;
+.member-card-large {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e4e6eb;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
+.card-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e4e6eb; margin-bottom: 10px; border: 2px solid #1877f2; }
+.card-name { font-size: 18px; font-weight: bold; color: #1877f2; margin-bottom: 12px; }
 
-.search-wrapper{
-  background:#ffffff;
-  padding:10px 12px;
-  border-bottom:1px solid #e4e6eb;
-}
+.card-actions { display: flex; flex-direction: column; gap: 8px; max-width: 320px; margin: 0 auto; }
+.btn-blue { background: #1877f2; color: #fff; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-green { background: #2e7d32; color: #fff; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
-input{
-  width:100%;
-  padding:10px 16px;
-  font-size:15px;
-  border:none;
-  border-radius:20px;
-  background:#f0f2f5;
-  color:#050505;
-  outline:none;
-  margin-bottom:0;
-}
+.back-container { text-align: center; margin-top: 16px; }
+.back-btn { background: #fff; border: 1px solid #e4e6eb; color: #050505; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; text-decoration: none; display: inline-block; }
 
-input:focus{
-  background:#e4e6eb;
-}
-
-#results{
-  background:#ffffff;
-  width:100%;
-}
-
-.member{
-  background:white;
-  padding:12px 14px;
-  border-bottom:1px solid #e4e6eb;
-  border-radius:0;
-  box-shadow:none;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  cursor:pointer;
-  transition:background .2s;
-}
-
-.member:hover{
-  background:#f2f4f7;
-}
-
-.member:active{
-  background:#e4e6eb;
-}
-
-.member img{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  margin-right:0;
-  object-fit:cover;
-  border:none;
-  background:#e5e9ed;
-  flex-shrink:0;
-}
-
-.member-info{
-  min-width:0;
-  flex:1;
-}
-
-.name{
-  font-size:15px;
-  font-weight:bold;
-  color:#050505;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.category{
-  font-size:13px;
-  color:#65676b;
-  margin-top:2px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.back-container{
-  text-align:center;
-  margin-top:20px;
-  padding:0 14px;
-}
-
-button.back-btn{
-  background:#ffffff;
-  color:#050505;
-  border:1px solid #ccd0d5;
-  padding:10px 20px;
-  border-radius:8px;
-  cursor:pointer;
-  margin-top:0;
-  font-size:14px;
-  font-weight:bold;
-  transition:background .2s;
-}
-
-button.back-btn:hover{
-  background:#f0f2f5;
-}
-
-@media(max-width:600px){
-  .container{
-    padding:0;
-  }
-  .header{
-    padding:12px;
-  }
-  .member{
-    padding:10px 12px;
-  }
-}
+.empty, .loading { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 12px; border: 1px solid #e4e6eb; }
 </style>
 </head>
 
@@ -169,117 +57,80 @@ button.back-btn:hover{
 
 <div class="container">
 
-<div class="header">
-  <h1>🔍 Search Members</h1>
-</div>
+  <!-- Blue Header Banner -->
+  <div class="search-banner">
+    <h1>👥 Find Members</h1>
+    <p>Connect with Christians around the world. View profiles and start private conversations.</p>
+  </div>
 
-<div class="search-wrapper">
-  <input
-    type="text"
-    id="searchBox"
-    placeholder="Search member..."
-    id="searchBox">
-</div>
+  <!-- Search Bar -->
+  <div class="search-box-wrapper">
+    <span>🔍</span>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search members...">
+  </div>
 
-<div id="results">
-  <div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">Loading members...</div>
-</div>
+  <!-- Results Area -->
+  <div id="results" class="results-grid">
+    <div class="loading">Loading members...</div>
+  </div>
 
-<div class="back-container">
-  <a href="feed.html" style="text-decoration:none;">
-    <button class="back-btn">⬅ Back to Feed</button>
-  </a>
-</div>
+  <div class="back-container">
+    <a href="feed.html" class="back-btn">⬅ Back to Feed</a>
+  </div>
 
 </div>
 
 <script type="module">
 import { db, collection, getDocs, query, orderBy } from "./firebase.js";
 
+const resultsContainer = document.getElementById("results");
+const searchInput = document.getElementById("searchInput");
 let allMembers = [];
 
-async function initSearch() {
-  const resultsContainer = document.getElementById("results");
-  const searchInput = document.getElementById("searchBox");
-
+async function init() {
   try {
-    // 1. Fetch live users from Firebase Firestore
-    const usersQuery = query(collection(db, "users"));
-    const usersSnap = await getDocs(usersQuery);
+    const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
 
     allMembers = [];
-
-    usersSnap.forEach((docSnap) => {
+    snap.forEach((docSnap) => {
       const u = docSnap.data();
       allMembers.push({
         id: docSnap.id,
         name: u.name || u.fullName || "Community Member",
-        picture: u.picture || u.profilePicture || "https://via.placeholder.com/48",
-        bio: u.bio || u.role || "Believer in Christ"
+        picture: u.picture || u.profilePicture || "https://via.placeholder.com/90"
       });
     });
 
-    // 2. If users collection is sparse, also pull distinct post authors from communityPosts
-    if (allMembers.length === 0) {
-      const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
-      const postsSnap = await getDocs(postsQuery);
-      const addedNames = new Set();
-
-      postsSnap.forEach((docSnap) => {
-        const p = docSnap.data();
-        const authorName = p.name || p.fullName || "Community Member";
-        if (!addedNames.has(authorName)) {
-          addedNames.add(authorName);
-          allMembers.push({
-            id: p.userId || p.authorId || "",
-            name: authorName,
-            picture: p.picture || p.profilePicture || "https://via.placeholder.com/48",
-            bio: p.category || "Community Contributor"
-          });
-        }
-      });
-    }
-
-    renderSearch("");
+    render(allMembers);
 
     searchInput.addEventListener("input", (e) => {
-      renderSearch(e.target.value);
+      const term = e.target.value.toLowerCase().trim();
+      const filtered = allMembers.filter(m => m.name.toLowerCase().includes(term));
+      render(filtered);
     });
 
   } catch (err) {
-    console.error("Search initialization error:", err);
-    resultsContainer.innerHTML = `
-      <div style="text-align:center; padding:30px; color:red; font-size:14px;">
-        Failed to load members. Please refresh page.
-      </div>
-    `;
+    console.error("Error loading search:", err);
+    resultsContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load members.</div>`;
   }
 }
 
-function renderSearch(keyword) {
-  const resultsContainer = document.getElementById("results");
-  const term = keyword.toLowerCase().trim();
-  resultsContainer.innerHTML = "";
-
-  const filtered = allMembers.filter(m => m.name.toLowerCase().includes(term));
-
-  if (filtered.length === 0) {
-    resultsContainer.innerHTML = `
-      <div style="text-align:center; padding:30px; color:#65676b; font-size:14px;">
-        No members found matching your search.
-      </div>
-    `;
+function render(members) {
+  if (members.length === 0) {
+    resultsContainer.innerHTML = `<div class="empty">No other members found.</div>`;
     return;
   }
 
   let html = "";
-  filtered.forEach((member) => {
+  members.forEach((m) => {
     html += `
-      <div class="member" onclick="window.openMember('${escapeHTML(member.name)}', '${member.id}')">
-        <img src="${member.picture}" onerror="this.src='https://via.placeholder.com/48';">
-        <div class="member-info">
-          <div class="name">${escapeHTML(member.name)}</div>
-          <div class="category">${escapeHTML(member.bio)}</div>
+      <div class="member-card-large">
+        <img src="${m.picture}" class="card-avatar" onerror="this.src='https://via.placeholder.com/90';">
+        <div class="card-name">${escapeHTML(m.name)}</div>
+        <div class="card-actions">
+          <a href="chat-room.html?userId=${m.id}" class="btn-blue">💬 Message</a>
+          <a href="member.html?userId=${m.id}" class="btn-green">👤 View Profile</a>
         </div>
       </div>
     `;
@@ -288,22 +139,13 @@ function renderSearch(keyword) {
   resultsContainer.innerHTML = html;
 }
 
-window.openMember = function(name, userId) {
-  localStorage.setItem("selectedMember", name);
-  if (userId) {
-    window.location.href = `member.html?userId=${userId}`;
-  } else {
-    window.location.href = "member.html";
-  }
-};
-
 function escapeHTML(str) {
   return String(str || "").replace(/[&<>'"]/g, 
     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
   );
 }
 
-initSearch();
+init();
 </script>
 
 </body>
