@@ -1,493 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Members | Faith Connect</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Find Members | SABASABA Gospel Ministry</title>
 
 <style>
 
-/* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
-===================================================== */
-
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f0f2f5;
-  color:#050505;
-  min-height:100vh;
+font-family:Arial,sans-serif;
+background:#eef3f8;
 }
 
 .container{
-  width:100%;
-  max-width:680px;
-  margin:0 auto;
-  padding-bottom:100px;
+max-width:1200px;
+margin:auto;
+padding:20px;
 }
-
-/* =====================================================
-   HEADER & SEARCH BAR
-===================================================== */
 
 .header{
-  background:#ffffff;
-  padding:16px 14px;
-  border-bottom:1px solid #e4e6eb;
-}
 
-.header .brand{
-  color:#0873c9;
-  font-weight:bold;
-  font-size:12px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  margin-bottom:4px;
+background:linear-gradient(135deg,#0066cc,#004d99);
+color:white;
+padding:35px;
+border-radius:20px;
+text-align:center;
+margin-bottom:25px;
+
 }
 
 .header h1{
-  margin:0;
-  font-size:20px;
-  color:#050505;
+
+font-size:38px;
+margin-bottom:10px;
+
 }
 
 .header p{
-  margin:4px 0 0;
-  color:#65676b;
-  font-size:13px;
+
+font-size:18px;
+line-height:1.6;
+
 }
 
-.search-box{
-  background:#ffffff;
-  padding:10px 12px;
-  border-bottom:1px solid #e4e6eb;
+.searchBox{
+
+margin-bottom:25px;
+
 }
 
-.search-box input{
-  width:100%;
-  padding:10px 16px;
-  font-size:15px;
-  border:none;
-  border-radius:20px;
-  background:#f0f2f5;
-  outline:none;
+.searchBox input{
+
+width:100%;
+padding:15px;
+border-radius:12px;
+border:1px solid #ccc;
+font-size:17px;
+outline:none;
+
 }
 
-.search-box input:focus{
-  background:#e4e6eb;
+.searchBox input:focus{
+
+border-color:#0066cc;
+
 }
 
-/* =====================================================
-   MEMBER ITEM ROWS & AVATAR FALLBACKS
-===================================================== */
+.memberGrid{
 
-#membersList{
-  width:100%;
-  background:#ffffff;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+
 }
 
-.member{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#ffffff;
-  padding:12px 14px;
-  border-bottom:1px solid #e4e6eb;
-  gap:12px;
+.memberCard{
+
+background:white;
+border-radius:18px;
+padding:20px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+transition:.3s;
+
 }
 
-.left{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  flex:1;
+.memberCard:hover{
+
+transform:translateY(-5px);
+
 }
 
-.avatar{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#e5e9ed;
-  flex-shrink:0;
-  margin-right:12px;
+.memberPhoto{
+
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+background:#ddd;
+margin:auto;
+margin-bottom:15px;
+
 }
 
-.avatarFallback{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:#e4e6eb;
-  color:#65676b;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  flex-shrink:0;
-  margin-right:12px;
+.memberCard h2{
+
+color:#0066cc;
+margin-bottom:8px;
+font-size:24px;
+
 }
 
-.info{
-  min-width:0;
-  flex:1;
+.memberInfo{
+
+color:#666;
+margin-bottom:18px;
+font-size:16px;
+line-height:1.5;
+
 }
 
-.info h3{
-  margin:0;
-  color:#050505;
-  font-size:15px;
-  font-weight:bold;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.buttonRow{
+
+display:flex;
+gap:10px;
+
 }
 
-.info p{
-  margin:2px 0 0;
-  color:#65676b;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.messageBtn{
+
+flex:1;
+background:#0066cc;
+color:white;
+border:none;
+padding:12px;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+
 }
 
-.message-btn{
-  background:#e4e6eb;
-  color:#050505;
-  border:none;
-  padding:8px 14px;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:bold;
-  cursor:pointer;
-  flex-shrink:0;
-  transition:background .2s ease;
+.profileBtn{
+
+flex:1;
+background:#28a745;
+color:white;
+border:none;
+padding:12px;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+
 }
 
-.message-btn:hover{
-  background:#d8dadf;
+.messageBtn:hover{
+
+background:#004d99;
+
 }
 
-/* =====================================================
-   LOAD MORE & FOOTER
-===================================================== */
+.profileBtn:hover{
 
-.loadMoreRow{
-  text-align:center;
-  padding:16px;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
+background:#1f7f36;
+
 }
 
-.loadMoreRow button{
-  background:#f0f2f5;
-  color:#0873c9;
-  border:none;
-  padding:10px 20px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
+.empty{
 
-.loadMoreRow button:hover{
-  background:#e4e6eb;
-}
+background:white;
+padding:40px;
+text-align:center;
+border-radius:18px;
+color:#777;
+font-size:18px;
 
-.loadMoreRow button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.statusText{
-  text-align:center;
-  color:#65676b;
-  padding:24px 14px;
-  font-size:15px;
 }
 
 .back{
-  text-align:center;
-  margin-top:20px;
-  padding:0 14px;
-}
 
-.back a{
-  text-decoration:none;
+margin-top:30px;
+text-align:center;
+
 }
 
 .back button{
-  background:#ffffff;
-  color:#050505;
-  padding:10px 20px;
-  border:1px solid #ccd0d5;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
+
+background:#0066cc;
+color:white;
+border:none;
+padding:14px 30px;
+border-radius:10px;
+font-size:17px;
+cursor:pointer;
+
+}
+
+@media(max-width:700px){
+
+.buttonRow{
+
+flex-direction:column;
+
+}
+
+.header h1{
+
+font-size:30px;
+
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-  <div class="header">
-    <div class="brand">Faith Connect</div>
-    <h1>🔍 Search Members</h1>
-    <p>Find believers and start a private conversation.</p>
-  </div>
+<div class="header">
 
-  <div class="search-box">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Search by name or email..."
-    >
-  </div>
+<h1>👥 find Members</h1>
 
-  <div id="membersList">
-    <div class="statusText">Loading members...</div>
-  </div>
+<p>
 
-  <div class="loadMoreRow" id="loadMoreRow" style="display:none;">
-    <button type="button" id="loadMoreButton">Load more members</button>
-  </div>
+Connect with Christians around the world.
+View profiles and start private conversations.
 
-  <div class="back">
-    <a href="messages.html">
-      <button>⬅ Back to Messages</button>
-    </a>
-  </div>
+</p>
 
 </div>
 
+<div class="searchBox">
+
+<input
+id="searchInput"
+type="text"
+placeholder="Search members...">
+
+</div>
+
+<div
+id="memberGrid"
+class="memberGrid">
+
+<div class="empty">
+
+Loading members...
+
+</div>
+
+</div>
+
+<div class="back">
+
+<a href="community.html">
+
+<button>
+
+⬅ Back to Community
+
+</button>
+
+</a>
+
+</div>
+
+</div>
 <script type="module">
 
-import {
-  db,
-  collection,
-  query,
-  limit,
-  startAfter,
-  getDocs
-} from "./firebase.js";
+import{
+auth,
+db,
+collection,
+getDocs,
+onAuthStateChanged
+}from "./firebase.js";
 
-const membersList = document.getElementById("membersList");
-const searchInput = document.getElementById("searchInput");
-const loadMoreRow = document.getElementById("loadMoreRow");
-const loadMoreButton = document.getElementById("loadMoreButton");
+const memberGrid=document.getElementById("memberGrid");
+const searchInput=document.getElementById("searchInput");
 
-const MEMBERS_PER_PAGE = 40;
+let allMembers=[];
 
-let members = [];
-let lastVisibleDoc = null;
-let noMoreMembers = false;
-let isLoadingMembers = false;
+onAuthStateChanged(auth,async(user)=>{
 
-const MEMBERS_CACHE_KEY = "sabasaba_members_cache_v1";
-const MEMBERS_CACHE_MAX_AGE_MS = 30 * 60 * 1000;
+if(!user){
 
-function saveMembersCache(memberList){
-  try{
-    window.localStorage.setItem(
-      MEMBERS_CACHE_KEY,
-      JSON.stringify({
-        savedAt: Date.now(),
-        members: memberList
-      })
-    );
-  }catch(error){
-    console.warn("Members cache could not be saved:", error);
-  }
+location.href="login.html";
+return;
+
 }
 
-function loadMembersCache(){
-  try{
-    const rawCache = window.localStorage.getItem(MEMBERS_CACHE_KEY);
-    if(!rawCache) return null;
+loadMembers(user.uid);
 
-    const parsedCache = JSON.parse(rawCache);
-    const cacheAge = Date.now() - (parsedCache.savedAt || 0);
-
-    if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS) return null;
-
-    if(!Array.isArray(parsedCache.members) || parsedCache.members.length === 0){
-      return null;
-    }
-
-    return parsedCache.members;
-  }catch(error){
-    console.warn("Members cache could not be read:", error);
-    return null;
-  }
-}
-
-async function loadMembers(isLoadMore = false){
-
-  if(isLoadingMembers || noMoreMembers) return;
-
-  isLoadingMembers = true;
-  loadMoreButton.disabled = true;
-  loadMoreButton.textContent = "Loading...";
-
-  try{
-    const usersReference = collection(db, "users");
-    let membersQuery;
-
-    if(isLoadMore && lastVisibleDoc){
-      membersQuery = query(
-        usersReference,
-        startAfter(lastVisibleDoc),
-        limit(MEMBERS_PER_PAGE)
-      );
-    }else{
-      membersQuery = query(
-        usersReference,
-        limit(MEMBERS_PER_PAGE)
-      );
-    }
-
-    const snapshot = await getDocs(membersQuery);
-    const newMembers = [];
-
-    snapshot.forEach(docSnapshot => {
-      newMembers.push({
-        id: docSnapshot.id,
-        ...docSnapshot.data()
-      });
-    });
-
-    if(isLoadMore){
-      members = members.concat(newMembers);
-    }else{
-      members = newMembers;
-    }
-
-    if(snapshot.docs.length > 0){
-      lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-    }
-
-    noMoreMembers = snapshot.docs.length < MEMBERS_PER_PAGE;
-    loadMoreRow.style.display = noMoreMembers ? "none" : "block";
-
-    displayMembers(members);
-
-    if(!isLoadMore){
-      saveMembersCache(newMembers);
-    }
-
-  }catch(error){
-    console.error("Error loading members:", error);
-    membersList.innerHTML = `
-      <div class="statusText">
-        Members could not be loaded. Please try again.
-      </div>
-    `;
-  }finally{
-    isLoadingMembers = false;
-    loadMoreButton.disabled = false;
-    loadMoreButton.textContent = "Load more members";
-  }
-}
-
-function displayMembers(list){
-
-  if(list.length === 0){
-    membersList.innerHTML = `
-      <div class="statusText">No members found.</div>
-    `;
-    return;
-  }
-
-  membersList.innerHTML = list.map(user => {
-    const name = escapeHTML(user.fullName || user.displayName || user.name || "Community Member");
-    const email = escapeHTML(user.email || "");
-    const picture = user.profilePicture || user.picture || user.photoURL || "";
-
-    // Robust Avatar Markup: Displays profile photo or falls back to centered silhouette
-    const avatarMarkup = picture
-      ? `<img class="avatar" loading="lazy" src="${picture}" alt="${name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-         <div class="avatarFallback" style="display:none;">👤</div>`
-      : `<div class="avatarFallback">👤</div>`;
-
-    return `
-      <div class="member">
-        <div class="left">
-          ${avatarMarkup}
-          <div class="info">
-            <h3>${name}</h3>
-            <p>${email}</p>
-          </div>
-        </div>
-        <button
-          class="message-btn"
-          onclick="window.location.href='chat.html?uid=${user.id}'">
-          💬 Message
-        </button>
-      </div>
-    `;
-  }).join("");
-}
-
-function escapeHTML(str) {
-  if (!str) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-searchInput.addEventListener("input", function(){
-  const keyword = this.value.toLowerCase().trim();
-
-  const filtered = members.filter(user => {
-    const name = (user.fullName || user.displayName || user.name || "").toLowerCase();
-    const email = (user.email || "").toLowerCase();
-    return name.includes(keyword) || email.includes(keyword);
-  });
-
-  displayMembers(filtered);
 });
 
-loadMoreButton.addEventListener("click", () => {
-  loadMembers(true);
+async function loadMembers(currentUid){
+
+memberGrid.innerHTML=`
+<div class="empty">
+Loading members...
+</div>
+`;
+
+try{
+
+const snapshot=await getDocs(collection(db,"users"));
+
+allMembers=[];
+
+snapshot.forEach(doc=>{
+
+const data=doc.data();
+
+if(doc.id===currentUid)return;
+
+allMembers.push({
+
+uid:doc.id,
+
+name:data.fullName||"Unknown Member",
+
+country:data.country||"",
+
+photo:data.profilePicture||"images/profile.png"
+
 });
 
-// Load cached copy immediately if available
-const cachedMembers = loadMembersCache();
-if(cachedMembers){
-  members = cachedMembers;
-  displayMembers(members);
+});
+
+renderMembers(allMembers);
+
+}catch(error){
+
+memberGrid.innerHTML=`
+<div class="empty">
+Failed to load members.
+</div>
+`;
+
+console.error(error);
+
 }
 
-// Fetch live members
-loadMembers(false);
+}
+
+function renderMembers(list){
+
+memberGrid.innerHTML="";
+
+if(list.length===0){
+
+memberGrid.innerHTML=`
+<div class="empty">
+No members found.
+</div>
+`;
+
+return;
+
+}
+
+list.forEach(member=>{
+
+memberGrid.innerHTML+=`
+
+<div class="memberCard">
+
+<img
+class="memberPhoto"
+src="${member.photo}"
+onerror="this.src='images/profile.png'">
+
+<h2>${member.name}</h2>
+
+<div class="memberInfo">
+
+${member.country}
+
+</div>
+
+<div class="buttonRow">
+
+<button
+class="messageBtn"
+onclick="location.href='chat.html?uid=${member.uid}'">
+
+💬 Message
+
+</button>
+
+<button
+class="profileBtn"
+onclick="location.href='profileview.html?uid=${member.uid}'">
+
+👤 View Profile
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",()=>{
+
+const keyword=searchInput.value.toLowerCase();
+
+const filtered=allMembers.filter(member=>
+
+member.name.toLowerCase().includes(keyword)
+
+||
+
+member.country.toLowerCase().includes(keyword)
+
+);
+
+renderMembers(filtered);
+
+});
 
 </script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registered:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-    });
-  }
-</script>
-
 </body>
+
 </html>
