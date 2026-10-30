@@ -6,15 +6,14 @@
   <title>Faith Connect | SABASABA Gospel Ministry</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 75px; }
+    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 80px; }
 
     /* Top Header */
-    .top-header { background: #fff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #e4e6eb; }
+    .top-header { background: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #e4e6eb; }
     .header-title { font-size: 20px; font-weight: bold; color: #1877f2; }
     .header-icons { display: flex; gap: 8px; }
     .icon-btn { background: #f0f2f5; border: none; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; text-decoration: none; color: #050505; }
 
-    /* Edge-to-Edge Feed Container */
     .feed-container { width: 100%; max-width: 600px; margin: 0 auto; padding: 0; }
 
     /* Admin Action Bar */
@@ -28,20 +27,21 @@
     .moment-story-card {
       flex: 0 0 110px;
       height: 190px;
-      border-radius: 10px;
+      border-radius: 12px;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 8px;
+      padding: 10px;
       text-decoration: none;
       color: #fff;
       background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      background-size: cover;
+      background-position: center;
     }
     
-    /* Create Moment Card - Clean Centered Layout */
     .moment-story-card.create {
       background: #fff;
       color: #050505;
@@ -51,29 +51,52 @@
       justify-content: center;
       text-align: center;
       border: 1px solid #e4e6eb;
-      padding: 10px;
-      gap: 10px;
+      gap: 8px;
     }
     
     .create-moment-circle-btn {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       background: #1877f2;
       color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
     }
     
-    .story-avatar-badge { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #1877f2; position: absolute; top: 8px; left: 8px; object-fit: cover; background: #fff; }
+    .story-avatar-badge { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #1877f2; position: absolute; top: 8px; left: 8px; object-fit: cover; background: #fff; }
     .story-card-name { font-size: 11px; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.9); z-index: 2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
-    .story-dove-icon { font-size: 30px; position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
+    .story-dove-icon { font-size: 32px; position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); opacity: 0.9; }
 
-    /* Post Card (Full Screen Facebook Style) */
+    /* Floating Action Button (+ Post Button at Bottom Right) */
+    .floating-post-btn {
+      position: fixed;
+      bottom: 75px;
+      right: 18px;
+      width: 56px;
+      height: 56px;
+      background: #1877f2;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(24, 119, 242, 0.4);
+      z-index: 999;
+      transition: transform 0.2s ease;
+    }
+    .floating-post-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Post Card */
     .post-card { background: #fff; border-top: 1px solid #e4e6eb; border-bottom: 1px solid #e4e6eb; margin-bottom: 8px; padding: 12px 0; }
     .post-header { display: flex; align-items: center; justify-content: space-between; padding: 0 12px 10px 12px; }
     .author-info { display: flex; align-items: center; gap: 10px; }
@@ -86,12 +109,8 @@
 
     .media-box { width: 100%; background: #000; overflow: hidden; margin-top: 4px; }
     .media-box video, .media-box img { width: 100%; max-height: 480px; object-fit: contain; display: block; margin: 0 auto; }
-    .video-fallback { display: block; padding: 10px; background: #111; color: #ffeb3b; text-align: center; font-size: 12px; text-decoration: none; }
 
-    .post-stats { display: flex; justify-content: space-between; padding: 8px 12px; font-size: 12px; color: #65676b; border-bottom: 1px solid #e4e6eb; margin-top: 8px; }
-    .post-actions { display: flex; justify-content: space-around; padding: 4px 0 0 0; }
-    .action-btn { flex: 1; background: none; border: none; padding: 8px; font-size: 13px; font-weight: bold; color: #65676b; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
-    .action-btn:hover { background: #f0f2f5; }
+    .post-footer { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 0 12px; border-top: 1px solid #e4e6eb; font-size: 12px; color: #65676b; }
     .delete-btn { background: #fdecec; color: #b00020; border: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
 
     /* Bottom Nav Bar */
@@ -123,7 +142,7 @@
       <a href="reported-posts.html" class="admin-btn">🛡️ Reported Posts</a>
     </div>
 
-    <!-- Moments / Stories Carousel with Centered Plus Button -->
+    <!-- Moments / Stories Carousel -->
     <div class="moments-row" id="momentsRow">
       <a href="create-faith-moment.html" class="moment-story-card create">
         <div class="create-moment-circle-btn">+</div>
@@ -131,12 +150,15 @@
       </a>
     </div>
 
-    <!-- Community Feed -->
+    <!-- Community Posts Feed -->
     <div id="communityFeed">
       <div class="loading">Loading community feed...</div>
     </div>
 
   </main>
+
+  <!-- Floating Blue Plus Button for New Community Posts -->
+  <a href="create-post.html" class="floating-post-btn" title="Create Post">+</a>
 
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
@@ -166,7 +188,6 @@
 
     async function loadFeed() {
       try {
-        // Load Moments
         const momentsQuery = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
         const momentsSnap = await getDocs(momentsQuery);
 
@@ -185,19 +206,28 @@
           if ((now - createdAt) <= (24 * 60 * 60 * 1000)) {
             const avatar = m.authorPicture || m.profilePicture || "https://via.placeholder.com/40";
             const name = m.authorName || m.name || "Member";
-            
-            momentsHTML += `
-              <a href="faith-moments.html" class="moment-story-card">
-                <img src="${avatar}" class="story-avatar-badge" alt="Avatar">
-                <div class="story-dove-icon">🕊️</div>
-                <div class="story-card-name">${escapeHTML(name)}</div>
-              </a>
-            `;
+            const bgImage = m.imageUrl || m.mediaUrl || "";
+
+            if (bgImage && !bgImage.includes("imagekit.io")) {
+              momentsHTML += `
+                <a href="faith-moments.html" class="moment-story-card" style="background-image: url('${bgImage}');">
+                  <img src="${avatar}" class="story-avatar-badge" alt="Avatar">
+                  <div class="story-card-name">${escapeHTML(name)}</div>
+                </a>
+              `;
+            } else {
+              momentsHTML += `
+                <a href="faith-moments.html" class="moment-story-card">
+                  <img src="${avatar}" class="story-avatar-badge" alt="Avatar">
+                  <div class="story-dove-icon">🕊️</div>
+                  <div class="story-card-name">${escapeHTML(name)}</div>
+                </a>
+              `;
+            }
           }
         });
         momentsRow.innerHTML = momentsHTML;
 
-        // Load Posts
         const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
         const postsSnap = await getDocs(postsQuery);
 
@@ -227,7 +257,6 @@
               mediaHTML = `
                 <div class="media-box">
                   <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
-                  <a href="${mediaUrl}" target="_blank" class="video-fallback">⚠️ Tap to open video directly if player fails</a>
                 </div>
               `;
             } else {
@@ -257,14 +286,9 @@
               <div class="category-badge">${escapeHTML(category)}</div>
               <div class="post-message">${escapeHTML(message)}</div>
               ${mediaHTML}
-              <div class="post-stats">
+              <div class="post-footer">
                 <span>❤️ ${data.likes?.length || 0} Likes</span>
                 <span>💬 ${data.commentCount || 0} Comments</span>
-              </div>
-              <div class="post-actions">
-                <button class="action-btn">👍 Like</button>
-                <button class="action-btn">💬 Comment</button>
-                <button class="action-btn">↗️ Share</button>
               </div>
             </div>
           `;
