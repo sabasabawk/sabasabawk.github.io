@@ -421,7 +421,20 @@
     });
   }
 </script>
-
+<script>
+document.addEventListener("error", function (e) {
+  var img = e.target;
+  if (!img || img.tagName !== "IMG" || img.dataset.fallback) return;
+  var hint = (img.alt || "") + " " + (img.className || "");
+  var inAvatar = img.closest(
+    '[class*="avatar" i],[class*="profile" i],[class*="author" i],[class*="user" i],[class*="picture" i]'
+  );
+  if (/profile|avatar|picture|user/i.test(hint) || inAvatar) {
+    img.dataset.fallback = "1";
+    img.src = "images/default-avatar.svg";
+  }
+}, true);
+</script>
 <!-- Load WhatsApp Call Sounds -->
 <script src="call-sounds.js"></script>
 
