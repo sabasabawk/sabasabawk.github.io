@@ -20,164 +20,224 @@ box-sizing:border-box;
 
 body{
 font-family:Arial,sans-serif;
-background:#eef3f8;
+background:#f0f2f5;
+color:#050505;
 }
 
 .container{
-max-width:1200px;
+max-width:680px;
 margin:auto;
-padding:20px;
+padding:0 0 30px;
 }
 
-.header{
-background:linear-gradient(135deg,#0066cc,#004d99);
-color:white;
-padding:35px;
-border-radius:20px;
-text-align:center;
-margin-bottom:25px;
+/* ---------- TOP BAR ---------- */
+
+.topBar{
+position:sticky;
+top:0;
+z-index:100;
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px 12px;
+background:#ffffff;
+border-bottom:1px solid #e4e6eb;
 }
 
-.header h1{
-font-size:38px;
-margin-bottom:10px;
+.topBack{
+width:38px;
+height:38px;
+flex-shrink:0;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#f0f2f5;
+color:#050505;
+text-decoration:none;
+font-size:20px;
+font-weight:bold;
 }
 
-.header p{
+.topTitle{
+min-width:0;
+flex:1;
+}
+
+.topTitle h1{
 font-size:18px;
-line-height:1.6;
+color:#0866c6;
 }
+
+.topTitle p{
+margin-top:2px;
+font-size:12px;
+color:#65676b;
+}
+
+/* ---------- SEARCH ---------- */
 
 .searchBox{
-margin-bottom:25px;
+padding:10px 12px;
+background:#ffffff;
+border-bottom:1px solid #e4e6eb;
 }
 
 .searchBox input{
 width:100%;
-padding:15px;
-border-radius:12px;
-border:1px solid #ccc;
-font-size:17px;
+padding:11px 14px;
+border-radius:22px;
+border:1px solid #ccd0d5;
+background:#f0f2f5;
+font-size:15px;
 outline:none;
 }
 
 .searchBox input:focus{
-border-color:#0066cc;
+border-color:#1877f2;
+background:#ffffff;
 }
 
+.countText{
+padding:10px 14px 6px;
+color:#65676b;
+font-size:12px;
+font-weight:bold;
+}
+
+/* ---------- MEMBER LIST ---------- */
+
 .memberGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
-gap:20px;
+background:#ffffff;
+border-top:1px solid #e4e6eb;
+border-bottom:1px solid #e4e6eb;
 }
 
 .memberCard{
-background:white;
-border-radius:18px;
-padding:20px;
-text-align:center;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-transition:.3s;
-min-width:0;
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+border-bottom:1px solid #f0f2f5;
 }
 
-.memberCard:hover{
-transform:translateY(-5px);
+.memberCard:last-child{
+border-bottom:0;
 }
 
 .memberPhoto{
-display:block;
-width:100px;
-height:100px;
+width:60px;
+height:60px;
+flex-shrink:0;
 border-radius:50%;
 object-fit:cover;
 background:#e7f3ff;
-margin:0 auto 15px;
+cursor:pointer;
 }
 
-.memberCard h2{
-color:#0066cc;
-margin-bottom:8px;
-font-size:24px;
-overflow-wrap:anywhere;
+.memberDetails{
+min-width:0;
+flex:1;
+}
+
+.memberName{
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+color:#050505;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .memberInfo{
-color:#666;
-margin-bottom:18px;
-font-size:16px;
-line-height:1.5;
-min-height:24px;
+margin-top:2px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+color:#65676b;
+font-size:13px;
+min-height:16px;
 }
 
 .buttonRow{
 display:flex;
-gap:10px;
+gap:8px;
+margin-top:8px;
+}
+
+.messageBtn,
+.profileBtn{
+flex:1;
+min-height:34px;
+padding:7px 8px;
+border:none;
+border-radius:8px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+white-space:nowrap;
 }
 
 .messageBtn{
-flex:1;
-background:#0066cc;
-color:white;
-border:none;
-padding:12px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
-
-.profileBtn{
-flex:1;
-background:#28a745;
-color:white;
-border:none;
-padding:12px;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
+background:#1877f2;
+color:#ffffff;
 }
 
 .messageBtn:hover{
-background:#004d99;
+background:#166fe5;
+}
+
+.profileBtn{
+background:#e4e6eb;
+color:#050505;
 }
 
 .profileBtn:hover{
-background:#1f7f36;
+background:#d8dadf;
 }
 
 .empty{
-grid-column:1/-1;
-background:white;
-padding:40px;
+padding:36px 16px;
 text-align:center;
-border-radius:18px;
-color:#777;
-font-size:18px;
+color:#65676b;
+font-size:15px;
 }
 
 .back{
-margin-top:30px;
+margin-top:20px;
 text-align:center;
+padding:0 12px;
+}
+
+.back a{
+display:block;
+text-decoration:none;
 }
 
 .back button{
-background:#0066cc;
-color:white;
-border:none;
-padding:14px 30px;
-border-radius:10px;
-font-size:17px;
+width:100%;
+background:#ffffff;
+color:#050505;
+border:1px solid #ccd0d5;
+padding:12px;
+border-radius:8px;
+font-size:15px;
+font-weight:bold;
 cursor:pointer;
 }
 
-@media(max-width:700px){
+@media(max-width:360px){
 
-.buttonRow{
-flex-direction:column;
+.memberPhoto{
+width:52px;
+height:52px;
 }
 
-.header h1{
-font-size:30px;
+.messageBtn,
+.profileBtn{
+font-size:12px;
+padding:7px 4px;
 }
 
 }
@@ -190,14 +250,14 @@ font-size:30px;
 
 <div class="container">
 
-<div class="header">
+<div class="topBar">
 
+<a href="feed.html" class="topBack" aria-label="Back">←</a>
+
+<div class="topTitle">
 <h1>👥 Find Members</h1>
-
-<p>
-Connect with Christians around the world.
-View profiles and start private conversations.
-</p>
+<p>Connect with Christians around the world</p>
+</div>
 
 </div>
 
@@ -206,9 +266,11 @@ View profiles and start private conversations.
 <input
 id="searchInput"
 type="text"
-placeholder="Search members...">
+placeholder="Search members by name or country...">
 
 </div>
+
+<div id="countText" class="countText"></div>
 
 <div
 id="memberGrid"
@@ -278,6 +340,7 @@ return {
 
 const memberGrid = document.getElementById("memberGrid");
 const searchInput = document.getElementById("searchInput");
+const countText = document.getElementById("countText");
 
 let allMembers = [];
 
@@ -335,6 +398,12 @@ data.photoURL ||
 
 });
 
+allMembers.sort(function(first, second){
+
+return first.name.localeCompare(second.name);
+
+});
+
 renderMembers(allMembers);
 
 }catch(error){
@@ -352,6 +421,11 @@ console.error(error);
 }
 
 function renderMembers(list){
+
+countText.textContent =
+list.length === 1
+? "1 member"
+: list.length + " members";
 
 if(list.length === 0){
 
@@ -373,9 +447,16 @@ memberGrid.innerHTML = list.map(member => `
 class="memberPhoto"
 loading="lazy"
 alt="${escapeHTML(member.name)}"
+data-uid="${escapeHTML(member.uid)}"
 src="${escapeHTML(member.photo || DEFAULT_AVATAR)}">
 
-<h2>${escapeHTML(member.name)}</h2>
+<div class="memberDetails">
+
+<div
+class="memberName"
+data-uid="${escapeHTML(member.uid)}">
+${escapeHTML(member.name)}
+</div>
 
 <div class="memberInfo">
 ${escapeHTML(member.country)}
@@ -394,8 +475,10 @@ data-uid="${escapeHTML(member.uid)}">
 class="profileBtn"
 type="button"
 data-uid="${escapeHTML(member.uid)}">
-👤 View Profile
+👤 Profile
 </button>
+
+</div>
 
 </div>
 
@@ -440,14 +523,16 @@ return;
 
 }
 
-const profileButton =
-event.target.closest(".profileBtn");
+const profileTarget =
+event.target.closest(
+".profileBtn, .memberPhoto, .memberName"
+);
 
-if(profileButton){
+if(profileTarget && profileTarget.dataset.uid){
 
 location.href =
 "profileview.html?uid=" +
-encodeURIComponent(profileButton.dataset.uid);
+encodeURIComponent(profileTarget.dataset.uid);
 
 }
 
