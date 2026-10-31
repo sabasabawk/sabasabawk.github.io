@@ -11,17 +11,40 @@
     .header h1 { font-size: 18px; color: #1877f2; }
     .create-btn { background: #1877f2; color: #fff; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; }
     .feed-container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
-    .moment-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; padding: 12px; }
+    .moment-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; margin-bottom: 12px; padding: 12px; cursor: pointer; }
+    .moment-card:active { background: #f7f8fa; }
     .moment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .author-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #ddd; }
+    .author-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #e7f3ff; flex-shrink: 0; }
     .author-name { font-weight: bold; font-size: 14px; }
     .moment-time { font-size: 11px; color: #65676b; }
-    .moment-message { font-size: 14px; line-height: 1.4; margin-bottom: 10px; white-space: pre-wrap; }
+    .moment-message { font-size: 14px; line-height: 1.4; margin-bottom: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
     .verse-box { background: #e7f3ff; border-left: 4px solid #1877f2; padding: 8px; font-size: 13px; margin-bottom: 10px; font-style: italic; }
-    .media-box { width: 100%; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px; }
-    .media-box video, .media-box img { width: 100%; max-height: 450px; object-fit: contain; display: block; }
-    .video-fallback { display: block; padding: 10px; background: #000; color: #ffeb3b; text-align: center; font-size: 13px; text-decoration: none; border-top: 1px solid #333; }
+    .media-box { position: relative; width: 100%; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px; }
+    .media-box video, .media-box img { width: 100%; max-height: 450px; object-fit: contain; display: block; pointer-events: none; }
+    .play-badge { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
     .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; }
+
+    /* ---------- FULL-SCREEN MOMENT VIEWER (like Facebook Stories) ---------- */
+
+    .storyViewer { position: fixed; inset: 0; z-index: 5000; display: none; justify-content: center; background: #000; -webkit-user-select: none; user-select: none; }
+    .storyViewer.open { display: flex; }
+    .storyFrame { position: relative; width: 100%; max-width: 480px; height: 100%; overflow: hidden; background: #111; touch-action: none; }
+    .storyContent { position: absolute; inset: 0; }
+    .storyMedia { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .storyTextBackground { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 90px 28px 60px; text-align: center; color: #fff; font-size: 24px; font-weight: bold; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .storyTextReference { margin-top: 14px; font-size: 16px; opacity: .92; }
+    .storyTextLink { margin-top: 18px; padding: 9px 16px; border-radius: 20px; background: rgba(255,255,255,.2); color: #fff; font-size: 14px; text-decoration: none; }
+    .storyShadeTop { position: absolute; top: 0; left: 0; right: 0; height: 140px; background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0)); pointer-events: none; }
+    .storyBar { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 3; height: 3px; overflow: hidden; border-radius: 3px; background: rgba(255,255,255,.35); pointer-events: none; }
+    .storyBarFill { width: 0%; height: 100%; background: #fff; }
+    .storyHeader { position: absolute; top: 22px; left: 12px; right: 12px; z-index: 3; display: flex; align-items: center; gap: 10px; color: #fff; }
+    .storyAvatar { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #e7f3ff; border: 2px solid #fff; }
+    .storyAuthor { min-width: 0; flex: 1; pointer-events: none; }
+    .storyAuthorName { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: bold; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+    .storyAuthorTime { margin-top: 2px; font-size: 12px; opacity: .9; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+    .storyIconButton { width: 38px; height: 38px; flex-shrink: 0; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.4); color: #fff; font-size: 18px; cursor: pointer; }
+    .storyCaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: none; max-height: 45%; overflow: hidden; padding: 70px 18px 34px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.72)); color: #fff; font-size: 17px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; pointer-events: none; }
+    .storyCaptionReference { margin-top: 6px; font-size: 14px; opacity: .9; }
   </style>
 </head>
 <body>
@@ -37,95 +60,120 @@
     </div>
   </main>
 
+  <!-- FULL-SCREEN VIEWER -->
+  <div id="storyViewer" class="storyViewer" aria-hidden="true">
+    <div id="storyFrame" class="storyFrame">
+      <div id="storyContent" class="storyContent"></div>
+      <div class="storyShadeTop"></div>
+      <div class="storyBar"><div id="storyBarFill" class="storyBarFill"></div></div>
+      <div class="storyHeader">
+        <img id="storyAvatar" class="storyAvatar" alt="">
+        <div class="storyAuthor">
+          <div id="storyName" class="storyAuthorName"></div>
+          <div id="storyTime" class="storyAuthorTime"></div>
+        </div>
+        <button id="storyMute" class="storyIconButton" type="button" aria-label="Sound on or off" style="display:none;">🔊</button>
+        <button id="storyClose" class="storyIconButton" type="button" aria-label="Close">✕</button>
+      </div>
+      <div id="storyCaption" class="storyCaption"></div>
+    </div>
+  </div>
+
   <script type="module">
     import { db, auth, collection, getDocs, query, orderBy, onAuthStateChanged } from "./firebase.js";
 
+    /* Blue head shown when someone has no picture or the picture is broken */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;charset=utf-8," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+        '<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+        '<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+        '<g clip-path="url(#c)" fill="#1877f2">' +
+        '<circle cx="100" cy="76" r="38"/>' +
+        '<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+      );
+
+    const TEXT_GRADIENTS = [
+      "linear-gradient(160deg,#087bd1,#0c5aa0)",
+      "linear-gradient(160deg,#7b2ff7,#4a1a9c)",
+      "linear-gradient(160deg,#e8590c,#a12d00)",
+      "linear-gradient(160deg,#0f9d58,#056b3a)",
+      "linear-gradient(160deg,#c2185b,#7b0f3a)"
+    ];
+
+    const TYPE_LABELS = {
+      verse: "Bible Verse",
+      prayer: "Prayer",
+      testimony: "Testimony",
+      photo: "Photo",
+      video: "Video",
+      text: "Encouragement",
+      encouragement: "Encouragement",
+      scripture: "Scripture"
+    };
+
+    const PHOTO_MS = 6000;
+    const TEXT_MS = 7000;
+
     const feedContainer = document.getElementById("momentsFeed");
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
-      loadFaithMoments();
-    });
+    let currentUser = null;
+    let moments = [];
+    let deepLinkHandled = false;
 
-    async function loadFaithMoments() {
-      try {
-        const q = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
+    /* ---------- helpers ---------- */
 
-        if (snapshot.empty) {
-          feedContainer.innerHTML = `<div class="empty">No faith moments shared yet. Be the first to share!</div>`;
-          return;
+    function escapeHTML(value) {
+      return String(value == null ? "" : value).replace(/[&<>'"]/g,
+        tag => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[tag] || tag)
+      );
+    }
+
+    /* Only real web links are ever used for pictures and videos */
+    function safeUrl(value) {
+      const text = String(value == null ? "" : value).trim();
+      return /^https?:\/\//i.test(text) ? text : "";
+    }
+
+    function isVideoUrl(url) {
+      return /\.(mp4|mov|webm|m4v|3gp|mkv|ogv)(\?|#|$)/i.test(url) || url.indexOf("/video/upload/") !== -1;
+    }
+
+    function firstValue(...values) {
+      for (const value of values) {
+        if (value !== undefined && value !== null && String(value).trim() !== "") {
+          return String(value).trim();
         }
-
-        let html = "";
-        const now = Date.now();
-
-        snapshot.forEach((docSnap) => {
-          const post = docSnap.data();
-          
-          const createdAt = post.timestamp?.toMillis ? post.timestamp.toMillis() : (post.timestamp?.seconds ? post.timestamp.seconds * 1000 : now);
-          const isExpired = (now - createdAt) > (24 * 60 * 60 * 1000);
-          if (isExpired) return;
-
-          const name = post.authorName || post.name || "Community Member";
-          const avatar = post.authorPicture || post.profilePicture || "https://via.placeholder.com/40";
-          const timeAgo = timeSince(createdAt);
-
-          let mediaHTML = "";
-          // Strictly bypass any ImageKit URL strings if they exist
-          let mediaUrl = post.videoUrl || post.imageUrl || post.mediaUrl || "";
-          if (mediaUrl.includes("imagekit.io")) {
-            mediaUrl = ""; // Ignore dead imagekit links
-          }
-
-          if (mediaUrl) {
-            if (post.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
-              mediaHTML = `
-                <div class="media-box">
-                  <video src="${mediaUrl}" controls preload="metadata" playsinline crossorigin="anonymous"></video>
-                  <a href="${mediaUrl}" target="_blank" class="video-fallback">⚠️ Having trouble playing? Tap to open video directly.</a>
-                </div>
-              `;
-            } else {
-              mediaHTML = `
-                <div class="media-box">
-                  <img src="${mediaUrl}" alt="Faith moment media">
-                </div>
-              `;
-            }
-          }
-
-          let verseHTML = post.verseReference ? `<div class="verse-box">📖 <b>${post.verseReference}</b></div>` : "";
-
-          html += `
-            <div class="moment-card">
-              <div class="moment-header">
-                <img src="${avatar}" class="author-avatar" alt="Avatar">
-                <div>
-                  <div class="author-name">${escapeHTML(name)}</div>
-                  <div class="moment-time">${timeAgo} • <span style="text-transform:capitalize;">${post.momentType || 'encouragement'}</span></div>
-                </div>
-              </div>
-              ${verseHTML}
-              <div class="moment-message">${escapeHTML(post.message || "")}</div>
-              ${mediaHTML}
-            </div>
-          `;
-        });
-
-        feedContainer.innerHTML = html || `<div class="empty">No active faith moments right now.</div>`;
-
-      } catch (err) {
-        console.error("Error loading moments:", err);
-        feedContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load moments. Please refresh.</div>`;
       }
+      return "";
+    }
+
+    function typeLabel(post) {
+      const raw = String(post.momentType || post.type || "encouragement").toLowerCase();
+      return TYPE_LABELS[raw] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+    }
+
+    function getMedia(post) {
+      const video = safeUrl(post.videoUrl);
+      const image = safeUrl(post.imageUrl);
+      const generic = safeUrl(post.mediaUrl);
+
+      if (video) return { type: "video", url: video };
+      if (generic && String(post.mediaType || "").toLowerCase() === "video") return { type: "video", url: generic };
+      if (image) return { type: "image", url: image };
+      if (generic) return { type: isVideoUrl(generic) ? "video" : "image", url: generic };
+      return { type: "none", url: "" };
+    }
+
+    function gradientFor(id) {
+      let total = 0;
+      String(id || "").split("").forEach(ch => { total += ch.charCodeAt(0); });
+      return TEXT_GRADIENTS[total % TEXT_GRADIENTS.length];
     }
 
     function timeSince(date) {
-      const seconds = Math.floor((new Date() - date) / 1000);
+      const seconds = Math.floor((Date.now() - date) / 1000);
       let interval = seconds / 31536000;
       if (interval > 1) return Math.floor(interval) + "y ago";
       interval = seconds / 2592000;
@@ -139,11 +187,512 @@
       return "Just now";
     }
 
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
+    /* ---------- loading ---------- */
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+      currentUser = user;
+      loadFaithMoments();
+    });
+
+    async function loadFaithMoments() {
+      try {
+        const q = query(collection(db, "faithMoments"), orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+
+        moments = [];
+        const now = Date.now();
+
+        snapshot.forEach((docSnap) => {
+          const post = docSnap.data();
+
+          const createdAt = post.timestamp && post.timestamp.toMillis
+            ? post.timestamp.toMillis()
+            : (post.timestamp && post.timestamp.seconds ? post.timestamp.seconds * 1000 : now);
+
+          if ((now - createdAt) > (24 * 60 * 60 * 1000)) return;
+
+          /* "Only Me" moments are shown only to their owner */
+          const ownerId = firstValue(post.userId, post.authorId, post.uid);
+          const isOwn = Boolean(currentUser && ownerId && ownerId === currentUser.uid);
+          const privacy = String(post.privacy || "everyone").toLowerCase();
+          if (privacy !== "everyone" && !isOwn) return;
+
+          moments.push({
+            id: docSnap.id,
+            data: post,
+            createdAt: createdAt,
+            isOwn: isOwn,
+            name: firstValue(post.authorName, post.name, post.fullName, "Community Member"),
+            avatar: safeUrl(firstValue(post.authorPicture, post.profilePicture, post.picture, post.photoURL)) || DEFAULT_AVATAR,
+            media: getMedia(post),
+            message: String(post.message || "").trim(),
+            reference: String(post.verseReference || "").trim()
+          });
+        });
+
+        renderList();
+        openDeepLinkedMoment();
+
+      } catch (err) {
+        console.error("Error loading moments:", err);
+        feedContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load moments. Please refresh.</div>`;
+      }
     }
+
+    function renderList() {
+      if (moments.length === 0) {
+        feedContainer.innerHTML = `<div class="empty">No active faith moments right now. Be the first to share!</div>`;
+        return;
+      }
+
+      feedContainer.innerHTML = moments.map((m, index) => {
+        let mediaHTML = "";
+
+        if (m.media.type === "video") {
+          mediaHTML = `
+            <div class="media-box">
+              <video class="list-media" src="${escapeHTML(m.media.url)}#t=0.1" muted playsinline preload="metadata"></video>
+              <div class="play-badge">▶</div>
+            </div>`;
+        } else if (m.media.type === "image") {
+          mediaHTML = `
+            <div class="media-box">
+              <img class="list-media" src="${escapeHTML(m.media.url)}" alt="Faith moment photo" loading="lazy">
+            </div>`;
+        }
+
+        const verseHTML = m.reference ? `<div class="verse-box">📖 <b>${escapeHTML(m.reference)}</b></div>` : "";
+        const messageHTML = m.message ? `<div class="moment-message">${escapeHTML(m.message)}</div>` : "";
+
+        return `
+          <div class="moment-card" data-index="${index}" role="button" tabindex="0">
+            <div class="moment-header">
+              <img src="${escapeHTML(m.avatar)}" class="author-avatar" alt="">
+              <div>
+                <div class="author-name">${escapeHTML(m.isOwn ? m.name + " (You)" : m.name)}</div>
+                <div class="moment-time">${escapeHTML(timeSince(m.createdAt))} • ${escapeHTML(typeLabel(m.data))}</div>
+              </div>
+            </div>
+            ${verseHTML}
+            ${messageHTML}
+            ${mediaHTML}
+          </div>`;
+      }).join("");
+    }
+
+    /* A broken avatar becomes the blue head; a broken picture or video is hidden */
+    feedContainer.addEventListener("error", (event) => {
+      const el = event.target;
+      if (!el || !el.tagName) return;
+
+      if (el.tagName === "IMG" && el.classList.contains("author-avatar")) {
+        if (el.src !== DEFAULT_AVATAR) el.src = DEFAULT_AVATAR;
+        return;
+      }
+
+      if (el.classList && el.classList.contains("list-media")) {
+        const box = el.closest(".media-box");
+        if (box) box.remove();
+      }
+    }, true);
+
+    feedContainer.addEventListener("click", (event) => {
+      const card = event.target.closest(".moment-card");
+      if (!card) return;
+      openViewer(Number(card.dataset.index));
+    });
+
+    feedContainer.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const card = event.target.closest(".moment-card");
+      if (!card) return;
+      event.preventDefault();
+      openViewer(Number(card.dataset.index));
+    });
+
+    /* ?moment=ID opens that Moment full screen (used after publishing) */
+    function openDeepLinkedMoment() {
+      if (deepLinkHandled) return;
+      deepLinkHandled = true;
+
+      const wantedId = new URLSearchParams(window.location.search).get("moment");
+      if (!wantedId) return;
+
+      const index = moments.findIndex(m => m.id === wantedId);
+      if (index >= 0) openViewer(index);
+    }
+
+    /* =====================================================
+       FULL-SCREEN VIEWER
+       Tap right = next, tap left = previous,
+       press and hold = pause, swipe down or Back = close
+    ===================================================== */
+
+    const viewer = document.getElementById("storyViewer");
+    const frame = document.getElementById("storyFrame");
+    const contentEl = document.getElementById("storyContent");
+    const barFill = document.getElementById("storyBarFill");
+    const avatarEl = document.getElementById("storyAvatar");
+    const nameEl = document.getElementById("storyName");
+    const timeEl = document.getElementById("storyTime");
+    const muteBtn = document.getElementById("storyMute");
+    const closeBtn = document.getElementById("storyClose");
+    const captionEl = document.getElementById("storyCaption");
+
+    let storyIndex = -1;
+    let token = 0;
+    let raf = 0;
+    let elapsed = 0;
+    let duration = PHOTO_MS;
+    let lastTick = 0;
+    let holdPaused = false;
+    let mediaLoading = false;
+    let muted = false;
+    let videoEl = null;
+    let historyPushed = false;
+    let pointer = null;
+
+    function isViewerOpen() {
+      return viewer.classList.contains("open");
+    }
+
+    function setProgress(ratio) {
+      const clamped = Math.max(0, Math.min(1, ratio || 0));
+      barFill.style.width = (clamped * 100) + "%";
+    }
+
+    function updateMuteButton() {
+      muteBtn.textContent = muted ? "🔇" : "🔊";
+      if (videoEl) videoEl.muted = muted;
+    }
+
+    function stopPlayback() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+
+      if (videoEl) {
+        try { videoEl.pause(); } catch (e) { /* not important */ }
+        videoEl.removeAttribute("src");
+        try { videoEl.load(); } catch (e) { /* not important */ }
+      }
+
+      videoEl = null;
+      mediaLoading = false;
+    }
+
+    /* photo and text Moments run on a timer */
+    function startTimer(ms) {
+      duration = ms;
+      elapsed = 0;
+      lastTick = performance.now();
+      mediaLoading = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(tick);
+    }
+
+    function tick(now) {
+      raf = requestAnimationFrame(tick);
+
+      /* cap the step so coming back to the app never skips ahead */
+      const step = Math.min(now - lastTick, 100);
+      lastTick = now;
+
+      if (holdPaused || mediaLoading || document.hidden) return;
+
+      elapsed += step;
+      setProgress(elapsed / duration);
+
+      if (elapsed >= duration) nextStory();
+    }
+
+    function holdPause() {
+      holdPaused = true;
+      if (videoEl) videoEl.pause();
+    }
+
+    function holdResume() {
+      holdPaused = false;
+      if (videoEl && !document.hidden) {
+        const p = videoEl.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+    }
+
+    function renderTextStory(m, note, linkUrl) {
+      contentEl.innerHTML = "";
+      captionEl.innerHTML = "";
+      captionEl.style.display = "none";
+      muteBtn.style.display = "none";
+
+      const box = document.createElement("div");
+      box.className = "storyTextBackground";
+      box.style.background = gradientFor(m.id);
+
+      const body = document.createElement("div");
+      body.textContent = m.message || (m.reference ? "" : (note || ""));
+      if (body.textContent) box.appendChild(body);
+
+      if (m.reference) {
+        const ref = document.createElement("div");
+        ref.className = "storyTextReference";
+        ref.textContent = "📖 " + m.reference;
+        box.appendChild(ref);
+      }
+
+      if (linkUrl) {
+        const link = document.createElement("a");
+        link.className = "storyTextLink";
+        link.href = linkUrl;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "Open video directly";
+        box.appendChild(link);
+      }
+
+      contentEl.appendChild(box);
+      startTimer(TEXT_MS);
+    }
+
+    function showStory(index) {
+      if (index >= moments.length) {
+        closeViewer();
+        return;
+      }
+
+      const safeIndex = Math.max(0, index);
+      const m = moments[safeIndex];
+      if (!m) {
+        closeViewer();
+        return;
+      }
+
+      stopPlayback();
+      const myToken = ++token;
+      storyIndex = safeIndex;
+      holdPaused = false;
+
+      nameEl.textContent = m.isOwn ? "Your Moment" : m.name;
+      timeEl.textContent = timeSince(m.createdAt) + " • " + typeLabel(m.data);
+
+      avatarEl.onerror = function () {
+        avatarEl.onerror = null;
+        avatarEl.src = DEFAULT_AVATAR;
+      };
+      avatarEl.src = m.avatar;
+
+      setProgress(0);
+      contentEl.innerHTML = "";
+      captionEl.innerHTML = "";
+      captionEl.style.display = "none";
+      muteBtn.style.display = "none";
+
+      const media = m.media;
+
+      if (media.type === "none") {
+        renderTextStory(m, "");
+        return;
+      }
+
+      /* caption under a photo or video */
+      if (m.message || m.reference) {
+        if (m.message) {
+          const captionText = document.createElement("div");
+          captionText.textContent = m.message;
+          captionEl.appendChild(captionText);
+        }
+        if (m.reference) {
+          const captionRef = document.createElement("div");
+          captionRef.className = "storyCaptionReference";
+          captionRef.textContent = "📖 " + m.reference;
+          captionEl.appendChild(captionRef);
+        }
+        captionEl.style.display = "block";
+      }
+
+      const fallback = function () {
+        if (token !== myToken) return;
+        stopPlayback();
+        renderTextStory(
+          m,
+          media.type === "video" ? "This video could not be played." : "This picture could not be loaded.",
+          media.type === "video" ? media.url : ""
+        );
+      };
+
+      if (media.type === "image") {
+        const img = document.createElement("img");
+        img.className = "storyMedia";
+        img.alt = "Faith Moment";
+        mediaLoading = true;
+
+        img.addEventListener("load", function () {
+          if (token === myToken) startTimer(PHOTO_MS);
+        }, { once: true });
+
+        img.addEventListener("error", fallback, { once: true });
+        img.src = media.url;
+        contentEl.appendChild(img);
+
+        /* keep the timer loop alive while the picture loads */
+        duration = PHOTO_MS;
+        elapsed = 0;
+        lastTick = performance.now();
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      /* video: the bar follows the video itself */
+      const video = document.createElement("video");
+      video.className = "storyMedia";
+      video.playsInline = true;
+      video.setAttribute("playsinline", "");
+      video.preload = "auto";
+      video.muted = muted;
+      videoEl = video;
+
+      video.addEventListener("timeupdate", function () {
+        if (token === myToken && video.duration) setProgress(video.currentTime / video.duration);
+      });
+      video.addEventListener("ended", function () {
+        if (token === myToken) nextStory();
+      });
+      video.addEventListener("error", fallback);
+
+      video.src = media.url;
+      contentEl.appendChild(video);
+
+      muteBtn.style.display = "flex";
+      updateMuteButton();
+
+      const started = video.play();
+      if (started && started.catch) {
+        started.catch(function () {
+          /* the phone may refuse sound: play silently instead */
+          if (token !== myToken) return;
+          video.muted = true;
+          muted = true;
+          updateMuteButton();
+          video.play().catch(function () {});
+        });
+      }
+    }
+
+    function nextStory() {
+      showStory(storyIndex + 1);
+    }
+
+    function previousStory() {
+      /* on the first Moment, "back" restarts it */
+      showStory(Math.max(0, storyIndex - 1));
+    }
+
+    function openViewer(index) {
+      if (index < 0 || index >= moments.length) return;
+
+      viewer.classList.add("open");
+      viewer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      try {
+        window.history.pushState({ momentStory: true }, "");
+        historyPushed = true;
+      } catch (e) {
+        historyPushed = false;
+      }
+
+      showStory(index);
+    }
+
+    function closeViewer() {
+      if (!isViewerOpen()) return;
+
+      token++;
+      stopPlayback();
+
+      viewer.classList.remove("open");
+      viewer.setAttribute("aria-hidden", "true");
+      contentEl.innerHTML = "";
+      document.body.style.overflow = "";
+
+      if (historyPushed) {
+        historyPushed = false;
+        try { window.history.back(); } catch (e) { /* not important */ }
+      }
+    }
+
+    /* ---------- gestures ---------- */
+
+    frame.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("button, a")) return;
+      pointer = { x: event.clientX, y: event.clientY, t: Date.now() };
+      holdPause();
+    });
+
+    frame.addEventListener("pointerup", (event) => {
+      if (!pointer) return;
+
+      const start = pointer;
+      pointer = null;
+
+      const moveX = event.clientX - start.x;
+      const moveY = event.clientY - start.y;
+      const heldFor = Date.now() - start.t;
+
+      /* swipe down closes */
+      if (moveY > 100 && Math.abs(moveY) > Math.abs(moveX)) {
+        closeViewer();
+        return;
+      }
+
+      holdResume();
+
+      /* a quick tap moves between Moments */
+      if (heldFor < 350 && Math.abs(moveX) < 20 && Math.abs(moveY) < 20) {
+        const box = frame.getBoundingClientRect();
+        if (event.clientX - box.left < box.width * 0.33) {
+          previousStory();
+        } else {
+          nextStory();
+        }
+      }
+    });
+
+    frame.addEventListener("pointercancel", () => {
+      pointer = null;
+      holdResume();
+    });
+
+    closeBtn.addEventListener("click", closeViewer);
+
+    muteBtn.addEventListener("click", () => {
+      muted = !muted;
+      updateMuteButton();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!isViewerOpen()) return;
+      if (event.key === "Escape") closeViewer();
+      else if (event.key === "ArrowRight") nextStory();
+      else if (event.key === "ArrowLeft") previousStory();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (!isViewerOpen() || !videoEl) return;
+      if (document.hidden) videoEl.pause();
+      else holdResume();
+    });
+
+    /* the phone's Back button closes the viewer */
+    window.addEventListener("popstate", () => {
+      if (isViewerOpen()) {
+        historyPushed = false;
+        closeViewer();
+      }
+    });
   </script>
 </body>
 </html>
