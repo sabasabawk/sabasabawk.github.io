@@ -141,8 +141,8 @@ position:relative;
 width:62px;
 height:62px;
 border-radius:50%;
-background:#087bd1;
-color:white;
+background:#e7f3ff;
+color:#1877f2;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -471,6 +471,19 @@ doc,
 getDoc
 } from "./firebase.js";
 
+/* Blue head shown when someone has no picture or the picture is broken */
+
+const DEFAULT_AVATAR =
+"data:image/svg+xml;charset=utf-8," +
+encodeURIComponent(
+'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+'<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+'<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+'<g clip-path="url(#c)" fill="#1877f2">' +
+'<circle cx="100" cy="76" r="38"/>' +
+'<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+);
+
 const badge =
 document.getElementById("messageBadge");
 
@@ -666,16 +679,13 @@ unreadCount
 
 const safeUid=encodeURIComponent(uid);
 const safeName=escapeHTML(name);
-const safePhoto=escapeHTML(photo);
+const safePhoto=escapeHTML(photo || DEFAULT_AVATAR);
 const safeMessage=escapeHTML(
 lastMessage || "Tap to open conversation"
 );
 
-const photoHTML=safePhoto
-? `<img src="${safePhoto}" alt="${safeName}"
-onerror="this.style.display='none';
-this.parentElement.textContent='👤';">`
-: "👤";
+const photoHTML=
+`<img src="${safePhoto}" alt="${safeName}">`;
 
 const card=document.createElement("div");
 
@@ -727,6 +737,26 @@ ${unreadCount > 99 ? "99+" : unreadCount}
 </div>
 
 `;
+
+/* a broken picture becomes the blue head */
+
+const avatarImage=card.querySelector(".avatar img");
+
+if(avatarImage){
+
+avatarImage.addEventListener(
+"error",
+()=>{
+
+if(avatarImage.src!==DEFAULT_AVATAR){
+avatarImage.src=DEFAULT_AVATAR;
+}
+
+},
+{once:true}
+);
+
+}
 
 const openChat=()=>{
 
@@ -859,6 +889,7 @@ profilePhoto=
 profile.photoURL ||
 profile.photoUrl ||
 profile.profilePicture ||
+profile.picture ||
 profile.profilePic ||
 profile.profileImage ||
 profile.avatar ||
@@ -1144,9 +1175,6 @@ refreshConversations();
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered successfully:', registration.scope);
-          })
           .catch((error) => {
             console.error('Service Worker registration failed:', error);
           });
