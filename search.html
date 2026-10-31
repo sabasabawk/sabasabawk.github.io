@@ -3,149 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Members | Faith Connect</title>
+
+<title>Search Members</title>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; color: #050505; min-height: 100vh; padding-bottom: 80px; }
 
-.container { max-width: 600px; margin: 0 auto; padding: 12px 8px; }
-
-/* Blue Banner Header */
-.search-banner {
-  background: linear-gradient(135deg, #0d47a1 0%, #1877f2 100%);
-  color: #ffffff;
-  padding: 24px 16px;
-  border-radius: 16px;
-  text-align: center;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
 }
-.search-banner h1 { font-size: 22px; margin-bottom: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.search-banner p { font-size: 13px; opacity: 0.9; line-height: 1.4; max-width: 400px; margin: 0 auto; }
 
-/* Search Input */
-.search-box-wrapper { background: #fff; padding: 10px 14px; border-radius: 20px; border: 1px solid #e4e6eb; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-.search-input { width: 100%; border: none; outline: none; font-size: 14px; background: transparent; }
-
-/* Member Card Layout */
-.results-grid { display: flex; flex-direction: column; gap: 12px; }
-
-.member-card-large {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e4e6eb;
-  padding: 20px 16px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+.container{
+max-width:700px;
+margin:auto;
 }
-.card-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e4e6eb; margin-bottom: 10px; border: 2px solid #1877f2; }
-.card-name { font-size: 18px; font-weight: bold; color: #1877f2; margin-bottom: 12px; }
 
-.card-actions { display: flex; flex-direction: column; gap: 8px; max-width: 320px; margin: 0 auto; }
-.btn-blue { background: #1877f2; color: #fff; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.btn-green { background: #2e7d32; color: #fff; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.header{
+background:#0066cc;
+color:white;
+padding:20px;
+text-align:center;
+border-radius:15px;
+margin-bottom:20px;
+}
 
-.back-container { text-align: center; margin-top: 16px; }
-.back-btn { background: #fff; border: 1px solid #e4e6eb; color: #050505; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; text-decoration: none; display: inline-block; }
+input{
+width:100%;
+padding:15px;
+font-size:18px;
+border:1px solid #ccc;
+border-radius:8px;
+box-sizing:border-box;
+margin-bottom:20px;
+}
 
-.empty, .loading { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 12px; border: 1px solid #e4e6eb; }
+.member{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+display:flex;
+align-items:center;
+}
+
+.member img{
+width:60px;
+height:60px;
+border-radius:50%;
+margin-right:15px;
+object-fit:cover;
+border:2px solid #0066cc;
+}
+
+.name{
+font-size:20px;
+font-weight:bold;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- Blue Header Banner -->
-  <div class="search-banner">
-    <h1>👥 Find Members</h1>
-    <p>Connect with Christians around the world. View profiles and start private conversations.</p>
-  </div>
+<div class="header">
+<h1>🔍 Search Members</h1>
+</div>
 
-  <!-- Search Bar -->
-  <div class="search-box-wrapper">
-    <span>🔍</span>
-    <input type="text" id="searchInput" class="search-input" placeholder="Search members...">
-  </div>
+<input
+type="text"
+id="searchBox"
+placeholder="Search member..."
+onkeyup="searchMembers()">
 
-  <!-- Results Area -->
-  <div id="results" class="results-grid">
-    <div class="loading">Loading members...</div>
-  </div>
+<div id="results"></div>
 
-  <div class="back-container">
-    <a href="feed.html" class="back-btn">⬅ Back to Feed</a>
-  </div>
+<a href="community.html">
+<button>⬅ Back</button>
+</a>
 
 </div>
 
-<script type="module">
-import { db, collection, getDocs, query, orderBy } from "./firebase.js";
+<script>
 
-const resultsContainer = document.getElementById("results");
-const searchInput = document.getElementById("searchInput");
-let allMembers = [];
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
 
-async function init() {
-  try {
-    const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
-    const snap = await getDocs(q);
+function searchMembers(){
 
-    allMembers = [];
-    snap.forEach((docSnap) => {
-      const u = docSnap.data();
-      allMembers.push({
-        id: docSnap.id,
-        name: u.name || u.fullName || "Community Member",
-        picture: u.picture || u.profilePicture || "https://via.placeholder.com/90"
-      });
-    });
+let keyword =
+document.getElementById("searchBox").value.toLowerCase();
 
-    render(allMembers);
+let results =
+document.getElementById("results");
 
-    searchInput.addEventListener("input", (e) => {
-      const term = e.target.value.toLowerCase().trim();
-      const filtered = allMembers.filter(m => m.name.toLowerCase().includes(term));
-      render(filtered);
-    });
+results.innerHTML="";
 
-  } catch (err) {
-    console.error("Error loading search:", err);
-    resultsContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load members.</div>`;
-  }
+let shown=[];
+
+posts.forEach(function(post){
+
+if(
+post.name.toLowerCase().includes(keyword)
+&&
+!shown.includes(post.name)
+){
+
+shown.push(post.name);
+
+results.innerHTML+=`
+
+<div class="member"
+onclick="openMember('${post.name}')"
+style="cursor:pointer;">
+
+<img src="${post.picture}">
+
+<div>
+
+<div class="name">${post.name}</div>
+
+<div>${post.category}</div>
+
+</div>
+
+</div>
+
+`;
+
 }
 
-function render(members) {
-  if (members.length === 0) {
-    resultsContainer.innerHTML = `<div class="empty">No other members found.</div>`;
-    return;
-  }
+});
 
-  let html = "";
-  members.forEach((m) => {
-    html += `
-      <div class="member-card-large">
-        <img src="${m.picture}" class="card-avatar" onerror="this.src='https://via.placeholder.com/90';">
-        <div class="card-name">${escapeHTML(m.name)}</div>
-        <div class="card-actions">
-          <a href="chat-room.html?userId=${m.id}" class="btn-blue">💬 Message</a>
-          <a href="member.html?userId=${m.id}" class="btn-green">👤 View Profile</a>
-        </div>
-      </div>
-    `;
-  });
-
-  resultsContainer.innerHTML = html;
 }
 
-function escapeHTML(str) {
-  return String(str || "").replace(/[&<>'"]/g, 
-    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-  );
-}
+searchMembers();
+function openMember(name){
 
-init();
+localStorage.setItem(
+"selectedMember",
+name
+);
+
+window.location.href="member.html";
+
+}
 </script>
 
 </body>
