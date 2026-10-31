@@ -31,25 +31,28 @@
 
     :root {
 
-      --primary-color: #1877f2;
-      --primary-dark: #166fe5;
-      --primary-light: #e7f3ff;
+      --primary-color: #087bd1;
+      --primary-dark: #0667b1;
+      --primary-light: #e9f5fd;
 
       --secondary-color: #ffb703;
 
-      --danger-color: #b00020;
+      --danger-color: #c62828;
       --danger-light: #fdecec;
 
-      --background-color: #f0f2f5;
+      --background-color: #eef3f8;
       --card-color: #ffffff;
 
-      --text-color: #050505;
-      --muted-text: #65676b;
+      --text-color: #1f2933;
+      --muted-text: #667085;
 
-      --border-color: #e4e6eb;
+      --border-color: #dce4ea;
 
-      --shadow: none;
-      --small-shadow: none;
+      --shadow:
+        0 4px 16px rgba(0, 0, 0, 0.08);
+
+      --small-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.06);
 
     }
 
@@ -69,7 +72,7 @@
         Helvetica,
         sans-serif;
 
-      line-height: 1.4;
+      line-height: 1.6;
 
     }
 
@@ -94,7 +97,7 @@
     button:disabled {
 
       cursor: not-allowed;
-      opacity: 0.6;
+      opacity: 0.65;
 
     }
 
@@ -102,11 +105,12 @@
     .page-container {
 
       width: 100%;
-      max-width: 680px;
+      max-width: 760px;
 
       margin: 0 auto;
 
-      padding: 0 0 90px 0;
+      padding:
+        18px 14px 40px;
 
     }
 
@@ -120,21 +124,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
 
-      background: #ffffff;
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
 
-      color: var(--text-color);
+      color: white;
 
-      border-radius: 0;
+      border-radius: 16px;
 
-      border-bottom: 1px solid var(--border-color);
+      padding: 18px;
 
-      padding: 16px 14px;
+      margin-bottom: 18px;
 
-      margin-bottom: 0;
-
-      box-shadow: none;
+      box-shadow:
+        var(--shadow);
 
     }
 
@@ -148,19 +156,18 @@
 
     .header-text h1 {
 
-      font-size: 20px;
-      line-height: 1.2;
+      font-size: 24px;
+      line-height: 1.25;
 
-      margin-bottom: 2px;
-      color: var(--text-color);
+      margin-bottom: 4px;
 
     }
 
 
     .header-text p {
 
-      font-size: 13px;
-      color: var(--muted-text);
+      font-size: 14px;
+      opacity: 0.9;
 
     }
 
@@ -169,31 +176,36 @@
 
       border: none;
 
-      background: #f0f2f5;
+      background:
+        rgba(255, 255, 255, 0.18);
 
-      color: var(--text-color);
+      color: white;
 
-      min-width: 38px;
-      height: 38px;
+      min-width: 44px;
+      height: 44px;
 
-      border-radius: 50%;
+      border-radius: 12px;
 
-      font-size: 18px;
+      font-size: 20px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      transition: background 0.2s ease;
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 
     }
 
 
     .header-button:hover {
 
-      background: #e4e6eb;
+      background:
+        rgba(255, 255, 255, 0.28);
 
-      transform: none;
+      transform:
+        translateY(-1px);
 
     }
 
@@ -207,17 +219,17 @@
       background:
         var(--card-color);
 
-      border: none;
+      border:
+        1px solid var(--border-color);
 
-      border-bottom: 1px solid var(--border-color);
+      border-radius: 16px;
 
-      border-radius: 0;
+      padding: 16px;
 
-      padding: 12px 14px;
+      margin-bottom: 18px;
 
-      margin-bottom: 0;
-
-      box-shadow: none;
+      box-shadow:
+        var(--small-shadow);
 
     }
 
@@ -226,25 +238,27 @@
 
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
 
-      margin-bottom: 10px;
+      margin-bottom: 12px;
 
     }
 
 
     .post-author-picture {
 
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
 
       border-radius: 50%;
 
       object-fit: cover;
 
-      border: none;
+      border:
+        2px solid var(--primary-light);
 
-      background: #e5e9ed;
+      background:
+        #eeeeee;
 
     }
 
@@ -259,11 +273,11 @@
 
     .post-author-name {
 
-      font-size: 15px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 700;
 
       color:
-        var(--text-color);
+        var(--primary-dark);
 
       overflow: hidden;
       text-overflow: ellipsis;
@@ -277,20 +291,18 @@
       color:
         var(--muted-text);
 
-      font-size: 11px;
-      margin-top: 1px;
+      font-size: 12px;
 
     }
 
 
     .post-text {
 
-      font-size: 14px;
+      font-size: 15px;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
 
-      margin-bottom: 6px;
-      color: var(--text-color);
+      margin-bottom: 12px;
 
     }
 
@@ -304,15 +316,17 @@
       background:
         var(--card-color);
 
-      border: none;
+      border:
+        1px solid var(--border-color);
 
-      border-radius: 0;
+      border-radius: 16px;
 
-      padding: 0;
+      padding: 16px;
 
-      margin-bottom: 0;
+      margin-bottom: 18px;
 
-      box-shadow: none;
+      box-shadow:
+        var(--small-shadow);
 
     }
 
@@ -322,24 +336,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
 
-      padding: 12px 14px;
-
-      border-bottom: 1px solid var(--border-color);
-
-      background: #ffffff;
+      margin-bottom: 16px;
 
     }
 
 
     .comments-heading {
 
-      font-size: 15px;
-      font-weight: bold;
+      font-size: 19px;
 
       color:
-        var(--text-color);
+        var(--primary-dark);
 
     }
 
@@ -350,14 +359,15 @@
         var(--primary-light);
 
       color:
-        var(--primary-color);
+        var(--primary-dark);
 
-      font-size: 11px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 700;
 
-      padding: 3px 8px;
+      padding:
+        5px 10px;
 
-      border-radius: 20px;
+      border-radius: 999px;
 
     }
 
@@ -366,8 +376,7 @@
 
       display: flex;
       flex-direction: column;
-      gap: 0;
-      background: #ffffff;
+      gap: 12px;
 
     }
 
@@ -382,44 +391,37 @@
       align-items: flex-start;
       gap: 10px;
 
-      padding: 10px 14px;
+      padding: 12px;
 
-      border: none;
-
-      border-bottom:
+      border:
         1px solid var(--border-color);
 
-      border-radius: 0;
+      border-radius: 14px;
 
       background:
-        #ffffff;
+        #fbfdfc;
 
       transition:
-        background 0.2s ease;
+        background 0.6s ease;
 
-    }
-
-
-    .comment-card:hover {
-      background: #f9fafb;
     }
 
 
     .comment-card.highlighted {
 
       background:
-        var(--primary-light);
+        #eef8f1;
 
       border-color:
-        var(--border-color);
+        var(--primary-color);
 
     }
 
 
     .comment-picture {
 
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
 
       border-radius: 50%;
 
@@ -427,10 +429,11 @@
 
       flex-shrink: 0;
 
-      border: none;
+      border:
+        2px solid var(--primary-light);
 
       background:
-        #e5e9ed;
+        #eeeeee;
 
     }
 
@@ -440,10 +443,6 @@
       flex: 1;
       min-width: 0;
 
-      background: #f0f2f5;
-      padding: 8px 12px;
-      border-radius: 14px;
-
     }
 
 
@@ -452,20 +451,20 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
 
-      margin-bottom: 2px;
+      margin-bottom: 4px;
 
     }
 
 
     .comment-author {
 
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 14px;
+      font-weight: 700;
 
       color:
-        var(--text-color);
+        var(--primary-dark);
 
       overflow-wrap: anywhere;
 
@@ -477,7 +476,7 @@
       color:
         var(--muted-text);
 
-      font-size: 10px;
+      font-size: 11px;
 
       white-space: nowrap;
 
@@ -486,12 +485,11 @@
 
     .comment-message {
 
-      font-size: 13px;
+      font-size: 14px;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
 
-      margin-bottom: 4px;
-      color: var(--text-color);
+      margin-bottom: 8px;
 
     }
 
@@ -514,20 +512,20 @@
         3px solid var(--primary-color);
 
       background:
-        rgba(24, 119, 242, 0.08);
+        var(--primary-light);
 
       color:
-        var(--text-color);
+        var(--primary-dark);
 
-      border-radius: 4px;
+      border-radius: 8px;
 
       padding:
-        4px 8px;
+        6px 10px;
 
-      margin-bottom: 6px;
+      margin-bottom: 8px;
 
-      font-size: 11px;
-      line-height: 1.3;
+      font-size: 12px;
+      line-height: 1.4;
 
     }
 
@@ -535,17 +533,16 @@
     .reply-quote:hover {
 
       background:
-        rgba(24, 119, 242, 0.14);
+        #d9efe2;
 
     }
 
 
     .reply-quote-name {
 
-      font-weight: bold;
+      font-weight: 700;
 
-      margin-bottom: 1px;
-      color: var(--primary-color);
+      margin-bottom: 2px;
 
     }
 
@@ -568,9 +565,8 @@
 
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 4px;
 
     }
 
@@ -581,14 +577,15 @@
       background: transparent;
 
       color:
-        var(--muted-text);
+        var(--primary-color);
 
-      font-size: 11px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: 700;
 
-      padding: 2px 4px;
+      padding:
+        3px 5px;
 
-      border-radius: 4px;
+      border-radius: 6px;
 
     }
 
@@ -596,8 +593,7 @@
     .comment-action-button:hover {
 
       background:
-        rgba(0, 0, 0, 0.05);
-      color: var(--text-color);
+        var(--primary-light);
 
     }
 
@@ -630,7 +626,7 @@
 
       justify-content: space-between;
 
-      gap: 8px;
+      gap: 10px;
 
       background:
         var(--primary-light);
@@ -638,11 +634,12 @@
       border-left:
         3px solid var(--primary-color);
 
-      border-radius: 6px;
+      border-radius: 10px;
 
-      padding: 8px 10px;
+      padding:
+        10px 12px;
 
-      margin-bottom: 8px;
+      margin-bottom: 10px;
 
     }
 
@@ -658,7 +655,7 @@
 
       min-width: 0;
 
-      font-size: 12px;
+      font-size: 13px;
 
       color:
         var(--text-color);
@@ -668,12 +665,12 @@
 
     .reply-preview-name {
 
-      font-weight: bold;
+      font-weight: 700;
 
       color:
-        var(--primary-color);
+        var(--primary-dark);
 
-      margin-bottom: 1px;
+      margin-bottom: 2px;
 
     }
 
@@ -697,18 +694,18 @@
       border: none;
 
       background:
-        rgba(24, 119, 242, 0.15);
+        rgba(8, 123, 209, 0.12);
 
       color:
-        var(--primary-color);
+        var(--primary-dark);
 
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
 
       border-radius: 50%;
 
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 15px;
+      font-weight: 700;
 
       display: flex;
       align-items: center;
@@ -720,7 +717,7 @@
     .cancel-reply-button:hover {
 
       background:
-        rgba(24, 119, 242, 0.25);
+        rgba(8, 123, 209, 0.22);
 
     }
 
@@ -734,21 +731,20 @@
       background:
         var(--card-color);
 
-      border: none;
+      border:
+        1px solid var(--border-color);
 
-      border-top: 1px solid var(--border-color);
+      border-radius: 16px;
 
-      border-radius: 0;
+      padding: 16px;
 
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      margin-bottom: 18px;
 
-      margin-bottom: 0;
-
-      box-shadow: none;
+      box-shadow:
+        var(--small-shadow);
 
       position: sticky;
-      bottom: 0;
-      z-index: 100;
+      bottom: 10px;
 
     }
 
@@ -761,9 +757,9 @@
 
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
 
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       position: relative;
 
     }
@@ -771,14 +767,14 @@
 
     .emoji-toggle-button {
 
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
       flex-shrink: 0;
 
-      border: none;
-      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
 
-      background: transparent;
+      background: #f4f8fb;
       color: var(--primary-color);
 
       display: flex;
@@ -802,31 +798,31 @@
       position: absolute;
 
       left: 0;
-      bottom: 42px;
+      bottom: 46px;
 
       z-index: 40;
 
-      width: 260px;
-      max-width: calc(100vw - 20px);
+      width: 270px;
+      max-width: calc(100vw - 30px);
 
-      max-height: 200px;
+      max-height: 220px;
 
       overflow-y: auto;
 
       display: none;
 
-      padding: 8px;
+      padding: 10px;
 
       border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 14px;
 
       grid-template-columns: repeat(6,1fr);
 
-      gap: 6px;
+      gap: 7px;
 
       background: #ffffff;
 
-      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
 
     }
 
@@ -838,28 +834,28 @@
 
     .emoji-picker button {
 
-      min-height: 34px;
+      min-height: 36px;
 
       border: 0;
-      border-radius: 6px;
+      border-radius: 8px;
 
-      background: transparent;
+      background: #f4f6f8;
 
-      font-size: 20px;
+      font-size: 21px;
 
     }
 
 
     .emoji-picker button:hover {
-      background: #f0f2f5;
+      background: #e4ebf2;
     }
 
 
     .comment-form {
 
       display: flex;
-      align-items: center;
-      gap: 8px;
+      align-items: flex-end;
+      gap: 10px;
 
     }
 
@@ -869,40 +865,44 @@
       flex: 1;
 
       width: 100%;
-      min-height: 38px;
-      max-height: 120px;
+      min-height: 48px;
+      max-height: 160px;
 
-      resize: none;
+      resize: vertical;
 
       border:
-        1px solid transparent;
+        1px solid var(--border-color);
 
-      border-radius: 20px;
+      border-radius: 12px;
 
       padding:
-        9px 14px;
+        12px 13px;
 
-      font-size: 14px;
+      font-size: 15px;
 
       color:
         var(--text-color);
 
       background:
-        #f0f2f5;
+        #ffffff;
 
       outline: none;
 
       transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
     }
 
 
     .comment-input:focus {
 
-      background: #ffffff;
-      border-color: #ccd0d5;
+      border-color:
+        var(--primary-color);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8, 123, 209, 0.12);
 
     }
 
@@ -910,33 +910,34 @@
     .comment-input::placeholder {
 
       color:
-        var(--muted-text);
+        #98a2ad;
 
     }
 
 
     .submit-comment-button {
 
-      min-width: auto;
-      min-height: 38px;
+      min-width: 94px;
+      min-height: 48px;
 
       border: none;
 
-      border-radius: 20px;
+      border-radius: 12px;
 
       padding:
-        8px 16px;
+        11px 16px;
 
       background:
         var(--primary-color);
 
       color: white;
 
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 14px;
+      font-weight: 700;
 
       transition:
-        background 0.2s ease;
+        background 0.2s ease,
+        transform 0.2s ease;
 
     }
 
@@ -946,16 +947,17 @@
       background:
         var(--primary-dark);
 
-      transform: none;
+      transform:
+        translateY(-1px);
 
     }
 
 
     .form-message {
 
-      margin-top: 6px;
+      margin-top: 10px;
 
-      font-size: 12px;
+      font-size: 13px;
 
       display: none;
 
@@ -991,14 +993,15 @@
       text-align: center;
 
       padding:
-        30px 16px;
+        26px 16px;
 
-      border: none;
+      border:
+        1px dashed var(--border-color);
 
-      border-radius: 0;
+      border-radius: 14px;
 
       background:
-        #ffffff;
+        #fbfdfc;
 
       color:
         var(--muted-text);
@@ -1010,23 +1013,23 @@
 
       display: block;
 
-      font-size: 28px;
+      font-size: 34px;
 
-      margin-bottom: 6px;
+      margin-bottom: 8px;
 
     }
 
 
     .loading-spinner {
 
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
 
       margin:
-        0 auto 10px;
+        0 auto 12px;
 
       border:
-        3px solid var(--primary-light);
+        4px solid var(--primary-light);
 
       border-top-color:
         var(--primary-color);
@@ -1057,23 +1060,22 @@
 
     .navigation-button {
 
-      width: calc(100% - 28px);
+      width: 100%;
 
-      margin: 20px 14px 0;
+      border: none;
 
-      border: 1px solid #ccd0d5;
+      border-radius: 12px;
 
-      border-radius: 8px;
-
-      padding: 10px 16px;
+      padding:
+        13px 16px;
 
       background:
-        #ffffff;
+        var(--primary-dark);
 
-      color: var(--text-color);
+      color: white;
 
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 15px;
+      font-weight: 700;
 
     }
 
@@ -1081,7 +1083,7 @@
     .navigation-button:hover {
 
       background:
-        #f0f2f5;
+        var(--primary-color);
 
     }
 
@@ -1101,23 +1103,24 @@
 
       .page-container {
 
-        padding: 0;
+        padding:
+          10px 9px 30px;
 
       }
 
 
       .page-header {
 
-        border-radius: 0;
+        border-radius: 12px;
 
-        padding: 12px;
+        padding: 15px;
 
       }
 
 
       .header-text h1 {
 
-        font-size: 18px;
+        font-size: 21px;
 
       }
 
@@ -1126,9 +1129,46 @@
       .comments-section,
       .comment-form-card {
 
-        border-radius: 0;
+        border-radius: 12px;
 
-        padding: 10px 12px;
+        padding: 13px;
+
+      }
+
+
+      .comment-form {
+
+        align-items: stretch;
+        flex-direction: column;
+
+      }
+
+
+      .submit-comment-button {
+
+        width: 100%;
+
+      }
+
+
+      .comment-form-card {
+
+        bottom: 5px;
+
+      }
+
+
+      .comment-top-row {
+
+        flex-direction: column;
+        gap: 1px;
+
+      }
+
+
+      .comment-time {
+
+        white-space: normal;
 
       }
 
@@ -1285,6 +1325,148 @@
 
 
     <!-- =====================================================
+         COMMENT FORM
+    ====================================================== -->
+
+    <section
+      id="commentFormCard"
+      class="comment-form-card"
+    >
+
+      <!-- =================================================
+           REPLY-TO PREVIEW
+      ================================================== -->
+
+      <div
+        id="replyPreviewBanner"
+        class="reply-preview-banner"
+      >
+
+        <div class="reply-preview-text">
+
+          <div class="reply-preview-name">
+            Replying to
+            <span id="replyPreviewName"></span>
+          </div>
+
+          <div
+            id="replyPreviewSnippet"
+            class="reply-preview-snippet"
+          ></div>
+
+        </div>
+
+
+        <button
+          id="cancelReplyButton"
+          class="cancel-reply-button"
+          type="button"
+          aria-label="Cancel reply"
+          title="Cancel reply"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           EMOJI TOOLBAR
+      ================================================== -->
+
+      <div class="emoji-toolbar-row">
+
+        <button
+          id="emojiToggleButton"
+          class="emoji-toggle-button"
+          type="button"
+          aria-label="Open emoji picker"
+          title="Emoji"
+        >
+          😊
+        </button>
+
+
+        <div
+          id="emojiPicker"
+          class="emoji-picker"
+        >
+
+          <button type="button">😀</button>
+          <button type="button">😁</button>
+          <button type="button">😂</button>
+          <button type="button">🤣</button>
+          <button type="button">😊</button>
+          <button type="button">😍</button>
+
+          <button type="button">🥰</button>
+          <button type="button">😘</button>
+          <button type="button">😇</button>
+          <button type="button">🙏</button>
+          <button type="button">❤️</button>
+          <button type="button">👍</button>
+
+          <button type="button">👏</button>
+          <button type="button">🔥</button>
+          <button type="button">🎉</button>
+          <button type="button">💪</button>
+          <button type="button">🙌</button>
+          <button type="button">🤝</button>
+
+          <button type="button">📖</button>
+          <button type="button">✝️</button>
+          <button type="button">⛪</button>
+          <button type="button">🕊️</button>
+          <button type="button">🌍</button>
+          <button type="button">🌞</button>
+
+          <button type="button">😢</button>
+          <button type="button">😭</button>
+          <button type="button">😔</button>
+          <button type="button">🤗</button>
+          <button type="button">💖</button>
+          <button type="button">✨</button>
+
+        </div>
+
+      </div>
+
+
+      <form
+        id="commentForm"
+        class="comment-form"
+      >
+
+        <textarea
+          id="commentInput"
+          class="comment-input"
+          name="comment"
+          placeholder="Write your comment..."
+          maxlength="1000"
+          required
+        ></textarea>
+
+
+        <button
+          id="submitCommentButton"
+          class="submit-comment-button"
+          type="submit"
+        >
+          Post Comment
+        </button>
+
+      </form>
+
+
+      <p
+        id="formMessage"
+        class="form-message"
+      ></p>
+
+    </section>
+
+
+    <!-- =====================================================
          NAVIGATION
     ====================================================== -->
 
@@ -1297,149 +1479,6 @@
     </button>
 
   </main>
-
-
-  <!-- =====================================================
-       COMMENT FORM (STICKY FOOTER)
-  ====================================================== -->
-
-  <section
-    id="commentFormCard"
-    class="comment-form-card"
-  >
-
-    <!-- =================================================
-         REPLY-TO PREVIEW
-    ================================================== -->
-
-    <div
-      id="replyPreviewBanner"
-      class="reply-preview-banner"
-    >
-
-      <div class="reply-preview-text">
-
-        <div class="reply-preview-name">
-          Replying to
-          <span id="replyPreviewName"></span>
-        </div>
-
-        <div
-          id="replyPreviewSnippet"
-          class="reply-preview-snippet"
-        ></div>
-
-      </div>
-
-
-      <button
-        id="cancelReplyButton"
-        class="cancel-reply-button"
-        type="button"
-        aria-label="Cancel reply"
-        title="Cancel reply"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <!-- =================================================
-         EMOJI TOOLBAR
-    ================================================== -->
-
-    <div class="emoji-toolbar-row">
-
-      <button
-        id="emojiToggleButton"
-        class="emoji-toggle-button"
-        type="button"
-        aria-label="Open emoji picker"
-        title="Emoji"
-      >
-        😊
-      </button>
-
-
-      <div
-        id="emojiPicker"
-        class="emoji-picker"
-      >
-
-        <button type="button">😀</button>
-        <button type="button">😁</button>
-        <button type="button">😂</button>
-        <button type="button">🤣</button>
-        <button type="button">😊</button>
-        <button type="button">😍</button>
-
-        <button type="button">🥰</button>
-        <button type="button">😘</button>
-        <button type="button">😇</button>
-        <button type="button">🙏</button>
-        <button type="button">❤️</button>
-        <button type="button">👍</button>
-
-        <button type="button">👏</button>
-        <button type="button">🔥</button>
-        <button type="button">🎉</button>
-        <button type="button">💪</button>
-        <button type="button">🙌</button>
-        <button type="button">🤝</button>
-
-        <button type="button">📖</button>
-        <button type="button">✝️</button>
-        <button type="button">⛪</button>
-        <button type="button">🕊️</button>
-        <button type="button">🌍</button>
-        <button type="button">🌞</button>
-
-        <button type="button">😢</button>
-        <button type="button">😭</button>
-        <button type="button">😔</button>
-        <button type="button">🤗</button>
-        <button type="button">💖</button>
-        <button type="button">✨</button>
-
-      </div>
-
-    </div>
-
-
-    <form
-      id="commentForm"
-      class="comment-form"
-    >
-
-      <textarea
-        id="commentInput"
-        class="comment-input"
-        name="comment"
-        placeholder="Write a comment..."
-        maxlength="1000"
-        rows="1"
-        required
-      ></textarea>
-
-
-      <button
-        id="submitCommentButton"
-        class="submit-comment-button"
-        type="submit"
-      >
-        Post
-      </button>
-
-    </form>
-
-
-    <p
-      id="formMessage"
-      class="form-message"
-    ></p>
-
-  </section>
 
 
   <script type="module">
@@ -3453,7 +3492,7 @@ commentForm.addEventListener(
 
 
       submitCommentButton.textContent =
-      "Post";
+      "Post Comment";
 
     }
 
