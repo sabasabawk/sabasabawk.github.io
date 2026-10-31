@@ -13,10 +13,6 @@ Private Messages | SABASABA Gospel Ministry
 
 <style>
 
-/* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
-===================================================== */
-
 *{
 margin:0;
 padding:0;
@@ -24,143 +20,135 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:#f0f2f5;
-color:#050505;
+font-family:Arial,sans-serif;
+background:#eef3f8;
+color:#222;
 min-height:100vh;
 }
 
 .container{
-max-width:680px;
+max-width:900px;
 margin:auto;
-padding:0 0 110px 0;
+padding:20px;
+padding-bottom:120px;
 }
 
 .brandLabel{
-color:#1877f2;
+text-align:center;
+color:#ffe27a;
+font-size:14px;
 font-weight:bold;
-font-size:11px;
 letter-spacing:.5px;
-text-transform:uppercase;
-margin-bottom:2px;
+margin-bottom:8px;
 }
 
 .header{
-background:#ffffff;
-color:#050505;
-padding:16px 14px;
-border-bottom:1px solid #e4e6eb;
-text-align:left;
-box-shadow:none;
-border-radius:0;
+background:#087bd1;
+color:white;
+padding:28px 20px;
+border-radius:18px;
+text-align:center;
+margin-bottom:20px;
+box-shadow:0 5px 15px rgba(8,123,209,.18);
 }
 
 .header h1{
-font-size:20px;
-margin-bottom:2px;
-color:#050505;
+font-size:32px;
+margin-bottom:10px;
 }
 
 .header p{
-font-size:13px;
-color:#65676b;
-line-height:1.4;
+font-size:17px;
+line-height:1.5;
 }
 
 #messageBadge{
-background:#e41e3f;
+background:#e60023;
 color:white;
 border-radius:50px;
-padding:2px 6px;
-font-size:11px;
+padding:4px 9px;
+font-size:14px;
 display:none;
 margin-left:6px;
 vertical-align:middle;
 }
 
 .search{
-background:#ffffff;
-padding:10px 12px;
-border-bottom:1px solid #e4e6eb;
-margin-bottom:0;
+margin-bottom:20px;
 }
 
 .search input{
 width:100%;
-padding:10px 16px;
-border-radius:20px;
-border:none;
-font-size:15px;
+padding:15px 16px;
+border-radius:12px;
+border:1px solid #c8c8c8;
+font-size:16px;
 outline:none;
-background:#f0f2f5;
-color:#050505;
+background:white;
 }
 
 .search input:focus{
-background:#e4e6eb;
+border-color:#087bd1;
+box-shadow:0 0 0 3px rgba(8,123,209,.12);
 }
 
 .status-message{
 display:none;
 text-align:center;
 padding:12px;
-margin:10px;
-border-radius:8px;
+margin-bottom:15px;
+border-radius:10px;
 background:#fff3cd;
 color:#765d00;
-font-size:13px;
 }
 
 .chat-list{
 display:flex;
 flex-direction:column;
-background:#ffffff;
+gap:14px;
 }
 
 .chat-card{
 display:flex;
 align-items:center;
-gap:12px;
+gap:13px;
 background:white;
-padding:12px 14px;
-border-bottom:1px solid #e4e6eb;
-border-radius:0;
-box-shadow:none;
+padding:14px;
+border-radius:16px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 cursor:pointer;
-transition:background .2s;
+transition:transform .2s,box-shadow .2s;
 position:relative;
 }
 
 .chat-card:hover{
-background:#f2f4f7;
-transform:none;
-box-shadow:none;
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(0,0,0,.12);
 }
 
 .chat-card:active{
-background:#e4e6eb;
-transform:none;
+transform:scale(.99);
 }
 
 .avatar-wrapper{
-width:48px;
-height:48px;
-min-width:48px;
+width:62px;
+height:62px;
+min-width:62px;
 position:relative;
 }
 
 .avatar{
-width:48px;
-height:48px;
+width:62px;
+height:62px;
 border-radius:50%;
-background:#e5e9ed;
-color:#65676b;
+background:#087bd1;
+color:white;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:20px;
+font-size:28px;
 overflow:hidden;
-border:none;
+border:2px solid #e8f2ff;
 }
 
 .avatar img{
@@ -172,17 +160,17 @@ display:block;
 
 .online-dot{
 position:absolute;
-right:0;
-bottom:0;
-width:12px;
-height:12px;
+right:1px;
+bottom:2px;
+width:16px;
+height:16px;
 border-radius:50%;
-background:#8b9aaa;
-border:2px solid white;
+background:#a5a5a5;
+border:3px solid white;
 }
 
 .online-dot.online{
-background:#31a24c;
+background:#18b653;
 }
 
 .chat-info{
@@ -194,22 +182,21 @@ min-width:0;
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:8px;
+gap:10px;
 }
 
 .chat-info h3{
-color:#050505;
-font-size:15px;
-font-weight:bold;
+color:#087bd1;
+font-size:18px;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 }
 
 .chat-message{
-color:#65676b;
-font-size:13px;
-margin-top:2px;
+color:#666;
+font-size:15px;
+margin-top:5px;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
@@ -218,32 +205,32 @@ max-width:100%;
 
 .chat-message.unread{
 font-weight:bold;
-color:#050505;
+color:#222;
 }
 
 .chat-side{
 display:flex;
 flex-direction:column;
 align-items:flex-end;
-gap:4px;
-min-width:50px;
+gap:8px;
+min-width:55px;
 }
 
 .time{
-font-size:11px;
-color:#65676b;
+font-size:12px;
+color:#777;
 white-space:nowrap;
 }
 
 .unread-badge{
 display:none;
-min-width:18px;
-height:18px;
-padding:0 5px;
+min-width:23px;
+height:23px;
+padding:0 7px;
 border-radius:20px;
-background:#0084ff;
+background:#e60023;
 color:white;
-font-size:11px;
+font-size:12px;
 font-weight:bold;
 align-items:center;
 justify-content:center;
@@ -251,73 +238,66 @@ justify-content:center;
 
 .empty-card{
 background:white;
-padding:40px 20px;
-border-radius:0;
+padding:30px 20px;
+border-radius:18px;
 text-align:center;
-box-shadow:none;
-border-bottom:1px solid #e4e6eb;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 .empty-icon{
-width:64px;
-height:64px;
-margin:0 auto 12px;
+width:85px;
+height:85px;
+margin:0 auto 15px;
 border-radius:50%;
-background:#f0f2f5;
-color:#65676b;
+background:#087bd1;
+color:white;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:30px;
+font-size:42px;
 }
 
 .empty-card h3{
-color:#050505;
-font-size:17px;
-margin-bottom:6px;
+color:#087bd1;
+font-size:21px;
+margin-bottom:8px;
 }
 
 .empty-card p{
-color:#65676b;
-font-size:13px;
-line-height:1.4;
-max-width:320px;
-margin:0 auto;
+color:#666;
+font-size:16px;
+line-height:1.5;
 }
 
 .loading{
 background:white;
-padding:30px;
-border-radius:0;
+padding:25px;
+border-radius:16px;
 text-align:center;
-color:#65676b;
-box-shadow:none;
-border-bottom:1px solid #e4e6eb;
-font-size:14px;
+color:#666;
+box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
 .new-chat{
 position:fixed;
-bottom:20px;
-right:16px;
-width:52px;
-height:52px;
+bottom:25px;
+right:25px;
+width:66px;
+height:66px;
 border-radius:50%;
 border:none;
-background:#1877f2;
+background:#087bd1;
 color:white;
-font-size:26px;
+font-size:38px;
 line-height:1;
 cursor:pointer;
-box-shadow:0 4px 12px rgba(0,0,0,.25);
+box-shadow:0 6px 17px rgba(0,0,0,.28);
 z-index:20;
-transition:transform .2s;
-display:flex;
-align-items:center;
-justify-content:center;
+transition:.2s;
 }
 
 .new-chat:hover{
+background:#0667b1;
 transform:scale(1.05);
 }
 
@@ -327,63 +307,60 @@ transform:scale(.95);
 
 .back{
 text-align:center;
-margin:20px 14px 0;
+margin-top:30px;
 }
 
 .back-button{
 display:inline-block;
-background:#ffffff;
-color:#050505;
-padding:10px 20px;
-border:1px solid #ccd0d5;
-border-radius:8px;
-font-size:14px;
-font-weight:bold;
+background:#087bd1;
+color:white;
+padding:13px 25px;
+border:none;
+border-radius:11px;
+font-size:17px;
 cursor:pointer;
 text-decoration:none;
-transition:background .2s;
 }
 
 .back-button:hover{
-background:#f0f2f5;
+background:#0667b1;
 }
 
 @media(max-width:600px){
 
 .container{
-padding:0;
-padding-bottom:100px;
+padding:16px;
+padding-bottom:115px;
 }
 
 .header{
-padding:12px;
+padding:26px 15px;
 }
 
 .header h1{
-font-size:18px;
+font-size:30px;
 }
 
 .chat-card{
-padding:10px 12px;
+padding:13px 11px;
 }
 
 .avatar-wrapper,
 .avatar{
-width:44px;
-height:44px;
-min-width:44px;
+width:58px;
+height:58px;
+min-width:58px;
 }
 
 .chat-info h3{
-font-size:14px;
+font-size:17px;
 }
 
 .new-chat{
-width:48px;
-height:48px;
-right:12px;
-bottom:70px;
-font-size:24px;
+width:64px;
+height:64px;
+right:20px;
+bottom:22px;
 }
 
 }
@@ -463,6 +440,23 @@ class="back-button">
 
 <script type="module">
 
+/*
+   This page reads from the same structure chat.html
+   writes to:
+   - The conversation list comes from the
+     "conversations" collection.
+   - Unread counts come from a collection-group query
+     across every conversation's "messages"
+     subcollection.
+   - Profile photo and name are read from the
+     conversation document first, then fall back to
+     the other user's "users" document.
+
+   NOTE: collectionGroup must be exported from
+   firebase.js. If it is not, the unread-count listener
+   fails, but the conversation list still works.
+*/
+
 import {
 auth,
 db,
@@ -497,6 +491,10 @@ let allConversations = [];
 let unsubscribeConversations = null;
 let unsubscribeUnreadMessages = null;
 
+/*
+   Guards against stale callbacks when
+   onAuthStateChanged fires more than once.
+*/
 let authGeneration = 0;
 
 newChatButton.addEventListener("click",()=>{
@@ -504,115 +502,158 @@ window.location.href="findmembers.html";
 });
 
 function showStatus(message){
+
 statusMessage.textContent=message;
 statusMessage.style.display="block";
+
 }
 
 function hideStatus(){
+
 statusMessage.textContent="";
 statusMessage.style.display="none";
+
 }
 
 function escapeHTML(value){
+
 return String(value ?? "")
 .replaceAll("&","&amp;")
 .replaceAll("<","&lt;")
 .replaceAll(">","&gt;")
 .replaceAll('"',"&quot;")
 .replaceAll("'","&#039;");
+
 }
 
 function formatTime(timestamp){
+
 if(!timestamp){
 return "";
 }
+
 let date;
+
 if(typeof timestamp.toDate==="function"){
 date=timestamp.toDate();
 }else{
 date=new Date(timestamp);
 }
+
 if(Number.isNaN(date.getTime())){
 return "";
 }
+
 const now=new Date();
+
 const sameDay=
 date.toDateString()===now.toDateString();
+
 if(sameDay){
+
 return date.toLocaleTimeString([],{
 hour:"2-digit",
 minute:"2-digit"
 });
+
 }
+
 const yesterday=new Date();
 yesterday.setDate(now.getDate()-1);
+
 if(date.toDateString()===yesterday.toDateString()){
 return "Yesterday";
 }
+
 return date.toLocaleDateString([],{
 day:"numeric",
 month:"short"
 });
+
 }
 
 function isUserOnline(profile){
+
 return profile.online===true ||
 profile.isOnline===true ||
 String(profile.status || "").toLowerCase()==="online";
+
 }
 
 function getLastMessagePreview(conversationData){
+
 const textPreview=
 conversationData.lastMessage ||
 conversationData.lastMessageText;
+
 if(textPreview){
 return textPreview;
 }
+
 const mediaType=
 String(conversationData.lastMessageType || "").toLowerCase();
+
 if(mediaType==="image"){
 return "📷 Picture";
 }
+
 if(mediaType==="video"){
 return "🎥 Video";
 }
+
 if(mediaType==="audio" || mediaType==="voice"){
 return "🎤 Voice message";
 }
+
 if(mediaType==="file"){
 return "📄 Document";
 }
+
 return "Tap to open conversation";
+
 }
 
 function showEmptyState(searching=false){
+
 chatList.innerHTML=`
+
 <div class="empty-card">
+
 <div class="empty-icon">
 💬
 </div>
+
 <h3>
 ${searching
 ? "No matching conversations"
 : "No conversations yet"}
 </h3>
+
 <p>
 ${searching
 ? "Try searching for a different name or message."
 : "Tap the blue + button to find a believer and start a private conversation."}
 </p>
+
 </div>
+
 `;
+
 }
 
 function renderConversations(conversations){
+
 chatList.innerHTML="";
+
 if(conversations.length===0){
+
 showEmptyState(searchInput.value.trim()!=="");
 return;
+
 }
 
 for(const conversation of conversations){
+
 const {
 uid,
 name,
@@ -637,76 +678,109 @@ this.parentElement.textContent='👤';">`
 : "👤";
 
 const card=document.createElement("div");
+
 card.className="chat-card";
 card.setAttribute("role","button");
 card.setAttribute("tabindex","0");
 
 card.innerHTML=`
+
 <div class="avatar-wrapper">
+
 <div class="avatar">
 ${photoHTML}
 </div>
+
 <span class="online-dot ${online ? "online" : ""}">
 </span>
+
 </div>
+
 <div class="chat-info">
+
 <div class="chat-name-row">
+
 <h3>
 ${safeName}
 </h3>
+
 </div>
+
 <p class="chat-message ${unreadCount > 0 ? "unread" : ""}">
 ${safeMessage}
 </p>
+
 </div>
+
 <div class="chat-side">
+
 <span class="time">
 ${escapeHTML(time)}
 </span>
+
 <span
 class="unread-badge"
 style="${unreadCount > 0 ? "display:flex;" : ""}">
 ${unreadCount > 99 ? "99+" : unreadCount}
 </span>
+
 </div>
+
 `;
 
 const openChat=()=>{
+
 window.location.href=
 `chat.html?uid=${safeUid}`;
+
 };
 
 card.addEventListener("click",openChat);
+
 card.addEventListener("keydown",(event)=>{
+
 if(event.key==="Enter" || event.key===" "){
 event.preventDefault();
 openChat();
 }
+
 });
 
 chatList.appendChild(card);
+
 }
+
 }
 
 function applySearch(){
+
 const term=
 searchInput.value
 .trim()
 .toLowerCase();
+
 if(!term){
+
 renderConversations(allConversations);
 return;
+
 }
+
 const filtered=
 allConversations.filter(conversation=>{
+
 return conversation.name
 .toLowerCase()
 .includes(term) ||
+
 String(conversation.lastMessage || "")
 .toLowerCase()
 .includes(term);
+
 });
+
 renderConversations(filtered);
+
 }
 
 searchInput.addEventListener(
@@ -718,23 +792,37 @@ async function buildConversations(
 conversationsSnapshot,
 unreadSnapshot
 ){
+
 const unreadCounts=new Map();
+
 unreadSnapshot.forEach(messageDoc=>{
+
+/*
+   Message path:
+   conversations/{conversationId}/messages/{messageId}
+*/
+
 const conversationId=
 messageDoc.ref.parent.parent?.id;
+
 if(!conversationId){
 return;
 }
+
 const previous=
 unreadCounts.get(conversationId) || 0;
+
 unreadCounts.set(
 conversationId,
 previous+1
 );
+
 });
 
 const conversations=[];
+
 for(const conversationDoc of conversationsSnapshot.docs){
+
 const data=conversationDoc.data();
 const conversationId=conversationDoc.id;
 
@@ -757,11 +845,16 @@ let profilePhoto="";
 let profileName="";
 
 try{
+
 const userSnapshot=
 await getDoc(doc(db,"users",otherUid));
+
 if(userSnapshot.exists()){
+
 const profile=userSnapshot.data();
+
 onlineStatus=isUserOnline(profile);
+
 profilePhoto=
 profile.photoURL ||
 profile.photoUrl ||
@@ -771,18 +864,23 @@ profile.profileImage ||
 profile.avatar ||
 profile.photo ||
 "";
+
 profileName=
 profile.displayName ||
 profile.name ||
 profile.fullName ||
 "";
+
 }
+
 }catch(error){
+
 console.error(
 "Could not load profile for:",
 otherUid,
 error
 );
+
 }
 
 const name=
@@ -796,19 +894,29 @@ data.participantPictures?.[otherUid] ||
 "";
 
 conversations.push({
+
 uid:otherUid,
+
 name,
+
 photo,
+
 online:onlineStatus,
+
 lastMessage:
 getLastMessagePreview(data),
+
 time:formatTime(data.updatedAt),
+
 timestamp:
 data.updatedAt?.toMillis?.() ||
 new Date(data.updatedAt || 0).getTime(),
+
 unreadCount:
 unreadCounts.get(conversationId) || 0
+
 });
+
 }
 
 conversations.sort(
@@ -824,18 +932,25 @@ conversations.reduce(
 );
 
 if(totalUnread>0){
+
 badge.style.display="inline-block";
+
 badge.textContent=
 totalUnread>99 ? "99+" : totalUnread;
+
 }else{
+
 badge.style.display="none";
 badge.textContent="0";
+
 }
 
 applySearch();
+
 }
 
 onAuthStateChanged(auth,(user)=>{
+
 authGeneration += 1;
 const thisGeneration = authGeneration;
 
@@ -848,52 +963,71 @@ unsubscribeUnreadMessages();
 }
 
 if(!user){
+
 currentUser=null;
 allConversations=[];
+
 badge.style.display="none";
+
 chatList.innerHTML=`
+
 <div class="empty-card">
+
 <div class="empty-icon">
 🔒
 </div>
+
 <h3>
 Please sign in
 </h3>
+
 <p>
 You must sign in before using private messages.
 </p>
+
 </div>
+
 `;
+
 showStatus(
 "Please sign in to view your private conversations."
 );
+
 return;
 }
 
 hideStatus();
+
 currentUser=user;
 
 let latestConversationsSnapshot=null;
 let latestUnreadSnapshot=null;
 
 const refreshConversations=()=>{
+
 if(
 latestConversationsSnapshot &&
 latestUnreadSnapshot
 ){
+
 buildConversations(
 latestConversationsSnapshot,
 latestUnreadSnapshot
 ).catch(error=>{
+
 console.error(
 "Conversation loading error:",
 error
 );
+
 showStatus(
 "Some conversations could not be loaded."
 );
+
 });
+
 }
+
 };
 
 const conversationsQuery=query(
@@ -906,37 +1040,53 @@ unsubscribeConversations=
 onSnapshot(
 conversationsQuery,
 (snapshot)=>{
+
 if(thisGeneration !== authGeneration){
 return;
 }
+
 latestConversationsSnapshot=snapshot;
+
 hideStatus();
+
 refreshConversations();
+
 },
 (error)=>{
+
 if(thisGeneration !== authGeneration){
 return;
 }
+
 console.error(
 "Conversations listener error:",
 error
 );
+
 chatList.innerHTML=`
+
 <div class="empty-card">
+
 <div class="empty-icon">
 ⚠️
 </div>
+
 <h3>
 Messages could not be loaded
 </h3>
+
 <p>
 Please check your internet connection and Firebase permissions.
 </p>
+
 </div>
+
 `;
+
 showStatus(
 "Unable to load private messages."
 );
+
 }
 );
 
@@ -950,45 +1100,58 @@ unsubscribeUnreadMessages=
 onSnapshot(
 unreadMessagesQuery,
 (snapshot)=>{
+
 if(thisGeneration !== authGeneration){
 return;
 }
+
 latestUnreadSnapshot=snapshot;
 refreshConversations();
+
 },
 (error)=>{
+
 if(thisGeneration !== authGeneration){
 return;
 }
+
 console.warn(
 "Unread-message listener error:",
 error
 );
+
+/*
+   Keep showing conversations even if the unread
+   query needs an index or collectionGroup is not
+   exported from firebase.js.
+*/
 latestUnreadSnapshot={
 forEach(){
 },
 docs:[]
 };
+
 refreshConversations();
+
 }
 );
+
 });
 
 </script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registered successfully:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-    });
-  }
-</script>
-
+  <script>
+    // Register the Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered successfully:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
