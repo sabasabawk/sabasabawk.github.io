@@ -18,13 +18,11 @@
 <style>
 
 /* =====================================================
-   FACEBOOK-STYLE EDGE-TO-EDGE CLEAN DESIGN
+   GENERAL PAGE STYLE
 ===================================================== */
 
 *{
   box-sizing:border-box;
-  margin:0;
-  padding:0;
 }
 
 
@@ -35,11 +33,13 @@ body{
   Helvetica,
   sans-serif;
 
-  background:#f0f2f5;
+  background:#eef3f8;
 
-  color:#050505;
+  margin:0;
 
-  min-height:100vh;
+  padding:20px;
+
+  color:#222;
 
 }
 
@@ -48,11 +48,9 @@ body{
 
   width:100%;
 
-  max-width:680px;
+  max-width:800px;
 
   margin:0 auto;
-
-  padding:0 0 80px 0;
 
 }
 
@@ -63,31 +61,35 @@ body{
 
 .header{
 
-  background:#ffffff;
+  background:
+  linear-gradient(
+    135deg,
+    #0066cc,
+    #004d99
+  );
 
-  color:#050505;
+  color:white;
 
-  padding:16px 14px;
+  padding:24px 20px;
 
-  border-radius:0;
+  border-radius:16px;
 
-  border-bottom:1px solid #e4e6eb;
+  text-align:center;
 
-  text-align:left;
+  margin-bottom:20px;
 
-  margin-bottom:0;
-
-  box-shadow:none;
+  box-shadow:
+  0 4px 12px
+  rgba(0,0,0,0.15);
 
 }
 
 
 .header h1{
 
-  margin:0 0 2px;
+  margin:0 0 8px;
 
-  font-size:20px;
-  color:#050505;
+  font-size:30px;
 
 }
 
@@ -96,9 +98,9 @@ body{
 
   margin:0;
 
-  font-size:13px;
+  font-size:16px;
 
-  color:#65676b;
+  opacity:0.95;
 
 }
 
@@ -115,15 +117,9 @@ body{
 
   align-items:center;
 
-  gap:8px;
+  gap:10px;
 
-  margin-bottom:0;
-
-  padding:10px 12px;
-
-  background:#ffffff;
-
-  border-bottom:1px solid #e4e6eb;
+  margin-bottom:18px;
 
   flex-wrap:wrap;
 
@@ -132,18 +128,19 @@ body{
 
 .notificationCount{
 
-  background:#f0f2f5;
+  background:white;
 
-  color:#65676b;
+  color:#004d99;
 
-  padding:6px 12px;
+  padding:10px 14px;
 
-  border-radius:20px;
+  border-radius:10px;
 
   font-weight:bold;
-  font-size:12px;
 
-  box-shadow:none;
+  box-shadow:
+  0 2px 6px
+  rgba(0,0,0,0.08);
 
 }
 
@@ -156,32 +153,34 @@ button{
 
   border:none;
 
-  border-radius:6px;
+  border-radius:9px;
 
-  padding:8px 14px;
+  padding:11px 16px;
 
   cursor:pointer;
 
-  font-size:13px;
+  font-size:15px;
 
   font-weight:bold;
 
   transition:
-  background 0.2s ease;
+  background 0.2s ease,
+  transform 0.2s ease;
 
 }
 
 
 button:hover{
 
-  transform:none;
+  transform:
+  translateY(-1px);
 
 }
 
 
 button:disabled{
 
-  opacity:0.5;
+  opacity:0.6;
 
   cursor:not-allowed;
 
@@ -192,96 +191,90 @@ button:disabled{
 
 .refreshButton{
 
-  background:#f0f2f5;
+  background:#0066cc;
 
-  color:#050505;
+  color:white;
 
 }
 
 
 .refreshButton:hover{
 
-  background:#e4e6eb;
+  background:#004d99;
 
 }
 
 
 .markAllButton{
 
-  background:#e4e6eb;
+  background:#198754;
 
-  color:#050505;
+  color:white;
 
 }
 
 
 .markAllButton:hover{
 
-  background:#d8dadf;
+  background:#146c43;
 
 }
 
 
 .deleteButton{
 
-  background:#f0f2f5;
+  background:#ffe0e0;
 
   color:#b00020;
 
-  padding:6px 10px;
+  padding:8px 12px;
 
-  font-size:12px;
+  font-size:14px;
 
 }
 
 
 .deleteButton:hover{
 
-  background:#fdecec;
+  background:#ffcaca;
 
 }
 
 
 .openButton{
 
-  background:#e7f3ff;
+  background:#e5f1ff;
 
-  color:#1877f2;
+  color:#0056a6;
 
-  padding:6px 10px;
+  padding:8px 12px;
 
-  font-size:12px;
+  font-size:14px;
 
 }
 
 
 .openButton:hover{
 
-  background:#d0e8ff;
+  background:#cfe5ff;
 
 }
 
 
 .backButton{
 
-  background:#ffffff;
+  background:#0066cc;
 
-  color:#050505;
+  color:white;
 
-  border:1px solid #ccd0d5;
-
-  padding:10px 20px;
-
-  font-size:14px;
-
-  border-radius:8px;
+  padding:12px 20px;
 
 }
 
 
 .backButton:hover{
 
-  background:#f0f2f5;
+  background:#004d99;
 
 }
 
@@ -294,9 +287,9 @@ button:disabled{
 
   padding:8px 14px;
 
-  font-size:13px;
+  font-size:14px;
 
-  margin-top:10px;
+  margin-top:12px;
 
 }
 
@@ -312,28 +305,26 @@ button:disabled{
    NOTIFICATION CARDS
 ===================================================== */
 
-#notificationList{
-  background:#ffffff;
-}
-
-
 .notification{
 
-  background:#ffffff;
+  background:white;
 
-  padding:12px 14px;
+  padding:18px;
 
-  margin-bottom:0;
+  margin-bottom:14px;
 
-  border-radius:0;
+  border-radius:13px;
 
-  box-shadow:none;
+  box-shadow:
+  0 3px 9px
+  rgba(0,0,0,0.1);
 
-  border-left:none;
+  border-left:
+  6px solid transparent;
 
-  border-bottom:1px solid #e4e6eb;
-
-  transition:background 0.2s ease;
+  transition:
+  transform 0.2s ease,
+  box-shadow 0.2s ease;
 
   cursor:pointer;
 
@@ -342,29 +333,30 @@ button:disabled{
 
 .notification:hover{
 
-  transform:none;
+  transform:
+  translateY(-2px);
 
-  box-shadow:none;
-
-  background:#f9fafb;
+  box-shadow:
+  0 5px 14px
+  rgba(0,0,0,0.13);
 
 }
 
 
 .notification.unread{
 
-  background:#f0f2f5;
+  background:#f1f8ff;
 
-  border-left-color:transparent;
+  border-left-color:#0066cc;
 
 }
 
 
 .notification.read{
 
-  background:#ffffff;
+  background:white;
 
-  border-left-color:transparent;
+  border-left-color:#cccccc;
 
 }
 
@@ -375,27 +367,27 @@ button:disabled{
 
   justify-content:space-between;
 
-  align-items:center;
+  align-items:flex-start;
 
-  gap:10px;
+  gap:12px;
 
-  margin-bottom:6px;
+  margin-bottom:9px;
 
 }
 
 
 .notificationType{
 
-  font-size:18px;
+  font-size:21px;
 
 }
 
 
 .notificationTime{
 
-  color:#65676b;
+  color:#777;
 
-  font-size:11px;
+  font-size:13px;
 
   text-align:right;
 
@@ -404,13 +396,11 @@ button:disabled{
 
 .notificationMessage{
 
-  font-size:14px;
+  font-size:17px;
 
-  line-height:1.4;
+  line-height:1.5;
 
   overflow-wrap:anywhere;
-
-  color:#050505;
 
 }
 
@@ -419,13 +409,13 @@ button:disabled{
 
   display:inline-block;
 
-  margin-top:6px;
+  margin-top:10px;
 
-  padding:2px 8px;
+  padding:5px 9px;
 
   border-radius:20px;
 
-  font-size:11px;
+  font-size:12px;
 
   font-weight:bold;
 
@@ -434,7 +424,7 @@ button:disabled{
 
 .notificationStatus.unreadStatus{
 
-  background:#1877f2;
+  background:#0066cc;
 
   color:white;
 
@@ -443,9 +433,9 @@ button:disabled{
 
 .notificationStatus.readStatus{
 
-  background:#e4e6eb;
+  background:#e3e3e3;
 
-  color:#65676b;
+  color:#555;
 
 }
 
@@ -458,11 +448,11 @@ button:disabled{
 
   display:flex;
 
-  gap:6px;
+  gap:9px;
 
   flex-wrap:wrap;
 
-  margin-top:10px;
+  margin-top:14px;
 
 }
 
@@ -473,48 +463,45 @@ button:disabled{
 
 .statusCard{
 
-  background:#ffffff;
+  background:white;
 
-  padding:30px 14px;
+  padding:22px;
 
-  border-radius:0;
+  border-radius:13px;
 
   text-align:center;
 
-  font-size:14px;
+  font-size:17px;
 
-  box-shadow:none;
-
-  border-bottom:1px solid #e4e6eb;
-
-  color:#65676b;
+  box-shadow:
+  0 3px 8px
+  rgba(0,0,0,0.08);
 
 }
 
 
 .statusCard.loading{
 
-  color:#65676b;
+  color:#0056a6;
 
 }
 
 
 .statusCard.empty{
 
-  color:#65676b;
+  color:#555;
 
 }
 
 
 .statusCard.error{
 
-  background:#fdecec;
+  background:#ffdddd;
 
   color:#b00020;
 
-  border:none;
-
-  border-bottom:1px solid #e4e6eb;
+  border:
+  1px solid #ffaaaa;
 
 }
 
@@ -527,9 +514,7 @@ button:disabled{
 
   text-align:center;
 
-  margin-top:20px;
-
-  padding:0 14px;
+  margin-top:25px;
 
 }
 
@@ -542,49 +527,56 @@ button:disabled{
 
   body{
 
-    padding:0;
-
-  }
-
-
-  .container{
-
-    padding:0;
+    padding:12px;
 
   }
 
 
   .header{
 
-    padding:12px;
+    padding:20px 14px;
 
   }
 
 
   .header h1{
 
-    font-size:18px;
+    font-size:25px;
 
   }
 
 
   .topActions{
 
-    flex-direction:row;
+    flex-direction:column;
 
-    align-items:center;
+    align-items:stretch;
 
   }
 
 
   .topActions button{
 
-    width:auto;
+    width:100%;
 
   }
 
 
   .notificationCount{
+
+    text-align:center;
+
+  }
+
+
+  .notificationHeader{
+
+    flex-direction:column;
+
+  }
+
+
+  .notificationTime{
 
     text-align:left;
 
@@ -593,7 +585,14 @@ button:disabled{
 
   .notificationActions{
 
-    flex-direction:row;
+    flex-direction:column;
+
+  }
+
+
+  .notificationActions button{
+
+    width:100%;
 
   }
 
@@ -637,24 +636,22 @@ button:disabled{
     </div>
 
 
-    <div style="display:flex; gap:6px;">
-      <button
-        id="refreshButton"
-        class="refreshButton"
-        type="button"
-      >
-        🔄 Refresh
-      </button>
+    <button
+      id="refreshButton"
+      class="refreshButton"
+      type="button"
+    >
+      🔄 Refresh
+    </button>
 
 
-      <button
-        id="markAllButton"
-        class="markAllButton"
-        type="button"
-      >
-        ✓ Mark All Read
-      </button>
-    </div>
+    <button
+      id="markAllButton"
+      class="markAllButton"
+      type="button"
+    >
+      ✓ Mark All Read
+    </button>
 
   </div>
 
@@ -1975,6 +1972,9 @@ if(refreshButton){
 }
 /* =====================================================
    BACK BUTTON
+   (fixed: was pointing to community.html,
+   which does not exist in this app — the
+   actual Community Wall page is feed.html)
 ===================================================== */
 
 if(backButton){
