@@ -1,223 +1,746 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat | Faith Connect</title>
-  <link rel="stylesheet" href="chat.css">
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Private Christian messaging for SABASABA Gospel Ministry."
+>
+
+<title>
+Private Chat | SABASABA Gospel Ministry
+</title>
+
+<link rel="stylesheet" href="chat.css?v=20261006">
 </head>
+
 <body>
 
-  <!-- Top Navigation Header -->
-  <header class="chat-header">
-    <div class="chat-user-info">
-      <a href="feed.html" class="icon-btn" style="margin-right:4px;">←</a>
-      <img id="partnerAvatar" class="chat-avatar" src="https://via.placeholder.com/40" alt="Avatar">
-      <div>
-        <div id="partnerName" class="chat-user-name">Loading...</div>
-        <div id="partnerStatus" class="chat-status">Active now</div>
+<!-- =====================================================
+   PART 4 OF 10
+   COMPLETE HTML PAGE STRUCTURE
+===================================================== -->
+
+
+<!-- =====================================================
+   CHAT HEADER
+===================================================== -->
+
+<header class="chatHeader">
+
+  <button
+    id="backButton"
+    class="backButton"
+    type="button"
+    aria-label="Go back"
+  >
+    ←
+  </button>
+
+
+  <div class="avatarWrapper">
+
+    <img
+      id="chatAvatar"
+      class="chatAvatar"
+      src="images/profile.png"
+      alt="Member profile picture"
+    >
+
+    <span
+      id="onlineDot"
+      class="onlineDot"
+      aria-hidden="true"
+    ></span>
+
+  </div>
+
+
+  <div class="chatHeaderInformation">
+
+    <div
+      id="chatName"
+      class="chatName"
+    >
+      Loading member...
+    </div>
+
+    <div
+      id="chatStatus"
+      class="chatStatus"
+    >
+      Checking status...
+    </div>
+
+  </div>
+
+
+  <div class="headerActions">
+
+    <button
+      id="voiceCallButton"
+      class="voiceCallButton"
+      type="button"
+      aria-label="Start voice call"
+      title="Voice call"
+      disabled
+    >
+      📞
+    </button>
+
+<button
+  id="videoCallButton"
+  class="videoCallButton"
+  type="button"
+  aria-label="Start video call"
+  title="Video call"
+  disabled
+>
+  📹
+</button>
+    <button
+      id="headerOptionsButton"
+      class="headerOptionsButton"
+      type="button"
+      aria-label="Open chat options"
+      title="Chat options"
+    >
+      ⋮
+    </button>
+
+  </div>
+
+
+  <!-- =================================================
+       HEADER OPTIONS MENU
+  ================================================== -->
+
+  <div
+    id="headerOptionsMenu"
+    class="headerOptionsMenu"
+  >
+
+    <button
+      id="viewProfileButton"
+      class="headerOptionButton"
+      type="button"
+    >
+      👤 View Profile
+    </button>
+
+
+    <button
+      id="clearChatButton"
+      class="headerOptionButton"
+      type="button"
+    >
+      🧹 Clear Chat for Me
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+   CHAT PAGE
+===================================================== -->
+
+<main class="chatPage">
+
+
+  <!-- =================================================
+       MESSAGES AREA
+  ================================================== -->
+
+  <section
+    id="chatArea"
+    class="chatArea"
+    aria-live="polite"
+    aria-label="Private conversation"
+  >
+
+    <div class="loadingMessage">
+      Loading conversation...
+    </div>
+
+  </section>
+
+
+  <!-- =================================================
+       TYPING INDICATOR
+  ================================================== -->
+
+  <div
+    id="typingIndicator"
+    class="typingIndicator"
+    aria-live="polite"
+  >
+
+    <span id="typingMemberName">
+      Member
+    </span>
+
+    <span>is typing</span>
+
+    <span class="typingDot"></span>
+    <span class="typingDot"></span>
+    <span class="typingDot"></span>
+
+  </div>
+
+
+  <!-- =================================================
+       REPLYING TO A FAITH MOMENT
+  ================================================== -->
+
+  <section
+    id="momentReplyPreviewArea"
+    class="momentReplyPreviewArea"
+  >
+
+    <div
+      id="momentReplyThumbnail"
+      class="momentReplyThumbnail"
+    ></div>
+
+    <div class="momentReplyText">
+
+      <div class="momentReplyLabel">
+        Replying to
+        <span id="momentReplyAuthorName"></span>'s
+        Faith Moment
       </div>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" id="startVoiceCall">📞</button>
-      <button class="icon-btn" id="startVideoCall">📹</button>
-    </div>
-  </header>
 
-  <!-- Messages List -->
-  <main class="chat-messages" id="chatMessages">
-    <!-- Messages dynamically inject here -->
-  </main>
+      <div
+        id="momentReplySnippet"
+        class="momentReplySnippet"
+      ></div>
 
-  <!-- Dynamic Status Panels (Hidden by Default) -->
-  <div id="recordingBar" class="recording-bar hidden-panel">
-    <span>🎙️ Recording Audio: <span id="recTimer">00:00</span></span>
-    <div>
-      <button class="rec-btn" id="cancelRecBtn" style="background:#65676b;">Cancel</button>
-      <button class="rec-btn" id="stopRecBtn">Send Voice</button>
     </div>
-  </div>
 
-  <div id="uploadStatus" class="recording-bar hidden-panel" style="background:#e7f3ff; color:#1877f2;">
-    <span>⏳ Uploading media... <span id="uploadPercent">0%</span></span>
-  </div>
+    <button
+      id="cancelMomentReplyButton"
+      class="cancelMomentReplyButton"
+      type="button"
+      aria-label="Cancel replying to this Faith Moment"
+    >
+      ×
+    </button>
 
-  <!-- Emoji Popover -->
-  <div id="emojiPicker" class="popover-panel">
-    <div class="emoji-grid">
-      <span class="emoji-item">😀</span><span class="emoji-item">😂</span><span class="emoji-item">😍</span><span class="emoji-item">🥰</span>
-      <span class="emoji-item">🙏</span><span class="emoji-item">❤️</span><span class="emoji-item">👍</span><span class="emoji-item">🔥</span>
-      <span class="emoji-item">🙌</span><span class="emoji-item">✨</span><span class="emoji-item">🕊️</span><span class="emoji-item">📖</span>
-      <span class="emoji-item">⛪</span><span class="emoji-item">😊</span><span class="emoji-item">😭</span><span class="emoji-item">👏</span>
+  </section>
+
+
+  <!-- =================================================
+       MEDIA PREVIEW
+  ================================================== -->
+
+  <section
+    id="mediaPreviewArea"
+    class="mediaPreviewArea"
+  >
+
+    <button
+      id="removePreviewButton"
+      class="removePreviewButton"
+      type="button"
+      aria-label="Remove selected media"
+    >
+      ×
+    </button>
+
+
+    <div
+      id="previewContent"
+      class="previewContent"
+    ></div>
+
+  </section>
+
+
+  <!-- =================================================
+       UPLOAD PROGRESS
+  ================================================== -->
+
+  <section
+    id="uploadProgressArea"
+    class="uploadProgressArea"
+  >
+
+    <div class="progressInformation">
+
+      <span id="uploadProgressText">
+        Uploading media...
+      </span>
+
+      <span id="uploadProgressPercent">
+        0%
+      </span>
+
     </div>
-  </div>
 
-  <!-- Attachment Options Popover -->
-  <div id="attachmentPicker" class="popover-panel">
-    <div class="attachment-options">
-      <label class="attach-btn">
-        <div class="attach-icon">📷</div>
-        <span>Photo</span>
-        <input type="file" id="photoInput" accept="image/*" class="hidden-panel">
-      </label>
-      <label class="attach-btn">
-        <div class="attach-icon">🎥</div>
-        <span>Video</span>
-        <input type="file" id="videoInput" accept="video/*" class="hidden-panel">
-      </label>
-      <label class="attach-btn">
-        <div class="attach-icon">📁</div>
-        <span>File</span>
-        <input type="file" id="fileInput" class="hidden-panel">
-      </label>
-    </div>
-  </div>
 
-  <!-- Bottom Message Bar -->
-  <footer class="chat-input-bar">
-    <button class="icon-btn" id="toggleEmoji">😊</button>
-    <button class="icon-btn" id="toggleAttach">📎</button>
-    <button class="icon-btn" id="micBtn">🎙️</button>
-    
-    <div class="input-wrapper">
-      <input type="text" id="msgInput" class="chat-input" placeholder="Type your message...">
+    <div class="progressTrack">
+
+      <div
+        id="progressBar"
+        class="progressBar"
+      ></div>
+
     </div>
-    
-    <button class="send-btn" id="sendBtn">➤</button>
+
+  </section>
+
+
+  <!-- =================================================
+       VOICE RECORDING PANEL
+  ================================================== -->
+
+  <section
+    id="voiceRecordingPanel"
+    class="voiceRecordingPanel"
+  >
+
+    <div class="recordingIndicator">
+
+      <span class="recordingDot"></span>
+
+      <span>
+        Recording:
+      </span>
+
+      <span
+        id="recordingTime"
+        class="recordingTime"
+      >
+        00:00
+      </span>
+
+    </div>
+
+
+    <div class="recordingActions">
+
+      <button
+        id="cancelRecordingButton"
+        class="recordingActionButton cancelRecordingButton"
+        type="button"
+      >
+        Cancel
+      </button>
+
+
+      <button
+        id="stopRecordingButton"
+        class="recordingActionButton stopRecordingButton"
+        type="button"
+      >
+        Stop
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =================================================
+       MESSAGE INPUT AREA
+  ================================================== -->
+
+  <footer class="inputArea">
+
+
+    <!-- Emoji button -->
+
+    <button
+      id="emojiButton"
+      class="iconButton"
+      type="button"
+      aria-label="Open emoji picker"
+      title="Emoji"
+    >
+      😊
+    </button>
+
+
+    <!-- Attachment button -->
+
+    <button
+      id="attachmentButton"
+      class="iconButton"
+      type="button"
+      aria-label="Attach media"
+      title="Attach media"
+    >
+      📎
+    </button>
+
+
+    <!-- Voice recording button -->
+
+    <button
+      id="voiceButton"
+      class="iconButton"
+      type="button"
+      aria-label="Record voice message"
+      title="Record voice message"
+    >
+      🎤
+    </button>
+
+
+    <!-- =================================================
+         EMOJI PICKER
+    ================================================== -->
+
+    <div
+      id="emojiPicker"
+      class="emojiPicker"
+    >
+
+      <button type="button">😀</button>
+      <button type="button">😁</button>
+      <button type="button">😂</button>
+      <button type="button">🤣</button>
+      <button type="button">😊</button>
+      <button type="button">😍</button>
+
+      <button type="button">🥰</button>
+      <button type="button">😘</button>
+      <button type="button">😇</button>
+      <button type="button">🙏</button>
+      <button type="button">❤️</button>
+      <button type="button">👍</button>
+
+      <button type="button">👏</button>
+      <button type="button">🔥</button>
+      <button type="button">🎉</button>
+      <button type="button">💪</button>
+      <button type="button">🙌</button>
+      <button type="button">🤝</button>
+
+      <button type="button">📖</button>
+      <button type="button">✝️</button>
+      <button type="button">⛪</button>
+      <button type="button">🕊️</button>
+      <button type="button">🌍</button>
+      <button type="button">🌞</button>
+
+      <button type="button">😢</button>
+      <button type="button">😭</button>
+      <button type="button">😔</button>
+      <button type="button">🤗</button>
+      <button type="button">💖</button>
+      <button type="button">✨</button>
+
+    </div>
+
+
+    <!-- =================================================
+         ATTACHMENT MENU
+    ================================================== -->
+
+    <div
+      id="attachmentMenu"
+      class="attachmentMenu"
+    >
+
+      <button
+        id="selectImageButton"
+        class="attachmentOption"
+        type="button"
+      >
+
+        <span class="attachmentOptionIcon">
+          📷
+        </span>
+
+        <span>
+          Select Picture
+        </span>
+
+      </button>
+
+
+      <button
+        id="selectVideoButton"
+        class="attachmentOption"
+        type="button"
+      >
+
+        <span class="attachmentOptionIcon">
+          🎥
+        </span>
+
+        <span>
+          Select Video
+        </span>
+
+      </button>
+<button
+  id="selectFileButton"
+  class="attachmentOption"
+  type="button"
+>
+
+  <span class="attachmentOptionIcon">
+    📄
+  </span>
+
+  <span>
+    Select File
+  </span>
+
+</button>
+    </div>
+
+
+    <!-- =================================================
+         MESSAGE TEXT
+    ================================================== -->
+
+    <textarea
+      id="messageInput"
+      class="messageInput"
+      rows="1"
+      maxlength="2000"
+      placeholder="Type your message..."
+      autocomplete="off"
+      aria-label="Type your message"
+    ></textarea>
+
+
+    <!-- =================================================
+         SEND BUTTON
+    ================================================== -->
+
+    <button
+      id="sendButton"
+      class="sendButton"
+      type="button"
+    >
+      Send
+    </button>
+
   </footer>
 
-  <!-- Incoming / Outgoing Call Overlay (Hidden by Default) -->
-  <div id="callModal" class="call-modal hidden-panel">
-    <img id="callAvatar" class="chat-avatar" style="width:90px; height:90px; margin-bottom:16px;" src="https://via.placeholder.com/90">
-    <h2 id="callUserName" style="font-size:20px; margin-bottom:8px;">Faith Connect Member</h2>
-    <p id="callStateText" style="color:#aaa; margin-bottom:24px;">Calling...</p>
-    <button id="endCallBtn" style="background:#d32f2f; color:#fff; border:none; padding:12px 28px; border-radius:24px; font-weight:bold; cursor:pointer;">End Call</button>
+</main>
+
+
+<!-- =====================================================
+   HIDDEN FILE INPUTS
+===================================================== -->
+
+<input
+  id="imageInput"
+  class="hiddenFileInput"
+  type="file"
+  accept="image/*"
+>
+
+<input
+  id="videoInput"
+  class="hiddenFileInput"
+  type="file"
+  accept="video/*"
+>
+<input
+  id="fileInput"
+  class="hiddenFileInput"
+  type="file"
+  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.csv,.rtf"
+>
+
+<!-- =====================================================
+   FULL-SCREEN MEDIA VIEWER
+===================================================== -->
+
+<div
+  id="mediaViewer"
+  class="mediaViewer"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-label="Full-screen media viewer"
+>
+
+  <button
+    id="viewerCloseButton"
+    class="viewerCloseButton"
+    type="button"
+    aria-label="Close media viewer"
+  >
+    ×
+  </button>
+
+
+  <img
+    id="viewerImage"
+    class="viewerImage"
+    alt="Full-screen shared picture"
+  >
+
+
+  <video
+    id="viewerVideo"
+    class="viewerVideo"
+    controls
+    playsinline
+  ></video>
+
+</div>
+
+
+<!-- =====================================================
+   BUSY OVERLAY
+===================================================== -->
+
+<div
+  id="chatBusyOverlay"
+  class="chatBusyOverlay"
+  aria-hidden="true"
+>
+
+  <div class="chatBusyCard">
+
+    <div class="chatBusyIcon">
+      ⏳
+    </div>
+
+    <div
+      id="chatBusyText"
+      class="chatBusyText"
+    >
+      Please wait...
+    </div>
+
   </div>
 
-  <script type="module">
-    import { db, auth, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, onAuthStateChanged } from "./firebase.js";
+</div>
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetUserId = urlParams.get("userId");
+<!-- =====================================================
+   INCOMING VOICE CALL OVERLAY
+===================================================== -->
 
-    const messagesContainer = document.getElementById("chatMessages");
-    const msgInput = document.getElementById("msgInput");
-    const sendBtn = document.getElementById("sendBtn");
-    
-    const partnerNameEl = document.getElementById("partnerName");
-    const partnerAvatarEl = document.getElementById("partnerAvatar");
+<div
+  id="incomingCallOverlay"
+  class="incomingCallOverlay"
+  aria-hidden="true"
+>
 
-    const toggleEmojiBtn = document.getElementById("toggleEmoji");
-    const emojiPicker = document.getElementById("emojiPicker");
-    const toggleAttachBtn = document.getElementById("toggleAttach");
-    const attachmentPicker = document.getElementById("attachmentPicker");
+  <div class="incomingCallCard">
 
-    let currentAuthUser = null;
+    <div
+  id="incomingCallTitle"
+  class="incomingCallTitle"
+>
+  Incoming Voice Call
+</div>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
-      currentAuthUser = user;
-      if (targetUserId) {
-        loadPartnerInfo(targetUserId);
-        listenForMessages(user.uid, targetUserId);
-      }
-    });
 
-    async function loadPartnerInfo(uid) {
-      try {
-        const userDoc = await getDoc(doc(db, "users", uid));
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          partnerNameEl.innerText = data.name || data.fullName || "Faith Connect Member";
-          partnerAvatarEl.src = data.picture || data.profilePicture || "https://via.placeholder.com/40";
-        }
-      } catch (err) {
-        console.error("Error loading partner:", err);
-      }
+    <div class="incomingCallerAvatarFrame">
+
+      <img
+        id="incomingCallerAvatar"
+        class="incomingCallerAvatar"
+        src="images/profile.png"
+        alt="Incoming caller profile picture"
+      >
+
+    </div>
+
+
+    <div
+      id="incomingCallerName"
+      class="incomingCallerName"
+    >
+      Faith Connect Member
+    </div>
+
+
+    <div class="incomingCallText">
+      is calling you...
+    </div>
+
+
+    <div class="incomingCallActions">
+
+      <div class="incomingCallAction">
+
+        <button
+          id="declineIncomingCallButton"
+          class="incomingCallActionButton decline"
+          type="button"
+          aria-label="Decline incoming call"
+        >
+          📵
+        </button>
+
+        <span class="incomingCallActionLabel">
+          Decline
+        </span>
+
+      </div>
+
+
+      <div class="incomingCallAction">
+
+        <button
+          id="acceptIncomingCallButton"
+          class="incomingCallActionButton accept"
+          type="button"
+          aria-label="Accept incoming call"
+        >
+          📞
+        </button>
+
+        <span class="incomingCallActionLabel">
+          Accept
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+   OPEN JAVASCRIPT MODULE
+===================================================== -->
+
+<script>
+/* Startup watchdog: shows a clear message on screen if chat.js
+   is old, incomplete, missing or blocked (instead of staying on
+   "Loading conversation..." forever). */
+(function(){
+  function show(text){
+    var area=document.getElementById("chatArea");
+    var box='<div style="margin:20px;padding:16px;border-radius:14px;background:#fdecec;color:#8a1f1f;font:700 14px/1.6 Arial,sans-serif;text-align:left">'+text+'</div>';
+    if(area){ area.innerHTML=box; } else { document.body.insertAdjacentHTML("afterbegin",box); }
+  }
+  window.addEventListener("error",function(e){
+    if(window.__chatLoaderRan) return;
+    show("Chat file problem: "+(e.message||"error")+"<br>File: "+String(e.filename||"").split("/").pop()+" (line "+(e.lineno||"?")+"). Upload chat.js again.");
+  });
+  setTimeout(function(){
+    if(!window.__chatLoaderRan){
+      show("chat.js did not start. It is missing, old or incomplete. Upload the new chat.js (small loader, about 2 KB) and chat-part1.js to chat-part4.js, then reload.");
     }
+  },7000);
+})();
+</script>
+<script type="module" src="chat.js?v=20261006"></script>
 
-    function listenForMessages(currentUid, partnerUid) {
-      const chatId = currentUid < partnerUid ? `${currentUid}_${partnerUid}` : `${partnerUid}_${currentUid}`;
-      const q = query(collection(db, "chats", chatId, "messages"), orderBy("timestamp", "asc"));
-
-      onSnapshot(q, (snapshot) => {
-        let html = "";
-        snapshot.forEach((docSnap) => {
-          const m = docSnap.data();
-          const isSent = m.senderId === currentUid;
-          const time = m.timestamp?.toDate ? m.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
-
-          let mediaHTML = "";
-          if (m.mediaUrl) {
-            if (m.mediaType === "video") {
-              mediaHTML = `<video src="${m.mediaUrl}" controls class="msg-media"></video>`;
-            } else {
-              mediaHTML = `<img src="${m.mediaUrl}" class="msg-media" alt="Media">`;
-            }
-          }
-
-          html += `
-            <div class="msg-row ${isSent ? 'sent' : 'received'}">
-              <div class="msg-bubble">
-                ${m.text ? escapeHTML(m.text) : ''}
-                ${mediaHTML}
-              </div>
-              <div class="msg-time">${time}</div>
-            </div>
-          `;
-        });
-        messagesContainer.innerHTML = html;
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      });
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
-
-    async function sendMessage() {
-      const text = msgInput.value.trim();
-      if (!text || !currentAuthUser || !targetUserId) return;
-
-      const chatId = currentAuthUser.uid < targetUserId ? `${currentAuthUser.uid}_${targetUserId}` : `${targetUserId}_${currentAuthUser.uid}`;
-      msgInput.value = "";
-
-      try {
-        await addDoc(collection(db, "chats", chatId, "messages"), {
-          senderId: currentAuthUser.uid,
-          receiverId: targetUserId,
-          text: text,
-          timestamp: serverTimestamp()
-        });
-      } catch (err) {
-        console.error("Send error:", err);
-      }
-    }
-
-    toggleEmojiBtn.addEventListener("click", () => {
-      emojiPicker.classList.toggle("active");
-      attachmentPicker.classList.remove("active");
-    });
-
-    toggleAttachBtn.addEventListener("click", () => {
-      attachmentPicker.classList.toggle("active");
-      emojiPicker.classList.remove("active");
-    });
-
-    document.querySelectorAll(".emoji-item").forEach(item => {
-      item.addEventListener("click", () => {
-        msgInput.value += item.innerText;
-        emojiPicker.classList.remove("active");
-      });
-    });
-
-    function escapeHTML(str) {
-      return String(str || "").replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
-  </script>
 </body>
+
 </html>
