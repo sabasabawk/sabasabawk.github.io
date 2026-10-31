@@ -24,7 +24,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
 import {
-  getFirestore,
+  initializeFirestore,
   collection,
   collectionGroup,
   addDoc,
@@ -64,11 +64,24 @@ const firebaseConfig = {
 
 /* =====================================================
    INITIALIZE FIREBASE SERVICES
+
+   Firestore is started with automatic connection
+   detection. On networks or phones where the normal
+   connection is blocked or stalls (the page then stays
+   on "Loading..." forever), Firestore switches itself to
+   a more compatible connection method.
 ===================================================== */
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+const db = initializeFirestore(
+  app,
+  {
+    experimentalAutoDetectLongPolling: true
+  }
+);
+
 const storage = getStorage(app);
 
 
