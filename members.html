@@ -3,148 +3,626 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find Members | Faith Connect</title>
+
+<title>Search Members</title>
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
 
-.header { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.header h1 { font-size: 18px; color: #1877f2; font-weight: bold; }
-.back-btn { text-decoration: none; color: #1877f2; font-weight: bold; font-size: 14px; }
-
-.container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
-
-.search-box { background: #fff; padding: 10px 14px; border-radius: 20px; border: 1px solid #e4e6eb; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-.search-input { width: 100%; border: none; outline: none; font-size: 14px; background: transparent; }
-
-.members-list { display: flex; flex-direction: column; gap: 8px; }
-
-.member-card { 
-  background: #fff; 
-  border-radius: 8px; 
-  border: 1px solid #e4e6eb; 
-  padding: 10px 12px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
 }
 
-.member-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
-.member-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #e4e6eb; flex-shrink: 0; }
-.member-details { overflow: hidden; }
-.member-name { font-weight: bold; font-size: 14px; color: #050505; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.member-role { font-size: 11px; color: #65676b; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.container{
+max-width:900px;
+margin:auto;
+}
 
-.member-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.btn-msg { background: #1877f2; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-decoration: none; }
-.btn-profile { background: #e4e6eb; color: #050505; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; text-decoration: none; }
+.header{
+background:linear-gradient(160deg,#0a3d8f 0%,#2196f3 100%);
+color:white;
+padding:25px;
+border-radius:18px;
+text-align:center;
+margin-bottom:20px;
+}
 
-.loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; }
+.header .brand{
+color:#ffd54f;
+font-weight:bold;
+font-size:14px;
+letter-spacing:1px;
+text-transform:uppercase;
+margin-bottom:6px;
+}
+
+.header h1{
+margin:0;
+}
+
+.header p{
+margin:8px 0 0;
+}
+
+.search-box{
+margin-bottom:20px;
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+box-sizing:border-box;
+}
+
+.member{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.left{
+display:flex;
+align-items:center;
+}
+
+.avatar{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+background:#ddd;
+margin-right:15px;
+}
+
+.info h3{
+margin:0;
+color:#0066cc;
+}
+
+.info p{
+margin:5px 0 0;
+color:#666;
+font-size:14px;
+}
+
+.message-btn{
+background:#0066cc;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.message-btn:hover{
+background:#004d99;
+}
+
+.loadMoreRow{
+text-align:center;
+margin:10px 0 20px;
+}
+
+.loadMoreRow button{
+background:#e5f1ff;
+color:#0056a6;
+border:none;
+padding:12px 22px;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.loadMoreRow button:hover{
+background:#cfe5ff;
+}
+
+.loadMoreRow button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+.statusText{
+text-align:center;
+color:#666;
+padding:15px;
+}
+
+.back{
+text-align:center;
+margin-top:30px;
+}
+
+.back button{
+background:#0066cc;
+color:white;
+padding:12px 24px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
 </style>
+
 </head>
+
 <body>
 
-  <header class="header">
-    <a href="feed.html" class="back-btn">← Back</a>
-    <h1>Find Members</h1>
-    <div style="width: 40px;"></div>
-  </header>
+<div class="container">
 
-  <main class="container">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search members by name...">
-    </div>
+<div class="header">
 
-    <div class="members-list" id="membersList">
-      <div class="loading">Loading members...</div>
-    </div>
-  </main>
+<div class="brand">Faith Connect</div>
 
-  <script type="module">
-    import { db, auth, collection, getDocs, query, orderBy, onAuthStateChanged } from "./firebase.js";
+<h1>🔍 Search Members</h1>
 
-    const membersListContainer = document.getElementById("membersList");
-    const searchInput = document.getElementById("searchInput");
-    let allMembers = [];
-    let currentUserId = null;
+<p>Find believers and start a private conversation.</p>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
-      currentUserId = user.uid;
-      loadMembers();
-    });
+</div>
 
-    async function loadMembers() {
-      try {
-        const q = query(collection(db, "users"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
+<div class="search-box">
 
-        allMembers = [];
-        snapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (docSnap.id !== currentUserId) {
-            allMembers.push({ id: docSnap.id, ...data });
-          }
-        });
+<input
+type="text"
+id="searchInput"
+placeholder="Search by name...">
 
-        renderMembers(allMembers);
-      } catch (err) {
-        console.error("Error loading members:", err);
-        membersListContainer.innerHTML = `<div class="empty" style="color:red;">Failed to load members.</div>`;
-      }
-    }
+</div>
 
-    function renderMembers(members) {
-      if (members.length === 0) {
-        membersListContainer.innerHTML = `<div class="empty">No other members found.</div>`;
-        return;
-      }
+<div id="membersList">
 
-      let html = "";
-      members.forEach((m) => {
-        const name = m.name || m.fullName || "Faith Connect Member";
-        const avatar = m.picture || m.profilePicture || "https://via.placeholder.com/50";
-        const role = m.bio || m.role || "Believer in Christ";
+<div class="statusText">
+Loading members...
+</div>
 
-        html += `
-          <div class="member-card">
-            <div class="member-info">
-              <img src="${avatar}" class="member-avatar" alt="Avatar">
-              <div class="member-details">
-                <div class="member-name">${escapeHTML(name)}</div>
-                <div class="member-role">${escapeHTML(role)}</div>
-              </div>
-            </div>
-            <div class="member-actions">
-              <a href="chat-room.html?userId=${m.id}" class="btn-msg">Message</a>
-              <a href="profile-view.html?userId=${m.id}" class="btn-profile">Profile</a>
-            </div>
-          </div>
-        `;
+</div>
+
+<div
+class="loadMoreRow"
+id="loadMoreRow"
+style="display:none;">
+
+<button
+type="button"
+id="loadMoreButton">
+Load more members
+</button>
+
+</div>
+
+<div class="back">
+
+<a href="messages.html">
+
+<button>
+
+⬅ Back to Messages
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+db,
+collection,
+query,
+orderBy,
+limit,
+startAfter,
+getDocs
+} from "./firebase.js";
+
+const membersList =
+document.getElementById("membersList");
+
+const searchInput =
+document.getElementById("searchInput");
+
+const loadMoreRow =
+document.getElementById("loadMoreRow");
+
+const loadMoreButton =
+document.getElementById("loadMoreButton");
+
+/*
+PAGE SIZE
+
+Instead of downloading every member account
+in the whole app at once (which is what was
+causing the slowness), only this many load
+to start. Tapping "Load more" fetches the
+next batch.
+*/
+
+const MEMBERS_PER_PAGE = 40;
+
+let members = [];
+let lastVisibleDoc = null;
+let noMoreMembers = false;
+let isLoadingMembers = false;
+
+/*
+SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
+
+Same idea as the Community Wall fix: this page
+used to wait for a fresh Firestore read every
+single time it opened, with nothing shown until
+that finished. Now, if a cached copy of the
+first page of members exists and isn't too old,
+it renders immediately while the live Firestore
+read still happens right away in the background
+and replaces it the moment it arrives. This never
+changes which members exist — it only changes
+how fast something appears on screen.
+*/
+
+const MEMBERS_CACHE_KEY =
+"sabasaba_members_cache_v1";
+
+const MEMBERS_CACHE_MAX_AGE_MS =
+30 * 60 * 1000;
+
+function saveMembersCache(memberList){
+
+try{
+
+window.localStorage.setItem(
+
+MEMBERS_CACHE_KEY,
+
+JSON.stringify({
+
+savedAt: Date.now(),
+
+members: memberList
+
+})
+
+);
+
+}catch(error){
+
+/*
+Local storage can fail (private browsing,
+storage full, etc.) — this is only a speed
+optimization, so a failure here is silently
+ignored and never shown to the user.
+*/
+
+console.warn(
+"Members cache could not be saved:",
+error
+);
+
+}
+
+}
+
+function loadMembersCache(){
+
+try{
+
+const rawCache =
+window.localStorage.getItem(MEMBERS_CACHE_KEY);
+
+if(!rawCache){
+
+return null;
+
+}
+
+const parsedCache =
+JSON.parse(rawCache);
+
+const cacheAge =
+Date.now() - (parsedCache.savedAt || 0);
+
+if(cacheAge > MEMBERS_CACHE_MAX_AGE_MS){
+
+return null;
+
+}
+
+if(
+
+!Array.isArray(parsedCache.members) ||
+
+parsedCache.members.length === 0
+
+){
+
+return null;
+
+}
+
+return parsedCache.members;
+
+}catch(error){
+
+console.warn(
+"Members cache could not be read:",
+error
+);
+
+return null;
+
+}
+
+}
+
+async function loadMembers(isLoadMore = false){
+
+if(isLoadingMembers || noMoreMembers){
+return;
+}
+
+isLoadingMembers = true;
+
+loadMoreButton.disabled = true;
+
+loadMoreButton.textContent =
+"Loading...";
+
+try{
+
+const usersReference =
+collection(db,"users");
+
+let membersQuery;
+
+if(isLoadMore && lastVisibleDoc){
+
+membersQuery = query(
+usersReference,
+orderBy("fullName"),
+startAfter(lastVisibleDoc),
+limit(MEMBERS_PER_PAGE)
+);
+
+}else{
+
+membersQuery = query(
+usersReference,
+orderBy("fullName"),
+limit(MEMBERS_PER_PAGE)
+);
+
+}
+
+const snapshot =
+await getDocs(membersQuery);
+
+const newMembers = [];
+
+snapshot.forEach(docSnapshot=>{
+
+newMembers.push({
+id: docSnapshot.id,
+...docSnapshot.data()
+});
+
+});
+
+if(isLoadMore){
+
+members = members.concat(newMembers);
+
+}else{
+
+members = newMembers;
+
+}
+
+if(snapshot.docs.length > 0){
+
+lastVisibleDoc =
+snapshot.docs[snapshot.docs.length - 1];
+
+}
+
+noMoreMembers =
+snapshot.docs.length < MEMBERS_PER_PAGE;
+
+loadMoreRow.style.display =
+noMoreMembers ? "none" : "block";
+
+displayMembers(members);
+
+/*
+Only the first page gets cached — older
+pages loaded via "Load more" don't need to,
+since this cache exists purely to make the
+very first thing on screen appear instantly.
+*/
+
+if(!isLoadMore){
+
+saveMembersCache(newMembers);
+
+}
+
+}catch(error){
+
+console.error(
+"Error loading members:",
+error
+);
+
+membersList.innerHTML = `
+
+<div class="statusText">
+Members could not be loaded. Please try again.
+</div>
+
+`;
+
+}finally{
+
+isLoadingMembers = false;
+
+loadMoreButton.disabled = false;
+
+loadMoreButton.textContent =
+"Load more members";
+
+}
+
+}
+
+function displayMembers(list){
+
+if(list.length === 0){
+
+membersList.innerHTML = `
+
+<div class="statusText">
+No members found.
+</div>
+
+`;
+
+return;
+
+}
+
+membersList.innerHTML =
+list.map(user => `
+
+<div class="member">
+
+<div class="left">
+
+<img
+class="avatar"
+loading="lazy"
+src="${user.profilePicture || 'images/profile.png'}"
+onerror="this.src='images/profile.png';">
+
+<div class="info">
+
+<h3>${user.fullName || "Unknown User"}</h3>
+
+<p>${user.email || ""}</p>
+
+</div>
+
+</div>
+
+<button
+class="message-btn"
+onclick="window.location.href='chat.html?uid=${user.id}'">
+
+💬 Message
+
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+searchInput.addEventListener("input",function(){
+
+const keyword =
+this.value.toLowerCase();
+
+/*
+Search filters the members already loaded.
+If someone isn't found, tap "Load more"
+first to bring in additional members, then
+search again.
+*/
+
+const filtered =
+members.filter(user=>
+
+(user.fullName || "")
+.toLowerCase()
+.includes(keyword)
+
+);
+
+displayMembers(filtered);
+
+});
+
+loadMoreButton.addEventListener(
+"click",
+()=>{
+
+loadMembers(true);
+
+}
+);
+
+/*
+Show the cached first page instantly if we
+have one — this removes the blank "Loading
+members..." wait on a repeat visit. The live
+Firestore read below still runs immediately
+and replaces this the moment real data
+arrives, so the cache is never shown for more
+than a moment and never goes stale on screen.
+*/
+
+const cachedMembers =
+loadMembersCache();
+
+if(cachedMembers){
+
+members = cachedMembers;
+
+displayMembers(members);
+
+}
+
+loadMembers(false);
+
+</script>
+  <script>
+    // Register the Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered successfully:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
       });
-
-      membersListContainer.innerHTML = html;
     }
-
-    searchInput.addEventListener("input", (e) => {
-      const term = e.target.value.toLowerCase();
-      const filtered = allMembers.filter(m => {
-        const name = (m.name || m.fullName || "").toLowerCase();
-        return name.includes(term);
+  </script>
+  <script>
+    // Register the Service Worker globally
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered successfully:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
       });
-      renderMembers(filtered);
-    });
-
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
     }
   </script>
 </body>
