@@ -4,337 +4,652 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Create and publish a post on the SABASABA Gospel Ministry Community Wall">
 
-<title>Create Post | SABASABA Gospel Ministry</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<meta
+  name="description"
+  content="Create and publish a post on the SABASABA Gospel Ministry Community Wall"
+>
+
+<title>
+  Create Post | SABASABA Gospel Ministry
+</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <style>
 
 /* =====================================================
-   EDGE-TO-EDGE CLEAN DESIGN
+   PART 1 OF 6
+   DOCUMENT SETUP AND MAIN CSS
 ===================================================== */
 
-*{box-sizing:border-box;margin:0;padding:0}
 
-html{scroll-behavior:smooth}
+/* =====================================================
+   GENERAL PAGE
+===================================================== */
 
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f0f2f5;
-  color:#050505;
-  min-height:100vh;
+*{
+  box-sizing:border-box;
 }
 
-button,input,select,textarea{font-family:inherit}
+html{
+  scroll-behavior:smooth;
+}
 
-button{-webkit-tap-highlight-color:transparent;cursor:pointer}
+body{
+  margin:0;
+  padding:20px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#eef3f8;
+  color:#222222;
+}
+
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
+}
 
 
-/* ---------- CONTAINER ---------- */
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
 
 .container{
   width:100%;
-  max-width:680px;
+  max-width:700px;
   margin:0 auto;
-  padding:0 0 90px 0;
-  background:#f0f2f5;
-}
-
-
-/* ---------- HEADER ---------- */
-
-.header{
+  padding:25px;
   background:#ffffff;
-  color:#050505;
-  padding:16px 14px;
-  border-bottom:1px solid #e4e6eb;
-  text-align:left;
+  border-radius:16px;
+  box-shadow:0 4px 14px rgba(0,0,0,.10);
 }
 
-h1{margin:0 0 2px;text-align:left;color:#050505;font-size:20px}
+
+/* =====================================================
+   PAGE TITLE
+===================================================== */
+
+h1{
+  margin:0 0 8px;
+  text-align:center;
+  color:#0066cc;
+  font-size:28px;
+}
 
 .page-description{
-  margin:0;
-  color:#65676b;
-  font-size:13px;
-  line-height:1.4;
-  text-align:left;
+  margin:0 0 25px;
+  color:#666666;
+  font-size:14px;
+  line-height:1.6;
+  text-align:center;
 }
 
 
-/* ---------- FORM ---------- */
-
-.form-body{
-  background:#ffffff;
-  padding:14px;
-  border-bottom:1px solid #e4e6eb;
-}
+/* =====================================================
+   FORM ELEMENTS
+===================================================== */
 
 label{
   display:block;
-  margin-top:12px;
-  color:#050505;
+  margin-top:16px;
+  color:#333333;
   font-weight:bold;
-  font-size:13px;
 }
 
-label:first-of-type{margin-top:0}
-
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
-  margin-top:6px;
-  padding:10px 12px;
-  border:1px solid #ccd0d5;
-  border-radius:6px;
+  margin-top:7px;
+  padding:12px;
+  border:1px solid #c8d1dc;
+  border-radius:9px;
   background:#ffffff;
-  color:#050505;
-  font-size:14px;
+  color:#222222;
+  font-size:16px;
   outline:none;
 }
 
-input:focus,select:focus,textarea:focus{border-color:#1877f2}
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#0066cc;
+  box-shadow:0 0 0 3px rgba(0,102,204,.12);
+}
 
-textarea{min-height:140px;resize:vertical;line-height:1.4}
+textarea{
+  min-height:180px;
+  resize:vertical;
+  line-height:1.5;
+}
 
 
-/* ---------- EMOJI ---------- */
+/* =====================================================
+   EMOJI TOOLBAR
+===================================================== */
 
-.emojiToolbarRow{margin-top:8px;position:relative;display:flex;align-items:center}
+.emojiToolbarRow{
+  margin-top:10px;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
 
 .emojiToggleButton{
-  width:34px;height:34px;border:none;border-radius:50%;
-  background:transparent;color:#1877f2;font-size:18px;
-  display:flex;align-items:center;justify-content:center;
+  width:40px;
+  height:40px;
+  border:1px solid #c8d1dc;
+  border-radius:10px;
+  background:#f4f6f8;
+  color:#0066cc;
+  font-size:19px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.emojiToggleButton:hover{background:#e7f3ff}
+.emojiToggleButton:hover{
+  background:#edf5ff;
+}
 
 .emojiPicker{
-  position:absolute;left:0;top:40px;z-index:40;
-  width:260px;max-width:calc(100vw - 20px);max-height:200px;
-  overflow-y:auto;display:none;padding:8px;
-  border:1px solid #e4e6eb;border-radius:12px;
-  grid-template-columns:repeat(6,1fr);gap:6px;
-  background:#ffffff;box-shadow:0 4px 16px rgba(0,0,0,.15);
+  position:absolute;
+  left:0;
+  top:48px;
+  z-index:40;
+  width:280px;
+  max-width:calc(100vw - 60px);
+  max-height:230px;
+  overflow-y:auto;
+  display:none;
+  padding:10px;
+  border:1px solid #c8d1dc;
+  border-radius:14px;
+  grid-template-columns:repeat(6,1fr);
+  gap:7px;
+  background:#ffffff;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
 }
 
-.emojiPicker.show{display:grid}
+.emojiPicker.show{
+  display:grid;
+}
 
 .emojiPicker button{
-  min-height:34px;border:0;border-radius:6px;
-  background:transparent;font-size:20px;
+  min-height:38px;
+  border:0;
+  border-radius:8px;
+  background:#f4f6f8;
+  font-size:21px;
 }
 
-.emojiPicker button:hover{background:#f0f2f5}
+.emojiPicker button:hover{
+  background:#e4ebf2;
+}
 
 
-/* ---------- MEDIA OPTIONS ---------- */
+/* =====================================================
+   MEDIA SELECTION AREA
+===================================================== */
 
 .media-options{
-  padding:12px 14px;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
+  margin-top:18px;
+  padding:16px;
+  background:#f7f9fc;
+  border:1px solid #dce4ec;
+  border-radius:11px;
 }
 
-.media-options-title{margin:0;color:#050505;font-weight:bold;font-size:14px}
+.media-options-title{
+  margin:0;
+  color:#333333;
+  font-weight:bold;
+}
 
 .media-picker-buttons{
-  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
 }
 
 .media-picker-button{
-  width:100%;padding:9px 10px;
-  border:1px solid #ccd0d5;border-radius:6px;
-  background:#f0f2f5;color:#050505;
-  font-size:13px;font-weight:bold;cursor:pointer;
-  transition:background .2s;
+  width:100%;
+  padding:13px 10px;
+  border:1px solid #c8d1dc;
+  border-radius:9px;
+  background:#ffffff;
+  color:#0066cc;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.media-picker-button:hover{background:#e4e6eb}
-.media-picker-button:disabled{opacity:.6;cursor:not-allowed}
+.media-picker-button:hover{
+  background:#edf5ff;
+  border-color:#0066cc;
+}
 
-.media-help{margin:8px 0 0;color:#65676b;font-size:11px;line-height:1.3}
+.media-picker-button:active{
+  transform:scale(.98);
+}
+
+.media-help{
+  margin:12px 0 0;
+  color:#666666;
+  font-size:13px;
+  line-height:1.5;
+}
 
 
-/* ---------- MEDIA PREVIEW ---------- */
+/* =====================================================
+   MEDIA PREVIEW
+===================================================== */
 
 #mediaPreview{
   display:none;
-  padding:12px 14px;
-  background:#ffffff;
-  border-bottom:1px solid #e4e6eb;
+  margin-top:16px;
+  padding:12px;
+  background:#f7f9fc;
+  border:1px solid #dce4ec;
+  border-radius:11px;
   text-align:center;
 }
 
 #mediaPreview video{
-  display:block;width:100%;max-height:360px;
-  object-fit:contain;border-radius:8px;background:#000000;
+  display:block;
+  width:100%;
+  max-height:430px;
+  object-fit:contain;
+  border-radius:9px;
+  background:#000000;
 }
 
-.preview-name{margin:8px 0 0;color:#65676b;font-size:12px;word-break:break-word}
+.preview-name{
+  margin:10px 0 0;
+  color:#555555;
+  font-size:13px;
+  word-break:break-word;
+}
 
 
-/* ---------- PHOTO GRID ---------- */
+/* =====================================================
+   MULTI-PHOTO PREVIEW GRID
+   (Facebook-style — every selected photo shows as
+   its own removable thumbnail, instead of only one
+   photo being possible per post)
+===================================================== */
 
 #imagePreviewGrid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:left;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  text-align:left;
 }
 
 .imagePreviewTile{
-  position:relative;aspect-ratio:1/1;overflow:hidden;
-  border-radius:6px;background:#000000;
+  position:relative;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  border-radius:9px;
+  background:#000000;
 }
 
-.imagePreviewTile img{display:block;width:100%;height:100%;object-fit:cover}
+.imagePreviewTile img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-.imagePreviewRemoveButton,
+.imagePreviewRemoveButton{
+  position:absolute;
+  top:5px;
+  right:5px;
+  width:26px;
+  height:26px;
+  border:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.6);
+  color:#ffffff;
+  font-size:14px;
+  font-weight:bold;
+  line-height:1;
+  cursor:pointer;
+}
+
+.imagePreviewRemoveButton:hover{
+  background:rgba(217,48,37,.85);
+}
+
 .imagePreviewEditButton{
-  position:absolute;top:4px;width:24px;height:24px;
-  border:0;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.7);color:#ffffff;line-height:1;cursor:pointer;
+  position:absolute;
+  top:5px;
+  left:5px;
+  width:26px;
+  height:26px;
+  border:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.6);
+  color:#ffffff;
+  font-size:13px;
+  line-height:1;
+  cursor:pointer;
 }
 
-.imagePreviewRemoveButton{right:4px;font-size:12px;font-weight:bold}
-.imagePreviewEditButton{left:4px;font-size:11px}
-
-.imagePreviewRemoveButton:hover{background:rgba(176,0,32,.9)}
-.imagePreviewEditButton:hover{background:#1877f2}
+.imagePreviewEditButton:hover{
+  background:rgba(0,102,204,.9);
+}
 
 .addMorePhotosTile{
-  aspect-ratio:1/1;border:2px dashed #ccd0d5;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  background:#f0f2f5;color:#1877f2;
-  font-size:22px;font-weight:bold;cursor:pointer;
+  aspect-ratio:1/1;
+  border:2px dashed #c8d1dc;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  color:#0066cc;
+  font-size:26px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.addMorePhotosTile:hover{background:#e4e6eb;border-color:#1877f2}
+.addMorePhotosTile:hover{
+  background:#edf5ff;
+  border-color:#0066cc;
+}
 
 
-/* ---------- PHOTO EDITOR ---------- */
+/* =====================================================
+   PHOTO EDITOR (crop / rotate before posting,
+   similar to Facebook/Instagram's edit screen)
+===================================================== */
 
 .photoEditorModal{
-  display:none;position:fixed;inset:0;z-index:2000;
-  background:#000000;flex-direction:column;
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:#000000;
+  flex-direction:column;
 }
 
-.photoEditorModal.show{display:flex}
+.photoEditorModal.show{
+  display:flex;
+}
 
 .photoEditorHeader{
-  flex:0 0 auto;display:flex;align-items:center;
-  justify-content:space-between;padding:12px 14px;background:#111111;
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  background:#111111;
 }
 
 .photoEditorHeaderButton{
-  border:0;background:none;color:#ffffff;
-  font-size:15px;font-weight:bold;padding:4px 8px;cursor:pointer;
+  border:0;
+  background:none;
+  color:#ffffff;
+  font-size:16px;
+  font-weight:bold;
+  padding:6px 10px;
+  cursor:pointer;
 }
 
-.photoEditorDoneButton{color:#4fb0ff}
-.photoEditorCounterText{color:#cccccc;font-size:12px}
+.photoEditorDoneButton{
+  color:#4fb0ff;
+}
+
+.photoEditorCounterText{
+  color:#cccccc;
+  font-size:13px;
+}
 
 .photoEditorImageArea{
-  flex:1 1 auto;position:relative;overflow:hidden;
-  min-height:0;background:#000000;
+  flex:1 1 auto;
+  position:relative;
+  overflow:hidden;
+  min-height:0;
+  background:#000000;
 }
 
-.photoEditorImageArea img{display:block;max-width:100%}
+.photoEditorImageArea img{
+  display:block;
+  max-width:100%;
+}
 
 .photoEditorToolbar{
-  flex:0 0 auto;display:flex;align-items:center;gap:8px;
-  padding:10px 12px;overflow-x:auto;background:#111111;
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  overflow-x:auto;
+  background:#111111;
 }
 
 .photoEditorToolButton{
-  flex:0 0 auto;padding:8px 12px;
-  border:1px solid rgba(255,255,255,.3);border-radius:18px;
-  background:transparent;color:#ffffff;font-size:13px;
-  cursor:pointer;white-space:nowrap;
+  flex:0 0 auto;
+  padding:9px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:20px;
+  background:transparent;
+  color:#ffffff;
+  font-size:14px;
+  cursor:pointer;
+  white-space:nowrap;
 }
 
-.photoEditorAspectButton.active{background:#1877f2;border-color:#1877f2}
+.photoEditorAspectButton.active{
+  background:#0066cc;
+  border-color:#0066cc;
+}
 
-.photoEditorSkipButton{margin-left:auto;color:#ffb703;border-color:rgba(255,183,3,.4)}
+.photoEditorSkipButton{
+  margin-left:auto;
+  color:#ffb703;
+  border-color:rgba(255,183,3,.5);
+}
 
 
-/* ---------- BUTTONS ---------- */
-
-.action-card{background:#ffffff;padding:12px 14px;border-bottom:1px solid #e4e6eb}
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .publish-button{
-  width:100%;padding:10px 16px;border:none;border-radius:6px;
-  background:#1877f2;color:#ffffff;
-  font-size:15px;font-weight:bold;cursor:pointer;transition:background .2s;
+  width:100%;
+  margin-top:20px;
+  padding:13px 20px;
+  border:none;
+  border-radius:9px;
+  background:#0066cc;
+  color:#ffffff;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.publish-button:hover{background:#166fe5}
-.publish-button:disabled{background:#e4e6eb;color:#8d949e;cursor:not-allowed}
+.publish-button:hover{
+  background:#004f9e;
+}
+
+.publish-button:disabled{
+  background:#8da9c4;
+  cursor:not-allowed;
+}
 
 .remove-media-button{
-  margin-top:10px;padding:7px 12px;border:none;border-radius:6px;
-  background:#fdecec;color:#b00020;
-  font-size:13px;font-weight:bold;cursor:pointer;
+  margin-top:12px;
+  padding:9px 16px;
+  border:none;
+  border-radius:8px;
+  background:#d93025;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.remove-media-button:hover{background:#fcd1d1}
-
-.back{margin-top:16px;text-align:center;padding:0 14px}
-.back a{display:block;text-decoration:none}
+.remove-media-button:hover{
+  background:#aa2118;
+}
 
 .back-button{
-  display:block;width:100%;padding:10px 16px;
-  border:1px solid #ccd0d5;border-radius:8px;
-  background:#ffffff;color:#050505;
-  font-size:14px;font-weight:bold;cursor:pointer;transition:background .2s;
+  display:block;
+  width:100%;
+  margin-top:12px;
+  padding:12px 20px;
+  border:none;
+  border-radius:9px;
+  background:#e7edf4;
+  color:#1f2933;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.back-button:hover{background:#f0f2f5}
+.back-button:hover{
+  background:#d8e2ec;
+}
+/* =====================================================
+   PART 2 OF 6
+   REMAINING CSS AND COMPLETE HTML
+===================================================== */
 
 
-/* ---------- UPLOAD PROGRESS ---------- */
+/* =====================================================
+   UPLOAD PROGRESS
+===================================================== */
 
 #uploadArea{
-  display:none;padding:12px 14px;
-  background:#ffffff;border-bottom:1px solid #e4e6eb;
+  display:none;
+  margin-top:17px;
+  padding:14px;
+  background:#f7f9fc;
+  border:1px solid #dce4ec;
+  border-radius:10px;
 }
 
 .progress-container{
-  width:100%;height:10px;overflow:hidden;
-  background:#e4e6eb;border-radius:20px;
+  width:100%;
+  height:13px;
+  overflow:hidden;
+  background:#dce4ec;
+  border-radius:20px;
 }
 
-#uploadProgress{width:0%;height:100%;background:#1877f2;transition:width .2s ease}
+#uploadProgress{
+  width:0%;
+  height:100%;
+  background:#0066cc;
+  transition:width .2s ease;
+}
 
-#uploadText{margin:6px 0 0;color:#65676b;font-size:12px;text-align:center}
+#uploadText{
+  margin:9px 0 0;
+  color:#555555;
+  font-size:14px;
+  text-align:center;
+}
 
 
-/* ---------- MESSAGES ---------- */
+/* =====================================================
+   SUCCESS AND ERROR MESSAGES
+===================================================== */
 
 #message{
-  min-height:20px;padding:10px 14px;
-  font-size:13px;font-weight:bold;line-height:1.4;text-align:center;
-  background:#ffffff;border-bottom:1px solid #e4e6eb;
+  min-height:24px;
+  margin-top:18px;
+  font-size:16px;
+  font-weight:bold;
+  line-height:1.5;
+  text-align:center;
 }
 
-.success-message{color:#31a24c;background:#eaf7ee !important}
-.error-message{color:#b00020;background:#fdecec !important}
-.info-message{color:#1877f2;background:#e7f3ff !important}
+.success-message{
+  color:#138a36;
+}
+
+.error-message{
+  color:#d93025;
+}
 
 
-/* ---------- MOBILE ---------- */
+/* =====================================================
+   BACK SECTION
+===================================================== */
+
+.back{
+  margin-top:20px;
+  text-align:center;
+}
+
+.back a{
+  display:block;
+  text-decoration:none;
+}
+
+
+/* =====================================================
+   MOBILE DESIGN
+===================================================== */
 
 @media(max-width:600px){
-  .header{padding:12px}
-  h1{font-size:18px}
-  textarea{min-height:120px}
+
+  body{
+    padding:12px;
+  }
+
+  .container{
+    padding:20px 16px;
+    border-radius:13px;
+  }
+
+  h1{
+    font-size:24px;
+  }
+
+  textarea{
+    min-height:160px;
+  }
+
 }
 
+
 @media(max-width:480px){
-  .media-picker-buttons{grid-template-columns:1fr}
+
+  .media-picker-buttons{
+    grid-template-columns:1fr;
+  }
+
+  #imagePreviewGrid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
 }
 
 </style>
@@ -346,152 +661,309 @@ textarea{min-height:140px;resize:vertical;line-height:1.4}
 
 <div class="container">
 
-<!-- HEADING -->
 
-<div class="header">
-  <h1>✍️ Create a Post</h1>
-  <p class="page-description">
-    Share encouragement, Bible verses, testimonies, and photos with the community.
-  </p>
-</div>
+<!-- =====================================================
+     PAGE HEADING
+===================================================== -->
+
+<h1>
+✍️ Create a Post
+</h1>
+
+<p class="page-description">
+
+Share encouragement, Bible verses,
+testimonies, prayer requests,
+announcements, questions,
+photos and videos with the
+SABASABA Gospel Ministry community.
+
+</p>
 
 
-<div class="form-body">
+<!-- =====================================================
+     YOUR NAME
+===================================================== -->
 
-  <label for="name">Your Name</label>
-  <input type="text" id="name" placeholder="Enter your name" autocomplete="name">
+<label for="name">
+Your Name
+</label>
 
-  <label for="category">Category</label>
-  <select id="category">
-    <option value="Encouragement">Encouragement</option>
-    <option value="Bible Verse">Bible Verse</option>
-    <option value="Prayer Request">Prayer Request</option>
-    <option value="Testimony">Testimony</option>
-    <option value="Announcement">Announcement</option>
-    <option value="Question">Question</option>
-  </select>
+<input
+  type="text"
+  id="name"
+  placeholder="Enter your name"
+  autocomplete="name"
+>
 
-  <label for="post">Your Post</label>
-  <textarea id="post" maxlength="5000" placeholder="What's on your mind?"></textarea>
 
-  <!-- EMOJI -->
+<!-- =====================================================
+     POST CATEGORY
+===================================================== -->
 
-  <div class="emojiToolbarRow">
+<label for="category">
+Category
+</label>
 
-    <button
-      id="emojiToggleButton"
-      type="button"
-      class="emojiToggleButton"
-      aria-label="Open emoji picker"
-      title="Emoji"
-    >😊</button>
+<select id="category">
 
-    <div id="emojiPicker" class="emojiPicker">
-      <button type="button">😀</button>
-      <button type="button">😁</button>
-      <button type="button">😂</button>
-      <button type="button">🤣</button>
-      <button type="button">😊</button>
-      <button type="button">😍</button>
+<option value="Encouragement">
+Encouragement
+</option>
 
-      <button type="button">🥰</button>
-      <button type="button">😘</button>
-      <button type="button">😇</button>
-      <button type="button">🙏</button>
-      <button type="button">❤️</button>
-      <button type="button">👍</button>
+<option value="Bible Verse">
+Bible Verse
+</option>
 
-      <button type="button">👏</button>
-      <button type="button">🔥</button>
-      <button type="button">🎉</button>
-      <button type="button">💪</button>
-      <button type="button">🙌</button>
-      <button type="button">🤝</button>
+<option value="Prayer Request">
+Prayer Request
+</option>
 
-      <button type="button">📖</button>
-      <button type="button">✝️</button>
-      <button type="button">⛪</button>
-      <button type="button">🕊️</button>
-      <button type="button">🌍</button>
-      <button type="button">🌞</button>
+<option value="Testimony">
+Testimony
+</option>
 
-      <button type="button">😢</button>
-      <button type="button">😭</button>
-      <button type="button">😔</button>
-      <button type="button">🤗</button>
-      <button type="button">💖</button>
-      <button type="button">✨</button>
-    </div>
+<option value="Announcement">
+Announcement
+</option>
+
+<option value="Question">
+Question
+</option>
+
+</select>
+
+
+<!-- =====================================================
+     POST MESSAGE
+===================================================== -->
+
+<label for="post">
+Your Post
+</label>
+
+<textarea
+  id="post"
+  maxlength="5000"
+  placeholder="Write your message here..."
+></textarea>
+
+
+<!-- =====================================================
+     EMOJI TOOLBAR
+===================================================== -->
+
+<div class="emojiToolbarRow">
+
+  <button
+    id="emojiToggleButton"
+    type="button"
+    class="emojiToggleButton"
+    aria-label="Open emoji picker"
+    title="Emoji"
+  >
+    😊
+  </button>
+
+
+  <div
+    id="emojiPicker"
+    class="emojiPicker"
+  >
+
+    <button type="button">😀</button>
+    <button type="button">😁</button>
+    <button type="button">😂</button>
+    <button type="button">🤣</button>
+    <button type="button">😊</button>
+    <button type="button">😍</button>
+
+    <button type="button">🥰</button>
+    <button type="button">😘</button>
+    <button type="button">😇</button>
+    <button type="button">🙏</button>
+    <button type="button">❤️</button>
+    <button type="button">👍</button>
+
+    <button type="button">👏</button>
+    <button type="button">🔥</button>
+    <button type="button">🎉</button>
+    <button type="button">💪</button>
+    <button type="button">🙌</button>
+    <button type="button">🤝</button>
+
+    <button type="button">📖</button>
+    <button type="button">✝️</button>
+    <button type="button">⛪</button>
+    <button type="button">🕊️</button>
+    <button type="button">🌍</button>
+    <button type="button">🌞</button>
+
+    <button type="button">😢</button>
+    <button type="button">😭</button>
+    <button type="button">😔</button>
+    <button type="button">🤗</button>
+    <button type="button">💖</button>
+    <button type="button">✨</button>
 
   </div>
 
 </div>
 
 
-<!-- PHOTO OR VIDEO -->
+<!-- =====================================================
+     PHOTO OR VIDEO
+===================================================== -->
 
 <div class="media-options">
 
-  <p class="media-options-title">Add Photos or a Video</p>
+<p class="media-options-title">
+Add Photos or a Video
+</p>
 
-  <div class="media-picker-buttons">
-    <button type="button" id="choosePhotoBtn" class="media-picker-button">📷 Choose Photos</button>
-    <button type="button" id="chooseVideoBtn" class="media-picker-button">🎥 Choose Video</button>
-  </div>
+<div class="media-picker-buttons">
 
-  <input type="file" id="mediaFile" accept="image/*,video/*" hidden>
+<button
+  type="button"
+  id="choosePhotoBtn"
+  class="media-picker-button"
+>
+📷 Choose Photos
+</button>
 
-  <p class="media-help">
-    Up to 10 photos or 1 video. Photos max 10MB each. Videos max 100MB.
-  </p>
+<button
+  type="button"
+  id="chooseVideoBtn"
+  class="media-picker-button"
+>
+🎥 Choose Video
+</button>
 
 </div>
 
 
-<!-- PREVIEW -->
+<input
+  type="file"
+  id="mediaFile"
+  accept="image/*,video/*"
+  hidden
+>
+
+
+<p class="media-help">
+
+You may attach up to 10 photos,
+or one video (not both in the
+same post).
+
+Photos:
+Maximum 10 MB each.
+
+Videos:
+Maximum 100 MB.
+
+</p>
+
+</div>
+
+
+<!-- =====================================================
+     MEDIA PREVIEW
+===================================================== -->
 
 <div id="mediaPreview">
-  <div id="imagePreviewGrid"></div>
-  <div id="previewContent"></div>
-  <p id="previewFileName" class="preview-name"></p>
-  <button type="button" id="removeMediaBtn" class="remove-media-button">❌ Remove Media</button>
+
+<div id="imagePreviewGrid"></div>
+
+<div id="previewContent"></div>
+
+<p
+  id="previewFileName"
+  class="preview-name"
+></p>
+
+<button
+  type="button"
+  id="removeMediaBtn"
+  class="remove-media-button"
+>
+❌ Remove Media
+</button>
+
 </div>
 
 
-<!-- UPLOAD PROGRESS -->
+<!-- =====================================================
+     UPLOAD PROGRESS
+===================================================== -->
 
 <div id="uploadArea">
-  <div class="progress-container">
-    <div id="uploadProgress"></div>
-  </div>
-  <p id="uploadText">Preparing upload...</p>
+
+<div class="progress-container">
+
+<div id="uploadProgress"></div>
+
+</div>
+
+<p id="uploadText">
+Preparing upload...
+</p>
+
 </div>
 
 
-<!-- STATUS MESSAGE -->
+<!-- =====================================================
+     PUBLISH BUTTON
+===================================================== -->
 
-<p id="message" aria-live="polite"></p>
+<button
+  type="button"
+  id="publishBtn"
+  class="publish-button"
+>
+📢 Publish Post
+</button>
 
 
-<!-- PUBLISH -->
+<!-- =====================================================
+     STATUS MESSAGE
+===================================================== -->
 
-<div class="action-card">
-  <button type="button" id="publishBtn" class="publish-button">📢 Publish Post</button>
-</div>
+<p
+  id="message"
+  aria-live="polite"
+></p>
 
 
-<!-- BACK -->
+<!-- =====================================================
+     BACK BUTTON
+===================================================== -->
 
 <div class="back">
-  <a href="feed.html">
-    <button type="button" class="back-button">⬅ Back to Community Wall</button>
-  </a>
-</div>
+
+<a href="feed.html">
+
+<button
+  type="button"
+  class="back-button"
+>
+⬅ Back to Community
+</button>
+
+</a>
 
 </div>
 
+</div>
 
-<!-- PHOTO EDITOR MODAL -->
+
+<!-- =====================================================
+     PHOTO EDITOR
+     (crop / rotate a photo before it is posted —
+     opens automatically for each newly chosen photo,
+     and can be reopened from the ✏️ button on any
+     already-selected photo)
+===================================================== -->
 
 <div
   id="photoEditorModal"
@@ -502,35 +974,118 @@ textarea{min-height:140px;resize:vertical;line-height:1.4}
   aria-label="Edit photo"
 >
 
-  <div class="photoEditorHeader">
-    <button type="button" id="photoEditorCancelButton" class="photoEditorHeaderButton">✕</button>
-    <span id="photoEditorCounter" class="photoEditorCounterText"></span>
-    <button type="button" id="photoEditorDoneButton" class="photoEditorHeaderButton photoEditorDoneButton">✓ Done</button>
-  </div>
+<div class="photoEditorHeader">
 
-  <div class="photoEditorImageArea">
-    <img id="photoEditorImage" src="" alt="Photo being edited">
-  </div>
+<button
+  type="button"
+  id="photoEditorCancelButton"
+  class="photoEditorHeaderButton"
+>
+✕
+</button>
 
-  <div class="photoEditorToolbar">
-    <button type="button" id="photoEditorRotateLeftButton" class="photoEditorToolButton" title="Rotate left">⟲</button>
-    <button type="button" id="photoEditorRotateRightButton" class="photoEditorToolButton" title="Rotate right">⟳</button>
+<span
+  id="photoEditorCounter"
+  class="photoEditorCounterText"
+></span>
 
-    <button type="button" class="photoEditorToolButton photoEditorAspectButton active" data-ratio="free">Free</button>
-    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1">1:1</button>
-    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="0.8">4:5</button>
-    <button type="button" class="photoEditorToolButton photoEditorAspectButton" data-ratio="1.7778">16:9</button>
+<button
+  type="button"
+  id="photoEditorDoneButton"
+  class="photoEditorHeaderButton photoEditorDoneButton"
+>
+✓ Done
+</button>
 
-    <button type="button" id="photoEditorSkipButton" class="photoEditorToolButton photoEditorSkipButton">Skip editing</button>
-  </div>
+</div>
+
+
+<div class="photoEditorImageArea">
+
+<img
+  id="photoEditorImage"
+  src=""
+  alt="Photo being edited"
+>
+
+</div>
+
+
+<div class="photoEditorToolbar">
+
+<button
+  type="button"
+  id="photoEditorRotateLeftButton"
+  class="photoEditorToolButton"
+  title="Rotate left"
+>
+⟲
+</button>
+
+<button
+  type="button"
+  id="photoEditorRotateRightButton"
+  class="photoEditorToolButton"
+  title="Rotate right"
+>
+⟳
+</button>
+
+<button
+  type="button"
+  class="photoEditorToolButton photoEditorAspectButton active"
+  data-ratio="free"
+>
+Free
+</button>
+
+<button
+  type="button"
+  class="photoEditorToolButton photoEditorAspectButton"
+  data-ratio="1"
+>
+1:1
+</button>
+
+<button
+  type="button"
+  class="photoEditorToolButton photoEditorAspectButton"
+  data-ratio="0.8"
+>
+4:5
+</button>
+
+<button
+  type="button"
+  class="photoEditorToolButton photoEditorAspectButton"
+  data-ratio="1.7778"
+>
+16:9
+</button>
+
+<button
+  type="button"
+  id="photoEditorSkipButton"
+  class="photoEditorToolButton photoEditorSkipButton"
+>
+Skip editing
+</button>
+
+</div>
 
 </div>
 
 
 <script type="module">
+/* =====================================================
+   PART 3 OF 6
+   FIREBASE IMPORTS, IMAGEKIT SETTINGS
+   AND PAGE SETUP
+===================================================== */
+
 
 /* =====================================================
-   FIREBASE + IMAGEKIT
+   FIREBASE IMPORTS
 ===================================================== */
 
 import {
@@ -543,142 +1098,399 @@ import {
   onAuthStateChanged
 } from "./firebase.js";
 
+
 import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
-const imagekitPublicKey = "public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
-const imagekitAuthEndpoint = "https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
-const imagekitUploadUrl = "https://upload.imagekit.io/api/v1/files/upload";
+/* =====================================================
+   IMAGEKIT SETTINGS
+===================================================== */
 
-const MAXIMUM_PHOTOS_PER_POST = 10;
-const MAXIMUM_PHOTO_BYTES = 10 * 1024 * 1024;
-const MAXIMUM_VIDEO_BYTES = 100 * 1024 * 1024;
-const AUTH_TIMEOUT_MS = 15000;
+const imagekitPublicKey =
+"public_RMynf3IEhbVAkjTfzqWnp5moKCY=";
+
+const imagekitUrlEndpoint =
+"https://ik.imagekit.io/f5si9ehav";
+
+const imagekitAuthEndpoint =
+"https://sabasabawk-github-io.vercel.app/api/imagekit-auth";
+
+const imagekitUploadUrl =
+"https://upload.imagekit.io/api/v1/files/upload";
 
 
 /* =====================================================
-   STATE
+   MAXIMUM PHOTOS PER POST
 ===================================================== */
 
-let currentUser = null;
-let currentProfile = {};
-
-let selectedImageFiles = [];
-let selectedImagePreviewUrls = [];
-let selectedVideoFile = null;
-let selectedVideoPreviewUrl = "";
-let selectedMediaType = "none";
-let activeUploadRequest = null;
-let isPublishing = false;
-
-let photoEditorCropper = null;
-let photoEditorMode = "queue";
-let photoEditorSingleIndex = -1;
-let photoEditQueueFiles = [];
-let photoEditQueueEditedFiles = [];
-let photoEditQueuePosition = 0;
-let photoEditorActiveObjectUrl = "";
+const MAXIMUM_PHOTOS_PER_POST =
+10;
 
 
 /* =====================================================
-   ELEMENTS
+   GLOBAL VARIABLES
 ===================================================== */
 
-const $ = (id) => document.getElementById(id);
+let currentUser =
+null;
 
-const nameInput = $("name");
-const categoryInput = $("category");
-const postInput = $("post");
-const emojiToggleButton = $("emojiToggleButton");
-const emojiPicker = $("emojiPicker");
-const mediaFileInput = $("mediaFile");
-const choosePhotoBtn = $("choosePhotoBtn");
-const chooseVideoBtn = $("chooseVideoBtn");
-const mediaPreview = $("mediaPreview");
-const imagePreviewGrid = $("imagePreviewGrid");
-const previewContent = $("previewContent");
-const previewFileName = $("previewFileName");
-const removeMediaBtn = $("removeMediaBtn");
-const uploadArea = $("uploadArea");
-const uploadProgress = $("uploadProgress");
-const uploadText = $("uploadText");
-const publishBtn = $("publishBtn");
-const messageElement = $("message");
 
-const photoEditorModal = $("photoEditorModal");
-const photoEditorImage = $("photoEditorImage");
-const photoEditorCounter = $("photoEditorCounter");
-const photoEditorCancelButton = $("photoEditorCancelButton");
-const photoEditorDoneButton = $("photoEditorDoneButton");
-const photoEditorSkipButton = $("photoEditorSkipButton");
-const photoEditorRotateLeftButton = $("photoEditorRotateLeftButton");
-const photoEditorRotateRightButton = $("photoEditorRotateRightButton");
-const photoEditorAspectButtons = document.querySelectorAll(".photoEditorAspectButton");
+let currentProfile =
+{};
+
+
+/*
+   Selected photos are now an ARRAY — this is
+   what allows more than one photo per post,
+   the same way Facebook lets you attach a
+   whole batch of photos at once.
+*/
+
+let selectedImageFiles =
+[];
+
+
+let selectedImagePreviewUrls =
+[];
+
+
+let selectedVideoFile =
+null;
+
+
+let selectedVideoPreviewUrl =
+"";
+
+
+let selectedMediaType =
+"none";
+
+
+let activeUploadRequest =
+null;
 
 
 /* =====================================================
-   HELPERS
+   PHOTO EDITOR STATE
 ===================================================== */
 
-function getFirstValue(...values) {
-  for (const value of values) {
-    if (value !== undefined && value !== null && String(value).trim() !== "") {
+let photoEditorCropper =
+null;
+
+
+/*
+   "queue" -> editing freshly chosen photos one after
+   another before they are added to the post.
+   "single" -> re-editing one photo that is already
+   in selectedImageFiles, from its ✏️ button.
+*/
+let photoEditorMode =
+"queue";
+
+
+let photoEditorSingleIndex =
+-1;
+
+
+let photoEditQueueFiles =
+[];
+
+
+let photoEditQueueEditedFiles =
+[];
+
+
+let photoEditQueuePosition =
+0;
+
+
+let photoEditorActiveObjectUrl =
+"";
+
+
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
+
+const nameInput =
+document.getElementById(
+  "name"
+);
+
+
+const categoryInput =
+document.getElementById(
+  "category"
+);
+
+
+const postInput =
+document.getElementById(
+  "post"
+);
+
+
+const emojiToggleButton =
+document.getElementById(
+  "emojiToggleButton"
+);
+
+
+const emojiPicker =
+document.getElementById(
+  "emojiPicker"
+);
+
+
+const mediaFileInput =
+document.getElementById(
+  "mediaFile"
+);
+
+
+const choosePhotoBtn =
+document.getElementById(
+  "choosePhotoBtn"
+);
+
+
+const chooseVideoBtn =
+document.getElementById(
+  "chooseVideoBtn"
+);
+
+
+const mediaPreview =
+document.getElementById(
+  "mediaPreview"
+);
+
+
+const imagePreviewGrid =
+document.getElementById(
+  "imagePreviewGrid"
+);
+
+
+const previewContent =
+document.getElementById(
+  "previewContent"
+);
+
+
+const previewFileName =
+document.getElementById(
+  "previewFileName"
+);
+
+
+const removeMediaBtn =
+document.getElementById(
+  "removeMediaBtn"
+);
+
+
+const uploadArea =
+document.getElementById(
+  "uploadArea"
+);
+
+
+const uploadProgress =
+document.getElementById(
+  "uploadProgress"
+);
+
+
+const uploadText =
+document.getElementById(
+  "uploadText"
+);
+
+
+const publishBtn =
+document.getElementById(
+  "publishBtn"
+);
+
+
+const messageElement =
+document.getElementById(
+  "message"
+);
+
+
+/* =====================================================
+   PHOTO EDITOR ELEMENTS
+===================================================== */
+
+const photoEditorModal =
+document.getElementById(
+  "photoEditorModal"
+);
+
+
+const photoEditorImage =
+document.getElementById(
+  "photoEditorImage"
+);
+
+
+const photoEditorCounter =
+document.getElementById(
+  "photoEditorCounter"
+);
+
+
+const photoEditorCancelButton =
+document.getElementById(
+  "photoEditorCancelButton"
+);
+
+
+const photoEditorDoneButton =
+document.getElementById(
+  "photoEditorDoneButton"
+);
+
+
+const photoEditorSkipButton =
+document.getElementById(
+  "photoEditorSkipButton"
+);
+
+
+const photoEditorRotateLeftButton =
+document.getElementById(
+  "photoEditorRotateLeftButton"
+);
+
+
+const photoEditorRotateRightButton =
+document.getElementById(
+  "photoEditorRotateRightButton"
+);
+
+
+const photoEditorAspectButtons =
+document.querySelectorAll(
+  ".photoEditorAspectButton"
+);
+
+
+/* =====================================================
+   GET FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(...values){
+
+  for(const value of values){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
       return String(value).trim();
+
     }
+
   }
+
   return "";
+
 }
 
-function showMessage(message, type = "error") {
-  messageElement.textContent = message;
+
+/* =====================================================
+   DISPLAY STATUS MESSAGE
+===================================================== */
+
+function showMessage(
+  message,
+  type = "error"
+){
+
+  messageElement.textContent =
+  message;
+
+
   messageElement.className =
-    type === "success" ? "success-message" :
-    type === "info" ? "info-message" :
-    "error-message";
+  type === "success"
+  ? "success-message"
+  : "error-message";
+
 }
 
-function clearMessage() {
-  messageElement.textContent = "";
-  messageElement.className = "";
+
+/* =====================================================
+   CLEAR STATUS MESSAGE
+===================================================== */
+
+function clearMessage(){
+
+  messageElement.textContent =
+  "";
+
+
+  messageElement.className =
+  "";
+
 }
 
-function resetUploadDisplay() {
-  uploadArea.style.display = "none";
-  uploadProgress.style.width = "0%";
-  uploadText.textContent = "Preparing upload...";
+
+/* =====================================================
+   RESET UPLOAD DISPLAY
+===================================================== */
+
+function resetUploadDisplay(){
+
+  uploadArea.style.display =
+  "none";
+
+
+  uploadProgress.style.width =
+  "0%";
+
+
+  uploadText.textContent =
+  "Preparing upload...";
+
 }
 
-function setPublishing(active) {
-  isPublishing = active;
-  publishBtn.disabled = active;
-  publishBtn.textContent = active ? "Publishing..." : "📢 Publish Post";
-  choosePhotoBtn.disabled = active;
-  chooseVideoBtn.disabled = active;
+
+/* =====================================================
+   ENABLE PUBLISH BUTTON
+===================================================== */
+
+function enablePublishButton(){
+
+  publishBtn.disabled =
+  false;
+
+
+  publishBtn.textContent =
+  "📢 Publish Post";
+
 }
 
-/* Checks that this device can actually play the chosen video */
-function canBrowserPlayVideo(file) {
-  return new Promise((resolve) => {
-    const v = document.createElement("video");
-    const url = URL.createObjectURL(file);
-    let finished = false;
 
-    const done = (ok) => {
-      if (finished) return;
-      finished = true;
-      URL.revokeObjectURL(url);
-      resolve(ok);
-    };
+/* =====================================================
+   DISABLE PUBLISH BUTTON
+===================================================== */
 
-    v.preload = "metadata";
-    v.muted = true;
-    v.onloadedmetadata = () => done(v.videoWidth > 0);
-    v.onerror = () => done(false);
-    setTimeout(() => done(false), 8000);
-    v.src = url;
-  });
+function disablePublishButton(){
+
+  publishBtn.disabled =
+  true;
+
+
+  publishBtn.textContent =
+  "Publishing...";
+
 }
 
 
@@ -686,702 +1498,2535 @@ function canBrowserPlayVideo(file) {
    EMOJI PICKER
 ===================================================== */
 
-emojiToggleButton.addEventListener("click", (event) => {
-  event.stopPropagation();
-  emojiPicker.classList.toggle("show");
-});
+emojiToggleButton.addEventListener(
+  "click",
+  function(event){
 
-emojiPicker.querySelectorAll("button").forEach((emojiOption) => {
-  emojiOption.addEventListener("click", () => {
-    const emoji = emojiOption.textContent;
-    const start = postInput.selectionStart ?? postInput.value.length;
-    const end = postInput.selectionEnd ?? postInput.value.length;
+    event.stopPropagation();
 
-    postInput.value = postInput.value.slice(0, start) + emoji + postInput.value.slice(end);
 
-    const newPosition = start + emoji.length;
-    postInput.focus();
-    postInput.setSelectionRange(newPosition, newPosition);
-    emojiPicker.classList.remove("show");
-  });
-});
+    emojiPicker.classList.toggle(
+      "show"
+    );
 
-document.addEventListener("click", (event) => {
-  if (!emojiPicker.contains(event.target) && event.target !== emojiToggleButton) {
-    emojiPicker.classList.remove("show");
   }
-});
+);
 
 
-/* =====================================================
-   PROFILE + AUTH
-===================================================== */
+emojiPicker
+.querySelectorAll(
+  "button"
+)
+.forEach(
+  function(emojiOption){
 
-async function loadCurrentProfile() {
-  currentProfile = {};
-  if (!currentUser) return;
+    emojiOption.addEventListener(
+      "click",
+      function(){
 
-  try {
-    const snapshot = await getDoc(doc(db, "users", currentUser.uid));
+        const emoji =
+        emojiOption.textContent;
 
-    if (snapshot.exists()) {
-      currentProfile = snapshot.data();
 
-      const savedName = getFirstValue(
-        currentProfile.name, currentProfile.fullName,
-        currentProfile.displayName, currentUser.displayName
+        const selectionStart =
+        postInput.selectionStart ??
+        postInput.value.length;
+
+
+        const selectionEnd =
+        postInput.selectionEnd ??
+        postInput.value.length;
+
+
+        const beginningText =
+        postInput.value.slice(
+          0,
+          selectionStart
+        );
+
+
+        const endingText =
+        postInput.value.slice(
+          selectionEnd
+        );
+
+
+        postInput.value =
+        beginningText +
+        emoji +
+        endingText;
+
+
+        const newCursorPosition =
+        selectionStart +
+        emoji.length;
+
+
+        postInput.focus();
+
+
+        postInput.setSelectionRange(
+          newCursorPosition,
+          newCursorPosition
+        );
+
+
+        emojiPicker.classList.remove(
+          "show"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      !emojiPicker.contains(
+        event.target
+      ) &&
+      event.target !==
+      emojiToggleButton
+    ){
+
+      emojiPicker.classList.remove(
+        "show"
       );
 
-      if (savedName) nameInput.value = savedName;
     }
-  } catch (error) {
-    console.error(error);
-  }
-}
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.replace("login.html");
-    return;
   }
-
-  currentUser = user;
-  await loadCurrentProfile();
-});
+);
+/* =====================================================
+   PART 4 OF 6
+   AUTHENTICATION, PROFILE LOADING
+   AND OPENING THE PHONE GALLERY
+===================================================== */
 
 
 /* =====================================================
-   MEDIA PICKER
+   LOAD CURRENT USER PROFILE
 ===================================================== */
 
-function openMediaPicker(mediaType) {
-  clearMessage();
-  mediaFileInput.value = "";
+async function loadCurrentProfile(){
 
-  if (mediaType === "image") {
-    mediaFileInput.accept = "image/*";
-    mediaFileInput.multiple = true;
-  } else if (mediaType === "video") {
-    mediaFileInput.accept = "video/*";
-    mediaFileInput.multiple = false;
-  } else {
-    mediaFileInput.accept = "image/*,video/*";
-    mediaFileInput.multiple = false;
+  currentProfile =
+  {};
+
+
+  if(!currentUser){
+
+    return;
+
   }
 
-  mediaFileInput.click();
+
+  try{
+
+    const profileReference =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+
+    const profileSnapshot =
+    await getDoc(
+      profileReference
+    );
+
+
+    if(profileSnapshot.exists()){
+
+      currentProfile =
+      profileSnapshot.data();
+
+
+      const savedName =
+      getFirstValue(
+        currentProfile.name,
+        currentProfile.fullName,
+        currentProfile.displayName,
+        currentUser.displayName
+      );
+
+
+      if(savedName){
+
+        nameInput.value =
+        savedName;
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+  }
+
 }
 
-choosePhotoBtn.addEventListener("click", () => openMediaPicker("image"));
-chooseVideoBtn.addEventListener("click", () => openMediaPicker("video"));
+
+/* =====================================================
+   AUTHENTICATION STATE
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    if(!user){
+
+      window.location.replace(
+        "login.html"
+      );
+
+      return;
+
+    }
+
+
+    currentUser =
+    user;
+
+
+    await loadCurrentProfile();
+
+  }
+);
+
+
+/* =====================================================
+   OPEN PHOTO OR VIDEO PICKER
+===================================================== */
+
+function openMediaPicker(mediaType){
+
+  clearMessage();
+
+
+  mediaFileInput.value =
+  "";
+
+
+  if(mediaType === "image"){
+
+    mediaFileInput.accept =
+    "image/*";
+
+
+    mediaFileInput.multiple =
+    true;
+
+  }else if(mediaType === "video"){
+
+    mediaFileInput.accept =
+    "video/*";
+
+
+    mediaFileInput.multiple =
+    false;
+
+  }else{
+
+    mediaFileInput.accept =
+    "image/*,video/*";
+
+
+    mediaFileInput.multiple =
+    false;
+
+  }
+
+
+  mediaFileInput.click();
+
+}
+
+
+/* =====================================================
+   CHOOSE PHOTO BUTTON
+===================================================== */
+
+choosePhotoBtn.addEventListener(
+  "click",
+  function(){
+
+    openMediaPicker(
+      "image"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CHOOSE VIDEO BUTTON
+===================================================== */
+
+chooseVideoBtn.addEventListener(
+  "click",
+  function(){
+
+    openMediaPicker(
+      "video"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   OPEN REQUESTED PICKER FROM COMMUNITY WALL
+===================================================== */
+
+function openRequestedMediaPicker(){
+
+  const parameters =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+  const requestedMedia =
+  parameters.get(
+    "media"
+  );
+
+
+  if(
+    requestedMedia !== "image" &&
+    requestedMedia !== "video"
+  ){
+
+    return;
+
+  }
+
+
+  window.setTimeout(
+    function(){
+
+      openMediaPicker(
+        requestedMedia
+      );
+
+    },
+    400
+  );
+
+}
+
+
+/* =====================================================
+   RUN REQUESTED PICKER AFTER PAGE LOAD
+===================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    openRequestedMediaPicker();
+
+  }
+);
+/* =====================================================
+   PART 5 OF 6
+   MEDIA SELECTION, PREVIEW
+   AND IMAGEKIT UPLOAD
+===================================================== */
 
 
 /* =====================================================
    PHOTO EDITOR
+   (crop / rotate, using Cropper.js)
 ===================================================== */
 
-function destroyPhotoEditorCropper() {
-  if (photoEditorCropper) {
+function destroyPhotoEditorCropper(){
+
+  if(photoEditorCropper){
+
     photoEditorCropper.destroy();
-    photoEditorCropper = null;
+
+
+    photoEditorCropper =
+    null;
+
   }
 
-  if (photoEditorActiveObjectUrl) {
-    URL.revokeObjectURL(photoEditorActiveObjectUrl);
-    photoEditorActiveObjectUrl = "";
+
+  if(photoEditorActiveObjectUrl){
+
+    URL.revokeObjectURL(
+      photoEditorActiveObjectUrl
+    );
+
+
+    photoEditorActiveObjectUrl =
+    "";
+
   }
+
 }
 
-function openPhotoEditorModal(imageUrl, counterText, showSkipButton) {
-  photoEditorCounter.textContent = counterText;
-  photoEditorSkipButton.style.display = showSkipButton ? "inline-block" : "none";
 
-  photoEditorAspectButtons.forEach((b) =>
-    b.classList.toggle("active", b.dataset.ratio === "free")
+function setPhotoEditorAspectButtonsToFree(){
+
+  photoEditorAspectButtons.forEach(
+    function(button){
+
+      button.classList.toggle(
+        "active",
+        button.dataset.ratio === "free"
+      );
+
+    }
   );
 
-  photoEditorModal.classList.add("show");
-  photoEditorModal.setAttribute("aria-hidden", "false");
+}
+
+
+function openPhotoEditorModal(
+  imageUrl,
+  counterText,
+  showSkipButton
+){
+
+  photoEditorCounter.textContent =
+  counterText;
+
+
+  photoEditorSkipButton.style.display =
+  showSkipButton
+  ? "inline-block"
+  : "none";
+
+
+  setPhotoEditorAspectButtonsToFree();
+
+
+  photoEditorModal.classList.add(
+    "show"
+  );
+
+
+  photoEditorModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
 
   destroyPhotoEditorCropper();
 
-  photoEditorActiveObjectUrl = imageUrl;
-  photoEditorImage.src = imageUrl;
 
-  photoEditorImage.onload = () => {
-    photoEditorCropper = new Cropper(photoEditorImage, {
-      viewMode: 1,
-      dragMode: "move",
-      autoCropArea: 1,
-      background: false,
-      responsive: true,
-      aspectRatio: NaN
-    });
+  photoEditorActiveObjectUrl =
+  imageUrl;
+
+
+  photoEditorImage.src =
+  imageUrl;
+
+
+  photoEditorImage.onload =
+  function(){
+
+    photoEditorCropper =
+    new Cropper(
+      photoEditorImage,
+      {
+
+        viewMode:
+        1,
+
+        dragMode:
+        "move",
+
+        autoCropArea:
+        1,
+
+        background:
+        false,
+
+        responsive:
+        true,
+
+        aspectRatio:
+        NaN
+
+      }
+    );
+
   };
+
 }
 
-function closePhotoEditorModal() {
-  photoEditorModal.classList.remove("show");
-  photoEditorModal.setAttribute("aria-hidden", "true");
+
+function closePhotoEditorModal(){
+
+  photoEditorModal.classList.remove(
+    "show"
+  );
+
+
+  photoEditorModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
   destroyPhotoEditorCropper();
+
 }
 
-function getCroppedImageFile(originalFile) {
-  return new Promise((resolve) => {
-    if (!photoEditorCropper) {
-      resolve(originalFile);
-      return;
-    }
 
-    const canvas = photoEditorCropper.getCroppedCanvas({
-      maxWidth: 2048,
-      maxHeight: 2048,
-      imageSmoothingQuality: "high"
-    });
+function getCroppedImageFile(
+  originalFile
+){
 
-    if (!canvas) {
-      resolve(originalFile);
-      return;
-    }
+  return new Promise(
+    function(resolve){
 
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        resolve(originalFile);
+      if(!photoEditorCropper){
+
+        resolve(
+          originalFile
+        );
+
         return;
+
       }
 
-      resolve(new File([blob], originalFile.name, { type: "image/jpeg" }));
-    }, "image/jpeg", 0.9);
-  });
-}
 
-function startPhotoEditQueue(files) {
-  photoEditorMode = "queue";
-  photoEditQueueFiles = files;
-  photoEditQueueEditedFiles = [];
-  photoEditQueuePosition = 0;
-  showNextQueuedPhotoInEditor();
-}
+      const canvas =
+      photoEditorCropper.getCroppedCanvas({
 
-function showNextQueuedPhotoInEditor() {
-  if (photoEditQueuePosition >= photoEditQueueFiles.length) {
-    closePhotoEditorModal();
-    finishPhotoEditQueue();
-    return;
-  }
+        maxWidth:
+        2048,
 
-  const file = photoEditQueueFiles[photoEditQueuePosition];
+        maxHeight:
+        2048,
 
-  openPhotoEditorModal(
-    URL.createObjectURL(file),
-    `Edit photo ${photoEditQueuePosition + 1} of ${photoEditQueueFiles.length}`,
-    true
-  );
-}
+        imageSmoothingQuality:
+        "high"
 
-function finishPhotoEditQueue() {
-  selectedImageFiles = photoEditQueueEditedFiles;
-  selectedImagePreviewUrls = selectedImageFiles.map((file) => URL.createObjectURL(file));
-  selectedMediaType = selectedImageFiles.length > 0 ? "image" : "none";
-
-  if (selectedImageFiles.length === 0) {
-    clearSelectedMedia();
-    return;
-  }
-
-  showMediaPreview();
-}
-
-function openPhotoEditorForIndex(index) {
-  photoEditorMode = "single";
-  photoEditorSingleIndex = index;
-
-  const file = selectedImageFiles[index];
-  if (!file) return;
-
-  openPhotoEditorModal(
-    URL.createObjectURL(file),
-    `Edit photo ${index + 1} of ${selectedImageFiles.length}`,
-    false
-  );
-}
-
-photoEditorRotateLeftButton.addEventListener("click", () => photoEditorCropper?.rotate(-90));
-photoEditorRotateRightButton.addEventListener("click", () => photoEditorCropper?.rotate(90));
-
-photoEditorAspectButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    photoEditorAspectButtons.forEach((b) => b.classList.remove("active"));
-    button.classList.add("active");
-
-    if (photoEditorCropper) {
-      const ratio = button.dataset.ratio;
-      photoEditorCropper.setAspectRatio(ratio === "free" ? NaN : parseFloat(ratio));
-    }
-  });
-});
-
-photoEditorCancelButton.addEventListener("click", () => {
-  if (photoEditorMode === "queue") {
-    if (!window.confirm("Discard selected photos?")) return;
-
-    closePhotoEditorModal();
-    photoEditQueueFiles = [];
-    photoEditQueueEditedFiles = [];
-    return;
-  }
-
-  closePhotoEditorModal();
-});
-
-photoEditorSkipButton.addEventListener("click", () => {
-  if (photoEditorMode !== "queue") return;
-
-  photoEditQueueEditedFiles.push(photoEditQueueFiles[photoEditQueuePosition]);
-  photoEditQueuePosition++;
-  closePhotoEditorModal();
-  showNextQueuedPhotoInEditor();
-});
-
-photoEditorDoneButton.addEventListener("click", async () => {
-  if (photoEditorMode === "queue") {
-    const edited = await getCroppedImageFile(photoEditQueueFiles[photoEditQueuePosition]);
-    photoEditQueueEditedFiles.push(edited);
-    photoEditQueuePosition++;
-    closePhotoEditorModal();
-    showNextQueuedPhotoInEditor();
-    return;
-  }
-
-  const original = selectedImageFiles[photoEditorSingleIndex];
-
-  if (!original) {
-    closePhotoEditorModal();
-    return;
-  }
-
-  const edited = await getCroppedImageFile(original);
-
-  URL.revokeObjectURL(selectedImagePreviewUrls[photoEditorSingleIndex]);
-  selectedImageFiles[photoEditorSingleIndex] = edited;
-  selectedImagePreviewUrls[photoEditorSingleIndex] = URL.createObjectURL(edited);
-
-  closePhotoEditorModal();
-  showMediaPreview();
-});
-
-
-/* =====================================================
-   FILE SELECTION
-===================================================== */
-
-mediaFileInput.addEventListener("change", async (event) => {
-  clearMessage();
-
-  const files = Array.from(event.target.files || []);
-  if (files.length === 0) return;
-
-  const firstFile = files[0];
-  const isImageBatch = firstFile.type.startsWith("image/");
-  const isVideo = files.length === 1 && firstFile.type.startsWith("video/");
-
-  if (!isImageBatch && !isVideo) {
-    showMessage("Please select valid photos or a video.");
-    return;
-  }
-
-  /* ----- PHOTOS ----- */
-  if (isImageBatch) {
-    clearSelectedMedia();
-
-    const validFiles = files.filter(
-      (f) => f.type.startsWith("image/") && f.size <= MAXIMUM_PHOTO_BYTES
-    );
-
-    const filesToUse = validFiles.slice(0, MAXIMUM_PHOTOS_PER_POST);
-
-    if (filesToUse.length === 0) {
-      showMessage("Selected photos exceed 10 MB or are invalid.");
-      return;
-    }
-
-    startPhotoEditQueue(filesToUse);
-    return;
-  }
-
-  /* ----- VIDEO ----- */
-  clearSelectedMedia();
-
-  if (firstFile.size > MAXIMUM_VIDEO_BYTES) {
-    showMessage("Video must be 100 MB or smaller.");
-    return;
-  }
-
-  showMessage("Checking your video...", "info");
-
-  const playable = await canBrowserPlayVideo(firstFile);
-
-  if (!playable) {
-    mediaFileInput.value = "";
-    showMessage(
-      "This video format can't be played. Record or convert it to MP4 (H.264) and try again."
-    );
-    return;
-  }
-
-  clearMessage();
-
-  selectedVideoFile = firstFile;
-  selectedVideoPreviewUrl = URL.createObjectURL(firstFile);
-  selectedMediaType = "video";
-  showMediaPreview();
-});
-
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-function showMediaPreview() {
-  imagePreviewGrid.innerHTML = "";
-  previewContent.innerHTML = "";
-  previewFileName.textContent = "";
-
-  if (selectedMediaType === "image") {
-    selectedImagePreviewUrls.forEach((previewUrl, index) => {
-      const tile = document.createElement("div");
-      tile.className = "imagePreviewTile";
-
-      tile.innerHTML = `
-        <img src="${previewUrl}" alt="Photo ${index + 1}" loading="lazy">
-        <button type="button" class="imagePreviewEditButton" aria-label="Edit">✏️</button>
-        <button type="button" class="imagePreviewRemoveButton" aria-label="Remove">✕</button>
-      `;
-
-      tile.querySelector(".imagePreviewEditButton")
-        .addEventListener("click", () => openPhotoEditorForIndex(index));
-
-      tile.querySelector(".imagePreviewRemoveButton")
-        .addEventListener("click", () => removeSelectedImageAt(index));
-
-      imagePreviewGrid.appendChild(tile);
-    });
-
-    if (selectedImageFiles.length < MAXIMUM_PHOTOS_PER_POST) {
-      const addMoreTile = document.createElement("button");
-      addMoreTile.type = "button";
-      addMoreTile.className = "addMorePhotosTile";
-      addMoreTile.textContent = "＋";
-      addMoreTile.addEventListener("click", () => openMediaPicker("image"));
-      imagePreviewGrid.appendChild(addMoreTile);
-    }
-
-    previewFileName.textContent =
-      `${selectedImageFiles.length} photo${selectedImageFiles.length === 1 ? "" : "s"} selected`;
-
-    mediaPreview.style.display = "block";
-    return;
-  }
-
-  if (selectedMediaType === "video") {
-    const video = document.createElement("video");
-    video.src = selectedVideoPreviewUrl;
-    video.controls = true;
-    video.playsInline = true;
-    previewContent.appendChild(video);
-
-    previewFileName.textContent = selectedVideoFile ? selectedVideoFile.name : "";
-    mediaPreview.style.display = "block";
-  }
-}
-
-function removeSelectedImageAt(indexToRemove) {
-  URL.revokeObjectURL(selectedImagePreviewUrls[indexToRemove]);
-
-  selectedImageFiles = selectedImageFiles.filter((_, i) => i !== indexToRemove);
-  selectedImagePreviewUrls = selectedImagePreviewUrls.filter((_, i) => i !== indexToRemove);
-
-  if (selectedImageFiles.length === 0) {
-    clearSelectedMedia();
-    return;
-  }
-
-  showMediaPreview();
-}
-
-function clearSelectedMedia() {
-  selectedImageFiles = [];
-  selectedImagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
-  selectedImagePreviewUrls = [];
-
-  if (selectedVideoPreviewUrl) URL.revokeObjectURL(selectedVideoPreviewUrl);
-
-  selectedVideoFile = null;
-  selectedVideoPreviewUrl = "";
-  selectedMediaType = "none";
-  mediaFileInput.value = "";
-
-  imagePreviewGrid.innerHTML = "";
-  previewContent.innerHTML = "";
-  previewFileName.textContent = "";
-  mediaPreview.style.display = "none";
-}
-
-removeMediaBtn.addEventListener("click", () => {
-  if (activeUploadRequest) {
-    activeUploadRequest.abort();
-    activeUploadRequest = null;
-  }
-
-  resetUploadDisplay();
-  clearSelectedMedia();
-  clearMessage();
-});
-
-
-/* =====================================================
-   IMAGEKIT UPLOAD
-===================================================== */
-
-async function getImagekitAuthParameters() {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS);
-
-  try {
-    const response = await fetch(imagekitAuthEndpoint, { signal: controller.signal });
-
-    if (!response.ok) {
-      throw new Error(`Could not authenticate upload (${response.status}).`);
-    }
-
-    return await response.json();
-
-  } catch (error) {
-    if (error.name === "AbortError") {
-      throw new Error("The upload server did not respond. Please try again.");
-    }
-    throw error;
-
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function uploadSingleFileToImagekit(file, onProgress) {
-  const authParameters = await getImagekitAuthParameters();
-
-  return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileName", file.name);
-    formData.append("publicKey", imagekitPublicKey);
-    formData.append("signature", authParameters.signature);
-    formData.append("expire", authParameters.expire);
-    formData.append("token", authParameters.token);
-    formData.append("folder", "/sabasaba-community");
-
-    const request = new XMLHttpRequest();
-    activeUploadRequest = request;
-
-    request.open("POST", imagekitUploadUrl, true);
-    request.timeout = 300000;
-
-    request.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable && typeof onProgress === "function") {
-        onProgress(Math.round((event.loaded / event.total) * 100));
-      }
-    });
-
-    request.addEventListener("load", () => {
-      activeUploadRequest = null;
-
-      try {
-        const response = JSON.parse(request.responseText);
-
-        if (request.status < 200 || request.status >= 300) {
-          throw new Error(response?.message || "Upload failed.");
-        }
-
-        if (!response.url) throw new Error("No URL returned.");
-
-        resolve({ url: response.url, name: file.name });
-
-      } catch (error) {
-        reject(error);
-      }
-    });
-
-    request.addEventListener("error", () => {
-      activeUploadRequest = null;
-      reject(new Error("Network error. Check your connection and try again."));
-    });
-
-    request.addEventListener("timeout", () => {
-      activeUploadRequest = null;
-      reject(new Error("Upload timed out. Check your connection and try again."));
-    });
-
-    request.addEventListener("abort", () => {
-      activeUploadRequest = null;
-      reject(new Error("Upload cancelled."));
-    });
-
-    request.send(formData);
-  });
-}
-
-async function uploadPostMedia() {
-  if (!currentUser) throw new Error("Please sign in.");
-
-  if (selectedMediaType === "none") {
-    return { mediaType: "none", mediaUrl: "", mediaName: "", imageUrls: [] };
-  }
-
-  uploadArea.style.display = "block";
-  uploadProgress.style.width = "0%";
-  uploadText.textContent = "Preparing upload...";
-
-  if (selectedMediaType === "image") {
-    const total = selectedImageFiles.length;
-    const uploadedUrls = [];
-
-    for (let i = 0; i < total; i++) {
-      const result = await uploadSingleFileToImagekit(selectedImageFiles[i], (progress) => {
-        uploadProgress.style.width = `${progress}%`;
-        uploadText.textContent = `Uploading photo ${i + 1} of ${total}: ${progress}%`;
       });
 
-      uploadedUrls.push(result.url);
+
+      if(!canvas){
+
+        resolve(
+          originalFile
+        );
+
+        return;
+
+      }
+
+
+      canvas.toBlob(
+        function(blob){
+
+          if(!blob){
+
+            resolve(
+              originalFile
+            );
+
+            return;
+
+          }
+
+
+          const editedFile =
+          new File(
+            [blob],
+            originalFile.name,
+            {
+              type:
+              "image/jpeg"
+            }
+          );
+
+
+          resolve(
+            editedFile
+          );
+
+        },
+        "image/jpeg",
+        0.9
+      );
+
     }
+  );
 
-    uploadProgress.style.width = "100%";
-    uploadText.textContent = "Photos uploaded successfully.";
-
-    return {
-      mediaType: "image",
-      mediaUrl: uploadedUrls[0] || "",
-      mediaName: `${total} photos`,
-      imageUrls: uploadedUrls
-    };
-  }
-
-  const videoResult = await uploadSingleFileToImagekit(selectedVideoFile, (progress) => {
-    uploadProgress.style.width = `${progress}%`;
-    uploadText.textContent = `Uploading video: ${progress}%`;
-  });
-
-  uploadProgress.style.width = "100%";
-  uploadText.textContent = "Video uploaded successfully.";
-
-  return {
-    mediaType: "video",
-    mediaUrl: videoResult.url,
-    mediaName: videoResult.name,
-    imageUrls: []
-  };
 }
 
 
 /* =====================================================
-   PUBLISH
+   PHOTO EDITOR -- NEWLY CHOSEN PHOTOS QUEUE
+   (shown one after another, right after picking
+   photos, so there is always a chance to crop or
+   rotate before they are added to the post)
 ===================================================== */
 
-async function publishPost() {
-  if (isPublishing) return;
+function startPhotoEditQueue(
+  files
+){
 
-  if (!currentUser) {
-    showMessage("Please wait for account loading.");
-    return;
-  }
+  photoEditorMode =
+  "queue";
 
-  const name = nameInput.value.trim();
-  const category = categoryInput.value;
-  const post = postInput.value.trim();
 
-  if (name === "") {
-    showMessage("Please enter your name.");
-    nameInput.focus();
-    return;
-  }
+  photoEditQueueFiles =
+  files;
 
-  const hasMedia =
-    (selectedMediaType === "image" && selectedImageFiles.length > 0) ||
-    (selectedMediaType === "video" && selectedVideoFile);
 
-  if (post === "" && !hasMedia) {
-    showMessage("Please write a message or attach media.");
-    postInput.focus();
-    return;
-  }
+  photoEditQueueEditedFiles =
+  [];
 
-  const savedPicture = getFirstValue(
-    currentProfile?.profilePicture, currentProfile?.picture,
-    currentProfile?.photoURL, currentUser.photoURL, ""
-  );
 
-  const picture =
-    savedPicture && !savedPicture.startsWith("data:image/")
-      ? savedPicture
-      : "images/profile.png";
+  photoEditQueuePosition =
+  0;
 
-  setPublishing(true);
-  clearMessage();
 
-  try {
-    const mediaResult = await uploadPostMedia();
-    const imageUrls = mediaResult.mediaType === "image" ? mediaResult.imageUrls : [];
+  showNextQueuedPhotoInEditor();
 
-    await addDoc(collection(db, "communityPosts"), {
-      userId: currentUser.uid,
-      authorId: currentUser.uid,
-      uid: currentUser.uid,
-      name: name,
-      fullName: name,
-      category: category,
-      post: post,
-      message: post,
-      timestamp: serverTimestamp(),
-      likes: [],
-      commentCount: 0,
-      picture: picture,
-      profilePicture: picture,
-      mediaType: mediaResult.mediaType,
-      mediaUrl: mediaResult.mediaUrl,
-      mediaName: mediaResult.mediaName,
-      imageUrl: imageUrls[0] || "",
-      imageUrls: imageUrls,
-      videoUrl: mediaResult.mediaType === "video" ? mediaResult.mediaUrl : ""
-    });
-
-    const totalPosts = parseInt(localStorage.getItem("posts")) || 0;
-    localStorage.setItem("posts", totalPosts + 1);
-
-    showMessage("✅ Your post has been published successfully!", "success");
-    postInput.value = "";
-    clearSelectedMedia();
-    resetUploadDisplay();
-    publishBtn.textContent = "✅ Published";
-
-    window.setTimeout(() => {
-      window.location.replace("feed.html");
-    }, 900);
-
-  } catch (error) {
-    console.error(error);
-    resetUploadDisplay();
-    showMessage(error.message || "Failed to publish post.");
-    setPublishing(false);
-  }
 }
 
-publishBtn.addEventListener("click", publishPost);
 
-postInput.addEventListener("keydown", (event) => {
-  if (event.ctrlKey && event.key === "Enter") {
-    event.preventDefault();
-    publishPost();
+function showNextQueuedPhotoInEditor(){
+
+  if(
+    photoEditQueuePosition >=
+    photoEditQueueFiles.length
+  ){
+
+    closePhotoEditorModal();
+
+
+    finishPhotoEditQueue();
+
+    return;
+
   }
-});
+
+
+  const file =
+  photoEditQueueFiles[
+    photoEditQueuePosition
+  ];
+
+
+  const temporaryUrl =
+  URL.createObjectURL(
+    file
+  );
+
+
+  openPhotoEditorModal(
+
+    temporaryUrl,
+
+    `Edit photo ${
+      photoEditQueuePosition + 1
+    } of ${photoEditQueueFiles.length}`,
+
+    true
+
+  );
+
+}
+
+
+function finishPhotoEditQueue(){
+
+  selectedImageFiles =
+  photoEditQueueEditedFiles;
+
+
+  selectedImagePreviewUrls =
+  selectedImageFiles.map(
+    function(file){
+
+      return URL.createObjectURL(
+        file
+      );
+
+    }
+  );
+
+
+  selectedMediaType =
+  selectedImageFiles.length > 0
+  ? "image"
+  : "none";
+
+
+  if(
+    selectedImageFiles.length === 0
+  ){
+
+    clearSelectedMedia();
+
+    return;
+
+  }
+
+
+  showMediaPreview();
+
+}
+
+
+/* =====================================================
+   PHOTO EDITOR -- RE-EDIT AN ALREADY SELECTED PHOTO
+   (opened from the ✏️ button on a preview tile)
+===================================================== */
+
+function openPhotoEditorForIndex(
+  index
+){
+
+  photoEditorMode =
+  "single";
+
+
+  photoEditorSingleIndex =
+  index;
+
+
+  const file =
+  selectedImageFiles[
+    index
+  ];
+
+
+  if(!file){
+
+    return;
+
+  }
+
+
+  const temporaryUrl =
+  URL.createObjectURL(
+    file
+  );
+
+
+  openPhotoEditorModal(
+
+    temporaryUrl,
+
+    `Edit photo ${
+      index + 1
+    } of ${selectedImageFiles.length}`,
+
+    false
+
+  );
+
+}
+
+
+/* =====================================================
+   PHOTO EDITOR CONTROLS
+===================================================== */
+
+photoEditorRotateLeftButton.addEventListener(
+  "click",
+  function(){
+
+    if(photoEditorCropper){
+
+      photoEditorCropper.rotate(
+        -90
+      );
+
+    }
+
+  }
+);
+
+
+photoEditorRotateRightButton.addEventListener(
+  "click",
+  function(){
+
+    if(photoEditorCropper){
+
+      photoEditorCropper.rotate(
+        90
+      );
+
+    }
+
+  }
+);
+
+
+photoEditorAspectButtons.forEach(
+  function(button){
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        photoEditorAspectButtons.forEach(
+          function(otherButton){
+
+            otherButton.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        if(!photoEditorCropper){
+
+          return;
+
+        }
+
+
+        const ratioValue =
+        button.dataset.ratio;
+
+
+        photoEditorCropper.setAspectRatio(
+          ratioValue === "free"
+          ? NaN
+          : parseFloat(
+            ratioValue
+          )
+        );
+
+      }
+    );
+
+  }
+);
+
+
+photoEditorCancelButton.addEventListener(
+  "click",
+  function(){
+
+    if(photoEditorMode === "queue"){
+
+      const discardEverything =
+      window.confirm(
+        "Discard all the photos you just selected?"
+      );
+
+
+      if(!discardEverything){
+
+        return;
+
+      }
+
+
+      closePhotoEditorModal();
+
+
+      photoEditQueueFiles =
+      [];
+
+
+      photoEditQueueEditedFiles =
+      [];
+
+
+      return;
+
+    }
+
+
+    closePhotoEditorModal();
+
+  }
+);
+
+
+photoEditorSkipButton.addEventListener(
+  "click",
+  function(){
+
+    if(photoEditorMode !== "queue"){
+
+      return;
+
+    }
+
+
+    const originalFile =
+    photoEditQueueFiles[
+      photoEditQueuePosition
+    ];
+
+
+    photoEditQueueEditedFiles.push(
+      originalFile
+    );
+
+
+    photoEditQueuePosition++;
+
+
+    closePhotoEditorModal();
+
+
+    showNextQueuedPhotoInEditor();
+
+  }
+);
+
+
+photoEditorDoneButton.addEventListener(
+  "click",
+  async function(){
+
+    if(photoEditorMode === "queue"){
+
+      const originalFile =
+      photoEditQueueFiles[
+        photoEditQueuePosition
+      ];
+
+
+      const editedFile =
+      await getCroppedImageFile(
+        originalFile
+      );
+
+
+      photoEditQueueEditedFiles.push(
+        editedFile
+      );
+
+
+      photoEditQueuePosition++;
+
+
+      closePhotoEditorModal();
+
+
+      showNextQueuedPhotoInEditor();
+
+      return;
+
+    }
+
+
+/* =====================================================
+   SINGLE RE-EDIT MODE
+===================================================== */
+
+    const originalFile =
+    selectedImageFiles[
+      photoEditorSingleIndex
+    ];
+
+
+    if(!originalFile){
+
+      closePhotoEditorModal();
+
+      return;
+
+    }
+
+
+    const editedFile =
+    await getCroppedImageFile(
+      originalFile
+    );
+
+
+    const oldPreviewUrl =
+    selectedImagePreviewUrls[
+      photoEditorSingleIndex
+    ];
+
+
+    if(oldPreviewUrl){
+
+      URL.revokeObjectURL(
+        oldPreviewUrl
+      );
+
+    }
+
+
+    selectedImageFiles[
+      photoEditorSingleIndex
+    ] =
+    editedFile;
+
+
+    selectedImagePreviewUrls[
+      photoEditorSingleIndex
+    ] =
+    URL.createObjectURL(
+      editedFile
+    );
+
+
+    closePhotoEditorModal();
+
+
+    showMediaPreview();
+
+  }
+);
+
+
+/* =====================================================
+   MEDIA FILE SELECTION
+===================================================== */
+
+mediaFileInput.addEventListener(
+  "change",
+  function(event){
+
+    clearMessage();
+
+
+    const files =
+    Array.from(
+      event.target.files || []
+    );
+
+
+    if(files.length === 0){
+
+      return;
+
+    }
+
+
+    const firstFile =
+    files[0];
+
+
+    const isImageBatch =
+    firstFile.type.startsWith(
+      "image/"
+    );
+
+
+    const isVideo =
+    files.length === 1 &&
+    firstFile.type.startsWith(
+      "video/"
+    );
+
+
+    if(
+      !isImageBatch &&
+      !isVideo
+    ){
+
+      showMessage(
+        "Please select valid photos or a video."
+      );
+
+      return;
+
+    }
+
+
+/* =====================================================
+   HANDLE PHOTO SELECTION (ONE OR MANY)
+===================================================== */
+
+    if(isImageBatch){
+
+      /*
+         Switching to photos clears any previously
+         chosen video, since a post is either photos
+         or one video, never both.
+      */
+
+      clearSelectedMedia();
+
+
+      const maximumImageSize =
+      10 * 1024 * 1024;
+
+
+      const validImageFiles =
+      [];
+
+
+      let rejectedForSize =
+      false;
+
+
+      files.forEach(
+        function(file){
+
+          if(
+            !file.type.startsWith(
+              "image/"
+            )
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            file.size > maximumImageSize
+          ){
+
+            rejectedForSize =
+            true;
+
+            return;
+
+          }
+
+
+          validImageFiles.push(
+            file
+          );
+
+        }
+      );
+
+
+      let filesToUse =
+      validImageFiles;
+
+
+      let tooManySelected =
+      false;
+
+
+      if(
+        filesToUse.length >
+        MAXIMUM_PHOTOS_PER_POST
+      ){
+
+        filesToUse =
+        filesToUse.slice(
+          0,
+          MAXIMUM_PHOTOS_PER_POST
+        );
+
+
+        tooManySelected =
+        true;
+
+      }
+
+
+      if(
+        filesToUse.length === 0
+      ){
+
+        showMessage(
+          "The selected photos could not be used. Please try again."
+        );
+
+        return;
+
+      }
+
+
+      if(rejectedForSize){
+
+        showMessage(
+          "Some photos were skipped because they were larger than 10 MB."
+        );
+
+      }
+
+
+      if(tooManySelected){
+
+        showMessage(
+          `Only the first ${MAXIMUM_PHOTOS_PER_POST} photos were kept. You may attach up to ${MAXIMUM_PHOTOS_PER_POST} photos per post.`
+        );
+
+      }
+
+
+/* =====================================================
+   OPEN THE PHOTO EDITOR FOR EACH NEWLY CHOSEN PHOTO
+   BEFORE ADDING THEM TO THE POST (crop / rotate,
+   like Facebook and Instagram offer)
+===================================================== */
+
+      startPhotoEditQueue(
+        filesToUse
+      );
+
+
+      return;
+
+    }
+
+
+/* =====================================================
+   HANDLE VIDEO SELECTION
+===================================================== */
+
+    clearSelectedMedia();
+
+
+    const maximumVideoSize =
+    100 * 1024 * 1024;
+
+
+    if(
+      firstFile.size > maximumVideoSize
+    ){
+
+      showMessage(
+        "The selected video is too large. Videos must be 100 MB or smaller."
+      );
+
+      return;
+
+    }
+
+
+    selectedVideoFile =
+    firstFile;
+
+
+    selectedVideoPreviewUrl =
+    URL.createObjectURL(
+      firstFile
+    );
+
+
+    selectedMediaType =
+    "video";
+
+
+    showMediaPreview();
+
+  }
+);
+
+
+/* =====================================================
+   SHOW MEDIA PREVIEW
+===================================================== */
+
+function showMediaPreview(){
+
+  imagePreviewGrid.innerHTML =
+  "";
+
+
+  previewContent.innerHTML =
+  "";
+
+
+  previewFileName.textContent =
+  "";
+
+
+/* =====================================================
+   PHOTO GRID PREVIEW
+===================================================== */
+
+  if(
+    selectedMediaType === "image"
+  ){
+
+    selectedImagePreviewUrls.forEach(
+      function(previewUrl,index){
+
+        const tile =
+        document.createElement(
+          "div"
+        );
+
+
+        tile.className =
+        "imagePreviewTile";
+
+
+        const image =
+        document.createElement(
+          "img"
+        );
+
+
+        image.src =
+        previewUrl;
+
+
+        image.alt =
+        `Selected photo ${index + 1}`;
+
+
+        image.loading =
+        "lazy";
+
+
+        const removeButton =
+        document.createElement(
+          "button"
+        );
+
+
+        removeButton.type =
+        "button";
+
+
+        removeButton.className =
+        "imagePreviewRemoveButton";
+
+
+        removeButton.setAttribute(
+          "aria-label",
+          `Remove photo ${index + 1}`
+        );
+
+
+        removeButton.textContent =
+        "✕";
+
+
+        removeButton.addEventListener(
+          "click",
+          function(){
+
+            removeSelectedImageAt(
+              index
+            );
+
+          }
+        );
+
+
+        const editButton =
+        document.createElement(
+          "button"
+        );
+
+
+        editButton.type =
+        "button";
+
+
+        editButton.className =
+        "imagePreviewEditButton";
+
+
+        editButton.setAttribute(
+          "aria-label",
+          `Edit photo ${index + 1}`
+        );
+
+
+        editButton.textContent =
+        "✏️";
+
+
+        editButton.addEventListener(
+          "click",
+          function(){
+
+            openPhotoEditorForIndex(
+              index
+            );
+
+          }
+        );
+
+
+        tile.appendChild(
+          image
+        );
+
+
+        tile.appendChild(
+          editButton
+        );
+
+
+        tile.appendChild(
+          removeButton
+        );
+
+
+        imagePreviewGrid.appendChild(
+          tile
+        );
+
+      }
+    );
+
+
+    if(
+      selectedImageFiles.length <
+      MAXIMUM_PHOTOS_PER_POST
+    ){
+
+      const addMoreTile =
+      document.createElement(
+        "button"
+      );
+
+
+      addMoreTile.type =
+      "button";
+
+
+      addMoreTile.className =
+      "addMorePhotosTile";
+
+
+      addMoreTile.setAttribute(
+        "aria-label",
+        "Add more photos"
+      );
+
+
+      addMoreTile.textContent =
+      "＋";
+
+
+      addMoreTile.addEventListener(
+        "click",
+        function(){
+
+          openMediaPicker(
+            "image"
+          );
+
+        }
+      );
+
+
+      imagePreviewGrid.appendChild(
+        addMoreTile
+      );
+
+    }
+
+
+    previewFileName.textContent =
+    `${selectedImageFiles.length} photo${
+      selectedImageFiles.length === 1
+      ? ""
+      : "s"
+    } selected`;
+
+
+    mediaPreview.style.display =
+    "block";
+
+
+    return;
+
+  }
+
+
+/* =====================================================
+   VIDEO PREVIEW
+===================================================== */
+
+  if(
+    selectedMediaType === "video"
+  ){
+
+    const video =
+    document.createElement(
+      "video"
+    );
+
+
+    video.src =
+    selectedVideoPreviewUrl;
+
+
+    video.controls =
+    true;
+
+
+    video.playsInline =
+    true;
+
+
+    video.preload =
+    "metadata";
+
+
+    previewContent.appendChild(
+      video
+    );
+
+
+    previewFileName.textContent =
+    selectedVideoFile
+    ? selectedVideoFile.name
+    : "";
+
+
+    mediaPreview.style.display =
+    "block";
+
+  }
+
+}
+
+
+/* =====================================================
+   REMOVE ONE SELECTED PHOTO
+===================================================== */
+
+function removeSelectedImageAt(
+  indexToRemove
+){
+
+  const urlToRelease =
+  selectedImagePreviewUrls[
+    indexToRemove
+  ];
+
+
+  if(urlToRelease){
+
+    URL.revokeObjectURL(
+      urlToRelease
+    );
+
+  }
+
+
+  selectedImageFiles =
+  selectedImageFiles.filter(
+    function(file,index){
+
+      return index !==
+      indexToRemove;
+
+    }
+  );
+
+
+  selectedImagePreviewUrls =
+  selectedImagePreviewUrls.filter(
+    function(url,index){
+
+      return index !==
+      indexToRemove;
+
+    }
+  );
+
+
+  if(
+    selectedImageFiles.length === 0
+  ){
+
+    clearSelectedMedia();
+
+    return;
+
+  }
+
+
+  showMediaPreview();
+
+}
+
+
+/* =====================================================
+   CLEAR SELECTED MEDIA
+===================================================== */
+
+function clearSelectedMedia(){
+
+  selectedImageFiles =
+  [];
+
+
+  selectedImagePreviewUrls.forEach(
+    function(url){
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    }
+  );
+
+
+  selectedImagePreviewUrls =
+  [];
+
+
+  if(selectedVideoPreviewUrl){
+
+    URL.revokeObjectURL(
+      selectedVideoPreviewUrl
+    );
+
+  }
+
+
+  selectedVideoFile =
+  null;
+
+
+  selectedVideoPreviewUrl =
+  "";
+
+
+  selectedMediaType =
+  "none";
+
+
+  mediaFileInput.value =
+  "";
+
+
+  imagePreviewGrid.innerHTML =
+  "";
+
+
+  previewContent.innerHTML =
+  "";
+
+
+  previewFileName.textContent =
+  "";
+
+
+  mediaPreview.style.display =
+  "none";
+
+}
+
+
+/* =====================================================
+   REMOVE MEDIA BUTTON
+===================================================== */
+
+removeMediaBtn.addEventListener(
+  "click",
+  function(){
+
+    if(activeUploadRequest){
+
+      activeUploadRequest.abort();
+
+
+      activeUploadRequest =
+      null;
+
+    }
+
+
+    resetUploadDisplay();
+
+
+    clearSelectedMedia();
+
+
+    clearMessage();
+
+  }
+);
+
+
+/* =====================================================
+   GET IMAGEKIT UPLOAD AUTHENTICATION
+===================================================== */
+
+async function getImagekitAuthParameters(){
+
+  const response =
+  await fetch(
+    imagekitAuthEndpoint
+  );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Could not authenticate the media upload. Please try again."
+    );
+
+  }
+
+
+  return response.json();
+
+}
+
+
+/* =====================================================
+   UPLOAD ONE FILE TO IMAGEKIT
+   (used for a single video, and called once per
+   photo when uploading a multi-photo post)
+===================================================== */
+
+async function uploadSingleFileToImagekit(
+  file,
+  onProgress
+){
+
+  const authParameters =
+  await getImagekitAuthParameters();
+
+
+  return new Promise(
+    function(resolve,reject){
+
+      const formData =
+      new FormData();
+
+
+      formData.append(
+        "file",
+        file
+      );
+
+
+      formData.append(
+        "fileName",
+        file.name
+      );
+
+
+      formData.append(
+        "publicKey",
+        imagekitPublicKey
+      );
+
+
+      formData.append(
+        "signature",
+        authParameters.signature
+      );
+
+
+      formData.append(
+        "expire",
+        authParameters.expire
+      );
+
+
+      formData.append(
+        "token",
+        authParameters.token
+      );
+
+
+      formData.append(
+        "folder",
+        "/sabasaba-community"
+      );
+
+
+      const request =
+      new XMLHttpRequest();
+
+
+      activeUploadRequest =
+      request;
+
+
+      request.open(
+        "POST",
+        imagekitUploadUrl,
+        true
+      );
+
+
+      request.timeout =
+      300000;
+
+
+      request.upload.addEventListener(
+        "progress",
+        function(event){
+
+          if(!event.lengthComputable){
+
+            return;
+
+          }
+
+
+          const progress =
+          Math.round(
+            (
+              event.loaded /
+              event.total
+            ) * 100
+          );
+
+
+          if(
+            typeof onProgress ===
+            "function"
+          ){
+
+            onProgress(
+              progress
+            );
+
+          }
+
+        }
+      );
+
+
+      request.addEventListener(
+        "load",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          try{
+
+            const response =
+            JSON.parse(
+              request.responseText
+            );
+
+
+            if(
+              request.status < 200 ||
+              request.status >= 300
+            ){
+
+              throw new Error(
+                response?.message ||
+                "ImageKit rejected the media upload."
+              );
+
+            }
+
+
+            if(!response.url){
+
+              throw new Error(
+                "ImageKit did not return a media link."
+              );
+
+            }
+
+
+            resolve({
+
+              url:
+              response.url,
+
+              name:
+              file.name
+
+            });
+
+          }catch(error){
+
+            console.error(
+              "ImageKit response error:",
+              error
+            );
+
+
+            reject(error);
+
+          }
+
+        }
+      );
+
+
+      request.addEventListener(
+        "error",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "The media upload failed because of a network error."
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "timeout",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "The media upload took too long. Please try again."
+            )
+          );
+
+        }
+      );
+
+
+      request.addEventListener(
+        "abort",
+        function(){
+
+          activeUploadRequest =
+          null;
+
+
+          reject(
+            new Error(
+              "The media upload was cancelled."
+            )
+          );
+
+        }
+      );
+
+
+      request.send(
+        formData
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   UPLOAD POST MEDIA
+   (handles either a batch of photos or one video —
+   uploads photos one at a time so the progress bar
+   can show "Uploading photo 2 of 4")
+===================================================== */
+
+async function uploadPostMedia(){
+
+  if(!currentUser){
+
+    throw new Error(
+      "You must sign in before uploading media."
+    );
+
+  }
+
+
+  if(
+    selectedMediaType === "none"
+  ){
+
+    return {
+
+      mediaType:
+      "none",
+
+      mediaUrl:
+      "",
+
+      mediaName:
+      "",
+
+      imageUrls:
+      []
+
+    };
+
+  }
+
+
+  uploadArea.style.display =
+  "block";
+
+
+  uploadProgress.style.width =
+  "0%";
+
+
+  uploadText.textContent =
+  "Preparing upload...";
+
+
+/* =====================================================
+   UPLOAD A BATCH OF PHOTOS
+===================================================== */
+
+  if(
+    selectedMediaType === "image"
+  ){
+
+    const totalPhotos =
+    selectedImageFiles.length;
+
+
+    const uploadedImageUrls =
+    [];
+
+
+    for(
+      let photoIndex = 0;
+      photoIndex < totalPhotos;
+      photoIndex++
+    ){
+
+      const file =
+      selectedImageFiles[
+        photoIndex
+      ];
+
+
+      const uploadResult =
+      await uploadSingleFileToImagekit(
+
+        file,
+
+        function(progress){
+
+          uploadProgress.style.width =
+          `${progress}%`;
+
+
+          uploadText.textContent =
+          `Uploading photo ${
+            photoIndex + 1
+          } of ${totalPhotos}: ${progress}%`;
+
+        }
+
+      );
+
+
+      uploadedImageUrls.push(
+        uploadResult.url
+      );
+
+    }
+
+
+    uploadProgress.style.width =
+    "100%";
+
+
+    uploadText.textContent =
+    `${totalPhotos} photo${
+      totalPhotos === 1
+      ? ""
+      : "s"
+    } uploaded successfully.`;
+
+
+    return {
+
+      mediaType:
+      "image",
+
+      mediaUrl:
+      uploadedImageUrls[0] ||
+      "",
+
+      mediaName:
+      `${totalPhotos} photo${
+        totalPhotos === 1
+        ? ""
+        : "s"
+      }`,
+
+      imageUrls:
+      uploadedImageUrls
+
+    };
+
+  }
+
+
+/* =====================================================
+   UPLOAD ONE VIDEO
+===================================================== */
+
+  const videoUploadResult =
+  await uploadSingleFileToImagekit(
+
+    selectedVideoFile,
+
+    function(progress){
+
+      uploadProgress.style.width =
+      `${progress}%`;
+
+
+      uploadText.textContent =
+      `Uploading video: ${progress}%`;
+
+    }
+
+  );
+
+
+  uploadProgress.style.width =
+  "100%";
+
+
+  uploadText.textContent =
+  "Media uploaded successfully.";
+
+
+  return {
+
+    mediaType:
+    "video",
+
+    mediaUrl:
+    videoUploadResult.url,
+
+    mediaName:
+    videoUploadResult.name,
+
+    imageUrls:
+    []
+
+  };
+
+}
+/* =====================================================
+   PART 6 OF 6
+   PUBLISH POST TO FIRESTORE,
+   REDIRECT AND FINAL CLOSING
+===================================================== */
+
+
+/* =====================================================
+   PUBLISH POST FUNCTION
+===================================================== */
+
+async function publishPost(){
+
+  if(!currentUser){
+
+    showMessage(
+      "Please wait while your account loads."
+    );
+
+    return;
+
+  }
+
+
+  const name =
+  nameInput.value.trim();
+
+
+  const category =
+  categoryInput.value;
+
+
+  const post =
+  postInput.value.trim();
+
+
+  if(name === ""){
+
+    showMessage(
+      "Please enter your name."
+    );
+
+
+    nameInput.focus();
+
+    return;
+
+  }
+
+
+  const hasMedia =
+  selectedMediaType === "image" &&
+  selectedImageFiles.length > 0 ||
+  selectedMediaType === "video" &&
+  selectedVideoFile;
+
+
+  if(
+    post === "" &&
+    !hasMedia
+  ){
+
+    showMessage(
+      "Please write a message or attach photos or a video."
+    );
+
+
+    postInput.focus();
+
+    return;
+
+  }
+
+
+  if(post.length > 5000){
+
+    showMessage(
+      "Your post is too long. Please use 5,000 characters or fewer."
+    );
+
+    return;
+
+  }
+
+
+/* =====================================================
+   GET PROFILE PICTURE
+===================================================== */
+
+  const savedPicture =
+  getFirstValue(
+    currentProfile?.profilePicture,
+    currentProfile?.picture,
+    currentProfile?.photoURL,
+    currentProfile?.photoUrl,
+    currentProfile?.profileImage,
+    currentProfile?.profilePhoto,
+    currentProfile?.imageUrl,
+    currentProfile?.avatar,
+    currentUser.photoURL,
+    ""
+  );
+
+
+  const picture =
+  savedPicture &&
+  !savedPicture.startsWith(
+    "data:image/"
+  )
+  ? savedPicture
+  : "images/profile.png";
+
+
+  disablePublishButton();
+
+
+  clearMessage();
+
+
+  try{
+
+
+/* =====================================================
+   UPLOAD MEDIA TO IMAGEKIT
+===================================================== */
+
+    const mediaResult =
+    await uploadPostMedia();
+
+
+    const imageUrls =
+    mediaResult.mediaType === "image"
+    ? mediaResult.imageUrls
+    : [];
+
+
+    const imageUrl =
+    imageUrls[0] ||
+    "";
+
+
+    const videoUrl =
+    mediaResult.mediaType === "video"
+    ? mediaResult.mediaUrl
+    : "";
+
+
+/* =====================================================
+   SAVE POST TO FIRESTORE
+
+   imageUrls is the new array field that holds
+   every attached photo. imageUrl is still saved
+   too (as the first photo) purely so any older
+   page that only reads a single imageUrl keeps
+   showing something sensible.
+===================================================== */
+
+    await addDoc(
+      collection(
+        db,
+        "communityPosts"
+      ),
+      {
+
+        userId:
+        currentUser.uid,
+
+        authorId:
+        currentUser.uid,
+
+        uid:
+        currentUser.uid,
+
+        name:
+        name,
+
+        fullName:
+        name,
+
+        category:
+        category,
+
+        post:
+        post,
+
+        message:
+        post,
+
+        timestamp:
+        serverTimestamp(),
+
+        likes:
+        [],
+
+        commentCount:
+        0,
+
+        picture:
+        picture,
+
+        profilePicture:
+        picture,
+
+        mediaType:
+        mediaResult.mediaType,
+
+        mediaUrl:
+        mediaResult.mediaUrl,
+
+        mediaName:
+        mediaResult.mediaName,
+
+        imageUrl:
+        imageUrl,
+
+        imageUrls:
+        imageUrls,
+
+        videoUrl:
+        videoUrl
+
+      }
+    );
+
+
+/* =====================================================
+   UPDATE LOCAL POST TOTAL
+===================================================== */
+
+    let totalPosts =
+    parseInt(
+      localStorage.getItem(
+        "posts"
+      )
+    ) || 0;
+
+
+    localStorage.setItem(
+      "posts",
+      totalPosts + 1
+    );
+
+
+/* =====================================================
+   SHOW SUCCESS MESSAGE
+===================================================== */
+
+    showMessage(
+      "✅ Your post has been published successfully!",
+      "success"
+    );
+
+
+/* =====================================================
+   RESET FORM
+===================================================== */
+
+    postInput.value =
+    "";
+
+
+    clearSelectedMedia();
+
+
+    resetUploadDisplay();
+
+
+    publishBtn.textContent =
+    "✅ Published";
+
+
+/* =====================================================
+   RETURN TO COMMUNITY WALL
+===================================================== */
+
+    window.setTimeout(
+      function(){
+
+        window.location.replace(
+          "feed.html"
+        );
+
+      },
+      900
+    );
+
+  }catch(error){
+
+    console.error(
+      "Post publishing error:",
+      error
+    );
+
+
+    resetUploadDisplay();
+
+
+    showMessage(
+      error.message ||
+      "The post could not be published."
+    );
+
+
+    enablePublishButton();
+
+  }
+
+}
+
+
+/* =====================================================
+   PUBLISH BUTTON
+===================================================== */
+
+publishBtn.addEventListener(
+  "click",
+  publishPost
+);
+
+
+/* =====================================================
+   CTRL + ENTER TO PUBLISH
+===================================================== */
+
+postInput.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.ctrlKey &&
+      event.key === "Enter"
+    ){
+
+      event.preventDefault();
+
+
+      publishPost();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   PREVENT DOUBLE SUBMISSION
+===================================================== */
+
+window.addEventListener(
+  "pageshow",
+  function(){
+
+    if(!activeUploadRequest){
+
+      enablePublishButton();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CLEAN PREVIEW WHEN LEAVING PAGE
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    selectedImagePreviewUrls.forEach(
+      function(url){
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      }
+    );
+
+
+    if(selectedVideoPreviewUrl){
+
+      URL.revokeObjectURL(
+        selectedVideoPreviewUrl
+      );
+
+    }
+
+
+    if(activeUploadRequest){
+
+      activeUploadRequest.abort();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   END OF MODULE
+===================================================== */
 
 </script>
 
