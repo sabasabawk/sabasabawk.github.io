@@ -1,235 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Member Profile | Faith Connect</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #f0f2f5; color: #050505; font-family: Arial, sans-serif; padding-bottom: 70px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* Top Navigation Header */
-    .header { background: #fff; padding: 12px 16px; border-bottom: 1px solid #e4e6eb; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-    .header h1 { font-size: 18px; color: #1877f2; font-weight: bold; }
-    .back-btn { text-decoration: none; color: #1877f2; font-weight: bold; font-size: 14px; }
+<title>Member Profile</title>
 
-    .container { max-width: 600px; margin: 12px auto; padding: 0 8px; }
+<style>
 
-    /* Profile Header Card */
-    .profile-card { background: #fff; border-radius: 12px; border: 1px solid #e4e6eb; padding: 20px 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 12px; }
-    .profile-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #1877f2; background: #e4e6eb; margin-bottom: 10px; }
-    .profile-name { font-size: 18px; font-weight: bold; color: #050505; margin-bottom: 4px; }
-    .profile-bio { font-size: 13px; color: #65676b; margin-bottom: 12px; line-height: 1.4; }
-    .followers-count { font-size: 13px; font-weight: bold; color: #1877f2; margin-bottom: 14px; }
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
+}
 
-    /* Action Buttons */
-    .action-row { display: flex; justify-content: center; gap: 8px; }
-    .btn-follow { background: #1877f2; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; }
-    .btn-message { background: #e7f3ff; color: #1877f2; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
+.container{
+max-width:800px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
 
-    /* Section Title */
-    .section-title { font-size: 15px; font-weight: bold; color: #050505; margin: 16px 4px 8px 4px; }
+.profile{
+text-align:center;
+}
 
-    /* Posts Container */
-    .post-card { background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-    .post-category { display: inline-block; background: #e7f3ff; color: #1877f2; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
-    .post-content { font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
-    .post-media { width: 100%; max-height: 350px; object-fit: contain; border-radius: 6px; margin-top: 8px; background: #000; }
+.profile img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #0066cc;
+}
 
-    .loading, .empty { text-align: center; padding: 30px; color: #65676b; font-size: 14px; background: #fff; border-radius: 8px; border: 1px solid #e4e6eb; }
-  </style>
+.profile h1{
+color:#0066cc;
+margin:15px 0 5px;
+}
+
+.section{
+margin-top:25px;
+padding-top:15px;
+border-top:1px solid #ddd;
+}
+
+.post{
+background:#f4f8fc;
+padding:15px;
+margin-top:10px;
+border-radius:10px;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+margin-right:10px;
+}
+
+button:hover{
+background:#004d99;
+}
+
+</style>
+
 </head>
+
 <body>
 
-  <header class="header">
-    <a href="javascript:history.back()" class="back-btn">← Back</a>
-    <h1>Member Profile</h1>
-    <div style="width: 40px;"></div>
-  </header>
+<div class="container">
 
-  <main class="container">
-    
-    <!-- Member Header Card -->
-    <div class="profile-card">
-      <img id="memberPicture" class="profile-avatar" src="https://via.placeholder.com/90" alt="Profile Picture">
-      <h2 id="memberName" class="profile-name">Loading Member...</h2>
-      <p id="memberBio" class="profile-bio">Faith Connect Member</p>
-      <div id="followers" class="followers-count">Followers: 0</div>
-      
-      <div class="action-row">
-        <button id="followBtn" class="btn-follow" onclick="toggleFollow()">➕ Follow</button>
-        <a id="messageLink" href="#" class="btn-message">💬 Message</a>
-      </div>
-    </div>
+<div class="profile">
 
-    <!-- Member Posts -->
-    <div class="section-title">📝 Posts by this Member</div>
-    <div id="memberPosts">
-      <div class="loading">Loading posts...</div>
-    </div>
+<img id="memberPicture" src="images/profile.png">
 
-  </main>
+<h1 id="memberName">Member</h1>
+<button onclick="followMember()">
+➕ Follow
+</button>
+<p id="followers">
+Followers: 0
+</p>
+</div>
 
-  <script type="module">
-    import { db, auth, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, where, orderBy, onAuthStateChanged } from "./firebase.js";
+<div class="section">
 
-    // Obtain target user ID or target name from URL parameters or fallback localStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetUserId = urlParams.get("userId");
-    const selectedName = localStorage.getItem("selectedMember");
+<h2>📝 Posts</h2>
 
-    const avatarEl = document.getElementById("memberPicture");
-    const nameEl = document.getElementById("memberName");
-    const bioEl = document.getElementById("memberBio");
-    const followersEl = document.getElementById("followers");
-    const followBtn = document.getElementById("followBtn");
-    const messageLink = document.getElementById("messageLink");
-    const postsContainer = document.getElementById("memberPosts");
+<div id="memberPosts"></div>
 
-    let currentAuthUser = null;
-    let targetMemberData = null;
-    let isFollowing = false;
+</div>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
-      currentAuthUser = user;
-      loadMemberProfile();
-    });
+<a href="search.html">
+<button>⬅ Back</button>
+</a>
 
-    async function loadMemberProfile() {
-      try {
-        let memberDocSnap = null;
+</div>
 
-        if (targetUserId) {
-          const docRef = doc(db, "users", targetUserId);
-          memberDocSnap = await getDoc(docRef);
-        }
+<script>
 
-        if (memberDocSnap && memberDocSnap.exists()) {
-          targetMemberData = { id: memberDocSnap.id, ...memberDocSnap.data() };
-        } else {
-          // Query user by name if no targetUserId parameter was supplied
-          const usersQuery = query(collection(db, "users"), where("name", "==", selectedName));
-          const querySnap = await getDocs(usersQuery);
-          if (!querySnap.empty) {
-            const firstDoc = querySnap.docs[0];
-            targetMemberData = { id: firstDoc.id, ...firstDoc.data() };
-          }
-        }
+let selected =
+localStorage.getItem("selectedMember");
 
-        const name = targetMemberData?.name || targetMemberData?.fullName || selectedName || "Member";
-        const avatar = targetMemberData?.picture || targetMemberData?.profilePicture || "https://via.placeholder.com/90";
-        const bio = targetMemberData?.bio || "Believer in Christ | Faith Connect";
-        const followersList = targetMemberData?.followers || [];
+let posts =
+JSON.parse(localStorage.getItem("communityPosts")) || [];
 
-        nameEl.innerText = name;
-        avatarEl.src = avatar;
-        bioEl.innerText = bio;
-        followersEl.innerText = `Followers: ${followersList.length}`;
+document.getElementById("memberName").innerText =
+selected;
 
-        // Configure direct messaging button
-        const targetId = targetMemberData?.id || "";
-        messageLink.href = targetId ? `chat-room.html?userId=${targetId}` : "chat.html";
+let postArea =
+document.getElementById("memberPosts");
 
-        // Check if current user is following this member
-        if (currentAuthUser && followersList.includes(currentAuthUser.uid)) {
-          isFollowing = true;
-          followBtn.innerText = "✓ Following";
-          followBtn.style.background = "#e4e6eb";
-          followBtn.style.color = "#050505";
-        }
+posts.forEach(function(post){
 
-        loadMemberPosts(name, targetId);
+if(post.name===selected){
 
-      } catch (err) {
-        console.error("Error loading member profile:", err);
-        nameEl.innerText = selectedName || "Member Profile";
-        postsContainer.innerHTML = `<div class="empty">Unable to load profile data.</div>`;
-      }
-    }
+document.getElementById("memberPicture").src =
+post.picture;
 
-    async function loadMemberPosts(authorName, authorId) {
-      try {
-        const postsQuery = query(collection(db, "communityPosts"), orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(postsQuery);
+postArea.innerHTML += `
+<div class="post">
 
-        let html = "";
-        let count = 0;
+<b>${post.category}</b>
 
-        snapshot.forEach((docSnap) => {
-          const p = docSnap.data();
-          const pAuthor = p.name || p.fullName || "";
-          const pUid = p.userId || p.authorId || p.uid || "";
+<br><br>
 
-          // Match by user ID or author name
-          if ((authorId && pUid === authorId) || (authorName && pAuthor === authorName)) {
-            count++;
-            let mediaHTML = "";
-            let mediaUrl = p.videoUrl || p.imageUrl || p.mediaUrl || "";
-            if (mediaUrl.includes("imagekit.io")) mediaUrl = "";
+${post.post}
 
-            if (mediaUrl) {
-              if (p.mediaType === "video" || mediaUrl.match(/\.(mp4|mov|webm|m4v)/i)) {
-                mediaHTML = `<video src="${mediaUrl}" controls playsinline crossorigin="anonymous" class="post-media"></video>`;
-              } else {
-                mediaHTML = `<img src="${mediaUrl}" class="post-media" alt="Post media">`;
-              }
-            }
+</div>
+`;
 
-            html += `
-              <div class="post-card">
-                <div class="post-category">${escapeHTML(p.category || "Encouragement")}</div>
-                <div class="post-content">${escapeHTML(p.post || p.message || "")}</div>
-                ${mediaHTML}
-              </div>
-            `;
-          }
-        });
+}
 
-        if (count === 0) {
-          postsContainer.innerHTML = `<div class="empty">No posts shared by this member yet.</div>`;
-        } else {
-          postsContainer.innerHTML = html;
-        }
+});
+function followMember(){
 
-      } catch (err) {
-        console.error("Error loading posts:", err);
-        postsContainer.innerHTML = `<div class="empty">Failed to load posts.</div>`;
-      }
-    }
+let selected =
+localStorage.getItem("selectedMember");
 
-    window.toggleFollow = async function() {
-      if (!targetMemberData?.id || !currentAuthUser) return;
+let followers =
+JSON.parse(localStorage.getItem("followers")) || {};
 
-      const userDocRef = doc(db, "users", targetMemberData.id);
+if(!followers[selected]){
+followers[selected]=0;
+}
 
-      try {
-        if (isFollowing) {
-          await updateDoc(userDocRef, { followers: arrayRemove(currentAuthUser.uid) });
-          isFollowing = false;
-          followBtn.innerText = "➕ Follow";
-          followBtn.style.background = "#1877f2";
-          followBtn.style.color = "#fff";
-        } else {
-          await updateDoc(userDocRef, { followers: arrayUnion(currentAuthUser.uid) });
-          isFollowing = true;
-          followBtn.innerText = "✓ Following";
-          followBtn.style.background = "#e4e6eb";
-          followBtn.style.color = "#050505";
-        }
-      } catch (err) {
-        alert("Action failed: " + err.message);
-      }
-    };
+followers[selected]++;
 
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
-  </script>
+localStorage.setItem(
+"followers",
+JSON.stringify(followers)
+);
+
+document.getElementById("followers").innerHTML =
+"Followers: " + followers[selected];
+
+alert("You are now following " + selected + "!");
+
+}
+
+let followers =
+JSON.parse(localStorage.getItem("followers")) || {};
+
+if(followers[selected]){
+
+document.getElementById("followers").innerHTML =
+"Followers: " + followers[selected];
+
+}
+window.followMember = followMember;
+window.messageMember = messageMember;
+</script>
+
 </body>
 </html>
