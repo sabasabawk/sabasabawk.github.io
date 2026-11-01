@@ -1246,8 +1246,8 @@
           <img
             id="postAuthorPicture"
             class="post-author-picture"
-            src="images/profile.png"
-            alt="Post author profile picture"
+            src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22c%22%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22%23e7f3ff%22%2F%3E%3Cg%20clip-path%3D%22url%28%23c%29%22%20fill%3D%22%231877f2%22%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%2276%22%20r%3D%2238%22%2F%3E%3Cpath%20d%3D%22M24%20200c0-44%2033-76%2076-76s76%2032%2076%2076z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            alt=""
           >
 
 
@@ -1524,7 +1524,15 @@ let currentPost = null;
 let unsubscribeComments = null;
 
 const defaultProfilePicture =
-  "images/profile.png";
+  "data:image/svg+xml;charset=utf-8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+    '<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+    '<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+    '<g clip-path="url(#c)" fill="#1877f2">' +
+    '<circle cx="100" cy="76" r="38"/>' +
+    '<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+  );
 
 
 let replyingTo = null;
@@ -2096,8 +2104,9 @@ function displayPost(
   postAuthorPicture.onerror =
   function(){
 
-    this.src =
-    defaultProfilePicture;
+    if(this.src !== defaultProfilePicture){
+      this.src = defaultProfilePicture;
+    }
 
   };
 
@@ -2612,8 +2621,9 @@ function createCommentCard(
     picture.onerror =
     function(){
 
-      this.src =
-      defaultProfilePicture;
+      if(this.src !== defaultProfilePicture){
+        this.src = defaultProfilePicture;
+      }
 
     };
 
