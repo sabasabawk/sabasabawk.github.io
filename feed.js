@@ -1,886 +1,2523 @@
 /* =====================================================
-   FAITH CONNECT - COMMUNITY WALL (feed.js)
-   Clean full version.
-
-   Changes in this version:
-   - Faith Moments strip shows EVERY moment as its own
-     card (no more one-moment-per-user limit).
-   - Strip reads authorName / authorPicture, which is what
-     create-faith-moment.html actually saves.
-   - Strip icons match the real moment types
-     (encouragement, scripture, testimony).
-   - Names are HTML-escaped on the strip.
-   - Infinite scroll keeps working after sign-in changes.
-   - "Load more" no longer re-fetches the first page.
+   FAITH CONNECT - COMMUNITY WALL (feed.js  -  PART 1 of 2)
+   Part 1 of 2. The full-screen viewers and the Faith Moments
+   strip are in feed2.js (Part 2). Includes admin icons:
+   🛡️ Reports and 📋 Feedback (admin only)
 ===================================================== */
-
-import {
-  auth, db, collection, addDoc, query, where, orderBy, onSnapshot,
-  doc, getDoc, getDocs, updateDoc, deleteDoc, serverTimestamp,
-  onAuthStateChanged, limit, startAfter
-} from "./firebase.js";
 
 
 /* =====================================================
-   CONFIG
+   FIREBASE IMPORTS
 ===================================================== */
 
-const ADMIN_EMAILS = ["sabasabawk@gmail.com"];
-const DEFAULT_PICTURE = "images/profile.png";
-const POSTS_PER_PAGE = 100;
-const MOMENTS_LIMIT = 60;
-const MOMENT_LIFETIME_MS = 24 * 60 * 60 * 1000;
-const MAX_GRID_PHOTOS = 4;
-const READ_MORE_LIMIT = 280;
+import{
+  auth,
+  db,
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp,
+  onAuthStateChanged,
+  limit,
+  startAfter
+}from "./firebase.js";
 
-const FEED_CACHE_KEY = "sabasaba_feed_cache_v1";
-const FEED_CACHE_MAX_POSTS = 20;
-const FEED_CACHE_MAX_AGE_MS = 30 * 60 * 1000;
+
+/* =====================================================
+   ADMIN EMAILS
+   These accounts always see the admin icons
+   (Reports and Feedback). Real protection is
+   still your Firestore security rules.
+===================================================== */
+
+const ADMIN_EMAILS =
+[
+  "sabasabawk@gmail.com"
+];
 
 
 /* =====================================================
    PAGE ELEMENTS
 ===================================================== */
 
-const $ = (id) => document.getElementById(id);
+const postsContainer =
+document.getElementById("postsContainer");
 
-const postsContainer = $("postsContainer");
-const loadMoreSentinel = $("loadMoreSentinel");
-const refreshButton = $("refreshButton");
-const quickPostButton = $("quickPostButton");
-const quickPostAvatar = $("quickPostAvatar");
-const quickMomentAvatar = $("quickMomentAvatar");
-const momentsRow = $("momentsRow");
-const notificationBadge = $("notificationBadge");
+const loadMoreSentinel =
+document.getElementById("loadMoreSentinel");
 
-const photoViewer = $("photoViewer");
-const photoViewerImage = $("photoViewerImage");
-const photoViewerVideo = $("photoViewerVideo");
-const closePhotoViewerButton = $("closePhotoViewer");
-const photoViewerPrevButton = $("photoViewerPrevButton");
-const photoViewerNextButton = $("photoViewerNextButton");
-const photoViewerCounter = $("photoViewerCounter");
+const refreshButton =
+document.getElementById("refreshButton");
 
-const videoReelViewer = $("videoReelViewer");
-const videoReelTrack = $("videoReelTrack");
-const closeVideoReelViewerButton = $("closeVideoReelViewer");
+const quickPostButton =
+document.getElementById("quickPostButton");
 
-const reportModal = $("reportModal");
-const reportReasonList = $("reportReasonList");
-const reportCancelButton = $("reportCancelButton");
-const reportSubmitButton = $("reportSubmitButton");
+const quickPostAvatar =
+document.getElementById("quickPostAvatar");
 
 
-/* =====================================================
-   STATE
-===================================================== */
+const reportModal =
+document.getElementById("reportModal");
 
-let currentUser = null;
-let currentProfile = {};
-let currentUserIsAdmin = false;
+const reportReasonList =
+document.getElementById("reportReasonList");
 
-let unsubscribePosts = null;
-let unsubscribeNotifications = null;
-let unsubscribeMoments = null;
+const reportCancelButton =
+document.getElementById("reportCancelButton");
 
-let loadedPostsDocs = [];
-const loadedPostIds = new Set();
-let lastVisibleDocument = null;
-let isLoadingMorePosts = false;
-let noMorePostsAvailable = false;
-let firstFeedSnapshotHandled = false;
-let renderDebounceTimer = null;
+const reportSubmitButton =
+document.getElementById("reportSubmitButton");
 
-let currentGalleryImages = [];
-let currentGalleryIndex = 0;
+const notificationBadge =
+document.getElementById("notificationBadge");
 
-let postsLoadObserver = null;
-let videoObserver = null;
-let reelScrollObserver = null;
+const topBarActions =
+document.querySelector(".topBarActions");
+
+
+const quickMomentAvatar =
+document.getElementById("quickMomentAvatar");
 
 
 /* =====================================================
-   SMALL HELPERS
+   GLOBAL VARIABLES
 ===================================================== */
 
-function getFirstValue(...values) {
-  for (const value of values) {
-    if (value !== undefined && value !== null && String(value).trim() !== "") {
-      return String(value).trim();
-    }
-  }
-  return "";
-}
+let currentUser =
+null;
 
-/* Serves ImageKit videos exactly as uploaded, so the free plan's
-   "video transformations limit" can never block playback. */
-function originalVideoUrl(url) {
-  const value = String(url || "");
-  if (!value || !value.includes("ik.imagekit.io")) return value;
-  if (/[?&]tr=/.test(value) || /\/tr:/.test(value)) return value;
-  return value + (value.includes("?") ? "&" : "?") + "tr=orig-true";
-}
+let currentProfile =
+{};
 
-function escapeHtml(text) {
-  return String(text ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+/*
+   True for admin accounts: either the email is in
+   ADMIN_EMAILS, or the profile document in Firestore
+   has isAdmin:true. Unlocks the admin icons and the
+   ability to remove any post.
+*/
 
-function toDate(timestamp) {
-  if (!timestamp) return null;
-  let date;
-  if (typeof timestamp.toDate === "function") date = timestamp.toDate();
-  else if (timestamp.seconds) date = new Date(timestamp.seconds * 1000);
-  else date = new Date(timestamp);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
+let currentUserIsAdmin =
+false;
 
-function formatPostDate(timestamp) {
-  const date = toDate(timestamp);
-  if (!date) return "Recently";
-  return date.toLocaleString(undefined, {
-    year: "numeric", month: "short", day: "numeric",
-    hour: "numeric", minute: "2-digit"
-  });
-}
+let unsubscribePosts =
+null;
 
-function protectProfilePicture(imageElement) {
-  if (!imageElement) return;
-  imageElement.addEventListener("error", () => {
-    imageElement.src = DEFAULT_PICTURE;
-  }, { once: true });
-}
+let unsubscribeNotifications =
+null;
 
-function lockScroll(locked) {
-  document.body.style.overflow = locked ? "hidden" : "";
-}
 
-function goToProfile(uid) {
-  window.location.href = "user-profile.html?uid=" + encodeURIComponent(uid);
-}
+/*
+   DEFAULT PROFILE PICTURE
+   A blue head-and-shoulders picture built right into the
+   code, so it always shows (no image file needed). It is
+   used when someone has no picture OR their picture is
+   broken.
+*/
+
+const defaultProfilePicture =
+"data:image/svg+xml;charset=utf-8," +
+encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+  '<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+  '<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+  '<g clip-path="url(#c)" fill="#1877f2">' +
+  '<circle cx="100" cy="76" r="38"/>' +
+  '<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+);
+
+const userProfileCache =
+new Map();
 
 
 /* =====================================================
-   STATUS MESSAGES
+   PAGINATION STATE
 ===================================================== */
 
-function showLoadingMessage() {
-  postsContainer.innerHTML =
-    `<div class="statusCard loading">Loading community posts...</div>`;
-}
-
-function showEmptyMessage() {
-  postsContainer.innerHTML = `
-    <div class="statusCard empty">
-      No community posts are available yet.<br><br>
-      Be the first person to share a testimony, prayer,
-      encouragement, photo or video.
-    </div>`;
-}
-
-function showErrorMessage(message) {
-  postsContainer.innerHTML = "";
-  const card = document.createElement("div");
-  card.className = "statusCard error";
-  card.textContent = message;
-  postsContainer.appendChild(card);
-}
+const POSTS_PER_PAGE =
+100;
 
 
 /* =====================================================
-   FEED CACHE
+   SIMPLE LOCAL CACHE FOR FASTER REPEAT LOADS
 ===================================================== */
 
-function saveFeedCache(postDocuments) {
-  try {
-    const posts = postDocuments
-      .slice(0, FEED_CACHE_MAX_POSTS)
-      .map((d) => ({ id: d.id, data: d.data() }));
+const FEED_CACHE_KEY =
+"sabasaba_feed_cache_v1";
+
+const FEED_CACHE_MAX_POSTS =
+20;
+
+const FEED_CACHE_MAX_AGE_MS =
+30 * 60 * 1000;
+
+
+function saveFeedCache(postDocuments){
+
+  try{
+
+    const cachedPosts =
+    postDocuments
+    .slice(0, FEED_CACHE_MAX_POSTS)
+    .map(
+      postDocument => ({
+        id:
+        postDocument.id,
+
+        data:
+        postDocument.data()
+      })
+    );
+
     window.localStorage.setItem(
       FEED_CACHE_KEY,
-      JSON.stringify({ savedAt: Date.now(), posts })
+      JSON.stringify({
+        savedAt:
+        Date.now(),
+
+        posts:
+        cachedPosts
+      })
     );
-  } catch (error) {
-    console.warn("Feed cache could not be saved:", error);
+
+  }catch(error){
+
+    console.warn(
+      "Feed cache could not be saved:",
+      error
+    );
+
   }
+
 }
 
-function loadFeedCache() {
-  try {
-    const raw = window.localStorage.getItem(FEED_CACHE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (Date.now() - (parsed.savedAt || 0) > FEED_CACHE_MAX_AGE_MS) return null;
-    if (!Array.isArray(parsed.posts) || parsed.posts.length === 0) return null;
-    return parsed.posts;
-  } catch (error) {
-    console.warn("Feed cache could not be read:", error);
-    return null;
-  }
-}
 
-function renderPostsFromCache(cachedPosts) {
-  postsContainer.innerHTML = "";
-  cachedPosts.forEach((cached) => {
-    try {
-      const card = createPostCard({ id: cached.id, ...cached.data });
-      card.classList.add("postCardCached");
-      postsContainer.appendChild(card);
-    } catch (error) {
-      console.error("Error rendering cached post:", error);
+function loadFeedCache(){
+
+  try{
+
+    const rawCache =
+    window.localStorage.getItem(
+      FEED_CACHE_KEY
+    );
+
+    if(!rawCache){
+      return null;
     }
-  });
+
+    const parsedCache =
+    JSON.parse(rawCache);
+
+    const cacheAge =
+    Date.now() -
+    (parsedCache.savedAt || 0);
+
+    if(cacheAge > FEED_CACHE_MAX_AGE_MS){
+      return null;
+    }
+
+    if(
+      !Array.isArray(parsedCache.posts) ||
+      parsedCache.posts.length === 0
+    ){
+      return null;
+    }
+
+    return parsedCache.posts;
+
+  }catch(error){
+
+    console.warn(
+      "Feed cache could not be read:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+function renderPostsFromCache(cachedPosts){
+
+  postsContainer.innerHTML =
+  "";
+
+  cachedPosts.forEach(
+    cachedPost => {
+
+      try{
+
+        const postCard =
+        createPostCard(
+          {
+            id:
+            cachedPost.id,
+
+            ...cachedPost.data
+          }
+        );
+
+        postCard.classList.add(
+          "postCardCached"
+        );
+
+        postsContainer.appendChild(
+          postCard
+        );
+
+      }catch(error){
+
+        console.error(
+          "Error rendering cached post:",
+          error
+        );
+
+      }
+
+    }
+  );
+
   startVideoAutoPlay();
+
+}
+
+
+let lastVisibleDocument =
+null;
+
+let isLoadingMorePosts =
+false;
+
+let noMorePostsAvailable =
+false;
+
+let postsLoadObserver =
+null;
+
+
+/*
+   FACEBOOK-STYLE FEED MODEL
+
+   A single ordered list of every post currently loaded
+   into the page, newest first. New posts are only ever
+   PREPENDED; older posts loaded by scrolling are only
+   ever APPENDED.
+*/
+
+let loadedPostsDocs =
+[];
+
+const loadedPostIds =
+new Set();
+
+let firstFeedSnapshotHandled =
+false;
+
+/*
+   Groups rapid bursts of live updates into a single
+   smooth redraw.
+*/
+
+let renderDebounceTimer =
+null;
+
+
+/* =====================================================
+   RETURN FIRST AVAILABLE VALUE
+===================================================== */
+
+function getFirstValue(
+  ...values
+){
+
+  for(
+    const value
+    of values
+  ){
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+
+      return String(
+        value
+      ).trim();
+
+    }
+
+  }
+
+  return "";
+
 }
 
 
 /* =====================================================
-   ADMIN SHORTCUTS STRIP
+   SHOW LOADING / EMPTY / ERROR MESSAGES
 ===================================================== */
 
-function updateAdminReportsLink() {
-  const oldStrip = $("adminToolsStrip");
+function showLoadingMessage(){
 
-  ["adminReportsLink", "adminFeedbackLink"].forEach((id) => {
-    const old = $(id);
-    if (old) old.remove();
-  });
+  postsContainer.innerHTML = `
 
-  if (!currentUserIsAdmin) {
-    if (oldStrip) oldStrip.remove();
+    <div class="statusCard loading">
+
+      Loading community posts...
+
+    </div>
+
+  `;
+
+}
+
+
+function showEmptyMessage(){
+
+  postsContainer.innerHTML = `
+
+    <div class="statusCard empty">
+
+      No community posts are available yet.
+
+      <br><br>
+
+      Be the first person to share
+      a testimony, prayer,
+      encouragement, photo or video.
+
+    </div>
+
+  `;
+
+}
+
+
+function showErrorMessage(
+  message
+){
+
+  postsContainer.innerHTML =
+  "";
+
+  const errorCard =
+  document.createElement("div");
+
+  errorCard.className =
+  "statusCard error";
+
+  errorCard.textContent =
+  message;
+
+  postsContainer.appendChild(
+    errorCard
+  );
+
+}
+
+
+/* =====================================================
+   PROTECT PROFILE PICTURES
+   If a picture is broken, show the blue head instead.
+===================================================== */
+
+function protectProfilePicture(
+  imageElement
+){
+
+  if(!imageElement){
     return;
   }
-  if (oldStrip) return;
 
-  const pageContainer = document.querySelector(".pageContainer");
-  if (!pageContainer) return;
+  imageElement.addEventListener(
+    "error",
+    function(){
 
-  const strip = document.createElement("div");
-  strip.id = "adminToolsStrip";
-  strip.style.cssText = "display:flex;gap:8px;margin:0 0 10px;";
+      if(
+        imageElement.src !==
+        defaultProfilePicture
+      ){
+
+        imageElement.src =
+        defaultProfilePicture;
+
+      }
+
+    },
+    {
+      once:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FORMAT FIREBASE DATE
+===================================================== */
+
+function formatPostDate(
+  timestamp
+){
+
+  if(!timestamp){
+    return "Recently";
+  }
+
+  try{
+
+    let postDate;
+
+    if(
+      typeof timestamp.toDate ===
+      "function"
+    ){
+
+      postDate =
+      timestamp.toDate();
+
+    }else if(
+      timestamp.seconds
+    ){
+
+      postDate =
+      new Date(
+        timestamp.seconds * 1000
+      );
+
+    }else{
+
+      postDate =
+      new Date(
+        timestamp
+      );
+
+    }
+
+    if(
+      Number.isNaN(
+        postDate.getTime()
+      )
+    ){
+      return "Recently";
+    }
+
+    return postDate.toLocaleString(
+      undefined,
+      {
+        year:
+        "numeric",
+
+        month:
+        "short",
+
+        day:
+        "numeric",
+
+        hour:
+        "numeric",
+
+        minute:
+        "2-digit"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Date formatting error:",
+      error
+    );
+
+    return "Recently";
+
+  }
+
+}
+
+
+/* =====================================================
+   ADMIN SHORTCUTS
+
+   🛡️ Reports and 📋 Feedback appear as a slim strip
+   under the top bar (not inside it), so the top bar
+   keeps its room for "Faith Connect". Added only when
+   currentUserIsAdmin is true; for every other account
+   nothing is added to the page at all.
+===================================================== */
+
+function updateAdminReportsLink(){
+
+  const oldStrip =
+  document.getElementById(
+    "adminToolsStrip"
+  );
+
+  /* remove any icons from earlier versions */
 
   [
-    { href: "admin-feedback.html", label: "📋 User Feedback" },
-    { href: "admin-reports.html", label: "🛡️ Reported Posts" }
-  ].forEach((info) => {
-    const link = document.createElement("a");
-    link.href = info.href;
-    link.textContent = info.label;
-    link.style.cssText =
-      "flex:1;text-align:center;padding:9px 6px;border-radius:12px;" +
-      "background:#e7f3ff;color:#0873c9;font-size:13px;font-weight:bold;" +
-      "text-decoration:none;";
-    strip.appendChild(link);
-  });
+    "adminReportsLink",
+    "adminFeedbackLink"
+  ].forEach(
+    function(oldId){
 
-  pageContainer.insertBefore(strip, pageContainer.firstChild);
+      const oldElement =
+      document.getElementById(
+        oldId
+      );
+
+      if(oldElement){
+
+        oldElement.remove();
+
+      }
+
+    }
+  );
+
+  if(!currentUserIsAdmin){
+
+    if(oldStrip){
+
+      oldStrip.remove();
+
+    }
+
+    return;
+
+  }
+
+  if(oldStrip){
+    return;
+  }
+
+  const pageContainer =
+  document.querySelector(
+    ".pageContainer"
+  );
+
+  if(!pageContainer){
+    return;
+  }
+
+  const strip =
+  document.createElement("div");
+
+  strip.id =
+  "adminToolsStrip";
+
+  strip.style.cssText =
+  "display:flex;gap:8px;margin:0 0 10px;";
+
+  const adminLinks =
+  [
+    {
+      href:"admin-feedback.html",
+      label:"📋 User Feedback"
+    },
+    {
+      href:"admin-reports.html",
+      label:"🛡️ Reported Posts"
+    }
+  ];
+
+  adminLinks.forEach(
+    function(linkInfo){
+
+      const link =
+      document.createElement("a");
+
+      link.href =
+      linkInfo.href;
+
+      link.textContent =
+      linkInfo.label;
+
+      link.style.cssText =
+      "flex:1;text-align:center;padding:9px 6px;" +
+      "border-radius:12px;background:#e7f3ff;" +
+      "color:#0873c9;font-size:13px;font-weight:bold;" +
+      "text-decoration:none;";
+
+      strip.appendChild(
+        link
+      );
+
+    }
+  );
+
+  pageContainer.insertBefore(
+    strip,
+    pageContainer.firstChild
+  );
+
 }
 
 
 /* =====================================================
-   CURRENT USER PROFILE
+   LOAD CURRENT USER PROFILE
+
+   Runs independently of the feed — nothing else waits
+   for this to finish.
 ===================================================== */
 
-function setMyAvatar(url) {
-  if (quickPostAvatar) quickPostAvatar.src = url;
-  if (quickMomentAvatar) {
-    quickMomentAvatar.style.backgroundImage = `url("${url}")`;
-  }
-}
+async function loadCurrentUserProfile(){
 
-async function loadCurrentUserProfile() {
-  currentProfile = {};
-  currentUserIsAdmin = false;
+  currentProfile =
+  {};
 
-  if (!currentUser) {
-    setMyAvatar(DEFAULT_PICTURE);
+  currentUserIsAdmin =
+  false;
+
+  if(!currentUser){
+
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
+
     updateAdminReportsLink();
+
     return;
+
   }
 
-  currentUserIsAdmin = ADMIN_EMAILS.includes(
-    String(currentUser.email || "").toLowerCase()
+  /*
+     Admin by email: works immediately, even before
+     (or without) the profile document loading.
+  */
+
+  currentUserIsAdmin =
+  ADMIN_EMAILS.includes(
+    String(
+      currentUser.email || ""
+    ).toLowerCase()
   );
+
   updateAdminReportsLink();
 
-  try {
-    const snapshot = await getDoc(doc(db, "users", currentUser.uid));
-    if (snapshot.exists()) {
-      currentProfile = snapshot.data();
-      currentUserIsAdmin = currentUserIsAdmin || currentProfile.isAdmin === true;
+  try{
+
+    const profileReference =
+    doc(
+      db,
+      "users",
+      currentUser.uid
+    );
+
+    const profileSnapshot =
+    await getDoc(
+      profileReference
+    );
+
+    if(
+      profileSnapshot.exists()
+    ){
+
+      currentProfile =
+      profileSnapshot.data();
+
+      currentUserIsAdmin =
+      currentUserIsAdmin ||
+      currentProfile.isAdmin === true;
+
     }
-    setMyAvatar(getFirstValue(
+
+    const profilePicture =
+    getFirstValue(
       currentProfile.picture,
       currentProfile.profilePicture,
       currentProfile.photoURL,
       currentProfile.photoUrl,
       currentUser.photoURL,
-      DEFAULT_PICTURE
-    ));
-  } catch (error) {
-    console.error("Error loading current user profile:", error);
-    if (quickPostAvatar) quickPostAvatar.src = DEFAULT_PICTURE;
+      defaultProfilePicture
+    );
+
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      profilePicture;
+
+    }
+
+    if(quickMomentAvatar){
+
+      quickMomentAvatar.style.backgroundImage =
+      `url("${profilePicture}")`;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error loading current user profile:",
+      error
+    );
+
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
+
   }
 
   updateAdminReportsLink();
-}
 
-if (quickPostButton) {
-  quickPostButton.addEventListener("click", () => {
-    window.location.href = currentUser ? "createpost.html" : "login.html";
-  });
 }
-protectProfilePicture(quickPostAvatar);
 
 
 /* =====================================================
-   NOTIFICATION BADGE
+   QUICK POST BUTTON (not on the page any more,
+   kept safely guarded)
 ===================================================== */
 
-function stopNotificationListener() {
-  if (typeof unsubscribeNotifications === "function") unsubscribeNotifications();
-  unsubscribeNotifications = null;
-}
+if(quickPostButton){
 
-function setBadge(count) {
-  if (!notificationBadge) return;
-  if (count > 0) {
-    notificationBadge.style.display = "flex";
-    notificationBadge.textContent = count > 99 ? "99+" : String(count);
-  } else {
-    notificationBadge.style.display = "none";
-    notificationBadge.textContent = "0";
-  }
-}
+  quickPostButton.addEventListener(
+    "click",
+    function(){
 
-function startNotificationListener() {
-  stopNotificationListener();
-  if (!currentUser) {
-    setBadge(0);
-    return;
-  }
+      if(!currentUser){
 
-  const unreadQuery = query(
-    collection(db, "notifications"),
-    where("recipientId", "==", currentUser.uid),
-    where("read", "==", false)
-  );
+        window.location.href =
+        "login.html";
 
-  unsubscribeNotifications = onSnapshot(
-    unreadQuery,
-    (snapshot) => setBadge(snapshot.size),
-    (error) => {
-      console.error("Notification badge error:", error);
-      setBadge(0);
+        return;
+
+      }
+
+      window.location.href =
+      "createpost.html";
+
     }
   );
+
+}
+
+
+if(quickPostAvatar){
+
+  protectProfilePicture(
+    quickPostAvatar
+  );
+
 }
 
 
 /* =====================================================
-   COMMUNITY FEED: START / STOP
+   STOP CURRENT FIRESTORE LISTENER
 ===================================================== */
 
-function stopPostsListener() {
-  if (typeof unsubscribePosts === "function") unsubscribePosts();
-  unsubscribePosts = null;
+function stopPostsListener(){
+
+  if(
+    typeof unsubscribePosts ===
+    "function"
+  ){
+
+    unsubscribePosts();
+
+  }
+
+  unsubscribePosts =
+  null;
+
 }
 
-function startCommunityFeed() {
+
+/* =====================================================
+   START COMMUNITY FEED
+===================================================== */
+
+function startCommunityFeed(){
+
   stopPostsListener();
 
-  lastVisibleDocument = null;
-  noMorePostsAvailable = false;
-  isLoadingMorePosts = false;
-  loadedPostsDocs = [];
-  loadedPostIds.clear();
-  firstFeedSnapshotHandled = false;
-  loadMoreSentinel.textContent = "";
+  if(postsLoadObserver){
 
-  const cachedPosts = loadFeedCache();
-  if (cachedPosts) renderPostsFromCache(cachedPosts);
-  else showLoadingMessage();
+    postsLoadObserver.disconnect();
+
+  }
+
+  lastVisibleDocument =
+  null;
+
+  noMorePostsAvailable =
+  false;
+
+  isLoadingMorePosts =
+  false;
+
+  loadedPostsDocs =
+  [];
+
+  loadedPostIds.clear();
+
+  firstFeedSnapshotHandled =
+  false;
+
+  loadMoreSentinel.textContent =
+  "";
+
+  const cachedPosts =
+  loadFeedCache();
+
+  if(cachedPosts){
+
+    renderPostsFromCache(
+      cachedPosts
+    );
+
+  }else{
+
+    showLoadingMessage();
+
+  }
 
   loadCommunityPosts();
+
 }
 
-onAuthStateChanged(
-  auth,
-  (user) => {
-    currentUser = user || null;
-    startCommunityFeed();
-    startNotificationListener();
-    startMomentsListener();
-    loadCurrentUserProfile();
-  },
-  (error) => {
-    console.error("Authentication listener error:", error);
-    currentUser = null;
-    currentProfile = {};
-    currentUserIsAdmin = false;
-    updateAdminReportsLink();
-    stopNotificationListener();
-    setBadge(0);
-    setMyAvatar(DEFAULT_PICTURE);
-    startCommunityFeed();
+
+/* =====================================================
+   NOTIFICATIONS BADGE
+===================================================== */
+
+function stopNotificationListener(){
+
+  if(
+    typeof unsubscribeNotifications ===
+    "function"
+  ){
+
+    unsubscribeNotifications();
+
   }
+
+  unsubscribeNotifications =
+  null;
+
+}
+
+
+function startNotificationListener(){
+
+  stopNotificationListener();
+
+  if(!currentUser){
+
+    notificationBadge.style.display =
+    "none";
+
+    notificationBadge.textContent =
+    "0";
+
+    return;
+
+  }
+
+  const unreadNotificationsQuery =
+  query(
+    collection(
+      db,
+      "notifications"
+    ),
+
+    where(
+      "recipientId",
+      "==",
+      currentUser.uid
+    ),
+
+    where(
+      "read",
+      "==",
+      false
+    )
+  );
+
+  unsubscribeNotifications =
+  onSnapshot(
+
+    unreadNotificationsQuery,
+
+    function(snapshot){
+
+      const totalUnread =
+      snapshot.size;
+
+      if(totalUnread > 0){
+
+        notificationBadge.style.display =
+        "flex";
+
+        notificationBadge.textContent =
+        totalUnread > 99
+        ? "99+"
+        : String(totalUnread);
+
+      }else{
+
+        notificationBadge.style.display =
+        "none";
+
+        notificationBadge.textContent =
+        "0";
+
+      }
+
+    },
+
+    function(error){
+
+      console.error(
+        "Notification badge error:",
+        error
+      );
+
+      notificationBadge.style.display =
+      "none";
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION LISTENER
+===================================================== */
+
+onAuthStateChanged(
+
+  auth,
+
+  function(user){
+
+    currentUser =
+    user || null;
+
+    startCommunityFeed();
+
+    startNotificationListener();
+
+    loadCurrentUserProfile();
+
+  },
+
+  function(error){
+
+    console.error(
+      "Authentication listener error:",
+      error
+    );
+
+    currentUser =
+    null;
+
+    currentProfile =
+    {};
+
+    currentUserIsAdmin =
+    false;
+
+    updateAdminReportsLink();
+
+    stopNotificationListener();
+
+    notificationBadge.style.display =
+    "none";
+
+    notificationBadge.textContent =
+    "0";
+
+    if(quickPostAvatar){
+
+      quickPostAvatar.src =
+      defaultProfilePicture;
+
+    }
+
+    startCommunityFeed();
+
+  }
+
 );
 
 
 /* =====================================================
-   COMMUNITY FEED: LOAD + RENDER
+   LOAD COMMUNITY POSTS FROM FIRESTORE
 ===================================================== */
 
-function scheduleCommunityPostsRender() {
-  if (renderDebounceTimer) clearTimeout(renderDebounceTimer);
-  renderDebounceTimer = window.setTimeout(() => {
-    renderDebounceTimer = null;
-    renderCommunityPosts();
-    updateLoadMoreSentinel();
-    scrollToSharedPost();
-  }, 250);
-}
+function scheduleCommunityPostsRender(){
 
-function renderCommunityPosts() {
-  postsContainer.innerHTML = "";
+  if(renderDebounceTimer){
 
-  if (loadedPostsDocs.length === 0) {
-    showEmptyMessage();
-    return;
+    clearTimeout(
+      renderDebounceTimer
+    );
+
   }
 
-  loadedPostsDocs.forEach((postDocument) => {
-    try {
-      postsContainer.appendChild(
-        createPostCard({ id: postDocument.id, ...postDocument.data() })
-      );
-    } catch (error) {
-      console.error("Error creating post card:", error);
-    }
-  });
+  renderDebounceTimer =
+  window.setTimeout(
+    function(){
 
-  if (postsContainer.children.length === 0) {
-    showErrorMessage("Community posts were found, but they could not be displayed.");
+      renderDebounceTimer =
+      null;
+
+      renderCommunityPosts();
+
+      updateLoadMoreSentinel();
+
+      scrollToSharedPost();
+
+    },
+    250
+  );
+
+}
+
+
+function renderCommunityPosts(){
+
+  postsContainer.innerHTML =
+  "";
+
+  const combinedDocs =
+  loadedPostsDocs;
+
+  if(
+    combinedDocs.length === 0
+  ){
+
+    showEmptyMessage();
+
     return;
+
+  }
+
+  combinedDocs.forEach(
+    function(postDocument){
+
+      try{
+
+        const postData = {
+          id:
+          postDocument.id,
+
+          ...postDocument.data()
+        };
+
+        const postCard =
+        createPostCard(
+          postData
+        );
+
+        postsContainer.appendChild(
+          postCard
+        );
+
+      }catch(error){
+
+        console.error(
+          "Error creating post card:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+  if(
+    postsContainer.children.length === 0
+  ){
+
+    showErrorMessage(
+      "Community posts were found, but they could not be displayed."
+    );
+
+    return;
+
   }
 
   startVideoAutoPlay();
+
 }
 
-function loadCommunityPosts() {
-  try {
-    const firstPageQuery = query(
-      collection(db, "communityPosts"),
-      orderBy("timestamp", "desc"),
-      limit(POSTS_PER_PAGE)
+
+function loadCommunityPosts(){
+
+  try{
+
+    const postsReference =
+    collection(
+      db,
+      "communityPosts"
     );
 
-    unsubscribePosts = onSnapshot(
+    const firstPageQuery =
+    query(
+      postsReference,
+      orderBy(
+        "timestamp",
+        "desc"
+      ),
+      limit(
+        POSTS_PER_PAGE
+      )
+    );
+
+    unsubscribePosts =
+    onSnapshot(
+
       firstPageQuery,
 
-      (snapshot) => {
-        if (!firstFeedSnapshotHandled) {
-          firstFeedSnapshotHandled = true;
+      function(snapshot){
 
-          loadedPostsDocs = snapshot.docs.slice();
+        /*
+           The very first snapshot fills loadedPostsDocs
+           from scratch. Every snapshot AFTER that only
+           PREPENDS brand-new posts — it never removes or
+           reshuffles anything already on screen.
+        */
+
+        if(!firstFeedSnapshotHandled){
+
+          firstFeedSnapshotHandled =
+          true;
+
+          loadedPostsDocs =
+          snapshot.docs.slice();
+
           loadedPostIds.clear();
-          loadedPostsDocs.forEach((d) => loadedPostIds.add(d.id));
 
-          if (snapshot.docs.length > 0) {
-            lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
+          loadedPostsDocs.forEach(
+            function(postDoc){
+
+              loadedPostIds.add(
+                postDoc.id
+              );
+
+            }
+          );
+
+          if(
+            snapshot.docs.length > 0
+          ){
+
+            lastVisibleDocument =
+            snapshot.docs[
+              snapshot.docs.length - 1
+            ];
+
           }
-          noMorePostsAvailable = snapshot.docs.length < POSTS_PER_PAGE;
 
-          saveFeedCache(loadedPostsDocs);
+          noMorePostsAvailable =
+          snapshot.docs.length === 0;
+
+          saveFeedCache(
+            loadedPostsDocs
+          );
+
           scheduleCommunityPostsRender();
+
+          return;
+
+        }
+
+        const newlyAddedDocs =
+        [];
+
+        snapshot.docChanges().forEach(
+          function(change){
+
+            if(
+              change.type !== "added"
+            ){
+
+              /*
+                 "modified" (likes/comments/edits) and
+                 "removed" are intentionally ignored here;
+                 post cards update themselves and the
+                 delete button removes its own card.
+              */
+
+              return;
+
+            }
+
+            if(
+              loadedPostIds.has(
+                change.doc.id
+              )
+            ){
+              return;
+            }
+
+            loadedPostIds.add(
+              change.doc.id
+            );
+
+            newlyAddedDocs.push(
+              change.doc
+            );
+
+          }
+        );
+
+        if(
+          newlyAddedDocs.length === 0
+        ){
           return;
         }
 
-        const newlyAdded = [];
-        snapshot.docChanges().forEach((change) => {
-          if (change.type !== "added") return;
-          if (loadedPostIds.has(change.doc.id)) return;
-          loadedPostIds.add(change.doc.id);
-          newlyAdded.push(change.doc);
-        });
+        newlyAddedDocs.sort(
+          function(firstDoc,secondDoc){
 
-        if (newlyAdded.length === 0) return;
+            const firstTime =
+            firstDoc.data()?.timestamp?.seconds ||
+            0;
 
-        newlyAdded.sort((a, b) =>
-          (b.data()?.timestamp?.seconds || 0) - (a.data()?.timestamp?.seconds || 0)
+            const secondTime =
+            secondDoc.data()?.timestamp?.seconds ||
+            0;
+
+            return secondTime - firstTime;
+
+          }
         );
 
-        loadedPostsDocs = newlyAdded.concat(loadedPostsDocs);
-        saveFeedCache(loadedPostsDocs);
+        loadedPostsDocs =
+        newlyAddedDocs.concat(
+          loadedPostsDocs
+        );
 
-        newlyAdded.slice().reverse().forEach((postDoc) => {
-          try {
-            postsContainer.insertBefore(
-              createPostCard({ id: postDoc.id, ...postDoc.data() }),
-              postsContainer.firstChild
-            );
-          } catch (error) {
-            console.error("Error inserting new post card:", error);
+        saveFeedCache(
+          loadedPostsDocs
+        );
+
+        newlyAddedDocs
+        .slice()
+        .reverse()
+        .forEach(
+          function(postDoc){
+
+            try{
+
+              const postData = {
+                id:
+                postDoc.id,
+
+                ...postDoc.data()
+              };
+
+              const newCard =
+              createPostCard(
+                postData
+              );
+
+              postsContainer.insertBefore(
+                newCard,
+                postsContainer.firstChild
+              );
+
+            }catch(error){
+
+              console.error(
+                "Error inserting new post card:",
+                error
+              );
+
+            }
+
           }
-        });
+        );
 
         startVideoAutoPlay();
+
       },
 
-      (error) => {
-        console.error("Error loading community posts:", error);
-        const messages = {
-          "permission-denied": "Firebase permission denied access to community posts.",
-          "failed-precondition": "Firebase requires an index before community posts can be displayed.",
-          "unavailable": "The Community Wall is temporarily unavailable. Check your internet connection and try again."
-        };
-        showErrorMessage(
-          messages[error.code] || "Community posts could not be loaded. Please try again."
+      function(error){
+
+        console.error(
+          "Error loading community posts:",
+          error
         );
+
+        if(
+          error.code === "permission-denied"
+        ){
+
+          showErrorMessage(
+            "Firebase permission denied access to community posts."
+          );
+
+          return;
+
+        }
+
+        if(
+          error.code === "failed-precondition"
+        ){
+
+          showErrorMessage(
+            "Firebase requires an index before community posts can be displayed."
+          );
+
+          return;
+
+        }
+
+        if(
+          error.code === "unavailable"
+        ){
+
+          showErrorMessage(
+            "The Community Wall is temporarily unavailable. Check your internet connection and try again."
+          );
+
+          return;
+
+        }
+
+        showErrorMessage(
+          "Community posts could not be loaded. Please try again."
+        );
+
       }
+
     );
-  } catch (error) {
-    console.error("Community feed setup error:", error);
-    showErrorMessage("The Community Wall could not be started.");
+
+  }catch(error){
+
+    console.error(
+      "Community feed setup error:",
+      error
+    );
+
+    showErrorMessage(
+      "The Community Wall could not be started."
+    );
+
   }
+
 }
 
-async function loadMoreCommunityPosts() {
-  if (isLoadingMorePosts || noMorePostsAvailable || !lastVisibleDocument) return;
 
-  isLoadingMorePosts = true;
-  loadMoreSentinel.textContent = "Loading more posts...";
+async function loadMoreCommunityPosts(){
 
-  try {
-    const nextPageQuery = query(
-      collection(db, "communityPosts"),
-      orderBy("timestamp", "desc"),
-      startAfter(lastVisibleDocument),
-      limit(POSTS_PER_PAGE)
+  if(
+    isLoadingMorePosts ||
+    noMorePostsAvailable
+  ){
+    return;
+  }
+
+  isLoadingMorePosts =
+  true;
+
+  loadMoreSentinel.textContent =
+  "Loading more posts...";
+
+  try{
+
+    const postsReference =
+    collection(
+      db,
+      "communityPosts"
     );
 
-    const snapshot = await getDocs(nextPageQuery);
+    const nextPageQuery =
+    lastVisibleDocument
 
-    if (snapshot.empty) {
-      noMorePostsAvailable = true;
+    ? query(
+        postsReference,
+        orderBy(
+          "timestamp",
+          "desc"
+        ),
+        startAfter(
+          lastVisibleDocument
+        ),
+        limit(
+          POSTS_PER_PAGE
+        )
+      )
+
+    : query(
+        postsReference,
+        orderBy(
+          "timestamp",
+          "desc"
+        ),
+        limit(
+          POSTS_PER_PAGE
+        )
+      );
+
+    const snapshot =
+    await getDocs(
+      nextPageQuery
+    );
+
+    if(snapshot.empty){
+
+      if(
+        loadedPostsDocs.length === 0
+      ){
+
+        noMorePostsAvailable =
+        true;
+
+        updateLoadMoreSentinel();
+
+        return;
+
+      }
+
+      /*
+         Reached the true end of the feed — loop back to
+         the very top instead of showing "no more posts".
+      */
+
+      lastVisibleDocument =
+      loadedPostsDocs.length > 0
+
+      ? loadedPostsDocs[
+          loadedPostsDocs.length - 1
+        ]
+
+      : null;
+
+      window.scrollTo(
+        {
+          top:0,
+          behavior:"smooth"
+        }
+      );
+
+      isLoadingMorePosts =
+      false;
+
+      updateLoadMoreSentinel();
+
       return;
+
     }
 
-    const olderDocs = snapshot.docs.filter((d) => !loadedPostIds.has(d.id));
-    olderDocs.forEach((d) => loadedPostIds.add(d.id));
-    loadedPostsDocs = loadedPostsDocs.concat(olderDocs);
+    const newOlderDocs =
+    snapshot.docs.filter(
+      function(postDoc){
 
-    olderDocs.forEach((postDoc) => {
-      try {
-        postsContainer.appendChild(
-          createPostCard({ id: postDoc.id, ...postDoc.data() })
+        return !loadedPostIds.has(
+          postDoc.id
         );
-      } catch (error) {
-        console.error("Error appending older post card:", error);
+
       }
-    });
+    );
+
+    newOlderDocs.forEach(
+      function(postDoc){
+
+        loadedPostIds.add(
+          postDoc.id
+        );
+
+      }
+    );
+
+    loadedPostsDocs =
+    loadedPostsDocs.concat(
+      newOlderDocs
+    );
+
+    newOlderDocs.forEach(
+      function(postDoc){
+
+        try{
+
+          const postData = {
+            id:
+            postDoc.id,
+
+            ...postDoc.data()
+          };
+
+          const olderCard =
+          createPostCard(
+            postData
+          );
+
+          postsContainer.appendChild(
+            olderCard
+          );
+
+        }catch(error){
+
+          console.error(
+            "Error appending older post card:",
+            error
+          );
+
+        }
+
+      }
+    );
 
     startVideoAutoPlay();
 
-    lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
-    if (snapshot.docs.length < POSTS_PER_PAGE) noMorePostsAvailable = true;
+    lastVisibleDocument =
+    snapshot.docs.length <
+    POSTS_PER_PAGE
 
-  } catch (error) {
-    console.error("Error loading more community posts:", error);
-    loadMoreSentinel.textContent = "Could not load more posts. Scroll to try again.";
-    isLoadingMorePosts = false;
+    ? null
+
+    : snapshot.docs[
+        snapshot.docs.length - 1
+      ];
+
+  }catch(error){
+
+    console.error(
+      "Error loading more community posts:",
+      error
+    );
+
+    loadMoreSentinel.textContent =
+    "Could not load more posts. Scroll to try again.";
+
+    isLoadingMorePosts =
+    false;
+
     return;
-  } finally {
-    isLoadingMorePosts = false;
+
   }
+
+  isLoadingMorePosts =
+  false;
 
   updateLoadMoreSentinel();
+
 }
 
-function updateLoadMoreSentinel() {
-  if (noMorePostsAvailable && postsContainer.children.length === 0) {
-    loadMoreSentinel.textContent = "Be the first to share something with the community 🙏";
-  } else {
-    loadMoreSentinel.textContent = "";
+
+function updateLoadMoreSentinel(){
+
+  if(noMorePostsAvailable){
+
+    loadMoreSentinel.textContent =
+    postsContainer.children.length > 0
+    ? ""
+    : "Be the first to share something with the community 🙏";
+
+  }else{
+
+    loadMoreSentinel.textContent =
+    "";
+
   }
+
 }
 
-postsLoadObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) loadMoreCommunityPosts();
-    });
+
+postsLoadObserver =
+new IntersectionObserver(
+
+  function(entries){
+
+    entries.forEach(
+      function(entry){
+
+        if(
+          entry.isIntersecting
+        ){
+
+          loadMoreCommunityPosts();
+
+        }
+
+      }
+    );
+
   },
-  { rootMargin: "300px" }
+
+  {
+    rootMargin:
+    "300px"
+  }
+
 );
-postsLoadObserver.observe(loadMoreSentinel);
+
+postsLoadObserver.observe(
+  loadMoreSentinel
+);
 
 
 /* =====================================================
-   POST CARD
+   CREATE EACH COMMUNITY POST CARD
 ===================================================== */
 
-function makeEl(tag, className, text) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (text !== undefined) el.textContent = text;
-  return el;
-}
+function createPostCard(postData){
 
-function makeButton(className, html, dataset = {}) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = className;
-  button.innerHTML = html;
-  Object.entries(dataset).forEach(([k, v]) => { button.dataset[k] = v; });
-  return button;
-}
+  const postCard =
+  document.createElement("article");
 
-function createPostCard(postData) {
-  const postCard = makeEl("article", "postCard");
-  postCard.id = `post-${postData.id}`;
-  postCard.dataset.postId = postData.id;
+  postCard.className =
+  "postCard";
 
-  const authorId = getFirstValue(postData.userId, postData.authorId, postData.uid);
-  const authorName = getFirstValue(
-    postData.name, postData.fullName, postData.displayName, "Community Member"
+  postCard.id =
+  `post-${postData.id}`;
+
+  postCard.dataset.postId =
+  postData.id;
+
+  const authorId =
+  getFirstValue(
+    postData.userId,
+    postData.authorId,
+    postData.uid
   );
-  const authorPicture = getFirstValue(
-    postData.picture, postData.profilePicture, postData.photoURL,
-    postData.photoUrl, DEFAULT_PICTURE
-  );
-  const authorCountry = getFirstValue(postData.country);
-  const postDate = formatPostDate(postData.timestamp);
-  const postMessage = getFirstValue(
-    postData.post, postData.message, postData.content,
-    postData.text, postData.description
-  );
-  const postCategory = getFirstValue(
-    postData.category, postData.postCategory, postData.type, "General"
-  );
-  const mediaType = getFirstValue(postData.mediaType).toLowerCase();
 
-  /* ----- media urls ----- */
-  let imageUrl = "";
-  let videoUrl = "";
+  const authorName =
+  getFirstValue(
+    postData.name,
+    postData.fullName,
+    postData.displayName,
+    "Community Member"
+  );
 
-  if (mediaType === "image") {
-    imageUrl = getFirstValue(
-      postData.imageUrl, postData.imageURL, postData.photoUrl,
-      postData.photoURL, postData.postImage, postData.image, postData.mediaUrl
+  const authorPicture =
+  getFirstValue(
+    postData.picture,
+    postData.profilePicture,
+    postData.photoURL,
+    postData.photoUrl,
+    defaultProfilePicture
+  );
+
+  const authorCountry =
+  getFirstValue(
+    postData.country
+  );
+
+  const postDate =
+  formatPostDate(
+    postData.timestamp
+  );
+
+  const postMessage =
+  getFirstValue(
+    postData.post,
+    postData.message,
+    postData.content,
+    postData.text,
+    postData.description
+  );
+
+  const postCategory =
+  getFirstValue(
+    postData.category,
+    postData.postCategory,
+    postData.type,
+    "General"
+  );
+
+  const mediaType =
+  getFirstValue(
+    postData.mediaType
+  ).toLowerCase();
+
+  let imageUrl =
+  "";
+
+  let videoUrl =
+  "";
+
+  if(mediaType === "image"){
+
+    imageUrl =
+    getFirstValue(
+      postData.imageUrl,
+      postData.imageURL,
+      postData.photoUrl,
+      postData.photoURL,
+      postData.postImage,
+      postData.image,
+      postData.mediaUrl
     );
-  } else if (mediaType === "video") {
-    videoUrl = getFirstValue(
-      postData.videoUrl, postData.videoURL, postData.postVideo,
-      postData.video, postData.mediaUrl
+
+  }else if(mediaType === "video"){
+
+    videoUrl =
+    getFirstValue(
+      postData.videoUrl,
+      postData.videoURL,
+      postData.postVideo,
+      postData.video,
+      postData.mediaUrl
     );
-  } else {
-    imageUrl = getFirstValue(
-      postData.imageUrl, postData.imageURL, postData.photoUrl,
-      postData.photoURL, postData.postImage, postData.image
+
+  }else{
+
+    imageUrl =
+    getFirstValue(
+      postData.imageUrl,
+      postData.imageURL,
+      postData.photoUrl,
+      postData.photoURL,
+      postData.postImage,
+      postData.image
     );
-    videoUrl = getFirstValue(
-      postData.videoUrl, postData.videoURL, postData.postVideo, postData.video
+
+    videoUrl =
+    getFirstValue(
+      postData.videoUrl,
+      postData.videoURL,
+      postData.postVideo,
+      postData.video
     );
+
   }
 
-  let imageUrls = Array.isArray(postData.imageUrls)
-    ? postData.imageUrls.filter((u) => typeof u === "string" && u.trim() !== "")
-    : [];
-  if (imageUrls.length === 0 && imageUrl) imageUrls = [imageUrl];
+  /*
+     MULTIPLE PHOTOS PER POST
+     imageUrls is the array field createpost.html saves;
+     older posts only have the single imageUrl above.
+  */
 
-  videoUrl = originalVideoUrl(videoUrl);
+  let imageUrls =
+  Array.isArray(
+    postData.imageUrls
+  )
+  ? postData.imageUrls.filter(
+      function(url){
 
-  const likes = Array.isArray(postData.likes) ? postData.likes : [];
-  const userHasLiked = Boolean(currentUser && likes.includes(currentUser.uid));
+        return (
+          typeof url === "string" &&
+          url.trim() !== ""
+        );
 
-  /* ----- header ----- */
-  const postHeader = makeEl("div", "postHeader");
-
-  const profileImage = makeEl("img", "authorPicture");
-  profileImage.src = authorPicture;
-  profileImage.loading = "lazy";
-  profileImage.alt = `${authorName}'s profile picture`;
-  protectProfilePicture(profileImage);
-
-  const authorInformation = makeEl("div", "authorInformation");
-  const authorNameRow = makeEl("div", "authorNameRow");
-  const authorNameElement = makeEl("div", "authorName", authorName);
-  const verifiedBadge = makeEl("span", "verifiedBadge");
-
-  if (postData.verified === true) {
-    const accountType = getFirstValue(
-      postData.accountType, postData.userType, postData.profileType, "member"
-    ).toLowerCase();
-    verifiedBadge.classList.add("show");
-    if (accountType === "ministry") {
-      verifiedBadge.classList.add("ministry");
-      verifiedBadge.textContent = "✔ Ministry";
-    } else {
-      verifiedBadge.textContent = "✔ Verified";
-    }
-  }
-
-  authorNameRow.append(authorNameElement, verifiedBadge);
-
-  const postDetails = makeEl(
-    "div", "postDetails",
-    authorCountry ? `${authorCountry} • ${postDate}` : postDate
-  );
-
-  authorInformation.append(authorNameRow, postDetails);
-  postHeader.append(profileImage, authorInformation);
-  postCard.appendChild(postHeader);
-
-  /* ----- category ----- */
-  if (postCategory) {
-    postCard.appendChild(makeEl("div", "postCategory", postCategory));
-  }
-
-  /* ----- message ----- */
-  if (postMessage) {
-    const messageElement = makeEl("div", "postMessage", postMessage);
-    postCard.appendChild(messageElement);
-
-    if (postMessage.length > READ_MORE_LIMIT) {
-      messageElement.classList.add("truncated");
-      const readMore = makeButton("readMoreToggle", "Read more");
-      readMore.addEventListener("click", () => {
-        const stillTruncated = messageElement.classList.toggle("truncated");
-        readMore.textContent = stillTruncated ? "Read more" : "Read less";
-      });
-      postCard.appendChild(readMore);
-    }
-  }
-
-  /* ----- media ----- */
-  const mediaContainer = makeEl("div", "postMediaContainer");
-
-  if (imageUrls.length > 0) {
-    const visible = imageUrls.slice(0, MAX_GRID_PHOTOS);
-    const remaining = imageUrls.length - visible.length;
-
-    const photoGrid = makeEl(
-      "div", `postPhotoGrid count-${Math.min(imageUrls.length, MAX_GRID_PHOTOS)}`
-    );
-    photoGrid.dataset.images = JSON.stringify(imageUrls);
-
-    visible.forEach((url, index) => {
-      const tile = makeEl("div", "postPhotoTile");
-      const img = makeEl("img", "communityPostImage");
-      img.src = url;
-      img.alt = `Community post photo ${index + 1}`;
-      img.loading = "lazy";
-      img.dataset.fullImage = url;
-      img.dataset.galleryIndex = String(index);
-      img.addEventListener("error", () => tile.remove(), { once: true });
-      tile.appendChild(img);
-
-      if (index === visible.length - 1 && remaining > 0) {
-        tile.appendChild(makeEl("div", "postPhotoMoreOverlay", `+${remaining}`));
       }
-      photoGrid.appendChild(tile);
-    });
+    )
+  : [];
 
-    mediaContainer.appendChild(photoGrid);
+  if(
+    imageUrls.length === 0 &&
+    imageUrl
+  ){
 
-  } else if (videoUrl) {
-    const wrapper = makeEl("div", "communityPostVideoWrapper");
-    const video = makeEl("video", "communityPostVideo");
-    video.src = videoUrl;
-    video.controls = false;
-    video.muted = true;
-    video.preload = "metadata";
-    video.playsInline = true;
-    video.loop = true;
-    video.addEventListener("error", () => {
-      const code = video.error ? video.error.code : "unknown";
-      console.error("Feed video failed:", videoUrl, "code", code);
+    imageUrls =
+    [imageUrl];
 
-      wrapper.innerHTML = "";
-
-      const note = document.createElement("a");
-      note.href = videoUrl;
-      note.target = "_blank";
-      note.rel = "noopener";
-      note.style.cssText =
-        "display:block;padding:24px 16px;background:#111;color:#fff;" +
-        "text-align:center;font-size:14px;line-height:1.5;";
-      note.textContent =
-        `⚠️ Video could not play (code ${code}). Tap to open it directly.`;
-      note.addEventListener("click", (e) => e.stopPropagation());
-      wrapper.appendChild(note);
-    }, { once: true });
-
-    const overlay = makeEl("div", "videoExpandOverlay", "▶");
-    wrapper.append(video, overlay);
-    wrapper.addEventListener("click", () => openVideoReelViewer(videoUrl));
-    mediaContainer.appendChild(wrapper);
   }
 
-  if (mediaContainer.children.length > 0) postCard.appendChild(mediaContainer);
+  if(
+    imageUrls.length > 0
+  ){
 
-  /* ----- main actions ----- */
-  const actions = makeEl("div", "postActions");
+    imageUrl =
+    imageUrls[0];
 
-  const likeButton = makeButton(
-    userHasLiked ? "likeButton liked" : "likeButton",
-    `❤️ <span>${likes.length}</span>`,
-    { postId: postData.id, authorId, likes: JSON.stringify(likes) }
-  );
-
-  const commentsCount = Number(postData.commentsCount) || 0;
-  const commentButton = makeButton(
-    "commentButton",
-    commentsCount > 0 ? `💬 <span>${commentsCount}</span>` : "💬 Comment",
-    { postId: postData.id }
-  );
-
-  const shareButton = makeButton(
-    "shareButton", "🔗 Share",
-    { postId: postData.id, message: postMessage }
-  );
-
-  actions.append(likeButton, commentButton, shareButton);
-
-  if (currentUser && authorId && authorId !== currentUser.uid) {
-    actions.appendChild(makeButton(
-      "reportButton", "🚩 Report",
-      { postId: postData.id, authorId, message: postMessage }
-    ));
   }
 
-  postCard.appendChild(actions);
+  const MAXIMUM_GRID_PHOTOS_SHOWN =
+  4;
 
-  /* ----- owner / admin actions ----- */
-  if (currentUser && authorId === currentUser.uid) {
-    const ownerActions = makeEl("div", "postActions ownerActions");
-    ownerActions.append(
-      makeButton("editButton", "✏️ Edit", { postId: postData.id, message: postMessage }),
-      makeButton("deleteButton", "🗑️ Delete", { postId: postData.id })
+  const likes =
+  Array.isArray(
+    postData.likes
+  )
+  ? postData.likes
+  : [];
+
+  const userHasLiked =
+  Boolean(
+    currentUser &&
+    likes.includes(
+      currentUser.uid
+    )
+  );
+
+  const postHeader =
+  document.createElement("div");
+
+  postHeader.className =
+  "postHeader";
+
+  const profileImage =
+  document.createElement("img");
+
+  profileImage.className =
+  "authorPicture";
+
+  profileImage.src =
+  authorPicture;
+
+  profileImage.loading =
+  "lazy";
+
+  profileImage.alt =
+  `${authorName}'s profile picture`;
+
+  protectProfilePicture(
+    profileImage
+  );
+
+  const authorInformation =
+  document.createElement("div");
+
+  authorInformation.className =
+  "authorInformation";
+
+  const authorNameRow =
+  document.createElement("div");
+
+  authorNameRow.className =
+  "authorNameRow";
+
+  const authorNameElement =
+  document.createElement("div");
+
+  authorNameElement.className =
+  "authorName";
+
+  authorNameElement.textContent =
+  authorName;
+
+  const verifiedBadge =
+  document.createElement("span");
+
+  verifiedBadge.className =
+  "verifiedBadge";
+
+  const accountIsVerified =
+  postData.verified === true;
+
+  const accountType =
+  getFirstValue(
+    postData.accountType,
+    postData.userType,
+    postData.profileType,
+    "member"
+  ).toLowerCase();
+
+  if(accountIsVerified){
+
+    verifiedBadge.classList.add(
+      "show"
     );
-    postCard.appendChild(ownerActions);
 
-  } else if (currentUserIsAdmin && currentUser) {
-    const adminActions = makeEl("div", "postActions ownerActions adminActions");
-    adminActions.appendChild(makeButton(
-      "deleteButton adminDeleteButton", "🛡️ Remove Post (Admin)",
-      { postId: postData.id }
-    ));
-    postCard.appendChild(adminActions);
+    if(
+      accountType === "ministry"
+    ){
+
+      verifiedBadge.classList.add(
+        "ministry"
+      );
+
+      verifiedBadge.textContent =
+      "✔ Ministry";
+
+    }else{
+
+      verifiedBadge.textContent =
+      "✔ Verified";
+
+    }
+
   }
 
-  /* ----- profile navigation ----- */
-  if (authorId) {
-    profileImage.addEventListener("click", () => goToProfile(authorId));
-    authorNameElement.addEventListener("click", () => goToProfile(authorId));
+  authorNameRow.appendChild(
+    authorNameElement
+  );
+
+  authorNameRow.appendChild(
+    verifiedBadge
+  );
+
+  const postDetails =
+  document.createElement("div");
+
+  postDetails.className =
+  "postDetails";
+
+  postDetails.textContent =
+  authorCountry
+  ? `${authorCountry} • ${postDate}`
+  : postDate;
+
+  authorInformation.appendChild(
+    authorNameRow
+  );
+
+  authorInformation.appendChild(
+    postDetails
+  );
+
+  postHeader.appendChild(
+    profileImage
+  );
+
+  postHeader.appendChild(
+    authorInformation
+  );
+
+  postCard.appendChild(
+    postHeader
+  );
+
+  if(postCategory){
+
+    const categoryElement =
+    document.createElement("div");
+
+    categoryElement.className =
+    "postCategory";
+
+    categoryElement.textContent =
+    postCategory;
+
+    postCard.appendChild(
+      categoryElement
+    );
+
+  }
+
+  if(postMessage){
+
+    const messageElement =
+    document.createElement("div");
+
+    messageElement.className =
+    "postMessage";
+
+    messageElement.textContent =
+    postMessage;
+
+    postCard.appendChild(
+      messageElement
+    );
+
+    /*
+       READ MORE / READ LESS for long passages.
+    */
+
+    const READ_MORE_CHARACTER_LIMIT =
+    280;
+
+    if(
+      postMessage.length >
+      READ_MORE_CHARACTER_LIMIT
+    ){
+
+      messageElement.classList.add(
+        "truncated"
+      );
+
+      const readMoreButton =
+      document.createElement("button");
+
+      readMoreButton.type =
+      "button";
+
+      readMoreButton.className =
+      "readMoreToggle";
+
+      readMoreButton.textContent =
+      "Read more";
+
+      readMoreButton.addEventListener(
+        "click",
+        function(){
+
+          const isStillTruncated =
+          messageElement.classList.toggle(
+            "truncated"
+          );
+
+          readMoreButton.textContent =
+          isStillTruncated
+          ? "Read more"
+          : "Read less";
+
+        }
+      );
+
+      postCard.appendChild(
+        readMoreButton
+      );
+
+    }
+
+  }
+
+  const mediaContainer =
+  document.createElement("div");
+
+  mediaContainer.className =
+  "postMediaContainer";
+
+  if(imageUrls.length > 0){
+
+    const photoGrid =
+    document.createElement("div");
+
+    photoGrid.className =
+    `postPhotoGrid count-${
+      Math.min(
+        imageUrls.length,
+        MAXIMUM_GRID_PHOTOS_SHOWN
+      )
+    }`;
+
+    photoGrid.dataset.images =
+    JSON.stringify(
+      imageUrls
+    );
+
+    const visibleImageUrls =
+    imageUrls.slice(
+      0,
+      MAXIMUM_GRID_PHOTOS_SHOWN
+    );
+
+    const remainingPhotosCount =
+    imageUrls.length -
+    visibleImageUrls.length;
+
+    visibleImageUrls.forEach(
+      function(url,index){
+
+        const tile =
+        document.createElement("div");
+
+        tile.className =
+        "postPhotoTile";
+
+        const postImage =
+        document.createElement("img");
+
+        postImage.className =
+        "communityPostImage";
+
+        postImage.src =
+        url;
+
+        postImage.alt =
+        `Community post photo ${index + 1}`;
+
+        postImage.loading =
+        "lazy";
+
+        postImage.dataset.fullImage =
+        url;
+
+        postImage.dataset.galleryIndex =
+        String(index);
+
+        postImage.addEventListener(
+          "error",
+          function(){
+
+            tile.remove();
+
+          },
+          {
+            once:true
+          }
+        );
+
+        tile.appendChild(
+          postImage
+        );
+
+        const isLastVisibleTile =
+        index ===
+        visibleImageUrls.length - 1;
+
+        if(
+          isLastVisibleTile &&
+          remainingPhotosCount > 0
+        ){
+
+          const moreOverlay =
+          document.createElement("div");
+
+          moreOverlay.className =
+          "postPhotoMoreOverlay";
+
+          moreOverlay.textContent =
+          `+${remainingPhotosCount}`;
+
+          tile.appendChild(
+            moreOverlay
+          );
+
+        }
+
+        photoGrid.appendChild(
+          tile
+        );
+
+      }
+    );
+
+    mediaContainer.appendChild(
+      photoGrid
+    );
+
+  }else if(videoUrl){
+
+    const videoWrapper =
+    document.createElement("div");
+
+    videoWrapper.className =
+    "communityPostVideoWrapper";
+
+    const postVideo =
+    document.createElement("video");
+
+    postVideo.className =
+    "communityPostVideo";
+
+    postVideo.src =
+    videoUrl;
+
+    postVideo.controls =
+    false;
+
+    postVideo.muted =
+    true;
+
+    postVideo.preload =
+    "metadata";
+
+    postVideo.playsInline =
+    true;
+
+    postVideo.loop =
+    true;
+
+    postVideo.addEventListener(
+      "error",
+      function(){
+
+        videoWrapper.remove();
+
+      },
+      {
+        once:true
+      }
+    );
+
+    const expandOverlay =
+    document.createElement("div");
+
+    expandOverlay.className =
+    "videoExpandOverlay";
+
+    expandOverlay.innerHTML =
+    "▶";
+
+    videoWrapper.appendChild(
+      postVideo
+    );
+
+    videoWrapper.appendChild(
+      expandOverlay
+    );
+
+    videoWrapper.addEventListener(
+      "click",
+      function(){
+
+        document.dispatchEvent(
+          new CustomEvent(
+            "faithconnect:open-video",
+            { detail:{ url:videoUrl } }
+          )
+        );
+
+      }
+    );
+
+    mediaContainer.appendChild(
+      videoWrapper
+    );
+
+  }
+
+  if(
+    mediaContainer.children.length > 0
+  ){
+
+    postCard.appendChild(
+      mediaContainer
+    );
+
+  }
+
+  const actionsContainer =
+  document.createElement("div");
+
+  actionsContainer.className =
+  "postActions";
+
+  const likeButton =
+  document.createElement("button");
+
+  likeButton.type =
+  "button";
+
+  likeButton.className =
+  userHasLiked
+  ? "likeButton liked"
+  : "likeButton";
+
+  likeButton.dataset.postId =
+  postData.id;
+
+  likeButton.dataset.authorId =
+  authorId;
+
+  likeButton.dataset.likes =
+  JSON.stringify(
+    likes
+  );
+
+  likeButton.innerHTML =
+  `❤️ <span>${likes.length}</span>`;
+
+  const commentButton =
+  document.createElement("button");
+
+  commentButton.type =
+  "button";
+
+  commentButton.className =
+  "commentButton";
+
+  commentButton.dataset.postId =
+  postData.id;
+
+  const commentsCount =
+  Number(
+    postData.commentsCount
+  ) || 0;
+
+  commentButton.innerHTML =
+  commentsCount > 0
+  ? `💬 <span>${commentsCount}</span>`
+  : "💬 Comment";
+
+  const shareButton =
+  document.createElement("button");
+
+  shareButton.type =
+  "button";
+
+  shareButton.className =
+  "shareButton";
+
+  shareButton.dataset.postId =
+  postData.id;
+
+  shareButton.dataset.message =
+  postMessage;
+
+  shareButton.innerHTML =
+  "🔗 Share";
+
+  actionsContainer.appendChild(
+    likeButton
+  );
+
+  actionsContainer.appendChild(
+    commentButton
+  );
+
+  actionsContainer.appendChild(
+    shareButton
+  );
+
+  if(
+    currentUser &&
+    authorId &&
+    authorId !== currentUser.uid
+  ){
+
+    const reportButton =
+    document.createElement("button");
+
+    reportButton.type =
+    "button";
+
+    reportButton.className =
+    "reportButton";
+
+    reportButton.dataset.postId =
+    postData.id;
+
+    reportButton.dataset.authorId =
+    authorId;
+
+    reportButton.dataset.message =
+    postMessage;
+
+    reportButton.innerHTML =
+    "🚩 Report";
+
+    actionsContainer.appendChild(
+      reportButton
+    );
+
+  }
+
+  postCard.appendChild(
+    actionsContainer
+  );
+
+  if(
+    currentUser &&
+    authorId === currentUser.uid
+  ){
+
+    const ownerActions =
+    document.createElement("div");
+
+    ownerActions.className =
+    "postActions ownerActions";
+
+    const editButton =
+    document.createElement("button");
+
+    editButton.type =
+    "button";
+
+    editButton.className =
+    "editButton";
+
+    editButton.dataset.postId =
+    postData.id;
+
+    editButton.dataset.message =
+    postMessage;
+
+    editButton.innerHTML =
+    "✏️ Edit";
+
+    const deleteButton =
+    document.createElement("button");
+
+    deleteButton.type =
+    "button";
+
+    deleteButton.className =
+    "deleteButton";
+
+    deleteButton.dataset.postId =
+    postData.id;
+
+    deleteButton.innerHTML =
+    "🗑️ Delete";
+
+    ownerActions.appendChild(
+      editButton
+    );
+
+    ownerActions.appendChild(
+      deleteButton
+    );
+
+    postCard.appendChild(
+      ownerActions
+    );
+
+  }else if(
+    currentUserIsAdmin &&
+    currentUser
+  ){
+
+    const adminActions =
+    document.createElement("div");
+
+    adminActions.className =
+    "postActions ownerActions adminActions";
+
+    const adminDeleteButton =
+    document.createElement("button");
+
+    adminDeleteButton.type =
+    "button";
+
+    adminDeleteButton.className =
+    "deleteButton adminDeleteButton";
+
+    adminDeleteButton.dataset.postId =
+    postData.id;
+
+    adminDeleteButton.innerHTML =
+    "🛡️ Remove Post (Admin)";
+
+    adminActions.appendChild(
+      adminDeleteButton
+    );
+
+    postCard.appendChild(
+      adminActions
+    );
+
+  }
+
+  if(authorId){
+
+    profileImage.addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+        "user-profile.html?uid=" +
+        encodeURIComponent(
+          authorId
+        );
+
+      }
+    );
+
+    authorNameElement.addEventListener(
+      "click",
+      function(){
+
+        window.location.href =
+        "user-profile.html?uid=" +
+        encodeURIComponent(
+          authorId
+        );
+
+      }
+    );
+
   }
 
   return postCard;
+
 }
 
 
@@ -888,836 +2525,1320 @@ function createPostCard(postData) {
    POST ACTIONS
 ===================================================== */
 
-async function createLikeNotification(recipientId, postId) {
-  if (!currentUser || !recipientId || !postId) return;
-  if (recipientId === currentUser.uid) return;
+async function createLikeNotification(
+  recipientId,
+  postId
+){
 
-  const senderName = getFirstValue(
-    currentProfile.fullName, currentProfile.name, currentUser.displayName,
-    currentUser.email, "A community member"
+  if(
+    !currentUser ||
+    !recipientId ||
+    !postId
+  ){
+    return;
+  }
+
+  if(
+    recipientId === currentUser.uid
+  ){
+    return;
+  }
+
+  const senderName =
+  getFirstValue(
+    currentProfile.fullName,
+    currentProfile.name,
+    currentUser.displayName,
+    currentUser.email,
+    "A community member"
   );
 
-  try {
-    await addDoc(collection(db, "notifications"), {
-      recipientId,
-      senderId: currentUser.uid,
-      senderName,
-      type: "like",
-      postId,
-      targetUrl: `feed.html?post=${encodeURIComponent(postId)}`,
-      message: `${senderName} liked your post.`,
-      read: false,
-      timestamp: serverTimestamp()
-    });
-  } catch (error) {
-    console.error("Error creating like notification:", error);
-  }
-}
+  try{
 
-async function handleLikeButton(button) {
-  if (!currentUser) {
-    window.location.href = "login.html";
-    return;
-  }
+    await addDoc(
+      collection(
+        db,
+        "notifications"
+      ),
+      {
+        recipientId:
+        recipientId,
 
-  const postId = button.dataset.postId;
-  const postAuthorId = button.dataset.authorId || "";
-  if (!postId) return;
+        senderId:
+        currentUser.uid,
 
-  let likes = [];
-  try {
-    const saved = JSON.parse(button.dataset.likes || "[]");
-    likes = Array.isArray(saved) ? saved : [];
-  } catch (error) {
-    console.error("Could not read post likes:", error);
-  }
+        senderName:
+        senderName,
 
-  const uid = currentUser.uid;
-  const alreadyLiked = likes.includes(uid);
-  const updatedLikes = alreadyLiked
-    ? likes.filter((id) => id !== uid)
-    : [...likes, uid];
+        type:
+        "like",
 
-  button.disabled = true;
+        postId:
+        postId,
 
-  try {
-    await updateDoc(doc(db, "communityPosts", postId), { likes: updatedLikes });
+        targetUrl:
+        `feed.html?post=${encodeURIComponent(postId)}`,
 
-    button.dataset.likes = JSON.stringify(updatedLikes);
-    button.classList.toggle("liked", !alreadyLiked);
+        message:
+        `${senderName} liked your post.`,
 
-    const count = button.querySelector("span");
-    if (count) count.textContent = updatedLikes.length;
+        read:
+        false,
 
-    if (!alreadyLiked) await createLikeNotification(postAuthorId, postId);
-
-  } catch (error) {
-    console.error("Error updating likes:", error);
-    alert("The like could not be updated.");
-  } finally {
-    button.disabled = false;
-  }
-}
-
-function handleCommentButton(button) {
-  const postId = button.dataset.postId;
-  if (!postId) return;
-  window.location.href = `comments.html?postId=${encodeURIComponent(postId)}`;
-}
-
-async function handleShareButton(button) {
-  const postId = button.dataset.postId;
-  if (!postId) return;
-
-  const postMessage = button.dataset.message || "";
-  const postUrl =
-    `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
-  const shareText = postMessage
-    ? `${postMessage}\n\nSABASABA Gospel Ministry`
-    : "See this post on SABASABA Gospel Ministry.";
-
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        title: "SABASABA Gospel Ministry",
-        text: shareText,
-        url: postUrl
-      });
-      return;
-    }
-
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(postUrl);
-      alert("Post link copied.");
-      return;
-    }
-
-    window.prompt("Copy this post link:", postUrl);
-
-  } catch (error) {
-    if (error.name !== "AbortError") {
-      console.error("Error sharing post:", error);
-      alert("The post could not be shared.");
-    }
-  }
-}
-
-async function handleEditButton(button) {
-  if (!currentUser) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  const postId = button.dataset.postId;
-  if (!postId) return;
-
-  const newMessage = window.prompt("Edit your post:", button.dataset.message || "");
-  if (newMessage === null) return;
-
-  const cleaned = newMessage.trim();
-  if (!cleaned) {
-    alert("The post cannot be empty.");
-    return;
-  }
-
-  button.disabled = true;
-
-  try {
-    await updateDoc(doc(db, "communityPosts", postId), { post: cleaned });
-    button.dataset.message = cleaned;
-  } catch (error) {
-    console.error("Error editing post:", error);
-    alert("The post could not be edited.");
-  } finally {
-    button.disabled = false;
-  }
-}
-
-async function handleDeleteButton(button) {
-  if (!currentUser) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  const postId = button.dataset.postId;
-  if (!postId) return;
-
-  if (!window.confirm("Are you sure you want to delete this post?")) return;
-
-  button.disabled = true;
-
-  try {
-    await deleteDoc(doc(db, "communityPosts", postId));
-
-    loadedPostIds.delete(postId);
-    loadedPostsDocs = loadedPostsDocs.filter((d) => d.id !== postId);
-
-    const cardElement = $(`post-${postId}`);
-    if (cardElement) cardElement.remove();
-
-    if (postsContainer.children.length === 0) showEmptyMessage();
-
-  } catch (error) {
-    console.error("Error deleting post:", error);
-    alert("The post could not be deleted.");
-    button.disabled = false;
-  }
-}
-
-
-/* =====================================================
-   REPORT MODAL
-===================================================== */
-
-let reportTargetPostId = null;
-let reportTargetAuthorId = null;
-let reportTargetMessage = "";
-let selectedReportReason = null;
-
-function openReportModal(postId, authorId, message) {
-  if (!currentUser) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  reportTargetPostId = postId;
-  reportTargetAuthorId = authorId || "";
-  reportTargetMessage = message || "";
-  selectedReportReason = null;
-
-  if (reportReasonList) {
-    reportReasonList
-      .querySelectorAll(".reportReasonOption")
-      .forEach((b) => b.classList.remove("selected"));
-  }
-
-  if (reportSubmitButton) {
-    reportSubmitButton.disabled = true;
-    reportSubmitButton.textContent = "Submit report";
-  }
-
-  if (reportModal) {
-    reportModal.classList.add("open");
-    reportModal.setAttribute("aria-hidden", "false");
-  }
-  lockScroll(true);
-}
-
-function closeReportModal() {
-  if (reportModal) {
-    reportModal.classList.remove("open");
-    reportModal.setAttribute("aria-hidden", "true");
-  }
-  lockScroll(false);
-
-  reportTargetPostId = null;
-  reportTargetAuthorId = null;
-  reportTargetMessage = "";
-  selectedReportReason = null;
-}
-
-if (reportReasonList) {
-  reportReasonList.addEventListener("click", (event) => {
-    const option = event.target.closest(".reportReasonOption");
-    if (!option) return;
-
-    reportReasonList
-      .querySelectorAll(".reportReasonOption")
-      .forEach((b) => b.classList.remove("selected"));
-
-    option.classList.add("selected");
-    selectedReportReason = option.dataset.reason || "Other";
-    if (reportSubmitButton) reportSubmitButton.disabled = false;
-  });
-}
-
-if (reportCancelButton) reportCancelButton.addEventListener("click", closeReportModal);
-
-if (reportModal) {
-  reportModal.addEventListener("click", (event) => {
-    if (event.target === reportModal) closeReportModal();
-  });
-}
-
-if (reportSubmitButton) {
-  reportSubmitButton.addEventListener("click", async () => {
-    if (!currentUser || !reportTargetPostId || !selectedReportReason) return;
-
-    reportSubmitButton.disabled = true;
-    reportSubmitButton.textContent = "Submitting...";
-
-    const reporterName = getFirstValue(
-      currentProfile.fullName, currentProfile.name, currentUser.displayName,
-      currentUser.email, "A community member"
+        timestamp:
+        serverTimestamp()
+      }
     );
 
-    try {
-      await addDoc(collection(db, "reports"), {
-        postId: reportTargetPostId,
-        postAuthorId: reportTargetAuthorId,
-        postMessageSnapshot: reportTargetMessage.slice(0, 300),
-        reporterId: currentUser.uid,
-        reporterName,
-        reason: selectedReportReason,
-        status: "pending",
-        timestamp: serverTimestamp()
-      });
+  }catch(error){
 
-      alert("Thank you — this post has been reported and will be reviewed.");
-      closeReportModal();
+    console.error(
+      "Error creating like notification:",
+      error
+    );
 
-    } catch (error) {
-      console.error("Error submitting report:", error);
-      alert("The report could not be submitted. Please try again.");
-      reportSubmitButton.disabled = false;
-      reportSubmitButton.textContent = "Submit report";
-    }
-  });
-}
-
-
-/* =====================================================
-   PHOTO VIEWER
-===================================================== */
-
-function updatePhotoViewerNavigation() {
-  const multiple = currentGalleryImages.length > 1;
-  photoViewerPrevButton.classList.toggle("hidden", !multiple);
-  photoViewerNextButton.classList.toggle("hidden", !multiple);
-  photoViewerCounter.classList.toggle("hidden", !multiple);
-  if (multiple) {
-    photoViewerCounter.textContent =
-      `${currentGalleryIndex + 1} of ${currentGalleryImages.length}`;
   }
+
 }
 
-function showGalleryImageAt(index) {
-  const total = currentGalleryImages.length;
-  if (total === 0) return;
-  currentGalleryIndex = ((index % total) + total) % total;
-  photoViewerImage.src = currentGalleryImages[currentGalleryIndex];
-  updatePhotoViewerNavigation();
-}
 
-function openPhotoViewer(images, startIndex = 0) {
-  const gallery = Array.isArray(images)
-    ? images.filter((u) => typeof u === "string" && u.trim() !== "")
-    : (images ? [images] : []);
+async function handleLikeButton(
+  button
+){
 
-  if (gallery.length === 0) return;
+  if(!currentUser){
 
-  currentGalleryImages = gallery;
+    window.location.href =
+    "login.html";
 
-  photoViewerVideo.pause();
-  photoViewerVideo.removeAttribute("src");
-  photoViewerVideo.load();
-  photoViewerVideo.style.display = "none";
-  photoViewerImage.style.display = "block";
+    return;
 
-  showGalleryImageAt(startIndex);
+  }
 
-  photoViewer.classList.add("open");
-  photoViewer.setAttribute("aria-hidden", "false");
-  lockScroll(true);
-  closePhotoViewerButton.focus();
-}
+  const postId =
+  button.dataset.postId;
 
-function hidePhotoViewer() {
-  photoViewer.classList.remove("open");
-  photoViewer.setAttribute("aria-hidden", "true");
+  const postAuthorId =
+  button.dataset.authorId ||
+  "";
 
-  photoViewerImage.src = "";
-  currentGalleryImages = [];
-  currentGalleryIndex = 0;
+  if(!postId){
+    return;
+  }
 
-  photoViewerVideo.pause();
-  photoViewerVideo.removeAttribute("src");
-  photoViewerVideo.load();
+  let likes =
+  [];
 
-  lockScroll(false);
-}
+  try{
 
-photoViewerPrevButton.addEventListener("click", (event) => {
-  event.stopPropagation();
-  showGalleryImageAt(currentGalleryIndex - 1);
-});
+    const savedLikes =
+    JSON.parse(
+      button.dataset.likes ||
+      "[]"
+    );
 
-photoViewerNextButton.addEventListener("click", (event) => {
-  event.stopPropagation();
-  showGalleryImageAt(currentGalleryIndex + 1);
-});
+    likes =
+    Array.isArray(
+      savedLikes
+    )
+    ? savedLikes
+    : [];
 
-closePhotoViewerButton.addEventListener("click", hidePhotoViewer);
+  }catch(error){
 
-photoViewer.addEventListener("click", (event) => {
-  if (event.target === photoViewer) hidePhotoViewer();
-});
+    console.error(
+      "Could not read post likes:",
+      error
+    );
 
+    likes =
+    [];
 
-/* =====================================================
-   REELS-STYLE VIDEO VIEWER
-===================================================== */
+  }
 
-function collectFeedVideoUrls() {
-  const urls = [];
-  document.querySelectorAll(".communityPostVideoWrapper video").forEach((v) => {
-    if (v.src && !urls.includes(v.src)) urls.push(v.src);
-  });
-  return urls;
-}
+  const currentUserId =
+  currentUser.uid;
 
-function openVideoReelViewer(startingVideoUrl) {
-  const videoUrls = collectFeedVideoUrls();
-  if (videoUrls.length === 0) return;
-
-  videoReelTrack.innerHTML = "";
-
-  videoUrls.forEach((url) => {
-    const slide = makeEl("div", "videoReelSlide");
-    const video = document.createElement("video");
-    video.src = url;
-    video.controls = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.preload = "metadata";
-    video.muted = false;
-    slide.appendChild(video);
-    videoReelTrack.appendChild(slide);
-  });
-
-  videoReelViewer.classList.add("open");
-  videoReelViewer.setAttribute("aria-hidden", "false");
-  lockScroll(true);
-
-  const startIndex = Math.max(0, videoUrls.indexOf(startingVideoUrl));
-  const slides = videoReelTrack.querySelectorAll(".videoReelSlide");
-  if (slides[startIndex]) slides[startIndex].scrollIntoView({ behavior: "auto" });
-
-  startReelAutoplayObserver();
-}
-
-function startReelAutoplayObserver() {
-  if (reelScrollObserver) reelScrollObserver.disconnect();
-
-  const allVideos = videoReelTrack.querySelectorAll("video");
-
-  reelScrollObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target;
-
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-          allVideos.forEach((other) => { if (other !== video) other.pause(); });
-          const p = video.play();
-          if (p !== undefined) p.catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-    },
-    { threshold: [0, 0.6, 1] }
+  const userAlreadyLiked =
+  likes.includes(
+    currentUserId
   );
 
-  allVideos.forEach((v) => reelScrollObserver.observe(v));
-}
+  const updatedLikes =
+  userAlreadyLiked
 
-function closeVideoReelViewer() {
-  if (reelScrollObserver) {
-    reelScrollObserver.disconnect();
-    reelScrollObserver = null;
+  ? likes.filter(
+      function(userId){
+
+        return (
+          userId !== currentUserId
+        );
+
+      }
+    )
+
+  : [
+      ...likes,
+      currentUserId
+    ];
+
+  button.disabled =
+  true;
+
+  try{
+
+    const postReference =
+    doc(
+      db,
+      "communityPosts",
+      postId
+    );
+
+    await updateDoc(
+      postReference,
+      {
+        likes:
+        updatedLikes
+      }
+    );
+
+    button.dataset.likes =
+    JSON.stringify(
+      updatedLikes
+    );
+
+    button.classList.toggle(
+      "liked",
+      !userAlreadyLiked
+    );
+
+    const likeCount =
+    button.querySelector(
+      "span"
+    );
+
+    if(likeCount){
+
+      likeCount.textContent =
+      updatedLikes.length;
+
+    }
+
+    if(!userAlreadyLiked){
+
+      await createLikeNotification(
+        postAuthorId,
+        postId
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error updating likes:",
+      error
+    );
+
+    alert(
+      "The like could not be updated."
+    );
+
+  }finally{
+
+    button.disabled =
+    false;
+
   }
 
-  videoReelTrack.querySelectorAll("video").forEach((v) => v.pause());
-
-  videoReelViewer.classList.remove("open");
-  videoReelViewer.setAttribute("aria-hidden", "true");
-  videoReelTrack.innerHTML = "";
-  lockScroll(false);
 }
 
-closeVideoReelViewerButton.addEventListener("click", closeVideoReelViewer);
+
+function handleCommentButton(
+  button
+){
+
+  const postId =
+  button.dataset.postId;
+
+  if(!postId){
+    return;
+  }
+
+  window.location.href =
+  `comments.html?postId=${encodeURIComponent(postId)}`;
+
+}
+
+
+async function handleShareButton(
+  button
+){
+
+  const postId =
+  button.dataset.postId;
+
+  if(!postId){
+    return;
+  }
+
+  const postMessage =
+  button.dataset.message ||
+  "";
+
+  const postUrl =
+  `${window.location.origin}${window.location.pathname}?post=${encodeURIComponent(postId)}`;
+
+  const shareText =
+  postMessage
+
+  ? `${postMessage}\n\nSABASABA Gospel Ministry`
+
+  : "See this post on SABASABA Gospel Ministry.";
+
+  try{
+
+    if(
+      navigator.share
+    ){
+
+      await navigator.share(
+        {
+          title:
+          "SABASABA Gospel Ministry",
+
+          text:
+          shareText,
+
+          url:
+          postUrl
+        }
+      );
+
+      return;
+
+    }
+
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(
+        postUrl
+      );
+
+      alert(
+        "Post link copied."
+      );
+
+      return;
+
+    }
+
+    window.prompt(
+      "Copy this post link:",
+      postUrl
+    );
+
+  }catch(error){
+
+    if(
+      error.name !== "AbortError"
+    ){
+
+      console.error(
+        "Error sharing post:",
+        error
+      );
+
+      alert(
+        "The post could not be shared."
+      );
+
+    }
+
+  }
+
+}
+
+
+async function handleEditButton(
+  button
+){
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+  const postId =
+  button.dataset.postId;
+
+  const oldMessage =
+  button.dataset.message ||
+  "";
+
+  if(!postId){
+    return;
+  }
+
+  const newMessage =
+  window.prompt(
+    "Edit your post:",
+    oldMessage
+  );
+
+  if(
+    newMessage === null
+  ){
+    return;
+  }
+
+  const cleanedMessage =
+  newMessage.trim();
+
+  if(!cleanedMessage){
+
+    alert(
+      "The post cannot be empty."
+    );
+
+    return;
+
+  }
+
+  button.disabled =
+  true;
+
+  try{
+
+    const postReference =
+    doc(
+      db,
+      "communityPosts",
+      postId
+    );
+
+    await updateDoc(
+      postReference,
+      {
+        post:
+        cleanedMessage
+      }
+    );
+
+    button.dataset.message =
+    cleanedMessage;
+
+  }catch(error){
+
+    console.error(
+      "Error editing post:",
+      error
+    );
+
+    alert(
+      "The post could not be edited."
+    );
+
+  }finally{
+
+    button.disabled =
+    false;
+
+  }
+
+}
+
+
+async function handleDeleteButton(
+  button
+){
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+  const postId =
+  button.dataset.postId;
+
+  if(!postId){
+    return;
+  }
+
+  const confirmed =
+  window.confirm(
+    "Are you sure you want to delete this post?"
+  );
+
+  if(!confirmed){
+    return;
+  }
+
+  button.disabled =
+  true;
+
+  try{
+
+    const postReference =
+    doc(
+      db,
+      "communityPosts",
+      postId
+    );
+
+    await deleteDoc(
+      postReference
+    );
+
+    /*
+       Remove it from the page and from the loaded-post
+       tracking right away — the live listener ignores
+       "removed" changes on purpose.
+    */
+
+    loadedPostIds.delete(
+      postId
+    );
+
+    loadedPostsDocs =
+    loadedPostsDocs.filter(
+      function(postDoc){
+
+        return postDoc.id !== postId;
+
+      }
+    );
+
+    const postCardElement =
+    document.getElementById(
+      `post-${postId}`
+    );
+
+    if(postCardElement){
+
+      postCardElement.remove();
+
+    }
+
+    if(
+      postsContainer.children.length === 0
+    ){
+
+      showEmptyMessage();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Error deleting post:",
+      error
+    );
+
+    alert(
+      "The post could not be deleted."
+    );
+
+    button.disabled =
+    false;
+
+  }
+
+}
+
+
+/* =====================================================
+   REPORT POST MODAL
+===================================================== */
+
+let reportTargetPostId =
+null;
+
+let reportTargetAuthorId =
+null;
+
+let reportTargetMessage =
+"";
+
+let selectedReportReason =
+null;
+
+
+function openReportModal(
+  postId,
+  authorId,
+  message
+){
+
+  if(!currentUser){
+
+    window.location.href =
+    "login.html";
+
+    return;
+
+  }
+
+  reportTargetPostId =
+  postId;
+
+  reportTargetAuthorId =
+  authorId ||
+  "";
+
+  reportTargetMessage =
+  message ||
+  "";
+
+  selectedReportReason =
+  null;
+
+  if(reportReasonList){
+
+    reportReasonList
+    .querySelectorAll(
+      ".reportReasonOption"
+    )
+    .forEach(
+      optionButton => {
+
+        optionButton.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+  }
+
+  if(reportSubmitButton){
+
+    reportSubmitButton.disabled =
+    true;
+
+    reportSubmitButton.textContent =
+    "Submit report";
+
+  }
+
+  if(reportModal){
+
+    reportModal.classList.add(
+      "open"
+    );
+
+    reportModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  }
+
+  document.body.style.overflow =
+  "hidden";
+
+}
+
+
+function closeReportModal(){
+
+  if(reportModal){
+
+    reportModal.classList.remove(
+      "open"
+    );
+
+    reportModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+  document.body.style.overflow =
+  "";
+
+  reportTargetPostId =
+  null;
+
+  reportTargetAuthorId =
+  null;
+
+  reportTargetMessage =
+  "";
+
+  selectedReportReason =
+  null;
+
+}
+
+
+if(reportReasonList){
+
+  reportReasonList.addEventListener(
+    "click",
+    event => {
+
+      const optionButton =
+      event.target.closest(
+        ".reportReasonOption"
+      );
+
+      if(!optionButton){
+        return;
+      }
+
+      reportReasonList
+      .querySelectorAll(
+        ".reportReasonOption"
+      )
+      .forEach(
+        button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        }
+      );
+
+      optionButton.classList.add(
+        "selected"
+      );
+
+      selectedReportReason =
+      optionButton.dataset.reason ||
+      "Other";
+
+      if(reportSubmitButton){
+
+        reportSubmitButton.disabled =
+        false;
+
+      }
+
+    }
+  );
+
+}
+
+
+if(reportCancelButton){
+
+  reportCancelButton.addEventListener(
+    "click",
+    closeReportModal
+  );
+
+}
+
+
+if(reportModal){
+
+  reportModal.addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target === reportModal
+      ){
+
+        closeReportModal();
+
+      }
+
+    }
+  );
+
+}
+
+
+if(reportSubmitButton){
+
+  reportSubmitButton.addEventListener(
+    "click",
+    async () => {
+
+      if(
+        !currentUser ||
+        !reportTargetPostId ||
+        !selectedReportReason
+      ){
+        return;
+      }
+
+      reportSubmitButton.disabled =
+      true;
+
+      reportSubmitButton.textContent =
+      "Submitting...";
+
+      const reporterName =
+      getFirstValue(
+        currentProfile.fullName,
+        currentProfile.name,
+        currentUser.displayName,
+        currentUser.email,
+        "A community member"
+      );
+
+      try{
+
+        await addDoc(
+          collection(
+            db,
+            "reports"
+          ),
+          {
+            postId:
+            reportTargetPostId,
+
+            postAuthorId:
+            reportTargetAuthorId,
+
+            postMessageSnapshot:
+            reportTargetMessage.slice(
+              0,
+              300
+            ),
+
+            reporterId:
+            currentUser.uid,
+
+            reporterName:
+            reporterName,
+
+            reason:
+            selectedReportReason,
+
+            status:
+            "pending",
+
+            timestamp:
+            serverTimestamp()
+          }
+        );
+
+        alert(
+          "Thank you — this post has been reported and will be reviewed."
+        );
+
+        closeReportModal();
+
+      }catch(error){
+
+        console.error(
+          "Error submitting report:",
+          error
+        );
+
+        alert(
+          "The report could not be submitted. Please try again."
+        );
+
+        reportSubmitButton.disabled =
+        false;
+
+        reportSubmitButton.textContent =
+        "Submit report";
+
+      }
+
+    }
+  );
+
+}
 
 
 /* =====================================================
    CLICK HANDLING FOR POSTS
 ===================================================== */
 
-postsContainer.addEventListener("click", (event) => {
-  const target = event.target;
+postsContainer.addEventListener(
+  "click",
+  function(event){
 
-  const like = target.closest(".likeButton");
-  if (like) return handleLikeButton(like);
-
-  const comment = target.closest(".commentButton");
-  if (comment) return handleCommentButton(comment);
-
-  const share = target.closest(".shareButton");
-  if (share) return handleShareButton(share);
-
-  const edit = target.closest(".editButton");
-  if (edit) return handleEditButton(edit);
-
-  const del = target.closest(".deleteButton");
-  if (del) return handleDeleteButton(del);
-
-  const report = target.closest(".reportButton");
-  if (report) {
-    return openReportModal(
-      report.dataset.postId,
-      report.dataset.authorId,
-      report.dataset.message
+    const likeButton =
+    event.target.closest(
+      ".likeButton"
     );
-  }
 
-  const image = target.closest(".communityPostImage");
-  if (image) {
-    const grid = image.closest(".postPhotoGrid");
-    let gallery = [];
+    if(likeButton){
 
-    try {
-      gallery = grid ? JSON.parse(grid.dataset.images || "[]") : [];
-    } catch (error) {
-      gallery = [];
+      handleLikeButton(
+        likeButton
+      );
+
+      return;
+
     }
 
-    if (!Array.isArray(gallery) || gallery.length === 0) {
-      gallery = [image.dataset.fullImage || image.src];
+    const commentButton =
+    event.target.closest(
+      ".commentButton"
+    );
+
+    if(commentButton){
+
+      handleCommentButton(
+        commentButton
+      );
+
+      return;
+
     }
 
-    openPhotoViewer(gallery, Number(image.dataset.galleryIndex) || 0);
-  }
-});
+    const shareButton =
+    event.target.closest(
+      ".shareButton"
+    );
 
+    if(shareButton){
 
-/* =====================================================
-   KEYBOARD
-===================================================== */
+      handleShareButton(
+        shareButton
+      );
 
-document.addEventListener("keydown", (event) => {
-  if (photoViewer.classList.contains("open")) {
-    if (event.key === "ArrowLeft") return showGalleryImageAt(currentGalleryIndex - 1);
-    if (event.key === "ArrowRight") return showGalleryImageAt(currentGalleryIndex + 1);
-  }
+      return;
 
-  if (event.key !== "Escape") return;
+    }
 
-  if (photoViewer.classList.contains("open")) hidePhotoViewer();
-  if (videoReelViewer.classList.contains("open")) closeVideoReelViewer();
-  if (reportModal && reportModal.classList.contains("open")) closeReportModal();
-});
+    const editButton =
+    event.target.closest(
+      ".editButton"
+    );
 
+    if(editButton){
 
-/* =====================================================
-   REFRESH BUTTON
-===================================================== */
+      handleEditButton(
+        editButton
+      );
 
-if (refreshButton) {
-  refreshButton.addEventListener("click", () => {
-    refreshButton.disabled = true;
-    refreshButton.textContent = "⏳";
-    startCommunityFeed();
-    window.setTimeout(() => {
-      refreshButton.disabled = false;
-      refreshButton.textContent = "🔄";
-    }, 1000);
-  });
-}
+      return;
 
+    }
 
-/* =====================================================
-   SCROLL TO SHARED POST (?post=...)
-===================================================== */
+    const deleteButton =
+    event.target.closest(
+      ".deleteButton"
+    );
 
-async function scrollToSharedPost() {
-  const sharedPostId = new URLSearchParams(window.location.search).get("post");
-  if (!sharedPostId) return;
+    if(deleteButton){
 
-  let sharedPost = $(`post-${sharedPostId}`);
+      handleDeleteButton(
+        deleteButton
+      );
 
-  if (!sharedPost) {
-    try {
-      const snapshot = await getDoc(doc(db, "communityPosts", sharedPostId));
-      if (snapshot.exists()) {
-        sharedPost = createPostCard({ id: snapshot.id, ...snapshot.data() });
-        postsContainer.insertBefore(sharedPost, postsContainer.firstChild);
+      return;
+
+    }
+
+    const reportButton =
+    event.target.closest(
+      ".reportButton"
+    );
+
+    if(reportButton){
+
+      openReportModal(
+        reportButton.dataset.postId,
+        reportButton.dataset.authorId,
+        reportButton.dataset.message
+      );
+
+      return;
+
+    }
+
+    const postImage =
+    event.target.closest(
+      ".communityPostImage"
+    );
+
+    if(postImage){
+
+      const photoGrid =
+      postImage.closest(
+        ".postPhotoGrid"
+      );
+
+      let galleryImages =
+      [];
+
+      try{
+
+        galleryImages =
+        photoGrid
+        ? JSON.parse(
+            photoGrid.dataset.images ||
+            "[]"
+          )
+        : [];
+
+      }catch(error){
+
+        galleryImages =
+        [];
+
       }
-    } catch (error) {
-      console.error("Error loading shared post:", error);
+
+      if(
+        !Array.isArray(galleryImages) ||
+        galleryImages.length === 0
+      ){
+
+        galleryImages =
+        [
+          postImage.dataset.fullImage ||
+          postImage.src
+        ];
+
+      }
+
+      const startIndex =
+      Number(
+        postImage.dataset.galleryIndex
+      ) ||
+      0;
+
+      document.dispatchEvent(
+        new CustomEvent(
+          "faithconnect:open-photos",
+          { detail:{ images:galleryImages, startIndex:startIndex } }
+        )
+      );
+
     }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key !== "Escape"
+    ){
+      return;
+    }
+
+    if(
+      reportModal &&
+      reportModal.classList.contains(
+        "open"
+      )
+    ){
+
+      closeReportModal();
+
+    }
+
+  }
+);
+
+
+if(refreshButton){
+
+  refreshButton.addEventListener(
+    "click",
+    function(){
+
+      refreshButton.disabled =
+      true;
+
+      refreshButton.textContent =
+      "⏳";
+
+      startCommunityFeed();
+
+      window.setTimeout(
+        function(){
+
+          refreshButton.disabled =
+          false;
+
+          refreshButton.textContent =
+          "🔄";
+
+        },
+        1000
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   SCROLL TO A SHARED POST (?post=...)
+===================================================== */
+
+async function scrollToSharedPost(){
+
+  const urlParameters =
+  new URLSearchParams(
+    window.location.search
+  );
+
+  const sharedPostId =
+  urlParameters.get(
+    "post"
+  );
+
+  if(!sharedPostId){
+    return;
   }
 
-  if (!sharedPost) return;
+  let sharedPost =
+  document.getElementById(
+    `post-${sharedPostId}`
+  );
 
-  window.setTimeout(() => {
-    sharedPost.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 150);
+  if(!sharedPost){
+
+    try{
+
+      const postReference =
+      doc(
+        db,
+        "communityPosts",
+        sharedPostId
+      );
+
+      const postSnapshot =
+      await getDoc(
+        postReference
+      );
+
+      if(
+        postSnapshot.exists()
+      ){
+
+        const postData = {
+          id:
+          postSnapshot.id,
+
+          ...postSnapshot.data()
+        };
+
+        const postCard =
+        createPostCard(
+          postData
+        );
+
+        postsContainer.insertBefore(
+          postCard,
+          postsContainer.firstChild
+        );
+
+        sharedPost =
+        postCard;
+
+      }
+
+    }catch(error){
+
+      console.error(
+        "Error loading shared post:",
+        error
+      );
+
+    }
+
+  }
+
+  if(!sharedPost){
+    return;
+  }
+
+  window.setTimeout(
+    function(){
+
+      sharedPost.scrollIntoView(
+        {
+          behavior:
+          "smooth",
+
+          block:
+          "center"
+        }
+      );
+
+    },
+    150
+  );
+
 }
+
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    stopPostsListener();
+
+    stopNotificationListener();
+
+    if(postsLoadObserver){
+
+      postsLoadObserver.disconnect();
+
+    }
+
+    if(renderDebounceTimer){
+
+      clearTimeout(
+        renderDebounceTimer
+      );
+
+    }
+
+  }
+);
+
+
+console.log(
+  "Faith Connect Community Wall is ready."
+);
 
 
 /* =====================================================
    VIDEO AUTOPLAY IN THE FEED
 ===================================================== */
 
-function startVideoAutoPlay() {
-  if (videoObserver) videoObserver.disconnect();
+let videoObserver =
+null;
 
-  const videos = document.querySelectorAll(".communityPostVideo");
-  if (!videos.length) return;
 
-  videoObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target;
+function startVideoAutoPlay(){
 
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.7) {
-          videos.forEach((other) => { if (other !== video) other.pause(); });
-          video.muted = true;
-          const p = video.play();
-          if (p !== undefined) {
-            p.catch((error) => console.log("Video autoplay was blocked:", error));
+  if(videoObserver){
+
+    videoObserver.disconnect();
+
+  }
+
+  const communityVideos =
+  document.querySelectorAll(
+    ".communityPostVideo"
+  );
+
+  if(
+    !communityVideos.length
+  ){
+    return;
+  }
+
+  videoObserver =
+  new IntersectionObserver(
+
+    function(entries){
+
+      entries.forEach(
+        function(entry){
+
+          const video =
+          entry.target;
+
+          if(
+            entry.isIntersecting &&
+            entry.intersectionRatio >= 0.7
+          ){
+
+            communityVideos.forEach(
+              function(otherVideo){
+
+                if(
+                  otherVideo !== video
+                ){
+
+                  otherVideo.pause();
+
+                }
+
+              }
+            );
+
+            video.muted =
+            true;
+
+            const playPromise =
+            video.play();
+
+            if(
+              playPromise !== undefined
+            ){
+
+              playPromise.catch(
+                function(error){
+
+                  console.log(
+                    "Video autoplay was blocked:",
+                    error
+                  );
+
+                }
+              );
+
+            }
+
+          }else{
+
+            video.pause();
+
           }
-        } else {
-          video.pause();
+
         }
-      });
+      );
+
     },
-    { threshold: [0, 0.25, 0.5, 0.7, 1] }
-  );
 
-  videos.forEach((video) => {
-    video.muted = true;
-    video.playsInline = true;
-    videoObserver.observe(video);
-  });
-}
-
-
-/* =====================================================
-   FAITH MOMENTS STRIP
-   Every moment gets its own card. Newest first.
-===================================================== */
-
-const MOMENT_TYPE_ICONS = {
-  encouragement: "🕊️",
-  scripture: "📖",
-  testimony: "✨",
-  verse: "📖",
-  prayer: "🙏",
-  photo: "🖼️",
-  video: "🎥"
-};
-
-function momentTypeIcon(type) {
-  return MOMENT_TYPE_ICONS[String(type || "").toLowerCase()] || "✨";
-}
-
-function momentInitials(name) {
-  const words = String(name || "Faith Member").trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return "F";
-  return words.slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("");
-}
-
-function isVideoUrl(url) {
-  const clean = String(url || "").split("?")[0].split("#")[0].toLowerCase();
-  return /\.(mp4|webm|mov|m4v|3gp|mkv|ogv)$/.test(clean);
-}
-
-function isMomentActive(momentData) {
-  /* Prefer the explicit expiry saved by the create page. */
-  const expires = toDate(momentData.expiresAt);
-  if (expires) return expires.getTime() > Date.now();
-
-  const created = toDate(momentData.timestamp || momentData.createdAt);
-  if (!created) return true;
-  return created.getTime() + MOMENT_LIFETIME_MS > Date.now();
-}
-
-function getMomentMedia(momentData) {
-  const mediaType = String(
-    momentData.mediaType || momentData.type || ""
-  ).toLowerCase();
-
-  const explicitVideo = getFirstValue(
-    momentData.videoUrl, momentData.videoURL, momentData.video
-  );
-
-  const imageCandidate = getFirstValue(
-    momentData.thumbnailUrl, momentData.thumbnailURL, momentData.videoThumbnail,
-    momentData.imageUrl, momentData.imageURL, momentData.photoUrl,
-    momentData.photoURL, momentData.mediaUrl, momentData.contentUrl
-  );
-
-  let videoUrl = explicitVideo;
-
-  if (!videoUrl && mediaType === "video") {
-    videoUrl = getFirstValue(
-      momentData.mediaUrl, momentData.contentUrl, momentData.fileUrl
-    );
-  }
-
-  if (!videoUrl && imageCandidate && isVideoUrl(imageCandidate)) {
-    videoUrl = imageCandidate;
-  }
-
-  const imageUrl =
-    imageCandidate && !isVideoUrl(imageCandidate) && imageCandidate !== videoUrl
-      ? imageCandidate
-      : "";
-
-  return { imageUrl, videoUrl: originalVideoUrl(videoUrl) };
-}
-
-function buildMomentCard(momentData) {
-  const name = getFirstValue(
-    momentData.authorName, momentData.name, momentData.fullName,
-    momentData.displayName, "Faith Connect Member"
-  );
-
-  const profilePicture = getFirstValue(
-    momentData.authorPicture, momentData.profilePicture,
-    momentData.picture, momentData.photoURL
-  );
-
-  const { imageUrl, videoUrl } = getMomentMedia(momentData);
-  const icon = momentTypeIcon(momentData.momentType || momentData.type);
-
-  const card = document.createElement("a");
-  card.href = `faith-moments.html?moment=${encodeURIComponent(momentData.id)}`;
-  card.className = "momentCard memberMomentCard";
-
-  if (imageUrl) card.style.backgroundImage = `url("${imageUrl}")`;
-  else card.classList.add("momentCardFallback");
-
-  const safeName = escapeHtml(name);
-
-  card.innerHTML = `
-    <div class="momentCardGradient"></div>
-    ${(!imageUrl && !videoUrl)
-      ? `<div class="momentCardFallbackIcon">${icon}</div>`
-      : ""}
-    <div class="momentCardAvatar">
-      ${profilePicture
-        ? `<img src="${escapeHtml(profilePicture)}" alt="${safeName}">`
-        : `<span class="momentCardAvatarInitials">${escapeHtml(momentInitials(name))}</span>`}
-    </div>
-    <div class="momentCardName">${safeName}</div>
-  `;
-
-  const avatarImg = card.querySelector(".momentCardAvatar img");
-  if (avatarImg) protectProfilePicture(avatarImg);
-
-  if (videoUrl) attachMomentVideo(card, videoUrl, icon);
-
-  return card;
-}
-
-function attachMomentVideo(card, videoUrl, icon) {
-  const frame = document.createElement("video");
-  frame.muted = true;
-  frame.defaultMuted = true;
-  frame.loop = true;
-  frame.autoplay = true;
-  frame.playsInline = true;
-  frame.preload = "auto";
-  frame.disablePictureInPicture = true;
-  frame.setAttribute("muted", "");
-  frame.setAttribute("playsinline", "");
-  frame.setAttribute("webkit-playsinline", "");
-  frame.setAttribute("loop", "");
-  frame.style.cssText =
-    "position:absolute;top:0;left:0;width:100%;height:100%;" +
-    "object-fit:cover;pointer-events:none;border-radius:inherit;";
-  frame.src = videoUrl.split("#")[0];
-
-  frame.addEventListener("error", () => {
-    frame.remove();
-    if (!card.querySelector(".momentCardFallbackIcon")) {
-      card.classList.add("momentCardFallback");
-      card.appendChild(makeEl("div", "momentCardFallbackIcon", icon));
+    {
+      threshold:[
+        0,
+        0.25,
+        0.5,
+        0.7,
+        1
+      ]
     }
-  });
 
-  card.style.position = "relative";
-  card.style.overflow = "hidden";
-  card.insertBefore(frame, card.firstChild);
-
-  const playQuietly = () => {
-    const p = frame.play();
-    if (p && typeof p.catch === "function") p.catch(() => {});
-  };
-
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) playQuietly();
-          else frame.pause();
-        });
-      },
-      { threshold: 0.4 }
-    ).observe(card);
-  } else {
-    frame.addEventListener("loadeddata", playQuietly);
-  }
-}
-
-function renderMomentsStrip(snapshot) {
-  if (!momentsRow) return;
-
-  momentsRow.querySelectorAll(".memberMomentCard").forEach((el) => el.remove());
-
-  const fragment = document.createDocumentFragment();
-
-  snapshot.forEach((momentDoc) => {
-    const momentData = momentDoc.data();
-
-    if (!isMomentActive(momentData)) return;
-
-    const ownerId = momentData.userId || momentData.authorId || momentData.uid || "";
-    if (!ownerId) return;
-
-    const privacy = String(momentData.privacy || "everyone").toLowerCase();
-    const isOwn = Boolean(currentUser && ownerId === currentUser.uid);
-    if (privacy !== "everyone" && !isOwn) return;
-
-    fragment.appendChild(buildMomentCard({ id: momentDoc.id, ...momentData }));
-  });
-
-  momentsRow.appendChild(fragment);
-}
-
-function stopMomentsListener() {
-  if (typeof unsubscribeMoments === "function") unsubscribeMoments();
-  unsubscribeMoments = null;
-}
-
-function startMomentsListener() {
-  stopMomentsListener();
-
-  const momentsQuery = query(
-    collection(db, "faithMoments"),
-    orderBy("timestamp", "desc"),
-    limit(MOMENTS_LIMIT)
   );
 
-  unsubscribeMoments = onSnapshot(
-    momentsQuery,
-    (snapshot) => renderMomentsStrip(snapshot),
-    (error) => console.error("Faith Moments strip error:", error)
+  communityVideos.forEach(
+    function(video){
+
+      video.muted =
+      true;
+
+      video.playsInline =
+      true;
+
+      videoObserver.observe(
+        video
+      );
+
+    }
   );
+
 }
+
 
 
 /* =====================================================
-   CLEANUP + READY
+   END OF feed.js (PART 1 of 2)
 ===================================================== */
-
-window.addEventListener("beforeunload", () => {
-  stopPostsListener();
-  stopNotificationListener();
-  stopMomentsListener();
-  if (postsLoadObserver) postsLoadObserver.disconnect();
-  if (renderDebounceTimer) clearTimeout(renderDebounceTimer);
-});
-
-console.log("Faith Connect Community Wall is ready.");
