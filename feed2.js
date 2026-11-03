@@ -338,6 +338,112 @@ photoViewerNextButton.addEventListener(
 );
 
 
+/* -----------------------------------------------------
+   SWIPE LEFT / RIGHT TO MOVE BETWEEN PHOTOS
+   (so every photo of a post can be reached on a phone)
+----------------------------------------------------- */
+
+let photoSwipeStartX = null;
+let photoSwipeStartY = null;
+
+photoViewer.addEventListener(
+  "touchstart",
+  function(event){
+
+    if(
+      event.touches.length !== 1 ||
+      currentGalleryImages.length < 2 ||
+      event.target === photoViewerVideo
+    ){
+
+      photoSwipeStartX = null;
+
+      return;
+
+    }
+
+    photoSwipeStartX =
+    event.touches[0].clientX;
+
+    photoSwipeStartY =
+    event.touches[0].clientY;
+
+  },
+  { passive:true }
+);
+
+photoViewer.addEventListener(
+  "touchend",
+  function(event){
+
+    if(photoSwipeStartX === null){
+      return;
+    }
+
+    const touch =
+    event.changedTouches[0];
+
+    const distanceX =
+    touch.clientX - photoSwipeStartX;
+
+    const distanceY =
+    touch.clientY - photoSwipeStartY;
+
+    photoSwipeStartX = null;
+
+    if(
+      Math.abs(distanceX) > 45 &&
+      Math.abs(distanceX) >
+      Math.abs(distanceY) * 1.4
+    ){
+
+      showGalleryImageAt(
+        distanceX < 0
+        ? currentGalleryIndex + 1
+        : currentGalleryIndex - 1
+      );
+
+    }
+
+  },
+  { passive:true }
+);
+
+/* Larger, always-visible arrows and counter for phones */
+
+const photoViewerExtraStyle =
+document.createElement("style");
+
+photoViewerExtraStyle.textContent = `
+  #photoViewer .photoViewerNavButton{
+    width:52px !important;
+    height:52px !important;
+    font-size:34px !important;
+    line-height:1 !important;
+    z-index:5 !important;
+    background:rgba(0,0,0,.55) !important;
+    color:#fff !important;
+    border-radius:50% !important;
+  }
+  #photoViewer .photoViewerNavButton.hidden,
+  #photoViewer .photoViewerCounter.hidden{
+    display:none !important;
+  }
+  #photoViewer .photoViewerCounter{
+    z-index:5 !important;
+    background:rgba(0,0,0,.55) !important;
+    color:#fff !important;
+    padding:5px 12px !important;
+    border-radius:14px !important;
+    font-size:13px !important;
+  }
+`;
+
+document.head.appendChild(
+  photoViewerExtraStyle
+);
+
+
 function openVideoViewer(
   videoUrl
 ){
