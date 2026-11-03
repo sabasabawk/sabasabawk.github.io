@@ -1,4 +1,4 @@
- /* =====================================================
+/* =====================================================
    FAITH CONNECT - COMMUNITY WALL (feed.js  -  PART 1 of 2)
    Part 1 of 2. The full-screen viewers and the Faith Moments
    strip are in feed2.js (Part 2). Includes admin icons:
@@ -3842,4 +3842,3 @@ function startVideoAutoPlay(){
 /* =====================================================
    END OF feed.js (PART 1 of 2)
 ===================================================== */
-
