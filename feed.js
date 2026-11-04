@@ -300,6 +300,21 @@ false;
 let noMorePostsAvailable =
 false;
 
+/* Endless scrolling: once every post has been shown, the feed
+   keeps going by showing the posts again in a new order. */
+
+let feedEndReached =
+false;
+
+let recycledQueue =
+[];
+
+let recycledCardCounter =
+0;
+
+let recycledDividerShown =
+false;
+
 let postsLoadObserver =
 null;
 
@@ -859,6 +874,15 @@ function startCommunityFeed(){
   noMorePostsAvailable =
   false;
 
+  feedEndReached =
+  false;
+
+  recycledQueue =
+  [];
+
+  recycledDividerShown =
+  false;
+
   isLoadingMorePosts =
   false;
 
@@ -1094,6 +1118,29 @@ function scheduleCommunityPostsRender(){
 }
 
 
+function rearmPostsObserver(){
+
+  /* The bottom-of-feed watcher is switched off when the feed
+     starts. Switch it back on once posts are on screen. */
+
+  if(
+    !postsLoadObserver ||
+    !loadMoreSentinel
+  ){
+    return;
+  }
+
+  postsLoadObserver.unobserve(
+    loadMoreSentinel
+  );
+
+  postsLoadObserver.observe(
+    loadMoreSentinel
+  );
+
+}
+
+
 function renderCommunityPosts(){
 
   postsContainer.innerHTML =
@@ -1158,6 +1205,8 @@ function renderCommunityPosts(){
   }
 
   startVideoAutoPlay();
+
+  rearmPostsObserver();
 
 }
 
@@ -1421,12 +1470,138 @@ function loadCommunityPosts(){
 }
 
 
+function appendRecycledPosts(){
+
+  if(loadedPostsDocs.length === 0){
+    return;
+  }
+
+  if(!recycledDividerShown){
+
+    recycledDividerShown =
+    true;
+
+    const divider =
+    document.createElement("div");
+
+    divider.className =
+    "feedEndDivider";
+
+    divider.style.cssText =
+    "text-align:center;padding:18px 12px;margin:8px 12px;" +
+    "color:#087bd1;font-weight:bold;font-size:14px;" +
+    "background:#e9f5fd;border-radius:14px;";
+
+    divider.textContent =
+    "🙏 You're all caught up. Here are some posts again.";
+
+    postsContainer.appendChild(
+      divider
+    );
+
+  }
+
+  if(recycledQueue.length === 0){
+
+    recycledQueue =
+    loadedPostsDocs.slice();
+
+    for(
+      let index = recycledQueue.length - 1;
+      index > 0;
+      index--
+    ){
+
+      const swapIndex =
+      Math.floor(
+        Math.random() * (index + 1)
+      );
+
+      const temporary =
+      recycledQueue[index];
+
+      recycledQueue[index] =
+      recycledQueue[swapIndex];
+
+      recycledQueue[swapIndex] =
+      temporary;
+
+    }
+
+  }
+
+  const nextBatch =
+  recycledQueue.splice(
+    0,
+    10
+  );
+
+  nextBatch.forEach(
+    function(postDoc){
+
+      try{
+
+        const repeatedCard =
+        createPostCard(
+          {
+            id:
+            postDoc.id,
+
+            ...postDoc.data()
+          }
+        );
+
+        recycledCardCounter++;
+
+        repeatedCard.id =
+        `post-${postDoc.id}-again-${recycledCardCounter}`;
+
+        postsContainer.appendChild(
+          repeatedCard
+        );
+
+      }catch(error){
+
+        console.error(
+          "Error repeating post card:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+  startVideoAutoPlay();
+
+  /* make the browser check the bottom of the page again */
+
+  postsLoadObserver.unobserve(
+    loadMoreSentinel
+  );
+
+  postsLoadObserver.observe(
+    loadMoreSentinel
+  );
+
+}
+
+
 async function loadMoreCommunityPosts(){
 
-  if(
-    isLoadingMorePosts ||
-    noMorePostsAvailable
-  ){
+  if(isLoadingMorePosts){
+    return;
+  }
+
+  if(feedEndReached){
+
+    appendRecycledPosts();
+
+    return;
+
+  }
+
+  if(noMorePostsAvailable){
     return;
   }
 
@@ -1497,26 +1672,13 @@ async function loadMoreCommunityPosts(){
          the very top instead of showing "no more posts".
       */
 
-      lastVisibleDocument =
-      loadedPostsDocs.length > 0
-
-      ? loadedPostsDocs[
-          loadedPostsDocs.length - 1
-        ]
-
-      : null;
-
-      window.scrollTo(
-        {
-          top:0,
-          behavior:"smooth"
-        }
-      );
+      feedEndReached =
+      true;
 
       isLoadingMorePosts =
       false;
 
-      updateLoadMoreSentinel();
+      appendRecycledPosts();
 
       return;
 
@@ -1582,6 +1744,16 @@ async function loadMoreCommunityPosts(){
     );
 
     startVideoAutoPlay();
+
+    if(
+      snapshot.docs.length <
+      POSTS_PER_PAGE
+    ){
+
+      feedEndReached =
+      true;
+
+    }
 
     lastVisibleDocument =
     snapshot.docs.length <
@@ -3020,16 +3192,15 @@ async function handleDeleteButton(
       }
     );
 
-    const postCardElement =
-    document.getElementById(
-      `post-${postId}`
+    postsContainer.querySelectorAll(
+      `[data-post-id="${postId}"]`
+    ).forEach(
+      function(cardCopy){
+
+        cardCopy.remove();
+
+      }
     );
-
-    if(postCardElement){
-
-      postCardElement.remove();
-
-    }
 
     if(
       postsContainer.children.length === 0
