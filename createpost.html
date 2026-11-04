@@ -744,9 +744,16 @@ Your Post
 
 <textarea
   id="post"
-  maxlength="5000"
+  maxlength="20000"
   placeholder="Write your message here..."
 ></textarea>
+
+<div
+  id="postCounter"
+  style="margin-top:6px;text-align:right;font-size:12px;color:#666666;"
+>
+  0 / 20,000
+</div>
 
 
 <!-- =====================================================
@@ -1320,6 +1327,44 @@ const messageElement =
 document.getElementById(
   "message"
 );
+
+
+const postCounter =
+document.getElementById(
+  "postCounter"
+);
+
+
+function updatePostCounter(){
+
+  const used =
+  postInput.value.length;
+
+  const limit =
+  20000;
+
+  postCounter.textContent =
+  `${used.toLocaleString()} / ${limit.toLocaleString()}`;
+
+  postCounter.style.color =
+  used >= limit
+  ? "#d93025"
+  : (
+      used >= limit * 0.9
+      ? "#b26a00"
+      : "#666666"
+    );
+
+}
+
+
+postInput.addEventListener(
+  "input",
+  updatePostCounter
+);
+
+
+updatePostCounter();
 
 
 /* =====================================================
@@ -3698,10 +3743,10 @@ async function publishPost(){
   }
 
 
-  if(post.length > 5000){
+  if(post.length > 20000){
 
     showMessage(
-      "Your post is too long. Please use 5,000 characters or fewer."
+      "Your post is too long. Please use 20,000 characters or fewer."
     );
 
     return;
