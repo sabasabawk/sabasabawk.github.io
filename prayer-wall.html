@@ -1039,7 +1039,15 @@ let unsubscribePrayerRequests =
 null;
 
 const defaultProfilePicture =
-"images/profile.png";
+"data:image/svg+xml;charset=utf-8," +
+encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+  '<defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>' +
+  '<circle cx="100" cy="100" r="100" fill="#e7f3ff"/>' +
+  '<g clip-path="url(#c)" fill="#1877f2">' +
+  '<circle cx="100" cy="76" r="38"/>' +
+  '<path d="M24 200c0-44 33-76 76-76s76 32 76 76z"/></g></svg>'
+);
 
 const userProfileCache =
 new Map();
@@ -1478,12 +1486,16 @@ function protectPrayerProfilePicture(
     "error",
     function(){
 
-      imageElement.src =
-      defaultProfilePicture;
+      if(
+        imageElement.src !==
+        defaultProfilePicture
+      ){
 
-    },
-    {
-      once:true
+        imageElement.src =
+        defaultProfilePicture;
+
+      }
+
     }
   );
 
